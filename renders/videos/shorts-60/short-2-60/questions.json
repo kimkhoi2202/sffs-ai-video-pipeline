@@ -1,0 +1,31 @@
+{
+  "slug": "short-2-60",
+  "title": "Short 2 (under 60s) — Fibonacci Series",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "audio": {
+    "music": "prize-wheel-parade.mp3",
+    "sfx": {
+      "whoosh": "short-2/whoosh.mp3",
+      "ding": "short-2/ding.mp3",
+      "sting": "short-2/sting.mp3"
+    }
+  },
+  "questions": [
+    {
+      "pos": 1,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "13"
+      }
+    }
+  ]
+}

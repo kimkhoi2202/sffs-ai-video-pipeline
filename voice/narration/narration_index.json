@@ -29,11 +29,11 @@
     },
     {
       "beat": "q3",
-      "chars": 232,
-      "dur_s": 19.36,
+      "chars": 233,
+      "dur_s": 18.96,
       "mp3": "narration/q3.mp3",
       "wav": "/tmp/vo_r15/q3.wav",
-      "text": "[excited] Question three, a picture puzzle! An empty circle becomes a filled-in circle. So an empty square becomes... which one? A, a filled square... B, an empty square... C, a filled circle... or D, a filled triangle? Six seconds!"
+      "text": "[excited] Question three, a picture puzzle! An empty circle becomes a filled-in circle. So an empty square becomes... which one? A, a filled square... B, an empty square... C, a filled circle... or D, a filled triangle? Five seconds!"
     },
     {
       "beat": "q4",
@@ -61,11 +61,11 @@
     },
     {
       "beat": "q7",
-      "chars": 203,
-      "dur_s": 20.72,
+      "chars": 202,
+      "dur_s": 21.04,
       "mp3": "narration/q7.mp3",
       "wav": "/tmp/vo_r15/q7.wav",
-      "text": "[excited] Question seven, and this one is tricky! Two, six, twelve, twenty, thirty, and then... what comes next? A, thirty-six... B, forty... C, forty-two... or D, forty-four? Seven seconds on the clock!"
+      "text": "[excited] Question seven, and this one is tricky! Two, six, twelve, twenty, thirty, and then... what comes next? A, thirty-six... B, forty... C, forty-two... or D, forty-four? Five seconds on the clock!"
     },
     {
       "beat": "q8",
@@ -77,11 +77,11 @@
     },
     {
       "beat": "q9",
-      "chars": 176,
+      "chars": 175,
       "dur_s": 17.12,
       "mp3": "narration/q9.mp3",
       "wav": "/tmp/vo_r15/q9.wav",
-      "text": "[excited] Question nine, a number series! One, one, two, three, five, eight, and then... what comes next? A, eleven... B, thirteen... C, twelve... or D, sixteen? Seven seconds!"
+      "text": "[excited] Question nine, a number series! One, one, two, three, five, eight, and then... what comes next? A, eleven... B, thirteen... C, twelve... or D, sixteen? Five seconds!"
     },
     {
       "beat": "q10",
@@ -93,43 +93,43 @@
     },
     {
       "beat": "q11",
-      "chars": 234,
-      "dur_s": 20.72,
+      "chars": 233,
+      "dur_s": 19.92,
       "mp3": "narration/q11.mp3",
       "wav": "/tmp/vo_r15/q11.wav",
-      "text": "[excited] Question eleven, a shape puzzle! Watch them grow, gaining one side each step: a triangle, then a square, then a pentagon. Which shape comes next? A, a circle... B, a hexagon... C, a square... or D, an octagon? Seven seconds!"
+      "text": "[excited] Question eleven, a shape puzzle! Watch them grow, gaining one side each step: a triangle, then a square, then a pentagon. Which shape comes next? A, a circle... B, a hexagon... C, a square... or D, an octagon? Five seconds!"
     },
     {
       "beat": "q12",
-      "chars": 218,
-      "dur_s": 18.32,
+      "chars": 219,
+      "dur_s": 16.48,
       "mp3": "narration/q12.mp3",
       "wav": "/tmp/vo_r15/q12.wav",
-      "text": "[excited] Question twelve, fill in the blank! The bridge was too weak to hold the heavy truck, so workers had to blank it before opening the road. A, decorate... B, reinforce... C, rename... or D, measure? Six seconds!"
+      "text": "[excited] Question twelve, fill in the blank! The bridge was too weak to hold the heavy truck, so workers had to blank it before opening the road. A, decorate... B, reinforce... C, rename... or D, measure? Five seconds!"
     },
     {
       "beat": "q13",
-      "chars": 231,
-      "dur_s": 18.08,
+      "chars": 230,
+      "dur_s": 19.76,
       "mp3": "narration/q13.mp3",
       "wav": "/tmp/vo_r15/q13.wav",
-      "text": "[excited] Question thirteen, a picture puzzle! A dot marches clockwise around a square: top-left, top-right, bottom-right... where does it jump next? A, top-left... B, bottom-left... C, top-right... or D, the center? Seven seconds!"
+      "text": "[excited] Question thirteen, a picture puzzle! A dot marches clockwise around a square: top-left, top-right, bottom-right... where does it jump next? A, top-left... B, bottom-left... C, top-right... or D, the center? Five seconds!"
     },
     {
       "beat": "q14",
-      "chars": 186,
-      "dur_s": 16.32,
+      "chars": 187,
+      "dur_s": 15.6,
       "mp3": "narration/q14.mp3",
       "wav": "/tmp/vo_r15/q14.wav",
-      "text": "[excited] Question fourteen, a number analogy! Two makes five, three makes seven, four makes nine, so five makes... what? A, ten... B, eleven... C, twelve... or D, thirteen? Six seconds!"
+      "text": "[excited] Question fourteen, a number analogy! Two makes five, three makes seven, four makes nine, so five makes... what? A, ten... B, eleven... C, twelve... or D, thirteen? Five seconds!"
     },
     {
       "beat": "q15",
-      "chars": 279,
-      "dur_s": 24.32,
+      "chars": 278,
+      "dur_s": 24.08,
       "mp3": "narration/q15.mp3",
       "wav": "/tmp/vo_r15/q15.wav",
-      "text": "[excited] Last one, question fifteen, a number puzzle, and it's sneaky! If four plus five makes twenty, three plus six makes eighteen, and two plus seven makes fourteen... then five plus four makes... what? A, nine... B, eighteen... C, twenty... or D, twenty-five? Seven seconds!"
+      "text": "[excited] Last one, question fifteen, a number puzzle, and it's sneaky! If four plus five makes twenty, three plus six makes eighteen, and two plus seven makes fourteen... then five plus four makes... what? A, nine... B, eighteen... C, twenty... or D, twenty-five? Five seconds!"
     },
     {
       "beat": "timesup",

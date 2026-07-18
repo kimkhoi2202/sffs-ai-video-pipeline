@@ -1,0 +1,57 @@
+{
+  "slug": "short-4",
+  "title": "Short 4 — Doubling, Odd One Out, Puzzle",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "audio": {
+    "music": "bonus-round-bounce.mp3",
+    "sfx": {
+      "whoosh": "short-4/whoosh.mp3",
+      "ding": "short-4/ding.mp3",
+      "sting": "short-4/sting.mp3"
+    }
+  },
+  "questions": [
+    {
+      "pos": 1,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "48"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "D",
+        "label": "NUMBER"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  4+5=20,  3+6=18,  2+7=14 / THEN  5+4 = ?",
+      "answer": {
+        "letter": "C",
+        "label": "20"
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { BADGE_COLORS, COLORS } from "../../theme/brand";
+import { useFmt } from "../../theme/layout";
 import { ANTON, DM_SANS } from "../../theme/fonts";
 import { QuestionFrame, PromptTitle } from "../../components/QuestionFrame";
 import { ShapeOptionsRow, ShapeOptionCard } from "../../components/OptionCards";
@@ -6,9 +7,8 @@ import { DotSquare, type DotPos } from "../../components/DotSquare";
 import type { DotQuestion as DotQ } from "../../data/types";
 
 /** Position plate: a dot stepping around a square (FLAT cells) + four
- *  dot-position option cards with labels. Flow layout via QuestionFrame. */
+ *  dot-position option cards with labels. Cells shrink for portrait. */
 const SEQ_COLORS = [COLORS.blue, COLORS.coral, COLORS.yellow, COLORS.mint];
-const TILE = 168; // smaller figure tiles so the dot-square has clear margin
 const POS_LABEL: Record<DotPos, string> = {
   tl: "TOP-LEFT",
   tr: "TOP-RIGHT",
@@ -17,11 +17,20 @@ const POS_LABEL: Record<DotPos, string> = {
   center: "CENTER",
 };
 
-export const DotQuestion: React.FC<{ q: DotQ; elapsed: number }> = ({ q, elapsed }) => {
+export const DotQuestion: React.FC<{ q: DotQ; elapsed: number; pos?: number; total?: number }> = ({
+  q,
+  elapsed,
+  pos,
+  total,
+}) => {
+  const { portrait } = useFmt();
+  const TILE = portrait ? 130 : 168;
+  const gap = portrait ? 30 : 66;
+
   const content = (
-    <div style={{ display: "flex", gap: 66, justifyContent: "center", alignItems: "center" }}>
-      {q.seq.map((pos, i) => (
-        <DotSquare key={i} size={TILE} pos={pos} dotColor={SEQ_COLORS[i % SEQ_COLORS.length]} />
+    <div style={{ display: "flex", gap, justifyContent: "center", alignItems: "center" }}>
+      {q.seq.map((p, i) => (
+        <DotSquare key={i} size={TILE} pos={p} dotColor={SEQ_COLORS[i % SEQ_COLORS.length]} />
       ))}
       <div style={{ position: "relative", width: TILE, height: TILE }}>
         <DotSquare size={TILE} pos={null} dotColor={COLORS.ink} />
@@ -48,6 +57,6 @@ export const DotQuestion: React.FC<{ q: DotQ; elapsed: number }> = ({ q, elapsed
   );
 
   return (
-    <QuestionFrame q={q} elapsed={elapsed} prompt={<PromptTitle fontSize={64} radius={36}>{q.prompt}</PromptTitle>} content={content} options={options} />
+    <QuestionFrame q={q} elapsed={elapsed} pos={pos} total={total} prompt={<PromptTitle fontSize={portrait ? 46 : 64} radius={36}>{q.prompt}</PromptTitle>} content={content} options={options} />
   );
 };

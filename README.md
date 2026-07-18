@@ -20,7 +20,7 @@ CogAT quiz video. It has three moving parts plus the committed assets/audio need
 | [`remotion/`](remotion/) | **Remotion (React) video project** — the current renderer. `src/` has the compositions, scenes, components, theme, and data; `public/` holds the audio (SFX, narration, music), fonts, and images the render reads via `staticFile`. |
 | [`voice/`](voice/) | **ElevenLabs voice / narration pipeline** (Python). Designs + clones the game-show host voice and generates per-beat narration mp3s, SFX, and captions. Superseded takes are archived under [`voice/_backups/`](voice/_backups/). |
 | [`assets/`](assets/) | Source music (mp3/wav), title cards, and the SFFS logo. |
-| [`renders/`](renders/) | Output `.mp4` masters (git-ignored — big + regenerable) plus their `.srt`/`.vtt` caption sidecars. |
+| [`renders/`](renders/) | Output `.mp4` masters (git-ignored — big + regenerable). The published cuts are organized under [`renders/videos/`](renders/videos/) — one folder per video (mp4 + `captions.srt`/`.vtt` + `questions.json` + `info.md`), with a top-level `manifest.json`. |
 | [`legacy/`](legacy/) | **Superseded** Python + ffmpeg render pipeline — `legacy/tools/` (the old `render_cogat_round_*.py` / `render_demo_quiz.py` / `render_gemini_master.py` renderers + bundled fonts + helper shells) and `legacy/renders/` (old build scripts). Kept for reference; Remotion replaced it. |
 
 > The committed audio in `remotion/public/audio/` and `voice/narration/` means you can **render the
@@ -46,14 +46,45 @@ npm run studio
 
 Compositions live in [`remotion/src/Root.tsx`](remotion/src/Root.tsx):
 
-- **`FullVideo`** — the full deliverable. A `platform` prop (`youtube` | `instagram` | `tiktok`)
-  swaps the outro CTA + VO/captions and recomputes the length:
-  `npx remotion render FullVideo ../renders/round-15-remotion-master.mp4 --props='{"platform":"youtube"}'`
+- **`FullVideo`** — landscape 16:9 (1920×1080). A `platform` prop (`youtube` | `instagram` | `tiktok`)
+  swaps the outro CTA + VO/captions, and a `questionIds` prop selects the question subset (any
+  order) — so the full 15-Q master and the curated 10-Q YouTube cut are the same composition:
+  `npx remotion render FullVideo ../renders/videos/youtube/cut-10/youtube-10.mp4 --props='{"platform":"youtube","questionIds":[3,6,9,13,10,7,11,14,12,15]}'`
+- **`Short`** — portrait 9:16 (1080×1920), same component re-flowed for vertical. The 5 shorts pass
+  `platform: "instagram"` (→ "follow for more") + a 3-id `questionIds` subset:
+  `npx remotion render Short ../renders/videos/shorts/short-1/short-1.mp4 --props='{"platform":"instagram","questionIds":[1,3,7]}'`
 - **`Round15Slice`** — the Phase-1 vertical slice.
 - **`Intro`** — the standalone intro.
 
-Encode intent (yuv420p, CRF 16) is set in [`remotion/remotion.config.ts`](remotion/remotion.config.ts).
-Generate the `.srt`/`.vtt` caption sidecars with `npx tsx scripts/gen-subs.ts` (run from `remotion/`).
+The score screen scales to the subset (15 → 13-15/8-12/0-7, 10 → 9-10/5-8/0-4, 3 → 3/2/0-1); the
+score VO is scale-agnostic and reused. Encode intent (yuv420p, CRF 16) is set in
+[`remotion/remotion.config.ts`](remotion/remotion.config.ts).
+
+### Repurposed cuts (YouTube long-form + 5 vertical shorts)
+
+[`src/data/cuts.ts`](remotion/src/data/cuts.ts) is the single source of truth for every published cut
+(subset + platform + aspect + folder). Regenerate all per-video metadata + subtitle sidecars with:
+
+```bash
+cd remotion
+npx tsx scripts/build-cuts.ts   # writes questions.json + info.md + captions.srt/.vtt + manifest.json
+```
+
+Each cut renders into its own folder under `renders/videos/`:
+
+```
+renders/videos/
+├── manifest.json                 ← index of every cut
+├── youtube/
+│   ├── full-15/                  ← the full 15-Q master (16:9, "subscribe")
+│   │   └── round-15-remotion-master.mp4 + captions.srt/.vtt + questions.json + info.md
+│   └── cut-10/                   ← curated best-10 YouTube cut (16:9, "subscribe")
+│       └── youtube-10.mp4 + …
+└── shorts/                       ← 5 vertical shorts (9:16, "follow for more")
+    ├── short-1/ … short-5/       ← 3 Qs each, mini score /3; serve BOTH Instagram + TikTok
+```
+
+> IG + TikTok take the **same** 9:16 "follow for more" cut, so the shorts live once under `shorts/`.
 
 ### Regenerate the voice / narration (ElevenLabs)
 
@@ -85,10 +116,12 @@ updating to run, since they moved under `legacy/`.)
 ### What's tracked vs ignored
 
 - **Ignored:** `**/.env` (secrets), `**/node_modules/`, `remotion/out/` (frame dumps), `__pycache__/`,
-  `renders/*.mp4` (final masters), fresh `voice/narration/*.bak` takes, `.DS_Store`.
+  `renders/**/*.mp4` (all final masters + per-video cuts, recursive), fresh `voice/narration/*.bak`
+  takes, `.DS_Store`.
 - **Tracked:** all source + config, the SFX / narration / music audio needed to render, fonts,
-  images, timelines, caption sidecars, and archived voice takes under `voice/_backups/`. No secrets,
-  no `node_modules`, no `.mp4` masters.
+  images, timelines, the per-video `questions.json` / `info.md` / `captions.srt`/`.vtt` + `manifest.json`
+  under `renders/videos/`, and archived voice takes under `voice/_backups/`. No secrets, no
+  `node_modules`, no `.mp4` masters.
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) typechecks the Remotion project on every
 push/PR (`npm ci` + `tsc --noEmit`). This is a render pipeline, not a deployed app — **there is no CD

@@ -1,0 +1,31 @@
+{
+  "slug": "short-5-60",
+  "title": "Short 5 (under 60s) — Number Series",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "audio": {
+    "music": "final-round-fanfare.mp3",
+    "sfx": {
+      "whoosh": "short-5/whoosh.mp3",
+      "ding": "short-5/ding.mp3",
+      "sting": "short-5/sting.mp3"
+    }
+  },
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "68"
+      }
+    }
+  ]
+}

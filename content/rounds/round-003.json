@@ -1,0 +1,300 @@
+{
+  "round": 3,
+  "slug": "round-003",
+  "title": "Round 3: Animals, Shapes and Sneaky Sums",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": { "verbal": 6, "quantitative": 6, "nonverbal": 3 },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "MONDAY" },
+        { "letter": "B", "text": "TUESDAY" },
+        { "letter": "C", "text": "MARCH" },
+        { "letter": "D", "text": "FRIDAY" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "MARCH",
+      "explanation": "Monday, Tuesday, and Friday are all days of the week. March is a month, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["6", "10", "14", "18", "?"],
+      "options": [
+        { "letter": "A", "text": "20" },
+        { "letter": "B", "text": "24" },
+        { "letter": "C", "text": "26" },
+        { "letter": "D", "text": "22" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "22",
+      "explanation": "Each number goes up by 4: 6, 10, 14, 18, so 18 plus 4 is 22."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 6,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "square",
+      "options": [
+        { "letter": "A", "shape": "square", "filled": true },
+        { "letter": "B", "shape": "square", "filled": false },
+        { "letter": "C", "shape": "triangle", "filled": true },
+        { "letter": "D", "shape": "circle", "filled": true }
+      ],
+      "ansLetter": "A",
+      "ansShape": "square",
+      "ansFilled": true,
+      "ansLabel": "FILLED SQUARE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty square becomes a filled square."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "COW IS TO MOO AS\nDOG IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "MEOW" },
+        { "letter": "B", "text": "BARK" },
+        { "letter": "C", "text": "BONE" },
+        { "letter": "D", "text": "TAIL" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "BARK",
+      "explanation": "A cow says moo, so a dog says bark. It is the sound each animal makes."
+    },
+    {
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["7", "14", "21", "28", "?"],
+      "options": [
+        { "letter": "A", "text": "33" },
+        { "letter": "B", "text": "42" },
+        { "letter": "C", "text": "36" },
+        { "letter": "D", "text": "35" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "35",
+      "explanation": "Each number goes up by 7: 7, 14, 21, 28, so 28 plus 7 is 35."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "SHOE IS TO FOOT AS\nHAT IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "HEAD" },
+        { "letter": "B", "text": "HAIR" },
+        { "letter": "C", "text": "NECK" },
+        { "letter": "D", "text": "GLOVE" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "HEAD",
+      "explanation": "A shoe goes on a foot, so a hat goes on a head. It is the body part each one covers."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 7,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["1", "4", "5", "9", "14", "?"],
+      "options": [
+        { "letter": "A", "text": "19" },
+        { "letter": "B", "text": "28" },
+        { "letter": "C", "text": "23" },
+        { "letter": "D", "text": "20" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "23",
+      "explanation": "Add the two numbers before it: 9 plus 14 is 23. Each number is the sum of the two before it."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "CATERPILLAR IS TO BUTTERFLY AS\nTADPOLE IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "FISH" },
+        { "letter": "B", "text": "FROG" },
+        { "letter": "C", "text": "POND" },
+        { "letter": "D", "text": "EGG" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "FROG",
+      "explanation": "A caterpillar grows into a butterfly, so a tadpole grows into a frog. It is what each one becomes."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 6,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["80", "40", "20", "10", "?"],
+      "options": [
+        { "letter": "A", "text": "5" },
+        { "letter": "B", "text": "8" },
+        { "letter": "C", "text": "15" },
+        { "letter": "D", "text": "6" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "5",
+      "explanation": "Each number is cut in half: 80, 40, 20, 10, so half of 10 is 5."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "SQUARE" },
+        { "letter": "B", "text": "TRIANGLE" },
+        { "letter": "C", "text": "CIRCLE" },
+        { "letter": "D", "text": "CUBE" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "CUBE",
+      "explanation": "A square, triangle, and circle are all flat shapes. A cube is a solid shape you can hold, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "tier": "FIGURE SERIES",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "seq": [7, 6, 5],
+      "options": [
+        { "letter": "A", "poly": "circle" },
+        { "letter": "B", "poly": 4 },
+        { "letter": "C", "poly": 3 },
+        { "letter": "D", "poly": 5 }
+      ],
+      "ansLetter": "B",
+      "ansShape": 4,
+      "ansLabel": "SQUARE",
+      "explanation": "The sides count down by one: heptagon 7, hexagon 6, pentagon 5, so next is the square with 4 sides."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 6,
+      "question": "THE HIKERS FELT SO ______ AFTER\nCLIMBING ALL DAY THAT THEY STOPPED\nTO REST BESIDE THE TRAIL.",
+      "questionFontSize": 58,
+      "options": [
+        { "letter": "A", "text": "CURIOUS" },
+        { "letter": "B", "text": "EARLY" },
+        { "letter": "C", "text": "EXHAUSTED" },
+        { "letter": "D", "text": "GENTLE" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "EXHAUSTED",
+      "explanation": "Climbing all day makes you very tired. Exhausted means worn out and needing rest."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": ["tl", "bl", "br"],
+      "options": [
+        { "letter": "A", "pos": "tr" },
+        { "letter": "B", "pos": "bl" },
+        { "letter": "C", "pos": "center" },
+        { "letter": "D", "pos": "tl" }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot steps counter-clockwise corner to corner: top-left, bottom-left, bottom-right, so the next corner is top-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "WHICH NUMBER FITS?\n1 -> 4,   2 -> 6,   3 -> 8,   4 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        { "letter": "A", "text": "9" },
+        { "letter": "B", "text": "10" },
+        { "letter": "C", "text": "11" },
+        { "letter": "D", "text": "12" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "10",
+      "explanation": "Each number is doubled then add two: 4 times 2 is 8, plus 2 is 10."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 7,
+      "question": "IF  2+3=11,  4+1=9,  3+5=23\nTHEN  2+4 = ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "12" },
+        { "letter": "B", "text": "16" },
+        { "letter": "C", "text": "14" },
+        { "letter": "D", "text": "8" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "14",
+      "explanation": "Multiply the two numbers, then add them both back: 2 times 4 is 8, plus 2 plus 4 is 14."
+    }
+  ]
+}

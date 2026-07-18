@@ -1,0 +1,300 @@
+{
+  "round": 4,
+  "slug": "round-004",
+  "title": "Round 4: Metals, Motion and Mystery Math",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": { "verbal": 6, "quantitative": 6, "nonverbal": 3 },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "EYE" },
+        { "letter": "B", "text": "EAR" },
+        { "letter": "C", "text": "NOSE" },
+        { "letter": "D", "text": "HAT" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "HAT",
+      "explanation": "An eye, ear, and nose are all parts of your body. A hat is something you wear, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["45", "40", "35", "30", "?"],
+      "options": [
+        { "letter": "A", "text": "26" },
+        { "letter": "B", "text": "20" },
+        { "letter": "C", "text": "25" },
+        { "letter": "D", "text": "28" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "25",
+      "explanation": "Each number goes down by 5: 45, 40, 35, 30, so 30 minus 5 is 25."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 6,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "circle",
+      "rightShape": "square",
+      "options": [
+        { "letter": "A", "shape": "circle", "filled": true },
+        { "letter": "B", "shape": "square", "filled": true },
+        { "letter": "C", "shape": "square", "filled": false },
+        { "letter": "D", "shape": "triangle", "filled": true }
+      ],
+      "ansLetter": "B",
+      "ansShape": "square",
+      "ansFilled": true,
+      "ansLabel": "FILLED SQUARE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty square becomes a filled square."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HAPPY IS TO SAD AS\nFAST IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "SLOW" },
+        { "letter": "B", "text": "QUICK" },
+        { "letter": "C", "text": "RACE" },
+        { "letter": "D", "text": "SLEEP" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SLOW",
+      "explanation": "Happy and sad are opposites, so the opposite of fast is slow. It is the same relationship, flipped."
+    },
+    {
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["5", "14", "23", "32", "?"],
+      "options": [
+        { "letter": "A", "text": "40" },
+        { "letter": "B", "text": "42" },
+        { "letter": "C", "text": "41" },
+        { "letter": "D", "text": "50" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "41",
+      "explanation": "Each number goes up by 9: 5, 14, 23, 32, so 32 plus 9 is 41."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "PEN IS TO WRITE AS\nSCISSORS IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "PAPER" },
+        { "letter": "B", "text": "CUT" },
+        { "letter": "C", "text": "SHARP" },
+        { "letter": "D", "text": "GLUE" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "CUT",
+      "explanation": "A pen is used to write, so scissors are used to cut. It is the job each tool does."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 7,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["3", "5", "9", "15", "23", "?"],
+      "options": [
+        { "letter": "A", "text": "31" },
+        { "letter": "B", "text": "32" },
+        { "letter": "C", "text": "35" },
+        { "letter": "D", "text": "33" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "33",
+      "explanation": "The gaps grow by two: plus 2, 4, 6, 8, then plus 10. So 23 plus 10 is 33."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "CHICKEN IS TO EGG AS\nCOW IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "MILK" },
+        { "letter": "B", "text": "GRASS" },
+        { "letter": "C", "text": "CALF" },
+        { "letter": "D", "text": "FARM" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "MILK",
+      "explanation": "A chicken gives us eggs, so a cow gives us milk. It is the food each animal provides."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 6,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["2", "6", "18", "54", "?"],
+      "options": [
+        { "letter": "A", "text": "108" },
+        { "letter": "B", "text": "162" },
+        { "letter": "C", "text": "150" },
+        { "letter": "D", "text": "216" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "162",
+      "explanation": "Each number is multiplied by 3: 2, 6, 18, 54, so 54 times 3 is 162."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "COPPER" },
+        { "letter": "B", "text": "GOLD" },
+        { "letter": "C", "text": "WOOD" },
+        { "letter": "D", "text": "SILVER" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "WOOD",
+      "explanation": "Copper, gold, and silver are all metals. Wood comes from trees, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "tier": "FIGURE SERIES",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "seq": [8, 7, 6],
+      "options": [
+        { "letter": "A", "poly": 5 },
+        { "letter": "B", "poly": "circle" },
+        { "letter": "C", "poly": 6 },
+        { "letter": "D", "poly": 4 }
+      ],
+      "ansLetter": "A",
+      "ansShape": 5,
+      "ansLabel": "PENTAGON",
+      "explanation": "The sides count down by one: octagon 8, heptagon 7, hexagon 6, so next is the pentagon with 5 sides."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 6,
+      "question": "THE MUSEUM GUIDE GAVE SUCH A\n______ TALK THAT NOBODY IN THE\nGROUP WANTED IT TO END.",
+      "questionFontSize": 58,
+      "options": [
+        { "letter": "A", "text": "BORING" },
+        { "letter": "B", "text": "QUIET" },
+        { "letter": "C", "text": "SHORT" },
+        { "letter": "D", "text": "FASCINATING" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "FASCINATING",
+      "explanation": "If nobody wanted the talk to end, it was very interesting. Fascinating means so interesting you cannot look away."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": ["tr", "tl", "bl"],
+      "options": [
+        { "letter": "A", "pos": "tl" },
+        { "letter": "B", "pos": "br" },
+        { "letter": "C", "pos": "center" },
+        { "letter": "D", "pos": "tr" }
+      ],
+      "ansLetter": "B",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot steps counter-clockwise corner to corner: top-right, top-left, bottom-left, so the next corner is bottom-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 12,   4 -> 16,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        { "letter": "A", "text": "20" },
+        { "letter": "B", "text": "18" },
+        { "letter": "C", "text": "24" },
+        { "letter": "D", "text": "15" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "20",
+      "explanation": "Each number is multiplied by 4: 5 times 4 is 20."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 7,
+      "question": "IF  1+2=9,  2+3=15,  4+1=15\nTHEN  3+3 = ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "9" },
+        { "letter": "B", "text": "12" },
+        { "letter": "C", "text": "18" },
+        { "letter": "D", "text": "6" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "18",
+      "explanation": "Add the two numbers, then multiply by 3: 3 plus 3 is 6, and 6 times 3 is 18."
+    }
+  ]
+}

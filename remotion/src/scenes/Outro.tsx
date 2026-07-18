@@ -1,36 +1,32 @@
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS, hardDropShadow, hardShadow } from "../theme/brand";
+import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { Pill } from "../components/Pill";
-import { FloatingShapes } from "../components/FloatingShapes";
+import { HeroShapes } from "../components/HeroShapes";
 import { PerspectiveGrid } from "../components/PerspectiveGrid";
 import type { Platform } from "../full/timeline";
 
 /**
- * Outro / end card — the closing hero moment, matching the intro/website-hero
- * energy: floating rotating neo-brutalist shapes over a vibrant green field, a
- * big two-line Anton headline in brand color with a hard offset black shadow,
- * the brain-logo accent, and a springy staggered entrance. Hierarchy: "YOUR
- * TURN" coral eyebrow -> "HOW DID / YOU DO?" hero headline -> "COMMENT YOUR
- * SCORE BELOW" -> platform CTA pill (YouTube "SUBSCRIBE FOR MORE", IG/TikTok
- * "FOLLOW FOR MORE"). No em/en dashes; no black-filled pills.
+ * Outro / end card — the closing hero moment matching the intro/website hero:
+ * floating rotating HeroShapes over a vibrant green field, a two-line Anton
+ * headline in brand color with a hard offset black shadow, the tilted brain-logo
+ * accent on the CTA, and a springy staggered entrance. Hierarchy: "YOUR TURN"
+ * eyebrow -> "HOW DID / YOU DO?" -> "COMMENT YOUR SCORE BELOW" -> platform CTA
+ * pill (YouTube "SUBSCRIBE FOR MORE", IG/TikTok "FOLLOW FOR MORE"). Re-flows for
+ * the portrait frame. No dashes; no black-filled pills.
  */
-const HEAD = 150;
-const OUTLINE = HEAD * 0.022; // ~3px black outline (matches intro title)
-const SHADOW_OFF = HEAD * 0.05; // hard extruded shadow, down-right
-
-const headWord = (color: string): React.CSSProperties => ({
+const headWord = (head: number, color: string): React.CSSProperties => ({
   fontFamily: ANTON,
-  fontSize: HEAD,
+  fontSize: head,
   lineHeight: 1,
   color,
-  WebkitTextStroke: `${OUTLINE}px ${COLORS.ink}`,
-  textShadow: `${SHADOW_OFF}px ${SHADOW_OFF}px 0 ${COLORS.ink}`,
+  WebkitTextStroke: `${head * 0.022}px ${COLORS.ink}`,
+  textShadow: `${head * 0.05}px ${head * 0.05}px 0 ${COLORS.ink}`,
   textTransform: "uppercase",
   whiteSpace: "nowrap",
 });
 
-/** Springy pop-in (scale + rise + fade), positioned centered at (cx, cy). */
 const Pop: React.FC<{ frame: number; fps: number; delay: number; cx: number; cy: number; children: React.ReactNode }> = ({
   frame,
   fps,
@@ -53,39 +49,40 @@ const Pop: React.FC<{ frame: number; fps: number; delay: number; cx: number; cy:
 export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const t = frame / fps;
+  const { w, portrait } = useFmt();
   const cta = platform === "youtube" ? "SUBSCRIBE FOR MORE" : "FOLLOW FOR MORE";
+  const cx = w / 2;
+
+  const head = portrait ? 128 : 150;
+  const L = portrait
+    ? { eyebrow: 380, l1: 566, l2: 726, comment: 916, cta: 1096, commentSize: 44, ctaSize: 58, ctaPad: "24px 52px", brain: { top: -46, right: -30, w: 112 } }
+    : { eyebrow: 181, l1: 357, l2: 507, comment: 659, cta: 803, commentSize: 56, ctaSize: 66, ctaPad: "26px 60px", brain: { top: -52, right: -34, w: 132 } };
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.green }}>
       <PerspectiveGrid base={COLORS.green} />
-      <FloatingShapes t={t} />
+      {/* same 6 hero shapes as the intro; hexagon recolored yellow so no shape blends into the green bg */}
+      <HeroShapes overrides={{ hexagon: COLORS.yellow }} />
 
-      {/* content block biased UP (~2:3 top:bottom whitespace) */}
-      {/* YOUR TURN eyebrow */}
-      <Pop frame={frame} fps={fps} delay={2} cx={960} cy={181}>
+      <Pop frame={frame} fps={fps} delay={2} cx={cx} cy={L.eyebrow}>
         <Pill text="YOUR TURN" fill={COLORS.coral} textColor={COLORS.ink} fontSize={38} tracking={4} padX={36} padY={18} />
       </Pop>
 
-      {/* HOW DID / YOU DO? hero headline (blue + coral, hard shadow) */}
-      <Pop frame={frame} fps={fps} delay={8} cx={960} cy={357}>
-        <div style={headWord(COLORS.blue)}>HOW DID</div>
+      <Pop frame={frame} fps={fps} delay={8} cx={cx} cy={L.l1}>
+        <div style={headWord(head, COLORS.blue)}>HOW DID</div>
       </Pop>
-      <Pop frame={frame} fps={fps} delay={12} cx={960} cy={507}>
-        <div style={headWord(COLORS.coral)}>YOU DO?</div>
+      <Pop frame={frame} fps={fps} delay={12} cx={cx} cy={L.l2}>
+        <div style={headWord(head, COLORS.coral)}>YOU DO?</div>
       </Pop>
 
-      {/* COMMENT YOUR SCORE BELOW */}
-      <Pop frame={frame} fps={fps} delay={18} cx={960} cy={659}>
-        <div style={{ fontFamily: ANTON, fontSize: 56, lineHeight: 1, color: COLORS.ink, textTransform: "uppercase", letterSpacing: "0.01em" }}>
+      <Pop frame={frame} fps={fps} delay={18} cx={cx} cy={L.comment}>
+        <div style={{ fontFamily: ANTON, fontSize: L.commentSize, lineHeight: 1, color: COLORS.ink, textTransform: "uppercase", letterSpacing: "0.01em" }}>
           COMMENT YOUR SCORE BELOW
         </div>
       </Pop>
 
-      {/* platform CTA pill (auto-sizes to its text) with the tilted brain-logo
-          sticker overlapping its TOP-RIGHT corner — anchored to the pill so it
-          lands correctly on both the wider "SUBSCRIBE" and narrower "FOLLOW" */}
-      <Pop frame={frame} fps={fps} delay={24} cx={960} cy={803}>
+      {/* platform CTA pill (auto-sizes) with the tilted brain sticker on its top-right corner */}
+      <Pop frame={frame} fps={fps} delay={24} cx={cx} cy={L.cta}>
         <div style={{ position: "relative", display: "inline-flex" }}>
           <div
             style={{
@@ -96,10 +93,10 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
               color: COLORS.ink,
               border: `8px solid ${COLORS.ink}`,
               borderRadius: 9999,
-              padding: "26px 60px",
+              padding: L.ctaPad,
               boxShadow: hardShadow(12),
               fontFamily: ANTON,
-              fontSize: 66,
+              fontSize: L.ctaSize,
               lineHeight: 1,
               textTransform: "uppercase",
               letterSpacing: "0.01em",
@@ -109,17 +106,7 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
           </div>
           <Img
             src={staticFile("images/sffs-logo.png")}
-            style={{
-              position: "absolute",
-              top: -52,
-              right: -34,
-              width: 132,
-              height: "auto",
-              display: "block",
-              transform: "rotate(12deg)",
-              filter: hardDropShadow(10),
-              zIndex: 2,
-            }}
+            style={{ position: "absolute", top: L.brain.top, right: L.brain.right, width: L.brain.w, height: "auto", display: "block", transform: "rotate(12deg)", filter: hardDropShadow(10), zIndex: 2 }}
           />
         </div>
       </Pop>

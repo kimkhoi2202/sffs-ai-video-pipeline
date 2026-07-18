@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { BADGE_COLORS, COLORS } from "../../theme/brand";
+import { useFmt } from "../../theme/layout";
 import { ANTON } from "../../theme/fonts";
 import { QuestionFrame, PromptTitle } from "../../components/QuestionFrame";
 import { ShapeOptionsRow, ShapeOptionCard } from "../../components/OptionCards";
@@ -7,23 +8,31 @@ import { Polygon } from "../../components/Polygon";
 import type { PolygonQuestion as PolyQ } from "../../data/types";
 
 /** Figure-series plate: a growing-sides polygon sequence (FLAT tiles) + four
- *  polygon-icon option cards. Flow layout via QuestionFrame. */
+ *  polygon-icon option cards. Tiles shrink for portrait. */
 const SEQ_COLORS = [COLORS.blue, COLORS.coral, COLORS.yellow, COLORS.mint];
 
-// Smaller figure tiles so the polygon sits with clear margin inside each cell.
-const TILE = 168;
-const Cell: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <div style={{ width: TILE, height: TILE, boxSizing: "border-box", background: COLORS.paper, border: `7px solid ${COLORS.ink}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
-    {children}
-  </div>
-);
+export const PolygonQuestion: React.FC<{ q: PolyQ; elapsed: number; pos?: number; total?: number }> = ({
+  q,
+  elapsed,
+  pos,
+  total,
+}) => {
+  const { portrait } = useFmt();
+  const TILE = portrait ? 130 : 168;
+  const r = Math.round(TILE * 0.34);
+  const gap = portrait ? 34 : 70;
 
-export const PolygonQuestion: React.FC<{ q: PolyQ; elapsed: number }> = ({ q, elapsed }) => {
+  const Cell: React.FC<{ children: ReactNode }> = ({ children }) => (
+    <div style={{ width: TILE, height: TILE, boxSizing: "border-box", background: COLORS.paper, border: `7px solid ${COLORS.ink}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {children}
+    </div>
+  );
+
   const content = (
-    <div style={{ display: "flex", gap: 70, justifyContent: "center", alignItems: "center" }}>
+    <div style={{ display: "flex", gap, justifyContent: "center", alignItems: "center" }}>
       {q.seq.map((sides, i) => (
         <Cell key={i}>
-          <Polygon shape={sides} r={57} fill={SEQ_COLORS[i % SEQ_COLORS.length]} border={8} />
+          <Polygon shape={sides} r={r} fill={SEQ_COLORS[i % SEQ_COLORS.length]} border={8} />
         </Cell>
       ))}
       <Cell>
@@ -43,6 +52,6 @@ export const PolygonQuestion: React.FC<{ q: PolyQ; elapsed: number }> = ({ q, el
   );
 
   return (
-    <QuestionFrame q={q} elapsed={elapsed} prompt={<PromptTitle fontSize={64} radius={36}>{q.prompt}</PromptTitle>} content={content} options={options} />
+    <QuestionFrame q={q} elapsed={elapsed} pos={pos} total={total} prompt={<PromptTitle fontSize={portrait ? 46 : 64} radius={36}>{q.prompt}</PromptTitle>} content={content} options={options} />
   );
 };

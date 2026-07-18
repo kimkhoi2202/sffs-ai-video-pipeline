@@ -19,13 +19,19 @@ remotion/.remotion/
 __pycache__/
 *.py[cod]
 
-# Large, regenerable OUTPUT masters — keep source + audio, drop final mp4s
+# Large, regenerable OUTPUT masters — keep source + audio, drop final mp4s.
+# Recursive so the per-video mp4s under renders/videos/<platform>/<slug>/ are
+# ignored too, while their questions.json / info.md / captions.srt|vtt / the
+# manifest.json ARE tracked.
 renders/*.mp4
+renders/**/*.mp4
 
 # Fresh backup takes the voice scripts write next to the active clips — the
 # curated archive lives (tracked) under voice/_backups/ instead.
 voice/narration/*.bak
 voice/narration/*.bak.mp3
+voice/narration/_countdownbak/
+voice/narration/_oldaccount_bak/
 
 # Editor / OS / misc
 .DS_Store

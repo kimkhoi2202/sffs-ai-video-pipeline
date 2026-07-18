@@ -1,0 +1,300 @@
+{
+  "round": 2,
+  "slug": "round-002",
+  "title": "Round 2: Trees, Tools and Number Jumps",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": { "verbal": 6, "quantitative": 6, "nonverbal": 3 },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "ROSE" },
+        { "letter": "B", "text": "OAK" },
+        { "letter": "C", "text": "TULIP" },
+        { "letter": "D", "text": "DAISY" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "OAK",
+      "explanation": "A rose, tulip, and daisy are all flowers. An oak is a tree, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["4", "7", "10", "13", "?"],
+      "options": [
+        { "letter": "A", "text": "16" },
+        { "letter": "B", "text": "17" },
+        { "letter": "C", "text": "19" },
+        { "letter": "D", "text": "15" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "16",
+      "explanation": "Each number goes up by 3: 4, 7, 10, 13, so the next is 13 plus 3 is 16."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 6,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "square",
+      "rightShape": "circle",
+      "options": [
+        { "letter": "A", "shape": "square", "filled": true },
+        { "letter": "B", "shape": "triangle", "filled": true },
+        { "letter": "C", "shape": "circle", "filled": false },
+        { "letter": "D", "shape": "circle", "filled": true }
+      ],
+      "ansLetter": "D",
+      "ansShape": "circle",
+      "ansFilled": true,
+      "ansLabel": "FILLED CIRCLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty circle becomes a filled circle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BIG IS TO HUGE AS\nSMALL IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "LITTLE" },
+        { "letter": "B", "text": "SHORT" },
+        { "letter": "C", "text": "TINY" },
+        { "letter": "D", "text": "MEDIUM" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "TINY",
+      "explanation": "Huge means very big, so tiny means very small. Each pair goes from the plain word to the stronger word."
+    },
+    {
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["60", "54", "48", "42", "?"],
+      "options": [
+        { "letter": "A", "text": "36" },
+        { "letter": "B", "text": "38" },
+        { "letter": "C", "text": "34" },
+        { "letter": "D", "text": "30" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "36",
+      "explanation": "Each number goes down by 6: 60, 54, 48, 42, so 42 minus 6 is 36."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "FINGER IS TO HAND AS\nTOE IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "LEG" },
+        { "letter": "B", "text": "SHOE" },
+        { "letter": "C", "text": "FOOT" },
+        { "letter": "D", "text": "NAIL" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "FOOT",
+      "explanation": "A finger is part of a hand, so a toe is part of a foot. It is the whole that the small part belongs to."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 7,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["4", "5", "7", "10", "14", "?"],
+      "options": [
+        { "letter": "A", "text": "18" },
+        { "letter": "B", "text": "19" },
+        { "letter": "C", "text": "20" },
+        { "letter": "D", "text": "17" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "19",
+      "explanation": "The gaps grow by one: plus 1, 2, 3, 4, then plus 5. So 14 plus 5 is 19."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "PUPPY IS TO DOG AS\nKITTEN IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "PET" },
+        { "letter": "B", "text": "PAW" },
+        { "letter": "C", "text": "CUB" },
+        { "letter": "D", "text": "CAT" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "CAT",
+      "explanation": "A puppy grows up to be a dog, so a kitten grows up to be a cat. It is the adult animal."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 6,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["1", "3", "9", "27", "?"],
+      "options": [
+        { "letter": "A", "text": "54" },
+        { "letter": "B", "text": "72" },
+        { "letter": "C", "text": "81" },
+        { "letter": "D", "text": "90" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "81",
+      "explanation": "Each number is multiplied by 3: 1, 3, 9, 27, so 27 times 3 is 81."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "ROAD" },
+        { "letter": "B", "text": "CAR" },
+        { "letter": "C", "text": "BUS" },
+        { "letter": "D", "text": "TRAIN" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "ROAD",
+      "explanation": "A car, bus, and train are all vehicles that carry people. A road is what they drive on, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "tier": "FIGURE SERIES",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "seq": [3, 4, 5],
+      "options": [
+        { "letter": "A", "poly": "circle" },
+        { "letter": "B", "poly": 6 },
+        { "letter": "C", "poly": 4 },
+        { "letter": "D", "poly": 8 }
+      ],
+      "ansLetter": "B",
+      "ansShape": 6,
+      "ansLabel": "HEXAGON",
+      "explanation": "The sides count up by one: triangle 3, square 4, pentagon 5, so next is the hexagon with 6 sides."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 6,
+      "question": "THE RAIN POURED ALL DAY, SO THE\nSCHOOL HAD TO ______ THE OUTDOOR\nGAMES UNTIL THE NEXT WEEKEND.",
+      "questionFontSize": 58,
+      "options": [
+        { "letter": "A", "text": "ENJOY" },
+        { "letter": "B", "text": "PAINT" },
+        { "letter": "C", "text": "COUNT" },
+        { "letter": "D", "text": "POSTPONE" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "POSTPONE",
+      "explanation": "Rain stops outdoor games, so they had to move them to later. Postpone means to put something off until a later time."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": ["tr", "br", "bl"],
+      "options": [
+        { "letter": "A", "pos": "tl" },
+        { "letter": "B", "pos": "tr" },
+        { "letter": "C", "pos": "center" },
+        { "letter": "D", "pos": "bl" }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot steps clockwise corner to corner: top-right, bottom-right, bottom-left, so the next corner is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "WHICH NUMBER FITS?\n1 -> 3,   2 -> 6,   3 -> 9,   4 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        { "letter": "A", "text": "7" },
+        { "letter": "B", "text": "12" },
+        { "letter": "C", "text": "10" },
+        { "letter": "D", "text": "15" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "12",
+      "explanation": "Each number is multiplied by 3: 4 times 3 is 12."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 7,
+      "question": "IF  2+3=6,  4+2=8,  5+3=15\nTHEN  6+2 = ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "8" },
+        { "letter": "B", "text": "14" },
+        { "letter": "C", "text": "12" },
+        { "letter": "D", "text": "16" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "12",
+      "explanation": "The plus sign secretly means multiply: 2 times 3 is 6, 4 times 2 is 8, so 6 times 2 is 12."
+    }
+  ]
+}

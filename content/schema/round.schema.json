@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://smartfella.local/schemas/round.schema.json",
+  "title": "SFFS Quiz Round",
+  "description": "Contract for one generated round of 15 CogAT-style questions. Mirrors the live Question shape in remotion/src/data/types.ts (content fields only; colors are auto-derived by the renderer and durations are measured from TTS, so both are omitted here). See video/CONTENT_PIPELINE.md.",
+  "type": "object",
+  "required": ["round", "slug", "title", "grade", "cogatLevel", "questions"],
+  "properties": {
+    "round": { "type": "integer", "minimum": 1 },
+    "slug": { "type": "string", "pattern": "^round-[0-9]{3}$" },
+    "title": {
+      "type": "string",
+      "description": "Human title. No em/en dashes.",
+      "not": { "pattern": "[\u2013\u2014]" }
+    },
+    "grade": { "const": 5 },
+    "cogatLevel": { "const": 11 },
+    "batteryMix": {
+      "type": "object",
+      "properties": {
+        "verbal": { "type": "integer" },
+        "quantitative": { "type": "integer" },
+        "nonverbal": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": {
+        "allOf": [
+          { "$ref": "#/$defs/common" },
+          {
+            "oneOf": [
+              { "$ref": "#/$defs/textQ" },
+              { "$ref": "#/$defs/numseriesQ" },
+              { "$ref": "#/$defs/shadedQ" },
+              { "$ref": "#/$defs/polygonQ" },
+              { "$ref": "#/$defs/dotQ" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "letter": { "type": "string", "enum": ["A", "B", "C", "D"] },
+    "difficulty": { "type": "string", "enum": ["easy", "medium", "hard"] },
+    "category": { "type": "string", "enum": ["verbal", "quantitative", "nonverbal"] },
+    "glyph": { "type": "string", "enum": ["circle", "square", "triangle"] },
+    "dotpos": { "type": "string", "enum": ["tl", "tr", "br", "bl", "center"] },
+    "poly": {
+      "anyOf": [
+        { "type": "integer", "minimum": 3, "maximum": 8 },
+        { "const": "circle" }
+      ]
+    },
+    "noDash": {
+      "type": "string",
+      "not": { "pattern": "[\u2013\u2014]" }
+    },
+    "common": {
+      "type": "object",
+      "required": [
+        "id", "kind", "category", "tier", "difficulty",
+        "countdown", "ansLetter", "ansLabel", "explanation"
+      ],
+      "properties": {
+        "id": { "type": "integer", "minimum": 1, "maximum": 15 },
+        "kind": { "type": "string", "enum": ["text", "numseries", "shaded", "polygon", "dot"] },
+        "category": { "$ref": "#/$defs/category" },
+        "tier": { "type": "string" },
+        "difficulty": { "$ref": "#/$defs/difficulty" },
+        "countdown": { "type": "integer", "minimum": 5, "maximum": 8 },
+        "ansLetter": { "$ref": "#/$defs/letter" },
+        "ansLabel": { "$ref": "#/$defs/noDash" },
+        "explanation": { "$ref": "#/$defs/noDash" }
+      }
+    },
+    "textOption": {
+      "type": "object",
+      "required": ["letter", "text"],
+      "properties": {
+        "letter": { "$ref": "#/$defs/letter" },
+        "text": { "$ref": "#/$defs/noDash" }
+      },
+      "additionalProperties": false
+    },
+    "shapeOption": {
+      "type": "object",
+      "required": ["letter", "shape", "filled"],
+      "properties": {
+        "letter": { "$ref": "#/$defs/letter" },
+        "shape": { "$ref": "#/$defs/glyph" },
+        "filled": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "polyOption": {
+      "type": "object",
+      "required": ["letter", "poly"],
+      "properties": {
+        "letter": { "$ref": "#/$defs/letter" },
+        "poly": { "$ref": "#/$defs/poly" }
+      },
+      "additionalProperties": false
+    },
+    "dotOption": {
+      "type": "object",
+      "required": ["letter", "pos"],
+      "properties": {
+        "letter": { "$ref": "#/$defs/letter" },
+        "pos": { "$ref": "#/$defs/dotpos" }
+      },
+      "additionalProperties": false
+    },
+    "textQ": {
+      "properties": {
+        "kind": { "const": "text" },
+        "question": { "$ref": "#/$defs/noDash" },
+        "questionFontSize": { "type": "integer", "minimum": 40, "maximum": 160 },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/textOption" }
+        }
+      },
+      "required": ["question", "questionFontSize", "options"]
+    },
+    "numseriesQ": {
+      "properties": {
+        "kind": { "const": "numseries" },
+        "prompt": { "$ref": "#/$defs/noDash" },
+        "seq": {
+          "type": "array",
+          "minItems": 3,
+          "items": { "type": "string" },
+          "contains": { "const": "?" }
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/textOption" }
+        }
+      },
+      "required": ["prompt", "seq", "options"]
+    },
+    "shadedQ": {
+      "properties": {
+        "kind": { "const": "shaded" },
+        "prompt": { "$ref": "#/$defs/noDash" },
+        "leftShape": { "$ref": "#/$defs/glyph" },
+        "rightShape": { "$ref": "#/$defs/glyph" },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/shapeOption" }
+        },
+        "ansShape": { "$ref": "#/$defs/glyph" },
+        "ansFilled": { "type": "boolean" }
+      },
+      "required": ["prompt", "leftShape", "rightShape", "options", "ansShape", "ansFilled"]
+    },
+    "polygonQ": {
+      "properties": {
+        "kind": { "const": "polygon" },
+        "prompt": { "$ref": "#/$defs/noDash" },
+        "seq": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "integer", "minimum": 3, "maximum": 8 }
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/polyOption" }
+        },
+        "ansShape": { "$ref": "#/$defs/poly" }
+      },
+      "required": ["prompt", "seq", "options", "ansShape"]
+    },
+    "dotQ": {
+      "properties": {
+        "kind": { "const": "dot" },
+        "prompt": { "$ref": "#/$defs/noDash" },
+        "seq": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/dotpos" }
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/dotOption" }
+        },
+        "ansPos": { "$ref": "#/$defs/dotpos" }
+      },
+      "required": ["prompt", "seq", "options", "ansPos"]
+    }
+  }
+}

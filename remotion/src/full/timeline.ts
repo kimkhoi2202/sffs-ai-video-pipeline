@@ -32,14 +32,22 @@ export const outroClipKey = (p: Platform): "outro-youtube" | "outro-follow" =>
 
 export type Segment =
   | { type: "intro"; start: number; dur: number }
-  | { type: "read"; q: Question; start: number; dur: number }
-  | { type: "countdown"; q: Question; start: number; dur: number }
-  | { type: "reveal"; q: Question; start: number; dur: number }
+  | { type: "read"; q: Question; pos: number; start: number; dur: number }
+  | { type: "countdown"; q: Question; pos: number; start: number; dur: number }
+  | { type: "reveal"; q: Question; pos: number; start: number; dur: number }
   | { type: "score"; start: number; dur: number }
   | { type: "outro"; start: number; dur: number };
 
 export type AudioEvent = { src: string; from: number; durationInFrames?: number };
 export type SfxEvent = { src: string; from: number; vol: number };
+
+/**
+ * A per-cut SFX set (paths under public/audio/sfx/). When supplied (the shorts,
+ * for a distinct sound per short) one whoosh covers all transition types and one
+ * sting covers score+outro; when omitted (the YouTube cuts) the shared per-type
+ * defaults are used, so the 16:9 masters are unchanged.
+ */
+export type SfxSet = { whoosh: string; ding: string; sting: string };
 
 /** SFX mix levels, applied to the -6 dBFS-normalized SFX. They play mostly in
  *  VO-silence gaps (segment TRAIL/LEAD), so they sit above the music bed and
@@ -52,6 +60,7 @@ const countdownFrames = (q: Question): number =>
 
 export type TimelineData = {
   platform: Platform;
+  questions: Question[];
   segments: Segment[];
   narration: AudioEvent[];
   ticks: AudioEvent[];
@@ -61,7 +70,15 @@ export type TimelineData = {
   total: number;
 };
 
-function build(platform: Platform): TimelineData {
+/** All 15 question ids, in order — the default subset (the full master). */
+export const ALL_IDS = QUESTIONS.map((q) => q.idx);
+
+/** Resolve a subset of question ids (in the given order) to Question objects. */
+const resolve = (ids: number[]): Question[] =>
+  ids.map((id) => QUESTIONS.find((q) => q.idx === id)).filter((q): q is Question => Boolean(q));
+
+function build(platform: Platform, ids: number[], sfxSet?: SfxSet): TimelineData {
+  const questions = resolve(ids);
   const segments: Segment[] = [];
   const narration: AudioEvent[] = [];
   const ticks: AudioEvent[] = [];
@@ -75,16 +92,17 @@ function build(platform: Platform): TimelineData {
   voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D.intro)]);
   cur += introDur;
 
-  for (const q of QUESTIONS) {
+  questions.forEach((q, qi) => {
+    const pos = qi + 1; // 1-based position within THIS cut ("QUESTION pos OF N")
     const qDur = D[`q${q.idx}`];
     const readDur = frames(LEAD + qDur + TRAIL);
-    segments.push({ type: "read", q, start: cur, dur: readDur });
+    segments.push({ type: "read", q, pos, start: cur, dur: readDur });
     narration.push({ src: `audio/narration/q${q.idx}.mp3`, from: cur + LEAD_FRAMES });
     voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(qDur)]);
     cur += readDur;
 
     const cdDur = countdownFrames(q);
-    segments.push({ type: "countdown", q, start: cur, dur: cdDur });
+    segments.push({ type: "countdown", q, pos, start: cur, dur: cdDur });
     ticks.push({ src: "audio/sfx/tick.wav", from: cur, durationInFrames: frames(q.countdown) });
     swellWindows.push([cur, cur + frames(q.countdown)]); // swell across the tick, before "time's up"
     narration.push({ src: "audio/narration/timesup.mp3", from: cur + frames(q.countdown) });
@@ -92,11 +110,11 @@ function build(platform: Platform): TimelineData {
     cur += cdDur;
 
     const rDur = frames(LEAD + D[`r${q.idx}`] + TRAIL);
-    segments.push({ type: "reveal", q, start: cur, dur: rDur });
+    segments.push({ type: "reveal", q, pos, start: cur, dur: rDur });
     narration.push({ src: `audio/narration/r${q.idx}.mp3`, from: cur + LEAD_FRAMES });
     voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D[`r${q.idx}`])]);
     cur += rDur;
-  }
+  });
 
   const scoreDur = frames(LEAD + D.score + TRAIL);
   segments.push({ type: "score", start: cur, dur: scoreDur });
@@ -111,7 +129,15 @@ function build(platform: Platform): TimelineData {
   voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D[outroKey])]);
   cur += outroDur;
 
-  // --- SFX: one sound per transition TYPE + a correct-answer ding per reveal ---
+  // --- SFX: transition whooshes + stings + a correct-answer ding per reveal ---
+  // A cut may supply its own SfxSet (the shorts); otherwise the shared per-type
+  // defaults are used (the YouTube cuts, unchanged).
+  const wEnter = sfxSet ? sfxSet.whoosh : "sfx-whoosh-enter.mp3";
+  const wReveal = sfxSet ? sfxSet.whoosh : "sfx-whoosh-reveal.mp3";
+  const wAdvance = sfxSet ? sfxSet.whoosh : "sfx-whoosh-advance.mp3";
+  const stScore = sfxSet ? sfxSet.sting : "sfx-sting-score.mp3";
+  const stOutro = sfxSet ? sfxSet.sting : "sfx-sting-outro.mp3";
+  const dingFile = sfxSet ? sfxSet.ding : "sfx-reveal-ding.mp3";
   const sfx: SfxEvent[] = [];
   const addSfx = (src: string, from: number, vol: number) =>
     sfx.push({ src: `audio/sfx/${src}`, from: Math.max(0, from), vol });
@@ -119,26 +145,31 @@ function build(platform: Platform): TimelineData {
     const prev = segments[i - 1].type;
     const t = segments[i].type;
     const b = segments[i].start;
-    if (prev === "intro" && t === "read") addSfx("sfx-whoosh-enter.mp3", b - SFX_LEADIN, SFX_VOL.whoosh); // intro -> Q1
-    else if (t === "reveal") addSfx("sfx-whoosh-reveal.mp3", b - SFX_LEADIN, SFX_VOL.whoosh); // question -> reveal
-    else if (prev === "reveal" && t === "read") addSfx("sfx-whoosh-advance.mp3", b - SFX_LEADIN, SFX_VOL.whoosh); // reveal -> next question
-    else if (t === "score") addSfx("sfx-sting-score.mp3", b - SFX_LEADIN, SFX_VOL.sting); // last reveal -> score
-    else if (t === "outro") addSfx("sfx-sting-outro.mp3", b - SFX_LEADIN, SFX_VOL.sting); // score -> outro
+    if (prev === "intro" && t === "read") addSfx(wEnter, b - SFX_LEADIN, SFX_VOL.whoosh); // intro -> Q1
+    else if (t === "reveal") addSfx(wReveal, b - SFX_LEADIN, SFX_VOL.whoosh); // question -> reveal
+    else if (prev === "reveal" && t === "read") addSfx(wAdvance, b - SFX_LEADIN, SFX_VOL.whoosh); // reveal -> next question
+    else if (t === "score") addSfx(stScore, b - SFX_LEADIN, SFX_VOL.sting); // last reveal -> score
+    else if (t === "outro") addSfx(stOutro, b - SFX_LEADIN, SFX_VOL.sting); // score -> outro
   }
   for (const seg of segments) {
-    if (seg.type === "reveal") addSfx("sfx-reveal-ding.mp3", seg.start + frames(0.12), SFX_VOL.ding);
+    if (seg.type === "reveal") addSfx(dingFile, seg.start + frames(0.12), SFX_VOL.ding);
   }
 
-  return { platform, segments, narration, ticks, sfx, voWindows, swellWindows, total: cur };
+  return { platform, questions, segments, narration, ticks, sfx, voWindows, swellWindows, total: cur };
 }
 
-const CACHE = new Map<Platform, TimelineData>();
-/** Per-platform timeline (cached). Default 'youtube' = the 16:9 master. */
-export const getTimeline = (platform: Platform = "youtube"): TimelineData => {
-  let t = CACHE.get(platform);
+const CACHE = new Map<string, TimelineData>();
+/**
+ * Per-cut timeline (cached by platform + question subset + sfx set). Default =
+ * the full 15-question YouTube master. Pass a subset of ids (the curated 10 or a
+ * short's 3) and an optional per-cut SfxSet to build that cut's timeline.
+ */
+export const getTimeline = (platform: Platform = "youtube", ids: number[] = ALL_IDS, sfxSet?: SfxSet): TimelineData => {
+  const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}`;
+  let t = CACHE.get(key);
   if (!t) {
-    t = build(platform);
-    CACHE.set(platform, t);
+    t = build(platform, ids, sfxSet);
+    CACHE.set(key, t);
   }
   return t;
 };
@@ -151,11 +182,14 @@ export const TOTAL = TIMELINE.total;
 // (parade is x0.75). With the parade gain the effective music sits ~11-12 dB
 // under the VO at DUCKED (present bed, not near-silent) and near-full at SWELL.
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
-const BASE = 0.55; // normal bed in gaps/transitions
-const DUCKED = 0.36; // under VO: reduced but clearly AUDIBLE (VO stays clearly on top)
-const SWELL = 0.9; // during the countdown (timer ticking, no VO): swell up for tension
-const RAMP = 8; // frames attack/release for the VO duck
-const SWELL_RAMP = 12; // frames ramp for the countdown swell (~0.4s, smooth in/out)
+// Two-level, VO-keyed envelope: the music is a CONTINUOUS bed that swells to a
+// full non-VO ceiling in EVERY no-one-talking gap (countdown, transitions,
+// intro/outro/reveal beats) and ducks to a present, clearly-audible bed whenever
+// narration is speaking. Smooth ramps between the two (no pops).
+const DUCKED = 0.38; // under VO: present bed, ~-8 dB under the swell (VO stays clearly on top)
+const SWELL = 0.9; // every VO-silence gap lifts to this full/non-VO ceiling
+const RAMP = 8; // frames attack/release for the duck <-> swell ramp (~0.27s)
+const SWELL_RAMP = 12; // frames ramp for the (still-exported) countdown swell gate
 
 export const duckGate = (frame: number, T: TimelineData = TIMELINE): number => {
   let g = 0;
@@ -175,11 +209,11 @@ export const swellGate = (frame: number, T: TimelineData = TIMELINE): number => 
   return g;
 };
 
-/** Music level: BASE bed, swelled UP during countdowns, ducked DOWN under VO. */
-export const musicLevel = (frame: number, T: TimelineData = TIMELINE): number => {
-  const swelled = BASE + (SWELL - BASE) * swellGate(frame, T);
-  return swelled + (DUCKED - swelled) * duckGate(frame, T);
-};
+/** Music level: full SWELL in every VO-silence gap, ducked to DUCKED while any
+ *  narration is speaking, with smooth ramps between (keyed only to the VO
+ *  windows, so the swell now applies to ALL gaps, not just the countdown). */
+export const musicLevel = (frame: number, T: TimelineData = TIMELINE): number =>
+  SWELL + (DUCKED - SWELL) * duckGate(frame, T);
 
 const FAN_LEN = 13;
 const XF = 1.5;
@@ -204,4 +238,18 @@ export const winnerVolume = (local: number, T: TimelineData = TIMELINE): number 
   const global = winStartFrame(T) + local;
   const fade = clamp01(local / frames(FADE)) * (1 - clamp01((local - frames(WIN_LEN - FADE)) / frames(FADE)));
   return musicLevel(global, T) * fade * GAIN.winner;
+};
+
+/**
+ * Single-track short music: one looped bed under the whole cut with the SAME
+ * duck/swell envelope (musicLevel) + parade gain as the arc, plus gentle fades
+ * in/out so the loop start/end aren't abrupt. Used by the shorts (each gets a
+ * distinct track); the YouTube cuts keep the fanfare->parade->winner arc.
+ */
+const SHORT_FADE_IN = frames(0.6);
+const SHORT_FADE_OUT = frames(1.2);
+export const shortMusicVolume = (frame: number, T: TimelineData = TIMELINE): number => {
+  const fin = clamp01(frame / SHORT_FADE_IN);
+  const fout = clamp01((T.total - frame) / SHORT_FADE_OUT);
+  return musicLevel(frame, T) * GAIN.parade * fin * fout;
 };

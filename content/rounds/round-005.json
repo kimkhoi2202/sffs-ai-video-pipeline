@@ -1,0 +1,300 @@
+{
+  "round": 5,
+  "slug": "round-005",
+  "title": "Round 5: Royals, Tastes and Tricky Totals",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": { "verbal": 6, "quantitative": 6, "nonverbal": 3 },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "NAIL" },
+        { "letter": "B", "text": "HAMMER" },
+        { "letter": "C", "text": "SAW" },
+        { "letter": "D", "text": "DRILL" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "NAIL",
+      "explanation": "A hammer, saw, and drill are all tools you use. A nail is what a tool works on, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["90", "83", "76", "69", "?"],
+      "options": [
+        { "letter": "A", "text": "61" },
+        { "letter": "B", "text": "62" },
+        { "letter": "C", "text": "63" },
+        { "letter": "D", "text": "60" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "62",
+      "explanation": "Each number goes down by 7: 90, 83, 76, 69, so 69 minus 7 is 62."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 6,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "square",
+      "rightShape": "triangle",
+      "options": [
+        { "letter": "A", "shape": "square", "filled": true },
+        { "letter": "B", "shape": "circle", "filled": true },
+        { "letter": "C", "shape": "triangle", "filled": true },
+        { "letter": "D", "shape": "triangle", "filled": false }
+      ],
+      "ansLetter": "C",
+      "ansShape": "triangle",
+      "ansFilled": true,
+      "ansLabel": "FILLED TRIANGLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "KING IS TO QUEEN AS\nPRINCE IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "CROWN" },
+        { "letter": "B", "text": "CASTLE" },
+        { "letter": "C", "text": "ROYAL" },
+        { "letter": "D", "text": "PRINCESS" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "PRINCESS",
+      "explanation": "A king and queen are the male and female pair, so the female of a prince is a princess."
+    },
+    {
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["3", "6", "12", "24", "?"],
+      "options": [
+        { "letter": "A", "text": "36" },
+        { "letter": "B", "text": "48" },
+        { "letter": "C", "text": "30" },
+        { "letter": "D", "text": "42" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "48",
+      "explanation": "Each number doubles: 3, 6, 12, 24, so 24 times 2 is 48."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "SUGAR IS TO SWEET AS\nLEMON IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "YELLOW" },
+        { "letter": "B", "text": "FRUIT" },
+        { "letter": "C", "text": "JUICE" },
+        { "letter": "D", "text": "SOUR" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SOUR",
+      "explanation": "Sugar tastes sweet, so a lemon tastes sour. It is the taste each food is known for."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 7,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["2", "5", "7", "12", "19", "?"],
+      "options": [
+        { "letter": "A", "text": "31" },
+        { "letter": "B", "text": "26" },
+        { "letter": "C", "text": "24" },
+        { "letter": "D", "text": "38" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "31",
+      "explanation": "Add the two numbers before it: 12 plus 19 is 31. Each number is the sum of the two before it."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "DAY IS TO WEEK AS\nMONTH IS TO ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "HOUR" },
+        { "letter": "B", "text": "MINUTE" },
+        { "letter": "C", "text": "YEAR" },
+        { "letter": "D", "text": "CALENDAR" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "YEAR",
+      "explanation": "Seven days make a week, and twelve months make a year. A month is part of a year the way a day is part of a week."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 6,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": ["2", "4", "7", "11", "16", "?"],
+      "options": [
+        { "letter": "A", "text": "21" },
+        { "letter": "B", "text": "20" },
+        { "letter": "C", "text": "23" },
+        { "letter": "D", "text": "22" }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "22",
+      "explanation": "The gaps grow by one: plus 2, 3, 4, 5, then plus 6. So 16 plus 6 is 22."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        { "letter": "A", "text": "SUN" },
+        { "letter": "B", "text": "JUPITER" },
+        { "letter": "C", "text": "MARS" },
+        { "letter": "D", "text": "VENUS" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SUN",
+      "explanation": "Jupiter, Mars, and Venus are all planets. The sun is a star, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "tier": "FIGURE SERIES",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "seq": [4, 5, 6],
+      "options": [
+        { "letter": "A", "poly": "circle" },
+        { "letter": "B", "poly": 6 },
+        { "letter": "C", "poly": 7 },
+        { "letter": "D", "poly": 8 }
+      ],
+      "ansLetter": "C",
+      "ansShape": 7,
+      "ansLabel": "HEPTAGON",
+      "explanation": "The sides count up by one: square 4, pentagon 5, hexagon 6, so next is the heptagon with 7 sides."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 6,
+      "question": "AFTER THE LONG DRY SUMMER, THE ONCE\nGREEN FIELD LOOKED COMPLETELY ______\nWITH NO PLANTS LEFT AT ALL.",
+      "questionFontSize": 58,
+      "options": [
+        { "letter": "A", "text": "CROWDED" },
+        { "letter": "B", "text": "BARREN" },
+        { "letter": "C", "text": "FROZEN" },
+        { "letter": "D", "text": "CHEERFUL" }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "BARREN",
+      "explanation": "With no plants left after a dry summer, the field is bare and empty. Barren means nothing can grow there."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 7,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": ["tl", "tr", "br"],
+      "options": [
+        { "letter": "A", "pos": "tr" },
+        { "letter": "B", "pos": "center" },
+        { "letter": "C", "pos": "br" },
+        { "letter": "D", "pos": "bl" }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot steps clockwise corner to corner: top-left, top-right, bottom-right, so the next corner is bottom-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "WHICH NUMBER FITS?\n1 -> 5,   2 -> 7,   3 -> 9,   4 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        { "letter": "A", "text": "10" },
+        { "letter": "B", "text": "12" },
+        { "letter": "C", "text": "11" },
+        { "letter": "D", "text": "13" }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "11",
+      "explanation": "Each number is doubled then add three: 4 times 2 is 8, plus 3 is 11."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 7,
+      "question": "IF  5+3=7,  4+2=2,  6+2=4\nTHEN  5+4 = ?",
+      "questionFontSize": 88,
+      "options": [
+        { "letter": "A", "text": "11" },
+        { "letter": "B", "text": "9" },
+        { "letter": "C", "text": "20" },
+        { "letter": "D", "text": "1" }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "11",
+      "explanation": "Multiply the two numbers, then subtract them both: 5 times 4 is 20, minus 5 minus 4 leaves 11."
+    }
+  ]
+}

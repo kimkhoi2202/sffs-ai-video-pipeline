@@ -1,0 +1,31 @@
+{
+  "slug": "short-4-60",
+  "title": "Short 4 (under 60s) — Odd One Out",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "audio": {
+    "music": "bonus-round-bounce.mp3",
+    "sfx": {
+      "whoosh": "short-4/whoosh.mp3",
+      "ding": "short-4/ding.mp3",
+      "sting": "short-4/sting.mp3"
+    }
+  },
+  "questions": [
+    {
+      "pos": 1,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "D",
+        "label": "NUMBER"
+      }
+    }
+  ]
+}

@@ -6,18 +6,25 @@ import { PolygonQuestion } from "./questions/PolygonQuestion";
 import { DotQuestion } from "./questions/DotQuestion";
 
 /** Dispatches to the right question-type plate. `elapsed` (seconds) drives the
- *  countdown; pass 0 for the static "read" plate (timer full). */
-export const QuestionPlate: React.FC<{ q: Question; elapsed: number }> = ({ q, elapsed }) => {
+ *  countdown; pass 0 for the static "read" plate (timer full). `pos`/`total`
+ *  drive the "QUESTION pos OF total" header for the current cut. */
+export const QuestionPlate: React.FC<{ q: Question; elapsed: number; pos?: number; total?: number }> = ({
+  q,
+  elapsed,
+  pos,
+  total,
+}) => {
+  const p = { elapsed, pos, total };
   switch (q.kind) {
     case "text":
-      return <TextQuestion q={q} elapsed={elapsed} />;
+      return <TextQuestion q={q} {...p} />;
     case "numseries":
-      return <NumSeriesQuestion q={q} elapsed={elapsed} />;
+      return <NumSeriesQuestion q={q} {...p} />;
     case "shaded":
-      return <ShadedQuestion q={q} elapsed={elapsed} />;
+      return <ShadedQuestion q={q} {...p} />;
     case "polygon":
-      return <PolygonQuestion q={q} elapsed={elapsed} />;
+      return <PolygonQuestion q={q} {...p} />;
     case "dot":
-      return <DotQuestion q={q} elapsed={elapsed} />;
+      return <DotQuestion q={q} {...p} />;
   }
 };

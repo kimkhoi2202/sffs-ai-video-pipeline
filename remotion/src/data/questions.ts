@@ -68,7 +68,7 @@ export const QUESTIONS: Question[] = [
     tier: "FIGURE ANALOGY",
     tierColor: COLORS.coral,
     accent: COLORS.coral,
-    countdown: 6,
+    countdown: 5,
     prompt: "WHICH SHAPE COMPLETES THE PATTERN?",
     leftShape: "circle",
     rightShape: "square",
@@ -160,7 +160,7 @@ export const QUESTIONS: Question[] = [
     tier: "NUMBER SERIES",
     tierColor: COLORS.yellow,
     accent: COLORS.yellow,
-    countdown: 7,
+    countdown: 5,
     prompt: "WHAT COMES NEXT?",
     seq: ["2", "6", "12", "20", "30", "?"],
     options: [
@@ -204,7 +204,7 @@ export const QUESTIONS: Question[] = [
     tier: "NUMBER SERIES",
     tierColor: COLORS.coral,
     accent: COLORS.coral,
-    countdown: 7,
+    countdown: 5,
     prompt: "WHAT COMES NEXT?",
     seq: ["1", "1", "2", "3", "5", "8", "?"],
     options: [
@@ -248,7 +248,7 @@ export const QUESTIONS: Question[] = [
     tier: "FIGURE SERIES",
     tierColor: COLORS.yellow,
     accent: COLORS.yellow,
-    countdown: 7,
+    countdown: 5,
     prompt: "WHICH SHAPE COMES NEXT?",
     seq: [3, 4, 5],
     options: [
@@ -271,7 +271,7 @@ export const QUESTIONS: Question[] = [
     tier: "SENTENCE COMPLETION",
     tierColor: COLORS.blue,
     accent: COLORS.coral,
-    countdown: 6,
+    countdown: 5,
     question: "THE BRIDGE WAS TOO WEAK TO HOLD THE\nHEAVY TRUCK, SO WORKERS HAD TO ______\nIT BEFORE OPENING THE ROAD.",
     questionFontSize: 58,
     options: [
@@ -293,7 +293,7 @@ export const QUESTIONS: Question[] = [
     tier: "POSITION",
     tierColor: COLORS.yellow,
     accent: COLORS.yellow,
-    countdown: 7,
+    countdown: 5,
     prompt: "WHERE DOES THE DOT MOVE NEXT?",
     seq: ["tl", "tr", "br"],
     options: [
@@ -317,7 +317,7 @@ export const QUESTIONS: Question[] = [
     tier: "NUMBER ANALOGY",
     tierColor: COLORS.mint,
     accent: COLORS.yellow,
-    countdown: 6,
+    countdown: 5,
     question: "WHICH NUMBER FITS?\n2 -> 5,   3 -> 7,   4 -> 9,   5 -> ?",
     questionFontSize: 80,
     options: [
@@ -339,7 +339,7 @@ export const QUESTIONS: Question[] = [
     tier: "NUMBER PUZZLE",
     tierColor: COLORS.coral,
     accent: COLORS.coral,
-    countdown: 7,
+    countdown: 5,
     question: "IF  4+5=20,  3+6=18,  2+7=14\nTHEN  5+4 = ?",
     questionFontSize: 88,
     options: [

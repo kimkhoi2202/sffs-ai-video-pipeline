@@ -1,0 +1,57 @@
+{
+  "slug": "short-5",
+  "title": "Short 5 — Countdown, Analogy, Sentence",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "audio": {
+    "music": "final-round-fanfare.mp3",
+    "sfx": {
+      "whoosh": "short-5/whoosh.mp3",
+      "ding": "short-5/ding.mp3",
+      "sting": "short-5/sting.mp3"
+    }
+  },
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "68"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "PAINTER IS TO BRUSH AS / CARPENTER IS TO ?",
+      "answer": {
+        "letter": "A",
+        "label": "HAMMER"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE BRIDGE WAS TOO WEAK TO HOLD THE / HEAVY TRUCK, SO WORKERS HAD TO ______ / IT BEFORE OPENING THE ROAD.",
+      "answer": {
+        "letter": "B",
+        "label": "REINFORCE"
+      }
+    }
+  ]
+}

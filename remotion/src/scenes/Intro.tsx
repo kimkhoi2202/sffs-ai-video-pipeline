@@ -1,24 +1,20 @@
 import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS, hardDropShadow, hardShadow } from "../theme/brand";
+import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { easeOutBack, easeOutCubic } from "../theme/easing";
-import { FloatingShapes } from "../components/FloatingShapes";
+import { HeroShapes } from "../components/HeroShapes";
 import { PerspectiveGrid } from "../components/PerspectiveGrid";
 
 /**
- * Animated branded INTRO — matches the website hero
- * (components/quiz/smart-fart-hero.tsx) and the approved Python intro
- * (render_cogat_round_15.py): "SMART FELLA" (blue) / OR pill / "FART SMELLA?"
- * (coral) in Anton with a ~3px black outline + a tight hard black drop shadow,
- * over the flat yellow field with five floating neo-brutalist shapes. The brain
- * logo pops in over the "?" at a jaunty clockwise tilt. Snappy staggered
- * entrance (easeOutCubic / easeOutBack), then the title HOLDS under the VO.
+ * Animated branded INTRO — matches the website hero + the approved Python intro:
+ * "SMART FELLA" (blue) / OR pill / "FART SMELLA?" (coral) in Anton with a ~3px
+ * black outline + tight hard black drop shadow, over the yellow field with the
+ * synthwave grid + the six floating neo-brutalist HeroShapes. The brain logo
+ * pops in over the "?" at a jaunty clockwise tilt. Snappy staggered entrance,
+ * then the title HOLDS. Re-flows for the portrait frame (smaller caps, stacked
+ * spacing, block biased up ~2:3).
  */
-
-const CAP = 208;
-const OUTLINE = CAP * 0.022; // ~3px black outline, proportional (site: text-stroke 3px)
-const SHADOW_OFF = CAP * 0.04; // 0.04em hard extruded shadow, down-right (site text-shadow)
-
 type Mode = "riseup" | "poprot" | "logopop";
 
 const transform = (mode: Mode, u: number) => {
@@ -33,21 +29,21 @@ const transform = (mode: Mode, u: number) => {
     scale = 0.9 + 0.1 * eb;
   } else if (mode === "poprot") {
     scale = eb;
-    angle = -12 * (1 - eb); // CSS CW; -12deg -> 0 (site OR: rotate -12 -> 0)
+    angle = -12 * (1 - eb);
   } else {
     scale = 0.1 + 0.9 * eb;
-    angle = -12 + 24 * eb; // spin in, settling at +12deg CW (LOGO_TILT)
+    angle = -12 + 24 * eb;
   }
   return { dy, scale, angle, alpha };
 };
 
-const titleWord = (text: string, color: string): React.CSSProperties => ({
+const titleWord = (cap: number, color: string): React.CSSProperties => ({
   fontFamily: ANTON,
-  fontSize: CAP,
+  fontSize: cap,
   lineHeight: 1,
   color,
-  WebkitTextStroke: `${OUTLINE}px ${COLORS.ink}`,
-  textShadow: `${SHADOW_OFF}px ${SHADOW_OFF}px 0 ${COLORS.ink}`,
+  WebkitTextStroke: `${cap * 0.022}px ${COLORS.ink}`,
+  textShadow: `${cap * 0.04}px ${cap * 0.04}px 0 ${COLORS.ink}`,
   textTransform: "uppercase",
   whiteSpace: "nowrap",
 });
@@ -65,15 +61,7 @@ const TitleEl: React.FC<{
   const u = entered ? (t - start) / dur : 0;
   const { dy, scale, angle, alpha } = entered ? transform(mode, u) : transform(mode, 0);
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: cx,
-        top: cy + dy,
-        transform: "translate(-50%, -50%)",
-        opacity: alpha,
-      }}
-    >
+    <div style={{ position: "absolute", left: cx, top: cy + dy, transform: "translate(-50%, -50%)", opacity: alpha }}>
       <div style={{ transform: `scale(${scale}) rotate(${angle}deg)`, display: "flex" }}>{children}</div>
     </div>
   );
@@ -82,21 +70,27 @@ const TitleEl: React.FC<{
 export const Intro: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const { w, portrait } = useFmt();
   const t = frame / fps;
+
+  const cap = portrait ? 146 : 208;
+  const cx = w / 2;
+  const L = portrait
+    ? { smart: 560, or: 760, fart: 984, orSize: 84, orPad: "15px 38px", orShadow: 9, brain: { cx: 936, cy: 918, wImg: 196, shadow: 11 } }
+    : { smart: 274, or: 494, fart: 720, orSize: 102, orPad: "18px 45px", orShadow: 11, brain: { cx: 1530, cy: 597, wImg: 286, shadow: 13 } };
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.yellow }}>
       <PerspectiveGrid base={COLORS.yellow} />
-      <FloatingShapes t={t} />
+      <HeroShapes />
 
-      {/* title block biased UP (~2:3 top:bottom), matching the outro */}
       {/* SMART FELLA (blue) */}
-      <TitleEl cx={918} cy={274} mode="riseup" start={0.08} dur={0.58} t={t}>
-        <div style={titleWord("SMART FELLA", COLORS.blue)}>SMART FELLA</div>
+      <TitleEl cx={cx} cy={L.smart} mode="riseup" start={0.08} dur={0.58} t={t}>
+        <div style={titleWord(cap, COLORS.blue)}>SMART FELLA</div>
       </TitleEl>
 
-      {/* OR pill — nudged up an extra ~6px so its down-shadow doesn't crowd FART (optical centering) */}
-      <TitleEl cx={918} cy={494} mode="poprot" start={0.66} dur={0.46} t={t}>
+      {/* OR pill */}
+      <TitleEl cx={cx} cy={L.or} mode="poprot" start={0.66} dur={0.46} t={t}>
         <div
           style={{
             display: "inline-flex",
@@ -106,10 +100,10 @@ export const Intro: React.FC = () => {
             color: COLORS.ink,
             border: `6px solid ${COLORS.ink}`,
             borderRadius: 9999,
-            padding: "18px 45px",
-            boxShadow: hardShadow(11),
+            padding: L.orPad,
+            boxShadow: hardShadow(L.orShadow),
             fontFamily: ANTON,
-            fontSize: 102,
+            fontSize: L.orSize,
             lineHeight: 1,
             textTransform: "uppercase",
           }}
@@ -119,16 +113,13 @@ export const Intro: React.FC = () => {
       </TitleEl>
 
       {/* FART SMELLA? (coral) */}
-      <TitleEl cx={944} cy={720} mode="riseup" start={1.05} dur={0.58} t={t}>
-        <div style={titleWord("FART SMELLA?", COLORS.coral)}>FART SMELLA?</div>
+      <TitleEl cx={portrait ? cx : 944} cy={L.fart} mode="riseup" start={1.05} dur={0.58} t={t}>
+        <div style={titleWord(cap, COLORS.coral)}>FART SMELLA?</div>
       </TitleEl>
 
-      {/* Brain mascot logo — pops in over the "?" (moves up with the title) */}
-      <TitleEl cx={1530} cy={597} mode="logopop" start={1.6} dur={0.7} t={t}>
-        <Img
-          src={staticFile("images/sffs-logo.png")}
-          style={{ width: 286, height: "auto", display: "block", filter: hardDropShadow(13) }}
-        />
+      {/* Brain mascot logo — pops in over the "?" */}
+      <TitleEl cx={L.brain.cx} cy={L.brain.cy} mode="logopop" start={1.6} dur={0.7} t={t}>
+        <Img src={staticFile("images/sffs-logo.png")} style={{ width: L.brain.wImg, height: "auto", display: "block", filter: hardDropShadow(L.brain.shadow) }} />
       </TitleEl>
     </AbsoluteFill>
   );
