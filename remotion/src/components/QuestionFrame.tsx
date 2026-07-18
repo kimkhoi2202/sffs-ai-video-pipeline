@@ -18,7 +18,12 @@ import type { Question } from "../data/types";
 export const HEADER_ZONE = 168; // reserved top region (header + countdown + shadow)
 export const BAR_ZONE = 124; // reserved bottom region (progress bar)
 export const CONTENT_GAP = 44; // prompt/title -> content (tiles/shapes)
-export const OPTIONS_GAP = 72; // question group -> answer options
+// Gap prompt/content -> options (G1). Small, so the options hug the question box;
+// the block is biased UP (bottom spacer > top spacer) so the gap BELOW the
+// options down to the bottom bar (G2) is clearly larger (~1:2, G1:G2).
+export const OPTIONS_GAP = 40;
+const SPACER_TOP = 2;
+const SPACER_BOTTOM = 3;
 
 /** The flat white prompt/question box. Natural height — grows with its text. */
 export const PromptTitle: React.FC<{ fontSize: number; radius?: number; children: ReactNode }> = ({
@@ -75,7 +80,7 @@ export const QuestionFrame: React.FC<{
           paddingRight: M,
         }}
       >
-        <div style={{ flexGrow: 1 }} />
+        <div style={{ flexGrow: SPACER_TOP }} />
         <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
           {prompt}
           {content ? (
@@ -83,7 +88,7 @@ export const QuestionFrame: React.FC<{
           ) : null}
           <div style={{ marginTop: OPTIONS_GAP, width: "100%" }}>{options}</div>
         </div>
-        <div style={{ flexGrow: 1 }} />
+        <div style={{ flexGrow: SPACER_BOTTOM }} />
       </div>
 
       <HeaderPills idx={q.idx} total={15} tier={q.tier} countFill={c.countFill} topicFill={c.topicFill} />

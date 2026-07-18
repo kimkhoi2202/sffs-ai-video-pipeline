@@ -22,6 +22,11 @@ __pycache__/
 # Large, regenerable OUTPUT masters — keep source + audio, drop final mp4s
 renders/*.mp4
 
+# Fresh backup takes the voice scripts write next to the active clips — the
+# curated archive lives (tracked) under voice/_backups/ instead.
+voice/narration/*.bak
+voice/narration/*.bak.mp3
+
 # Editor / OS / misc
 .DS_Store
 *.log

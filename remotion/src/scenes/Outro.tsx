@@ -3,6 +3,7 @@ import { COLORS, hardDropShadow, hardShadow } from "../theme/brand";
 import { ANTON } from "../theme/fonts";
 import { Pill } from "../components/Pill";
 import { FloatingShapes } from "../components/FloatingShapes";
+import { PerspectiveGrid } from "../components/PerspectiveGrid";
 import type { Platform } from "../full/timeline";
 
 /**
@@ -57,57 +58,69 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.green }}>
+      <PerspectiveGrid base={COLORS.green} />
       <FloatingShapes t={t} />
 
-      {/* brain-logo accent, tilted, to the right of the headline */}
-      <Pop frame={frame} fps={fps} delay={15} cx={1452} cy={470}>
-        <Img
-          src={staticFile("images/sffs-logo.png")}
-          style={{ width: 184, height: "auto", display: "block", transform: "rotate(12deg)", filter: hardDropShadow(11) }}
-        />
-      </Pop>
-
+      {/* content block biased UP (~2:3 top:bottom whitespace) */}
       {/* YOUR TURN eyebrow */}
-      <Pop frame={frame} fps={fps} delay={2} cx={960} cy={236}>
+      <Pop frame={frame} fps={fps} delay={2} cx={960} cy={181}>
         <Pill text="YOUR TURN" fill={COLORS.coral} textColor={COLORS.ink} fontSize={38} tracking={4} padX={36} padY={18} />
       </Pop>
 
       {/* HOW DID / YOU DO? hero headline (blue + coral, hard shadow) */}
-      <Pop frame={frame} fps={fps} delay={8} cx={960} cy={412}>
+      <Pop frame={frame} fps={fps} delay={8} cx={960} cy={357}>
         <div style={headWord(COLORS.blue)}>HOW DID</div>
       </Pop>
-      <Pop frame={frame} fps={fps} delay={12} cx={960} cy={562}>
+      <Pop frame={frame} fps={fps} delay={12} cx={960} cy={507}>
         <div style={headWord(COLORS.coral)}>YOU DO?</div>
       </Pop>
 
       {/* COMMENT YOUR SCORE BELOW */}
-      <Pop frame={frame} fps={fps} delay={18} cx={960} cy={714}>
+      <Pop frame={frame} fps={fps} delay={18} cx={960} cy={659}>
         <div style={{ fontFamily: ANTON, fontSize: 56, lineHeight: 1, color: COLORS.ink, textTransform: "uppercase", letterSpacing: "0.01em" }}>
           COMMENT YOUR SCORE BELOW
         </div>
       </Pop>
 
-      {/* platform CTA pill */}
-      <Pop frame={frame} fps={fps} delay={24} cx={960} cy={858}>
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: COLORS.yellow,
-            color: COLORS.ink,
-            border: `8px solid ${COLORS.ink}`,
-            borderRadius: 9999,
-            padding: "26px 60px",
-            boxShadow: hardShadow(12),
-            fontFamily: ANTON,
-            fontSize: 66,
-            lineHeight: 1,
-            textTransform: "uppercase",
-            letterSpacing: "0.01em",
-          }}
-        >
-          {cta}
+      {/* platform CTA pill (auto-sizes to its text) with the tilted brain-logo
+          sticker overlapping its TOP-RIGHT corner — anchored to the pill so it
+          lands correctly on both the wider "SUBSCRIBE" and narrower "FOLLOW" */}
+      <Pop frame={frame} fps={fps} delay={24} cx={960} cy={803}>
+        <div style={{ position: "relative", display: "inline-flex" }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: COLORS.yellow,
+              color: COLORS.ink,
+              border: `8px solid ${COLORS.ink}`,
+              borderRadius: 9999,
+              padding: "26px 60px",
+              boxShadow: hardShadow(12),
+              fontFamily: ANTON,
+              fontSize: 66,
+              lineHeight: 1,
+              textTransform: "uppercase",
+              letterSpacing: "0.01em",
+            }}
+          >
+            {cta}
+          </div>
+          <Img
+            src={staticFile("images/sffs-logo.png")}
+            style={{
+              position: "absolute",
+              top: -52,
+              right: -34,
+              width: 132,
+              height: "auto",
+              display: "block",
+              transform: "rotate(12deg)",
+              filter: hardDropShadow(10),
+              zIndex: 2,
+            }}
+          />
         </div>
       </Pop>
     </AbsoluteFill>

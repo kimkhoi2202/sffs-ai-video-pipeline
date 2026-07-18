@@ -3,6 +3,7 @@ import { COLORS, hardDropShadow, hardShadow } from "../theme/brand";
 import { ANTON } from "../theme/fonts";
 import { easeOutBack, easeOutCubic } from "../theme/easing";
 import { FloatingShapes } from "../components/FloatingShapes";
+import { PerspectiveGrid } from "../components/PerspectiveGrid";
 
 /**
  * Animated branded INTRO — matches the website hero
@@ -85,15 +86,17 @@ export const Intro: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.yellow }}>
+      <PerspectiveGrid base={COLORS.yellow} />
       <FloatingShapes t={t} />
 
+      {/* title block biased UP (~2:3 top:bottom), matching the outro */}
       {/* SMART FELLA (blue) */}
-      <TitleEl cx={918} cy={322} mode="riseup" start={0.08} dur={0.58} t={t}>
+      <TitleEl cx={918} cy={274} mode="riseup" start={0.08} dur={0.58} t={t}>
         <div style={titleWord("SMART FELLA", COLORS.blue)}>SMART FELLA</div>
       </TitleEl>
 
-      {/* OR pill (white capsule) */}
-      <TitleEl cx={918} cy={548} mode="poprot" start={0.66} dur={0.46} t={t}>
+      {/* OR pill — nudged up an extra ~6px so its down-shadow doesn't crowd FART (optical centering) */}
+      <TitleEl cx={918} cy={494} mode="poprot" start={0.66} dur={0.46} t={t}>
         <div
           style={{
             display: "inline-flex",
@@ -116,12 +119,12 @@ export const Intro: React.FC = () => {
       </TitleEl>
 
       {/* FART SMELLA? (coral) */}
-      <TitleEl cx={944} cy={768} mode="riseup" start={1.05} dur={0.58} t={t}>
+      <TitleEl cx={944} cy={720} mode="riseup" start={1.05} dur={0.58} t={t}>
         <div style={titleWord("FART SMELLA?", COLORS.coral)}>FART SMELLA?</div>
       </TitleEl>
 
-      {/* Brain mascot logo — pops in over the "?" (painted last => on top) */}
-      <TitleEl cx={1530} cy={645} mode="logopop" start={1.6} dur={0.7} t={t}>
+      {/* Brain mascot logo — pops in over the "?" (moves up with the title) */}
+      <TitleEl cx={1530} cy={597} mode="logopop" start={1.6} dur={0.7} t={t}>
         <Img
           src={staticFile("images/sffs-logo.png")}
           style={{ width: 286, height: "auto", display: "block", filter: hardDropShadow(13) }}

@@ -16,7 +16,10 @@ import { LetterBadge } from "../components/LetterBadge";
  * balances the left badge), and the shadowed pill + explanation card are nudged
  * up/left by half their shadow so they read optically centered.
  */
-const CARD = { x: 300, y: 262, w: VIDEO.width - 600, h: 208 };
+// y nudged up 10 so the (flat) answer card is OPTICALLY centered between the
+// CORRECT ANSWER pill above (its shadow eats the top gap) and the explanation
+// card below: top gap (pill+shadow -> card) ≈ bottom gap (card -> explanation).
+const CARD = { x: 300, y: 252, w: VIDEO.width - 600, h: 208 };
 const INSET = 30;
 const BADGE = CARD.h - 2 * INSET; // 148
 const BADGE_X = CARD.x + INSET; // 330

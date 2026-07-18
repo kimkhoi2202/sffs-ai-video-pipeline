@@ -10,8 +10,10 @@ import type { PolygonQuestion as PolyQ } from "../../data/types";
  *  polygon-icon option cards. Flow layout via QuestionFrame. */
 const SEQ_COLORS = [COLORS.blue, COLORS.coral, COLORS.yellow, COLORS.mint];
 
+// Smaller figure tiles so the polygon sits with clear margin inside each cell.
+const TILE = 168;
 const Cell: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <div style={{ width: 190, height: 190, boxSizing: "border-box", background: COLORS.paper, border: `7px solid ${COLORS.ink}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
+  <div style={{ width: TILE, height: TILE, boxSizing: "border-box", background: COLORS.paper, border: `7px solid ${COLORS.ink}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
     {children}
   </div>
 );
@@ -21,11 +23,11 @@ export const PolygonQuestion: React.FC<{ q: PolyQ; elapsed: number }> = ({ q, el
     <div style={{ display: "flex", gap: 70, justifyContent: "center", alignItems: "center" }}>
       {q.seq.map((sides, i) => (
         <Cell key={i}>
-          <Polygon shape={sides} r={64.6} fill={SEQ_COLORS[i % SEQ_COLORS.length]} border={8} />
+          <Polygon shape={sides} r={57} fill={SEQ_COLORS[i % SEQ_COLORS.length]} border={8} />
         </Cell>
       ))}
       <Cell>
-        <span style={{ fontFamily: ANTON, fontSize: 190 * 0.6, lineHeight: 1, color: COLORS.ink }}>?</span>
+        <span style={{ fontFamily: ANTON, fontSize: TILE * 0.6, lineHeight: 1, color: COLORS.ink }}>?</span>
       </Cell>
     </div>
   );
@@ -34,7 +36,7 @@ export const PolygonQuestion: React.FC<{ q: PolyQ; elapsed: number }> = ({ q, el
     <ShapeOptionsRow>
       {q.options.map((o) => (
         <ShapeOptionCard key={o.letter} letter={o.letter}>
-          <Polygon shape={o.poly} r={72} fill={BADGE_COLORS[o.letter]} border={8} />
+          <Polygon shape={o.poly} r={63} fill={BADGE_COLORS[o.letter]} border={8} />
         </ShapeOptionCard>
       ))}
     </ShapeOptionsRow>

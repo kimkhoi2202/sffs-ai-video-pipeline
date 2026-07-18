@@ -19,7 +19,7 @@ export const QuestionReveal: React.FC<{ q: Question }> = ({ q }) => {
         <Reveal
           letter={letter}
           explanation={q.explanation}
-          answer={{ kind: "shape", label: q.ansLabel, node: <ShapeGlyph kind={q.ansShape} s={82} fill={q.ansFilled ? SHADE_FILL : COLORS.paper} /> }}
+          answer={{ kind: "shape", label: q.ansLabel, node: <ShapeGlyph kind={q.ansShape} s={66} fill={q.ansFilled ? SHADE_FILL : COLORS.paper} /> }}
         />
       );
     case "polygon":
@@ -27,7 +27,7 @@ export const QuestionReveal: React.FC<{ q: Question }> = ({ q }) => {
         <Reveal
           letter={letter}
           explanation={q.explanation}
-          answer={{ kind: "shape", label: q.ansLabel, node: <Polygon shape={q.ansShape} r={90} fill={BADGE_COLORS[letter]} border={8} /> }}
+          answer={{ kind: "shape", label: q.ansLabel, node: <Polygon shape={q.ansShape} r={74} fill={BADGE_COLORS[letter]} border={8} /> }}
         />
       );
     case "dot":
@@ -35,7 +35,7 @@ export const QuestionReveal: React.FC<{ q: Question }> = ({ q }) => {
         <Reveal
           letter={letter}
           explanation={q.explanation}
-          answer={{ kind: "shape", label: q.ansLabel, node: <DotSquare size={184} pos={q.ansPos} dotColor={BADGE_COLORS[letter]} border={8} sqRadius={12} /> }}
+          answer={{ kind: "shape", label: q.ansLabel, node: <DotSquare size={150} pos={q.ansPos} dotColor={BADGE_COLORS[letter]} border={8} sqRadius={12} /> }}
         />
       );
   }

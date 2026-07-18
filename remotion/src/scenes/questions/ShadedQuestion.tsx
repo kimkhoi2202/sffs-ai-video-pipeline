@@ -10,15 +10,18 @@ import type { ShadedQuestion as ShadedQ } from "../../data/types";
 /** Figure-analogy plate: [empty L] : [filled L] = [empty R] : [ ? ] with FLAT
  *  tiles, ratio ":" as stacked dots and analogy "::" as the EQUALS sign; four
  *  shadowed shape option cards below. Flow layout via QuestionFrame. */
+// Figure tiles: smaller than before so the shape sits with clear margin (not
+// filling edge-to-edge) and the tiles don't crowd adjacent elements.
+const TILE = 168;
 const Cell: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <div style={{ width: 190, height: 190, boxSizing: "border-box", background: COLORS.paper, border: `7px solid ${COLORS.ink}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
+  <div style={{ width: TILE, height: TILE, boxSizing: "border-box", background: COLORS.paper, border: `7px solid ${COLORS.ink}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
     {children}
   </div>
 );
 
 const glyphCell = (kind: GlyphKind, filled: boolean) => (
   <Cell>
-    <ShapeGlyph kind={kind} s={57} fill={filled ? SHADE_FILL : COLORS.paper} />
+    <ShapeGlyph kind={kind} s={50} fill={filled ? SHADE_FILL : COLORS.paper} />
   </Cell>
 );
 
@@ -46,7 +49,7 @@ export const ShadedQuestion: React.FC<{ q: ShadedQ; elapsed: number }> = ({ q, e
       {glyphCell(q.rightShape, false)}
       <Sep width={70}><Dot fill={sep} /><Dot fill={sep} /></Sep>
       <Cell>
-        <span style={{ fontFamily: ANTON, fontSize: 190 * 0.6, lineHeight: 1, color: COLORS.ink }}>?</span>
+        <span style={{ fontFamily: ANTON, fontSize: TILE * 0.6, lineHeight: 1, color: COLORS.ink }}>?</span>
       </Cell>
     </div>
   );
@@ -55,7 +58,7 @@ export const ShadedQuestion: React.FC<{ q: ShadedQ; elapsed: number }> = ({ q, e
     <ShapeOptionsRow>
       {q.options.map((o) => (
         <ShapeOptionCard key={o.letter} letter={o.letter}>
-          <ShapeGlyph kind={o.shape} s={62.4} fill={o.filled ? SHADE_FILL : COLORS.paper} />
+          <ShapeGlyph kind={o.shape} s={55} fill={o.filled ? SHADE_FILL : COLORS.paper} />
         </ShapeOptionCard>
       ))}
     </ShapeOptionsRow>

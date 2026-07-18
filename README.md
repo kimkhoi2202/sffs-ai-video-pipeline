@@ -18,10 +18,10 @@ CogAT quiz video. It has three moving parts plus the committed assets/audio need
 | Folder | What it is |
 |---|---|
 | [`remotion/`](remotion/) | **Remotion (React) video project** — the current renderer. `src/` has the compositions, scenes, components, theme, and data; `public/` holds the audio (SFX, narration, music), fonts, and images the render reads via `staticFile`. |
-| [`voice/`](voice/) | **ElevenLabs voice / narration pipeline** (Python). Designs + clones the game-show host voice and generates per-beat narration mp3s, SFX, and captions. |
-| [`tools/`](tools/) | **Python + ffmpeg render scripts** (the earlier round-01→05 / Gemini render path) plus bundled fonts. |
+| [`voice/`](voice/) | **ElevenLabs voice / narration pipeline** (Python). Designs + clones the game-show host voice and generates per-beat narration mp3s, SFX, and captions. Superseded takes are archived under [`voice/_backups/`](voice/_backups/). |
 | [`assets/`](assets/) | Source music (mp3/wav), title cards, and the SFFS logo. |
-| [`renders/`](renders/) | Output `.mp4` masters (git-ignored — big + regenerable) plus their timeline/caption sidecars and legacy build scripts. |
+| [`renders/`](renders/) | Output `.mp4` masters (git-ignored — big + regenerable) plus their `.srt`/`.vtt` caption sidecars. |
+| [`legacy/`](legacy/) | **Superseded** Python + ffmpeg render pipeline — `legacy/tools/` (the old `render_cogat_round_*.py` / `render_demo_quiz.py` / `render_gemini_master.py` renderers + bundled fonts + helper shells) and `legacy/renders/` (old build scripts). Kept for reference; Remotion replaced it. |
 
 > The committed audio in `remotion/public/audio/` and `voice/narration/` means you can **render the
 > video without an ElevenLabs key or credits** — you only need the key to *regenerate* the voice.
@@ -29,7 +29,7 @@ CogAT quiz video. It has three moving parts plus the committed assets/audio need
 ### Prerequisites
 
 - **Node.js 18+** and npm (for the Remotion project)
-- **Python 3** and **ffmpeg** (for the voice pipeline and the `tools/` render scripts)
+- **Python 3** and **ffmpeg** (for the voice pipeline and the archived `legacy/` render scripts)
 
 ### Render the video (Remotion)
 
@@ -74,18 +74,21 @@ python3 voice_pipeline.py samples   # synth narration for the saved voice_id
 - Scripts: `voice_pipeline.py` (design/save/samples), `clone_voice.py` (one-time clone; also reads
   optional `OLD_ELEVENLABS_API_KEY`), `gen_sfx.py`, `gen_captions.py`, `regen_all.py`, `regen_score.py`.
 
-### Legacy ffmpeg render path (Python tools)
+### Legacy ffmpeg render path (archived)
 
-[`tools/`](tools/) holds the original ffmpeg-based renderers (`render_cogat_round_*.py`,
-`render_gemini_master.py`, `render_demo_quiz.py`) and helper shells; they shell out to `ffmpeg` and
-write masters into `renders/`. Kept for reference — new work happens in `remotion/`.
+[`legacy/tools/`](legacy/tools/) holds the original ffmpeg/PIL renderers (`render_cogat_round_*.py`,
+`render_gemini_master.py`, `render_demo_quiz.py`) plus bundled fonts and helper shells, and
+[`legacy/renders/`](legacy/renders/) the old build scripts. They wrote masters into `renders/`. Kept
+for reference — all new work happens in `remotion/`. (Paths inside these archived scripts may need
+updating to run, since they moved under `legacy/`.)
 
 ### What's tracked vs ignored
 
 - **Ignored:** `**/.env` (secrets), `**/node_modules/`, `remotion/out/` (frame dumps), `__pycache__/`,
-  `renders/*.mp4` (final masters), `.DS_Store`.
+  `renders/*.mp4` (final masters), fresh `voice/narration/*.bak` takes, `.DS_Store`.
 - **Tracked:** all source + config, the SFX / narration / music audio needed to render, fonts,
-  images, timelines, and caption sidecars. No secrets, no `node_modules`, no `.mp4` masters.
+  images, timelines, caption sidecars, and archived voice takes under `voice/_backups/`. No secrets,
+  no `node_modules`, no `.mp4` masters.
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) typechecks the Remotion project on every
 push/PR (`npm ci` + `tsc --noEmit`). This is a render pipeline, not a deployed app — **there is no CD
