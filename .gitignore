@@ -1,0 +1,28 @@
+# ──────────────────────────────────────────────────────────────
+# SFFS AI video pipeline — .gitignore
+# ──────────────────────────────────────────────────────────────
+
+# Secrets — NEVER commit. Live API keys live in voice/.env
+**/.env
+**/.env.*
+!**/.env.example
+*.key
+
+# Node
+**/node_modules/
+
+# Remotion render artifacts (frame dumps / caches — regenerable)
+remotion/out/
+remotion/.remotion/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Large, regenerable OUTPUT masters — keep source + audio, drop final mp4s
+renders/*.mp4
+
+# Editor / OS / misc
+.DS_Store
+*.log
+.vercel/

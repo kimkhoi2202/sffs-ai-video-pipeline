@@ -1,0 +1,4 @@
+[0:a]atrim=0:15,asetpts=PTS-STARTPTS,afade=t=in:st=0:d=1.0,afade=t=out:st=13.4:d=1.5,volume=-17.0dB[a];
+[1:a]atrim=0:102.8,asetpts=PTS-STARTPTS,afade=t=in:st=0:d=1.5,afade=t=out:st=101.3:d=1.5,volume=-16.6dB,adelay=13400|13400[b];
+[2:a]atrim=0:28.5,asetpts=PTS-STARTPTS,afade=t=in:st=0:d=1.5,afade=t=out:st=26.933:d=1.5,volume=-18.1dB,adelay=114700|114700[c];
+[a][b][c]amix=inputs=3:normalize=0:dropout_transition=0,atrim=0:143.133333,asetpts=PTS-STARTPTS,aresample=48000[bed]

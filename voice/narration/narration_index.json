@@ -1,0 +1,279 @@
+{
+  "voice_id": "lZcmpVLaoXF4v0uz4l6Q",
+  "model": "eleven_v3",
+  "total_chars": 5810,
+  "beats": [
+    {
+      "beat": "intro",
+      "chars": 77,
+      "dur_s": 6.08,
+      "mp3": "narration/intro.mp3",
+      "wav": "/tmp/vo_r15/intro.wav",
+      "text": "[excited] Are you a SMART fella... or a FART smella? [laughs] Let's find OUT!"
+    },
+    {
+      "beat": "q1",
+      "chars": 163,
+      "dur_s": 16.24,
+      "mp3": "narration/q1.mp3",
+      "wav": "/tmp/vo_r15/q1.wav",
+      "text": "[excited] Question one! Which one does NOT belong? Robin... sparrow... salmon... eagle. Is it A, robin... B, sparrow... C, salmon... or D, eagle? Five seconds, go!"
+    },
+    {
+      "beat": "q2",
+      "chars": 181,
+      "dur_s": 16.08,
+      "mp3": "narration/q2.mp3",
+      "wav": "/tmp/vo_r15/q2.wav",
+      "text": "[excited] Question two, a number series! Three, six, twelve, twenty-four, and then... what comes next? A, thirty-six... B, forty-eight... C, thirty... or D, forty-two? Five seconds!"
+    },
+    {
+      "beat": "q3",
+      "chars": 232,
+      "dur_s": 19.36,
+      "mp3": "narration/q3.mp3",
+      "wav": "/tmp/vo_r15/q3.wav",
+      "text": "[excited] Question three, a picture puzzle! An empty circle becomes a filled-in circle. So an empty square becomes... which one? A, a filled square... B, an empty square... C, a filled circle... or D, a filled triangle? Six seconds!"
+    },
+    {
+      "beat": "q4",
+      "chars": 145,
+      "dur_s": 15.36,
+      "mp3": "narration/q4.mp3",
+      "wav": "/tmp/vo_r15/q4.wav",
+      "text": "[excited] Question four, a word analogy! Giant is to tiny, as wide is to... what? A, narrow... B, tall... C, long... or D, big? Five seconds, go!"
+    },
+    {
+      "beat": "q5",
+      "chars": 197,
+      "dur_s": 18.16,
+      "mp3": "narration/q5.mp3",
+      "wav": "/tmp/vo_r15/q5.wav",
+      "text": "[excited] Question five, another number series! One hundred, ninety-two, eighty-four, seventy-six, and then... what? A, seventy... B, sixty-eight... C, sixty-six... or D, seventy-two? Five seconds!"
+    },
+    {
+      "beat": "q6",
+      "chars": 148,
+      "dur_s": 14.4,
+      "mp3": "narration/q6.mp3",
+      "wav": "/tmp/vo_r15/q6.wav",
+      "text": "[excited] Question six, a word analogy! Ocean is to puddle, as mountain is to... what? A, valley... B, hill... C, river... or D, rock? Five seconds!"
+    },
+    {
+      "beat": "q7",
+      "chars": 203,
+      "dur_s": 20.72,
+      "mp3": "narration/q7.mp3",
+      "wav": "/tmp/vo_r15/q7.wav",
+      "text": "[excited] Question seven, and this one is tricky! Two, six, twelve, twenty, thirty, and then... what comes next? A, thirty-six... B, forty... C, forty-two... or D, forty-four? Seven seconds on the clock!"
+    },
+    {
+      "beat": "q8",
+      "chars": 152,
+      "dur_s": 14.4,
+      "mp3": "narration/q8.mp3",
+      "wav": "/tmp/vo_r15/q8.wav",
+      "text": "[excited] Question eight, a word analogy! Painter is to brush, as carpenter is to... what? A, hammer... B, wood... C, house... or D, nail? Five seconds!"
+    },
+    {
+      "beat": "q9",
+      "chars": 176,
+      "dur_s": 17.12,
+      "mp3": "narration/q9.mp3",
+      "wav": "/tmp/vo_r15/q9.wav",
+      "text": "[excited] Question nine, a number series! One, one, two, three, five, eight, and then... what comes next? A, eleven... B, thirteen... C, twelve... or D, sixteen? Seven seconds!"
+    },
+    {
+      "beat": "q10",
+      "chars": 157,
+      "dur_s": 16.88,
+      "mp3": "narration/q10.mp3",
+      "wav": "/tmp/vo_r15/q10.wav",
+      "text": "[excited] Question ten! Which one does NOT belong? Add... subtract... multiply... number. A, add... B, subtract... C, multiply... or D, number? Five seconds!"
+    },
+    {
+      "beat": "q11",
+      "chars": 234,
+      "dur_s": 20.72,
+      "mp3": "narration/q11.mp3",
+      "wav": "/tmp/vo_r15/q11.wav",
+      "text": "[excited] Question eleven, a shape puzzle! Watch them grow, gaining one side each step: a triangle, then a square, then a pentagon. Which shape comes next? A, a circle... B, a hexagon... C, a square... or D, an octagon? Seven seconds!"
+    },
+    {
+      "beat": "q12",
+      "chars": 218,
+      "dur_s": 18.32,
+      "mp3": "narration/q12.mp3",
+      "wav": "/tmp/vo_r15/q12.wav",
+      "text": "[excited] Question twelve, fill in the blank! The bridge was too weak to hold the heavy truck, so workers had to blank it before opening the road. A, decorate... B, reinforce... C, rename... or D, measure? Six seconds!"
+    },
+    {
+      "beat": "q13",
+      "chars": 231,
+      "dur_s": 18.08,
+      "mp3": "narration/q13.mp3",
+      "wav": "/tmp/vo_r15/q13.wav",
+      "text": "[excited] Question thirteen, a picture puzzle! A dot marches clockwise around a square: top-left, top-right, bottom-right... where does it jump next? A, top-left... B, bottom-left... C, top-right... or D, the center? Seven seconds!"
+    },
+    {
+      "beat": "q14",
+      "chars": 186,
+      "dur_s": 16.32,
+      "mp3": "narration/q14.mp3",
+      "wav": "/tmp/vo_r15/q14.wav",
+      "text": "[excited] Question fourteen, a number analogy! Two makes five, three makes seven, four makes nine, so five makes... what? A, ten... B, eleven... C, twelve... or D, thirteen? Six seconds!"
+    },
+    {
+      "beat": "q15",
+      "chars": 279,
+      "dur_s": 24.32,
+      "mp3": "narration/q15.mp3",
+      "wav": "/tmp/vo_r15/q15.wav",
+      "text": "[excited] Last one, question fifteen, a number puzzle, and it's sneaky! If four plus five makes twenty, three plus six makes eighteen, and two plus seven makes fourteen... then five plus four makes... what? A, nine... B, eighteen... C, twenty... or D, twenty-five? Seven seconds!"
+    },
+    {
+      "beat": "timesup",
+      "chars": 34,
+      "dur_s": 2.24,
+      "mp3": "narration/timesup.mp3",
+      "wav": "/tmp/vo_r15/timesup.wav",
+      "text": "[excited] TIME'S UP! Pencils down!"
+    },
+    {
+      "beat": "r1",
+      "chars": 148,
+      "dur_s": 12.4,
+      "mp3": "narration/r1.mp3",
+      "wav": "/tmp/vo_r15/r1.wav",
+      "text": "[excited] The answer is... C, salmon! A robin, a sparrow, and an eagle all soar through the sky as birds. But a salmon? That one swims. It's a fish!"
+    },
+    {
+      "beat": "r2",
+      "chars": 138,
+      "dur_s": 11.04,
+      "mp3": "narration/r2.mp3",
+      "wav": "/tmp/vo_r15/r2.wav",
+      "text": "[excited] It's... B, forty-eight! Each number simply doubles: three, six, twelve, twenty-four... and twenty-four times two is forty-eight!"
+    },
+    {
+      "beat": "r3",
+      "chars": 160,
+      "dur_s": 12.24,
+      "mp3": "narration/r3.mp3",
+      "wav": "/tmp/vo_r15/r3.wav",
+      "text": "[excited] The answer is... A, a filled square! The rule is simple: the shape gets colored in, but stays the very same shape. Empty square becomes filled square!"
+    },
+    {
+      "beat": "r4",
+      "chars": 114,
+      "dur_s": 9.44,
+      "mp3": "narration/r4.mp3",
+      "wav": "/tmp/vo_r15/r4.wav",
+      "text": "[excited] It's... A, narrow! Giant and tiny are opposites, so just flip 'wide' to its opposite, and that's narrow!"
+    },
+    {
+      "beat": "r5",
+      "chars": 113,
+      "dur_s": 8.32,
+      "mp3": "narration/r5.mp3",
+      "wav": "/tmp/vo_r15/r5.wav",
+      "text": "[excited] The answer is... B, sixty-eight! Every step drops by eight, and seventy-six minus eight is sixty-eight!"
+    },
+    {
+      "beat": "r6",
+      "chars": 137,
+      "dur_s": 10.8,
+      "mp3": "narration/r6.mp3",
+      "wav": "/tmp/vo_r15/r6.wav",
+      "text": "[excited] It's... B, hill! An ocean shrinks down to a tiny puddle, so a mountain shrinks down to a little hill. Same thing, pocket-sized!"
+    },
+    {
+      "beat": "r7",
+      "chars": 169,
+      "dur_s": 13.44,
+      "mp3": "narration/r7.mp3",
+      "wav": "/tmp/vo_r15/r7.wav",
+      "text": "[excited] The answer is... C, forty-two! Look at the jumps: plus four, plus six, plus eight, plus ten. The next jump is plus twelve, and thirty plus twelve is forty-two!"
+    },
+    {
+      "beat": "r8",
+      "chars": 151,
+      "dur_s": 10.96,
+      "mp3": "narration/r8.mp3",
+      "wav": "/tmp/vo_r15/r8.wav",
+      "text": "[excited] It's... A, hammer! A painter's tool is a brush, and a carpenter's tool is a hammer. Wood is just the material, and a house is what you build!"
+    },
+    {
+      "beat": "r9",
+      "chars": 136,
+      "dur_s": 9.68,
+      "mp3": "narration/r9.mp3",
+      "wav": "/tmp/vo_r15/r9.wav",
+      "text": "[excited] The answer is... B, thirteen! Add the two numbers before it: five plus eight is thirteen. That's the famous Fibonacci pattern!"
+    },
+    {
+      "beat": "r10",
+      "chars": 126,
+      "dur_s": 9.52,
+      "mp3": "narration/r10.mp3",
+      "wav": "/tmp/vo_r15/r10.wav",
+      "text": "[excited] It's... D, number! Add, subtract, and multiply are all things you do. But a number? That's the thing you do them to!"
+    },
+    {
+      "beat": "r11",
+      "chars": 138,
+      "dur_s": 12.0,
+      "mp3": "narration/r11.mp3",
+      "wav": "/tmp/vo_r15/r11.wav",
+      "text": "[excited] The answer is... B, hexagon! Count the sides: triangle three, square four, pentagon five... so next up is the six-sided hexagon!"
+    },
+    {
+      "beat": "r12",
+      "chars": 131,
+      "dur_s": 9.36,
+      "mp3": "narration/r12.mp3",
+      "wav": "/tmp/vo_r15/r12.wav",
+      "text": "[excited] It's... B, reinforce! Too weak means you have to make it stronger, and reinforce is the only word that fixes the problem!"
+    },
+    {
+      "beat": "r13",
+      "chars": 147,
+      "dur_s": 9.68,
+      "mp3": "narration/r13.mp3",
+      "wav": "/tmp/vo_r15/r13.wav",
+      "text": "[excited] The answer is... B, bottom-left! The dot steps clockwise, corner to corner, and right after bottom-right, the next corner is bottom-left!"
+    },
+    {
+      "beat": "r14",
+      "chars": 109,
+      "dur_s": 9.6,
+      "mp3": "narration/r14.mp3",
+      "wav": "/tmp/vo_r15/r14.wav",
+      "text": "[excited] It's... B, eleven! Each number is doubled, then add one. Five times two is ten, plus one is eleven!"
+    },
+    {
+      "beat": "r15",
+      "chars": 156,
+      "dur_s": 11.84,
+      "mp3": "narration/r15.mp3",
+      "wav": "/tmp/vo_r15/r15.wav",
+      "text": "[excited] The answer is... C, twenty! Here's the trick: that plus sign secretly means multiply. Four times five is twenty, so five times four is twenty too!"
+    },
+    {
+      "beat": "score",
+      "chars": 86,
+      "dur_s": 6.08,
+      "mp3": "narration/score.mp3",
+      "wav": "/tmp/vo_r15/score.wav",
+      "text": "[cheerful] So, are you smart or fart? Count up your correct answers to find your rank!"
+    },
+    {
+      "beat": "outro",
+      "chars": 90,
+      "dur_s": 5.92,
+      "mp3": "narration/outro.mp3",
+      "wav": "/tmp/vo_r15/outro.wav",
+      "text": "[cheerful] So, how did you do? Comment your score below, and follow or subscribe for more!"
+    }
+  ]
+}

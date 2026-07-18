@@ -1,0 +1,207 @@
+/**
+ * Full-video timeline. Builds the ordered segment list (intro -> 15 x [read,
+ * countdown, reveal] -> score -> outro) with exact frame offsets derived from
+ * the EXISTING narration durations + the Python pacing (LEAD/TRAIL, countdown +
+ * "time's up" tail). Also emits every audio event (narration, tick beds, reveal
+ * dings) and the VO / countdown windows that drive the music duck + swell and
+ * the fanfare->parade->winner arc.
+ *
+ * Platform-aware: the OUTRO clip (VO + captions + duration) depends on the
+ * target platform - YouTube uses the "subscribe" variant, IG/TikTok the "follow"
+ * variant - so the whole timeline (and total length) is computed per platform.
+ */
+import { QUESTIONS } from "../data/questions";
+import type { Question } from "../data/types";
+import DURS from "../data/durations.json";
+
+// Per-beat narration durations (s), regenerated together with the clips — the
+// authoritative source for timing. Keyed "intro","q1".."q15","r1".."r15",
+// "timesup","score","outro-youtube","outro-follow".
+const D = DURS as Record<string, number>;
+
+export const FPS = 30;
+export const LEAD = 0.35;
+export const TRAIL = 0.8;
+export const frames = (s: number): number => Math.round(s * FPS);
+export const LEAD_FRAMES = frames(LEAD);
+
+export type Platform = "youtube" | "instagram" | "tiktok";
+/** Outro VO/caption clip key for a platform (YouTube -> subscribe; else follow). */
+export const outroClipKey = (p: Platform): "outro-youtube" | "outro-follow" =>
+  p === "youtube" ? "outro-youtube" : "outro-follow";
+
+export type Segment =
+  | { type: "intro"; start: number; dur: number }
+  | { type: "read"; q: Question; start: number; dur: number }
+  | { type: "countdown"; q: Question; start: number; dur: number }
+  | { type: "reveal"; q: Question; start: number; dur: number }
+  | { type: "score"; start: number; dur: number }
+  | { type: "outro"; start: number; dur: number };
+
+export type AudioEvent = { src: string; from: number; durationInFrames?: number };
+export type SfxEvent = { src: string; from: number; vol: number };
+
+/** SFX mix levels, applied to the -6 dBFS-normalized SFX. They play mostly in
+ *  VO-silence gaps (segment TRAIL/LEAD), so they sit above the music bed and
+ *  under the VO peaks. */
+const SFX_VOL = { whoosh: 0.55, ding: 0.7, sting: 0.62 };
+const SFX_LEADIN = frames(0.25); // a transition whoosh starts this far before the boundary
+
+const countdownFrames = (q: Question): number =>
+  Math.max(frames(q.countdown + 1), frames(q.countdown + D.timesup + 0.3));
+
+export type TimelineData = {
+  platform: Platform;
+  segments: Segment[];
+  narration: AudioEvent[];
+  ticks: AudioEvent[];
+  sfx: SfxEvent[];
+  voWindows: [number, number][];
+  swellWindows: [number, number][];
+  total: number;
+};
+
+function build(platform: Platform): TimelineData {
+  const segments: Segment[] = [];
+  const narration: AudioEvent[] = [];
+  const ticks: AudioEvent[] = [];
+  const voWindows: [number, number][] = [];
+  const swellWindows: [number, number][] = []; // countdown (timer ticking, no VO) -> music swells
+  let cur = 0;
+
+  const introDur = frames(LEAD + D.intro + TRAIL);
+  segments.push({ type: "intro", start: cur, dur: introDur });
+  narration.push({ src: "audio/narration/intro.mp3", from: cur + LEAD_FRAMES });
+  voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D.intro)]);
+  cur += introDur;
+
+  for (const q of QUESTIONS) {
+    const qDur = D[`q${q.idx}`];
+    const readDur = frames(LEAD + qDur + TRAIL);
+    segments.push({ type: "read", q, start: cur, dur: readDur });
+    narration.push({ src: `audio/narration/q${q.idx}.mp3`, from: cur + LEAD_FRAMES });
+    voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(qDur)]);
+    cur += readDur;
+
+    const cdDur = countdownFrames(q);
+    segments.push({ type: "countdown", q, start: cur, dur: cdDur });
+    ticks.push({ src: "audio/sfx/tick.wav", from: cur, durationInFrames: frames(q.countdown) });
+    swellWindows.push([cur, cur + frames(q.countdown)]); // swell across the tick, before "time's up"
+    narration.push({ src: "audio/narration/timesup.mp3", from: cur + frames(q.countdown) });
+    voWindows.push([cur + frames(q.countdown), cur + frames(q.countdown) + frames(D.timesup)]);
+    cur += cdDur;
+
+    const rDur = frames(LEAD + D[`r${q.idx}`] + TRAIL);
+    segments.push({ type: "reveal", q, start: cur, dur: rDur });
+    narration.push({ src: `audio/narration/r${q.idx}.mp3`, from: cur + LEAD_FRAMES });
+    voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D[`r${q.idx}`])]);
+    cur += rDur;
+  }
+
+  const scoreDur = frames(LEAD + D.score + TRAIL);
+  segments.push({ type: "score", start: cur, dur: scoreDur });
+  narration.push({ src: "audio/narration/score.mp3", from: cur + LEAD_FRAMES });
+  voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D.score)]);
+  cur += scoreDur;
+
+  const outroKey = outroClipKey(platform);
+  const outroDur = frames(LEAD + D[outroKey] + TRAIL);
+  segments.push({ type: "outro", start: cur, dur: outroDur });
+  narration.push({ src: `audio/narration/${outroKey}.mp3`, from: cur + LEAD_FRAMES });
+  voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D[outroKey])]);
+  cur += outroDur;
+
+  // --- SFX: one sound per transition TYPE + a correct-answer ding per reveal ---
+  const sfx: SfxEvent[] = [];
+  const addSfx = (src: string, from: number, vol: number) =>
+    sfx.push({ src: `audio/sfx/${src}`, from: Math.max(0, from), vol });
+  for (let i = 1; i < segments.length; i++) {
+    const prev = segments[i - 1].type;
+    const t = segments[i].type;
+    const b = segments[i].start;
+    if (prev === "intro" && t === "read") addSfx("sfx-whoosh-enter.mp3", b - SFX_LEADIN, SFX_VOL.whoosh); // intro -> Q1
+    else if (t === "reveal") addSfx("sfx-whoosh-reveal.mp3", b - SFX_LEADIN, SFX_VOL.whoosh); // question -> reveal
+    else if (prev === "reveal" && t === "read") addSfx("sfx-whoosh-advance.mp3", b - SFX_LEADIN, SFX_VOL.whoosh); // reveal -> next question
+    else if (t === "score") addSfx("sfx-sting-score.mp3", b - SFX_LEADIN, SFX_VOL.sting); // last reveal -> score
+    else if (t === "outro") addSfx("sfx-sting-outro.mp3", b - SFX_LEADIN, SFX_VOL.sting); // score -> outro
+  }
+  for (const seg of segments) {
+    if (seg.type === "reveal") addSfx("sfx-reveal-ding.mp3", seg.start + frames(0.12), SFX_VOL.ding);
+  }
+
+  return { platform, segments, narration, ticks, sfx, voWindows, swellWindows, total: cur };
+}
+
+const CACHE = new Map<Platform, TimelineData>();
+/** Per-platform timeline (cached). Default 'youtube' = the 16:9 master. */
+export const getTimeline = (platform: Platform = "youtube"): TimelineData => {
+  let t = CACHE.get(platform);
+  if (!t) {
+    t = build(platform);
+    CACHE.set(platform, t);
+  }
+  return t;
+};
+
+export const TIMELINE = getTimeline("youtube");
+export const TOTAL = TIMELINE.total;
+
+// --- Music: dynamic envelope (swell on countdowns, duck under VO) + arc -------
+// Levels are the shared duck/swell curve; each bed also gets its crossfade * GAIN
+// (parade is x0.75). With the parade gain the effective music sits ~11-12 dB
+// under the VO at DUCKED (present bed, not near-silent) and near-full at SWELL.
+const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
+const BASE = 0.55; // normal bed in gaps/transitions
+const DUCKED = 0.36; // under VO: reduced but clearly AUDIBLE (VO stays clearly on top)
+const SWELL = 0.9; // during the countdown (timer ticking, no VO): swell up for tension
+const RAMP = 8; // frames attack/release for the VO duck
+const SWELL_RAMP = 12; // frames ramp for the countdown swell (~0.4s, smooth in/out)
+
+export const duckGate = (frame: number, T: TimelineData = TIMELINE): number => {
+  let g = 0;
+  for (const [s, e] of T.voWindows) {
+    g = Math.max(g, Math.min(clamp01((frame - s) / RAMP), clamp01((e + RAMP - frame) / RAMP)));
+  }
+  return g;
+};
+
+/** Countdown swell gate: ramps 0->1 as the timer starts ticking and 1->0 just
+ *  before "time's up", so the swell lives entirely in the VO-free countdown. */
+export const swellGate = (frame: number, T: TimelineData = TIMELINE): number => {
+  let g = 0;
+  for (const [s, e] of T.swellWindows) {
+    g = Math.max(g, Math.min(clamp01((frame - s) / SWELL_RAMP), clamp01((e - frame) / SWELL_RAMP)));
+  }
+  return g;
+};
+
+/** Music level: BASE bed, swelled UP during countdowns, ducked DOWN under VO. */
+export const musicLevel = (frame: number, T: TimelineData = TIMELINE): number => {
+  const swelled = BASE + (SWELL - BASE) * swellGate(frame, T);
+  return swelled + (DUCKED - swelled) * duckGate(frame, T);
+};
+
+const FAN_LEN = 13;
+const XF = 1.5;
+const WIN_LEN = 15;
+const FADE = 1.5;
+export const GAIN = { fanfare: 1.0, parade: 0.75, winner: 0.89 };
+export const winStartFrame = (T: TimelineData = TIMELINE): number => T.total - frames(WIN_LEN);
+
+const rampUp = (f: number, aS: number, bS: number) => clamp01((f - frames(aS)) / (frames(bS) - frames(aS)));
+const rampDown = (f: number, aS: number, bS: number) => 1 - rampUp(f, aS, bS);
+
+/** Bed crossfade envelopes (global frame). */
+export const fanfareBed = (f: number): number => rampUp(f, 0, FADE) * rampDown(f, FAN_LEN - XF, FAN_LEN);
+export const paradeBed = (f: number, T: TimelineData = TIMELINE): number => {
+  const winStartS = winStartFrame(T) / FPS;
+  return rampUp(f, FAN_LEN - XF, FAN_LEN) * rampDown(f, winStartS, winStartS + XF);
+};
+
+/** Winner plays inside a Sequence starting at winStartFrame, so it receives a
+ *  sequence-LOCAL frame; convert to global for the duck. */
+export const winnerVolume = (local: number, T: TimelineData = TIMELINE): number => {
+  const global = winStartFrame(T) + local;
+  const fade = clamp01(local / frames(FADE)) * (1 - clamp01((local - frames(WIN_LEN - FADE)) / frames(FADE)));
+  return musicLevel(global, T) * fade * GAIN.winner;
+};

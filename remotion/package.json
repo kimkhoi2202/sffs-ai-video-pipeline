@@ -1,0 +1,25 @@
+{
+  "name": "sffs-remotion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remotion migration of the 'Smart Fella or Fart Smella' CogAT quiz video (Phase 1 vertical slice). Self-contained: NOT wired into the Next.js app.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "still": "remotion still",
+    "upgrade": "remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/fonts": "^4.0.490",
+    "@remotion/google-fonts": "^4.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.0.0"
+  }
+}

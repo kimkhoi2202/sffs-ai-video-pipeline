@@ -1,0 +1,17 @@
+# Secrets — never commit (defense-in-depth; also covered by the repo-root .gitignore)
+.env
+.env.*
+!.env.example
+*.key
+
+# Raw API responses that may embed base64 audio blobs
+*.raw.json
+
+# Python / OS
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# NOTE: narration/, samples/, previews/ and their .mp3/.wav files are INTENTIONALLY
+# tracked — they are small and expensive to regenerate (ElevenLabs credits), so the
+# pipeline reproduces without re-spending. Do not re-add *.mp3 / *.wav ignores here.

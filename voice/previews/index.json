@@ -1,0 +1,117 @@
+{
+  "model_id": "eleven_ttv_v3",
+  "output_format": "mp3_44100_128",
+  "preview_text": "[excited] Are you a SMART fella... or a FART smella? Let's find OUT! Fifteen questions, quick minds only, here we go! Question one: which one does NOT belong? Robin, sparrow, salmon, or eagle? You've got five seconds... five, four, three, two, one, [gasp] time's UP! And the answer is... SALMON! Robin, sparrow, and eagle all fly, but a salmon swims. [laughs] Nice work, big brain, grab a grown-up, and let's keep this quiz rolling!",
+  "variants": [
+    {
+      "slug": "a-ringmaster",
+      "name": "A \u2014 Booming Ringmaster",
+      "guidance_scale": 4.0,
+      "description": "A charismatic, high-energy American game-show host in his late thirties, MCing a comedic kids-and-family brain quiz. Warm, booming, resonant chest voice with big theatrical prime-time-announcer energy, like a spotlight-and-confetti ringmaster. Bright, punchy, crisp diction; leans in to tease a question, then erupts with delight on the reveal. Playful and a little cheeky, never mean; huge dynamic range, bouncy rhythm, always building excitement. Clean, close-mic studio sound, no background noise. Neutral American accent."
+    },
+    {
+      "slug": "b-cheeky-rascal",
+      "name": "B \u2014 Cheeky Rascal",
+      "guidance_scale": 3.0,
+      "description": "A fast-talking, mischievous American game-show host, gender-neutral-leaning, sounds early thirties, hosting a silly kids-and-family brain quiz. Bright, bouncy and cheeky with a wink in every line: warm and encouraging but full of playful comedic energy. Snappy, punchy delivery with quick pacing, exaggerated build-ups and gleeful reveals, lots of dynamic range. Fun cartoon-quiz-master vibe, all-ages and kid-safe, never sarcastic at the player's expense. Crisp, clean studio recording, no background noise. Neutral American accent."
+    },
+    {
+      "slug": "c-warm-hype",
+      "name": "C \u2014 Warm Hype Host",
+      "guidance_scale": 5.0,
+      "description": "A warm, charismatic American game-show host in their thirties for a family brain-quiz show: big, friendly and high-energy. A booming yet welcoming voice with theatrical announcer flair: crisp, punchy consonants, confident delivery, and an infectious build of excitement toward each answer. Playful and a touch cheeky, genuinely rooting for the player; celebrates wins, never mocks. Wide dynamic range from a conspiratorial hush to a triumphant shout. Pristine studio sound, no noise. Neutral American accent, all-ages friendly."
+    }
+  ],
+  "previews": [
+    {
+      "variant": "A \u2014 Booming Ringmaster",
+      "slug": "a-ringmaster",
+      "guidance_scale": 4.0,
+      "preview_index": 1,
+      "file": "previews/a-ringmaster_1.mp3",
+      "generated_voice_id": "ncR0WKuOvyCqwZpWVXCh",
+      "duration_secs": 38.533375,
+      "language": "en"
+    },
+    {
+      "variant": "A \u2014 Booming Ringmaster",
+      "slug": "a-ringmaster",
+      "guidance_scale": 4.0,
+      "preview_index": 2,
+      "file": "previews/a-ringmaster_2.mp3",
+      "generated_voice_id": "nGZKM8IZzy2A8qAw1BgT",
+      "duration_secs": 37.566875,
+      "language": "en"
+    },
+    {
+      "variant": "A \u2014 Booming Ringmaster",
+      "slug": "a-ringmaster",
+      "guidance_scale": 4.0,
+      "preview_index": 3,
+      "file": "previews/a-ringmaster_3.mp3",
+      "generated_voice_id": "UZLl5VadyJ8aGgjUQQ4C",
+      "duration_secs": 38.3505625,
+      "language": "en"
+    },
+    {
+      "variant": "B \u2014 Cheeky Rascal",
+      "slug": "b-cheeky-rascal",
+      "guidance_scale": 3.0,
+      "preview_index": 1,
+      "file": "previews/b-cheeky-rascal_1.mp3",
+      "generated_voice_id": "zW3pgdumfvpjerW3xdUD",
+      "duration_secs": 38.7685,
+      "language": "en"
+    },
+    {
+      "variant": "B \u2014 Cheeky Rascal",
+      "slug": "b-cheeky-rascal",
+      "guidance_scale": 3.0,
+      "preview_index": 2,
+      "file": "previews/b-cheeky-rascal_2.mp3",
+      "generated_voice_id": "QN7BlQ2gMdDlvtm9ehKf",
+      "duration_secs": 39.2386875,
+      "language": "en"
+    },
+    {
+      "variant": "B \u2014 Cheeky Rascal",
+      "slug": "b-cheeky-rascal",
+      "guidance_scale": 3.0,
+      "preview_index": 3,
+      "file": "previews/b-cheeky-rascal_3.mp3",
+      "generated_voice_id": "60gvYSGzHvtSdEwP4LtW",
+      "duration_secs": 36.5219375,
+      "language": "en"
+    },
+    {
+      "variant": "C \u2014 Warm Hype Host",
+      "slug": "c-warm-hype",
+      "guidance_scale": 5.0,
+      "preview_index": 1,
+      "file": "previews/c-warm-hype_1.mp3",
+      "generated_voice_id": "3hAyeocOPpOtpEAc7laH",
+      "duration_secs": 36.05175,
+      "language": "en"
+    },
+    {
+      "variant": "C \u2014 Warm Hype Host",
+      "slug": "c-warm-hype",
+      "guidance_scale": 5.0,
+      "preview_index": 2,
+      "file": "previews/c-warm-hype_2.mp3",
+      "generated_voice_id": "uZoUbwMnDQ0RTNcud9Mw",
+      "duration_secs": 37.0705625,
+      "language": "en"
+    },
+    {
+      "variant": "C \u2014 Warm Hype Host",
+      "slug": "c-warm-hype",
+      "guidance_scale": 5.0,
+      "preview_index": 3,
+      "file": "previews/c-warm-hype_3.mp3",
+      "generated_voice_id": "B4e39foWSFwSUsVN2ptg",
+      "duration_secs": 40.5970625,
+      "language": "en"
+    }
+  ]
+}
