@@ -4,7 +4,11 @@
   "title": "Round 2: Trees, Tools and Number Jumps",
   "grade": 5,
   "cogatLevel": 11,
-  "batteryMix": { "verbal": 6, "quantitative": 6, "nonverbal": 3 },
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
   "questions": [
     {
       "id": 1,
@@ -16,10 +20,22 @@
       "question": "WHICH ONE DOES NOT BELONG?",
       "questionFontSize": 96,
       "options": [
-        { "letter": "A", "text": "ROSE" },
-        { "letter": "B", "text": "OAK" },
-        { "letter": "C", "text": "TULIP" },
-        { "letter": "D", "text": "DAISY" }
+        {
+          "letter": "A",
+          "text": "ROSE"
+        },
+        {
+          "letter": "B",
+          "text": "OAK"
+        },
+        {
+          "letter": "C",
+          "text": "TULIP"
+        },
+        {
+          "letter": "D",
+          "text": "DAISY"
+        }
       ],
       "ansLetter": "B",
       "ansLabel": "OAK",
@@ -33,12 +49,30 @@
       "difficulty": "easy",
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["4", "7", "10", "13", "?"],
+      "seq": [
+        "4",
+        "7",
+        "10",
+        "13",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "16" },
-        { "letter": "B", "text": "17" },
-        { "letter": "C", "text": "19" },
-        { "letter": "D", "text": "15" }
+        {
+          "letter": "A",
+          "text": "16"
+        },
+        {
+          "letter": "B",
+          "text": "17"
+        },
+        {
+          "letter": "C",
+          "text": "19"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
       ],
       "ansLetter": "A",
       "ansLabel": "16",
@@ -50,15 +84,31 @@
       "category": "nonverbal",
       "tier": "FIGURE ANALOGY",
       "difficulty": "easy",
-      "countdown": 6,
+      "countdown": 5,
       "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
       "leftShape": "square",
       "rightShape": "circle",
       "options": [
-        { "letter": "A", "shape": "square", "filled": true },
-        { "letter": "B", "shape": "triangle", "filled": true },
-        { "letter": "C", "shape": "circle", "filled": false },
-        { "letter": "D", "shape": "circle", "filled": true }
+        {
+          "letter": "A",
+          "shape": "square",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": true
+        }
       ],
       "ansLetter": "D",
       "ansShape": "circle",
@@ -76,10 +126,22 @@
       "question": "BIG IS TO HUGE AS\nSMALL IS TO ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "LITTLE" },
-        { "letter": "B", "text": "SHORT" },
-        { "letter": "C", "text": "TINY" },
-        { "letter": "D", "text": "MEDIUM" }
+        {
+          "letter": "A",
+          "text": "LITTLE"
+        },
+        {
+          "letter": "B",
+          "text": "SHORT"
+        },
+        {
+          "letter": "C",
+          "text": "TINY"
+        },
+        {
+          "letter": "D",
+          "text": "MEDIUM"
+        }
       ],
       "ansLetter": "C",
       "ansLabel": "TINY",
@@ -93,12 +155,30 @@
       "difficulty": "easy",
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["60", "54", "48", "42", "?"],
+      "seq": [
+        "60",
+        "54",
+        "48",
+        "42",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "36" },
-        { "letter": "B", "text": "38" },
-        { "letter": "C", "text": "34" },
-        { "letter": "D", "text": "30" }
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "34"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
       ],
       "ansLetter": "A",
       "ansLabel": "36",
@@ -114,10 +194,22 @@
       "question": "FINGER IS TO HAND AS\nTOE IS TO ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "LEG" },
-        { "letter": "B", "text": "SHOE" },
-        { "letter": "C", "text": "FOOT" },
-        { "letter": "D", "text": "NAIL" }
+        {
+          "letter": "A",
+          "text": "LEG"
+        },
+        {
+          "letter": "B",
+          "text": "SHOE"
+        },
+        {
+          "letter": "C",
+          "text": "FOOT"
+        },
+        {
+          "letter": "D",
+          "text": "NAIL"
+        }
       ],
       "ansLetter": "C",
       "ansLabel": "FOOT",
@@ -129,14 +221,33 @@
       "category": "quantitative",
       "tier": "NUMBER SERIES",
       "difficulty": "hard",
-      "countdown": 7,
+      "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["4", "5", "7", "10", "14", "?"],
+      "seq": [
+        "4",
+        "5",
+        "7",
+        "10",
+        "14",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "18" },
-        { "letter": "B", "text": "19" },
-        { "letter": "C", "text": "20" },
-        { "letter": "D", "text": "17" }
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "17"
+        }
       ],
       "ansLetter": "B",
       "ansLabel": "19",
@@ -152,10 +263,22 @@
       "question": "PUPPY IS TO DOG AS\nKITTEN IS TO ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "PET" },
-        { "letter": "B", "text": "PAW" },
-        { "letter": "C", "text": "CUB" },
-        { "letter": "D", "text": "CAT" }
+        {
+          "letter": "A",
+          "text": "PET"
+        },
+        {
+          "letter": "B",
+          "text": "PAW"
+        },
+        {
+          "letter": "C",
+          "text": "CUB"
+        },
+        {
+          "letter": "D",
+          "text": "CAT"
+        }
       ],
       "ansLetter": "D",
       "ansLabel": "CAT",
@@ -167,14 +290,32 @@
       "category": "quantitative",
       "tier": "NUMBER SERIES",
       "difficulty": "medium",
-      "countdown": 6,
+      "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["1", "3", "9", "27", "?"],
+      "seq": [
+        "1",
+        "3",
+        "9",
+        "27",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "54" },
-        { "letter": "B", "text": "72" },
-        { "letter": "C", "text": "81" },
-        { "letter": "D", "text": "90" }
+        {
+          "letter": "A",
+          "text": "54"
+        },
+        {
+          "letter": "B",
+          "text": "72"
+        },
+        {
+          "letter": "C",
+          "text": "81"
+        },
+        {
+          "letter": "D",
+          "text": "90"
+        }
       ],
       "ansLetter": "C",
       "ansLabel": "81",
@@ -190,10 +331,22 @@
       "question": "WHICH ONE DOES NOT BELONG?",
       "questionFontSize": 96,
       "options": [
-        { "letter": "A", "text": "ROAD" },
-        { "letter": "B", "text": "CAR" },
-        { "letter": "C", "text": "BUS" },
-        { "letter": "D", "text": "TRAIN" }
+        {
+          "letter": "A",
+          "text": "ROAD"
+        },
+        {
+          "letter": "B",
+          "text": "CAR"
+        },
+        {
+          "letter": "C",
+          "text": "BUS"
+        },
+        {
+          "letter": "D",
+          "text": "TRAIN"
+        }
       ],
       "ansLetter": "A",
       "ansLabel": "ROAD",
@@ -205,14 +358,30 @@
       "category": "nonverbal",
       "tier": "FIGURE SERIES",
       "difficulty": "medium",
-      "countdown": 7,
+      "countdown": 5,
       "prompt": "WHICH SHAPE COMES NEXT?",
-      "seq": [3, 4, 5],
+      "seq": [
+        3,
+        4,
+        5
+      ],
       "options": [
-        { "letter": "A", "poly": "circle" },
-        { "letter": "B", "poly": 6 },
-        { "letter": "C", "poly": 4 },
-        { "letter": "D", "poly": 8 }
+        {
+          "letter": "A",
+          "poly": "circle"
+        },
+        {
+          "letter": "B",
+          "poly": 6
+        },
+        {
+          "letter": "C",
+          "poly": 4
+        },
+        {
+          "letter": "D",
+          "poly": 8
+        }
       ],
       "ansLetter": "B",
       "ansShape": 6,
@@ -225,14 +394,26 @@
       "category": "verbal",
       "tier": "SENTENCE COMPLETION",
       "difficulty": "hard",
-      "countdown": 6,
+      "countdown": 5,
       "question": "THE RAIN POURED ALL DAY, SO THE\nSCHOOL HAD TO ______ THE OUTDOOR\nGAMES UNTIL THE NEXT WEEKEND.",
       "questionFontSize": 58,
       "options": [
-        { "letter": "A", "text": "ENJOY" },
-        { "letter": "B", "text": "PAINT" },
-        { "letter": "C", "text": "COUNT" },
-        { "letter": "D", "text": "POSTPONE" }
+        {
+          "letter": "A",
+          "text": "ENJOY"
+        },
+        {
+          "letter": "B",
+          "text": "PAINT"
+        },
+        {
+          "letter": "C",
+          "text": "COUNT"
+        },
+        {
+          "letter": "D",
+          "text": "POSTPONE"
+        }
       ],
       "ansLetter": "D",
       "ansLabel": "POSTPONE",
@@ -244,14 +425,30 @@
       "category": "nonverbal",
       "tier": "POSITION",
       "difficulty": "medium",
-      "countdown": 7,
+      "countdown": 5,
       "prompt": "WHERE DOES THE DOT MOVE NEXT?",
-      "seq": ["tr", "br", "bl"],
+      "seq": [
+        "tr",
+        "br",
+        "bl"
+      ],
       "options": [
-        { "letter": "A", "pos": "tl" },
-        { "letter": "B", "pos": "tr" },
-        { "letter": "C", "pos": "center" },
-        { "letter": "D", "pos": "bl" }
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
       ],
       "ansLetter": "A",
       "ansPos": "tl",
@@ -264,14 +461,26 @@
       "category": "quantitative",
       "tier": "NUMBER ANALOGY",
       "difficulty": "medium",
-      "countdown": 6,
+      "countdown": 5,
       "question": "WHICH NUMBER FITS?\n1 -> 3,   2 -> 6,   3 -> 9,   4 -> ?",
       "questionFontSize": 80,
       "options": [
-        { "letter": "A", "text": "7" },
-        { "letter": "B", "text": "12" },
-        { "letter": "C", "text": "10" },
-        { "letter": "D", "text": "15" }
+        {
+          "letter": "A",
+          "text": "7"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "10"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
       ],
       "ansLetter": "B",
       "ansLabel": "12",
@@ -283,14 +492,26 @@
       "category": "quantitative",
       "tier": "NUMBER PUZZLE",
       "difficulty": "hard",
-      "countdown": 7,
+      "countdown": 5,
       "question": "IF  2+3=6,  4+2=8,  5+3=15\nTHEN  6+2 = ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "8" },
-        { "letter": "B", "text": "14" },
-        { "letter": "C", "text": "12" },
-        { "letter": "D", "text": "16" }
+        {
+          "letter": "A",
+          "text": "8"
+        },
+        {
+          "letter": "B",
+          "text": "14"
+        },
+        {
+          "letter": "C",
+          "text": "12"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
       ],
       "ansLetter": "C",
       "ansLabel": "12",

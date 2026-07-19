@@ -833,3 +833,45 @@ video/
    front vs generate-then-render on demand.
 7. **VO cost at scale.** ~100 rounds × 30 clips = ~3,000 TTS calls. OK to batch on the current
    ElevenLabs plan, or should we gate rendering to validated-and-approved rounds only?
+
+---
+
+## 14. Implemented generator & the nonverbal signature ceiling
+
+The batch build ships a **deterministic, seeded generator** rather than the LLM loop sketched in §8
+(§8 remains valid if you prefer LLM authoring). See `content/gen-rounds.mjs` + `content/verbal-bank.mjs`.
+
+- **Quantitative** (number series / number analogy / number puzzle) are generated procedurally and
+  **re-solved with the same solvers `validate.mjs` uses**, so the marked answer is always the unique
+  solution and no distractor equals it. The near-dup guard (jaccard, mirroring §9.4) keeps every text
+  item globally distinct.
+- **Verbal** (odd-one-out / verbal analogy / sentence completion) are drawn from curated single-answer
+  banks and then **AI-judged** (an independent pass confirms one unambiguous Grade-5 answer).
+- **Nonverbal** are drawn from the **enumerated unique-signature pool** minus what the bank already uses.
+
+**The nonverbal signature space is the hard ceiling on round count.** With the current renderer:
+
+| kind | vocabulary | unique signatures (clean, portrait-safe) |
+|---|---|---|
+| `shaded` (figure analogy) | 3 glyphs, answer = right glyph filled | **9** (3 × 3) |
+| `polygon` (figure series) | sides 3..8, constant step, shown length ≤ 4 | ~24 |
+| `dot` (position) | 4 corners, rotation, shown length ≤ 4 | ~24 |
+
+That is ~57 unique nonverbal items total → **~18 rounds** at 3 nonverbal each (or **9** if you require
+one-shaded-per-round, since shaded caps at 9). `DotQuestion`/`PolygonQuestion` use fixed tiles, so a
+shown sequence longer than ~5 overflows in portrait; longer sequences are avoided.
+
+Because a strict one-each rule caps the bank at 9 rounds, `validate.mjs` now accepts the 3 nonverbal
+items as **any mix** of shaded/polygon/dot (each still deterministically solved + globally deduped);
+the 6/6/3 battery is unchanged.
+
+**To scale toward ~100 rounds, expand the nonverbal vocabulary** (each item needs a matching renderer
+component, solver, schema enum, and generator enumerator):
+- **Dot 3×3 grid** (add top/right/bottom/left mid-edges to `DotSquare` → 8 perimeter positions):
+  rotations/paths jump from ~24 to a few hundred. Highest leverage, smallest change.
+- **More figure-analogy transforms** (unfill, rotate, resize) and/or **more glyphs** in `ShapeGlyph`:
+  lifts `shaded` well past 9.
+- **Shrink-to-fit** `DotQuestion`/`PolygonQuestion` tiles (as `NumSeriesQuestion` already does) to
+  allow longer sequences safely.
+
+Each of these changes on-screen output, so it needs a visual review + a re-render of an affected cut.

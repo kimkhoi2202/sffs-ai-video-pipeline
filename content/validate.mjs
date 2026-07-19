@@ -185,18 +185,11 @@ function nearDup(qa, qb) {
   return false;
 }
 
-// ---- recommended countdown (playbook 5.1) ---------------------------------
-function recCountdown(q) {
-  const t = q.tier.toUpperCase();
-  let base;
-  if (t.includes("SENTENCE")) base = 6;
-  else if (q.category === "verbal") base = 5;
-  else if (q.category === "nonverbal") base = 7 + (q.difficulty === "easy" ? -1 : 0);
-  else base = 6; // quantitative
-  if (q.category === "quantitative") base += q.difficulty === "easy" ? -1 : q.difficulty === "hard" ? 1 : 0;
-  else if (q.category === "verbal" && !t.includes("SENTENCE")) base += q.difficulty === "hard" ? 1 : 0;
-  return Math.max(5, Math.min(8, base));
-}
+// ---- standard countdown ----------------------------------------------------
+// The render pipeline uses a uniform 5s question countdown (matches the Remotion
+// masters + build-cuts metadata). 5s is the default for every generated round;
+// the validator warns on any other value.
+const STD_COUNTDOWN = 5;
 
 // ---- validation ------------------------------------------------------------
 function requiredFieldsOk(q, add) {
@@ -334,9 +327,8 @@ function validateRound(round, dedupPool) {
       humanCheck.push(hcRow(q, "verbal item (no deterministic solver)"));
     }
 
-    // countdown vs recommended ladder (soft)
-    const rec = recCountdown(q);
-    if (Math.abs(q.countdown - rec) > 1) add("warn", `q${id}: countdown ${q.countdown}s vs recommended ~${rec}s`);
+    // countdown: uniform 5s standard (soft)
+    if (q.countdown !== STD_COUNTDOWN) add("warn", `q${id}: countdown ${q.countdown}s (standard is ${STD_COUNTDOWN}s)`);
 
     // intra-round dedup
     const sig = sigOf(q);
@@ -360,7 +352,15 @@ function validateRound(round, dedupPool) {
   // ---- round-level mix ----
   const mixOk = cat.verbal === 6 && cat.quantitative === 6 && cat.nonverbal === 3;
   if (!mixOk) add("fail", `battery mix must be 6/6/3, got verbal ${cat.verbal} / quant ${cat.quantitative} / nonverbal ${cat.nonverbal}`);
-  if (!(nonverbalKinds.shaded === 1 && nonverbalKinds.polygon === 1 && nonverbalKinds.dot === 1)) add("fail", `nonverbal must be one each shaded/polygon/dot, got ${JSON.stringify(nonverbalKinds)}`);
+  // The 3 nonverbal items must be drawn from the solver-verified visual kinds
+  // (shaded / polygon / dot), in ANY mix. This was "one each" for the pilot, but
+  // the shaded figure-analogy has only 9 possible unique signatures (3 glyphs ×
+  // 3, answer = right shape filled), so a strict one-shaded-per-round rule caps
+  // the whole bank at 9 rounds. A flexible mix (each item still deterministically
+  // solved + globally deduped) lets the bank scale while preserving the 6/6/3
+  // battery. See CONTENT_PIPELINE.md (nonverbal signature space).
+  const nvKindTotal = nonverbalKinds.shaded + nonverbalKinds.polygon + nonverbalKinds.dot;
+  if (nvKindTotal !== 3) add("fail", `nonverbal must be 3 items drawn from shaded/polygon/dot, got ${JSON.stringify(nonverbalKinds)}`);
   const diffOk = diff.easy === 6 && diff.medium === 6 && diff.hard === 3;
   if (!diffOk) add("fail", `difficulty mix must be 6/6/3, got easy ${diff.easy} / medium ${diff.medium} / hard ${diff.hard}`);
   if (qs.length === 15 && qs[14] && qs[14].difficulty !== "hard") add("warn", "last question should be hard (finale)");

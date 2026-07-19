@@ -55,8 +55,8 @@ export type SfxSet = { whoosh: string; ding: string; sting: string };
 const SFX_VOL = { whoosh: 0.55, ding: 0.7, sting: 0.62 };
 const SFX_LEADIN = frames(0.25); // a transition whoosh starts this far before the boundary
 
-const countdownFrames = (q: Question): number =>
-  Math.max(frames(q.countdown + 1), frames(q.countdown + D.timesup + 0.3));
+const countdownFrames = (q: Question, durs: Record<string, number>): number =>
+  Math.max(frames(q.countdown + 1), frames(q.countdown + durs.timesup + 0.3));
 
 export type TimelineData = {
   platform: Platform;
@@ -74,11 +74,28 @@ export type TimelineData = {
 export const ALL_IDS = QUESTIONS.map((q) => q.idx);
 
 /** Resolve a subset of question ids (in the given order) to Question objects. */
-const resolve = (ids: number[]): Question[] =>
-  ids.map((id) => QUESTIONS.find((q) => q.idx === id)).filter((q): q is Question => Boolean(q));
+const resolve = (ids: number[], src: Question[] = QUESTIONS): Question[] =>
+  ids.map((id) => src.find((q) => q.idx === id)).filter((q): q is Question => Boolean(q));
 
-function build(platform: Platform, ids: number[], sfxSet?: SfxSet): TimelineData {
-  const questions = resolve(ids);
+/**
+ * Build a cut's timeline. For the committed master, `questionsSrc`/`durs`/`qrBase`
+ * default to the module data (data/questions.ts + data/durations.json + the shared
+ * audio/narration/ dir). To render a DIFFERENT generated round, the batch pipeline
+ * passes that round's Question[] + measured duration map + a per-round narration
+ * base (e.g. "audio/rounds/round-002/") via props; the META beats (intro/timesup/
+ * score/outro) always come from the shared audio/narration/ dir since they are
+ * round-agnostic. Purely additive: omit the extras and behavior is unchanged.
+ */
+function build(
+  platform: Platform,
+  ids: number[],
+  sfxSet?: SfxSet,
+  questionsSrc: Question[] = QUESTIONS,
+  durs: Record<string, number> = DURS as Record<string, number>,
+  qrBase = "audio/narration/",
+): TimelineData {
+  const D = durs;
+  const questions = resolve(ids, questionsSrc);
   const segments: Segment[] = [];
   const narration: AudioEvent[] = [];
   const ticks: AudioEvent[] = [];
@@ -97,11 +114,11 @@ function build(platform: Platform, ids: number[], sfxSet?: SfxSet): TimelineData
     const qDur = D[`q${q.idx}`];
     const readDur = frames(LEAD + qDur + TRAIL);
     segments.push({ type: "read", q, pos, start: cur, dur: readDur });
-    narration.push({ src: `audio/narration/q${q.idx}.mp3`, from: cur + LEAD_FRAMES });
+    narration.push({ src: `${qrBase}q${q.idx}.mp3`, from: cur + LEAD_FRAMES });
     voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(qDur)]);
     cur += readDur;
 
-    const cdDur = countdownFrames(q);
+    const cdDur = countdownFrames(q, D);
     segments.push({ type: "countdown", q, pos, start: cur, dur: cdDur });
     ticks.push({ src: "audio/sfx/tick.wav", from: cur, durationInFrames: frames(q.countdown) });
     swellWindows.push([cur, cur + frames(q.countdown)]); // swell across the tick, before "time's up"
@@ -111,7 +128,7 @@ function build(platform: Platform, ids: number[], sfxSet?: SfxSet): TimelineData
 
     const rDur = frames(LEAD + D[`r${q.idx}`] + TRAIL);
     segments.push({ type: "reveal", q, pos, start: cur, dur: rDur });
-    narration.push({ src: `audio/narration/r${q.idx}.mp3`, from: cur + LEAD_FRAMES });
+    narration.push({ src: `${qrBase}r${q.idx}.mp3`, from: cur + LEAD_FRAMES });
     voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D[`r${q.idx}`])]);
     cur += rDur;
   });
@@ -160,15 +177,25 @@ function build(platform: Platform, ids: number[], sfxSet?: SfxSet): TimelineData
 
 const CACHE = new Map<string, TimelineData>();
 /**
- * Per-cut timeline (cached by platform + question subset + sfx set). Default =
- * the full 15-question YouTube master. Pass a subset of ids (the curated 10 or a
- * short's 3) and an optional per-cut SfxSet to build that cut's timeline.
+ * Per-cut timeline (cached by platform + question subset + sfx set + round). The
+ * default is the committed full-15 YouTube master. Pass a subset of ids (the
+ * curated 10 or a short's 3), an optional per-cut SfxSet, and — for a generated
+ * round other than the committed master — that round's Question[] + duration map
+ * + per-round narration base (qrBase). The cache key includes qrBase so distinct
+ * rounds never collide.
  */
-export const getTimeline = (platform: Platform = "youtube", ids: number[] = ALL_IDS, sfxSet?: SfxSet): TimelineData => {
-  const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}`;
+export const getTimeline = (
+  platform: Platform = "youtube",
+  ids: number[] = ALL_IDS,
+  sfxSet?: SfxSet,
+  questionsSrc?: Question[],
+  durs?: Record<string, number>,
+  qrBase?: string,
+): TimelineData => {
+  const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}:${qrBase ?? "def"}`;
   let t = CACHE.get(key);
   if (!t) {
-    t = build(platform, ids, sfxSet);
+    t = build(platform, ids, sfxSet, questionsSrc, durs, qrBase);
     CACHE.set(key, t);
   }
   return t;

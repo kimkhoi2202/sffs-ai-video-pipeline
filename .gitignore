@@ -26,6 +26,11 @@ __pycache__/
 renders/*.mp4
 renders/**/*.mp4
 
+# Per-round generated narration (mp3s + durations + scratch beats/props) — the
+# meta beats + committed round-15 narration stay tracked; mass-gen rounds are
+# regenerable from their round JSON via TTS, so keep them out of git.
+remotion/public/audio/rounds/
+
 # Fresh backup takes the voice scripts write next to the active clips — the
 # curated archive lives (tracked) under voice/_backups/ instead.
 voice/narration/*.bak

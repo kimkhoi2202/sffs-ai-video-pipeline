@@ -1,7 +1,7 @@
 {
-  "round": 1,
-  "slug": "round-001",
-  "title": "Round 1: Fruit, Patterns and Shapes",
+  "round": 8,
+  "slug": "round-008",
+  "title": "Round 8: Think Fast, Think Smart",
   "grade": 5,
   "cogatLevel": 11,
   "batteryMix": {
@@ -22,24 +22,24 @@
       "options": [
         {
           "letter": "A",
-          "text": "APPLE"
+          "text": "GOLD"
         },
         {
           "letter": "B",
-          "text": "BANANA"
+          "text": "WOOD"
         },
         {
           "letter": "C",
-          "text": "CARROT"
+          "text": "IRON"
         },
         {
           "letter": "D",
-          "text": "GRAPE"
+          "text": "SILVER"
         }
       ],
-      "ansLetter": "C",
-      "ansLabel": "CARROT",
-      "explanation": "An apple, banana, and grape are all fruits. A carrot is a vegetable, so it does not belong."
+      "ansLetter": "B",
+      "ansLabel": "WOOD",
+      "explanation": "Gold, silver, and iron are metals. Wood is not a metal, so it does not belong."
     },
     {
       "id": 2,
@@ -50,33 +50,33 @@
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
       "seq": [
-        "5",
-        "10",
-        "15",
-        "20",
+        "4",
+        "9",
+        "14",
+        "19",
         "?"
       ],
       "options": [
         {
           "letter": "A",
-          "text": "25"
+          "text": "24"
         },
         {
           "letter": "B",
-          "text": "30"
+          "text": "27"
         },
         {
           "letter": "C",
-          "text": "21"
+          "text": "25"
         },
         {
           "letter": "D",
-          "text": "24"
+          "text": "26"
         }
       ],
       "ansLetter": "A",
-      "ansLabel": "25",
-      "explanation": "Each number goes up by 5: 5, 10, 15, 20, so the next is 20 plus 5 is 25."
+      "ansLabel": "24",
+      "explanation": "Each number goes up by five, so the next one is nineteen plus five is twenty-four."
     },
     {
       "id": 3,
@@ -86,18 +86,18 @@
       "difficulty": "easy",
       "countdown": 5,
       "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
-      "leftShape": "circle",
-      "rightShape": "triangle",
+      "leftShape": "square",
+      "rightShape": "square",
       "options": [
         {
           "letter": "A",
-          "shape": "circle",
-          "filled": true
+          "shape": "triangle",
+          "filled": false
         },
         {
           "letter": "B",
           "shape": "triangle",
-          "filled": false
+          "filled": true
         },
         {
           "letter": "C",
@@ -106,15 +106,15 @@
         },
         {
           "letter": "D",
-          "shape": "triangle",
+          "shape": "circle",
           "filled": true
         }
       ],
-      "ansLetter": "D",
-      "ansShape": "triangle",
+      "ansLetter": "C",
+      "ansShape": "square",
       "ansFilled": true,
-      "ansLabel": "FILLED TRIANGLE",
-      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+      "ansLabel": "FILLED SQUARE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty square becomes a filled square."
     },
     {
       "id": 4,
@@ -123,29 +123,29 @@
       "tier": "VERBAL ANALOGY",
       "difficulty": "easy",
       "countdown": 5,
-      "question": "HOT IS TO COLD AS\nDAY IS TO ?",
+      "question": "OPEN IS TO CLOSED AS\nPUSH IS TO ?",
       "questionFontSize": 88,
       "options": [
         {
           "letter": "A",
-          "text": "MORNING"
+          "text": "SHUT"
         },
         {
           "letter": "B",
-          "text": "NIGHT"
+          "text": "PULL"
         },
         {
           "letter": "C",
-          "text": "SUN"
+          "text": "DOOR"
         },
         {
           "letter": "D",
-          "text": "LIGHT"
+          "text": "OPEN"
         }
       ],
       "ansLetter": "B",
-      "ansLabel": "NIGHT",
-      "explanation": "Hot and cold are opposites, so the opposite of day is night. It is the same relationship, flipped."
+      "ansLabel": "PULL",
+      "explanation": "Open and closed are opposites, so the opposite of push is pull."
     },
     {
       "id": 5,
@@ -156,10 +156,10 @@
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
       "seq": [
-        "2",
-        "4",
         "8",
+        "12",
         "16",
+        "20",
         "?"
       ],
       "options": [
@@ -169,20 +169,20 @@
         },
         {
           "letter": "B",
-          "text": "20"
+          "text": "14"
         },
         {
           "letter": "C",
-          "text": "32"
+          "text": "34"
         },
         {
           "letter": "D",
-          "text": "30"
+          "text": "26"
         }
       ],
-      "ansLetter": "C",
-      "ansLabel": "32",
-      "explanation": "Each number doubles: 2, 4, 8, 16, so the next is 16 times 2 is 32."
+      "ansLetter": "A",
+      "ansLabel": "24",
+      "explanation": "Each number goes up by four, so the next one is twenty plus four is twenty-four."
     },
     {
       "id": 6,
@@ -191,29 +191,29 @@
       "tier": "VERBAL ANALOGY",
       "difficulty": "medium",
       "countdown": 5,
-      "question": "BEE IS TO HIVE AS\nBIRD IS TO ?",
+      "question": "EYE IS TO SEE AS\nEAR IS TO ?",
       "questionFontSize": 88,
       "options": [
         {
           "letter": "A",
-          "text": "NEST"
+          "text": "SOUND"
         },
         {
           "letter": "B",
-          "text": "TREE"
+          "text": "HEAR"
         },
         {
           "letter": "C",
-          "text": "EGG"
+          "text": "LISTEN"
         },
         {
           "letter": "D",
-          "text": "SKY"
+          "text": "NOSE"
         }
       ],
-      "ansLetter": "A",
-      "ansLabel": "NEST",
-      "explanation": "A bee lives in a hive, so a bird lives in a nest. Each one is the home that animal builds."
+      "ansLetter": "B",
+      "ansLabel": "HEAR",
+      "explanation": "An eye is used to see, so an ear is used to hear."
     },
     {
       "id": 7,
@@ -224,34 +224,34 @@
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
       "seq": [
-        "1",
-        "2",
+        "4",
         "5",
-        "10",
-        "17",
+        "9",
+        "14",
+        "23",
         "?"
       ],
       "options": [
         {
           "letter": "A",
-          "text": "24"
+          "text": "40"
         },
         {
           "letter": "B",
-          "text": "26"
+          "text": "42"
         },
         {
           "letter": "C",
-          "text": "25"
+          "text": "47"
         },
         {
           "letter": "D",
-          "text": "28"
+          "text": "37"
         }
       ],
-      "ansLetter": "B",
-      "ansLabel": "26",
-      "explanation": "The gaps are the odd numbers 1, 3, 5, 7, then 9. So 17 plus 9 is 26."
+      "ansLetter": "D",
+      "ansLabel": "37",
+      "explanation": "Add the two numbers before it: twenty-three plus fourteen is thirty-seven."
     },
     {
       "id": 8,
@@ -260,29 +260,29 @@
       "tier": "VERBAL ANALOGY",
       "difficulty": "easy",
       "countdown": 5,
-      "question": "FISH IS TO SWIM AS\nBIRD IS TO ?",
+      "question": "COW IS TO CALF AS\nHORSE IS TO ?",
       "questionFontSize": 88,
       "options": [
         {
           "letter": "A",
-          "text": "WALK"
+          "text": "HAY"
         },
         {
           "letter": "B",
-          "text": "SING"
+          "text": "RUN"
         },
         {
           "letter": "C",
-          "text": "HOP"
+          "text": "MANE"
         },
         {
           "letter": "D",
-          "text": "FLY"
+          "text": "FOAL"
         }
       ],
       "ansLetter": "D",
-      "ansLabel": "FLY",
-      "explanation": "A fish moves by swimming, so a bird moves by flying. It is how each animal gets around."
+      "ansLabel": "FOAL",
+      "explanation": "A baby cow is a calf, so a baby horse is a foal."
     },
     {
       "id": 9,
@@ -294,33 +294,32 @@
       "prompt": "WHAT COMES NEXT?",
       "seq": [
         "2",
-        "3",
-        "5",
-        "8",
         "13",
+        "24",
+        "35",
         "?"
       ],
       "options": [
         {
           "letter": "A",
-          "text": "18"
+          "text": "36"
         },
         {
           "letter": "B",
-          "text": "20"
+          "text": "49"
         },
         {
           "letter": "C",
-          "text": "21"
+          "text": "41"
         },
         {
           "letter": "D",
-          "text": "26"
+          "text": "46"
         }
       ],
-      "ansLetter": "C",
-      "ansLabel": "21",
-      "explanation": "Add the two numbers before it: 8 plus 13 is 21. It is the add-the-last-two pattern."
+      "ansLetter": "D",
+      "ansLabel": "46",
+      "explanation": "Each number goes up by eleven, so the next one is thirty-five plus eleven is forty-six."
     },
     {
       "id": 10,
@@ -334,24 +333,24 @@
       "options": [
         {
           "letter": "A",
-          "text": "PIANO"
+          "text": "SQUARE"
         },
         {
           "letter": "B",
-          "text": "GUITAR"
+          "text": "TRIANGLE"
         },
         {
           "letter": "C",
-          "text": "DRUM"
+          "text": "SEVEN"
         },
         {
           "letter": "D",
-          "text": "SONG"
+          "text": "CIRCLE"
         }
       ],
-      "ansLetter": "D",
-      "ansLabel": "SONG",
-      "explanation": "A piano, guitar, and drum are all instruments you play. A song is the music they make, so it does not belong."
+      "ansLetter": "C",
+      "ansLabel": "SEVEN",
+      "explanation": "A triangle, circle, and square are shapes. Seven is a number, so it does not belong."
     },
     {
       "id": 11,
@@ -362,9 +361,9 @@
       "countdown": 5,
       "prompt": "WHICH SHAPE COMES NEXT?",
       "seq": [
-        6,
         5,
-        4
+        6,
+        7
       ],
       "options": [
         {
@@ -377,17 +376,17 @@
         },
         {
           "letter": "C",
-          "poly": "circle"
+          "poly": 8
         },
         {
           "letter": "D",
-          "poly": 5
+          "poly": 7
         }
       ],
-      "ansLetter": "A",
-      "ansShape": 3,
-      "ansLabel": "TRIANGLE",
-      "explanation": "The sides count down by one: hexagon 6, pentagon 5, square 4, so next is the triangle with 3 sides."
+      "ansLetter": "C",
+      "ansShape": 8,
+      "ansLabel": "OCTAGON",
+      "explanation": "The number of sides goes up by one each step, so the next shape is the octagon."
     },
     {
       "id": 12,
@@ -396,29 +395,29 @@
       "tier": "SENTENCE COMPLETION",
       "difficulty": "hard",
       "countdown": 5,
-      "question": "THE LIBRARY WAS SO QUIET THAT EVEN A\nWHISPER SEEMED ______, SO EVERYONE\nTRIED HARD NOT TO MAKE A SOUND.",
-      "questionFontSize": 58,
+      "question": "THE STORY WAS SO ______ THAT I COULD NOT\nSTOP TURNING THE PAGES.",
+      "questionFontSize": 56,
       "options": [
         {
           "letter": "A",
-          "text": "HEAVY"
+          "text": "QUIET"
         },
         {
           "letter": "B",
-          "text": "LOUD"
+          "text": "INTERESTING"
         },
         {
           "letter": "C",
-          "text": "COLORFUL"
+          "text": "SHORT"
         },
         {
           "letter": "D",
-          "text": "EXPENSIVE"
+          "text": "BORING"
         }
       ],
       "ansLetter": "B",
-      "ansLabel": "LOUD",
-      "explanation": "In a place that quiet, even a tiny whisper stands out and seems loud. Only loud fits the meaning."
+      "ansLabel": "INTERESTING",
+      "explanation": "Not wanting to stop reading means the story was interesting."
     },
     {
       "id": 13,
@@ -429,9 +428,8 @@
       "countdown": 5,
       "prompt": "WHERE DOES THE DOT MOVE NEXT?",
       "seq": [
-        "bl",
-        "tl",
-        "tr"
+        "br",
+        "bl"
       ],
       "options": [
         {
@@ -440,21 +438,21 @@
         },
         {
           "letter": "B",
-          "pos": "br"
-        },
-        {
-          "letter": "C",
           "pos": "center"
         },
         {
-          "letter": "D",
+          "letter": "C",
           "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
         }
       ],
-      "ansLetter": "B",
-      "ansPos": "br",
-      "ansLabel": "BOTTOM-RIGHT",
-      "explanation": "The dot steps clockwise corner to corner: bottom-left, top-left, top-right, so the next corner is bottom-right."
+      "ansLetter": "A",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot steps clockwise around the corners, so the next spot is top-left."
     },
     {
       "id": 14,
@@ -463,29 +461,29 @@
       "tier": "NUMBER ANALOGY",
       "difficulty": "medium",
       "countdown": 5,
-      "question": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?",
+      "question": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   5 -> 19,   8 -> ?",
       "questionFontSize": 80,
       "options": [
         {
           "letter": "A",
-          "text": "8"
+          "text": "36"
         },
         {
           "letter": "B",
-          "text": "10"
+          "text": "29"
         },
         {
           "letter": "C",
-          "text": "11"
+          "text": "31"
         },
         {
           "letter": "D",
-          "text": "9"
+          "text": "21"
         }
       ],
-      "ansLetter": "D",
-      "ansLabel": "9",
-      "explanation": "Each number is doubled then take away one: 5 times 2 is 10, minus 1 is 9."
+      "ansLetter": "C",
+      "ansLabel": "31",
+      "explanation": "Each number is multiplied by four then take away one, so eight becomes thirty-one."
     },
     {
       "id": 15,
@@ -494,29 +492,29 @@
       "tier": "NUMBER PUZZLE",
       "difficulty": "hard",
       "countdown": 5,
-      "question": "IF  2+3=10,  4+1=10,  5+2=14\nTHEN  3+4 = ?",
-      "questionFontSize": 88,
+      "question": "IF  1+4=5,  5+5=30,  1+3=4\nTHEN  2+4 = ?",
+      "questionFontSize": 84,
       "options": [
         {
           "letter": "A",
-          "text": "7"
+          "text": "10"
         },
         {
           "letter": "B",
-          "text": "12"
+          "text": "11"
         },
         {
           "letter": "C",
-          "text": "14"
+          "text": "0"
         },
         {
           "letter": "D",
-          "text": "24"
+          "text": "5"
         }
       ],
-      "ansLetter": "C",
-      "ansLabel": "14",
-      "explanation": "The trick is to add the two numbers, then double: 3 plus 4 is 7, and 7 times 2 is 14."
+      "ansLetter": "A",
+      "ansLabel": "10",
+      "explanation": "The trick is to multiply them, then add the first: eight plus two is ten."
     }
   ]
 }

@@ -1,0 +1,206 @@
+{
+  "round": 1,
+  "slug": "full-15",
+  "title": "Round 1: Fruit, Patterns and Shapes — Round 15 — Full 15 (YouTube)",
+  "platform": "youtube",
+  "format": "16:9",
+  "questionCount": 15,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "C",
+        "label": "CARROT"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "25"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "difficulty": "easy",
+      "tier": "FIGURE ANALOGY",
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "answer": {
+        "letter": "D",
+        "label": "FILLED TRIANGLE"
+      }
+    },
+    {
+      "pos": 4,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "HOT IS TO COLD AS / DAY IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "NIGHT"
+      }
+    },
+    {
+      "pos": 5,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "32"
+      }
+    },
+    {
+      "pos": 6,
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "BEE IS TO HIVE AS / BIRD IS TO ?",
+      "answer": {
+        "letter": "A",
+        "label": "NEST"
+      }
+    },
+    {
+      "pos": 7,
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "26"
+      }
+    },
+    {
+      "pos": 8,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "FISH IS TO SWIM AS / BIRD IS TO ?",
+      "answer": {
+        "letter": "D",
+        "label": "FLY"
+      }
+    },
+    {
+      "pos": 9,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "21"
+      }
+    },
+    {
+      "pos": 10,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "D",
+        "label": "SONG"
+      }
+    },
+    {
+      "pos": 11,
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "FIGURE SERIES",
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "TRIANGLE"
+      }
+    },
+    {
+      "pos": 12,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE LIBRARY WAS SO QUIET THAT EVEN A / WHISPER SEEMED ______, SO EVERYONE / TRIED HARD NOT TO MAKE A SOUND.",
+      "answer": {
+        "letter": "B",
+        "label": "LOUD"
+      }
+    },
+    {
+      "pos": 13,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "BOTTOM-RIGHT"
+      }
+    },
+    {
+      "pos": 14,
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?",
+      "answer": {
+        "letter": "D",
+        "label": "9"
+      }
+    },
+    {
+      "pos": 15,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  2+3=10,  4+1=10,  5+2=14 / THEN  3+4 = ?",
+      "answer": {
+        "letter": "C",
+        "label": "14"
+      }
+    }
+  ]
+}

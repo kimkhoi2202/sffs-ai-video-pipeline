@@ -73,13 +73,21 @@ export const FullVideo: React.FC<{
   questionIds?: number[];
   music?: string;
   sfx?: SfxSet;
-}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp }) => {
+  /** Per-round overrides (batch pipeline). When omitted, the committed master
+   *  data (data/questions.ts + durations.json + shared audio/narration/) is used. */
+  questions?: Question[];
+  durs?: Record<string, number>;
+  qrBase?: string;
+}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase }) => {
   const cut = slug ? bySlug(slug) : undefined;
   const platform: Platform = cut?.platform ?? platformProp ?? "youtube";
   const ids = cut?.ids ?? questionIds;
   const music = cut?.music ?? musicProp;
   const sfx = cut?.sfx ?? sfxProp;
-  const T: TimelineData = useMemo(() => getTimeline(platform, ids, sfx), [platform, ids, sfx]);
+  const T: TimelineData = useMemo(
+    () => getTimeline(platform, ids, sfx, questions, durs, qrBase),
+    [platform, ids, sfx, questions, durs, qrBase],
+  );
   const total = T.questions.length;
   const winStart = winStartFrame(T);
   return (

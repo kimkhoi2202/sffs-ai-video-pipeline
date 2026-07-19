@@ -3,19 +3,29 @@ import "./theme/fonts"; // side-effect: load Anton + DM Sans (gated via delayRen
 import { VIDEO } from "./theme/brand";
 import { FullVideo } from "./full/FullVideo";
 import { ALL_IDS, FPS, TOTAL as FULL_TOTAL, getTimeline, type Platform, type SfxSet } from "./full/timeline";
+import type { Question } from "./data/types";
 import { bySlug } from "./data/cuts";
 import { Round15Slice } from "./slice/Round15Slice";
 import { SEG, TOTAL as SLICE_TOTAL } from "./slice/timeline";
 import { Intro } from "./scenes/Intro";
 
 /** Duration for a cut: prefer the named cut (by slug) from src/data/cuts.ts;
- *  fall back to explicit props. */
-const cutDuration = (props: { slug?: string; platform?: Platform; questionIds?: number[]; sfx?: SfxSet }): number => {
+ *  fall back to explicit props. Per-round overrides (questions/durs/qrBase) are
+ *  threaded so a generated round's length is computed from ITS narration. */
+const cutDuration = (props: {
+  slug?: string;
+  platform?: Platform;
+  questionIds?: number[];
+  sfx?: SfxSet;
+  questions?: Question[];
+  durs?: Record<string, number>;
+  qrBase?: string;
+}): number => {
   const cut = props.slug ? bySlug(props.slug) : undefined;
   const platform = cut?.platform ?? (props.platform as Platform) ?? "youtube";
   const ids = cut?.ids ?? props.questionIds ?? ALL_IDS;
   const sfx = cut?.sfx ?? props.sfx;
-  return getTimeline(platform, ids, sfx).total;
+  return getTimeline(platform, ids, sfx, props.questions, props.durs, props.qrBase).total;
 };
 
 /**

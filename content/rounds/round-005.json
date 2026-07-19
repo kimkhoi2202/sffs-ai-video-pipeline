@@ -4,7 +4,11 @@
   "title": "Round 5: Royals, Tastes and Tricky Totals",
   "grade": 5,
   "cogatLevel": 11,
-  "batteryMix": { "verbal": 6, "quantitative": 6, "nonverbal": 3 },
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
   "questions": [
     {
       "id": 1,
@@ -16,10 +20,22 @@
       "question": "WHICH ONE DOES NOT BELONG?",
       "questionFontSize": 96,
       "options": [
-        { "letter": "A", "text": "NAIL" },
-        { "letter": "B", "text": "HAMMER" },
-        { "letter": "C", "text": "SAW" },
-        { "letter": "D", "text": "DRILL" }
+        {
+          "letter": "A",
+          "text": "NAIL"
+        },
+        {
+          "letter": "B",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "C",
+          "text": "SAW"
+        },
+        {
+          "letter": "D",
+          "text": "DRILL"
+        }
       ],
       "ansLetter": "A",
       "ansLabel": "NAIL",
@@ -33,12 +49,30 @@
       "difficulty": "easy",
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["90", "83", "76", "69", "?"],
+      "seq": [
+        "90",
+        "83",
+        "76",
+        "69",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "61" },
-        { "letter": "B", "text": "62" },
-        { "letter": "C", "text": "63" },
-        { "letter": "D", "text": "60" }
+        {
+          "letter": "A",
+          "text": "61"
+        },
+        {
+          "letter": "B",
+          "text": "62"
+        },
+        {
+          "letter": "C",
+          "text": "63"
+        },
+        {
+          "letter": "D",
+          "text": "60"
+        }
       ],
       "ansLetter": "B",
       "ansLabel": "62",
@@ -50,15 +84,31 @@
       "category": "nonverbal",
       "tier": "FIGURE ANALOGY",
       "difficulty": "easy",
-      "countdown": 6,
+      "countdown": 5,
       "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
       "leftShape": "square",
       "rightShape": "triangle",
       "options": [
-        { "letter": "A", "shape": "square", "filled": true },
-        { "letter": "B", "shape": "circle", "filled": true },
-        { "letter": "C", "shape": "triangle", "filled": true },
-        { "letter": "D", "shape": "triangle", "filled": false }
+        {
+          "letter": "A",
+          "shape": "square",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "triangle",
+          "filled": false
+        }
       ],
       "ansLetter": "C",
       "ansShape": "triangle",
@@ -76,10 +126,22 @@
       "question": "KING IS TO QUEEN AS\nPRINCE IS TO ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "CROWN" },
-        { "letter": "B", "text": "CASTLE" },
-        { "letter": "C", "text": "ROYAL" },
-        { "letter": "D", "text": "PRINCESS" }
+        {
+          "letter": "A",
+          "text": "CROWN"
+        },
+        {
+          "letter": "B",
+          "text": "CASTLE"
+        },
+        {
+          "letter": "C",
+          "text": "ROYAL"
+        },
+        {
+          "letter": "D",
+          "text": "PRINCESS"
+        }
       ],
       "ansLetter": "D",
       "ansLabel": "PRINCESS",
@@ -93,12 +155,30 @@
       "difficulty": "easy",
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["3", "6", "12", "24", "?"],
+      "seq": [
+        "3",
+        "6",
+        "12",
+        "24",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "36" },
-        { "letter": "B", "text": "48" },
-        { "letter": "C", "text": "30" },
-        { "letter": "D", "text": "42" }
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "30"
+        },
+        {
+          "letter": "D",
+          "text": "42"
+        }
       ],
       "ansLetter": "B",
       "ansLabel": "48",
@@ -114,10 +194,22 @@
       "question": "SUGAR IS TO SWEET AS\nLEMON IS TO ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "YELLOW" },
-        { "letter": "B", "text": "FRUIT" },
-        { "letter": "C", "text": "JUICE" },
-        { "letter": "D", "text": "SOUR" }
+        {
+          "letter": "A",
+          "text": "YELLOW"
+        },
+        {
+          "letter": "B",
+          "text": "FRUIT"
+        },
+        {
+          "letter": "C",
+          "text": "JUICE"
+        },
+        {
+          "letter": "D",
+          "text": "SOUR"
+        }
       ],
       "ansLetter": "D",
       "ansLabel": "SOUR",
@@ -129,14 +221,33 @@
       "category": "quantitative",
       "tier": "NUMBER SERIES",
       "difficulty": "hard",
-      "countdown": 7,
+      "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["2", "5", "7", "12", "19", "?"],
+      "seq": [
+        "2",
+        "5",
+        "7",
+        "12",
+        "19",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "31" },
-        { "letter": "B", "text": "26" },
-        { "letter": "C", "text": "24" },
-        { "letter": "D", "text": "38" }
+        {
+          "letter": "A",
+          "text": "31"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "38"
+        }
       ],
       "ansLetter": "A",
       "ansLabel": "31",
@@ -152,10 +263,22 @@
       "question": "DAY IS TO WEEK AS\nMONTH IS TO ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "HOUR" },
-        { "letter": "B", "text": "MINUTE" },
-        { "letter": "C", "text": "YEAR" },
-        { "letter": "D", "text": "CALENDAR" }
+        {
+          "letter": "A",
+          "text": "HOUR"
+        },
+        {
+          "letter": "B",
+          "text": "MINUTE"
+        },
+        {
+          "letter": "C",
+          "text": "YEAR"
+        },
+        {
+          "letter": "D",
+          "text": "CALENDAR"
+        }
       ],
       "ansLetter": "C",
       "ansLabel": "YEAR",
@@ -167,14 +290,33 @@
       "category": "quantitative",
       "tier": "NUMBER SERIES",
       "difficulty": "medium",
-      "countdown": 6,
+      "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
-      "seq": ["2", "4", "7", "11", "16", "?"],
+      "seq": [
+        "2",
+        "4",
+        "7",
+        "11",
+        "16",
+        "?"
+      ],
       "options": [
-        { "letter": "A", "text": "21" },
-        { "letter": "B", "text": "20" },
-        { "letter": "C", "text": "23" },
-        { "letter": "D", "text": "22" }
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "23"
+        },
+        {
+          "letter": "D",
+          "text": "22"
+        }
       ],
       "ansLetter": "D",
       "ansLabel": "22",
@@ -190,10 +332,22 @@
       "question": "WHICH ONE DOES NOT BELONG?",
       "questionFontSize": 96,
       "options": [
-        { "letter": "A", "text": "SUN" },
-        { "letter": "B", "text": "JUPITER" },
-        { "letter": "C", "text": "MARS" },
-        { "letter": "D", "text": "VENUS" }
+        {
+          "letter": "A",
+          "text": "SUN"
+        },
+        {
+          "letter": "B",
+          "text": "JUPITER"
+        },
+        {
+          "letter": "C",
+          "text": "MARS"
+        },
+        {
+          "letter": "D",
+          "text": "VENUS"
+        }
       ],
       "ansLetter": "A",
       "ansLabel": "SUN",
@@ -205,14 +359,30 @@
       "category": "nonverbal",
       "tier": "FIGURE SERIES",
       "difficulty": "medium",
-      "countdown": 7,
+      "countdown": 5,
       "prompt": "WHICH SHAPE COMES NEXT?",
-      "seq": [4, 5, 6],
+      "seq": [
+        4,
+        5,
+        6
+      ],
       "options": [
-        { "letter": "A", "poly": "circle" },
-        { "letter": "B", "poly": 6 },
-        { "letter": "C", "poly": 7 },
-        { "letter": "D", "poly": 8 }
+        {
+          "letter": "A",
+          "poly": "circle"
+        },
+        {
+          "letter": "B",
+          "poly": 6
+        },
+        {
+          "letter": "C",
+          "poly": 7
+        },
+        {
+          "letter": "D",
+          "poly": 8
+        }
       ],
       "ansLetter": "C",
       "ansShape": 7,
@@ -225,14 +395,26 @@
       "category": "verbal",
       "tier": "SENTENCE COMPLETION",
       "difficulty": "hard",
-      "countdown": 6,
+      "countdown": 5,
       "question": "AFTER THE LONG DRY SUMMER, THE ONCE\nGREEN FIELD LOOKED COMPLETELY ______\nWITH NO PLANTS LEFT AT ALL.",
       "questionFontSize": 58,
       "options": [
-        { "letter": "A", "text": "CROWDED" },
-        { "letter": "B", "text": "BARREN" },
-        { "letter": "C", "text": "FROZEN" },
-        { "letter": "D", "text": "CHEERFUL" }
+        {
+          "letter": "A",
+          "text": "CROWDED"
+        },
+        {
+          "letter": "B",
+          "text": "BARREN"
+        },
+        {
+          "letter": "C",
+          "text": "FROZEN"
+        },
+        {
+          "letter": "D",
+          "text": "CHEERFUL"
+        }
       ],
       "ansLetter": "B",
       "ansLabel": "BARREN",
@@ -244,14 +426,30 @@
       "category": "nonverbal",
       "tier": "POSITION",
       "difficulty": "medium",
-      "countdown": 7,
+      "countdown": 5,
       "prompt": "WHERE DOES THE DOT MOVE NEXT?",
-      "seq": ["tl", "tr", "br"],
+      "seq": [
+        "tl",
+        "tr",
+        "br"
+      ],
       "options": [
-        { "letter": "A", "pos": "tr" },
-        { "letter": "B", "pos": "center" },
-        { "letter": "C", "pos": "br" },
-        { "letter": "D", "pos": "bl" }
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
       ],
       "ansLetter": "D",
       "ansPos": "bl",
@@ -264,14 +462,26 @@
       "category": "quantitative",
       "tier": "NUMBER ANALOGY",
       "difficulty": "medium",
-      "countdown": 6,
+      "countdown": 5,
       "question": "WHICH NUMBER FITS?\n1 -> 5,   2 -> 7,   3 -> 9,   4 -> ?",
       "questionFontSize": 80,
       "options": [
-        { "letter": "A", "text": "10" },
-        { "letter": "B", "text": "12" },
-        { "letter": "C", "text": "11" },
-        { "letter": "D", "text": "13" }
+        {
+          "letter": "A",
+          "text": "10"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
       ],
       "ansLetter": "C",
       "ansLabel": "11",
@@ -283,14 +493,26 @@
       "category": "quantitative",
       "tier": "NUMBER PUZZLE",
       "difficulty": "hard",
-      "countdown": 7,
+      "countdown": 5,
       "question": "IF  5+3=7,  4+2=2,  6+2=4\nTHEN  5+4 = ?",
       "questionFontSize": 88,
       "options": [
-        { "letter": "A", "text": "11" },
-        { "letter": "B", "text": "9" },
-        { "letter": "C", "text": "20" },
-        { "letter": "D", "text": "1" }
+        {
+          "letter": "A",
+          "text": "11"
+        },
+        {
+          "letter": "B",
+          "text": "9"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "1"
+        }
       ],
       "ansLetter": "A",
       "ansLabel": "11",

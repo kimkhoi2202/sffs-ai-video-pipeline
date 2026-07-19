@@ -1,0 +1,75 @@
+{
+  "round": 1,
+  "slug": "round-001",
+  "title": "Round 1: Fruit, Patterns and Shapes",
+  "generated": "2026-07-19",
+  "cuts": [
+    {
+      "slug": "short-1",
+      "dir": "round-001/instagram/short-1",
+      "file": "short-1.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        1,
+        3,
+        7
+      ],
+      "countdownSec": 5,
+      "durationSec": 128
+    },
+    {
+      "slug": "short-1-60",
+      "dir": "round-001/shorts-60/short-1-60",
+      "file": "short-1-60.mp4",
+      "platform": "instagram+tiktok",
+      "format": "9:16",
+      "questionIds": [
+        1
+      ],
+      "countdownSec": 5,
+      "durationSec": 52
+    },
+    {
+      "slug": "short-1",
+      "dir": "round-001/tiktok/short-1",
+      "file": "short-1.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        1,
+        3,
+        7
+      ],
+      "countdownSec": 5,
+      "durationSec": 128,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "full-15",
+      "dir": "round-001/youtube/full-15",
+      "file": "round-15-remotion-master.mp4",
+      "platform": "youtube",
+      "format": "16:9",
+      "questionIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "countdownSec": 5,
+      "durationSec": 555
+    }
+  ]
+}

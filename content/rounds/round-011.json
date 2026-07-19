@@ -1,7 +1,7 @@
 {
-  "round": 1,
-  "slug": "round-001",
-  "title": "Round 1: Fruit, Patterns and Shapes",
+  "round": 11,
+  "slug": "round-011",
+  "title": "Round 11: Analogies, Sums and Figures",
   "grade": 5,
   "cogatLevel": 11,
   "batteryMix": {
@@ -22,24 +22,24 @@
       "options": [
         {
           "letter": "A",
-          "text": "APPLE"
+          "text": "DRESS"
         },
         {
           "letter": "B",
-          "text": "BANANA"
+          "text": "SHIRT"
         },
         {
           "letter": "C",
-          "text": "CARROT"
+          "text": "RIVER"
         },
         {
           "letter": "D",
-          "text": "GRAPE"
+          "text": "COAT"
         }
       ],
       "ansLetter": "C",
-      "ansLabel": "CARROT",
-      "explanation": "An apple, banana, and grape are all fruits. A carrot is a vegetable, so it does not belong."
+      "ansLabel": "RIVER",
+      "explanation": "A shirt, dress, and coat are clothing. A river is water, so it does not belong."
     },
     {
       "id": 2,
@@ -50,71 +50,70 @@
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
       "seq": [
-        "5",
-        "10",
-        "15",
-        "20",
+        "11",
+        "16",
+        "21",
+        "26",
         "?"
       ],
       "options": [
         {
           "letter": "A",
-          "text": "25"
-        },
-        {
-          "letter": "B",
           "text": "30"
         },
         {
+          "letter": "B",
+          "text": "31"
+        },
+        {
           "letter": "C",
-          "text": "21"
+          "text": "36"
         },
         {
           "letter": "D",
-          "text": "24"
+          "text": "33"
         }
       ],
-      "ansLetter": "A",
-      "ansLabel": "25",
-      "explanation": "Each number goes up by 5: 5, 10, 15, 20, so the next is 20 plus 5 is 25."
+      "ansLetter": "B",
+      "ansLabel": "31",
+      "explanation": "Each number goes up by five, so the next one is twenty-six plus five is thirty-one."
     },
     {
       "id": 3,
-      "kind": "shaded",
+      "kind": "dot",
       "category": "nonverbal",
-      "tier": "FIGURE ANALOGY",
+      "tier": "POSITION",
       "difficulty": "easy",
       "countdown": 5,
-      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
-      "leftShape": "circle",
-      "rightShape": "triangle",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "br",
+        "bl",
+        "tl"
+      ],
       "options": [
         {
           "letter": "A",
-          "shape": "circle",
-          "filled": true
+          "pos": "br"
         },
         {
           "letter": "B",
-          "shape": "triangle",
-          "filled": false
+          "pos": "tr"
         },
         {
           "letter": "C",
-          "shape": "square",
-          "filled": true
+          "pos": "tl"
         },
         {
           "letter": "D",
-          "shape": "triangle",
-          "filled": true
+          "pos": "bl"
         }
       ],
-      "ansLetter": "D",
-      "ansShape": "triangle",
-      "ansFilled": true,
-      "ansLabel": "FILLED TRIANGLE",
-      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+      "ansLetter": "B",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot steps clockwise around the corners, so the next spot is top-right."
     },
     {
       "id": 4,
@@ -123,29 +122,29 @@
       "tier": "VERBAL ANALOGY",
       "difficulty": "easy",
       "countdown": 5,
-      "question": "HOT IS TO COLD AS\nDAY IS TO ?",
+      "question": "SHEEP IS TO LAMB AS\nFROG IS TO ?",
       "questionFontSize": 88,
       "options": [
         {
           "letter": "A",
-          "text": "MORNING"
+          "text": "GREEN"
         },
         {
           "letter": "B",
-          "text": "NIGHT"
+          "text": "JUMP"
         },
         {
           "letter": "C",
-          "text": "SUN"
+          "text": "POND"
         },
         {
           "letter": "D",
-          "text": "LIGHT"
+          "text": "TADPOLE"
         }
       ],
-      "ansLetter": "B",
-      "ansLabel": "NIGHT",
-      "explanation": "Hot and cold are opposites, so the opposite of day is night. It is the same relationship, flipped."
+      "ansLetter": "D",
+      "ansLabel": "TADPOLE",
+      "explanation": "A baby sheep is a lamb, so a baby frog is a tadpole."
     },
     {
       "id": 5,
@@ -156,33 +155,33 @@
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
       "seq": [
-        "2",
-        "4",
-        "8",
-        "16",
+        "9",
+        "14",
+        "19",
+        "24",
         "?"
       ],
       "options": [
         {
           "letter": "A",
-          "text": "24"
+          "text": "29"
         },
         {
           "letter": "B",
-          "text": "20"
+          "text": "34"
         },
         {
           "letter": "C",
-          "text": "32"
+          "text": "27"
         },
         {
           "letter": "D",
-          "text": "30"
+          "text": "26"
         }
       ],
-      "ansLetter": "C",
-      "ansLabel": "32",
-      "explanation": "Each number doubles: 2, 4, 8, 16, so the next is 16 times 2 is 32."
+      "ansLetter": "A",
+      "ansLabel": "29",
+      "explanation": "Each number goes up by five, so the next one is twenty-four plus five is twenty-nine."
     },
     {
       "id": 6,
@@ -191,29 +190,29 @@
       "tier": "VERBAL ANALOGY",
       "difficulty": "medium",
       "countdown": 5,
-      "question": "BEE IS TO HIVE AS\nBIRD IS TO ?",
+      "question": "DOG IS TO BARK AS\nCAT IS TO ?",
       "questionFontSize": 88,
       "options": [
         {
           "letter": "A",
-          "text": "NEST"
+          "text": "MEOW"
         },
         {
           "letter": "B",
-          "text": "TREE"
+          "text": "TAIL"
         },
         {
           "letter": "C",
-          "text": "EGG"
+          "text": "PAW"
         },
         {
           "letter": "D",
-          "text": "SKY"
+          "text": "PURR"
         }
       ],
       "ansLetter": "A",
-      "ansLabel": "NEST",
-      "explanation": "A bee lives in a hive, so a bird lives in a nest. Each one is the home that animal builds."
+      "ansLabel": "MEOW",
+      "explanation": "A dog says bark, so a cat says meow."
     },
     {
       "id": 7,
@@ -224,34 +223,34 @@
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
       "seq": [
-        "1",
-        "2",
-        "5",
-        "10",
-        "17",
+        "3",
+        "6",
+        "12",
+        "21",
+        "33",
         "?"
       ],
       "options": [
         {
           "letter": "A",
-          "text": "24"
+          "text": "45"
         },
         {
           "letter": "B",
-          "text": "26"
+          "text": "48"
         },
         {
           "letter": "C",
-          "text": "25"
+          "text": "43"
         },
         {
           "letter": "D",
-          "text": "28"
+          "text": "46"
         }
       ],
       "ansLetter": "B",
-      "ansLabel": "26",
-      "explanation": "The gaps are the odd numbers 1, 3, 5, 7, then 9. So 17 plus 9 is 26."
+      "ansLabel": "48",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-eight."
     },
     {
       "id": 8,
@@ -260,29 +259,29 @@
       "tier": "VERBAL ANALOGY",
       "difficulty": "easy",
       "countdown": 5,
-      "question": "FISH IS TO SWIM AS\nBIRD IS TO ?",
+      "question": "BUY IS TO SELL AS\nGIVE IS TO ?",
       "questionFontSize": 88,
       "options": [
         {
           "letter": "A",
-          "text": "WALK"
+          "text": "KEEP"
         },
         {
           "letter": "B",
-          "text": "SING"
+          "text": "HAND"
         },
         {
           "letter": "C",
-          "text": "HOP"
+          "text": "GIFT"
         },
         {
           "letter": "D",
-          "text": "FLY"
+          "text": "TAKE"
         }
       ],
       "ansLetter": "D",
-      "ansLabel": "FLY",
-      "explanation": "A fish moves by swimming, so a bird moves by flying. It is how each animal gets around."
+      "ansLabel": "TAKE",
+      "explanation": "Buy and sell are opposites, so the opposite of give is take."
     },
     {
       "id": 9,
@@ -293,34 +292,34 @@
       "countdown": 5,
       "prompt": "WHAT COMES NEXT?",
       "seq": [
-        "2",
         "3",
-        "5",
-        "8",
-        "13",
+        "4",
+        "7",
+        "11",
+        "18",
         "?"
       ],
       "options": [
         {
           "letter": "A",
-          "text": "18"
+          "text": "30"
         },
         {
           "letter": "B",
-          "text": "20"
+          "text": "31"
         },
         {
           "letter": "C",
-          "text": "21"
+          "text": "29"
         },
         {
           "letter": "D",
-          "text": "26"
+          "text": "27"
         }
       ],
       "ansLetter": "C",
-      "ansLabel": "21",
-      "explanation": "Add the two numbers before it: 8 plus 13 is 21. It is the add-the-last-two pattern."
+      "ansLabel": "29",
+      "explanation": "Add the two numbers before it: eighteen plus eleven is twenty-nine."
     },
     {
       "id": 10,
@@ -334,24 +333,24 @@
       "options": [
         {
           "letter": "A",
-          "text": "PIANO"
+          "text": "CLOUD"
         },
         {
           "letter": "B",
-          "text": "GUITAR"
+          "text": "PINE"
         },
         {
           "letter": "C",
-          "text": "DRUM"
+          "text": "MAPLE"
         },
         {
           "letter": "D",
-          "text": "SONG"
+          "text": "OAK"
         }
       ],
-      "ansLetter": "D",
-      "ansLabel": "SONG",
-      "explanation": "A piano, guitar, and drum are all instruments you play. A song is the music they make, so it does not belong."
+      "ansLetter": "A",
+      "ansLabel": "CLOUD",
+      "explanation": "An oak, pine, and maple are trees. A cloud is in the sky, so it does not belong."
     },
     {
       "id": 11,
@@ -363,31 +362,30 @@
       "prompt": "WHICH SHAPE COMES NEXT?",
       "seq": [
         6,
-        5,
-        4
+        7
       ],
       "options": [
         {
           "letter": "A",
-          "poly": 3
+          "poly": 6
         },
         {
           "letter": "B",
-          "poly": 4
+          "poly": 8
         },
         {
           "letter": "C",
-          "poly": "circle"
+          "poly": 3
         },
         {
           "letter": "D",
-          "poly": 5
+          "poly": 4
         }
       ],
-      "ansLetter": "A",
-      "ansShape": 3,
-      "ansLabel": "TRIANGLE",
-      "explanation": "The sides count down by one: hexagon 6, pentagon 5, square 4, so next is the triangle with 3 sides."
+      "ansLetter": "B",
+      "ansShape": 8,
+      "ansLabel": "OCTAGON",
+      "explanation": "The number of sides goes up by one each step, so the next shape is the octagon."
     },
     {
       "id": 12,
@@ -396,29 +394,29 @@
       "tier": "SENTENCE COMPLETION",
       "difficulty": "hard",
       "countdown": 5,
-      "question": "THE LIBRARY WAS SO QUIET THAT EVEN A\nWHISPER SEEMED ______, SO EVERYONE\nTRIED HARD NOT TO MAKE A SOUND.",
-      "questionFontSize": 58,
+      "question": "AFTER RUNNING THE WHOLE RACE, THE RUNNER\nFELT VERY ______ AND SAT DOWN TO REST.",
+      "questionFontSize": 56,
       "options": [
         {
           "letter": "A",
-          "text": "HEAVY"
+          "text": "EARLY"
         },
         {
           "letter": "B",
-          "text": "LOUD"
+          "text": "HAPPY"
         },
         {
           "letter": "C",
-          "text": "COLORFUL"
+          "text": "TIRED"
         },
         {
           "letter": "D",
-          "text": "EXPENSIVE"
+          "text": "FAST"
         }
       ],
-      "ansLetter": "B",
-      "ansLabel": "LOUD",
-      "explanation": "In a place that quiet, even a tiny whisper stands out and seems loud. Only loud fits the meaning."
+      "ansLetter": "C",
+      "ansLabel": "TIRED",
+      "explanation": "Needing to rest after a race means the runner was tired."
     },
     {
       "id": 13,
@@ -430,31 +428,32 @@
       "prompt": "WHERE DOES THE DOT MOVE NEXT?",
       "seq": [
         "bl",
-        "tl",
-        "tr"
+        "br",
+        "tr",
+        "tl"
       ],
       "options": [
         {
           "letter": "A",
-          "pos": "tl"
+          "pos": "tr"
         },
         {
           "letter": "B",
-          "pos": "br"
-        },
-        {
-          "letter": "C",
           "pos": "center"
         },
         {
-          "letter": "D",
+          "letter": "C",
           "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "br"
         }
       ],
-      "ansLetter": "B",
-      "ansPos": "br",
-      "ansLabel": "BOTTOM-RIGHT",
-      "explanation": "The dot steps clockwise corner to corner: bottom-left, top-left, top-right, so the next corner is bottom-right."
+      "ansLetter": "C",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot steps counter-clockwise around the corners, so the next spot is bottom-left."
     },
     {
       "id": 14,
@@ -463,29 +462,29 @@
       "tier": "NUMBER ANALOGY",
       "difficulty": "medium",
       "countdown": 5,
-      "question": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?",
+      "question": "WHICH NUMBER FITS?\n2 -> 5,   5 -> 11,   7 -> 15,   6 -> ?",
       "questionFontSize": 80,
       "options": [
         {
           "letter": "A",
-          "text": "8"
-        },
-        {
-          "letter": "B",
           "text": "10"
         },
         {
+          "letter": "B",
+          "text": "23"
+        },
+        {
           "letter": "C",
-          "text": "11"
+          "text": "15"
         },
         {
           "letter": "D",
-          "text": "9"
+          "text": "13"
         }
       ],
       "ansLetter": "D",
-      "ansLabel": "9",
-      "explanation": "Each number is doubled then take away one: 5 times 2 is 10, minus 1 is 9."
+      "ansLabel": "13",
+      "explanation": "Each number is multiplied by two then add one, so six becomes thirteen."
     },
     {
       "id": 15,
@@ -494,12 +493,12 @@
       "tier": "NUMBER PUZZLE",
       "difficulty": "hard",
       "countdown": 5,
-      "question": "IF  2+3=10,  4+1=10,  5+2=14\nTHEN  3+4 = ?",
-      "questionFontSize": 88,
+      "question": "IF  2+1=-1,  6+6=24,  5+4=11\nTHEN  4+6 = ?",
+      "questionFontSize": 84,
       "options": [
         {
           "letter": "A",
-          "text": "7"
+          "text": "14"
         },
         {
           "letter": "B",
@@ -507,16 +506,16 @@
         },
         {
           "letter": "C",
-          "text": "14"
+          "text": "16"
         },
         {
           "letter": "D",
-          "text": "24"
+          "text": "15"
         }
       ],
-      "ansLetter": "C",
+      "ansLetter": "A",
       "ansLabel": "14",
-      "explanation": "The trick is to add the two numbers, then double: 3 plus 4 is 7, and 7 times 2 is 14."
+      "explanation": "The trick is to multiply them, then take away their sum: twenty-four minus ten is fourteen."
     }
   ]
 }
