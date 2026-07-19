@@ -1,0 +1,520 @@
+{
+  "round": 84,
+  "slug": "round-084",
+  "title": "Round 84: Words, Numbers and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BRONZE"
+        },
+        {
+          "letter": "B",
+          "text": "BRASS"
+        },
+        {
+          "letter": "C",
+          "text": "ORANGE"
+        },
+        {
+          "letter": "D",
+          "text": "COPPER"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "ORANGE",
+      "explanation": "Bronze, brass, and copper are all metals. Orange is a fruit, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "22",
+        "27",
+        "32",
+        "37",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "42"
+        },
+        {
+          "letter": "B",
+          "text": "52"
+        },
+        {
+          "letter": "C",
+          "text": "41"
+        },
+        {
+          "letter": "D",
+          "text": "47"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "42",
+      "explanation": "Each number goes up by five, so the next one is thirty-seven plus five is forty-two."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "heart",
+      "rightShape": "triangle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "star",
+          "filled": true
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "triangle",
+      "ansFilled": true,
+      "ansLabel": "FILLED TRIANGLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BIG IS TO SMALL AS\nOLD IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LATE"
+        },
+        {
+          "letter": "B",
+          "text": "DRY"
+        },
+        {
+          "letter": "C",
+          "text": "NEW"
+        },
+        {
+          "letter": "D",
+          "text": "SOFT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "NEW",
+      "explanation": "Big and small are opposites, so the opposite of old is new."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 6,   4 -> 10,   6 -> 14,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "9"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "10"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "12",
+      "explanation": "Each number is multiplied by two then add two, so five becomes twelve."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "TOOTH IS TO MOUTH AS\nSAIL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CAR"
+        },
+        {
+          "letter": "B",
+          "text": "PLANT"
+        },
+        {
+          "letter": "C",
+          "text": "BOAT"
+        },
+        {
+          "letter": "D",
+          "text": "HAND"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "BOAT",
+      "explanation": "Tooth is part of a mouth, so a sail is part of a boat."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "10",
+        "14",
+        "19",
+        "25",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "29"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "34"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "32",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-two."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "MONKEY IS TO JUNGLE AS\nBAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ICE"
+        },
+        {
+          "letter": "B",
+          "text": "CAVE"
+        },
+        {
+          "letter": "C",
+          "text": "OCEAN"
+        },
+        {
+          "letter": "D",
+          "text": "WATER"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "CAVE",
+      "explanation": "Monkey lives in the jungle, so a bat lives in the cave."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "16",
+        "26",
+        "36",
+        "46",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "55"
+        },
+        {
+          "letter": "B",
+          "text": "53"
+        },
+        {
+          "letter": "C",
+          "text": "46"
+        },
+        {
+          "letter": "D",
+          "text": "56"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "56",
+      "explanation": "Each number goes up by ten, so the next one is forty-six plus ten is fifty-six."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CIRCLE"
+        },
+        {
+          "letter": "B",
+          "text": "KIWI"
+        },
+        {
+          "letter": "C",
+          "text": "CUBE"
+        },
+        {
+          "letter": "D",
+          "text": "SQUARE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "KIWI",
+      "explanation": "Circle, cube, and square are all shapes. Kiwi is a fruit, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "tr",
+        "lm",
+        "br",
+        "tm",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "BUY IS TO SELL AS\nFAST IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DOWN"
+        },
+        {
+          "letter": "B",
+          "text": "LATE"
+        },
+        {
+          "letter": "C",
+          "text": "SOFT"
+        },
+        {
+          "letter": "D",
+          "text": "SLOW"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SLOW",
+      "explanation": "Buy and sell are opposites, so the opposite of fast is slow."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "star",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "teardrop",
+          "filled": false
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "star",
+      "ansFilled": true,
+      "ansLabel": "FILLED STAR",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty star becomes a filled star."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   4 -> 10,   6 -> 16,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "22"
+        },
+        {
+          "letter": "B",
+          "text": "24"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "12"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "22",
+      "explanation": "Each number is multiplied by three then take away two, so eight becomes twenty-two."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+3=15,  6+9=45,  2+6=6\nTHEN  2+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "3"
+        },
+        {
+          "letter": "B",
+          "text": "6"
+        },
+        {
+          "letter": "C",
+          "text": "7"
+        },
+        {
+          "letter": "D",
+          "text": "8"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "8",
+      "explanation": "The trick is to multiply them, then take away the second: sixteen minus eight is eight."
+    }
+  ]
+}

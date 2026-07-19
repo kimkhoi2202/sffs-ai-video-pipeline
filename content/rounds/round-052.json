@@ -1,0 +1,517 @@
+{
+  "round": 52,
+  "slug": "round-052",
+  "title": "Round 52: Smart Start Quiz",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RED"
+        },
+        {
+          "letter": "B",
+          "text": "RAFT"
+        },
+        {
+          "letter": "C",
+          "text": "CANOE"
+        },
+        {
+          "letter": "D",
+          "text": "KAYAK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "RED",
+      "explanation": "Kayak, raft, and canoe are all boats. Red is a color, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "10",
+        "18",
+        "26",
+        "34",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "45"
+        },
+        {
+          "letter": "B",
+          "text": "40"
+        },
+        {
+          "letter": "C",
+          "text": "42"
+        },
+        {
+          "letter": "D",
+          "text": "47"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "42",
+      "explanation": "Each number goes up by eight, so the next one is thirty-four plus eight is forty-two."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "star",
+      "rightShape": "triangle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "crescent",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "teardrop",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "star",
+          "filled": true
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "triangle",
+      "ansFilled": true,
+      "ansLabel": "FILLED TRIANGLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BAKER IS TO BAKERY AS\nPILOT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LIBRARY"
+        },
+        {
+          "letter": "B",
+          "text": "AIRPLANE"
+        },
+        {
+          "letter": "C",
+          "text": "HOSPITAL"
+        },
+        {
+          "letter": "D",
+          "text": "COURT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "AIRPLANE",
+      "explanation": "Baker works in a bakery, so a pilot works in an airplane."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   4 -> 15,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "24"
+        },
+        {
+          "letter": "B",
+          "text": "29"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "32"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "27",
+      "explanation": "Each number is multiplied by three then add three, so eight becomes twenty-seven."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BIG IS TO SMALL AS\nNEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SLOW"
+        },
+        {
+          "letter": "B",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "FAR"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "FAR",
+      "explanation": "Big and small are opposites, so the opposite of near is far."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "11",
+        "15",
+        "20",
+        "26",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "31"
+        },
+        {
+          "letter": "B",
+          "text": "30"
+        },
+        {
+          "letter": "C",
+          "text": "33"
+        },
+        {
+          "letter": "D",
+          "text": "32"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "33",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-three."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "NEAR IS TO FAR AS\nHIGH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LOW"
+        },
+        {
+          "letter": "B",
+          "text": "CLOSED"
+        },
+        {
+          "letter": "C",
+          "text": "SAD"
+        },
+        {
+          "letter": "D",
+          "text": "SELL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "LOW",
+      "explanation": "Near and far are opposites, so the opposite of high is low."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "12",
+        "22",
+        "32",
+        "42",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "52"
+        },
+        {
+          "letter": "B",
+          "text": "62"
+        },
+        {
+          "letter": "C",
+          "text": "50"
+        },
+        {
+          "letter": "D",
+          "text": "53"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "52",
+      "explanation": "Each number goes up by ten, so the next one is forty-two plus ten is fifty-two."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHOULDER"
+        },
+        {
+          "letter": "B",
+          "text": "KAYAK"
+        },
+        {
+          "letter": "C",
+          "text": "KNEE"
+        },
+        {
+          "letter": "D",
+          "text": "HAND"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "KAYAK",
+      "explanation": "Shoulder, knee, and hand are all body parts. Kayak is a boat, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "tm",
+        "tr",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "br"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "OVEN IS TO HEAT AS\nRULER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MEASURE"
+        },
+        {
+          "letter": "B",
+          "text": "HEAR"
+        },
+        {
+          "letter": "C",
+          "text": "WRITE"
+        },
+        {
+          "letter": "D",
+          "text": "CUT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "MEASURE",
+      "explanation": "Oven is used to heat, so a ruler is used to measure."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "bm",
+        "br",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   7 -> 19,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "20"
+        },
+        {
+          "letter": "B",
+          "text": "28"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "25"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by three then take away two, so nine becomes twenty-five."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+9=-1,  2+6=4,  5+5=15\nTHEN  9+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "36"
+        },
+        {
+          "letter": "C",
+          "text": "31"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "31",
+      "explanation": "The trick is to multiply them, then take away their sum: forty-five minus fourteen is thirty-one."
+    }
+  ]
+}

@@ -1,0 +1,520 @@
+{
+  "round": 54,
+  "slug": "round-054",
+  "title": "Round 54: Logic and Language",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SQUARE"
+        },
+        {
+          "letter": "B",
+          "text": "POTATO"
+        },
+        {
+          "letter": "C",
+          "text": "CIRCLE"
+        },
+        {
+          "letter": "D",
+          "text": "OVAL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "POTATO",
+      "explanation": "Oval, circle, and square are all shapes. Potato is a vegetable, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "24",
+        "32",
+        "40",
+        "48",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "46"
+        },
+        {
+          "letter": "B",
+          "text": "55"
+        },
+        {
+          "letter": "C",
+          "text": "56"
+        },
+        {
+          "letter": "D",
+          "text": "53"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "56",
+      "explanation": "Each number goes up by eight, so the next one is forty-eight plus eight is fifty-six."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "heart",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "heart",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "crescent",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "square",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "heart",
+      "ansFilled": true,
+      "ansLabel": "FILLED HEART",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty heart becomes a filled heart."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "EARLY IS TO LATE AS\nLEFT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHORT"
+        },
+        {
+          "letter": "B",
+          "text": "DIRTY"
+        },
+        {
+          "letter": "C",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "RIGHT"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "RIGHT",
+      "explanation": "Early and late are opposites, so the opposite of left is right."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 2,   3 -> 4,   4 -> 6,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "15"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "22"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "12",
+      "explanation": "Each number is multiplied by two then take away two, so seven becomes twelve."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "THICK IS TO THIN AS\nWIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "LOSE"
+        },
+        {
+          "letter": "C",
+          "text": "CLOSED"
+        },
+        {
+          "letter": "D",
+          "text": "SLOW"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "LOSE",
+      "explanation": "Thick and thin are opposites, so the opposite of win is lose."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "5",
+        "10",
+        "19",
+        "32",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "46"
+        },
+        {
+          "letter": "B",
+          "text": "50"
+        },
+        {
+          "letter": "C",
+          "text": "52"
+        },
+        {
+          "letter": "D",
+          "text": "49"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "49",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-nine."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FAST IS TO SLOW AS\nLEFT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SINK"
+        },
+        {
+          "letter": "B",
+          "text": "CLOSED"
+        },
+        {
+          "letter": "C",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "SMALL"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "RIGHT",
+      "explanation": "Fast and slow are opposites, so the opposite of left is right."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "5",
+        "6",
+        "11",
+        "17",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "28"
+        },
+        {
+          "letter": "B",
+          "text": "27"
+        },
+        {
+          "letter": "C",
+          "text": "26"
+        },
+        {
+          "letter": "D",
+          "text": "33"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "28",
+      "explanation": "Add the two numbers before it: seventeen plus eleven is twenty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BASS"
+        },
+        {
+          "letter": "B",
+          "text": "FOOT"
+        },
+        {
+          "letter": "C",
+          "text": "SHOULDER"
+        },
+        {
+          "letter": "D",
+          "text": "ANKLE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "BASS",
+      "explanation": "Ankle, foot, and shoulder are all body parts. Bass is a fish, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "tl",
+        "rm",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "STRONG IS TO WEAK AS\nWIDE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DARK"
+        },
+        {
+          "letter": "B",
+          "text": "SELL"
+        },
+        {
+          "letter": "C",
+          "text": "NARROW"
+        },
+        {
+          "letter": "D",
+          "text": "SMALL"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "NARROW",
+      "explanation": "Strong and weak are opposites, so the opposite of wide is narrow."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "bm",
+        "tr",
+        "lm",
+        "br",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "br"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 11,   6 -> 15,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "17"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "19"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "19",
+      "explanation": "Each number is multiplied by two then add three, so eight becomes nineteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  7+3=28,  1+3=4,  3+8=27\nTHEN  8+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "72"
+        },
+        {
+          "letter": "B",
+          "text": "69"
+        },
+        {
+          "letter": "C",
+          "text": "73"
+        },
+        {
+          "letter": "D",
+          "text": "64"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "72",
+      "explanation": "The trick is to multiply them, then add the first: sixty-four plus eight is seventy-two."
+    }
+  ]
+}

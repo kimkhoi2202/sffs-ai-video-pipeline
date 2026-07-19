@@ -1,0 +1,520 @@
+{
+  "round": 87,
+  "slug": "round-087",
+  "title": "Round 87: Riddles, Series and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRESS"
+        },
+        {
+          "letter": "B",
+          "text": "SCARF"
+        },
+        {
+          "letter": "C",
+          "text": "IRON"
+        },
+        {
+          "letter": "D",
+          "text": "GLOVE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "IRON",
+      "explanation": "Glove, dress, and scarf are all clothing. Iron is a metal, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "17",
+        "20",
+        "23",
+        "26",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "39"
+        },
+        {
+          "letter": "B",
+          "text": "32"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "29",
+      "explanation": "Each number goes up by three, so the next one is twenty-six plus three is twenty-nine."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "square",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "lightning",
+          "filled": false
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "CAT IS TO KITTEN AS\nDOG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FAWN"
+        },
+        {
+          "letter": "B",
+          "text": "DUCKLING"
+        },
+        {
+          "letter": "C",
+          "text": "PUPPY"
+        },
+        {
+          "letter": "D",
+          "text": "FOAL"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "PUPPY",
+      "explanation": "Cat baby is called a kitten, so a dog baby is called a puppy."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 7,   6 -> 13,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "16"
+        },
+        {
+          "letter": "C",
+          "text": "21"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "19",
+      "explanation": "Each number is multiplied by two then add one, so nine becomes nineteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "PIG IS TO OINK AS\nFROG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BARK"
+        },
+        {
+          "letter": "B",
+          "text": "CROAK"
+        },
+        {
+          "letter": "C",
+          "text": "BUZZ"
+        },
+        {
+          "letter": "D",
+          "text": "QUACK"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "CROAK",
+      "explanation": "Pig says oink, so a frog says croak."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "8",
+        "13",
+        "21",
+        "32",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "44"
+        },
+        {
+          "letter": "B",
+          "text": "41"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "46"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "46",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-six."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "COW IS TO BARN AS\nDOG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KENNEL"
+        },
+        {
+          "letter": "B",
+          "text": "DEN"
+        },
+        {
+          "letter": "C",
+          "text": "NEST"
+        },
+        {
+          "letter": "D",
+          "text": "HIVE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "KENNEL",
+      "explanation": "Cow lives in a barn, so a dog lives in a kennel."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "11",
+        "23",
+        "35",
+        "47",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "61"
+        },
+        {
+          "letter": "B",
+          "text": "64"
+        },
+        {
+          "letter": "C",
+          "text": "62"
+        },
+        {
+          "letter": "D",
+          "text": "59"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "59",
+      "explanation": "Each number goes up by twelve, so the next one is forty-seven plus twelve is fifty-nine."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RAIN"
+        },
+        {
+          "letter": "B",
+          "text": "GLIDER"
+        },
+        {
+          "letter": "C",
+          "text": "WIND"
+        },
+        {
+          "letter": "D",
+          "text": "SLEET"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "GLIDER",
+      "explanation": "Rain, wind, and sleet are all kinds of weather. Glider is an aircraft, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "lm",
+        "br",
+        "tm",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "SCALE IS TO WEIGH AS\nEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WRITE"
+        },
+        {
+          "letter": "B",
+          "text": "CUT"
+        },
+        {
+          "letter": "C",
+          "text": "HEAR"
+        },
+        {
+          "letter": "D",
+          "text": "MEASURE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "HEAR",
+      "explanation": "Scale is used to weigh, so an ear is used to hear."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "br",
+        "rm",
+        "tr",
+        "tm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 18,   6 -> 22,   7 -> 26,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "32"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "34",
+      "explanation": "Each number is multiplied by four then take away two, so nine becomes thirty-four."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  8+8=56,  6+7=36,  7+6=35\nTHEN  2+4 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "6"
+        },
+        {
+          "letter": "B",
+          "text": "8"
+        },
+        {
+          "letter": "C",
+          "text": "5"
+        },
+        {
+          "letter": "D",
+          "text": "7"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "6",
+      "explanation": "The trick is to multiply them, then take away the first: eight minus two is six."
+    }
+  ]
+}

@@ -1,0 +1,517 @@
+{
+  "round": 89,
+  "slug": "round-089",
+  "title": "Round 89: Analogies, Sums and Figures",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GOLD"
+        },
+        {
+          "letter": "B",
+          "text": "NICKEL"
+        },
+        {
+          "letter": "C",
+          "text": "ZINC"
+        },
+        {
+          "letter": "D",
+          "text": "DRAGONFLY"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "DRAGONFLY",
+      "explanation": "Zinc, nickel, and gold are all metals. Dragonfly is an insect, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "20",
+        "25",
+        "30",
+        "35",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "37"
+        },
+        {
+          "letter": "B",
+          "text": "39"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "40",
+      "explanation": "Each number goes up by five, so the next one is thirty-five plus five is forty."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "lightning",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "crescent",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "lightning",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "lightning",
+      "ansFilled": true,
+      "ansLabel": "FILLED LIGHTNING",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty lightning becomes a filled lightning."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "LOUD IS TO QUIET AS\nBIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHORT"
+        },
+        {
+          "letter": "B",
+          "text": "PULL"
+        },
+        {
+          "letter": "C",
+          "text": "SMALL"
+        },
+        {
+          "letter": "D",
+          "text": "FAR"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SMALL",
+      "explanation": "Loud and quiet are opposites, so the opposite of big is small."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 10,   6 -> 19,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "16"
+        },
+        {
+          "letter": "B",
+          "text": "17"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "18"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by three then add one, so five becomes sixteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "CANDLE IS TO WAX AS\nBRICK IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CLAY"
+        },
+        {
+          "letter": "B",
+          "text": "PAPER"
+        },
+        {
+          "letter": "C",
+          "text": "WOOD"
+        },
+        {
+          "letter": "D",
+          "text": "GLASS"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "CLAY",
+      "explanation": "Candle is made of wax, so a brick is made of clay."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "10",
+        "14",
+        "20",
+        "28",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "38"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "38",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "TALL IS TO SHORT AS\nOLD IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PULL"
+        },
+        {
+          "letter": "B",
+          "text": "NARROW"
+        },
+        {
+          "letter": "C",
+          "text": "FAR"
+        },
+        {
+          "letter": "D",
+          "text": "NEW"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "NEW",
+      "explanation": "Tall and short are opposites, so the opposite of old is new."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "28",
+        "38",
+        "48",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "60"
+        },
+        {
+          "letter": "B",
+          "text": "58"
+        },
+        {
+          "letter": "C",
+          "text": "68"
+        },
+        {
+          "letter": "D",
+          "text": "61"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "58",
+      "explanation": "Each number goes up by ten, so the next one is forty-eight plus ten is fifty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PENTAGON"
+        },
+        {
+          "letter": "B",
+          "text": "ELM"
+        },
+        {
+          "letter": "C",
+          "text": "SQUARE"
+        },
+        {
+          "letter": "D",
+          "text": "HEXAGON"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "ELM",
+      "explanation": "Square, pentagon, and hexagon are all shapes. Elm is a tree, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "rm",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "HIGH IS TO LOW AS\nLEFT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SMALL"
+        },
+        {
+          "letter": "B",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "TAKE"
+        },
+        {
+          "letter": "D",
+          "text": "SHALLOW"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "RIGHT",
+      "explanation": "High and low are opposites, so the opposite of left is right."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "tm",
+        "lm",
+        "bm",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "28"
+        },
+        {
+          "letter": "C",
+          "text": "13"
+        },
+        {
+          "letter": "D",
+          "text": "23"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "18",
+      "explanation": "Each number is multiplied by four then take away two, so five becomes eighteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+6=28,  2+2=16,  8+2=40\nTHEN  8+7 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "50"
+        },
+        {
+          "letter": "B",
+          "text": "70"
+        },
+        {
+          "letter": "C",
+          "text": "60"
+        },
+        {
+          "letter": "D",
+          "text": "65"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "60",
+      "explanation": "The trick is to add the two numbers, then times four: fifteen times four is sixty."
+    }
+  ]
+}

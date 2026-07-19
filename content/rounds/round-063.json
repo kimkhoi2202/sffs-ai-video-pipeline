@@ -1,0 +1,521 @@
+{
+  "round": 63,
+  "slug": "round-063",
+  "title": "Round 63: Analogies, Sums and Figures",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MERCURY"
+        },
+        {
+          "letter": "B",
+          "text": "MILK"
+        },
+        {
+          "letter": "C",
+          "text": "COCOA"
+        },
+        {
+          "letter": "D",
+          "text": "TEA"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "MERCURY",
+      "explanation": "Milk, tea, and cocoa are all drinks. Mercury is a planet, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "24",
+        "30",
+        "36",
+        "42",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "48"
+        },
+        {
+          "letter": "B",
+          "text": "46"
+        },
+        {
+          "letter": "C",
+          "text": "45"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "48",
+      "explanation": "Each number goes up by six, so the next one is forty-two plus six is forty-eight."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "arrow",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "star",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "arrow",
+      "ansFilled": true,
+      "ansLabel": "FILLED ARROW",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty arrow becomes a filled arrow."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SHIRT IS TO COTTON AS\nWINDOW IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "B",
+          "text": "GLASS"
+        },
+        {
+          "letter": "C",
+          "text": "PAPER"
+        },
+        {
+          "letter": "D",
+          "text": "METAL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "GLASS",
+      "explanation": "Shirt is made of cotton, so a window is made of glass."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "13"
+        },
+        {
+          "letter": "B",
+          "text": "15"
+        },
+        {
+          "letter": "C",
+          "text": "10"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "15",
+      "explanation": "Each number is multiplied by two then add three, so six becomes fifteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WINDOW IS TO GLASS AS\nTIRE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "COTTON"
+        },
+        {
+          "letter": "B",
+          "text": "METAL"
+        },
+        {
+          "letter": "C",
+          "text": "RUBBER"
+        },
+        {
+          "letter": "D",
+          "text": "PLASTIC"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "RUBBER",
+      "explanation": "Window is made of glass, so a tire is made of rubber."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "9",
+        "13",
+        "19",
+        "27",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "37"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "35"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "37",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-seven."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "CARPENTER IS TO HAMMER AS\nMINER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BRUSH"
+        },
+        {
+          "letter": "B",
+          "text": "KNIFE"
+        },
+        {
+          "letter": "C",
+          "text": "PLOW"
+        },
+        {
+          "letter": "D",
+          "text": "PICKAXE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "PICKAXE",
+      "explanation": "Carpenter uses a hammer, so a miner uses a pickaxe."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "17",
+        "30",
+        "43",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "53"
+        },
+        {
+          "letter": "B",
+          "text": "57"
+        },
+        {
+          "letter": "C",
+          "text": "56"
+        },
+        {
+          "letter": "D",
+          "text": "51"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "56",
+      "explanation": "Each number goes up by thirteen, so the next one is forty-three plus thirteen is fifty-six."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HAWK"
+        },
+        {
+          "letter": "B",
+          "text": "DRUM"
+        },
+        {
+          "letter": "C",
+          "text": "HARP"
+        },
+        {
+          "letter": "D",
+          "text": "GUITAR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "HAWK",
+      "explanation": "Guitar, drum, and harp are all instruments. Hawk is a bird, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "bm",
+        "lm",
+        "tm",
+        "rm",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "lm"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "FISHERMAN IS TO NET AS\nWRITER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PICKAXE"
+        },
+        {
+          "letter": "B",
+          "text": "NEEDLE"
+        },
+        {
+          "letter": "C",
+          "text": "SCISSORS"
+        },
+        {
+          "letter": "D",
+          "text": "PEN"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "PEN",
+      "explanation": "Fisherman uses a net, so a writer uses a pen."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "br",
+        "lm",
+        "tr",
+        "bm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "br"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   6 -> 16,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "17"
+        },
+        {
+          "letter": "D",
+          "text": "22"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "22",
+      "explanation": "Each number is multiplied by three then take away two, so eight becomes twenty-two."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  4+5=27,  7+3=30,  2+6=24\nTHEN  8+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "39"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "41"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "39",
+      "explanation": "The trick is to add the two numbers, then triple: eight plus five is thirteen, times three is thirty-nine."
+    }
+  ]
+}

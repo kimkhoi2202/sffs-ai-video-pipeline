@@ -31,7 +31,10 @@ const isNum = (s) => /^-?\d+$/.test(String(s).trim());
 const cap = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 
 const POLY_NAME = { 3: "triangle", 4: "square", 5: "pentagon", 6: "hexagon", 7: "heptagon", 8: "octagon", circle: "circle" };
-const POS_SPEAK = { tl: "top-left", tr: "top-right", br: "bottom-right", bl: "bottom-left", center: "the center" };
+const POS_SPEAK = { tl: "top-left", tm: "the top", tr: "top-right", rm: "the right", br: "bottom-right", bm: "the bottom", bl: "bottom-left", lm: "the left", center: "the center" };
+// Spoken names for glyphs whose raw kind reads awkwardly aloud.
+const GLYPH_SPEAK = { lightning: "lightning bolt", crescent: "crescent moon" };
+const gSpeak = (shape) => GLYPH_SPEAK[shape] || shape;
 const qWord = (n) => (n === 15 ? "fifteen" : n2w(n));
 
 const TYPE_PHRASE = {
@@ -50,14 +53,15 @@ const art = (w) => (/^[aeiou]/i.test(String(w)) ? "an" : "a");
 const withArt = (phrase) => `${art(phrase)} ${phrase}`;
 /** Spoken form of one option. */
 function optionSpeak(q, o) {
-  if (q.kind === "shaded") return withArt(`${o.filled ? "filled" : "empty"} ${o.shape}`);
+  if (q.kind === "shaded") return withArt(`${o.filled ? "filled" : "empty"} ${gSpeak(o.shape)}`);
   if (q.kind === "polygon") return withArt(o.poly === "circle" ? "circle" : POLY_NAME[o.poly]);
   if (q.kind === "dot") return POS_SPEAK[o.pos];
   return isNum(o.text) ? n2w(o.text) : o.text.toLowerCase();
 }
 /** Spoken form of the correct answer. */
 function answerSpeak(q) {
-  if (q.kind === "shaded" || q.kind === "polygon") return withArt(q.ansLabel.toLowerCase());
+  if (q.kind === "shaded") return withArt(`filled ${gSpeak(q.ansShape)}`);
+  if (q.kind === "polygon") return withArt(q.ansLabel.toLowerCase());
   if (q.kind === "dot") return POS_SPEAK[q.ansPos];
   return isNum(q.ansLabel) ? n2w(q.ansLabel) : q.ansLabel.toLowerCase();
 }
@@ -100,7 +104,7 @@ function questionStem(q) {
     return `${cap(nums)}, and then... what comes next?`;
   }
   if (q.kind === "shaded") {
-    return `An empty ${q.leftShape} becomes a filled-in ${q.leftShape}. So an empty ${q.rightShape} becomes... which one?`;
+    return `An empty ${gSpeak(q.leftShape)} becomes a filled-in ${gSpeak(q.leftShape)}. So an empty ${gSpeak(q.rightShape)} becomes... which one?`;
   }
   if (q.kind === "polygon") {
     const grow = q.seq[1] > q.seq[0];

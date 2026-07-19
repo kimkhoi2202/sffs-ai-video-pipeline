@@ -1,0 +1,518 @@
+{
+  "round": 29,
+  "slug": "round-029",
+  "title": "Round 29: Shapes, Sums and Sayings",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CLARINET"
+        },
+        {
+          "letter": "B",
+          "text": "VIOLIN"
+        },
+        {
+          "letter": "C",
+          "text": "GUITAR"
+        },
+        {
+          "letter": "D",
+          "text": "SPRUCE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SPRUCE",
+      "explanation": "Clarinet, violin, and guitar are all instruments. Spruce is a tree, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "19",
+        "25",
+        "31",
+        "37",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "43"
+        },
+        {
+          "letter": "B",
+          "text": "45"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "33"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "43",
+      "explanation": "Each number goes up by six, so the next one is thirty-seven plus six is forty-three."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "star",
+      "rightShape": "star",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "triangle",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "crescent",
+          "filled": false
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "star",
+      "ansFilled": true,
+      "ansLabel": "FILLED STAR",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty star becomes a filled star."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BUY IS TO SELL AS\nWET IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "EMPTY"
+        },
+        {
+          "letter": "B",
+          "text": "DRY"
+        },
+        {
+          "letter": "C",
+          "text": "SHORT"
+        },
+        {
+          "letter": "D",
+          "text": "SOFT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "DRY",
+      "explanation": "Buy and sell are opposites, so the opposite of wet is dry."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   7 -> 15,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "19",
+      "explanation": "Each number is multiplied by two then add one, so nine becomes nineteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "FISH IS TO WATER AS\nLION IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ICE"
+        },
+        {
+          "letter": "B",
+          "text": "CAVE"
+        },
+        {
+          "letter": "C",
+          "text": "JUNGLE"
+        },
+        {
+          "letter": "D",
+          "text": "SAVANNA"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SAVANNA",
+      "explanation": "Fish lives in the water, so a lion lives in the savanna."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "2",
+        "5",
+        "7",
+        "12",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "9"
+        },
+        {
+          "letter": "D",
+          "text": "17"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "19",
+      "explanation": "Add the two numbers before it: twelve plus seven is nineteen."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WOLF IS TO HOWL AS\nCAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "QUACK"
+        },
+        {
+          "letter": "B",
+          "text": "ROAR"
+        },
+        {
+          "letter": "C",
+          "text": "MEOW"
+        },
+        {
+          "letter": "D",
+          "text": "BARK"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "MEOW",
+      "explanation": "Wolf says howl, so a cat says meow."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "17",
+        "29",
+        "41",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "56"
+        },
+        {
+          "letter": "B",
+          "text": "53"
+        },
+        {
+          "letter": "C",
+          "text": "55"
+        },
+        {
+          "letter": "D",
+          "text": "51"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "53",
+      "explanation": "Each number goes up by twelve, so the next one is forty-one plus twelve is fifty-three."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TEA"
+        },
+        {
+          "letter": "B",
+          "text": "BRONZE"
+        },
+        {
+          "letter": "C",
+          "text": "MILK"
+        },
+        {
+          "letter": "D",
+          "text": "CIDER"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "BRONZE",
+      "explanation": "Cider, milk, and tea are all drinks. Bronze is a metal, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "rm",
+        "br",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "AFTER AN HOUR OF SCRUBBING, THE WINDOW\nWAS FINALLY SPARKLING ______.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CLEAN"
+        },
+        {
+          "letter": "B",
+          "text": "DIRTY"
+        },
+        {
+          "letter": "C",
+          "text": "BROKEN"
+        },
+        {
+          "letter": "D",
+          "text": "DARK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "CLEAN",
+      "explanation": "Scrubbing until sparkling means clean."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "lm",
+        "bl",
+        "bm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   5 -> 13,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "10"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "15",
+      "explanation": "Each number is multiplied by two then add three, so six becomes fifteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  9+7=80,  7+6=65,  6+2=40\nTHEN  7+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "75"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "64"
+        },
+        {
+          "letter": "D",
+          "text": "65"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "65",
+      "explanation": "The trick is to add the two numbers, then times five: thirteen times five is sixty-five."
+    }
+  ]
+}

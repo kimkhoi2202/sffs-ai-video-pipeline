@@ -1,0 +1,518 @@
+{
+  "round": 77,
+  "slug": "round-077",
+  "title": "Round 77: Brainy Bunch Challenge",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GRAPE"
+        },
+        {
+          "letter": "B",
+          "text": "MANGO"
+        },
+        {
+          "letter": "C",
+          "text": "BLUE"
+        },
+        {
+          "letter": "D",
+          "text": "LEMON"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "BLUE",
+      "explanation": "Grape, lemon, and mango are all fruits. Blue is a color, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "24",
+        "31",
+        "38",
+        "45",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "54"
+        },
+        {
+          "letter": "B",
+          "text": "52"
+        },
+        {
+          "letter": "C",
+          "text": "47"
+        },
+        {
+          "letter": "D",
+          "text": "53"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "52",
+      "explanation": "Each number goes up by seven, so the next one is forty-five plus seven is fifty-two."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "arrow",
+      "rightShape": "lightning",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "heart",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "lightning",
+      "ansFilled": true,
+      "ansLabel": "FILLED LIGHTNING",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty lightning becomes a filled lightning."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BRICK IS TO CLAY AS\nBOOK IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PAPER"
+        },
+        {
+          "letter": "B",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "C",
+          "text": "WOOD"
+        },
+        {
+          "letter": "D",
+          "text": "METAL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "PAPER",
+      "explanation": "Brick is made of clay, so a book is made of paper."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 8,   6 -> 10,   7 -> 12,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "14"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "14",
+      "explanation": "Each number is multiplied by two then take away two, so eight becomes fourteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "DUCK IS TO DUCKLING AS\nBEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LAMB"
+        },
+        {
+          "letter": "B",
+          "text": "CUB"
+        },
+        {
+          "letter": "C",
+          "text": "CALF"
+        },
+        {
+          "letter": "D",
+          "text": "KID"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "CUB",
+      "explanation": "Duck baby is called a duckling, so a bear baby is called a cub."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "7",
+        "10",
+        "17",
+        "27",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "54"
+        },
+        {
+          "letter": "B",
+          "text": "45"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "44",
+      "explanation": "Add the two numbers before it: twenty-seven plus seventeen is forty-four."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BUY IS TO SELL AS\nFULL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TAKE"
+        },
+        {
+          "letter": "B",
+          "text": "POOR"
+        },
+        {
+          "letter": "C",
+          "text": "SOFT"
+        },
+        {
+          "letter": "D",
+          "text": "EMPTY"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "EMPTY",
+      "explanation": "Buy and sell are opposites, so the opposite of full is empty."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "20",
+        "32",
+        "44",
+        "56",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "68"
+        },
+        {
+          "letter": "B",
+          "text": "78"
+        },
+        {
+          "letter": "C",
+          "text": "65"
+        },
+        {
+          "letter": "D",
+          "text": "69"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "68",
+      "explanation": "Each number goes up by twelve, so the next one is fifty-six plus twelve is sixty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CHAIR"
+        },
+        {
+          "letter": "B",
+          "text": "STOOL"
+        },
+        {
+          "letter": "C",
+          "text": "BED"
+        },
+        {
+          "letter": "D",
+          "text": "DEER"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "DEER",
+      "explanation": "Bed, chair, and stool are all furniture. Deer is a mammal, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "bl",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "FISH IS TO POND AS\nFOX IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEB"
+        },
+        {
+          "letter": "B",
+          "text": "DEN"
+        },
+        {
+          "letter": "C",
+          "text": "HIVE"
+        },
+        {
+          "letter": "D",
+          "text": "ANTHILL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "DEN",
+      "explanation": "Fish lives in a pond, so a fox lives in a den."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "tm",
+        "tr",
+        "rm",
+        "br",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "lm"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "24"
+        },
+        {
+          "letter": "B",
+          "text": "35"
+        },
+        {
+          "letter": "C",
+          "text": "34"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "34",
+      "explanation": "Each number is multiplied by four then take away two, so nine becomes thirty-four."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  9+4=26,  1+5=12,  2+8=20\nTHEN  6+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "36"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "26"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "24",
+      "explanation": "The trick is to add the two numbers, then double: six plus six is twelve, and twelve times two is twenty-four."
+    }
+  ]
+}

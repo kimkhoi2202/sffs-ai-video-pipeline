@@ -1,0 +1,518 @@
+{
+  "round": 98,
+  "slug": "round-098",
+  "title": "Round 98: Puzzles, Patterns and Brain Teasers",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PARROT"
+        },
+        {
+          "letter": "B",
+          "text": "ROCKET"
+        },
+        {
+          "letter": "C",
+          "text": "HAWK"
+        },
+        {
+          "letter": "D",
+          "text": "OWL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "ROCKET",
+      "explanation": "Hawk, parrot, and owl are all birds. Rocket is an aircraft, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "12",
+        "15",
+        "18",
+        "21",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "24"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "24",
+      "explanation": "Each number goes up by three, so the next one is twenty-one plus three is twenty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "lightning",
+      "rightShape": "square",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "diamond",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "teardrop",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "square",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "square",
+      "ansFilled": true,
+      "ansLabel": "FILLED SQUARE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty square becomes a filled square."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BEGIN IS TO END AS\nBIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SAD"
+        },
+        {
+          "letter": "B",
+          "text": "PULL"
+        },
+        {
+          "letter": "C",
+          "text": "SMALL"
+        },
+        {
+          "letter": "D",
+          "text": "NIGHT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SMALL",
+      "explanation": "Begin and end are opposites, so the opposite of big is small."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "20"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "17"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "17",
+      "explanation": "Each number is multiplied by three then add two, so five becomes seventeen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BIRD IS TO NEST AS\nDOG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PEN"
+        },
+        {
+          "letter": "B",
+          "text": "KENNEL"
+        },
+        {
+          "letter": "C",
+          "text": "ANTHILL"
+        },
+        {
+          "letter": "D",
+          "text": "DEN"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "KENNEL",
+      "explanation": "Bird lives in a nest, so a dog lives in a kennel."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "2",
+        "7",
+        "9",
+        "16",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "26"
+        },
+        {
+          "letter": "B",
+          "text": "25"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "25",
+      "explanation": "Add the two numbers before it: sixteen plus nine is twenty-five."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "OPEN IS TO CLOSED AS\nBUY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NEW"
+        },
+        {
+          "letter": "B",
+          "text": "SHORT"
+        },
+        {
+          "letter": "C",
+          "text": "SELL"
+        },
+        {
+          "letter": "D",
+          "text": "NIGHT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SELL",
+      "explanation": "Open and closed are opposites, so the opposite of buy is sell."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "19",
+        "30",
+        "41",
+        "52",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "63"
+        },
+        {
+          "letter": "B",
+          "text": "73"
+        },
+        {
+          "letter": "C",
+          "text": "68"
+        },
+        {
+          "letter": "D",
+          "text": "60"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "63",
+      "explanation": "Each number goes up by eleven, so the next one is fifty-two plus eleven is sixty-three."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GOLF"
+        },
+        {
+          "letter": "B",
+          "text": "HELICOPTER"
+        },
+        {
+          "letter": "C",
+          "text": "JET"
+        },
+        {
+          "letter": "D",
+          "text": "BLIMP"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "GOLF",
+      "explanation": "Helicopter, blimp, and jet are all aircraft. Golf is a sport, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "lm",
+        "br",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "PUSH IS TO PULL AS\nOPEN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CLOSED"
+        },
+        {
+          "letter": "B",
+          "text": "SAD"
+        },
+        {
+          "letter": "C",
+          "text": "WEAK"
+        },
+        {
+          "letter": "D",
+          "text": "NEW"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "CLOSED",
+      "explanation": "Push and pull are opposites, so the opposite of open is closed."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "heart",
+      "rightShape": "diamond",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "diamond",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "diamond",
+      "ansFilled": true,
+      "ansLabel": "FILLED DIAMOND",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty diamond becomes a filled diamond."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 22,   6 -> 26,   7 -> 30,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "35"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "29"
+        },
+        {
+          "letter": "D",
+          "text": "37"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "34",
+      "explanation": "Each number is multiplied by four then add two, so eight becomes thirty-four."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+2=2,  1+9=8,  8+5=32\nTHEN  7+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "34"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "45"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "35",
+      "explanation": "The trick is to multiply them, then take away the first: forty-two minus seven is thirty-five."
+    }
+  ]
+}

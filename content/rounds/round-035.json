@@ -1,0 +1,519 @@
+{
+  "round": 35,
+  "slug": "round-035",
+  "title": "Round 35: Riddles, Series and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "THUNDER"
+        },
+        {
+          "letter": "B",
+          "text": "HAIL"
+        },
+        {
+          "letter": "C",
+          "text": "RAIN"
+        },
+        {
+          "letter": "D",
+          "text": "EEL"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "EEL",
+      "explanation": "Thunder, hail, and rain are all kinds of weather. Eel is a fish, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "12",
+        "17",
+        "22",
+        "27",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "32"
+        },
+        {
+          "letter": "D",
+          "text": "22"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "32",
+      "explanation": "Each number goes up by five, so the next one is twenty-seven plus five is thirty-two."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "teardrop",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "teardrop",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "teardrop",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "teardrop",
+      "ansFilled": true,
+      "ansLabel": "FILLED TEARDROP",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty teardrop becomes a filled teardrop."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "KANGAROO IS TO JOEY AS\nBEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CHICK"
+        },
+        {
+          "letter": "B",
+          "text": "CALF"
+        },
+        {
+          "letter": "C",
+          "text": "CUB"
+        },
+        {
+          "letter": "D",
+          "text": "PUPPY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "CUB",
+      "explanation": "Kangaroo baby is called a joey, so a bear baby is called a cub."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 13,   6 -> 16,   7 -> 19,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by three then take away two, so nine becomes twenty-five."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "LEAF IS TO PLANT AS\nWHEEL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CAR"
+        },
+        {
+          "letter": "B",
+          "text": "PIANO"
+        },
+        {
+          "letter": "C",
+          "text": "MOUTH"
+        },
+        {
+          "letter": "D",
+          "text": "HAND"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "CAR",
+      "explanation": "Leaf is part of a plant, so a wheel is part of a car."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "7",
+        "9",
+        "12",
+        "16",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "23"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "21",
+      "explanation": "The gaps grow by the same amount each step, so the next number is twenty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FAST IS TO SLOW AS\nHAPPY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NEW"
+        },
+        {
+          "letter": "B",
+          "text": "SAD"
+        },
+        {
+          "letter": "C",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "SELL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SAD",
+      "explanation": "Fast and slow are opposites, so the opposite of happy is sad."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "19",
+        "31",
+        "43",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "53"
+        },
+        {
+          "letter": "B",
+          "text": "58"
+        },
+        {
+          "letter": "C",
+          "text": "55"
+        },
+        {
+          "letter": "D",
+          "text": "56"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "55",
+      "explanation": "Each number goes up by twelve, so the next one is forty-three plus twelve is fifty-five."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WILLOW"
+        },
+        {
+          "letter": "B",
+          "text": "TAXI"
+        },
+        {
+          "letter": "C",
+          "text": "TRACTOR"
+        },
+        {
+          "letter": "D",
+          "text": "JEEP"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "WILLOW",
+      "explanation": "Tractor, taxi, and jeep are all road vehicles. Willow is a tree, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "bl",
+        "lm",
+        "tl",
+        "tm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE BELL WAS SO ______ THAT WE COVERED\nOUR EARS UNTIL IT FINALLY STOPPED.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SOFT"
+        },
+        {
+          "letter": "B",
+          "text": "LOUD"
+        },
+        {
+          "letter": "C",
+          "text": "SLOW"
+        },
+        {
+          "letter": "D",
+          "text": "QUIET"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "LOUD",
+      "explanation": "Covering ears means loud."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "lm",
+        "tr",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   7 -> 13,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "10"
+        },
+        {
+          "letter": "B",
+          "text": "11"
+        },
+        {
+          "letter": "C",
+          "text": "21"
+        },
+        {
+          "letter": "D",
+          "text": "14"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "11",
+      "explanation": "Each number is multiplied by two then take away one, so six becomes eleven."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+5=6,  9+4=45,  2+1=4\nTHEN  2+7 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "11"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "16",
+      "explanation": "The trick is to multiply them, then add the first: fourteen plus two is sixteen."
+    }
+  ]
+}

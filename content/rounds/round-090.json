@@ -1,0 +1,519 @@
+{
+  "round": 90,
+  "slug": "round-090",
+  "title": "Round 90: Brainy Bunch Challenge",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CABINET"
+        },
+        {
+          "letter": "B",
+          "text": "NINETY"
+        },
+        {
+          "letter": "C",
+          "text": "TWELVE"
+        },
+        {
+          "letter": "D",
+          "text": "THREE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "CABINET",
+      "explanation": "Twelve, three, and ninety are all numbers. Cabinet is a piece of furniture, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "15",
+        "22",
+        "29",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "37"
+        },
+        {
+          "letter": "B",
+          "text": "36"
+        },
+        {
+          "letter": "C",
+          "text": "26"
+        },
+        {
+          "letter": "D",
+          "text": "39"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "36",
+      "explanation": "Each number goes up by seven, so the next one is twenty-nine plus seven is thirty-six."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "circle",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "square",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": false
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "PUSH IS TO PULL AS\nLIGHT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TAKE"
+        },
+        {
+          "letter": "B",
+          "text": "DARK"
+        },
+        {
+          "letter": "C",
+          "text": "COLD"
+        },
+        {
+          "letter": "D",
+          "text": "NIGHT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "DARK",
+      "explanation": "Push and pull are opposites, so the opposite of light is dark."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 9,   5 -> 11,   7 -> 15,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "23"
+        },
+        {
+          "letter": "B",
+          "text": "11"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "13",
+      "explanation": "Each number is multiplied by two then add one, so six becomes thirteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "NEAR IS TO FAR AS\nFULL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "EMPTY"
+        },
+        {
+          "letter": "B",
+          "text": "NARROW"
+        },
+        {
+          "letter": "C",
+          "text": "COLD"
+        },
+        {
+          "letter": "D",
+          "text": "POOR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "EMPTY",
+      "explanation": "Near and far are opposites, so the opposite of full is empty."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "9",
+        "14",
+        "21",
+        "30",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "39"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "41"
+        },
+        {
+          "letter": "D",
+          "text": "40"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "41",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HOT IS TO COLD AS\nLIGHT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TAKE"
+        },
+        {
+          "letter": "B",
+          "text": "DRY"
+        },
+        {
+          "letter": "C",
+          "text": "DARK"
+        },
+        {
+          "letter": "D",
+          "text": "SELL"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DARK",
+      "explanation": "Hot and cold are opposites, so the opposite of light is dark."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "19",
+        "32",
+        "45",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "63"
+        },
+        {
+          "letter": "B",
+          "text": "58"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "53"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "58",
+      "explanation": "Each number goes up by thirteen, so the next one is forty-five plus thirteen is fifty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FIFTY"
+        },
+        {
+          "letter": "B",
+          "text": "TWELVE"
+        },
+        {
+          "letter": "C",
+          "text": "PUMPKIN"
+        },
+        {
+          "letter": "D",
+          "text": "THREE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "PUMPKIN",
+      "explanation": "Fifty, twelve, and three are all numbers. Pumpkin is a vegetable, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "bm",
+        "br",
+        "rm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "tr"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "DOCTOR IS TO HOSPITAL AS\nJUDGE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "COURT"
+        },
+        {
+          "letter": "B",
+          "text": "FARM"
+        },
+        {
+          "letter": "C",
+          "text": "SHIP"
+        },
+        {
+          "letter": "D",
+          "text": "SCHOOL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "COURT",
+      "explanation": "Doctor works in a hospital, so a judge works in a court."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "diamond",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "diamond",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "diamond",
+      "ansFilled": true,
+      "ansLabel": "FILLED DIAMOND",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty diamond becomes a filled diamond."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   5 -> 9,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "15"
+        },
+        {
+          "letter": "B",
+          "text": "14"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "13",
+      "explanation": "Each number is multiplied by two then take away one, so seven becomes thirteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+3=9,  6+1=-1,  6+4=14\nTHEN  2+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "4"
+        },
+        {
+          "letter": "B",
+          "text": "11"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "6"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "6",
+      "explanation": "The trick is to multiply them, then take away their sum: sixteen minus ten is six."
+    }
+  ]
+}

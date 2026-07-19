@@ -1,0 +1,517 @@
+{
+  "round": 23,
+  "slug": "round-023",
+  "title": "Round 23: Clever Clues and Number Tricks",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SNOW"
+        },
+        {
+          "letter": "B",
+          "text": "MOTH"
+        },
+        {
+          "letter": "C",
+          "text": "BEETLE"
+        },
+        {
+          "letter": "D",
+          "text": "ANT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SNOW",
+      "explanation": "Beetle, moth, and ant are all insects. Snow is a kind of weather, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "23",
+        "28",
+        "33",
+        "38",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "41"
+        },
+        {
+          "letter": "B",
+          "text": "43"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "46"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "43",
+      "explanation": "Each number goes up by five, so the next one is thirty-eight plus five is forty-three."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "crescent",
+      "rightShape": "cross",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "diamond",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": false
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "cross",
+      "ansFilled": true,
+      "ansLabel": "FILLED CROSS",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty cross becomes a filled cross."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FARMER IS TO PLOW AS\nBARBER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SCISSORS"
+        },
+        {
+          "letter": "B",
+          "text": "NEEDLE"
+        },
+        {
+          "letter": "C",
+          "text": "BRUSH"
+        },
+        {
+          "letter": "D",
+          "text": "PICKAXE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SCISSORS",
+      "explanation": "Farmer uses a plow, so a barber uses a scissors."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 9,   6 -> 21,   7 -> 24,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "33"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "30"
+        },
+        {
+          "letter": "D",
+          "text": "28"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "30",
+      "explanation": "Each number is multiplied by three then add three, so nine becomes thirty."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "LION IS TO ROAR AS\nWOLF IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "QUACK"
+        },
+        {
+          "letter": "B",
+          "text": "NEIGH"
+        },
+        {
+          "letter": "C",
+          "text": "CROAK"
+        },
+        {
+          "letter": "D",
+          "text": "HOWL"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "HOWL",
+      "explanation": "Lion says roar, so a wolf says howl."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "6",
+        "11",
+        "17",
+        "28",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "45"
+        },
+        {
+          "letter": "B",
+          "text": "43"
+        },
+        {
+          "letter": "C",
+          "text": "47"
+        },
+        {
+          "letter": "D",
+          "text": "46"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "45",
+      "explanation": "Add the two numbers before it: twenty-eight plus seventeen is forty-five."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HARD IS TO SOFT AS\nDAY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LATE"
+        },
+        {
+          "letter": "B",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "SMALL"
+        },
+        {
+          "letter": "D",
+          "text": "WEAK"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "NIGHT",
+      "explanation": "Hard and soft are opposites, so the opposite of day is night."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "19",
+        "26",
+        "33",
+        "40",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "42"
+        },
+        {
+          "letter": "B",
+          "text": "52"
+        },
+        {
+          "letter": "C",
+          "text": "46"
+        },
+        {
+          "letter": "D",
+          "text": "47"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "47",
+      "explanation": "Each number goes up by seven, so the next one is forty plus seven is forty-seven."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HARP"
+        },
+        {
+          "letter": "B",
+          "text": "PIANO"
+        },
+        {
+          "letter": "C",
+          "text": "SODA"
+        },
+        {
+          "letter": "D",
+          "text": "CELLO"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SODA",
+      "explanation": "Harp, piano, and cello are all instruments. Soda is a drink, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "lm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE SURPRISE WAS COMPLETELY ______, SO SHE\nGASPED WHEN SHE FINALLY SAW IT.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BORING"
+        },
+        {
+          "letter": "B",
+          "text": "USUAL"
+        },
+        {
+          "letter": "C",
+          "text": "UNEXPECTED"
+        },
+        {
+          "letter": "D",
+          "text": "PLANNED"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "UNEXPECTED",
+      "explanation": "A gasp means it was unexpected."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "rm",
+        "tl",
+        "bm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   7 -> 19,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "16"
+        },
+        {
+          "letter": "B",
+          "text": "15"
+        },
+        {
+          "letter": "C",
+          "text": "17"
+        },
+        {
+          "letter": "D",
+          "text": "26"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by three then take away two, so six becomes sixteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+1=7,  1+5=10,  6+5=35\nTHEN  7+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "38"
+        },
+        {
+          "letter": "B",
+          "text": "40"
+        },
+        {
+          "letter": "C",
+          "text": "37"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "40",
+      "explanation": "The trick is to multiply them, then add the second: thirty-five plus five is forty."
+    }
+  ]
+}

@@ -1,0 +1,515 @@
+{
+  "round": 76,
+  "slug": "round-076",
+  "title": "Round 76: Analogies, Sums and Figures",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRUM"
+        },
+        {
+          "letter": "B",
+          "text": "TENNIS"
+        },
+        {
+          "letter": "C",
+          "text": "CRICKET"
+        },
+        {
+          "letter": "D",
+          "text": "GOLF"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "DRUM",
+      "explanation": "Tennis, cricket, and golf are all sports. Drum is an instrument, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "4",
+        "7",
+        "10",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "8"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "14"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "13",
+      "explanation": "Each number goes up by three, so the next one is ten plus three is thirteen."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "circle",
+      "rightShape": "arrow",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "diamond",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "arrow",
+      "ansFilled": true,
+      "ansLabel": "FILLED ARROW",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty arrow becomes a filled arrow."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HIGH IS TO LOW AS\nWET IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRY"
+        },
+        {
+          "letter": "B",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "QUIET"
+        },
+        {
+          "letter": "D",
+          "text": "PULL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "DRY",
+      "explanation": "High and low are opposites, so the opposite of wet is dry."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "27"
+        },
+        {
+          "letter": "C",
+          "text": "31"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "29",
+      "explanation": "Each number is multiplied by three then add two, so nine becomes twenty-nine."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BRICK IS TO CLAY AS\nCANDLE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "B",
+          "text": "WAX"
+        },
+        {
+          "letter": "C",
+          "text": "GOLD"
+        },
+        {
+          "letter": "D",
+          "text": "WOOD"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "WAX",
+      "explanation": "Brick is made of clay, so a candle is made of wax."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "3",
+        "8",
+        "11",
+        "19",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "35"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "30",
+      "explanation": "Add the two numbers before it: nineteen plus eleven is thirty."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BROOM IS TO SWEEP AS\nKNIFE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WRITE"
+        },
+        {
+          "letter": "B",
+          "text": "WEIGH"
+        },
+        {
+          "letter": "C",
+          "text": "CUT"
+        },
+        {
+          "letter": "D",
+          "text": "LIGHT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "CUT",
+      "explanation": "Broom is used to sweep, so a knife is used to cut."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "16",
+        "29",
+        "42",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "52"
+        },
+        {
+          "letter": "B",
+          "text": "55"
+        },
+        {
+          "letter": "C",
+          "text": "60"
+        },
+        {
+          "letter": "D",
+          "text": "56"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "55",
+      "explanation": "Each number goes up by thirteen, so the next one is forty-two plus thirteen is fifty-five."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WIND"
+        },
+        {
+          "letter": "B",
+          "text": "DRIZZLE"
+        },
+        {
+          "letter": "C",
+          "text": "AXE"
+        },
+        {
+          "letter": "D",
+          "text": "FOG"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "AXE",
+      "explanation": "Drizzle, fog, and wind are all kinds of weather. Axe is a tool, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "tm",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "lm"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "BOOK IS TO PAPER AS\nTIRE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GLASS"
+        },
+        {
+          "letter": "B",
+          "text": "RUBBER"
+        },
+        {
+          "letter": "C",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "D",
+          "text": "WAX"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "RUBBER",
+      "explanation": "Book is made of paper, so a tire is made of rubber."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "tl",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 2,   3 -> 4,   7 -> 12,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "6"
+        },
+        {
+          "letter": "B",
+          "text": "7"
+        },
+        {
+          "letter": "C",
+          "text": "13"
+        },
+        {
+          "letter": "D",
+          "text": "8"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "8",
+      "explanation": "Each number is multiplied by two then take away two, so five becomes eight."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+8=36,  1+4=20,  3+3=24\nTHEN  9+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "72"
+        },
+        {
+          "letter": "B",
+          "text": "82"
+        },
+        {
+          "letter": "C",
+          "text": "69"
+        },
+        {
+          "letter": "D",
+          "text": "62"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "72",
+      "explanation": "The trick is to add the two numbers, then times four: eighteen times four is seventy-two."
+    }
+  ]
+}

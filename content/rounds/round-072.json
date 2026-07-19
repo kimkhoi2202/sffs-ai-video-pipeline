@@ -1,0 +1,518 @@
+{
+  "round": 72,
+  "slug": "round-072",
+  "title": "Round 72: Puzzles, Patterns and Brain Teasers",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FOOT"
+        },
+        {
+          "letter": "B",
+          "text": "SHOULDER"
+        },
+        {
+          "letter": "C",
+          "text": "CHIN"
+        },
+        {
+          "letter": "D",
+          "text": "BEE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "BEE",
+      "explanation": "Chin, foot, and shoulder are all body parts. Bee is an insect, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "23",
+        "29",
+        "35",
+        "41",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "47"
+        },
+        {
+          "letter": "B",
+          "text": "45"
+        },
+        {
+          "letter": "C",
+          "text": "42"
+        },
+        {
+          "letter": "D",
+          "text": "37"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "47",
+      "explanation": "Each number goes up by six, so the next one is forty-one plus six is forty-seven."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "circle",
+      "rightShape": "cross",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "square",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "heart",
+          "filled": false
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "cross",
+      "ansFilled": true,
+      "ansLabel": "FILLED CROSS",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty cross becomes a filled cross."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WIDE IS TO NARROW AS\nNEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SINK"
+        },
+        {
+          "letter": "B",
+          "text": "THIN"
+        },
+        {
+          "letter": "C",
+          "text": "WEAK"
+        },
+        {
+          "letter": "D",
+          "text": "FAR"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "FAR",
+      "explanation": "Wide and narrow are opposites, so the opposite of near is far."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 5,   5 -> 9,   7 -> 13,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "13"
+        },
+        {
+          "letter": "B",
+          "text": "15"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "25"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "15",
+      "explanation": "Each number is multiplied by two then take away one, so eight becomes fifteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "PUSH IS TO PULL AS\nHAPPY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CLOSED"
+        },
+        {
+          "letter": "B",
+          "text": "LOW"
+        },
+        {
+          "letter": "C",
+          "text": "SAD"
+        },
+        {
+          "letter": "D",
+          "text": "WEAK"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SAD",
+      "explanation": "Push and pull are opposites, so the opposite of happy is sad."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "5",
+        "12",
+        "22",
+        "35",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "49"
+        },
+        {
+          "letter": "B",
+          "text": "56"
+        },
+        {
+          "letter": "C",
+          "text": "51"
+        },
+        {
+          "letter": "D",
+          "text": "54"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "51",
+      "explanation": "The gaps grow by the same amount each step, so the next number is fifty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "GIVE IS TO TAKE AS\nBIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SMALL"
+        },
+        {
+          "letter": "B",
+          "text": "NARROW"
+        },
+        {
+          "letter": "C",
+          "text": "THIN"
+        },
+        {
+          "letter": "D",
+          "text": "DRY"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SMALL",
+      "explanation": "Give and take are opposites, so the opposite of big is small."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "9",
+        "19",
+        "29",
+        "39",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "49"
+        },
+        {
+          "letter": "B",
+          "text": "47"
+        },
+        {
+          "letter": "C",
+          "text": "59"
+        },
+        {
+          "letter": "D",
+          "text": "52"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "49",
+      "explanation": "Each number goes up by ten, so the next one is thirty-nine plus ten is forty-nine."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "JACKET"
+        },
+        {
+          "letter": "B",
+          "text": "SKIRT"
+        },
+        {
+          "letter": "C",
+          "text": "SHIRT"
+        },
+        {
+          "letter": "D",
+          "text": "CARROT"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "CARROT",
+      "explanation": "Jacket, skirt, and shirt are all clothing. Carrot is a vegetable, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "lm",
+        "br",
+        "tm",
+        "bl",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "GOAT IS TO KID AS\nHEN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FOAL"
+        },
+        {
+          "letter": "B",
+          "text": "CHICK"
+        },
+        {
+          "letter": "C",
+          "text": "TADPOLE"
+        },
+        {
+          "letter": "D",
+          "text": "DUCKLING"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "CHICK",
+      "explanation": "Goat baby is called a kid, so a hen baby is called a chick."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "bm",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "17"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "17",
+      "explanation": "Each number is multiplied by two then take away one, so nine becomes seventeen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  3+1=12,  2+1=9,  4+3=21\nTHEN  2+4 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "28"
+        },
+        {
+          "letter": "B",
+          "text": "6"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "18",
+      "explanation": "The trick is to add the two numbers, then triple: two plus four is six, times three is eighteen."
+    }
+  ]
+}

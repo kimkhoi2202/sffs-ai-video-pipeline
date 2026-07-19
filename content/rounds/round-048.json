@@ -1,0 +1,518 @@
+{
+  "round": 48,
+  "slug": "round-048",
+  "title": "Round 48: Riddles, Series and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "YELLOW"
+        },
+        {
+          "letter": "B",
+          "text": "GREEN"
+        },
+        {
+          "letter": "C",
+          "text": "RED"
+        },
+        {
+          "letter": "D",
+          "text": "MERCURY"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "MERCURY",
+      "explanation": "Red, green, and yellow are all colors. Mercury is a planet, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "12",
+        "20",
+        "28",
+        "36",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "54"
+        },
+        {
+          "letter": "B",
+          "text": "44"
+        },
+        {
+          "letter": "C",
+          "text": "43"
+        },
+        {
+          "letter": "D",
+          "text": "34"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "44",
+      "explanation": "Each number goes up by eight, so the next one is thirty-six plus eight is forty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "lightning",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "teardrop",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": false
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "KNIFE IS TO CUT AS\nEYE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HEAR"
+        },
+        {
+          "letter": "B",
+          "text": "SEE"
+        },
+        {
+          "letter": "C",
+          "text": "HEAT"
+        },
+        {
+          "letter": "D",
+          "text": "WEIGH"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SEE",
+      "explanation": "Knife is used to cut, so an eye is used to see."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "14"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "17"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "14",
+      "explanation": "Each number is multiplied by two then take away two, so eight becomes fourteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "EYE IS TO SEE AS\nSCALE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEIGH"
+        },
+        {
+          "letter": "B",
+          "text": "HEAT"
+        },
+        {
+          "letter": "C",
+          "text": "LIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "HEAR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "WEIGH",
+      "explanation": "Eye is used to see, so a scale is used to weigh."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "7",
+        "8",
+        "15",
+        "23",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "39"
+        },
+        {
+          "letter": "B",
+          "text": "35"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "38"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "38",
+      "explanation": "Add the two numbers before it: twenty-three plus fifteen is thirty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "RICH IS TO POOR AS\nBEGIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHORT"
+        },
+        {
+          "letter": "B",
+          "text": "END"
+        },
+        {
+          "letter": "C",
+          "text": "PULL"
+        },
+        {
+          "letter": "D",
+          "text": "WEAK"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "END",
+      "explanation": "Rich and poor are opposites, so the opposite of begin is end."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "13",
+        "20",
+        "27",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "31"
+        },
+        {
+          "letter": "C",
+          "text": "34"
+        },
+        {
+          "letter": "D",
+          "text": "39"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "34",
+      "explanation": "Each number goes up by seven, so the next one is twenty-seven plus seven is thirty-four."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KAYAK"
+        },
+        {
+          "letter": "B",
+          "text": "FIFTEEN"
+        },
+        {
+          "letter": "C",
+          "text": "BOAT"
+        },
+        {
+          "letter": "D",
+          "text": "CANOE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "FIFTEEN",
+      "explanation": "Canoe, boat, and kayak are all boats. Fifteen is a number, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "bl",
+        "rm",
+        "tl",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "DOG IS TO KENNEL AS\nSPIDER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BURROW"
+        },
+        {
+          "letter": "B",
+          "text": "POND"
+        },
+        {
+          "letter": "C",
+          "text": "WEB"
+        },
+        {
+          "letter": "D",
+          "text": "PEN"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "WEB",
+      "explanation": "Dog lives in a kennel, so a spider lives in a web."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "tr",
+        "lm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 9,   6 -> 11,   7 -> 13,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "16"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "17"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "17",
+      "explanation": "Each number is multiplied by two then take away one, so nine becomes seventeen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  8+3=13,  8+4=20,  3+6=9\nTHEN  3+7 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "8"
+        },
+        {
+          "letter": "B",
+          "text": "21"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "11",
+      "explanation": "The trick is to multiply them, then take away their sum: twenty-one minus ten is eleven."
+    }
+  ]
+}

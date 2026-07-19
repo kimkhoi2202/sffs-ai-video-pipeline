@@ -49,8 +49,8 @@
     "letter": { "type": "string", "enum": ["A", "B", "C", "D"] },
     "difficulty": { "type": "string", "enum": ["easy", "medium", "hard"] },
     "category": { "type": "string", "enum": ["verbal", "quantitative", "nonverbal"] },
-    "glyph": { "type": "string", "enum": ["circle", "square", "triangle"] },
-    "dotpos": { "type": "string", "enum": ["tl", "tr", "br", "bl", "center"] },
+    "glyph": { "type": "string", "enum": ["circle", "square", "triangle", "diamond", "star", "heart", "cross", "arrow", "crescent", "lightning", "teardrop"] },
+    "dotpos": { "type": "string", "enum": ["tl", "tm", "tr", "rm", "br", "bm", "bl", "lm", "center"] },
     "poly": {
       "anyOf": [
         { "type": "integer", "minimum": 3, "maximum": 8 },

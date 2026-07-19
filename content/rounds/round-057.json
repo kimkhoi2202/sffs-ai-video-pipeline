@@ -1,0 +1,520 @@
+{
+  "round": 57,
+  "slug": "round-057",
+  "title": "Round 57: The Whole Brain Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "JEEP"
+        },
+        {
+          "letter": "B",
+          "text": "TIGER"
+        },
+        {
+          "letter": "C",
+          "text": "COW"
+        },
+        {
+          "letter": "D",
+          "text": "RABBIT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "JEEP",
+      "explanation": "Tiger, rabbit, and cow are all mammals. Jeep is a road vehicle, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "24",
+        "30",
+        "36",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "42"
+        },
+        {
+          "letter": "B",
+          "text": "43"
+        },
+        {
+          "letter": "C",
+          "text": "39"
+        },
+        {
+          "letter": "D",
+          "text": "32"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "42",
+      "explanation": "Each number goes up by six, so the next one is thirty-six plus six is forty-two."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "arrow",
+      "rightShape": "cross",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "cross",
+      "ansFilled": true,
+      "ansLabel": "FILLED CROSS",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty cross becomes a filled cross."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "DUCK IS TO QUACK AS\nFROG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CROAK"
+        },
+        {
+          "letter": "B",
+          "text": "HOOT"
+        },
+        {
+          "letter": "C",
+          "text": "BAA"
+        },
+        {
+          "letter": "D",
+          "text": "HISS"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "CROAK",
+      "explanation": "Duck says quack, so a frog says croak."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 9,   5 -> 18,   6 -> 21,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "26"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "24",
+      "explanation": "Each number is multiplied by three then add three, so seven becomes twenty-four."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BROOM IS TO SWEEP AS\nRULER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HEAR"
+        },
+        {
+          "letter": "B",
+          "text": "WEIGH"
+        },
+        {
+          "letter": "C",
+          "text": "MEASURE"
+        },
+        {
+          "letter": "D",
+          "text": "CUT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "MEASURE",
+      "explanation": "Broom is used to sweep, so a ruler is used to measure."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "6",
+        "12",
+        "20",
+        "30",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "41"
+        },
+        {
+          "letter": "B",
+          "text": "42"
+        },
+        {
+          "letter": "C",
+          "text": "32"
+        },
+        {
+          "letter": "D",
+          "text": "40"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "42",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-two."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "DEEP IS TO SHALLOW AS\nWET IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SINK"
+        },
+        {
+          "letter": "B",
+          "text": "DOWN"
+        },
+        {
+          "letter": "C",
+          "text": "DRY"
+        },
+        {
+          "letter": "D",
+          "text": "NARROW"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DRY",
+      "explanation": "Deep and shallow are opposites, so the opposite of wet is dry."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "13",
+        "21",
+        "29",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "47"
+        },
+        {
+          "letter": "B",
+          "text": "37"
+        },
+        {
+          "letter": "C",
+          "text": "39"
+        },
+        {
+          "letter": "D",
+          "text": "42"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "37",
+      "explanation": "Each number goes up by eight, so the next one is twenty-nine plus eight is thirty-seven."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CHERRY"
+        },
+        {
+          "letter": "B",
+          "text": "PLUM"
+        },
+        {
+          "letter": "C",
+          "text": "ROCKET"
+        },
+        {
+          "letter": "D",
+          "text": "MANGO"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "ROCKET",
+      "explanation": "Plum, cherry, and mango are all fruits. Rocket is an aircraft, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "br",
+        "tm",
+        "bl",
+        "rm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "WIDE IS TO NARROW AS\nBEGIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "END"
+        },
+        {
+          "letter": "B",
+          "text": "SINK"
+        },
+        {
+          "letter": "C",
+          "text": "DARK"
+        },
+        {
+          "letter": "D",
+          "text": "COLD"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "END",
+      "explanation": "Wide and narrow are opposites, so the opposite of begin is end."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "tl",
+        "bl",
+        "br",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 2,   6 -> 10,   7 -> 12,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "4"
+        },
+        {
+          "letter": "B",
+          "text": "14"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "12"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "14",
+      "explanation": "Each number is multiplied by two then take away two, so eight becomes fourteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  7+2=27,  2+6=24,  1+2=9\nTHEN  6+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "31"
+        },
+        {
+          "letter": "B",
+          "text": "37"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "36",
+      "explanation": "The trick is to add the two numbers, then triple: six plus six is twelve, times three is thirty-six."
+    }
+  ]
+}

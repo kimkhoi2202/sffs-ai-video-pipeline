@@ -1,0 +1,517 @@
+{
+  "round": 67,
+  "slug": "round-067",
+  "title": "Round 67: Logic and Language",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BASEBALL"
+        },
+        {
+          "letter": "B",
+          "text": "RUGBY"
+        },
+        {
+          "letter": "C",
+          "text": "BLACK"
+        },
+        {
+          "letter": "D",
+          "text": "TENNIS"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "BLACK",
+      "explanation": "Tennis, rugby, and baseball are all sports. Black is a color, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "25",
+        "32",
+        "39",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "47"
+        },
+        {
+          "letter": "B",
+          "text": "46"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "49"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "46",
+      "explanation": "Each number goes up by seven, so the next one is thirty-nine plus seven is forty-six."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "cross",
+      "rightShape": "cross",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "heart",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "heart",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "teardrop",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "cross",
+      "ansFilled": true,
+      "ansLabel": "FILLED CROSS",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty cross becomes a filled cross."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HARD IS TO SOFT AS\nCLEAN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SAD"
+        },
+        {
+          "letter": "B",
+          "text": "COLD"
+        },
+        {
+          "letter": "C",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "DIRTY"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "DIRTY",
+      "explanation": "Hard and soft are opposites, so the opposite of clean is dirty."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   7 -> 13,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "4"
+        },
+        {
+          "letter": "B",
+          "text": "7"
+        },
+        {
+          "letter": "C",
+          "text": "9"
+        },
+        {
+          "letter": "D",
+          "text": "12"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "9",
+      "explanation": "Each number is multiplied by two then take away one, so five becomes nine."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BRICK IS TO CLAY AS\nSPOON IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "METAL"
+        },
+        {
+          "letter": "B",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "C",
+          "text": "RUBBER"
+        },
+        {
+          "letter": "D",
+          "text": "COTTON"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "METAL",
+      "explanation": "Brick is made of clay, so a spoon is made of metal."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "11",
+        "16",
+        "23",
+        "32",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "45"
+        },
+        {
+          "letter": "B",
+          "text": "43"
+        },
+        {
+          "letter": "C",
+          "text": "42"
+        },
+        {
+          "letter": "D",
+          "text": "48"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "43",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-three."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "CHEF IS TO KITCHEN AS\nTEACHER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SCHOOL"
+        },
+        {
+          "letter": "B",
+          "text": "LIBRARY"
+        },
+        {
+          "letter": "C",
+          "text": "AIRPLANE"
+        },
+        {
+          "letter": "D",
+          "text": "BAKERY"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SCHOOL",
+      "explanation": "Chef works in a kitchen, so a teacher works in a school."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "20",
+        "26",
+        "32",
+        "38",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "45"
+        },
+        {
+          "letter": "B",
+          "text": "41"
+        },
+        {
+          "letter": "C",
+          "text": "46"
+        },
+        {
+          "letter": "D",
+          "text": "44"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "44",
+      "explanation": "Each number goes up by six, so the next one is thirty-eight plus six is forty-four."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FLY"
+        },
+        {
+          "letter": "B",
+          "text": "YELLOW"
+        },
+        {
+          "letter": "C",
+          "text": "FLEA"
+        },
+        {
+          "letter": "D",
+          "text": "BEETLE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "YELLOW",
+      "explanation": "Beetle, fly, and flea are all insects. Yellow is a color, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "bl",
+        "tl",
+        "tr",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "SHIRT IS TO COTTON AS\nTIRE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RUBBER"
+        },
+        {
+          "letter": "B",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "C",
+          "text": "CLAY"
+        },
+        {
+          "letter": "D",
+          "text": "METAL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "RUBBER",
+      "explanation": "Shirt is made of cotton, so a tire is made of rubber."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "bm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "14"
+        },
+        {
+          "letter": "C",
+          "text": "17"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "17",
+      "explanation": "Each number is multiplied by two then add three, so seven becomes seventeen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+2=12,  9+8=51,  6+6=36\nTHEN  5+3 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "24"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "23"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "24",
+      "explanation": "The trick is to add the two numbers, then triple: five plus three is eight, times three is twenty-four."
+    }
+  ]
+}

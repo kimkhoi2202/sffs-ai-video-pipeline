@@ -1,0 +1,518 @@
+{
+  "round": 88,
+  "slug": "round-088",
+  "title": "Round 88: Clever Clues and Number Tricks",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PLUM"
+        },
+        {
+          "letter": "B",
+          "text": "BANANA"
+        },
+        {
+          "letter": "C",
+          "text": "SWEATER"
+        },
+        {
+          "letter": "D",
+          "text": "LEMON"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SWEATER",
+      "explanation": "Lemon, plum, and banana are all fruits. Sweater is a piece of clothing, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "19",
+        "22",
+        "25",
+        "28",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "31"
+        },
+        {
+          "letter": "C",
+          "text": "41"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "31",
+      "explanation": "Each number goes up by three, so the next one is twenty-eight plus three is thirty-one."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "circle",
+      "rightShape": "diamond",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "heart",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": false
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "diamond",
+      "ansFilled": true,
+      "ansLabel": "FILLED DIAMOND",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty diamond becomes a filled diamond."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "LEFT IS TO RIGHT AS\nDAY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRY"
+        },
+        {
+          "letter": "B",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "NEW"
+        },
+        {
+          "letter": "D",
+          "text": "SOFT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "NIGHT",
+      "explanation": "Left and right are opposites, so the opposite of day is night."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   5 -> 9,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "17"
+        },
+        {
+          "letter": "B",
+          "text": "18"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "19"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "17",
+      "explanation": "Each number is multiplied by two then take away one, so nine becomes seventeen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "CLEAN IS TO DIRTY AS\nWIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "SELL"
+        },
+        {
+          "letter": "C",
+          "text": "LOSE"
+        },
+        {
+          "letter": "D",
+          "text": "NEW"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "LOSE",
+      "explanation": "Clean and dirty are opposites, so the opposite of win is lose."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "6",
+        "8",
+        "11",
+        "15",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "22"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "23"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "20",
+      "explanation": "The gaps grow by the same amount each step, so the next number is twenty."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "LION IS TO SAVANNA AS\nWHALE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WATER"
+        },
+        {
+          "letter": "B",
+          "text": "POND"
+        },
+        {
+          "letter": "C",
+          "text": "CAVE"
+        },
+        {
+          "letter": "D",
+          "text": "OCEAN"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "OCEAN",
+      "explanation": "Lion lives in the savanna, so a whale lives in the ocean."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "12",
+        "25",
+        "38",
+        "51",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "67"
+        },
+        {
+          "letter": "B",
+          "text": "64"
+        },
+        {
+          "letter": "C",
+          "text": "62"
+        },
+        {
+          "letter": "D",
+          "text": "63"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "64",
+      "explanation": "Each number goes up by thirteen, so the next one is fifty-one plus thirteen is sixty-four."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BLIMP"
+        },
+        {
+          "letter": "B",
+          "text": "LEMONADE"
+        },
+        {
+          "letter": "C",
+          "text": "COFFEE"
+        },
+        {
+          "letter": "D",
+          "text": "MILK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "BLIMP",
+      "explanation": "Coffee, milk, and lemonade are all drinks. Blimp is an aircraft, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "rm",
+        "bm",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "BEGIN IS TO END AS\nTALL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHORT"
+        },
+        {
+          "letter": "B",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "POOR"
+        },
+        {
+          "letter": "D",
+          "text": "PULL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SHORT",
+      "explanation": "Begin and end are opposites, so the opposite of tall is short."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "crescent",
+      "rightShape": "diamond",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "square",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "diamond",
+      "ansFilled": true,
+      "ansLabel": "FILLED DIAMOND",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty diamond becomes a filled diamond."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   6 -> 11,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "17"
+        },
+        {
+          "letter": "D",
+          "text": "22"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "17",
+      "explanation": "Each number is multiplied by two then take away one, so nine becomes seventeen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  7+4=17,  8+4=20,  8+7=41\nTHEN  4+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "17"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "20",
+      "explanation": "The trick is to multiply them, then take away their sum: thirty-two minus twelve is twenty."
+    }
+  ]
+}

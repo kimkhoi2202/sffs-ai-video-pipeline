@@ -1,0 +1,518 @@
+{
+  "round": 95,
+  "slug": "round-095",
+  "title": "Round 95: Quick Wits Workout",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BIRCH"
+        },
+        {
+          "letter": "B",
+          "text": "REDWOOD"
+        },
+        {
+          "letter": "C",
+          "text": "BROCCOLI"
+        },
+        {
+          "letter": "D",
+          "text": "CEDAR"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "BROCCOLI",
+      "explanation": "Redwood, cedar, and birch are all trees. Broccoli is a vegetable, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "7",
+        "13",
+        "19",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "28"
+        },
+        {
+          "letter": "B",
+          "text": "24"
+        },
+        {
+          "letter": "C",
+          "text": "22"
+        },
+        {
+          "letter": "D",
+          "text": "25"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "25",
+      "explanation": "Each number goes up by six, so the next one is nineteen plus six is twenty-five."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "square",
+      "rightShape": "teardrop",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "teardrop",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "crescent",
+          "filled": true
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "teardrop",
+      "ansFilled": true,
+      "ansLabel": "FILLED TEARDROP",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty teardrop becomes a filled teardrop."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SNAKE IS TO HISS AS\nFROG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CHIRP"
+        },
+        {
+          "letter": "B",
+          "text": "ROAR"
+        },
+        {
+          "letter": "C",
+          "text": "MEOW"
+        },
+        {
+          "letter": "D",
+          "text": "CROAK"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "CROAK",
+      "explanation": "Snake says hiss, so a frog says croak."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 13,   6 -> 15,   7 -> 17,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "18"
+        },
+        {
+          "letter": "C",
+          "text": "21"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "21",
+      "explanation": "Each number is multiplied by two then add three, so nine becomes twenty-one."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "LION IS TO ROAR AS\nHORSE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NEIGH"
+        },
+        {
+          "letter": "B",
+          "text": "MEOW"
+        },
+        {
+          "letter": "C",
+          "text": "CHIRP"
+        },
+        {
+          "letter": "D",
+          "text": "BARK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "NEIGH",
+      "explanation": "Lion says roar, so a horse says neigh."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "6",
+        "13",
+        "24",
+        "39",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "48"
+        },
+        {
+          "letter": "B",
+          "text": "58"
+        },
+        {
+          "letter": "C",
+          "text": "60"
+        },
+        {
+          "letter": "D",
+          "text": "55"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "58",
+      "explanation": "The gaps grow by the same amount each step, so the next number is fifty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FLOAT IS TO SINK AS\nHARD IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "THIN"
+        },
+        {
+          "letter": "B",
+          "text": "SOFT"
+        },
+        {
+          "letter": "C",
+          "text": "PULL"
+        },
+        {
+          "letter": "D",
+          "text": "TAKE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SOFT",
+      "explanation": "Float and sink are opposites, so the opposite of hard is soft."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "11",
+        "24",
+        "37",
+        "50",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "63"
+        },
+        {
+          "letter": "B",
+          "text": "65"
+        },
+        {
+          "letter": "C",
+          "text": "68"
+        },
+        {
+          "letter": "D",
+          "text": "73"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "63",
+      "explanation": "Each number goes up by thirteen, so the next one is fifty plus thirteen is sixty-three."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FOG"
+        },
+        {
+          "letter": "B",
+          "text": "THUNDER"
+        },
+        {
+          "letter": "C",
+          "text": "HAIL"
+        },
+        {
+          "letter": "D",
+          "text": "GRASSHOPPER"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "GRASSHOPPER",
+      "explanation": "Fog, hail, and thunder are all kinds of weather. Grasshopper is an insect, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "tm",
+        "br",
+        "lm",
+        "tr",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "bl"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "LEFT IS TO RIGHT AS\nPUSH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SLOW"
+        },
+        {
+          "letter": "B",
+          "text": "COLD"
+        },
+        {
+          "letter": "C",
+          "text": "PULL"
+        },
+        {
+          "letter": "D",
+          "text": "SINK"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "PULL",
+      "explanation": "Left and right are opposites, so the opposite of push is pull."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "br",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   4 -> 10,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "16"
+        },
+        {
+          "letter": "B",
+          "text": "18"
+        },
+        {
+          "letter": "C",
+          "text": "26"
+        },
+        {
+          "letter": "D",
+          "text": "19"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by three then take away two, so six becomes sixteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  8+3=16,  9+7=54,  3+2=3\nTHEN  6+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "51"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "48",
+      "explanation": "The trick is to multiply them, then take away the first: fifty-four minus six is forty-eight."
+    }
+  ]
+}

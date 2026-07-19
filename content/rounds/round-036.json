@@ -1,0 +1,516 @@
+{
+  "round": 36,
+  "slug": "round-036",
+  "title": "Round 36: Clever Clues and Number Tricks",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HAND"
+        },
+        {
+          "letter": "B",
+          "text": "GOLD"
+        },
+        {
+          "letter": "C",
+          "text": "LEG"
+        },
+        {
+          "letter": "D",
+          "text": "KNEE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "GOLD",
+      "explanation": "Knee, leg, and hand are all body parts. Gold is a metal, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "21",
+        "28",
+        "35",
+        "42",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "49"
+        },
+        {
+          "letter": "B",
+          "text": "52"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "39"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "49",
+      "explanation": "Each number goes up by seven, so the next one is forty-two plus seven is forty-nine."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "teardrop",
+          "filled": false
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HAPPY IS TO SAD AS\nBUY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "END"
+        },
+        {
+          "letter": "B",
+          "text": "NARROW"
+        },
+        {
+          "letter": "C",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "SELL"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SELL",
+      "explanation": "Happy and sad are opposites, so the opposite of buy is sell."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   6 -> 15,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "21",
+      "explanation": "Each number is multiplied by two then add three, so nine becomes twenty-one."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "SHEEP IS TO LAMB AS\nBEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DUCKLING"
+        },
+        {
+          "letter": "B",
+          "text": "CALF"
+        },
+        {
+          "letter": "C",
+          "text": "JOEY"
+        },
+        {
+          "letter": "D",
+          "text": "CUB"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "CUB",
+      "explanation": "Sheep baby is called a lamb, so a bear baby is called a cub."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "6",
+        "11",
+        "19",
+        "30",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "34"
+        },
+        {
+          "letter": "B",
+          "text": "44"
+        },
+        {
+          "letter": "C",
+          "text": "41"
+        },
+        {
+          "letter": "D",
+          "text": "39"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "44",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-four."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BRICK IS TO CLAY AS\nRING IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GOLD"
+        },
+        {
+          "letter": "B",
+          "text": "WOOD"
+        },
+        {
+          "letter": "C",
+          "text": "RUBBER"
+        },
+        {
+          "letter": "D",
+          "text": "PLASTIC"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "GOLD",
+      "explanation": "Brick is made of clay, so a ring is made of gold."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "19",
+        "32",
+        "45",
+        "58",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "70"
+        },
+        {
+          "letter": "B",
+          "text": "71"
+        },
+        {
+          "letter": "C",
+          "text": "81"
+        },
+        {
+          "letter": "D",
+          "text": "61"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "71",
+      "explanation": "Each number goes up by thirteen, so the next one is fifty-eight plus thirteen is seventy-one."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RECTANGLE"
+        },
+        {
+          "letter": "B",
+          "text": "OVAL"
+        },
+        {
+          "letter": "C",
+          "text": "SQUARE"
+        },
+        {
+          "letter": "D",
+          "text": "TAXI"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "TAXI",
+      "explanation": "Rectangle, oval, and square are all shapes. Taxi is a road vehicle, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "tr",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "br"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE PARROT WAS SO ______ THAT IT LEARNED\nTHE NEW TRICK IN JUST ONE TRY.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SLEEPY"
+        },
+        {
+          "letter": "B",
+          "text": "HUNGRY"
+        },
+        {
+          "letter": "C",
+          "text": "CLEVER"
+        },
+        {
+          "letter": "D",
+          "text": "GRUMPY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "CLEVER",
+      "explanation": "Learning in one try means clever."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "lm",
+        "tm",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "bl"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "br"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 10,   5 -> 18,   7 -> 26,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "31"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "34",
+      "explanation": "Each number is multiplied by four then take away two, so nine becomes thirty-four."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+6=24,  5+3=24,  4+1=15\nTHEN  6+7 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "38"
+        },
+        {
+          "letter": "B",
+          "text": "44"
+        },
+        {
+          "letter": "C",
+          "text": "39"
+        },
+        {
+          "letter": "D",
+          "text": "40"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "39",
+      "explanation": "The trick is to add the two numbers, then triple: six plus seven is thirteen, times three is thirty-nine."
+    }
+  ]
+}

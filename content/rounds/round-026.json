@@ -1,0 +1,518 @@
+{
+  "round": 26,
+  "slug": "round-026",
+  "title": "Round 26: Smart Start Quiz",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "COW"
+        },
+        {
+          "letter": "B",
+          "text": "HAIL"
+        },
+        {
+          "letter": "C",
+          "text": "LION"
+        },
+        {
+          "letter": "D",
+          "text": "HORSE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "HAIL",
+      "explanation": "Cow, lion, and horse are all mammals. Hail is a kind of weather, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "15",
+        "22",
+        "29",
+        "36",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "41"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "43",
+      "explanation": "Each number goes up by seven, so the next one is thirty-six plus seven is forty-three."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "star",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "heart",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": false
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FINGER IS TO HAND AS\nSAIL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MOUTH"
+        },
+        {
+          "letter": "B",
+          "text": "BOOK"
+        },
+        {
+          "letter": "C",
+          "text": "FLOWER"
+        },
+        {
+          "letter": "D",
+          "text": "BOAT"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "BOAT",
+      "explanation": "Finger is part of a hand, so a sail is part of a boat."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 11,   6 -> 20,   7 -> 23,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "24"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "23"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then add two, so eight becomes twenty-six."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "HOT IS TO COLD AS\nTALL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHORT"
+        },
+        {
+          "letter": "B",
+          "text": "WEAK"
+        },
+        {
+          "letter": "C",
+          "text": "SMALL"
+        },
+        {
+          "letter": "D",
+          "text": "SAD"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SHORT",
+      "explanation": "Hot and cold are opposites, so the opposite of tall is short."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "7",
+        "10",
+        "14",
+        "19",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "28"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "25",
+      "explanation": "The gaps grow by the same amount each step, so the next number is twenty-five."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SPOON IS TO METAL AS\nSHIRT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GOLD"
+        },
+        {
+          "letter": "B",
+          "text": "WOOD"
+        },
+        {
+          "letter": "C",
+          "text": "COTTON"
+        },
+        {
+          "letter": "D",
+          "text": "PAPER"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "COTTON",
+      "explanation": "Spoon is made of metal, so a shirt is made of cotton."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "20",
+        "27",
+        "34",
+        "41",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "50"
+        },
+        {
+          "letter": "B",
+          "text": "45"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "43"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "48",
+      "explanation": "Each number goes up by seven, so the next one is forty-one plus seven is forty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HAIL"
+        },
+        {
+          "letter": "B",
+          "text": "WIND"
+        },
+        {
+          "letter": "C",
+          "text": "DRIZZLE"
+        },
+        {
+          "letter": "D",
+          "text": "FOOT"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "FOOT",
+      "explanation": "Wind, hail, and drizzle are all kinds of weather. Foot is a body part, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "tl",
+        "bl",
+        "br",
+        "tr",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "bl"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE SUITCASE WAS TOO ______ TO LIFT ALONE,\nSO TWO PEOPLE CARRIED IT TOGETHER.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HEAVY"
+        },
+        {
+          "letter": "B",
+          "text": "EMPTY"
+        },
+        {
+          "letter": "C",
+          "text": "OPEN"
+        },
+        {
+          "letter": "D",
+          "text": "LIGHT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "HEAVY",
+      "explanation": "Needing two people means heavy."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "rm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 10,   6 -> 16,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "30"
+        },
+        {
+          "letter": "D",
+          "text": "35"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by three then take away two, so nine becomes twenty-five."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+3=20,  1+9=40,  8+1=36\nTHEN  7+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "63"
+        },
+        {
+          "letter": "B",
+          "text": "50"
+        },
+        {
+          "letter": "C",
+          "text": "60"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "60",
+      "explanation": "The trick is to add the two numbers, then times four: fifteen times four is sixty."
+    }
+  ]
+}

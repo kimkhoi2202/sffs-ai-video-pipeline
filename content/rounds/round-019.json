@@ -1,0 +1,519 @@
+{
+  "round": 19,
+  "slug": "round-019",
+  "title": "Round 19: Words, Numbers and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "IRON"
+        },
+        {
+          "letter": "B",
+          "text": "SHEEP"
+        },
+        {
+          "letter": "C",
+          "text": "BRONZE"
+        },
+        {
+          "letter": "D",
+          "text": "NICKEL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SHEEP",
+      "explanation": "Iron, bronze, and nickel are all metals. Sheep is a mammal, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "9",
+        "16",
+        "23",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "32"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "30",
+      "explanation": "Each number goes up by seven, so the next one is twenty-three plus seven is thirty."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "square",
+      "rightShape": "heart",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "heart",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "heart",
+      "ansFilled": true,
+      "ansLabel": "FILLED HEART",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty heart becomes a filled heart."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "LIGHT IS TO DARK AS\nUP IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DOWN"
+        },
+        {
+          "letter": "B",
+          "text": "SOFT"
+        },
+        {
+          "letter": "C",
+          "text": "EMPTY"
+        },
+        {
+          "letter": "D",
+          "text": "PULL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "DOWN",
+      "explanation": "Light and dark are opposites, so the opposite of up is down."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 4,   5 -> 8,   7 -> 12,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "10"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "11"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "10",
+      "explanation": "Each number is multiplied by two then take away two, so six becomes ten."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "LOUD IS TO QUIET AS\nWIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEAK"
+        },
+        {
+          "letter": "B",
+          "text": "SLOW"
+        },
+        {
+          "letter": "C",
+          "text": "NARROW"
+        },
+        {
+          "letter": "D",
+          "text": "LOSE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "LOSE",
+      "explanation": "Loud and quiet are opposites, so the opposite of win is lose."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "5",
+        "11",
+        "19",
+        "29",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "43"
+        },
+        {
+          "letter": "B",
+          "text": "31"
+        },
+        {
+          "letter": "C",
+          "text": "41"
+        },
+        {
+          "letter": "D",
+          "text": "44"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "41",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BEAR IS TO CUB AS\nCAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DUCKLING"
+        },
+        {
+          "letter": "B",
+          "text": "CALF"
+        },
+        {
+          "letter": "C",
+          "text": "KITTEN"
+        },
+        {
+          "letter": "D",
+          "text": "PUPPY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "KITTEN",
+      "explanation": "Bear baby is called a cub, so a cat baby is called a kitten."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "10",
+        "20",
+        "40",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "85"
+        },
+        {
+          "letter": "B",
+          "text": "80"
+        },
+        {
+          "letter": "C",
+          "text": "70"
+        },
+        {
+          "letter": "D",
+          "text": "81"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "80",
+      "explanation": "Each number is multiplied by two, so the next one is forty times two is eighty."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WILLOW"
+        },
+        {
+          "letter": "B",
+          "text": "SHELF"
+        },
+        {
+          "letter": "C",
+          "text": "BENCH"
+        },
+        {
+          "letter": "D",
+          "text": "CABINET"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "WILLOW",
+      "explanation": "Cabinet, bench, and shelf are all furniture. Willow is a tree, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "rm",
+        "bl",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE WOOL RUG FELT VERY ______ AND KEPT\nUS WARM ON THE COLD NIGHT.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "COZY"
+        },
+        {
+          "letter": "B",
+          "text": "ROUGH"
+        },
+        {
+          "letter": "C",
+          "text": "COLD"
+        },
+        {
+          "letter": "D",
+          "text": "WET"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "COZY",
+      "explanation": "Wool that keeps you warm feels cozy."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "rm",
+        "tm",
+        "lm",
+        "bm",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tm"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   7 -> 15,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "21"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "8"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "11",
+      "explanation": "Each number is multiplied by two then add one, so five becomes eleven."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  5+2=21,  5+4=27,  6+6=36\nTHEN  4+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "37"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "36",
+      "explanation": "The trick is to add the two numbers, then triple: four plus eight is twelve, times three is thirty-six."
+    }
+  ]
+}

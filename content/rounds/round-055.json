@@ -1,0 +1,519 @@
+{
+  "round": 55,
+  "slug": "round-055",
+  "title": "Round 55: Shapes, Sums and Sayings",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ANKLE"
+        },
+        {
+          "letter": "B",
+          "text": "ELBOW"
+        },
+        {
+          "letter": "C",
+          "text": "LEG"
+        },
+        {
+          "letter": "D",
+          "text": "GLIDER"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "GLIDER",
+      "explanation": "Ankle, elbow, and leg are all body parts. Glider is an aircraft, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "19",
+        "21",
+        "23",
+        "25",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "28"
+        },
+        {
+          "letter": "B",
+          "text": "24"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "27",
+      "explanation": "Each number goes up by two, so the next one is twenty-five plus two is twenty-seven."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "square",
+      "rightShape": "star",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": false
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "star",
+      "ansFilled": true,
+      "ansLabel": "FILLED STAR",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty star becomes a filled star."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "COW IS TO BARN AS\nANT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ANTHILL"
+        },
+        {
+          "letter": "B",
+          "text": "FOLD"
+        },
+        {
+          "letter": "C",
+          "text": "PEN"
+        },
+        {
+          "letter": "D",
+          "text": "BURROW"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "ANTHILL",
+      "explanation": "Cow lives in a barn, so an ant lives in an anthill."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "20",
+      "explanation": "Each number is multiplied by three then take away one, so seven becomes twenty."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "HEN IS TO CHICK AS\nSHEEP IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FAWN"
+        },
+        {
+          "letter": "B",
+          "text": "DUCKLING"
+        },
+        {
+          "letter": "C",
+          "text": "LAMB"
+        },
+        {
+          "letter": "D",
+          "text": "PUPPY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "LAMB",
+      "explanation": "Hen baby is called a chick, so a sheep baby is called a lamb."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "8",
+        "10",
+        "18",
+        "28",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "46"
+        },
+        {
+          "letter": "B",
+          "text": "45"
+        },
+        {
+          "letter": "C",
+          "text": "41"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "46",
+      "explanation": "Add the two numbers before it: twenty-eight plus eighteen is forty-six."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SHEEP IS TO LAMB AS\nFROG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KITTEN"
+        },
+        {
+          "letter": "B",
+          "text": "TADPOLE"
+        },
+        {
+          "letter": "C",
+          "text": "PUPPY"
+        },
+        {
+          "letter": "D",
+          "text": "FOAL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "TADPOLE",
+      "explanation": "Sheep baby is called a lamb, so a frog baby is called a tadpole."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "19",
+        "30",
+        "41",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "54"
+        },
+        {
+          "letter": "B",
+          "text": "47"
+        },
+        {
+          "letter": "C",
+          "text": "42"
+        },
+        {
+          "letter": "D",
+          "text": "52"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "52",
+      "explanation": "Each number goes up by eleven, so the next one is forty-one plus eleven is fifty-two."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FOX"
+        },
+        {
+          "letter": "B",
+          "text": "BEAR"
+        },
+        {
+          "letter": "C",
+          "text": "COW"
+        },
+        {
+          "letter": "D",
+          "text": "BUS"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "BUS",
+      "explanation": "Fox, cow, and bear are all mammals. Bus is a road vehicle, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "rm",
+        "tr",
+        "tm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "PEN IS TO WRITE AS\nEYE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HEAT"
+        },
+        {
+          "letter": "B",
+          "text": "SEE"
+        },
+        {
+          "letter": "C",
+          "text": "SWEEP"
+        },
+        {
+          "letter": "D",
+          "text": "LIGHT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SEE",
+      "explanation": "Pen is used to write, so an eye is used to see."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "br",
+        "bl",
+        "tl",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 8,   5 -> 12,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "14"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "19"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "14",
+      "explanation": "Each number is multiplied by two then add two, so six becomes fourteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+3=10,  3+3=12,  3+5=16\nTHEN  5+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "12"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "22",
+      "explanation": "The trick is to add the two numbers, then double: five plus six is eleven, and eleven times two is twenty-two."
+    }
+  ]
+}

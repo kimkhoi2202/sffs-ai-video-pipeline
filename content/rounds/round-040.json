@@ -1,0 +1,521 @@
+{
+  "round": 40,
+  "slug": "round-040",
+  "title": "Round 40: Mix It Up Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "VAN"
+        },
+        {
+          "letter": "B",
+          "text": "MOTORCYCLE"
+        },
+        {
+          "letter": "C",
+          "text": "RAKE"
+        },
+        {
+          "letter": "D",
+          "text": "TAXI"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "RAKE",
+      "explanation": "Van, taxi, and motorcycle are all road vehicles. Rake is a tool, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "22",
+        "29",
+        "36",
+        "43",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "60"
+        },
+        {
+          "letter": "B",
+          "text": "40"
+        },
+        {
+          "letter": "C",
+          "text": "49"
+        },
+        {
+          "letter": "D",
+          "text": "50"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "50",
+      "explanation": "Each number goes up by seven, so the next one is forty-three plus seven is fifty."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "cross",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "cross",
+      "ansFilled": true,
+      "ansLabel": "FILLED CROSS",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty cross becomes a filled cross."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "GIVE IS TO TAKE AS\nCLEAN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LOSE"
+        },
+        {
+          "letter": "B",
+          "text": "LATE"
+        },
+        {
+          "letter": "C",
+          "text": "DIRTY"
+        },
+        {
+          "letter": "D",
+          "text": "SHORT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DIRTY",
+      "explanation": "Give and take are opposites, so the opposite of clean is dirty."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 10,   6 -> 19,   7 -> 22,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "16"
+        },
+        {
+          "letter": "B",
+          "text": "15"
+        },
+        {
+          "letter": "C",
+          "text": "6"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by three then add one, so five becomes sixteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BEE IS TO BUZZ AS\nSHEEP IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BAA"
+        },
+        {
+          "letter": "B",
+          "text": "OINK"
+        },
+        {
+          "letter": "C",
+          "text": "QUACK"
+        },
+        {
+          "letter": "D",
+          "text": "ROAR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "BAA",
+      "explanation": "Bee says buzz, so a sheep says baa."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "9",
+        "13",
+        "22",
+        "35",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "55"
+        },
+        {
+          "letter": "B",
+          "text": "57"
+        },
+        {
+          "letter": "C",
+          "text": "52"
+        },
+        {
+          "letter": "D",
+          "text": "58"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "57",
+      "explanation": "Add the two numbers before it: thirty-five plus twenty-two is fifty-seven."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHEEL IS TO CAR AS\nSAIL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HOUSE"
+        },
+        {
+          "letter": "B",
+          "text": "BOAT"
+        },
+        {
+          "letter": "C",
+          "text": "HAND"
+        },
+        {
+          "letter": "D",
+          "text": "BOOK"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "BOAT",
+      "explanation": "Wheel is part of a car, so a sail is part of a boat."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "15",
+        "25",
+        "35",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "42"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "45"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "45",
+      "explanation": "Each number goes up by ten, so the next one is thirty-five plus ten is forty-five."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "COW"
+        },
+        {
+          "letter": "B",
+          "text": "HOCKEY"
+        },
+        {
+          "letter": "C",
+          "text": "RABBIT"
+        },
+        {
+          "letter": "D",
+          "text": "TIGER"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "HOCKEY",
+      "explanation": "Cow, tiger, and rabbit are all mammals. Hockey is a sport, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "tm",
+        "bl",
+        "rm",
+        "tl",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "tr"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "WIN IS TO LOSE AS\nLEFT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "SINK"
+        },
+        {
+          "letter": "C",
+          "text": "SAD"
+        },
+        {
+          "letter": "D",
+          "text": "DARK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "RIGHT",
+      "explanation": "Win and lose are opposites, so the opposite of left is right."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "tr",
+        "tl",
+        "bl",
+        "br",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   7 -> 13,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "20"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "15",
+      "explanation": "Each number is multiplied by two then take away one, so eight becomes fifteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+3=4,  2+3=8,  8+3=32\nTHEN  2+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "10"
+        },
+        {
+          "letter": "C",
+          "text": "22"
+        },
+        {
+          "letter": "D",
+          "text": "14"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "12",
+      "explanation": "The trick is to multiply them, then add the first: ten plus two is twelve."
+    }
+  ]
+}

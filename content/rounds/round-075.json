@@ -1,0 +1,517 @@
+{
+  "round": 75,
+  "slug": "round-075",
+  "title": "Round 75: Clever Clues and Number Tricks",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SOCCER"
+        },
+        {
+          "letter": "B",
+          "text": "TIGER"
+        },
+        {
+          "letter": "C",
+          "text": "GOLF"
+        },
+        {
+          "letter": "D",
+          "text": "BOXING"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "TIGER",
+      "explanation": "Boxing, soccer, and golf are all sports. Tiger is a mammal, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "5",
+        "9",
+        "13",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "17"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "12"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "17",
+      "explanation": "Each number goes up by four, so the next one is thirteen plus four is seventeen."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "heart",
+      "rightShape": "heart",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "heart",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "star",
+          "filled": false
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "heart",
+      "ansFilled": true,
+      "ansLabel": "FILLED HEART",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty heart becomes a filled heart."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "TOE IS TO FOOT AS\nPAGE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BOOK"
+        },
+        {
+          "letter": "B",
+          "text": "MOUTH"
+        },
+        {
+          "letter": "C",
+          "text": "PLANT"
+        },
+        {
+          "letter": "D",
+          "text": "CAR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "BOOK",
+      "explanation": "Toe is part of a foot, so a page is part of a book."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   7 -> 22,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "11"
+        },
+        {
+          "letter": "C",
+          "text": "26"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by three then add one, so five becomes sixteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "NEAR IS TO FAR AS\nOLD IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "SOFT"
+        },
+        {
+          "letter": "C",
+          "text": "SHORT"
+        },
+        {
+          "letter": "D",
+          "text": "NEW"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "NEW",
+      "explanation": "Near and far are opposites, so the opposite of old is new."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "8",
+        "12",
+        "17",
+        "23",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "31"
+        },
+        {
+          "letter": "B",
+          "text": "40"
+        },
+        {
+          "letter": "C",
+          "text": "29"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "30",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FOX IS TO DEN AS\nHORSE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BURROW"
+        },
+        {
+          "letter": "B",
+          "text": "HIVE"
+        },
+        {
+          "letter": "C",
+          "text": "STABLE"
+        },
+        {
+          "letter": "D",
+          "text": "PEN"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "STABLE",
+      "explanation": "Fox lives in a den, so a horse lives in a stable."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "11",
+        "20",
+        "29",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "35"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "41"
+        },
+        {
+          "letter": "D",
+          "text": "28"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "38",
+      "explanation": "Each number goes up by nine, so the next one is twenty-nine plus nine is thirty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PURPLE"
+        },
+        {
+          "letter": "B",
+          "text": "YELLOW"
+        },
+        {
+          "letter": "C",
+          "text": "BRASS"
+        },
+        {
+          "letter": "D",
+          "text": "BLUE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "BRASS",
+      "explanation": "Blue, purple, and yellow are all colors. Brass is a metal, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "bl",
+        "bm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "tm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "BAT IS TO CAVE AS\nPENGUIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "POND"
+        },
+        {
+          "letter": "B",
+          "text": "DESERT"
+        },
+        {
+          "letter": "C",
+          "text": "ICE"
+        },
+        {
+          "letter": "D",
+          "text": "OCEAN"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "ICE",
+      "explanation": "Bat lives in the cave, so a penguin lives in the ice."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "bl",
+        "lm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "31"
+        },
+        {
+          "letter": "C",
+          "text": "34"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "34",
+      "explanation": "Each number is multiplied by four then take away two, so nine becomes thirty-four."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  7+8=60,  6+3=36,  6+4=40\nTHEN  8+7 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "58"
+        },
+        {
+          "letter": "B",
+          "text": "60"
+        },
+        {
+          "letter": "C",
+          "text": "63"
+        },
+        {
+          "letter": "D",
+          "text": "15"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "60",
+      "explanation": "The trick is to add the two numbers, then times four: fifteen times four is sixty."
+    }
+  ]
+}

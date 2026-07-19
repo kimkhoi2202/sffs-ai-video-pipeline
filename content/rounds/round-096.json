@@ -1,0 +1,517 @@
+{
+  "round": 96,
+  "slug": "round-096",
+  "title": "Round 96: The Whole Brain Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CRICKET"
+        },
+        {
+          "letter": "B",
+          "text": "TENNIS"
+        },
+        {
+          "letter": "C",
+          "text": "GOLF"
+        },
+        {
+          "letter": "D",
+          "text": "COW"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "COW",
+      "explanation": "Cricket, golf, and tennis are all sports. Cow is a mammal, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "20",
+        "23",
+        "26",
+        "29",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "42"
+        },
+        {
+          "letter": "B",
+          "text": "37"
+        },
+        {
+          "letter": "C",
+          "text": "32"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "32",
+      "explanation": "Each number goes up by three, so the next one is twenty-nine plus three is thirty-two."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "square",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "square",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "triangle",
+          "filled": false
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "square",
+      "ansFilled": true,
+      "ansLabel": "FILLED SQUARE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty square becomes a filled square."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HOT IS TO COLD AS\nWIDE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "SELL"
+        },
+        {
+          "letter": "C",
+          "text": "NARROW"
+        },
+        {
+          "letter": "D",
+          "text": "PULL"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "NARROW",
+      "explanation": "Hot and cold are opposites, so the opposite of wide is narrow."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   7 -> 20,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "23"
+        },
+        {
+          "letter": "B",
+          "text": "24"
+        },
+        {
+          "letter": "C",
+          "text": "26"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then take away one, so nine becomes twenty-six."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "THICK IS TO THIN AS\nNEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NEW"
+        },
+        {
+          "letter": "B",
+          "text": "FAR"
+        },
+        {
+          "letter": "C",
+          "text": "SHALLOW"
+        },
+        {
+          "letter": "D",
+          "text": "EMPTY"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "FAR",
+      "explanation": "Thick and thin are opposites, so the opposite of near is far."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "3",
+        "7",
+        "13",
+        "21",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "41"
+        },
+        {
+          "letter": "B",
+          "text": "36"
+        },
+        {
+          "letter": "C",
+          "text": "32"
+        },
+        {
+          "letter": "D",
+          "text": "31"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "31",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "OVEN IS TO HEAT AS\nBROOM IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MEASURE"
+        },
+        {
+          "letter": "B",
+          "text": "SWEEP"
+        },
+        {
+          "letter": "C",
+          "text": "SEE"
+        },
+        {
+          "letter": "D",
+          "text": "WRITE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SWEEP",
+      "explanation": "Oven is used to heat, so a broom is used to sweep."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "14",
+        "23",
+        "32",
+        "41",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "50"
+        },
+        {
+          "letter": "B",
+          "text": "55"
+        },
+        {
+          "letter": "C",
+          "text": "49"
+        },
+        {
+          "letter": "D",
+          "text": "53"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "50",
+      "explanation": "Each number goes up by nine, so the next one is forty-one plus nine is fifty."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CELLO"
+        },
+        {
+          "letter": "B",
+          "text": "BANJO"
+        },
+        {
+          "letter": "C",
+          "text": "GUITAR"
+        },
+        {
+          "letter": "D",
+          "text": "BLUE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "BLUE",
+      "explanation": "Guitar, banjo, and cello are all instruments. Blue is a color, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "bl",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "tm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "RABBIT IS TO BURROW AS\nFISH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "POND"
+        },
+        {
+          "letter": "B",
+          "text": "STABLE"
+        },
+        {
+          "letter": "C",
+          "text": "HIVE"
+        },
+        {
+          "letter": "D",
+          "text": "PEN"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "POND",
+      "explanation": "Rabbit lives in a burrow, so a fish lives in a pond."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "crescent",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "heart",
+          "filled": true
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 13,   7 -> 17,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "21"
+        },
+        {
+          "letter": "D",
+          "text": "23"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "21",
+      "explanation": "Each number is multiplied by two then add three, so nine becomes twenty-one."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+8=6,  6+3=9,  3+1=-1\nTHEN  2+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "20"
+        },
+        {
+          "letter": "B",
+          "text": "6"
+        },
+        {
+          "letter": "C",
+          "text": "8"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "6",
+      "explanation": "The trick is to multiply them, then take away their sum: sixteen minus ten is six."
+    }
+  ]
+}

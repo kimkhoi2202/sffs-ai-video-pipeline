@@ -1,0 +1,515 @@
+{
+  "round": 53,
+  "slug": "round-053",
+  "title": "Round 53: Mix It Up Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GOLD"
+        },
+        {
+          "letter": "B",
+          "text": "ARM"
+        },
+        {
+          "letter": "C",
+          "text": "WRIST"
+        },
+        {
+          "letter": "D",
+          "text": "ANKLE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "GOLD",
+      "explanation": "Wrist, ankle, and arm are all body parts. Gold is a metal, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "6",
+        "8",
+        "10",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "7"
+        },
+        {
+          "letter": "B",
+          "text": "14"
+        },
+        {
+          "letter": "C",
+          "text": "2"
+        },
+        {
+          "letter": "D",
+          "text": "12"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "12",
+      "explanation": "Each number goes up by two, so the next one is ten plus two is twelve."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "heart",
+      "rightShape": "lightning",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "star",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "diamond",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "lightning",
+      "ansFilled": true,
+      "ansLabel": "FILLED LIGHTNING",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty lightning becomes a filled lightning."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "DOG IS TO KENNEL AS\nBEE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "STABLE"
+        },
+        {
+          "letter": "B",
+          "text": "ANTHILL"
+        },
+        {
+          "letter": "C",
+          "text": "HIVE"
+        },
+        {
+          "letter": "D",
+          "text": "WEB"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "HIVE",
+      "explanation": "Dog lives in a kennel, so a bee lives in a hive."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 11,   5 -> 14,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "20"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "33"
+        },
+        {
+          "letter": "D",
+          "text": "23"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "23",
+      "explanation": "Each number is multiplied by three then take away one, so eight becomes twenty-three."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WRITER IS TO PEN AS\nFISHERMAN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BRUSH"
+        },
+        {
+          "letter": "B",
+          "text": "PICKAXE"
+        },
+        {
+          "letter": "C",
+          "text": "NET"
+        },
+        {
+          "letter": "D",
+          "text": "SCISSORS"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "NET",
+      "explanation": "Writer uses a pen, so a fisherman uses a net."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "4",
+        "9",
+        "16",
+        "25",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "34"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "36",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-six."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WIDE IS TO NARROW AS\nBIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DIRTY"
+        },
+        {
+          "letter": "B",
+          "text": "SMALL"
+        },
+        {
+          "letter": "C",
+          "text": "WEAK"
+        },
+        {
+          "letter": "D",
+          "text": "POOR"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SMALL",
+      "explanation": "Wide and narrow are opposites, so the opposite of big is small."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "9",
+        "21",
+        "33",
+        "45",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "57"
+        },
+        {
+          "letter": "B",
+          "text": "67"
+        },
+        {
+          "letter": "C",
+          "text": "59"
+        },
+        {
+          "letter": "D",
+          "text": "55"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "57",
+      "explanation": "Each number goes up by twelve, so the next one is forty-five plus twelve is fifty-seven."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HARP"
+        },
+        {
+          "letter": "B",
+          "text": "SODA"
+        },
+        {
+          "letter": "C",
+          "text": "FLUTE"
+        },
+        {
+          "letter": "D",
+          "text": "DRUM"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SODA",
+      "explanation": "Harp, flute, and drum are all instruments. Soda is a drink, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "bm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THICK IS TO THIN AS\nPUSH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEAK"
+        },
+        {
+          "letter": "B",
+          "text": "PULL"
+        },
+        {
+          "letter": "C",
+          "text": "NARROW"
+        },
+        {
+          "letter": "D",
+          "text": "DOWN"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "PULL",
+      "explanation": "Thick and thin are opposites, so the opposite of push is pull."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "tr",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 18,   6 -> 22,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "32"
+        },
+        {
+          "letter": "C",
+          "text": "30"
+        },
+        {
+          "letter": "D",
+          "text": "28"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "30",
+      "explanation": "Each number is multiplied by four then take away two, so eight becomes thirty."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+8=42,  2+8=30,  3+8=33\nTHEN  9+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "42"
+        },
+        {
+          "letter": "B",
+          "text": "45"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "40"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "45",
+      "explanation": "The trick is to add the two numbers, then triple: nine plus six is fifteen, times three is forty-five."
+    }
+  ]
+}

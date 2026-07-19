@@ -1,0 +1,520 @@
+{
+  "round": 65,
+  "slug": "round-065",
+  "title": "Round 65: Smart Start Quiz",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CUBE"
+        },
+        {
+          "letter": "B",
+          "text": "HAT"
+        },
+        {
+          "letter": "C",
+          "text": "SHIRT"
+        },
+        {
+          "letter": "D",
+          "text": "COAT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "CUBE",
+      "explanation": "Hat, shirt, and coat are all clothing. Cube is a shape, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "17",
+        "19",
+        "21",
+        "23",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "22"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "25"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "25",
+      "explanation": "Each number goes up by two, so the next one is twenty-three plus two is twenty-five."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "crescent",
+      "rightShape": "heart",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "heart",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "heart",
+      "ansFilled": true,
+      "ansLabel": "FILLED HEART",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty heart becomes a filled heart."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BEGIN IS TO END AS\nLIGHT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEAK"
+        },
+        {
+          "letter": "B",
+          "text": "EMPTY"
+        },
+        {
+          "letter": "C",
+          "text": "DARK"
+        },
+        {
+          "letter": "D",
+          "text": "SELL"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DARK",
+      "explanation": "Begin and end are opposites, so the opposite of light is dark."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "20"
+        },
+        {
+          "letter": "B",
+          "text": "31"
+        },
+        {
+          "letter": "C",
+          "text": "33"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "30",
+      "explanation": "Each number is multiplied by three then add three, so nine becomes thirty."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "EYE IS TO SEE AS\nCLOCK IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HEAR"
+        },
+        {
+          "letter": "B",
+          "text": "HEAT"
+        },
+        {
+          "letter": "C",
+          "text": "TIME"
+        },
+        {
+          "letter": "D",
+          "text": "SWEEP"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "TIME",
+      "explanation": "Eye is used to see, so a clock is used to time."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "7",
+        "11",
+        "18",
+        "29",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "47"
+        },
+        {
+          "letter": "B",
+          "text": "42"
+        },
+        {
+          "letter": "C",
+          "text": "57"
+        },
+        {
+          "letter": "D",
+          "text": "46"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "47",
+      "explanation": "Add the two numbers before it: twenty-nine plus eighteen is forty-seven."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "DAY IS TO NIGHT AS\nFAST IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SELL"
+        },
+        {
+          "letter": "B",
+          "text": "TAKE"
+        },
+        {
+          "letter": "C",
+          "text": "SLOW"
+        },
+        {
+          "letter": "D",
+          "text": "DOWN"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SLOW",
+      "explanation": "Day and night are opposites, so the opposite of fast is slow."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "9",
+        "17",
+        "25",
+        "33",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "38"
+        },
+        {
+          "letter": "B",
+          "text": "41"
+        },
+        {
+          "letter": "C",
+          "text": "46"
+        },
+        {
+          "letter": "D",
+          "text": "31"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "41",
+      "explanation": "Each number goes up by eight, so the next one is thirty-three plus eight is forty-one."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BROWN"
+        },
+        {
+          "letter": "B",
+          "text": "TENNIS"
+        },
+        {
+          "letter": "C",
+          "text": "WHITE"
+        },
+        {
+          "letter": "D",
+          "text": "RED"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "TENNIS",
+      "explanation": "Red, brown, and white are all colors. Tennis is a sport, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "bl",
+        "br",
+        "tr",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "lm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "DEEP IS TO SHALLOW AS\nFLOAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "QUIET"
+        },
+        {
+          "letter": "B",
+          "text": "SINK"
+        },
+        {
+          "letter": "C",
+          "text": "SOFT"
+        },
+        {
+          "letter": "D",
+          "text": "SHORT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SINK",
+      "explanation": "Deep and shallow are opposites, so the opposite of float is sink."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "bl",
+        "br",
+        "tr",
+        "tl",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   7 -> 23,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "26"
+        },
+        {
+          "letter": "B",
+          "text": "28"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "25"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then add two, so eight becomes twenty-six."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+1=5,  6+3=27,  1+5=11\nTHEN  8+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "89"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "84"
+        },
+        {
+          "letter": "D",
+          "text": "94"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "89",
+      "explanation": "The trick is to multiply them, then add both back: eight times nine is seventy-two, plus eight plus nine is eighty-nine."
+    }
+  ]
+}

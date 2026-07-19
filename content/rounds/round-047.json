@@ -1,0 +1,520 @@
+{
+  "round": 47,
+  "slug": "round-047",
+  "title": "Round 47: Think Fast, Think Smart",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ANKLE"
+        },
+        {
+          "letter": "B",
+          "text": "ELBOW"
+        },
+        {
+          "letter": "C",
+          "text": "FORTY"
+        },
+        {
+          "letter": "D",
+          "text": "KNEE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "FORTY",
+      "explanation": "Elbow, knee, and ankle are all body parts. Forty is a number, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "15",
+        "20",
+        "25",
+        "30",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "35"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "32"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "35",
+      "explanation": "Each number goes up by five, so the next one is thirty plus five is thirty-five."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "arrow",
+      "rightShape": "star",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "circle",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "star",
+      "ansFilled": true,
+      "ansLabel": "FILLED STAR",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty star becomes a filled star."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "PIG IS TO OINK AS\nOWL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HOOT"
+        },
+        {
+          "letter": "B",
+          "text": "QUACK"
+        },
+        {
+          "letter": "C",
+          "text": "MEOW"
+        },
+        {
+          "letter": "D",
+          "text": "BARK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "HOOT",
+      "explanation": "Pig says oink, so an owl says hoot."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "16"
+        },
+        {
+          "letter": "B",
+          "text": "15"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "19"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by two then take away two, so nine becomes sixteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BIG IS TO SMALL AS\nBUY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PULL"
+        },
+        {
+          "letter": "B",
+          "text": "SELL"
+        },
+        {
+          "letter": "C",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "NARROW"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SELL",
+      "explanation": "Big and small are opposites, so the opposite of buy is sell."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "6",
+        "13",
+        "23",
+        "36",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "47"
+        },
+        {
+          "letter": "B",
+          "text": "55"
+        },
+        {
+          "letter": "C",
+          "text": "49"
+        },
+        {
+          "letter": "D",
+          "text": "52"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "52",
+      "explanation": "The gaps grow by the same amount each step, so the next number is fifty-two."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BOTTLE IS TO PLASTIC AS\nSPOON IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GLASS"
+        },
+        {
+          "letter": "B",
+          "text": "GOLD"
+        },
+        {
+          "letter": "C",
+          "text": "COTTON"
+        },
+        {
+          "letter": "D",
+          "text": "METAL"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "METAL",
+      "explanation": "Bottle is made of plastic, so a spoon is made of metal."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "16",
+        "24",
+        "32",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "43"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "35"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "40",
+      "explanation": "Each number goes up by eight, so the next one is thirty-two plus eight is forty."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BROWN"
+        },
+        {
+          "letter": "B",
+          "text": "BLACK"
+        },
+        {
+          "letter": "C",
+          "text": "MERCURY"
+        },
+        {
+          "letter": "D",
+          "text": "GRAY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "MERCURY",
+      "explanation": "Gray, brown, and black are all colors. Mercury is a planet, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "tl",
+        "lm",
+        "bl",
+        "bm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "PIG IS TO PEN AS\nSHEEP IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NEST"
+        },
+        {
+          "letter": "B",
+          "text": "FOLD"
+        },
+        {
+          "letter": "C",
+          "text": "POND"
+        },
+        {
+          "letter": "D",
+          "text": "BURROW"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "FOLD",
+      "explanation": "Pig lives in a pen, so a sheep lives in a fold."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "lm",
+        "tr",
+        "bm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 14,   4 -> 18,   7 -> 30,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "44"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "31"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "34",
+      "explanation": "Each number is multiplied by four then add two, so eight becomes thirty-four."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  8+2=6,  5+6=19,  5+9=31\nTHEN  8+4 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "32"
+        },
+        {
+          "letter": "C",
+          "text": "12"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "20",
+      "explanation": "The trick is to multiply them, then take away their sum: thirty-two minus twelve is twenty."
+    }
+  ]
+}

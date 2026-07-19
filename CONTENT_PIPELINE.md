@@ -845,33 +845,31 @@ The batch build ships a **deterministic, seeded generator** rather than the LLM 
   **re-solved with the same solvers `validate.mjs` uses**, so the marked answer is always the unique
   solution and no distractor equals it. The near-dup guard (jaccard, mirroring §9.4) keeps every text
   item globally distinct.
-- **Verbal** (odd-one-out / verbal analogy / sentence completion) are drawn from curated single-answer
-  banks and then **AI-judged** (an independent pass confirms one unambiguous Grade-5 answer).
+- **Verbal** (odd-one-out / verbal analogy / sentence completion) are generated procedurally by
+  `content/verbal-gen.mjs` (single-answer by construction) and then **AI-judged** (an independent pass
+  confirms one unambiguous Grade-5 answer). `content/verbal-bank.mjs` holds the original curated pilot
+  items.
 - **Nonverbal** are drawn from the **enumerated unique-signature pool** minus what the bank already uses.
 
-**The nonverbal signature space is the hard ceiling on round count.** With the current renderer:
+**The nonverbal signature space was the ceiling on round count; the vocabulary was then EXPANDED
+(committed + shape-approved) so the bank scales to ~100+ clean, zero-duplicate rounds:**
 
-| kind | vocabulary | unique signatures (clean, portrait-safe) |
+| kind | vocabulary (shipped) | unique signatures |
 |---|---|---|
-| `shaded` (figure analogy) | 3 glyphs, answer = right glyph filled | **9** (3 × 3) |
-| `polygon` (figure series) | sides 3..8, constant step, shown length ≤ 4 | ~24 |
-| `dot` (position) | 4 corners, rotation, shown length ≤ 4 | ~24 |
+| `shaded` (figure analogy) | 11 glyphs (circle, square, triangle, diamond, star, heart, cross, arrow, crescent, lightning, teardrop); answer = right glyph, filled | **121** (11 × 11) |
+| `polygon` (figure series) | sides 3..8, constant step, shown length ≤ 4 | ~22 |
+| `dot` (position) | 3×3 grid = 8-position perimeter ring + center; constant ring-step rotations (±1/±2/±3), shown length 3..6 | ~192 |
 
-That is ~57 unique nonverbal items total → **~18 rounds** at 3 nonverbal each (or **9** if you require
-one-shaded-per-round, since shaded caps at 9). `DotQuestion`/`PolygonQuestion` use fixed tiles, so a
-shown sequence longer than ~5 overflows in portrait; longer sequences are avoided.
+That is ~335 unique nonverbal items → **~111 rounds** at 3 nonverbal each. `DotQuestion` /
+`PolygonQuestion` now shrink tiles to fit (like `NumSeriesQuestion`), so longer sequences stay on one
+row. The 3 nonverbal items may be ANY mix of shaded/polygon/dot (each still deterministically solved +
+globally deduped); the 6/6/3 battery is unchanged. The old 4-corner dot rotations are ring-step 2, so
+the pilot rounds still validate. Solvers + signatures live once in `validate.mjs` and are imported by
+`gen-rounds.mjs` so the two never diverge.
 
-Because a strict one-each rule caps the bank at 9 rounds, `validate.mjs` now accepts the 3 nonverbal
-items as **any mix** of shaded/polygon/dot (each still deterministically solved + globally deduped);
-the 6/6/3 battery is unchanged.
+Verbal scales via `content/verbal-gen.mjs` (procedural, single-answer by construction): category-based
+odd-one-out (3 from one category + 1 outsider from a different super-group), relation-based analogies
+(two pairs of a functional relation, distractors from other answers), and clue-based sentence
+completions. Every verbal item still goes through the independent AI-judge gate.
 
-**To scale toward ~100 rounds, expand the nonverbal vocabulary** (each item needs a matching renderer
-component, solver, schema enum, and generator enumerator):
-- **Dot 3×3 grid** (add top/right/bottom/left mid-edges to `DotSquare` → 8 perimeter positions):
-  rotations/paths jump from ~24 to a few hundred. Highest leverage, smallest change.
-- **More figure-analogy transforms** (unfill, rotate, resize) and/or **more glyphs** in `ShapeGlyph`:
-  lifts `shaded` well past 9.
-- **Shrink-to-fit** `DotQuestion`/`PolygonQuestion` tiles (as `NumSeriesQuestion` already does) to
-  allow longer sequences safely.
-
-Each of these changes on-screen output, so it needs a visual review + a re-render of an affected cut.
+**Shipped bank: 100 rounds / 1500 questions, zero global duplicates.**

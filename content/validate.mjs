@@ -21,7 +21,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROUNDS_DIR = path.join(HERE, "rounds");
@@ -39,11 +39,12 @@ const DASH_RE = /[\u2013\u2014]|--/; // en dash, em dash, or double hyphen
 const hasDash = (s) => DASH_RE.test(String(s));
 
 const POLY_NAME = { 3: "triangle", 4: "square", 5: "pentagon", 6: "hexagon", 7: "heptagon", 8: "octagon", circle: "circle" };
-const POS_NAME = { tl: "top-left", tr: "top-right", br: "bottom-right", bl: "bottom-left", center: "center" };
-const CW = ["tl", "tr", "br", "bl"];
+const POS_NAME = { tl: "top-left", tm: "top", tr: "top-right", rm: "right", br: "bottom-right", bm: "bottom", bl: "bottom-left", lm: "left", center: "center" };
+// 8-position perimeter ring (clockwise) that dot rotations walk; center excluded.
+const RING = ["tl", "tm", "tr", "rm", "br", "bm", "bl", "lm"];
 
-const GLYPHS = ["circle", "square", "triangle"];
-const DOTPOS = ["tl", "tr", "br", "bl", "center"];
+const GLYPHS = ["circle", "square", "triangle", "diamond", "star", "heart", "cross", "arrow", "crescent", "lightning", "teardrop"];
+const DOTPOS = ["tl", "tm", "tr", "rm", "br", "bm", "bl", "lm", "center"];
 const LETTERS = ["A", "B", "C", "D"];
 const CATS = ["verbal", "quantitative", "nonverbal"];
 const DIFFS = ["easy", "medium", "hard"];
@@ -120,13 +121,18 @@ function solvePolygon(seq) {
 }
 
 function solveDot(seq) {
+  // constant angular step around the 8-position perimeter ring (any step 1..7,
+  // excluding 0; step 4 = bounce between opposite spots is allowed but the
+  // generator avoids it). The old 4-corner rotations are ring-step 2, so pilot
+  // rounds still solve. Center in the sequence is not a rotation.
   if (seq.includes("center")) return null;
-  const idx = seq.map((p) => CW.indexOf(p));
-  if (idx.some((i) => i < 0)) return null;
-  const steps = idx.slice(1).map((v, i) => ((v - idx[i]) % 4 + 4) % 4);
-  if (steps.every((s) => s === 1)) return { next: CW[(idx[idx.length - 1] + 1) % 4], rule: "clockwise" };
-  if (steps.every((s) => s === 3)) return { next: CW[(idx[idx.length - 1] + 3) % 4], rule: "counter-clockwise" };
-  return null;
+  const n = RING.length;
+  const idx = seq.map((p) => RING.indexOf(p));
+  if (idx.some((i) => i < 0) || idx.length < 2) return null;
+  const steps = idx.slice(1).map((v, i) => ((v - idx[i]) % n + n) % n);
+  if (steps.some((s) => s === 0) || !steps.every((s) => s === steps[0])) return null;
+  const step = steps[0];
+  return { next: RING[(idx[idx.length - 1] + step) % n], rule: `ring-step ${step}` };
 }
 
 // ---- signatures (playbook 4.2) --------------------------------------------
@@ -184,6 +190,10 @@ function nearDup(qa, qb) {
   }
   return false;
 }
+
+// Shared with the generator (gen-rounds.mjs) so it uses the SAME solvers +
+// signatures + near-dup logic as this validator (single source of truth).
+export { solveSeries, solveMapping, solvePuzzle, solvePolygon, solveDot, payloadOf, answerNormOf, sigOf, hashOf, nearDup };
 
 // ---- standard countdown ----------------------------------------------------
 // The render pipeline uses a uniform 5s question countdown (matches the Remotion
@@ -478,4 +488,6 @@ function printReport(round, res) {
   console.log(`  ${res.pass ? "PASS" : "FAIL"} (${res.humanCheck.length} verbal items need human review)`);
 }
 
-main();
+// Run validation only when invoked as a CLI; importing (e.g. from gen-rounds.mjs
+// to reuse the solvers) must NOT trigger a full validation pass.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();

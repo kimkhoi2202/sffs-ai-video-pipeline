@@ -1,0 +1,517 @@
+{
+  "round": 31,
+  "slug": "round-031",
+  "title": "Round 31: The Whole Brain Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MERCURY"
+        },
+        {
+          "letter": "B",
+          "text": "SATURN"
+        },
+        {
+          "letter": "C",
+          "text": "MARS"
+        },
+        {
+          "letter": "D",
+          "text": "RADISH"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "RADISH",
+      "explanation": "Saturn, mars, and mercury are all planets. Radish is a vegetable, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "22",
+        "26",
+        "30",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "37"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "32"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "34",
+      "explanation": "Each number goes up by four, so the next one is thirty plus four is thirty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "cross",
+      "rightShape": "lightning",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "heart",
+          "filled": false
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "lightning",
+      "ansFilled": true,
+      "ansLabel": "FILLED LIGHTNING",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty lightning becomes a filled lightning."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FINGER IS TO HAND AS\nKEY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FOOT"
+        },
+        {
+          "letter": "B",
+          "text": "FLOWER"
+        },
+        {
+          "letter": "C",
+          "text": "MOUTH"
+        },
+        {
+          "letter": "D",
+          "text": "PIANO"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "PIANO",
+      "explanation": "Finger is part of a hand, so a key is part of a piano."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   6 -> 11,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "13"
+        },
+        {
+          "letter": "B",
+          "text": "17"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "15",
+      "explanation": "Each number is multiplied by two then take away one, so eight becomes fifteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "HARD IS TO SOFT AS\nBEGIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "END"
+        },
+        {
+          "letter": "B",
+          "text": "SHORT"
+        },
+        {
+          "letter": "C",
+          "text": "LOSE"
+        },
+        {
+          "letter": "D",
+          "text": "RIGHT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "END",
+      "explanation": "Hard and soft are opposites, so the opposite of begin is end."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "10",
+        "16",
+        "26",
+        "40",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "68"
+        },
+        {
+          "letter": "B",
+          "text": "58"
+        },
+        {
+          "letter": "C",
+          "text": "53"
+        },
+        {
+          "letter": "D",
+          "text": "59"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "58",
+      "explanation": "The gaps grow by the same amount each step, so the next number is fifty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "ANT IS TO ANTHILL AS\nPIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DEN"
+        },
+        {
+          "letter": "B",
+          "text": "POND"
+        },
+        {
+          "letter": "C",
+          "text": "PEN"
+        },
+        {
+          "letter": "D",
+          "text": "STABLE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "PEN",
+      "explanation": "Ant lives in an anthill, so a pig lives in a pen."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "12",
+        "21",
+        "30",
+        "39",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "58"
+        },
+        {
+          "letter": "B",
+          "text": "50"
+        },
+        {
+          "letter": "C",
+          "text": "53"
+        },
+        {
+          "letter": "D",
+          "text": "48"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "48",
+      "explanation": "Each number goes up by nine, so the next one is thirty-nine plus nine is forty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "YELLOW"
+        },
+        {
+          "letter": "B",
+          "text": "HELICOPTER"
+        },
+        {
+          "letter": "C",
+          "text": "JET"
+        },
+        {
+          "letter": "D",
+          "text": "BLIMP"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "YELLOW",
+      "explanation": "Blimp, jet, and helicopter are all aircraft. Yellow is a color, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "tl",
+        "tm",
+        "tr",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE YARD WAS FULL OF ______ FLOWERS\nIN RED, YELLOW, AND PURPLE.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PLAIN"
+        },
+        {
+          "letter": "B",
+          "text": "COLORFUL"
+        },
+        {
+          "letter": "C",
+          "text": "TINY"
+        },
+        {
+          "letter": "D",
+          "text": "EMPTY"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "COLORFUL",
+      "explanation": "Many colors means colorful."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "tm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "tm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 10,   7 -> 19,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "13"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "13",
+      "explanation": "Each number is multiplied by three then take away two, so five becomes thirteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+4=40,  7+7=56,  5+2=28\nTHEN  2+4 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "29"
+        },
+        {
+          "letter": "B",
+          "text": "21"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "8"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "24",
+      "explanation": "The trick is to add the two numbers, then times four: six times four is twenty-four."
+    }
+  ]
+}

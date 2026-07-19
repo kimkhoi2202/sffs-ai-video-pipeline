@@ -1,0 +1,515 @@
+{
+  "round": 51,
+  "slug": "round-051",
+  "title": "Round 51: Brainy Bunch Challenge",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ROCKET"
+        },
+        {
+          "letter": "B",
+          "text": "JACKET"
+        },
+        {
+          "letter": "C",
+          "text": "HELICOPTER"
+        },
+        {
+          "letter": "D",
+          "text": "BLIMP"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "JACKET",
+      "explanation": "Rocket, blimp, and helicopter are all aircraft. Jacket is a piece of clothing, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "23",
+        "25",
+        "27",
+        "29",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "34"
+        },
+        {
+          "letter": "D",
+          "text": "31"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "31",
+      "explanation": "Each number goes up by two, so the next one is twenty-nine plus two is thirty-one."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "star",
+      "rightShape": "circle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "circle",
+      "ansFilled": true,
+      "ansLabel": "FILLED CIRCLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty circle becomes a filled circle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SAILOR IS TO SHIP AS\nTEACHER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SCHOOL"
+        },
+        {
+          "letter": "B",
+          "text": "HOSPITAL"
+        },
+        {
+          "letter": "C",
+          "text": "BAKERY"
+        },
+        {
+          "letter": "D",
+          "text": "AIRPLANE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SCHOOL",
+      "explanation": "Sailor works in a ship, so a teacher works in a school."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   5 -> 13,   7 -> 19,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "22"
+        },
+        {
+          "letter": "B",
+          "text": "25"
+        },
+        {
+          "letter": "C",
+          "text": "27"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "22",
+      "explanation": "Each number is multiplied by three then take away two, so eight becomes twenty-two."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BEGIN IS TO END AS\nDEEP IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NEW"
+        },
+        {
+          "letter": "B",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "SHALLOW"
+        },
+        {
+          "letter": "D",
+          "text": "SHORT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SHALLOW",
+      "explanation": "Begin and end are opposites, so the opposite of deep is shallow."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "4",
+        "9",
+        "13",
+        "22",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "34"
+        },
+        {
+          "letter": "B",
+          "text": "35"
+        },
+        {
+          "letter": "C",
+          "text": "30"
+        },
+        {
+          "letter": "D",
+          "text": "45"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "35",
+      "explanation": "Add the two numbers before it: twenty-two plus thirteen is thirty-five."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SHEEP IS TO BAA AS\nWOLF IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MEOW"
+        },
+        {
+          "letter": "B",
+          "text": "HOWL"
+        },
+        {
+          "letter": "C",
+          "text": "HOOT"
+        },
+        {
+          "letter": "D",
+          "text": "HISS"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "HOWL",
+      "explanation": "Sheep says baa, so a wolf says howl."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "26",
+        "34",
+        "42",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "60"
+        },
+        {
+          "letter": "B",
+          "text": "53"
+        },
+        {
+          "letter": "C",
+          "text": "50"
+        },
+        {
+          "letter": "D",
+          "text": "51"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "50",
+      "explanation": "Each number goes up by eight, so the next one is forty-two plus eight is fifty."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MARS"
+        },
+        {
+          "letter": "B",
+          "text": "SATURN"
+        },
+        {
+          "letter": "C",
+          "text": "JUPITER"
+        },
+        {
+          "letter": "D",
+          "text": "JET"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "JET",
+      "explanation": "Jupiter, saturn, and mars are all planets. Jet is an aircraft, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "lm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "HORSE IS TO NEIGH AS\nCAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BARK"
+        },
+        {
+          "letter": "B",
+          "text": "HISS"
+        },
+        {
+          "letter": "C",
+          "text": "QUACK"
+        },
+        {
+          "letter": "D",
+          "text": "MEOW"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "MEOW",
+      "explanation": "Horse says neigh, so a cat says meow."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "tm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   5 -> 13,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "22"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "19",
+      "explanation": "Each number is multiplied by three then take away two, so seven becomes nineteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+9=40,  5+4=36,  8+2=40\nTHEN  7+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "45"
+        },
+        {
+          "letter": "B",
+          "text": "47"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "38"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "48",
+      "explanation": "The trick is to add the two numbers, then times four: twelve times four is forty-eight."
+    }
+  ]
+}

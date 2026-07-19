@@ -1,0 +1,517 @@
+{
+  "round": 66,
+  "slug": "round-066",
+  "title": "Round 66: Mix It Up Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CIRCLE"
+        },
+        {
+          "letter": "B",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "C",
+          "text": "CUBE"
+        },
+        {
+          "letter": "D",
+          "text": "OVAL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "HAMMER",
+      "explanation": "Oval, circle, and cube are all shapes. Hammer is a tool, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "8",
+        "14",
+        "20",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "28"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "29"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "26",
+      "explanation": "Each number goes up by six, so the next one is twenty plus six is twenty-six."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "diamond",
+      "rightShape": "circle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "crescent",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "lightning",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": false
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "circle",
+      "ansFilled": true,
+      "ansLabel": "FILLED CIRCLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty circle becomes a filled circle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FAST IS TO SLOW AS\nDAY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SELL"
+        },
+        {
+          "letter": "B",
+          "text": "SMALL"
+        },
+        {
+          "letter": "C",
+          "text": "QUIET"
+        },
+        {
+          "letter": "D",
+          "text": "NIGHT"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "NIGHT",
+      "explanation": "Fast and slow are opposites, so the opposite of day is night."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "26"
+        },
+        {
+          "letter": "B",
+          "text": "16"
+        },
+        {
+          "letter": "C",
+          "text": "23"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then add two, so eight becomes twenty-six."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "CHEF IS TO KNIFE AS\nCARPENTER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SCISSORS"
+        },
+        {
+          "letter": "B",
+          "text": "PEN"
+        },
+        {
+          "letter": "C",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "D",
+          "text": "SPADE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "HAMMER",
+      "explanation": "Chef uses a knife, so a carpenter uses a hammer."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "9",
+        "13",
+        "18",
+        "24",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "29"
+        },
+        {
+          "letter": "B",
+          "text": "36"
+        },
+        {
+          "letter": "C",
+          "text": "28"
+        },
+        {
+          "letter": "D",
+          "text": "31"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "31",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FARMER IS TO FARM AS\nSAILOR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "STAGE"
+        },
+        {
+          "letter": "B",
+          "text": "HOSPITAL"
+        },
+        {
+          "letter": "C",
+          "text": "SHIP"
+        },
+        {
+          "letter": "D",
+          "text": "KITCHEN"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SHIP",
+      "explanation": "Farmer works in a farm, so a sailor works in a ship."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "20",
+        "33",
+        "46",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "57"
+        },
+        {
+          "letter": "B",
+          "text": "59"
+        },
+        {
+          "letter": "C",
+          "text": "54"
+        },
+        {
+          "letter": "D",
+          "text": "62"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "59",
+      "explanation": "Each number goes up by thirteen, so the next one is forty-six plus thirteen is fifty-nine."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "STEEL"
+        },
+        {
+          "letter": "B",
+          "text": "VAN"
+        },
+        {
+          "letter": "C",
+          "text": "CAR"
+        },
+        {
+          "letter": "D",
+          "text": "MOTORCYCLE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "STEEL",
+      "explanation": "Van, car, and motorcycle are all road vehicles. Steel is a metal, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "tm",
+        "br",
+        "lm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "OWL IS TO HOOT AS\nBEE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BUZZ"
+        },
+        {
+          "letter": "B",
+          "text": "CHIRP"
+        },
+        {
+          "letter": "C",
+          "text": "BARK"
+        },
+        {
+          "letter": "D",
+          "text": "OINK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "BUZZ",
+      "explanation": "Owl says hoot, so a bee says buzz."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "bl",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "bl"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 14,   4 -> 18,   6 -> 26,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "40"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "38"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "38",
+      "explanation": "Each number is multiplied by four then add two, so nine becomes thirty-eight."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+2=3,  4+5=24,  6+5=36\nTHEN  8+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "45"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "38"
+        },
+        {
+          "letter": "D",
+          "text": "40"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "48",
+      "explanation": "The trick is to multiply them, then add the first: forty plus eight is forty-eight."
+    }
+  ]
+}

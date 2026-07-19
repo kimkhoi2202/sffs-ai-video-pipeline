@@ -1,0 +1,521 @@
+{
+  "round": 24,
+  "slug": "round-024",
+  "title": "Round 24: Analogies, Sums and Figures",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "VOLLEYBALL"
+        },
+        {
+          "letter": "B",
+          "text": "CRICKET"
+        },
+        {
+          "letter": "C",
+          "text": "SLEET"
+        },
+        {
+          "letter": "D",
+          "text": "RUGBY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SLEET",
+      "explanation": "Rugby, volleyball, and cricket are all sports. Sleet is a kind of weather, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "24",
+        "29",
+        "34",
+        "39",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "41"
+        },
+        {
+          "letter": "B",
+          "text": "47"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "46"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "44",
+      "explanation": "Each number goes up by five, so the next one is thirty-nine plus five is forty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "crescent",
+      "rightShape": "square",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "heart",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "square",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "square",
+      "ansFilled": true,
+      "ansLabel": "FILLED SQUARE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty square becomes a filled square."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SAILOR IS TO SHIP AS\nFARMER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SCHOOL"
+        },
+        {
+          "letter": "B",
+          "text": "KITCHEN"
+        },
+        {
+          "letter": "C",
+          "text": "BAKERY"
+        },
+        {
+          "letter": "D",
+          "text": "FARM"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "FARM",
+      "explanation": "Sailor works in a ship, so a farmer works in a farm."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 12,   7 -> 16,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "14"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "4"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "14",
+      "explanation": "Each number is multiplied by two then add two, so six becomes fourteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "HARD IS TO SOFT AS\nTALL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRY"
+        },
+        {
+          "letter": "B",
+          "text": "SHORT"
+        },
+        {
+          "letter": "C",
+          "text": "FAR"
+        },
+        {
+          "letter": "D",
+          "text": "NARROW"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SHORT",
+      "explanation": "Hard and soft are opposites, so the opposite of tall is short."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "5",
+        "8",
+        "12",
+        "17",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "28"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "23",
+      "explanation": "The gaps grow by the same amount each step, so the next number is twenty-three."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "CAMEL IS TO DESERT AS\nMONKEY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "JUNGLE"
+        },
+        {
+          "letter": "B",
+          "text": "SAVANNA"
+        },
+        {
+          "letter": "C",
+          "text": "CAVE"
+        },
+        {
+          "letter": "D",
+          "text": "WATER"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "JUNGLE",
+      "explanation": "Camel lives in the desert, so a monkey lives in the jungle."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "10",
+        "20",
+        "30",
+        "40",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "52"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "53"
+        },
+        {
+          "letter": "D",
+          "text": "50"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "50",
+      "explanation": "Each number goes up by ten, so the next one is forty plus ten is fifty."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRAGONFLY"
+        },
+        {
+          "letter": "B",
+          "text": "FLEA"
+        },
+        {
+          "letter": "C",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "D",
+          "text": "MOTH"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "HAMMER",
+      "explanation": "Moth, flea, and dragonfly are all insects. Hammer is a tool, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "rm",
+        "bm",
+        "lm",
+        "tm",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE LAKE FROZE SOLID IN JANUARY, SO THE\nCHILDREN COULD ______ ACROSS THE TOP.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SAIL"
+        },
+        {
+          "letter": "B",
+          "text": "SWIM"
+        },
+        {
+          "letter": "C",
+          "text": "SKATE"
+        },
+        {
+          "letter": "D",
+          "text": "DIVE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SKATE",
+      "explanation": "Frozen water lets you skate."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "tm",
+        "rm",
+        "bm",
+        "lm",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 9,   5 -> 11,   6 -> 13,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "22"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "19",
+      "explanation": "Each number is multiplied by two then add one, so nine becomes nineteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  9+3=18,  8+7=48,  4+2=4\nTHEN  3+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "24"
+        },
+        {
+          "letter": "B",
+          "text": "27"
+        },
+        {
+          "letter": "C",
+          "text": "22"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "24",
+      "explanation": "The trick is to multiply them, then take away the first: twenty-seven minus three is twenty-four."
+    }
+  ]
+}

@@ -1,0 +1,520 @@
+{
+  "round": 28,
+  "slug": "round-028",
+  "title": "Round 28: Logic and Language",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "JET"
+        },
+        {
+          "letter": "B",
+          "text": "CHAIR"
+        },
+        {
+          "letter": "C",
+          "text": "CABINET"
+        },
+        {
+          "letter": "D",
+          "text": "DESK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "JET",
+      "explanation": "Cabinet, chair, and desk are all furniture. Jet is an aircraft, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "21",
+        "24",
+        "27",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "35"
+        },
+        {
+          "letter": "B",
+          "text": "27"
+        },
+        {
+          "letter": "C",
+          "text": "33"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "30",
+      "explanation": "Each number goes up by three, so the next one is twenty-seven plus three is thirty."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "star",
+      "rightShape": "arrow",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "lightning",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "teardrop",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "arrow",
+      "ansFilled": true,
+      "ansLabel": "FILLED ARROW",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty arrow becomes a filled arrow."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "RABBIT IS TO BURROW AS\nBEE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DEN"
+        },
+        {
+          "letter": "B",
+          "text": "KENNEL"
+        },
+        {
+          "letter": "C",
+          "text": "HIVE"
+        },
+        {
+          "letter": "D",
+          "text": "BARN"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "HIVE",
+      "explanation": "Rabbit lives in a burrow, so a bee lives in a hive."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 8,   4 -> 11,   6 -> 17,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "24"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "23"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "23",
+      "explanation": "Each number is multiplied by three then take away one, so eight becomes twenty-three."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "SCALE IS TO WEIGH AS\nBROOM IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SWEEP"
+        },
+        {
+          "letter": "B",
+          "text": "HEAT"
+        },
+        {
+          "letter": "C",
+          "text": "WRITE"
+        },
+        {
+          "letter": "D",
+          "text": "HEAR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SWEEP",
+      "explanation": "Scale is used to weigh, so a broom is used to sweep."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "10",
+        "13",
+        "17",
+        "22",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "28"
+        },
+        {
+          "letter": "C",
+          "text": "30"
+        },
+        {
+          "letter": "D",
+          "text": "31"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "28",
+      "explanation": "The gaps grow by the same amount each step, so the next number is twenty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "EARLY IS TO LATE AS\nHOT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "COLD"
+        },
+        {
+          "letter": "C",
+          "text": "THIN"
+        },
+        {
+          "letter": "D",
+          "text": "SMALL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "COLD",
+      "explanation": "Early and late are opposites, so the opposite of hot is cold."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "13",
+        "23",
+        "33",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "33"
+        },
+        {
+          "letter": "B",
+          "text": "43"
+        },
+        {
+          "letter": "C",
+          "text": "53"
+        },
+        {
+          "letter": "D",
+          "text": "40"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "43",
+      "explanation": "Each number goes up by ten, so the next one is thirty-three plus ten is forty-three."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WRIST"
+        },
+        {
+          "letter": "B",
+          "text": "CHIN"
+        },
+        {
+          "letter": "C",
+          "text": "BLACK"
+        },
+        {
+          "letter": "D",
+          "text": "ARM"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "BLACK",
+      "explanation": "Chin, wrist, and arm are all body parts. Black is a color, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "tr",
+        "tm",
+        "tl",
+        "lm",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "tl"
+        },
+        {
+          "letter": "C",
+          "pos": "tr"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "SINCE THE HALLWAY WAS COMPLETELY ______,\nWE TURNED ON A LAMP SO WE COULD SEE.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WARM"
+        },
+        {
+          "letter": "B",
+          "text": "LARGE"
+        },
+        {
+          "letter": "C",
+          "text": "DARK"
+        },
+        {
+          "letter": "D",
+          "text": "BRIGHT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DARK",
+      "explanation": "You turn on a lamp when it is dark."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "tl",
+        "lm",
+        "bl",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "8"
+        },
+        {
+          "letter": "C",
+          "text": "23"
+        },
+        {
+          "letter": "D",
+          "text": "18"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "18",
+      "explanation": "Each number is multiplied by three then add three, so five becomes eighteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  9+6=39,  5+6=19,  1+9=-1\nTHEN  3+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "9"
+        },
+        {
+          "letter": "B",
+          "text": "7"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "18"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "9",
+      "explanation": "The trick is to multiply them, then take away their sum: eighteen minus nine is nine."
+    }
+  ]
+}

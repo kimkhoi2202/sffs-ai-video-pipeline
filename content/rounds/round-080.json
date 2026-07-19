@@ -1,0 +1,521 @@
+{
+  "round": 80,
+  "slug": "round-080",
+  "title": "Round 80: Logic and Language",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BROCCOLI"
+        },
+        {
+          "letter": "B",
+          "text": "ANT"
+        },
+        {
+          "letter": "C",
+          "text": "PEA"
+        },
+        {
+          "letter": "D",
+          "text": "RADISH"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "ANT",
+      "explanation": "Radish, broccoli, and pea are all vegetables. Ant is an insect, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "23",
+        "28",
+        "33",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "35"
+        },
+        {
+          "letter": "B",
+          "text": "41"
+        },
+        {
+          "letter": "C",
+          "text": "38"
+        },
+        {
+          "letter": "D",
+          "text": "39"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "38",
+      "explanation": "Each number goes up by five, so the next one is thirty-three plus five is thirty-eight."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "diamond",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "heart",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "crescent",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "diamond",
+      "ansFilled": true,
+      "ansLabel": "FILLED DIAMOND",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty diamond becomes a filled diamond."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WIN IS TO LOSE AS\nHARD IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEAK"
+        },
+        {
+          "letter": "B",
+          "text": "SLOW"
+        },
+        {
+          "letter": "C",
+          "text": "FAR"
+        },
+        {
+          "letter": "D",
+          "text": "SOFT"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SOFT",
+      "explanation": "Win and lose are opposites, so the opposite of hard is soft."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 16,   6 -> 19,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "24"
+        },
+        {
+          "letter": "B",
+          "text": "27"
+        },
+        {
+          "letter": "C",
+          "text": "22"
+        },
+        {
+          "letter": "D",
+          "text": "17"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "22",
+      "explanation": "Each number is multiplied by three then add one, so seven becomes twenty-two."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "SNAKE IS TO HISS AS\nCAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MEOW"
+        },
+        {
+          "letter": "B",
+          "text": "BUZZ"
+        },
+        {
+          "letter": "C",
+          "text": "OINK"
+        },
+        {
+          "letter": "D",
+          "text": "QUACK"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "MEOW",
+      "explanation": "Snake says hiss, so a cat says meow."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "12",
+        "19",
+        "29",
+        "42",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "68"
+        },
+        {
+          "letter": "B",
+          "text": "58"
+        },
+        {
+          "letter": "C",
+          "text": "57"
+        },
+        {
+          "letter": "D",
+          "text": "59"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "58",
+      "explanation": "The gaps grow by the same amount each step, so the next number is fifty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "PENGUIN IS TO ICE AS\nWHALE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "OCEAN"
+        },
+        {
+          "letter": "B",
+          "text": "CAVE"
+        },
+        {
+          "letter": "C",
+          "text": "JUNGLE"
+        },
+        {
+          "letter": "D",
+          "text": "POND"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "OCEAN",
+      "explanation": "Penguin lives in the ice, so a whale lives in the ocean."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "19",
+        "31",
+        "43",
+        "55",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "64"
+        },
+        {
+          "letter": "B",
+          "text": "67"
+        },
+        {
+          "letter": "C",
+          "text": "69"
+        },
+        {
+          "letter": "D",
+          "text": "65"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "67",
+      "explanation": "Each number goes up by twelve, so the next one is fifty-five plus twelve is sixty-seven."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRILL"
+        },
+        {
+          "letter": "B",
+          "text": "WRENCH"
+        },
+        {
+          "letter": "C",
+          "text": "AXE"
+        },
+        {
+          "letter": "D",
+          "text": "LEG"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "LEG",
+      "explanation": "Axe, wrench, and drill are all tools. Leg is a body part, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "lm",
+        "tr",
+        "bm",
+        "tl",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "FROG IS TO TADPOLE AS\nKANGAROO IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CUB"
+        },
+        {
+          "letter": "B",
+          "text": "JOEY"
+        },
+        {
+          "letter": "C",
+          "text": "LAMB"
+        },
+        {
+          "letter": "D",
+          "text": "DUCKLING"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "JOEY",
+      "explanation": "Frog baby is called a tadpole, so a kangaroo baby is called a joey."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "lm",
+        "bm",
+        "rm",
+        "tm",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 10,   7 -> 26,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "33"
+        },
+        {
+          "letter": "C",
+          "text": "34"
+        },
+        {
+          "letter": "D",
+          "text": "37"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "34",
+      "explanation": "Each number is multiplied by four then take away two, so nine becomes thirty-four."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  7+9=79,  4+1=9,  7+5=47\nTHEN  8+4 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "44"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "43"
+        },
+        {
+          "letter": "D",
+          "text": "41"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "44",
+      "explanation": "The trick is to multiply them, then add both back: eight times four is thirty-two, plus eight plus four is forty-four."
+    }
+  ]
+}

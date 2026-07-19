@@ -1,0 +1,518 @@
+{
+  "round": 100,
+  "slug": "round-100",
+  "title": "Round 100: Riddles, Series and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PANTS"
+        },
+        {
+          "letter": "B",
+          "text": "JACKET"
+        },
+        {
+          "letter": "C",
+          "text": "HAT"
+        },
+        {
+          "letter": "D",
+          "text": "SQUARE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SQUARE",
+      "explanation": "Pants, jacket, and hat are all clothing. Square is a shape, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "21",
+        "26",
+        "31",
+        "36",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "46"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "42"
+        },
+        {
+          "letter": "D",
+          "text": "41"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "41",
+      "explanation": "Each number goes up by five, so the next one is thirty-six plus five is forty-one."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "diamond",
+      "rightShape": "arrow",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "heart",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "triangle",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": false
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "arrow",
+      "ansFilled": true,
+      "ansLabel": "FILLED ARROW",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty arrow becomes a filled arrow."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "NEAR IS TO FAR AS\nTALL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TAKE"
+        },
+        {
+          "letter": "B",
+          "text": "SHORT"
+        },
+        {
+          "letter": "C",
+          "text": "LATE"
+        },
+        {
+          "letter": "D",
+          "text": "END"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SHORT",
+      "explanation": "Near and far are opposites, so the opposite of tall is short."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 8,   5 -> 14,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "7"
+        },
+        {
+          "letter": "B",
+          "text": "18"
+        },
+        {
+          "letter": "C",
+          "text": "17"
+        },
+        {
+          "letter": "D",
+          "text": "19"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "17",
+      "explanation": "Each number is multiplied by three then take away one, so six becomes seventeen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "FULL IS TO EMPTY AS\nLOUD IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "QUIET"
+        },
+        {
+          "letter": "B",
+          "text": "THIN"
+        },
+        {
+          "letter": "C",
+          "text": "LATE"
+        },
+        {
+          "letter": "D",
+          "text": "FAR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "QUIET",
+      "explanation": "Full and empty are opposites, so the opposite of loud is quiet."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "12",
+        "20",
+        "32",
+        "48",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "63"
+        },
+        {
+          "letter": "B",
+          "text": "69"
+        },
+        {
+          "letter": "C",
+          "text": "68"
+        },
+        {
+          "letter": "D",
+          "text": "67"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "68",
+      "explanation": "The gaps grow by the same amount each step, so the next number is sixty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HARD IS TO SOFT AS\nLEFT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "POOR"
+        },
+        {
+          "letter": "B",
+          "text": "NEW"
+        },
+        {
+          "letter": "C",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "LOSE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "RIGHT",
+      "explanation": "Hard and soft are opposites, so the opposite of left is right."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "16",
+        "24",
+        "32",
+        "40",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "43"
+        },
+        {
+          "letter": "B",
+          "text": "49"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "45"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "48",
+      "explanation": "Each number goes up by eight, so the next one is forty plus eight is forty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SEVEN"
+        },
+        {
+          "letter": "B",
+          "text": "SHELF"
+        },
+        {
+          "letter": "C",
+          "text": "TABLE"
+        },
+        {
+          "letter": "D",
+          "text": "BENCH"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SEVEN",
+      "explanation": "Shelf, bench, and table are all furniture. Seven is a number, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "rm",
+        "tm",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "tm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "WIN IS TO LOSE AS\nBIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "QUIET"
+        },
+        {
+          "letter": "C",
+          "text": "SELL"
+        },
+        {
+          "letter": "D",
+          "text": "SMALL"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SMALL",
+      "explanation": "Win and lose are opposites, so the opposite of big is small."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "square",
+      "rightShape": "diamond",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "triangle",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "diamond",
+      "ansFilled": true,
+      "ansLabel": "FILLED DIAMOND",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty diamond becomes a filled diamond."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 15,   7 -> 27,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "15"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "9"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "19",
+      "explanation": "Each number is multiplied by four then take away one, so five becomes nineteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  2+7=23,  1+2=5,  6+3=27\nTHEN  3+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "39"
+        },
+        {
+          "letter": "B",
+          "text": "37"
+        },
+        {
+          "letter": "C",
+          "text": "40"
+        },
+        {
+          "letter": "D",
+          "text": "41"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "39",
+      "explanation": "The trick is to multiply them, then add both back: three times nine is twenty-seven, plus three plus nine is thirty-nine."
+    }
+  ]
+}

@@ -1,0 +1,519 @@
+{
+  "round": 70,
+  "slug": "round-070",
+  "title": "Round 70: The Whole Brain Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PEA"
+        },
+        {
+          "letter": "B",
+          "text": "BROCCOLI"
+        },
+        {
+          "letter": "C",
+          "text": "FLUTE"
+        },
+        {
+          "letter": "D",
+          "text": "CELERY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "FLUTE",
+      "explanation": "Pea, celery, and broccoli are all vegetables. Flute is an instrument, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "16",
+        "23",
+        "30",
+        "37",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "49"
+        },
+        {
+          "letter": "B",
+          "text": "45"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "39"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "44",
+      "explanation": "Each number goes up by seven, so the next one is thirty-seven plus seven is forty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "cross",
+      "rightShape": "star",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "heart",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "teardrop",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "star",
+      "ansFilled": true,
+      "ansLabel": "FILLED STAR",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty star becomes a filled star."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "PILOT IS TO AIRPLANE AS\nCHEF IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BAKERY"
+        },
+        {
+          "letter": "B",
+          "text": "KITCHEN"
+        },
+        {
+          "letter": "C",
+          "text": "HOSPITAL"
+        },
+        {
+          "letter": "D",
+          "text": "LIBRARY"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "KITCHEN",
+      "explanation": "Pilot works in an airplane, so a chef works in a kitchen."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   5 -> 16,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "19"
+        },
+        {
+          "letter": "C",
+          "text": "12"
+        },
+        {
+          "letter": "D",
+          "text": "22"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "22",
+      "explanation": "Each number is multiplied by three then add one, so seven becomes twenty-two."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "TOOTH IS TO MOUTH AS\nPAGE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CAR"
+        },
+        {
+          "letter": "B",
+          "text": "PLANT"
+        },
+        {
+          "letter": "C",
+          "text": "BOOK"
+        },
+        {
+          "letter": "D",
+          "text": "HOUSE"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "BOOK",
+      "explanation": "Tooth is part of a mouth, so a page is part of a book."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "5",
+        "10",
+        "15",
+        "25",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "40"
+        },
+        {
+          "letter": "B",
+          "text": "42"
+        },
+        {
+          "letter": "C",
+          "text": "37"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "40",
+      "explanation": "Add the two numbers before it: twenty-five plus fifteen is forty."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BEGIN IS TO END AS\nEARLY IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DIRTY"
+        },
+        {
+          "letter": "B",
+          "text": "LATE"
+        },
+        {
+          "letter": "C",
+          "text": "WEAK"
+        },
+        {
+          "letter": "D",
+          "text": "PULL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "LATE",
+      "explanation": "Begin and end are opposites, so the opposite of early is late."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "16",
+        "29",
+        "42",
+        "55",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "67"
+        },
+        {
+          "letter": "B",
+          "text": "68"
+        },
+        {
+          "letter": "C",
+          "text": "58"
+        },
+        {
+          "letter": "D",
+          "text": "71"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "68",
+      "explanation": "Each number goes up by thirteen, so the next one is fifty-five plus thirteen is sixty-eight."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CATFISH"
+        },
+        {
+          "letter": "B",
+          "text": "SEVEN"
+        },
+        {
+          "letter": "C",
+          "text": "BASS"
+        },
+        {
+          "letter": "D",
+          "text": "CARP"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SEVEN",
+      "explanation": "Bass, catfish, and carp are all fish. Seven is a number, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "lm",
+        "bm",
+        "rm",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "tr"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "LOUD IS TO QUIET AS\nUP IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LOW"
+        },
+        {
+          "letter": "B",
+          "text": "SELL"
+        },
+        {
+          "letter": "C",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "DOWN"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "DOWN",
+      "explanation": "Loud and quiet are opposites, so the opposite of up is down."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "bl",
+        "bm",
+        "br",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "33"
+        },
+        {
+          "letter": "B",
+          "text": "38"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "33",
+      "explanation": "Each number is multiplied by four then add one, so eight becomes thirty-three."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+9=48,  8+8=56,  9+2=9\nTHEN  3+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "15",
+      "explanation": "The trick is to multiply them, then take away the first: eighteen minus three is fifteen."
+    }
+  ]
+}

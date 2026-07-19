@@ -1,0 +1,521 @@
+{
+  "round": 20,
+  "slug": "round-020",
+  "title": "Round 20: Puzzles, Patterns and Brain Teasers",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TRUMPET"
+        },
+        {
+          "letter": "B",
+          "text": "PINK"
+        },
+        {
+          "letter": "C",
+          "text": "DRUM"
+        },
+        {
+          "letter": "D",
+          "text": "HARP"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "PINK",
+      "explanation": "Drum, harp, and trumpet are all instruments. Pink is a color, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "8",
+        "16",
+        "32",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "67"
+        },
+        {
+          "letter": "B",
+          "text": "69"
+        },
+        {
+          "letter": "C",
+          "text": "64"
+        },
+        {
+          "letter": "D",
+          "text": "65"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "64",
+      "explanation": "Each number is multiplied by two, so the next one is thirty-two times two is sixty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "circle",
+      "rightShape": "lightning",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "heart",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "lightning",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "lightning",
+      "ansFilled": true,
+      "ansLabel": "FILLED LIGHTNING",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty lightning becomes a filled lightning."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "PETAL IS TO FLOWER AS\nWHEEL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BOOK"
+        },
+        {
+          "letter": "B",
+          "text": "HOUSE"
+        },
+        {
+          "letter": "C",
+          "text": "CAR"
+        },
+        {
+          "letter": "D",
+          "text": "BOAT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "CAR",
+      "explanation": "Petal is part of a flower, so a wheel is part of a car."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 14,   6 -> 17,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "23"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "24"
+        },
+        {
+          "letter": "D",
+          "text": "27"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then take away one, so nine becomes twenty-six."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "OPEN IS TO CLOSED AS\nWIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LOSE"
+        },
+        {
+          "letter": "B",
+          "text": "QUIET"
+        },
+        {
+          "letter": "C",
+          "text": "COLD"
+        },
+        {
+          "letter": "D",
+          "text": "FAR"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "LOSE",
+      "explanation": "Open and closed are opposites, so the opposite of win is lose."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "9",
+        "11",
+        "20",
+        "31",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "51"
+        },
+        {
+          "letter": "B",
+          "text": "54"
+        },
+        {
+          "letter": "C",
+          "text": "46"
+        },
+        {
+          "letter": "D",
+          "text": "49"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "51",
+      "explanation": "Add the two numbers before it: thirty-one plus twenty is fifty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "LIGHT IS TO DARK AS\nFAST IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SLOW"
+        },
+        {
+          "letter": "B",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "DOWN"
+        },
+        {
+          "letter": "D",
+          "text": "LATE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SLOW",
+      "explanation": "Light and dark are opposites, so the opposite of fast is slow."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "20",
+        "32",
+        "44",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "55"
+        },
+        {
+          "letter": "B",
+          "text": "51"
+        },
+        {
+          "letter": "C",
+          "text": "58"
+        },
+        {
+          "letter": "D",
+          "text": "56"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "56",
+      "explanation": "Each number goes up by twelve, so the next one is forty-four plus twelve is fifty-six."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SLEET"
+        },
+        {
+          "letter": "B",
+          "text": "SNOW"
+        },
+        {
+          "letter": "C",
+          "text": "WRIST"
+        },
+        {
+          "letter": "D",
+          "text": "THUNDER"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "WRIST",
+      "explanation": "Sleet, thunder, and snow are all kinds of weather. Wrist is a body part, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "lm",
+        "tl",
+        "tm",
+        "tr",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE RIDDLE WAS SO ______ THAT IT TOOK\nHER ALL AFTERNOON TO SOLVE IT.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "EASY"
+        },
+        {
+          "letter": "B",
+          "text": "SILLY"
+        },
+        {
+          "letter": "C",
+          "text": "DIFFICULT"
+        },
+        {
+          "letter": "D",
+          "text": "SHORT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DIFFICULT",
+      "explanation": "Taking all afternoon means difficult."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "rm",
+        "bl",
+        "tm",
+        "br",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 10,   3 -> 14,   5 -> 22,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "34"
+        },
+        {
+          "letter": "B",
+          "text": "41"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "38"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "38",
+      "explanation": "Each number is multiplied by four then add two, so nine becomes thirty-eight."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  8+3=13,  5+2=3,  3+5=7\nTHEN  7+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "41"
+        },
+        {
+          "letter": "B",
+          "text": "42"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "41",
+      "explanation": "The trick is to multiply them, then take away their sum: fifty-six minus fifteen is forty-one."
+    }
+  ]
+}

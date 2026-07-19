@@ -1,0 +1,518 @@
+{
+  "round": 83,
+  "slug": "round-083",
+  "title": "Round 83: The Whole Brain Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KNEE"
+        },
+        {
+          "letter": "B",
+          "text": "CHIN"
+        },
+        {
+          "letter": "C",
+          "text": "WRIST"
+        },
+        {
+          "letter": "D",
+          "text": "EAGLE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "EAGLE",
+      "explanation": "Chin, wrist, and knee are all body parts. Eagle is a bird, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "13",
+        "21",
+        "29",
+        "37",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "45"
+        },
+        {
+          "letter": "B",
+          "text": "50"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "46"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "45",
+      "explanation": "Each number goes up by eight, so the next one is thirty-seven plus eight is forty-five."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "heart",
+      "rightShape": "teardrop",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "teardrop",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "diamond",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "heart",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "teardrop",
+      "ansFilled": true,
+      "ansLabel": "FILLED TEARDROP",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty teardrop becomes a filled teardrop."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HOT IS TO COLD AS\nCLEAN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SELL"
+        },
+        {
+          "letter": "B",
+          "text": "DIRTY"
+        },
+        {
+          "letter": "C",
+          "text": "LATE"
+        },
+        {
+          "letter": "D",
+          "text": "SLOW"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "DIRTY",
+      "explanation": "Hot and cold are opposites, so the opposite of clean is dirty."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 7,   5 -> 13,   7 -> 19,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "23"
+        },
+        {
+          "letter": "B",
+          "text": "35"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "26"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by three then take away two, so nine becomes twenty-five."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "PILOT IS TO AIRPLANE AS\nACTOR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KITCHEN"
+        },
+        {
+          "letter": "B",
+          "text": "FARM"
+        },
+        {
+          "letter": "C",
+          "text": "STAGE"
+        },
+        {
+          "letter": "D",
+          "text": "COURT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "STAGE",
+      "explanation": "Pilot works in an airplane, so an actor works in a stage."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "9",
+        "15",
+        "25",
+        "39",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "67"
+        },
+        {
+          "letter": "B",
+          "text": "60"
+        },
+        {
+          "letter": "C",
+          "text": "58"
+        },
+        {
+          "letter": "D",
+          "text": "57"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "57",
+      "explanation": "The gaps grow by the same amount each step, so the next number is fifty-seven."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "TOE IS TO FOOT AS\nTOOTH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HOUSE"
+        },
+        {
+          "letter": "B",
+          "text": "MOUTH"
+        },
+        {
+          "letter": "C",
+          "text": "CAR"
+        },
+        {
+          "letter": "D",
+          "text": "FLOWER"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "MOUTH",
+      "explanation": "Toe is part of a foot, so a tooth is part of a mouth."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "15",
+        "28",
+        "41",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "49"
+        },
+        {
+          "letter": "B",
+          "text": "54"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "51"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "54",
+      "explanation": "Each number goes up by thirteen, so the next one is forty-one plus thirteen is fifty-four."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "STOOL"
+        },
+        {
+          "letter": "B",
+          "text": "COCOA"
+        },
+        {
+          "letter": "C",
+          "text": "CHAIR"
+        },
+        {
+          "letter": "D",
+          "text": "SHELF"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "COCOA",
+      "explanation": "Chair, shelf, and stool are all furniture. Cocoa is a drink, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "bm",
+        "rm",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "FULL IS TO EMPTY AS\nGIVE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TAKE"
+        },
+        {
+          "letter": "B",
+          "text": "SMALL"
+        },
+        {
+          "letter": "C",
+          "text": "LOSE"
+        },
+        {
+          "letter": "D",
+          "text": "PULL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "TAKE",
+      "explanation": "Full and empty are opposites, so the opposite of give is take."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "tr",
+        "rm",
+        "br",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "rm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 19,   5 -> 23,   6 -> 27,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "40"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "33"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "35",
+      "explanation": "Each number is multiplied by four then add three, so eight becomes thirty-five."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  7+8=64,  3+7=28,  6+9=63\nTHEN  8+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "50"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "45"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "45",
+      "explanation": "The trick is to multiply them, then add the second: forty plus five is forty-five."
+    }
+  ]
+}

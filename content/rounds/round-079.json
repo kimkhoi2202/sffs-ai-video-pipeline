@@ -1,0 +1,518 @@
+{
+  "round": 79,
+  "slug": "round-079",
+  "title": "Round 79: Mix It Up Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MILK"
+        },
+        {
+          "letter": "B",
+          "text": "YACHT"
+        },
+        {
+          "letter": "C",
+          "text": "LEMONADE"
+        },
+        {
+          "letter": "D",
+          "text": "COFFEE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "YACHT",
+      "explanation": "Milk, coffee, and lemonade are all drinks. Yacht is a boat, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "4",
+        "6",
+        "8",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "9"
+        },
+        {
+          "letter": "B",
+          "text": "10"
+        },
+        {
+          "letter": "C",
+          "text": "0"
+        },
+        {
+          "letter": "D",
+          "text": "11"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "10",
+      "explanation": "Each number goes up by two, so the next one is eight plus two is ten."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "cross",
+      "rightShape": "diamond",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "crescent",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "diamond",
+      "ansFilled": true,
+      "ansLabel": "FILLED DIAMOND",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty diamond becomes a filled diamond."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SAIL IS TO BOAT AS\nWHEEL IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HAND"
+        },
+        {
+          "letter": "B",
+          "text": "FLOWER"
+        },
+        {
+          "letter": "C",
+          "text": "CAR"
+        },
+        {
+          "letter": "D",
+          "text": "PLANT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "CAR",
+      "explanation": "Sail is part of a boat, so a wheel is part of a car."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 13,   6 -> 19,   7 -> 22,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "22"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by three then add one, so eight becomes twenty-five."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "FULL IS TO EMPTY AS\nOPEN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEAK"
+        },
+        {
+          "letter": "B",
+          "text": "COLD"
+        },
+        {
+          "letter": "C",
+          "text": "NIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "CLOSED"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "CLOSED",
+      "explanation": "Full and empty are opposites, so the opposite of open is closed."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "7",
+        "9",
+        "16",
+        "25",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "41"
+        },
+        {
+          "letter": "B",
+          "text": "39"
+        },
+        {
+          "letter": "C",
+          "text": "36"
+        },
+        {
+          "letter": "D",
+          "text": "51"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "41",
+      "explanation": "Add the two numbers before it: twenty-five plus sixteen is forty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "DUCK IS TO QUACK AS\nLION IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HISS"
+        },
+        {
+          "letter": "B",
+          "text": "ROAR"
+        },
+        {
+          "letter": "C",
+          "text": "BUZZ"
+        },
+        {
+          "letter": "D",
+          "text": "OINK"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "ROAR",
+      "explanation": "Duck says quack, so a lion says roar."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "13",
+        "20",
+        "27",
+        "34",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "39"
+        },
+        {
+          "letter": "B",
+          "text": "36"
+        },
+        {
+          "letter": "C",
+          "text": "46"
+        },
+        {
+          "letter": "D",
+          "text": "41"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "41",
+      "explanation": "Each number goes up by seven, so the next one is thirty-four plus seven is forty-one."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GRASSHOPPER"
+        },
+        {
+          "letter": "B",
+          "text": "FOOT"
+        },
+        {
+          "letter": "C",
+          "text": "WRIST"
+        },
+        {
+          "letter": "D",
+          "text": "LEG"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "GRASSHOPPER",
+      "explanation": "Wrist, foot, and leg are all body parts. Grasshopper is an insect, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "tm",
+        "bl",
+        "rm",
+        "tl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "DAY IS TO NIGHT AS\nLIGHT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DARK"
+        },
+        {
+          "letter": "B",
+          "text": "POOR"
+        },
+        {
+          "letter": "C",
+          "text": "THIN"
+        },
+        {
+          "letter": "D",
+          "text": "END"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "DARK",
+      "explanation": "Day and night are opposites, so the opposite of light is dark."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "tr",
+        "rm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "tr"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 15,   5 -> 18,   6 -> 21,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "35"
+        },
+        {
+          "letter": "C",
+          "text": "31"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "30",
+      "explanation": "Each number is multiplied by three then add three, so nine becomes thirty."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+2=20,  5+7=47,  8+6=62\nTHEN  7+3 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "32"
+        },
+        {
+          "letter": "C",
+          "text": "31"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "31",
+      "explanation": "The trick is to multiply them, then add both back: seven times three is twenty-one, plus seven plus three is thirty-one."
+    }
+  ]
+}

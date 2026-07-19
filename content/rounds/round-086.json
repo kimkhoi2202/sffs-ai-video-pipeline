@@ -1,0 +1,518 @@
+{
+  "round": 86,
+  "slug": "round-086",
+  "title": "Round 86: Think Fast, Think Smart",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHOVEL"
+        },
+        {
+          "letter": "B",
+          "text": "SLEET"
+        },
+        {
+          "letter": "C",
+          "text": "HAIL"
+        },
+        {
+          "letter": "D",
+          "text": "DRIZZLE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SHOVEL",
+      "explanation": "Hail, drizzle, and sleet are all kinds of weather. Shovel is a tool, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "6",
+        "9",
+        "12",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "13"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "18"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "15",
+      "explanation": "Each number goes up by three, so the next one is twelve plus three is fifteen."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "star",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "square",
+          "filled": false
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "star",
+      "ansFilled": true,
+      "ansLabel": "FILLED STAR",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty star becomes a filled star."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "RICH IS TO POOR AS\nGIVE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TAKE"
+        },
+        {
+          "letter": "B",
+          "text": "CLOSED"
+        },
+        {
+          "letter": "C",
+          "text": "SELL"
+        },
+        {
+          "letter": "D",
+          "text": "NIGHT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "TAKE",
+      "explanation": "Rich and poor are opposites, so the opposite of give is take."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 8,   6 -> 10,   7 -> 12,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "14"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by two then take away two, so nine becomes sixteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WRITER IS TO PEN AS\nTAILOR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PICKAXE"
+        },
+        {
+          "letter": "B",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "C",
+          "text": "NEEDLE"
+        },
+        {
+          "letter": "D",
+          "text": "BRUSH"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "NEEDLE",
+      "explanation": "Writer uses a pen, so a tailor uses a needle."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "11",
+        "19",
+        "31",
+        "47",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "64"
+        },
+        {
+          "letter": "B",
+          "text": "62"
+        },
+        {
+          "letter": "C",
+          "text": "69"
+        },
+        {
+          "letter": "D",
+          "text": "67"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "67",
+      "explanation": "The gaps grow by the same amount each step, so the next number is sixty-seven."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "OPEN IS TO CLOSED AS\nBEGIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "THIN"
+        },
+        {
+          "letter": "B",
+          "text": "END"
+        },
+        {
+          "letter": "C",
+          "text": "LOSE"
+        },
+        {
+          "letter": "D",
+          "text": "FAR"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "END",
+      "explanation": "Open and closed are opposites, so the opposite of begin is end."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "9",
+        "22",
+        "35",
+        "48",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "61"
+        },
+        {
+          "letter": "B",
+          "text": "60"
+        },
+        {
+          "letter": "C",
+          "text": "64"
+        },
+        {
+          "letter": "D",
+          "text": "66"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "61",
+      "explanation": "Each number goes up by thirteen, so the next one is forty-eight plus thirteen is sixty-one."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "JACKET"
+        },
+        {
+          "letter": "B",
+          "text": "SALMON"
+        },
+        {
+          "letter": "C",
+          "text": "GOLDFISH"
+        },
+        {
+          "letter": "D",
+          "text": "TUNA"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "JACKET",
+      "explanation": "Tuna, salmon, and goldfish are all fish. Jacket is a piece of clothing, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "br",
+        "bm",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "FULL IS TO EMPTY AS\nPUSH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SMALL"
+        },
+        {
+          "letter": "B",
+          "text": "DIRTY"
+        },
+        {
+          "letter": "C",
+          "text": "SINK"
+        },
+        {
+          "letter": "D",
+          "text": "PULL"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "PULL",
+      "explanation": "Full and empty are opposites, so the opposite of push is pull."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "lightning",
+      "rightShape": "triangle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "triangle",
+          "filled": false
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "triangle",
+      "ansFilled": true,
+      "ansLabel": "FILLED TRIANGLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 6,   5 -> 12,   6 -> 14,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "17"
+        },
+        {
+          "letter": "B",
+          "text": "16"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "18"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "18",
+      "explanation": "Each number is multiplied by two then add two, so eight becomes eighteen."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  5+1=10,  7+6=84,  4+6=48\nTHEN  6+4 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "58"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "47"
+        },
+        {
+          "letter": "D",
+          "text": "51"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "48",
+      "explanation": "The trick is to multiply them, then double: twenty-four times two is forty-eight."
+    }
+  ]
+}

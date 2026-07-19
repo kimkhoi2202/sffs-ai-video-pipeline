@@ -1,0 +1,520 @@
+{
+  "round": 74,
+  "slug": "round-074",
+  "title": "Round 74: Riddles, Series and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "BRONZE"
+        },
+        {
+          "letter": "B",
+          "text": "VAN"
+        },
+        {
+          "letter": "C",
+          "text": "BRASS"
+        },
+        {
+          "letter": "D",
+          "text": "STEEL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "VAN",
+      "explanation": "Bronze, brass, and steel are all metals. Van is a road vehicle, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "23",
+        "30",
+        "37",
+        "44",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "46"
+        },
+        {
+          "letter": "B",
+          "text": "51"
+        },
+        {
+          "letter": "C",
+          "text": "61"
+        },
+        {
+          "letter": "D",
+          "text": "56"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "51",
+      "explanation": "Each number goes up by seven, so the next one is forty-four plus seven is fifty-one."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "triangle",
+      "rightShape": "teardrop",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "square",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "teardrop",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "circle",
+          "filled": false
+        }
+      ],
+      "ansLetter": "B",
+      "ansShape": "teardrop",
+      "ansFilled": true,
+      "ansLabel": "FILLED TEARDROP",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty teardrop becomes a filled teardrop."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HAPPY IS TO SAD AS\nHIGH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LOW"
+        },
+        {
+          "letter": "B",
+          "text": "LATE"
+        },
+        {
+          "letter": "C",
+          "text": "POOR"
+        },
+        {
+          "letter": "D",
+          "text": "NARROW"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "LOW",
+      "explanation": "Happy and sad are opposites, so the opposite of high is low."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n5 -> 17,   6 -> 20,   7 -> 23,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "26"
+        },
+        {
+          "letter": "B",
+          "text": "39"
+        },
+        {
+          "letter": "C",
+          "text": "32"
+        },
+        {
+          "letter": "D",
+          "text": "29"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "29",
+      "explanation": "Each number is multiplied by three then add two, so nine becomes twenty-nine."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WET IS TO DRY AS\nWIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LOSE"
+        },
+        {
+          "letter": "B",
+          "text": "FAR"
+        },
+        {
+          "letter": "C",
+          "text": "NEW"
+        },
+        {
+          "letter": "D",
+          "text": "NARROW"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "LOSE",
+      "explanation": "Wet and dry are opposites, so the opposite of win is lose."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "7",
+        "11",
+        "17",
+        "25",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "33"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "35",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-five."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "JUDGE IS TO COURT AS\nSAILOR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "AIRPLANE"
+        },
+        {
+          "letter": "B",
+          "text": "SHIP"
+        },
+        {
+          "letter": "C",
+          "text": "BAKERY"
+        },
+        {
+          "letter": "D",
+          "text": "STAGE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SHIP",
+      "explanation": "Judge works in a court, so a sailor works in a ship."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "17",
+        "26",
+        "35",
+        "44",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "63"
+        },
+        {
+          "letter": "B",
+          "text": "56"
+        },
+        {
+          "letter": "C",
+          "text": "43"
+        },
+        {
+          "letter": "D",
+          "text": "53"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "53",
+      "explanation": "Each number goes up by nine, so the next one is forty-four plus nine is fifty-three."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ORANGE"
+        },
+        {
+          "letter": "B",
+          "text": "GRAPE"
+        },
+        {
+          "letter": "C",
+          "text": "DRESS"
+        },
+        {
+          "letter": "D",
+          "text": "MELON"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DRESS",
+      "explanation": "Melon, grape, and orange are all fruits. Dress is a piece of clothing, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "br",
+        "tr",
+        "tl",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "PUSH IS TO PULL AS\nFLOAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "POOR"
+        },
+        {
+          "letter": "B",
+          "text": "SOFT"
+        },
+        {
+          "letter": "C",
+          "text": "SHALLOW"
+        },
+        {
+          "letter": "D",
+          "text": "SINK"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "SINK",
+      "explanation": "Push and pull are opposites, so the opposite of float is sink."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "bm",
+        "br",
+        "rm",
+        "tr",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tl"
+        },
+        {
+          "letter": "B",
+          "pos": "lm"
+        },
+        {
+          "letter": "C",
+          "pos": "tr"
+        },
+        {
+          "letter": "D",
+          "pos": "bl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   4 -> 10,   6 -> 16,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "15"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by three then take away two, so nine becomes twenty-five."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+5=55,  7+8=75,  3+5=40\nTHEN  4+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "65"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "64"
+        },
+        {
+          "letter": "D",
+          "text": "66"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "65",
+      "explanation": "The trick is to add the two numbers, then times five: thirteen times five is sixty-five."
+    }
+  ]
+}

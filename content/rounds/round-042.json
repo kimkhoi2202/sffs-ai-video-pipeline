@@ -1,0 +1,519 @@
+{
+  "round": 42,
+  "slug": "round-042",
+  "title": "Round 42: Shapes, Sums and Sayings",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DRAGONFLY"
+        },
+        {
+          "letter": "B",
+          "text": "LADYBUG"
+        },
+        {
+          "letter": "C",
+          "text": "GRASSHOPPER"
+        },
+        {
+          "letter": "D",
+          "text": "GOLF"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "GOLF",
+      "explanation": "Grasshopper, ladybug, and dragonfly are all insects. Golf is a sport, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "9",
+        "16",
+        "23",
+        "30",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "34"
+        },
+        {
+          "letter": "B",
+          "text": "35"
+        },
+        {
+          "letter": "C",
+          "text": "37"
+        },
+        {
+          "letter": "D",
+          "text": "27"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "37",
+      "explanation": "Each number goes up by seven, so the next one is thirty plus seven is thirty-seven."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "arrow",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "square",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "arrow",
+      "ansFilled": true,
+      "ansLabel": "FILLED ARROW",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty arrow becomes a filled arrow."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "OVEN IS TO HEAT AS\nEAR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HEAR"
+        },
+        {
+          "letter": "B",
+          "text": "MEASURE"
+        },
+        {
+          "letter": "C",
+          "text": "LIGHT"
+        },
+        {
+          "letter": "D",
+          "text": "TIME"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "HEAR",
+      "explanation": "Oven is used to heat, so an ear is used to hear."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "30"
+        },
+        {
+          "letter": "B",
+          "text": "18"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "23"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "20",
+      "explanation": "Each number is multiplied by three then add two, so six becomes twenty."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "UP IS TO DOWN AS\nRICH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "QUIET"
+        },
+        {
+          "letter": "B",
+          "text": "POOR"
+        },
+        {
+          "letter": "C",
+          "text": "SELL"
+        },
+        {
+          "letter": "D",
+          "text": "FAR"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "POOR",
+      "explanation": "Up and down are opposites, so the opposite of rich is poor."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "1",
+        "3",
+        "4",
+        "7",
+        "11",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "17"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "18",
+      "explanation": "Add the two numbers before it: eleven plus seven is eighteen."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "DOG IS TO PUPPY AS\nSHEEP IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CUB"
+        },
+        {
+          "letter": "B",
+          "text": "FAWN"
+        },
+        {
+          "letter": "C",
+          "text": "LAMB"
+        },
+        {
+          "letter": "D",
+          "text": "KITTEN"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "LAMB",
+      "explanation": "Dog baby is called a puppy, so a sheep baby is called a lamb."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "17",
+        "28",
+        "39",
+        "50",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "64"
+        },
+        {
+          "letter": "B",
+          "text": "61"
+        },
+        {
+          "letter": "C",
+          "text": "58"
+        },
+        {
+          "letter": "D",
+          "text": "66"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "61",
+      "explanation": "Each number goes up by eleven, so the next one is fifty plus eleven is sixty-one."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "STOOL"
+        },
+        {
+          "letter": "B",
+          "text": "SHELF"
+        },
+        {
+          "letter": "C",
+          "text": "TWELVE"
+        },
+        {
+          "letter": "D",
+          "text": "DRESSER"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "TWELVE",
+      "explanation": "Stool, shelf, and dresser are all furniture. Twelve is a number, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tr",
+        "tm",
+        "tl",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "rm"
+        },
+        {
+          "letter": "B",
+          "pos": "bl"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "br"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "DAY IS TO NIGHT AS\nSTRONG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SELL"
+        },
+        {
+          "letter": "B",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "C",
+          "text": "SHORT"
+        },
+        {
+          "letter": "D",
+          "text": "WEAK"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "WEAK",
+      "explanation": "Day and night are opposites, so the opposite of strong is weak."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "tl",
+        "tm",
+        "tr",
+        "rm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "bl"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 8,   6 -> 20,   7 -> 23,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "25"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "29"
+        },
+        {
+          "letter": "D",
+          "text": "27"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then add two, so eight becomes twenty-six."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+8=36,  3+8=44,  6+8=56\nTHEN  8+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "56"
+        },
+        {
+          "letter": "B",
+          "text": "46"
+        },
+        {
+          "letter": "C",
+          "text": "48"
+        },
+        {
+          "letter": "D",
+          "text": "53"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "56",
+      "explanation": "The trick is to add the two numbers, then times four: fourteen times four is fifty-six."
+    }
+  ]
+}

@@ -1,0 +1,519 @@
+{
+  "round": 85,
+  "slug": "round-085",
+  "title": "Round 85: Puzzles, Patterns and Brain Teasers",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WRENCH"
+        },
+        {
+          "letter": "B",
+          "text": "SCOOTER"
+        },
+        {
+          "letter": "C",
+          "text": "RAKE"
+        },
+        {
+          "letter": "D",
+          "text": "PLIERS"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "SCOOTER",
+      "explanation": "Wrench, rake, and pliers are all tools. Scooter is a road vehicle, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "18",
+        "20",
+        "22",
+        "24",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "26"
+        },
+        {
+          "letter": "B",
+          "text": "16"
+        },
+        {
+          "letter": "C",
+          "text": "21"
+        },
+        {
+          "letter": "D",
+          "text": "36"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "26",
+      "explanation": "Each number goes up by two, so the next one is twenty-four plus two is twenty-six."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "diamond",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "diamond",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "square",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "teardrop",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "FAST IS TO SLOW AS\nTHICK IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "END"
+        },
+        {
+          "letter": "B",
+          "text": "THIN"
+        },
+        {
+          "letter": "C",
+          "text": "SHORT"
+        },
+        {
+          "letter": "D",
+          "text": "RIGHT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "THIN",
+      "explanation": "Fast and slow are opposites, so the opposite of thick is thin."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "26"
+        },
+        {
+          "letter": "B",
+          "text": "29"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then take away one, so nine becomes twenty-six."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "HEN IS TO CHICK AS\nGOAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CALF"
+        },
+        {
+          "letter": "B",
+          "text": "FAWN"
+        },
+        {
+          "letter": "C",
+          "text": "DUCKLING"
+        },
+        {
+          "letter": "D",
+          "text": "KID"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "KID",
+      "explanation": "Hen baby is called a chick, so a goat baby is called a kid."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "8",
+        "13",
+        "22",
+        "35",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "49"
+        },
+        {
+          "letter": "B",
+          "text": "51"
+        },
+        {
+          "letter": "C",
+          "text": "52"
+        },
+        {
+          "letter": "D",
+          "text": "42"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "52",
+      "explanation": "The gaps grow by the same amount each step, so the next number is fifty-two."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BEAR IS TO CUB AS\nDUCK IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TADPOLE"
+        },
+        {
+          "letter": "B",
+          "text": "FOAL"
+        },
+        {
+          "letter": "C",
+          "text": "DUCKLING"
+        },
+        {
+          "letter": "D",
+          "text": "CHICK"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DUCKLING",
+      "explanation": "Bear baby is called a cub, so a duck baby is called a duckling."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "17",
+        "27",
+        "37",
+        "47",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "56"
+        },
+        {
+          "letter": "B",
+          "text": "67"
+        },
+        {
+          "letter": "C",
+          "text": "57"
+        },
+        {
+          "letter": "D",
+          "text": "47"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "57",
+      "explanation": "Each number goes up by ten, so the next one is forty-seven plus ten is fifty-seven."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HORSE"
+        },
+        {
+          "letter": "B",
+          "text": "MILK"
+        },
+        {
+          "letter": "C",
+          "text": "DOG"
+        },
+        {
+          "letter": "D",
+          "text": "LION"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "MILK",
+      "explanation": "Horse, dog, and lion are all mammals. Milk is a drink, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "bm",
+        "rm",
+        "tm",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "br"
+        },
+        {
+          "letter": "B",
+          "pos": "tr"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves two spots counter-clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "PUSH IS TO PULL AS\nGIVE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TAKE"
+        },
+        {
+          "letter": "B",
+          "text": "DRY"
+        },
+        {
+          "letter": "C",
+          "text": "FAR"
+        },
+        {
+          "letter": "D",
+          "text": "SHORT"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "TAKE",
+      "explanation": "Push and pull are opposites, so the opposite of give is take."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "br",
+        "rm",
+        "tr",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "tl",
+      "ansLabel": "TOP-LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 10,   5 -> 22,   7 -> 30,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "36"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "16"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by four then add two, so six becomes twenty-six."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  4+8=60,  4+2=30,  4+7=55\nTHEN  4+8 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "60"
+        },
+        {
+          "letter": "B",
+          "text": "62"
+        },
+        {
+          "letter": "C",
+          "text": "57"
+        },
+        {
+          "letter": "D",
+          "text": "50"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "60",
+      "explanation": "The trick is to add the two numbers, then times five: twelve times five is sixty."
+    }
+  ]
+}

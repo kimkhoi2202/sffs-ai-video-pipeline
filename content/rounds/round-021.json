@@ -1,0 +1,518 @@
+{
+  "round": 21,
+  "slug": "round-021",
+  "title": "Round 21: Think Fast, Think Smart",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "MOTORCYCLE"
+        },
+        {
+          "letter": "B",
+          "text": "SHOVEL"
+        },
+        {
+          "letter": "C",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "D",
+          "text": "AXE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "MOTORCYCLE",
+      "explanation": "Axe, hammer, and shovel are all tools. Motorcycle is a road vehicle, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "12",
+        "36",
+        "108",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "325"
+        },
+        {
+          "letter": "B",
+          "text": "314"
+        },
+        {
+          "letter": "C",
+          "text": "324"
+        },
+        {
+          "letter": "D",
+          "text": "319"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "324",
+      "explanation": "Each number is multiplied by three, so the next one is one hundred eight times three is three hundred twenty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "cross",
+      "rightShape": "heart",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "teardrop",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "heart",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "heart",
+      "ansFilled": true,
+      "ansLabel": "FILLED HEART",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty heart becomes a filled heart."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "PUSH IS TO PULL AS\nBEGIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FAR"
+        },
+        {
+          "letter": "B",
+          "text": "WEAK"
+        },
+        {
+          "letter": "C",
+          "text": "END"
+        },
+        {
+          "letter": "D",
+          "text": "CLOSED"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "END",
+      "explanation": "Push and pull are opposites, so the opposite of begin is end."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "15"
+        },
+        {
+          "letter": "B",
+          "text": "12"
+        },
+        {
+          "letter": "C",
+          "text": "17"
+        },
+        {
+          "letter": "D",
+          "text": "14"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "15",
+      "explanation": "Each number is multiplied by two then add three, so six becomes fifteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "LIGHT IS TO DARK AS\nRICH IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "POOR"
+        },
+        {
+          "letter": "B",
+          "text": "SOFT"
+        },
+        {
+          "letter": "C",
+          "text": "LATE"
+        },
+        {
+          "letter": "D",
+          "text": "LOSE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "POOR",
+      "explanation": "Light and dark are opposites, so the opposite of rich is poor."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "2",
+        "6",
+        "8",
+        "14",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "32"
+        },
+        {
+          "letter": "C",
+          "text": "22"
+        },
+        {
+          "letter": "D",
+          "text": "27"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "22",
+      "explanation": "Add the two numbers before it: fourteen plus eight is twenty-two."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BEE IS TO BUZZ AS\nPIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ROAR"
+        },
+        {
+          "letter": "B",
+          "text": "MOO"
+        },
+        {
+          "letter": "C",
+          "text": "MEOW"
+        },
+        {
+          "letter": "D",
+          "text": "OINK"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "OINK",
+      "explanation": "Bee says buzz, so a pig says oink."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "11",
+        "20",
+        "29",
+        "38",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "49"
+        },
+        {
+          "letter": "B",
+          "text": "47"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "50"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "47",
+      "explanation": "Each number goes up by nine, so the next one is thirty-eight plus nine is forty-seven."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "JACKET"
+        },
+        {
+          "letter": "B",
+          "text": "COAT"
+        },
+        {
+          "letter": "C",
+          "text": "HELICOPTER"
+        },
+        {
+          "letter": "D",
+          "text": "SWEATER"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "HELICOPTER",
+      "explanation": "Coat, sweater, and jacket are all clothing. Helicopter is an aircraft, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "br",
+        "rm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "lm"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "WE WORE THICK COATS AND GLOVES BECAUSE\nTHE WINTER DAY WAS SO ______.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HOT"
+        },
+        {
+          "letter": "B",
+          "text": "COLD"
+        },
+        {
+          "letter": "C",
+          "text": "SUNNY"
+        },
+        {
+          "letter": "D",
+          "text": "LOUD"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "COLD",
+      "explanation": "Coats and gloves mean cold."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "tl",
+        "bm",
+        "tr",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "br",
+      "ansLabel": "BOTTOM-RIGHT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is bottom-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   6 -> 23,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "31"
+        },
+        {
+          "letter": "C",
+          "text": "33"
+        },
+        {
+          "letter": "D",
+          "text": "27"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "31",
+      "explanation": "Each number is multiplied by four then take away one, so eight becomes thirty-one."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  8+3=35,  2+5=17,  7+7=63\nTHEN  7+6 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "53"
+        },
+        {
+          "letter": "B",
+          "text": "54"
+        },
+        {
+          "letter": "C",
+          "text": "65"
+        },
+        {
+          "letter": "D",
+          "text": "55"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "55",
+      "explanation": "The trick is to multiply them, then add both back: seven times six is forty-two, plus seven plus six is fifty-five."
+    }
+  ]
+}

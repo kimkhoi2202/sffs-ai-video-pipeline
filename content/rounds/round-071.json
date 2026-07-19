@@ -1,0 +1,515 @@
+{
+  "round": 71,
+  "slug": "round-071",
+  "title": "Round 71: Words, Numbers and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LADYBUG"
+        },
+        {
+          "letter": "B",
+          "text": "ANT"
+        },
+        {
+          "letter": "C",
+          "text": "FLEA"
+        },
+        {
+          "letter": "D",
+          "text": "CHAIR"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "CHAIR",
+      "explanation": "Ant, flea, and ladybug are all insects. Chair is a piece of furniture, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "22",
+        "30",
+        "38",
+        "46",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "56"
+        },
+        {
+          "letter": "B",
+          "text": "54"
+        },
+        {
+          "letter": "C",
+          "text": "51"
+        },
+        {
+          "letter": "D",
+          "text": "57"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "54",
+      "explanation": "Each number goes up by eight, so the next one is forty-six plus eight is fifty-four."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "arrow",
+      "rightShape": "triangle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "crescent",
+          "filled": true
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "triangle",
+      "ansFilled": true,
+      "ansLabel": "FILLED TRIANGLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HORSE IS TO STABLE AS\nSPIDER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "FOLD"
+        },
+        {
+          "letter": "B",
+          "text": "HIVE"
+        },
+        {
+          "letter": "C",
+          "text": "PEN"
+        },
+        {
+          "letter": "D",
+          "text": "WEB"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "WEB",
+      "explanation": "Horse lives in a stable, so a spider lives in a web."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "17"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "21"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "20",
+      "explanation": "Each number is multiplied by three then take away one, so seven becomes twenty."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "HARD IS TO SOFT AS\nLIGHT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LATE"
+        },
+        {
+          "letter": "B",
+          "text": "CLOSED"
+        },
+        {
+          "letter": "C",
+          "text": "DARK"
+        },
+        {
+          "letter": "D",
+          "text": "SINK"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "DARK",
+      "explanation": "Hard and soft are opposites, so the opposite of light is dark."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "8",
+        "10",
+        "15",
+        "23",
+        "34",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "46"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "51"
+        },
+        {
+          "letter": "D",
+          "text": "47"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "48",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-eight."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "RING IS TO GOLD AS\nSHIRT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "B",
+          "text": "PAPER"
+        },
+        {
+          "letter": "C",
+          "text": "CLAY"
+        },
+        {
+          "letter": "D",
+          "text": "COTTON"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "COTTON",
+      "explanation": "Ring is made of gold, so a shirt is made of cotton."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "16",
+        "27",
+        "38",
+        "49",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "60"
+        },
+        {
+          "letter": "B",
+          "text": "58"
+        },
+        {
+          "letter": "C",
+          "text": "55"
+        },
+        {
+          "letter": "D",
+          "text": "59"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "60",
+      "explanation": "Each number goes up by eleven, so the next one is forty-nine plus eleven is sixty."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "PLIERS"
+        },
+        {
+          "letter": "B",
+          "text": "FLY"
+        },
+        {
+          "letter": "C",
+          "text": "SCREWDRIVER"
+        },
+        {
+          "letter": "D",
+          "text": "DRILL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "FLY",
+      "explanation": "Screwdriver, pliers, and drill are all tools. Fly is an insect, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tl",
+        "lm",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bm",
+      "ansLabel": "BOTTOM",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is bottom."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "CARPENTER IS TO HAMMER AS\nGARDENER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SPADE"
+        },
+        {
+          "letter": "B",
+          "text": "SCISSORS"
+        },
+        {
+          "letter": "C",
+          "text": "KNIFE"
+        },
+        {
+          "letter": "D",
+          "text": "NEEDLE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "SPADE",
+      "explanation": "Carpenter uses a hammer, so a gardener uses a spade."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "bm",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tm"
+        },
+        {
+          "letter": "B",
+          "pos": "lm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "28"
+        },
+        {
+          "letter": "B",
+          "text": "25"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by three then add one, so eight becomes twenty-five."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  4+5=18,  2+3=10,  3+2=10\nTHEN  7+2 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "17"
+        },
+        {
+          "letter": "C",
+          "text": "28"
+        },
+        {
+          "letter": "D",
+          "text": "20"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "18",
+      "explanation": "The trick is to add the two numbers, then double: seven plus two is nine, and nine times two is eighteen."
+    }
+  ]
+}

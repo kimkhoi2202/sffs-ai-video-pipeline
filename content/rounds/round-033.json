@@ -1,0 +1,519 @@
+{
+  "round": 33,
+  "slug": "round-033",
+  "title": "Round 33: Puzzles, Patterns and Brain Teasers",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RAIN"
+        },
+        {
+          "letter": "B",
+          "text": "ARM"
+        },
+        {
+          "letter": "C",
+          "text": "SHOULDER"
+        },
+        {
+          "letter": "D",
+          "text": "KNEE"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "RAIN",
+      "explanation": "Knee, arm, and shoulder are all body parts. Rain is a kind of weather, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "15",
+        "45",
+        "135",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "405"
+        },
+        {
+          "letter": "B",
+          "text": "415"
+        },
+        {
+          "letter": "C",
+          "text": "407"
+        },
+        {
+          "letter": "D",
+          "text": "402"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "405",
+      "explanation": "Each number is multiplied by three, so the next one is one hundred thirty-five times three is four hundred five."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "crescent",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "square",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "crescent",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "square",
+          "filled": false
+        }
+      ],
+      "ansLetter": "C",
+      "ansShape": "crescent",
+      "ansFilled": true,
+      "ansLabel": "FILLED CRESCENT",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty crescent becomes a filled crescent."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "ACTOR IS TO STAGE AS\nDOCTOR IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KITCHEN"
+        },
+        {
+          "letter": "B",
+          "text": "HOSPITAL"
+        },
+        {
+          "letter": "C",
+          "text": "LIBRARY"
+        },
+        {
+          "letter": "D",
+          "text": "AIRPLANE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "HOSPITAL",
+      "explanation": "Actor works in a stage, so a doctor works in a hospital."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "10"
+        },
+        {
+          "letter": "D",
+          "text": "18"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "20",
+      "explanation": "Each number is multiplied by three then add two, so six becomes twenty."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "SHEEP IS TO FOLD AS\nHORSE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DEN"
+        },
+        {
+          "letter": "B",
+          "text": "BARN"
+        },
+        {
+          "letter": "C",
+          "text": "POND"
+        },
+        {
+          "letter": "D",
+          "text": "STABLE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "STABLE",
+      "explanation": "Sheep lives in a fold, so a horse lives in a stable."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "10",
+        "15",
+        "21",
+        "28",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "38"
+        },
+        {
+          "letter": "B",
+          "text": "36"
+        },
+        {
+          "letter": "C",
+          "text": "33"
+        },
+        {
+          "letter": "D",
+          "text": "39"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "36",
+      "explanation": "The gaps grow by the same amount each step, so the next number is thirty-six."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "HOT IS TO COLD AS\nBEGIN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "DARK"
+        },
+        {
+          "letter": "B",
+          "text": "END"
+        },
+        {
+          "letter": "C",
+          "text": "LOW"
+        },
+        {
+          "letter": "D",
+          "text": "TAKE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "END",
+      "explanation": "Hot and cold are opposites, so the opposite of begin is end."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "14",
+        "26",
+        "38",
+        "50",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "62"
+        },
+        {
+          "letter": "B",
+          "text": "63"
+        },
+        {
+          "letter": "C",
+          "text": "64"
+        },
+        {
+          "letter": "D",
+          "text": "61"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "62",
+      "explanation": "Each number goes up by twelve, so the next one is fifty plus twelve is sixty-two."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ONION"
+        },
+        {
+          "letter": "B",
+          "text": "PEA"
+        },
+        {
+          "letter": "C",
+          "text": "JEEP"
+        },
+        {
+          "letter": "D",
+          "text": "CARROT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "JEEP",
+      "explanation": "Pea, carrot, and onion are all vegetables. Jeep is a road vehicle, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "bl",
+        "bm",
+        "br",
+        "rm",
+        "tr"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "center"
+        },
+        {
+          "letter": "B",
+          "pos": "br"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "lm"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "tm",
+      "ansLabel": "TOP",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is top."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE PATH WAS SO ______ THAT ONLY ONE\nPERSON COULD SQUEEZE THROUGH AT A TIME.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SMOOTH"
+        },
+        {
+          "letter": "B",
+          "text": "SHORT"
+        },
+        {
+          "letter": "C",
+          "text": "WIDE"
+        },
+        {
+          "letter": "D",
+          "text": "NARROW"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "NARROW",
+      "explanation": "Only one at a time means narrow."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bl",
+        "lm",
+        "tl",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "tl"
+        },
+        {
+          "letter": "D",
+          "pos": "center"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "27"
+        },
+        {
+          "letter": "B",
+          "text": "28"
+        },
+        {
+          "letter": "C",
+          "text": "21"
+        },
+        {
+          "letter": "D",
+          "text": "26"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then take away one, so nine becomes twenty-six."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  6+3=27,  6+1=21,  2+3=15\nTHEN  8+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "53"
+        },
+        {
+          "letter": "B",
+          "text": "48"
+        },
+        {
+          "letter": "C",
+          "text": "51"
+        },
+        {
+          "letter": "D",
+          "text": "54"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "51",
+      "explanation": "The trick is to add the two numbers, then triple: eight plus nine is seventeen, times three is fifty-one."
+    }
+  ]
+}

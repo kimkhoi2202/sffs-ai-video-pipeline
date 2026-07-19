@@ -29,9 +29,9 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { VERBAL } from "./verbal-bank.mjs";
+import { solveSeries, solveMapping, solvePuzzle, solveDot, payloadOf, answerNormOf, sigOf } from "./validate.mjs";
+import { makeVerbalGen } from "./verbal-gen.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROUNDS_DIR = path.join(HERE, "rounds");
@@ -71,34 +71,12 @@ const shuffle = (arr) => {
 
 // ---- signature helpers (EXACT mirror of validate.mjs) ----------------------
 const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
-const slugify = (s) => norm(s).replace(/ /g, "-");
 const POLY_NAME = { 3: "triangle", 4: "square", 5: "pentagon", 6: "hexagon", 7: "heptagon", 8: "octagon", circle: "circle" };
-const POS_NAME = { tl: "top-left", tr: "top-right", br: "bottom-right", bl: "bottom-left", center: "center" };
-const CW = ["tl", "tr", "br", "bl"];
-
-function payloadOf(q) {
-  switch (q.kind) {
-    case "text":
-      return norm(q.question) + " || " + q.options.map((o) => norm(o.text)).sort().join("~");
-    case "numseries":
-      return q.seq.filter((t) => t !== "?").join("~");
-    case "shaded":
-      return `${q.leftShape}>${q.rightShape}=>${q.ansShape}:${q.ansFilled}`;
-    case "polygon":
-      return q.seq.join("~") + `=>${q.ansShape}`;
-    case "dot":
-      return q.seq.join("~") + `=>${q.ansPos}`;
-    default:
-      return "";
-  }
-}
-function answerNormOf(q) {
-  if (q.kind === "shaded") return `${q.ansFilled ? "filled" : "empty"}-${q.ansShape}`;
-  if (q.kind === "polygon") return String(q.ansShape);
-  if (q.kind === "dot") return q.ansPos;
-  return norm(q.ansLabel);
-}
-const sigOf = (q) => [q.kind, q.category, slugify(q.tier), payloadOf(q), answerNormOf(q)].join("|");
+const POS_NAME = { tl: "top-left", tm: "top", tr: "top-right", rm: "right", br: "bottom-right", bm: "bottom", bl: "bottom-left", lm: "left", center: "center" };
+// 8-position perimeter ring (clockwise); dot rotations walk it. center excluded.
+const RING = ["tl", "tm", "tr", "rm", "br", "bm", "bl", "lm"];
+// payloadOf / answerNormOf / sigOf + all solvers come from validate.mjs (imported
+// above) so the generator and validator can never diverge on signatures or rules.
 
 // ---- near-dup guard for TEXT items (mirrors validate.mjs nearDup for kind text) ----
 // The exact-signature check is not enough for text: the validator also fails a
@@ -123,37 +101,9 @@ function textOK(q) {
 }
 function acceptText(q) { ACCEPTED_TEXT.push({ key: textKey(q), optKey: optKeyOf(q), ans: answerNormOf(q) }); }
 
-// ---- solvers (EXACT mirror of validate.mjs) --------------------------------
-function solveSeries(nums) {
-  const n = nums.length;
-  if (n < 3) return null;
-  const d = nums.slice(1).map((v, i) => v - nums[i]);
-  if (d.every((x) => x === d[0])) return { next: nums[n - 1] + d[0] };
-  const r = nums[1] / nums[0];
-  if (nums.every((v, i) => i === 0 || Math.abs(nums[i - 1] * r - v) < 1e-9)) {
-    const nx = nums[n - 1] * r;
-    if (Number.isInteger(nx)) return { next: nx };
-  }
-  if (nums.every((v, i) => i < 2 || v === nums[i - 1] + nums[i - 2])) return { next: nums[n - 1] + nums[n - 2] };
-  const dd = d.slice(1).map((v, i) => v - d[i]);
-  if (dd.length >= 1 && dd.every((x) => x === dd[0])) return { next: nums[n - 1] + (d[d.length - 1] + dd[0]) };
-  return null;
-}
-function solveMapping(question) {
-  const pairs = [...question.matchAll(/(-?\d+)\s*->\s*(-?\d+)/g)].map((m) => [+m[1], +m[2]]);
-  const qm = question.match(/(-?\d+)\s*->\s*\?/);
-  if (!qm || pairs.length < 2) return null;
-  const x = +qm[1];
-  const [x1, y1] = pairs[0];
-  const [x2, y2] = pairs[1];
-  if (x2 === x1) return null;
-  const m = (y2 - y1) / (x2 - x1);
-  const c = y1 - m * x1;
-  if (!pairs.every(([a, b]) => Math.abs(m * a + c - b) < 1e-9)) return null;
-  const val = m * x + c;
-  if (!Number.isInteger(val)) return null;
-  return { next: val };
-}
+// solveSeries / solveMapping / solvePuzzle / solveDot are imported from
+// validate.mjs. PUZZLE_FORMULAS stays here because the generator needs the
+// formula FUNCTIONS to BUILD puzzles (validate only needs them to verify).
 const PUZZLE_FORMULAS = [
   ["a*b", (a, b) => a * b],
   ["a+b", (a, b) => a + b],
@@ -169,32 +119,6 @@ const PUZZLE_FORMULAS = [
   ["a*b-b", (a, b) => a * b - b],
   ["a*b*2", (a, b) => a * b * 2],
 ];
-function solvePuzzle(question) {
-  const eqs = [...question.matchAll(/(-?\d+)\s*[+\-x×*]\s*(-?\d+)\s*=\s*(-?\d+)/g)].map((m) => [+m[1], +m[2], +m[3]]);
-  const qm = question.match(/(-?\d+)\s*[+\-x×*]\s*(-?\d+)\s*=\s*\?/);
-  if (!qm || eqs.length < 2) return null;
-  const qa = +qm[1];
-  const qb = +qm[2];
-  const fits = PUZZLE_FORMULAS.filter(([, f]) => eqs.every(([a, b, c]) => f(a, b) === c));
-  if (!fits.length) return null;
-  const finals = [...new Set(fits.map(([, f]) => f(qa, qb)))];
-  return { next: finals.length === 1 ? finals[0] : null, ambiguous: finals.length > 1 };
-}
-function solvePolygon(seq) {
-  if (seq.length < 2) return null;
-  const d = seq.slice(1).map((v, i) => v - seq[i]);
-  if (d.every((x) => x === d[0])) return { next: seq[seq.length - 1] + d[0] };
-  return null;
-}
-function solveDot(seq) {
-  if (seq.includes("center")) return null;
-  const idx = seq.map((p) => CW.indexOf(p));
-  if (idx.some((i) => i < 0)) return null;
-  const steps = idx.slice(1).map((v, i) => (((v - idx[i]) % 4) + 4) % 4);
-  if (steps.every((s) => s === 1)) return { next: CW[(idx[idx.length - 1] + 1) % 4] };
-  if (steps.every((s) => s === 3)) return { next: CW[(idx[idx.length - 1] + 3) % 4] };
-  return null;
-}
 
 // ---- number helpers --------------------------------------------------------
 const ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
@@ -249,17 +173,17 @@ function genSeries(difficulty, targetLetter, usedSig) {
     let nums;
     if (difficulty === "easy") {
       const type = pick(["arith", "arith", "geo"]);
-      if (type === "arith") { const s = randInt(1, 15), d = pick([2, 3, 4, 5, 6]); nums = [s, s + d, s + 2 * d, s + 3 * d]; }
-      else { const s = pick([1, 2, 3]), r = pick([2, 3]); nums = [s, s * r, s * r * r, s * r * r * r]; }
+      if (type === "arith") { const s = randInt(1, 24), d = pick([2, 3, 4, 5, 6, 7, 8]); nums = [s, s + d, s + 2 * d, s + 3 * d]; }
+      else { const s = pick([1, 2, 3, 4, 5]), r = pick([2, 3]); nums = [s, s * r, s * r * r, s * r * r * r]; }
     } else if (difficulty === "medium") {
       const type = pick(["arith", "fib", "geo"]);
-      if (type === "arith") { const s = randInt(2, 12), d = pick([6, 7, 8, 9, 11]); nums = [s, s + d, s + 2 * d, s + 3 * d]; }
-      else if (type === "geo") { const s = pick([2, 3, 4]), r = 2; nums = [s, s * r, s * r * r, s * r * r * r]; }
-      else { let a = randInt(1, 3), b = randInt(2, 4); nums = [a, b, a + b, a + 2 * b, 2 * a + 3 * b]; }
+      if (type === "arith") { const s = randInt(2, 20), d = pick([6, 7, 8, 9, 10, 11, 12, 13]); nums = [s, s + d, s + 2 * d, s + 3 * d]; }
+      else if (type === "geo") { const s = pick([2, 3, 4, 5]), r = 2; nums = [s, s * r, s * r * r, s * r * r * r]; }
+      else { let a = randInt(1, 4), b = randInt(2, 6); nums = [a, b, a + b, a + 2 * b, 2 * a + 3 * b]; }
     } else {
       const type = pick(["fib", "sqdiff"]);
-      if (type === "fib") { let a = randInt(2, 4), b = randInt(3, 6); const s = [a, b]; while (s.length < 5) s.push(s[s.length - 1] + s[s.length - 2]); nums = s; }
-      else { const s = randInt(1, 4), d0 = pick([1, 2, 3]), dd = pick([1, 2, 3]); const out = [s]; let d = d0; for (let i = 0; i < 4; i++) { out.push(out[out.length - 1] + d); d += dd; } nums = out; }
+      if (type === "fib") { let a = randInt(1, 5), b = randInt(2, 9); const s = [a, b]; while (s.length < 5) s.push(s[s.length - 1] + s[s.length - 2]); nums = s; }
+      else { const s = randInt(1, 8), d0 = pick([1, 2, 3, 4]), dd = pick([1, 2, 3, 4]); const out = [s]; let d = d0; for (let i = 0; i < 4; i++) { out.push(out[out.length - 1] + d); d += dd; } nums = out; }
     }
     if (nums.some((x) => !Number.isInteger(x) || x < 0 || x > 999)) continue;
     const solved = solveSeries(nums);
@@ -321,13 +245,13 @@ function genPuzzle(targetLetter, usedSig) {
     const pairs = [];
     const seen = new Set();
     while (pairs.length < 3) {
-      const a = randInt(1, 6), b = randInt(1, 6);
+      const a = randInt(1, 9), b = randInt(1, 9);
       const key = `${a},${b}`;
       if (seen.has(key)) continue;
       seen.add(key);
       pairs.push([a, b]);
     }
-    const qa = randInt(2, 6), qb = randInt(2, 6);
+    const qa = randInt(2, 9), qb = randInt(2, 9);
     const ans = f(qa, qb);
     if (ans < 0 || ans > 99) continue;
     const question = `IF  ${pairs.map(([a, b]) => `${a}+${b}=${f(a, b)}`).join(",  ")}\nTHEN  ${qa}+${qb} = ?`;
@@ -364,7 +288,7 @@ function puzzleExplain(name, a, b, ans) {
 }
 
 // ---- NONVERBAL generators (from the enumerated unique-signature pool) -------
-const GLYPHS = ["circle", "square", "triangle"];
+const GLYPHS = ["circle", "square", "triangle", "diamond", "star", "heart", "cross", "arrow", "crescent", "lightning", "teardrop"];
 function enumShaded() {
   const out = [];
   for (const L of GLYPHS) for (const R of GLYPHS) out.push({ leftShape: L, rightShape: R, ansShape: R, ansFilled: true });
@@ -384,10 +308,12 @@ function enumPolygon() {
 }
 function enumDot() {
   const out = [];
-  for (let len = 2; len <= 4; len++) for (const dir of [1, 3]) for (let st = 0; st < 4; st++) {
-    const seq = []; for (let i = 0; i < len; i++) seq.push(CW[(st + i * dir) % 4]);
-    const next = CW[(st + len * dir) % 4];
-    out.push({ seq, ansPos: next, dir });
+  const n = RING.length;
+  // constant angular step around the 8-ring; steps 1..3 CW and their CCW mirrors
+  // (5,6,7). step 4 (opposite-bounce) excluded. lengths 3-6 (shrink-to-fit renders).
+  for (const step of [1, 2, 3, 5, 6, 7]) for (let start = 0; start < n; start++) for (let len = 3; len <= 6; len++) {
+    const seq = []; for (let i = 0; i < len; i++) seq.push(RING[(start + i * step) % n]);
+    out.push({ seq, ansPos: RING[(start + len * step) % n], step });
   }
   return out;
 }
@@ -410,11 +336,12 @@ function buildPolygon(base, difficulty, targetLetter) {
 }
 function buildDot(base, difficulty, targetLetter) {
   const correct = { pos: base.ansPos };
-  const others = ["tl", "tr", "br", "bl", "center"].filter((p) => p !== base.ansPos);
+  const others = ["tl", "tm", "tr", "rm", "br", "bm", "bl", "lm", "center"].filter((p) => p !== base.ansPos);
   const distr = shuffle(others).slice(0, 3).map((p) => ({ pos: p }));
   const options = placeObj(correct, distr, targetLetter, "pos");
-  const dirName = base.dir === 1 ? "clockwise" : "counter-clockwise";
-  return { kind: "dot", category: "nonverbal", tier: "POSITION", difficulty, prompt: "WHERE DOES THE DOT MOVE NEXT?", seq: base.seq, options, ansLetter: targetLetter, ansPos: base.ansPos, ansLabel: POS_NAME[base.ansPos].toUpperCase(), explanation: `The dot steps ${dirName} around the corners, so the next spot is ${POS_NAME[base.ansPos]}.` };
+  const cw = base.step <= 4;
+  const amt = cw ? base.step : 8 - base.step;
+  return { kind: "dot", category: "nonverbal", tier: "POSITION", difficulty, prompt: "WHERE DOES THE DOT MOVE NEXT?", seq: base.seq, options, ansLetter: targetLetter, ansPos: base.ansPos, ansLabel: POS_NAME[base.ansPos].toUpperCase(), explanation: `The dot moves ${n2w(amt)} spot${amt > 1 ? "s" : ""} ${cw ? "clockwise" : "counter-clockwise"} around the grid each step, so the next spot is ${POS_NAME[base.ansPos]}.` };
 }
 
 // ---- VERBAL builders (from curated bank) -----------------------------------
@@ -433,7 +360,7 @@ const TEMPLATE = [
   ["series", "easy"],       // 2 quant
   ["nv1", "easy"],          // 3 nonverbal (shaded if available, else polygon/dot)
   ["analogy", "easy"],      // 4 verbal
-  ["series", "easy"],       // 5 quant
+  ["numanalogy", "easy"],   // 5 quant (easy number analogy; keeps the scarce simple-series pool to 1/round)
   ["analogy", "medium"],    // 6 verbal
   ["series", "hard"],       // 7 quant
   ["analogy", "easy"],      // 8 verbal
@@ -467,11 +394,13 @@ function main() {
   const polyPool = shuffle(enumPolygon().filter((b) => !usedNVpayload.has("polygon|" + b.seq.join("~") + "=>" + b.ansShape)));
   const dotPool = shuffle(enumDot().filter((b) => !usedNVpayload.has("dot|" + b.seq.join("~") + "=>" + b.ansPos)));
 
-  // verbal pools (curated), filter out anything whose signature already exists
+  // procedural verbal pools (single-answer by construction), already shuffled;
+  // drop anything whose signature already exists in the bank.
+  const gen = makeVerbalGen(rng);
   const vpool = {
-    oddoneout: shuffle(VERBAL.oddoneout.filter((it) => !usedSig.has(sigOf(buildVerbal(it, "ODD ONE OUT", "easy", "A"))))),
-    analogy: shuffle(VERBAL.analogy.filter((it) => !usedSig.has(sigOf(buildVerbal(it, "VERBAL ANALOGY", "easy", "A"))))),
-    sentence: shuffle(VERBAL.sentence.filter((it) => !usedSig.has(sigOf(buildVerbal(it, "SENTENCE COMPLETION", "hard", "A"))))),
+    oddoneout: gen.oddoneout.filter((it) => !usedSig.has(sigOf(buildVerbal(it, "ODD ONE OUT", "easy", "A")))),
+    analogy: gen.analogy.filter((it) => !usedSig.has(sigOf(buildVerbal(it, "VERBAL ANALOGY", "easy", "A")))),
+    sentence: gen.sentence.filter((it) => !usedSig.has(sigOf(buildVerbal(it, "SENTENCE COMPLETION", "hard", "A")))),
   };
 
   const takeNV = (difficulty, targetLetter, kindPref) => {
@@ -501,12 +430,19 @@ function main() {
     return null;
   };
 
-  const takeVerbal = (key, tier, difficulty, targetLetter) => {
-    const pool = vpool[key];
-    while (pool.length) {
-      const it = pool.pop();
-      const q = buildVerbal(it, tier, difficulty, targetLetter);
-      if (!usedSig.has(sigOf(q))) { usedSig.add(sigOf(q)); acceptText(q); return q; }
+  // Try each preferred verbal tier in order (falls back to the huge analogy /
+  // odd-one-out pools when a scarcer tier like sentence-completion runs out).
+  // textOK enforces the same near-dup gate the validator uses, so no verbal item
+  // near-duplicates the bank or another item in this run.
+  const TIER_NAME = { oddoneout: "ODD ONE OUT", analogy: "VERBAL ANALOGY", sentence: "SENTENCE COMPLETION" };
+  const takeVerbal = (prefTiers, difficulty, targetLetter) => {
+    for (const key of prefTiers) {
+      const pool = vpool[key];
+      while (pool.length) {
+        const it = pool.pop();
+        const q = buildVerbal(it, TIER_NAME[key], difficulty, targetLetter);
+        if (!usedSig.has(sigOf(q)) && textOK(q)) { usedSig.add(sigOf(q)); acceptText(q); return q; }
+      }
     }
     return null;
   };
@@ -527,9 +463,9 @@ function main() {
       if (key === "series") q = genSeries(difficulty, tl, usedSig);
       else if (key === "numanalogy") q = genAnalogyNum(difficulty, tl, usedSig);
       else if (key === "puzzle") q = genPuzzle(tl, usedSig);
-      else if (key === "oddoneout") q = takeVerbal("oddoneout", "ODD ONE OUT", difficulty, tl);
-      else if (key === "analogy") q = takeVerbal("analogy", "VERBAL ANALOGY", difficulty, tl);
-      else if (key === "sentence") q = takeVerbal("sentence", "SENTENCE COMPLETION", difficulty, tl);
+      else if (key === "oddoneout") q = takeVerbal(["oddoneout", "analogy"], difficulty, tl);
+      else if (key === "analogy") q = takeVerbal(["analogy", "oddoneout"], difficulty, tl);
+      else if (key === "sentence") q = takeVerbal(["sentence", "analogy", "oddoneout"], difficulty, tl);
       else if (key === "nv1") q = takeNV(difficulty, tl, "shaded");
       else if (key === "nv2") q = takeNV(difficulty, tl, "flexible");
       else if (key === "nv3") q = takeNV(difficulty, tl, "flexible");

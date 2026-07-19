@@ -1,0 +1,520 @@
+{
+  "round": 34,
+  "slug": "round-034",
+  "title": "Round 34: Think Fast, Think Smart",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CHAIR"
+        },
+        {
+          "letter": "B",
+          "text": "TABLE"
+        },
+        {
+          "letter": "C",
+          "text": "CHERRY"
+        },
+        {
+          "letter": "D",
+          "text": "DRESSER"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "CHERRY",
+      "explanation": "Table, dresser, and chair are all furniture. Cherry is a fruit, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "7",
+        "11",
+        "15",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "29"
+        },
+        {
+          "letter": "B",
+          "text": "24"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "19"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "19",
+      "explanation": "Each number goes up by four, so the next one is fifteen plus four is nineteen."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "diamond",
+      "rightShape": "triangle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "triangle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "teardrop",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "lightning",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "triangle",
+      "ansFilled": true,
+      "ansLabel": "FILLED TRIANGLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "CHEF IS TO KNIFE AS\nFISHERMAN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SPADE"
+        },
+        {
+          "letter": "B",
+          "text": "NET"
+        },
+        {
+          "letter": "C",
+          "text": "PICKAXE"
+        },
+        {
+          "letter": "D",
+          "text": "SCISSORS"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "NET",
+      "explanation": "Chef uses a knife, so a fisherman uses a net."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   6 -> 10,   9 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "16"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "17"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "16",
+      "explanation": "Each number is multiplied by two then take away two, so nine becomes sixteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "JUDGE IS TO COURT AS\nCHEF IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KITCHEN"
+        },
+        {
+          "letter": "B",
+          "text": "SCHOOL"
+        },
+        {
+          "letter": "C",
+          "text": "SHIP"
+        },
+        {
+          "letter": "D",
+          "text": "BAKERY"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "KITCHEN",
+      "explanation": "Judge works in a court, so a chef works in a kitchen."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "9",
+        "14",
+        "23",
+        "37",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "60"
+        },
+        {
+          "letter": "B",
+          "text": "62"
+        },
+        {
+          "letter": "C",
+          "text": "63"
+        },
+        {
+          "letter": "D",
+          "text": "59"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "60",
+      "explanation": "Add the two numbers before it: thirty-seven plus twenty-three is sixty."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BOTTLE IS TO PLASTIC AS\nTIRE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CLAY"
+        },
+        {
+          "letter": "B",
+          "text": "GOLD"
+        },
+        {
+          "letter": "C",
+          "text": "WAX"
+        },
+        {
+          "letter": "D",
+          "text": "RUBBER"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "RUBBER",
+      "explanation": "Bottle is made of plastic, so a tire is made of rubber."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "15",
+        "23",
+        "31",
+        "39",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "44"
+        },
+        {
+          "letter": "B",
+          "text": "42"
+        },
+        {
+          "letter": "C",
+          "text": "47"
+        },
+        {
+          "letter": "D",
+          "text": "45"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "47",
+      "explanation": "Each number goes up by eight, so the next one is thirty-nine plus eight is forty-seven."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "CELERY"
+        },
+        {
+          "letter": "B",
+          "text": "PURPLE"
+        },
+        {
+          "letter": "C",
+          "text": "CABBAGE"
+        },
+        {
+          "letter": "D",
+          "text": "LETTUCE"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "PURPLE",
+      "explanation": "Lettuce, celery, and cabbage are all vegetables. Purple is a color, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "tl",
+        "rm",
+        "bl",
+        "tm",
+        "br"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "rm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE GUARD WAS VERY ______ AND STOOD\nHIS GROUND EVEN WHEN HE WAS AFRAID.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "LAZY"
+        },
+        {
+          "letter": "B",
+          "text": "SHY"
+        },
+        {
+          "letter": "C",
+          "text": "TIRED"
+        },
+        {
+          "letter": "D",
+          "text": "BRAVE"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "BRAVE",
+      "explanation": "Standing ground despite fear is brave."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "rm",
+        "bm",
+        "lm",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "center"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "B",
+      "ansPos": "rm",
+      "ansLabel": "RIGHT",
+      "explanation": "The dot moves two spots clockwise around the grid each step, so the next spot is right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 11,   5 -> 17,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "23"
+        },
+        {
+          "letter": "B",
+          "text": "31"
+        },
+        {
+          "letter": "C",
+          "text": "26"
+        },
+        {
+          "letter": "D",
+          "text": "27"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "26",
+      "explanation": "Each number is multiplied by three then add two, so eight becomes twenty-six."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  8+4=20,  1+8=-1,  8+1=-1\nTHEN  3+9 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "10"
+        },
+        {
+          "letter": "B",
+          "text": "18"
+        },
+        {
+          "letter": "C",
+          "text": "15"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "15",
+      "explanation": "The trick is to multiply them, then take away their sum: twenty-seven minus twelve is fifteen."
+    }
+  ]
+}

@@ -1,0 +1,518 @@
+{
+  "round": 22,
+  "slug": "round-022",
+  "title": "Round 22: Riddles, Series and Shapes",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RADISH"
+        },
+        {
+          "letter": "B",
+          "text": "CABINET"
+        },
+        {
+          "letter": "C",
+          "text": "CHAIR"
+        },
+        {
+          "letter": "D",
+          "text": "DRESSER"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "RADISH",
+      "explanation": "Chair, cabinet, and dresser are all furniture. Radish is a vegetable, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "5",
+        "9",
+        "13",
+        "17",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "21"
+        },
+        {
+          "letter": "B",
+          "text": "26"
+        },
+        {
+          "letter": "C",
+          "text": "11"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "21",
+      "explanation": "Each number goes up by four, so the next one is seventeen plus four is twenty-one."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "cross",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "teardrop",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "arrow",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "arrow",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "cross",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "cross",
+      "ansFilled": true,
+      "ansLabel": "FILLED CROSS",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty cross becomes a filled cross."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "SPOON IS TO METAL AS\nBOTTLE IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RUBBER"
+        },
+        {
+          "letter": "B",
+          "text": "PLASTIC"
+        },
+        {
+          "letter": "C",
+          "text": "PAPER"
+        },
+        {
+          "letter": "D",
+          "text": "COTTON"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "PLASTIC",
+      "explanation": "Spoon is made of metal, so a bottle is made of plastic."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   5 -> 9,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "11"
+        },
+        {
+          "letter": "B",
+          "text": "18"
+        },
+        {
+          "letter": "C",
+          "text": "14"
+        },
+        {
+          "letter": "D",
+          "text": "13"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "13",
+      "explanation": "Each number is multiplied by two then take away one, so seven becomes thirteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BEGIN IS TO END AS\nFLOAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "SHALLOW"
+        },
+        {
+          "letter": "B",
+          "text": "EMPTY"
+        },
+        {
+          "letter": "C",
+          "text": "SINK"
+        },
+        {
+          "letter": "D",
+          "text": "DARK"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SINK",
+      "explanation": "Begin and end are opposites, so the opposite of float is sink."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "6",
+        "9",
+        "15",
+        "24",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "44"
+        },
+        {
+          "letter": "B",
+          "text": "37"
+        },
+        {
+          "letter": "C",
+          "text": "39"
+        },
+        {
+          "letter": "D",
+          "text": "40"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "39",
+      "explanation": "Add the two numbers before it: twenty-four plus fifteen is thirty-nine."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BARBER IS TO SCISSORS AS\nFARMER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KNIFE"
+        },
+        {
+          "letter": "B",
+          "text": "NEEDLE"
+        },
+        {
+          "letter": "C",
+          "text": "PICKAXE"
+        },
+        {
+          "letter": "D",
+          "text": "PLOW"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "PLOW",
+      "explanation": "Barber uses a scissors, so a farmer uses a plow."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "10",
+        "18",
+        "26",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "39"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "31"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "34",
+      "explanation": "Each number goes up by eight, so the next one is twenty-six plus eight is thirty-four."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "COD"
+        },
+        {
+          "letter": "B",
+          "text": "MELON"
+        },
+        {
+          "letter": "C",
+          "text": "PEACH"
+        },
+        {
+          "letter": "D",
+          "text": "LEMON"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "COD",
+      "explanation": "Peach, lemon, and melon are all fruits. Cod is a fish, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "rm",
+        "tl",
+        "bm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "tr"
+        },
+        {
+          "letter": "B",
+          "pos": "bl"
+        },
+        {
+          "letter": "C",
+          "pos": "tm"
+        },
+        {
+          "letter": "D",
+          "pos": "bm"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves three spots counter-clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE SLOPE WAS SO ______ THAT WE HAD TO\nREST HALFWAY UP TO CATCH OUR BREATH.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WIDE"
+        },
+        {
+          "letter": "B",
+          "text": "FLAT"
+        },
+        {
+          "letter": "C",
+          "text": "STEEP"
+        },
+        {
+          "letter": "D",
+          "text": "SHORT"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "STEEP",
+      "explanation": "Resting to catch breath means steep."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "br",
+        "rm",
+        "tr",
+        "tm",
+        "tl",
+        "lm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "lm"
+        },
+        {
+          "letter": "B",
+          "pos": "bm"
+        },
+        {
+          "letter": "C",
+          "pos": "bl"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves one spot counter-clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   7 -> 31,   5 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "26"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "23",
+      "explanation": "Each number is multiplied by four then add three, so five becomes twenty-three."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  1+9=18,  3+9=36,  5+2=12\nTHEN  6+7 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "52"
+        },
+        {
+          "letter": "B",
+          "text": "49"
+        },
+        {
+          "letter": "C",
+          "text": "47"
+        },
+        {
+          "letter": "D",
+          "text": "50"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "49",
+      "explanation": "The trick is to multiply them, then add the second: forty-two plus seven is forty-nine."
+    }
+  ]
+}

@@ -1,0 +1,515 @@
+{
+  "round": 25,
+  "slug": "round-025",
+  "title": "Round 25: Brainy Bunch Challenge",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "NEPTUNE"
+        },
+        {
+          "letter": "B",
+          "text": "HOCKEY"
+        },
+        {
+          "letter": "C",
+          "text": "SOCCER"
+        },
+        {
+          "letter": "D",
+          "text": "BOXING"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "NEPTUNE",
+      "explanation": "Hockey, soccer, and boxing are all sports. Neptune is a planet, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "3",
+        "8",
+        "13",
+        "18",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "23"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "26"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "23",
+      "explanation": "Each number goes up by five, so the next one is eighteen plus five is twenty-three."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "cross",
+      "rightShape": "arrow",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "teardrop",
+          "filled": false
+        },
+        {
+          "letter": "B",
+          "shape": "cross",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "square",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "arrow",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "arrow",
+      "ansFilled": true,
+      "ansLabel": "FILLED ARROW",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty arrow becomes a filled arrow."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "BARBER IS TO SCISSORS AS\nMINER IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "B",
+          "text": "NET"
+        },
+        {
+          "letter": "C",
+          "text": "PICKAXE"
+        },
+        {
+          "letter": "D",
+          "text": "PLOW"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "PICKAXE",
+      "explanation": "Barber uses a scissors, so a miner uses a pickaxe."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   6 -> 16,   7 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "19"
+        },
+        {
+          "letter": "B",
+          "text": "29"
+        },
+        {
+          "letter": "C",
+          "text": "18"
+        },
+        {
+          "letter": "D",
+          "text": "14"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "19",
+      "explanation": "Each number is multiplied by three then take away two, so seven becomes nineteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "BROOM IS TO SWEEP AS\nOVEN IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "WEIGH"
+        },
+        {
+          "letter": "B",
+          "text": "HEAT"
+        },
+        {
+          "letter": "C",
+          "text": "HEAR"
+        },
+        {
+          "letter": "D",
+          "text": "CUT"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "HEAT",
+      "explanation": "Broom is used to sweep, so an oven is used to heat."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "7",
+        "11",
+        "17",
+        "25",
+        "35",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "46"
+        },
+        {
+          "letter": "B",
+          "text": "47"
+        },
+        {
+          "letter": "C",
+          "text": "44"
+        },
+        {
+          "letter": "D",
+          "text": "42"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "47",
+      "explanation": "The gaps grow by the same amount each step, so the next number is forty-seven."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "NEAR IS TO FAR AS\nFLOAT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "RIGHT"
+        },
+        {
+          "letter": "B",
+          "text": "SHALLOW"
+        },
+        {
+          "letter": "C",
+          "text": "SINK"
+        },
+        {
+          "letter": "D",
+          "text": "WEAK"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SINK",
+      "explanation": "Near and far are opposites, so the opposite of float is sink."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "2",
+        "12",
+        "22",
+        "32",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "32"
+        },
+        {
+          "letter": "B",
+          "text": "39"
+        },
+        {
+          "letter": "C",
+          "text": "43"
+        },
+        {
+          "letter": "D",
+          "text": "42"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "42",
+      "explanation": "Each number goes up by ten, so the next one is thirty-two plus ten is forty-two."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TROUT"
+        },
+        {
+          "letter": "B",
+          "text": "HAMMER"
+        },
+        {
+          "letter": "C",
+          "text": "COD"
+        },
+        {
+          "letter": "D",
+          "text": "GOLDFISH"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "HAMMER",
+      "explanation": "Cod, trout, and goldfish are all fish. Hammer is a tool, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "bm",
+        "tl",
+        "rm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "tm"
+        },
+        {
+          "letter": "C",
+          "pos": "bm"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "A",
+      "ansPos": "bl",
+      "ansLabel": "BOTTOM-LEFT",
+      "explanation": "The dot moves three spots clockwise around the grid each step, so the next spot is bottom-left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SENTENCE COMPLETION",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "THE TORTOISE MOVED SO ______ THAT IT TOOK\nAN HOUR TO CROSS THE SMALL YARD.",
+      "questionFontSize": 56,
+      "options": [
+        {
+          "letter": "A",
+          "text": "QUICKLY"
+        },
+        {
+          "letter": "B",
+          "text": "NEATLY"
+        },
+        {
+          "letter": "C",
+          "text": "SLOWLY"
+        },
+        {
+          "letter": "D",
+          "text": "LOUDLY"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SLOWLY",
+      "explanation": "An hour to cross means slowly."
+    },
+    {
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "lm",
+        "tl",
+        "tm"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bl"
+        },
+        {
+          "letter": "B",
+          "pos": "rm"
+        },
+        {
+          "letter": "C",
+          "pos": "br"
+        },
+        {
+          "letter": "D",
+          "pos": "tr"
+        }
+      ],
+      "ansLetter": "D",
+      "ansPos": "tr",
+      "ansLabel": "TOP-RIGHT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is top-right."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 13,   7 -> 29,   6 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "15"
+        },
+        {
+          "letter": "B",
+          "text": "28"
+        },
+        {
+          "letter": "C",
+          "text": "25"
+        },
+        {
+          "letter": "D",
+          "text": "24"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "25",
+      "explanation": "Each number is multiplied by four then add one, so six becomes twenty-five."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  4+1=8,  5+5=50,  1+7=14\nTHEN  3+3 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "18"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "19"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "18",
+      "explanation": "The trick is to multiply them, then double: nine times two is eighteen."
+    }
+  ]
+}

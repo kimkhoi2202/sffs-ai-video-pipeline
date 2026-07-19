@@ -1,0 +1,520 @@
+{
+  "round": 92,
+  "slug": "round-092",
+  "title": "Round 92: Mix It Up Round",
+  "grade": 5,
+  "cogatLevel": 11,
+  "batteryMix": {
+    "verbal": 6,
+    "quantitative": 6,
+    "nonverbal": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "VOLLEYBALL"
+        },
+        {
+          "letter": "B",
+          "text": "FOX"
+        },
+        {
+          "letter": "C",
+          "text": "SOCCER"
+        },
+        {
+          "letter": "D",
+          "text": "TENNIS"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "FOX",
+      "explanation": "Volleyball, soccer, and tennis are all sports. Fox is a mammal, so it does not belong."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "14",
+        "21",
+        "28",
+        "35",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "43"
+        },
+        {
+          "letter": "B",
+          "text": "42"
+        },
+        {
+          "letter": "C",
+          "text": "47"
+        },
+        {
+          "letter": "D",
+          "text": "45"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "42",
+      "explanation": "Each number goes up by seven, so the next one is thirty-five plus seven is forty-two."
+    },
+    {
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "teardrop",
+      "rightShape": "triangle",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "circle",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "diamond",
+          "filled": false
+        },
+        {
+          "letter": "C",
+          "shape": "star",
+          "filled": true
+        },
+        {
+          "letter": "D",
+          "shape": "triangle",
+          "filled": true
+        }
+      ],
+      "ansLetter": "D",
+      "ansShape": "triangle",
+      "ansFilled": true,
+      "ansLabel": "FILLED TRIANGLE",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty triangle becomes a filled triangle."
+    },
+    {
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WOLF IS TO HOWL AS\nPIG IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "OINK"
+        },
+        {
+          "letter": "B",
+          "text": "NEIGH"
+        },
+        {
+          "letter": "C",
+          "text": "BAA"
+        },
+        {
+          "letter": "D",
+          "text": "MEOW"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "OINK",
+      "explanation": "Wolf says howl, so a pig says oink."
+    },
+    {
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 4,   6 -> 10,   7 -> 12,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "12"
+        },
+        {
+          "letter": "B",
+          "text": "13"
+        },
+        {
+          "letter": "C",
+          "text": "16"
+        },
+        {
+          "letter": "D",
+          "text": "14"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "14",
+      "explanation": "Each number is multiplied by two then take away two, so eight becomes fourteen."
+    },
+    {
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "NEAR IS TO FAR AS\nLEFT IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "THIN"
+        },
+        {
+          "letter": "B",
+          "text": "POOR"
+        },
+        {
+          "letter": "C",
+          "text": "EMPTY"
+        },
+        {
+          "letter": "D",
+          "text": "RIGHT"
+        }
+      ],
+      "ansLetter": "D",
+      "ansLabel": "RIGHT",
+      "explanation": "Near and far are opposites, so the opposite of left is right."
+    },
+    {
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "hard",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "6",
+        "9",
+        "16",
+        "27",
+        "42",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "71"
+        },
+        {
+          "letter": "B",
+          "text": "61"
+        },
+        {
+          "letter": "C",
+          "text": "63"
+        },
+        {
+          "letter": "D",
+          "text": "60"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "61",
+      "explanation": "The gaps grow by the same amount each step, so the next number is sixty-one."
+    },
+    {
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "TABLE IS TO WOOD AS\nRING IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GOLD"
+        },
+        {
+          "letter": "B",
+          "text": "WAX"
+        },
+        {
+          "letter": "C",
+          "text": "CLAY"
+        },
+        {
+          "letter": "D",
+          "text": "PLASTIC"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "GOLD",
+      "explanation": "Table is made of wood, so a ring is made of gold."
+    },
+    {
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "tier": "NUMBER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "4",
+        "16",
+        "28",
+        "40",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "52"
+        },
+        {
+          "letter": "B",
+          "text": "54"
+        },
+        {
+          "letter": "C",
+          "text": "51"
+        },
+        {
+          "letter": "D",
+          "text": "47"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "52",
+      "explanation": "Each number goes up by twelve, so the next one is forty plus twelve is fifty-two."
+    },
+    {
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ODD ONE OUT",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH ONE DOES NOT BELONG?",
+      "questionFontSize": 96,
+      "options": [
+        {
+          "letter": "A",
+          "text": "ROCKET"
+        },
+        {
+          "letter": "B",
+          "text": "GLIDER"
+        },
+        {
+          "letter": "C",
+          "text": "VOLLEYBALL"
+        },
+        {
+          "letter": "D",
+          "text": "BLIMP"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "VOLLEYBALL",
+      "explanation": "Glider, blimp, and rocket are all aircraft. Volleyball is a sport, so it does not belong."
+    },
+    {
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "tier": "POSITION",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "seq": [
+        "tm",
+        "tr",
+        "rm",
+        "br",
+        "bm",
+        "bl"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "pos": "bm"
+        },
+        {
+          "letter": "B",
+          "pos": "center"
+        },
+        {
+          "letter": "C",
+          "pos": "lm"
+        },
+        {
+          "letter": "D",
+          "pos": "tl"
+        }
+      ],
+      "ansLetter": "C",
+      "ansPos": "lm",
+      "ansLabel": "LEFT",
+      "explanation": "The dot moves one spot clockwise around the grid each step, so the next spot is left."
+    },
+    {
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "VERBAL ANALOGY",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "FROG IS TO CROAK AS\nBIRD IS TO ?",
+      "questionFontSize": 82,
+      "options": [
+        {
+          "letter": "A",
+          "text": "QUACK"
+        },
+        {
+          "letter": "B",
+          "text": "CHIRP"
+        },
+        {
+          "letter": "C",
+          "text": "BUZZ"
+        },
+        {
+          "letter": "D",
+          "text": "BARK"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "CHIRP",
+      "explanation": "Frog says croak, so a bird says chirp."
+    },
+    {
+      "id": 13,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "leftShape": "diamond",
+      "rightShape": "teardrop",
+      "options": [
+        {
+          "letter": "A",
+          "shape": "teardrop",
+          "filled": true
+        },
+        {
+          "letter": "B",
+          "shape": "lightning",
+          "filled": true
+        },
+        {
+          "letter": "C",
+          "shape": "triangle",
+          "filled": false
+        },
+        {
+          "letter": "D",
+          "shape": "diamond",
+          "filled": true
+        }
+      ],
+      "ansLetter": "A",
+      "ansShape": "teardrop",
+      "ansFilled": true,
+      "ansLabel": "FILLED TEARDROP",
+      "explanation": "The rule is the shape gets filled in but stays the same shape, so the empty teardrop becomes a filled teardrop."
+    },
+    {
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER ANALOGY",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   7 -> 31,   8 -> ?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "38"
+        },
+        {
+          "letter": "B",
+          "text": "34"
+        },
+        {
+          "letter": "C",
+          "text": "35"
+        },
+        {
+          "letter": "D",
+          "text": "33"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "35",
+      "explanation": "Each number is multiplied by four then add three, so eight becomes thirty-five."
+    },
+    {
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "NUMBER PUZZLE",
+      "difficulty": "hard",
+      "countdown": 5,
+      "question": "IF  9+1=20,  6+3=18,  6+4=20\nTHEN  5+5 = ?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "23"
+        },
+        {
+          "letter": "B",
+          "text": "17"
+        },
+        {
+          "letter": "C",
+          "text": "20"
+        },
+        {
+          "letter": "D",
+          "text": "30"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "20",
+      "explanation": "The trick is to add the two numbers, then double: five plus five is ten, and ten times two is twenty."
+    }
+  ]
+}
