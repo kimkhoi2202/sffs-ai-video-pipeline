@@ -1,0 +1,50 @@
+{
+  "round": 4,
+  "slug": "short-5",
+  "title": "Round 4: Metals, Motion and Mystery Math — Short 5 — Countdown, Analogy, Sentence",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "41"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "CHICKEN IS TO EGG AS / COW IS TO ?",
+      "answer": {
+        "letter": "A",
+        "label": "MILK"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE MUSEUM GUIDE GAVE SUCH A / ______ TALK THAT NOBODY IN THE / GROUP WANTED IT TO END.",
+      "answer": {
+        "letter": "D",
+        "label": "FASCINATING"
+      }
+    }
+  ]
+}

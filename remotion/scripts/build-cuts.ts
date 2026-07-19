@@ -11,7 +11,7 @@ import { buildPhrases } from "../src/lib/phrases";
 import { ALL_CUTS, SHORTS, COG, DIFF, type Cut } from "../src/data/cuts";
 import { QUESTIONS } from "../src/data/questions";
 
-const ROOT = join(process.cwd(), "..", "renders", "videos");
+const ROOT = join(process.cwd(), "..", "renders.nosync", "videos");
 const today = new Date().toISOString().slice(0, 10);
 
 const p2 = (n: number) => String(Math.floor(n)).padStart(2, "0");

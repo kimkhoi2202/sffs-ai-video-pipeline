@@ -32,7 +32,9 @@ const VIDEO = resolve(REMOTION, "..");
 const CONTENT = join(VIDEO, "content");
 const ROUNDS = join(CONTENT, "rounds");
 const PUB_ROUNDS = join(REMOTION, "public", "audio", "rounds");
-const OUT_ROOT = join(VIDEO, "renders", "videos");
+// renders.nosync: the ".nosync" suffix makes iCloud skip this whole tree, so the
+// thousands of heavy mp4s never get synced (which was throttling all file I/O).
+const OUT_ROOT = join(VIDEO, "renders.nosync", "videos");
 const DURS_META = JSON.parse(readFileSync(join(REMOTION, "src", "data", "durations.json"), "utf8"));
 const FFPROBE = process.env.FFPROBE || "/opt/homebrew/bin/ffprobe";
 const DEFAULT_VOICE = "lZcmpVLaoXF4v0uz4l6Q"; // cloned "Booming Ringmaster"
@@ -259,7 +261,7 @@ async function main() {
     const roundManifest = { round: round.round, slug, title: round.title, generated: new Date().toISOString().slice(0, 10), cuts: [...mergedCuts.values()].sort((a, b) => a.dir.localeCompare(b.dir)) };
     writeFileSync(rmPath, JSON.stringify(roundManifest, null, 2) + "\n");
     manifestRounds.push({ round: round.round, slug, dir: slug, cutCount: cutEntries.length, manifest: `${slug}/manifest.json` });
-    console.log(`[round] ${slug}: ${cutEntries.length} cut(s) -> renders/videos/${slug}/`);
+    console.log(`[round] ${slug}: ${cutEntries.length} cut(s) -> renders.nosync/videos/${slug}/`);
   }
 
   // update top-level manifest additively (preserve any legacy `cuts`)

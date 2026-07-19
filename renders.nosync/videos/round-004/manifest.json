@@ -1,0 +1,37 @@
+{
+  "round": 4,
+  "slug": "round-004",
+  "title": "Round 4: Metals, Motion and Mystery Math",
+  "generated": "2026-07-19",
+  "cuts": [
+    {
+      "slug": "short-5",
+      "dir": "round-004/instagram/short-5",
+      "file": "short-5.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        5,
+        8,
+        12
+      ],
+      "countdownSec": 5,
+      "durationSec": 126
+    },
+    {
+      "slug": "short-5",
+      "dir": "round-004/tiktok/short-5",
+      "file": "short-5.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        5,
+        8,
+        12
+      ],
+      "countdownSec": 5,
+      "durationSec": 126,
+      "note": "byte-identical mirror of the instagram short"
+    }
+  ]
+}

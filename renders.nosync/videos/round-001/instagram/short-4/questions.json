@@ -1,0 +1,50 @@
+{
+  "round": 1,
+  "slug": "short-4",
+  "title": "Round 1: Fruit, Patterns and Shapes — Short 4 — Doubling, Odd One Out, Puzzle",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "25"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "D",
+        "label": "SONG"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  2+3=10,  4+1=10,  5+2=14 / THEN  3+4 = ?",
+      "answer": {
+        "letter": "C",
+        "label": "14"
+      }
+    }
+  ]
+}

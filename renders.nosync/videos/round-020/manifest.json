@@ -1,0 +1,37 @@
+{
+  "round": 20,
+  "slug": "round-020",
+  "title": "Round 20: Puzzles, Patterns and Brain Teasers",
+  "generated": "2026-07-19",
+  "cuts": [
+    {
+      "slug": "short-3",
+      "dir": "round-020/instagram/short-3",
+      "file": "short-3.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        6,
+        13,
+        14
+      ],
+      "countdownSec": 5,
+      "durationSec": 119
+    },
+    {
+      "slug": "short-3",
+      "dir": "round-020/tiktok/short-3",
+      "file": "short-3.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        6,
+        13,
+        14
+      ],
+      "countdownSec": 5,
+      "durationSec": 119,
+      "note": "byte-identical mirror of the instagram short"
+    }
+  ]
+}

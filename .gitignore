@@ -20,14 +20,18 @@ __pycache__/
 *.py[cod]
 
 # Large, regenerable OUTPUT masters — keep source + audio, drop final mp4s.
-# Recursive so the per-video mp4s under renders/videos/<platform>/<slug>/ are
-# ignored too, while their questions.json / info.md / captions.srt|vtt / the
-# manifest.json ARE tracked.
-renders/*.mp4
-renders/**/*.mp4
+# The render tree is renders.nosync/ (the ".nosync" suffix makes iCloud skip the
+# whole tree so the thousands of heavy mp4s never sync). Recursive so the per-video
+# mp4s under renders.nosync/videos/<platform>/<slug>/ are ignored too, while their
+# questions.json / info.md / captions.srt|vtt / the manifest.json ARE tracked.
+renders.nosync/*.mp4
+renders.nosync/**/*.mp4
 
 # Local shape/preview review artifacts (regenerable from the NonverbalPreview composition)
-renders/previews/
+renders.nosync/previews/
+
+# Transient scratch (old-render trash staged for deletion) — never commit
+renders.nosync/.trash-old/
 
 # Per-round generated narration (mp3s + durations + scratch beats/props) — the
 # meta beats + committed round-15 narration stay tracked; mass-gen rounds are
