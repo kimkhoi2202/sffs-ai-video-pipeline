@@ -4,10 +4,11 @@ export type PolyShape = number | "circle";
 
 /**
  * A crisp regular polygon (or circle) drawn as a real SVG with rounded joins —
- * the figure-series shapes (triangle=3 ... octagon=8). Ports draw_polygon +
- * POLY_ROT from render_cogat_round_15.py: `r` is the circumradius, per-shape
- * start angle orients each shape "correctly" (triangle/pentagon point up, square
- * axis-aligned, hexagon flat-top, octagon). FLAT by design.
+ * the figure-series shapes (triangle=3 ... octagon=8). `r` is the circumradius,
+ * per-shape start angle orients each shape "correctly" (odd shapes point up,
+ * square axis-aligned, hexagon flat-top). FLAT by design. Capped at 8 sides:
+ * 9-10 sides read as a circle, so figure-series variety comes from the glyph set
+ * instead (see CONTENT_PIPELINE 14).
  */
 const POLY_ROT: Record<number, number> = { 3: -90, 4: 45, 5: -90, 6: 0, 7: -90, 8: 22.5 };
 

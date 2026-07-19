@@ -11,9 +11,13 @@ import type { DotQuestion as DotQ } from "../../data/types";
 const SEQ_COLORS = [COLORS.blue, COLORS.coral, COLORS.yellow, COLORS.mint];
 const POS_LABEL: Record<DotPos, string> = {
   tl: "TOP-LEFT",
+  tm: "TOP",
   tr: "TOP-RIGHT",
+  rm: "RIGHT",
   br: "BOTTOM-RIGHT",
+  bm: "BOTTOM",
   bl: "BOTTOM-LEFT",
+  lm: "LEFT",
   center: "CENTER",
 };
 
@@ -23,9 +27,11 @@ export const DotQuestion: React.FC<{ q: DotQ; elapsed: number; pos?: number; tot
   pos,
   total,
 }) => {
-  const { portrait } = useFmt();
-  const TILE = portrait ? 130 : 168;
+  const { portrait, w, M } = useFmt();
   const gap = portrait ? 30 : 66;
+  const nTiles = q.seq.length + 1; // shown positions + the "?" tile
+  // shrink tiles to fit the frame width so longer rotation sequences stay one row
+  const TILE = Math.min(portrait ? 130 : 168, Math.floor((w - 2 * M - (nTiles - 1) * gap) / nTiles));
 
   const content = (
     <div style={{ display: "flex", gap, justifyContent: "center", alignItems: "center" }}>

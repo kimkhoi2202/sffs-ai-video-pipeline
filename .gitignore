@@ -26,6 +26,9 @@ __pycache__/
 renders/*.mp4
 renders/**/*.mp4
 
+# Local shape/preview review artifacts (regenerable from the NonverbalPreview composition)
+renders/previews/
+
 # Per-round generated narration (mp3s + durations + scratch beats/props) — the
 # meta beats + committed round-15 narration stay tracked; mass-gen rounds are
 # regenerable from their round JSON via TTS, so keep them out of git.

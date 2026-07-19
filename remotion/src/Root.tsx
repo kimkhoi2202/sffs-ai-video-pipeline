@@ -8,6 +8,7 @@ import { bySlug } from "./data/cuts";
 import { Round15Slice } from "./slice/Round15Slice";
 import { SEG, TOTAL as SLICE_TOTAL } from "./slice/timeline";
 import { Intro } from "./scenes/Intro";
+import { NonverbalPreview } from "./preview/NonverbalPreview";
 
 /** Duration for a cut: prefer the named cut (by slug) from src/data/cuts.ts;
  *  fall back to explicit props. Per-round overrides (questions/durs/qrBase) are
@@ -64,6 +65,9 @@ export const RemotionRoot: React.FC = () => {
 
       <Composition id="Round15Slice" component={Round15Slice} durationInFrames={SLICE_TOTAL} {...landscape} />
       <Composition id="Intro" component={Intro} durationInFrames={SEG.intro} {...landscape} />
+
+      {/* Static contact sheet of the expanded nonverbal vocabulary (still-only). */}
+      <Composition id="NonverbalPreview" component={NonverbalPreview} durationInFrames={1} fps={30} width={1920} height={1600} />
     </>
   );
 };

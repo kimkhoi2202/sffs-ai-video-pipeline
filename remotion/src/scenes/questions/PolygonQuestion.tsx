@@ -17,10 +17,12 @@ export const PolygonQuestion: React.FC<{ q: PolyQ; elapsed: number; pos?: number
   pos,
   total,
 }) => {
-  const { portrait } = useFmt();
-  const TILE = portrait ? 130 : 168;
-  const r = Math.round(TILE * 0.34);
+  const { portrait, w, M } = useFmt();
   const gap = portrait ? 34 : 70;
+  const nTiles = q.seq.length + 1; // shown shapes + the "?" tile
+  // shrink tiles to fit the frame width so longer series stay on one row
+  const TILE = Math.min(portrait ? 130 : 168, Math.floor((w - 2 * M - (nTiles - 1) * gap) / nTiles));
+  const r = Math.round(TILE * 0.34);
 
   const Cell: React.FC<{ children: ReactNode }> = ({ children }) => (
     <div style={{ width: TILE, height: TILE, boxSizing: "border-box", background: COLORS.paper, border: `7px solid ${COLORS.ink}`, borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
