@@ -147,7 +147,17 @@ const tsStamp = (sec: number, comma: boolean) => {
 };
 
 function ffprobe(file: string, args: string[]): string {
-  return execFileSync(FFPROBE, ["-v", "error", ...args, file], { encoding: "utf8" }).trim();
+  // retry: ffprobe can fail transiently under heavy load (many parallel renders)
+  let lastErr: unknown;
+  for (let a = 0; a < 3; a++) {
+    try {
+      return execFileSync(FFPROBE, ["-v", "error", ...args, file], { encoding: "utf8" }).trim();
+    } catch (e) {
+      lastErr = e;
+      spawnSync("sleep", ["2"]);
+    }
+  }
+  throw lastErr;
 }
 
 async function main() {
@@ -197,37 +207,46 @@ async function main() {
       const propsFile = join(audioDir, `_props-${cut.slug}.json`);
       writeFileSync(propsFile, JSON.stringify(props));
 
-      if (skipExistingRender && existsSync(outMp4)) {
-        console.log(`[render] ${slug}/${cut.slug} skip (exists) -> re-verify + refresh metadata`);
+      // A cut already rendered on a prior pass is trusted WHOLE: skip its render,
+      // its ffprobe re-verify, its metadata rewrite AND its tiktok re-mirror.
+      // Re-touching every done cut on each resume is slow + fragile (transient
+      // ffprobe / fs ETIMEDOUT under heavy I/O, especially on a synced ~/Documents)
+      // and would keep aborting the long run before it ever reaches new work.
+      const skipped = skipExistingRender && existsSync(outMp4);
+      if (skipped) {
+        console.log(`[render] ${slug}/${cut.slug} skip (exists)`);
       } else {
         console.log(`[render] ${slug}/${cut.slug} (${comp} ${cut.format}) ~${expectSec.toFixed(1)}s -> ${cut.dir}/${cut.file}`);
         const rr = spawnSync("npx", ["remotion", "render", comp, outMp4, `--props=${propsFile}`], { cwd: REMOTION, stdio: "inherit" });
         if (rr.status !== 0) throw new Error(`render failed: ${slug}/${cut.slug}`);
+
+        // ffprobe verify FRESH renders only: aspect + duration + A/V drift
+        const [w, h] = ffprobe(outMp4, ["-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0"]).split(",").map(Number);
+        const container = Number(ffprobe(outMp4, ["-show_entries", "format=duration", "-of", "default=nk=1:nw=1"]));
+        const aDur = Number(ffprobe(outMp4, ["-select_streams", "a:0", "-show_entries", "stream=duration", "-of", "default=nk=1:nw=1"]) || "0");
+        const wantW = cut.format === "16:9" ? 1920 : 1080;
+        const wantH = cut.format === "16:9" ? 1080 : 1920;
+        const problems: string[] = [];
+        if (w !== wantW || h !== wantH) problems.push(`aspect ${w}x${h} != ${wantW}x${wantH}`);
+        if (Math.abs(container - expectSec) > 0.35) problems.push(`duration ${container.toFixed(2)}s vs expected ${expectSec.toFixed(2)}s`);
+        if (aDur > 0 && Math.abs(aDur - container) > 0.3) problems.push(`A/V drift ${(aDur - container).toFixed(2)}s`);
+        if (problems.length) throw new Error(`ffprobe verify FAILED ${slug}/${cut.slug}: ${problems.join("; ")}`);
+        console.log(`  [ok] ${w}x${h} ${container.toFixed(2)}s (audio ${aDur.toFixed(2)}s)`);
       }
 
-      // ffprobe verify: aspect + duration + A/V drift
-      const [w, h] = ffprobe(outMp4, ["-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0"]).split(",").map(Number);
-      const container = Number(ffprobe(outMp4, ["-show_entries", "format=duration", "-of", "default=nk=1:nw=1"]));
-      const aDur = Number(ffprobe(outMp4, ["-select_streams", "a:0", "-show_entries", "stream=duration", "-of", "default=nk=1:nw=1"]) || "0");
-      const wantW = cut.format === "16:9" ? 1920 : 1080;
-      const wantH = cut.format === "16:9" ? 1080 : 1920;
-      const problems: string[] = [];
-      if (w !== wantW || h !== wantH) problems.push(`aspect ${w}x${h} != ${wantW}x${wantH}`);
-      if (Math.abs(container - expectSec) > 0.35) problems.push(`duration ${container.toFixed(2)}s vs expected ${expectSec.toFixed(2)}s`);
-      if (aDur > 0 && Math.abs(aDur - container) > 0.3) problems.push(`A/V drift ${(aDur - container).toFixed(2)}s`);
-      if (problems.length) throw new Error(`ffprobe verify FAILED ${slug}/${cut.slug}: ${problems.join("; ")}`);
-      console.log(`  [ok] ${w}x${h} ${container.toFixed(2)}s (audio ${aDur.toFixed(2)}s)`);
-
-      // metadata sidecars
-      writeMetadata(outDir, round, cut, T, expectSec, scripts, durs);
+      // metadata sidecars (fresh renders only; a skipped cut keeps its prior files)
+      if (!skipped) writeMetadata(outDir, round, cut, T, expectSec, scripts, durs);
       const platform = cut.dir.startsWith("youtube/") ? "youtube" : cut.dir.startsWith("shorts-60/") ? "instagram+tiktok" : "instagram";
       cutEntries.push({ slug: cut.slug, dir: join(slug, cut.dir), file: cut.file, platform, format: cut.format, questionIds: cut.ids, countdownSec: 5, durationSec: Math.round(expectSec) });
 
       // TikTok byte-identical mirror of each Instagram short
       if (cut.dir.startsWith("instagram/")) {
         const tkDir = join(OUT_ROOT, slug, cut.dir.replace("instagram/", "tiktok/"));
-        rmSync(tkDir, { recursive: true, force: true });
-        cpSync(outDir, tkDir, { recursive: true });
+        // re-mirror only for fresh renders, or if the mirror is somehow missing
+        if (!skipped || !existsSync(join(tkDir, cut.file))) {
+          rmSync(tkDir, { recursive: true, force: true });
+          cpSync(outDir, tkDir, { recursive: true });
+        }
         cutEntries.push({ slug: cut.slug, dir: join(slug, cut.dir.replace("instagram/", "tiktok/")), file: cut.file, platform: "tiktok", format: cut.format, questionIds: cut.ids, countdownSec: 5, durationSec: Math.round(expectSec), note: "byte-identical mirror of the instagram short" });
       }
     }
