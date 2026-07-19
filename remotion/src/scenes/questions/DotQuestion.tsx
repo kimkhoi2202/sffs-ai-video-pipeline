@@ -30,20 +30,27 @@ export const DotQuestion: React.FC<{ q: DotQ; elapsed: number; pos?: number; tot
   const { portrait, w, M } = useFmt();
   const gap = portrait ? 30 : 66;
   const nTiles = q.seq.length + 1; // shown positions + the "?" tile
-  // shrink tiles to fit the frame width so longer rotation sequences stay one row
-  const TILE = Math.min(portrait ? 130 : 168, Math.floor((w - 2 * M - (nTiles - 1) * gap) / nTiles));
+  // Wrap a long dot path onto TWO rows (portrait) so tiles stay big and use the
+  // vertical space, instead of one cramped shrink-to-fit row. 16:9 fits more/row.
+  const maxPerRow = portrait ? 5 : 8;
+  const nRows = Math.ceil(nTiles / maxPerRow);
+  const perRow = Math.ceil(nTiles / nRows);
+  const TILE = Math.min(portrait ? 150 : 176, Math.floor((w - 2 * M - (perRow - 1) * gap) / perRow));
 
+  const tiles = q.seq.map((p, i) => <DotSquare key={"s" + i} size={TILE} pos={p} dotColor={SEQ_COLORS[i % SEQ_COLORS.length]} />);
+  tiles.push(
+    <div key="q" style={{ position: "relative", width: TILE, height: TILE }}>
+      <DotSquare size={TILE} pos={null} dotColor={COLORS.ink} />
+      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: ANTON, fontSize: TILE * 0.5, lineHeight: 1, color: COLORS.ink }}>?</div>
+    </div>,
+  );
+  const rows = [];
+  for (let i = 0; i < tiles.length; i += perRow) rows.push(tiles.slice(i, i + perRow));
   const content = (
-    <div style={{ display: "flex", gap, justifyContent: "center", alignItems: "center" }}>
-      {q.seq.map((p, i) => (
-        <DotSquare key={i} size={TILE} pos={p} dotColor={SEQ_COLORS[i % SEQ_COLORS.length]} />
+    <div style={{ display: "flex", flexDirection: "column", gap: Math.round(gap * 0.7), alignItems: "center" }}>
+      {rows.map((row, ri) => (
+        <div key={ri} style={{ display: "flex", gap, justifyContent: "center", alignItems: "center" }}>{row}</div>
       ))}
-      <div style={{ position: "relative", width: TILE, height: TILE }}>
-        <DotSquare size={TILE} pos={null} dotColor={COLORS.ink} />
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: ANTON, fontSize: TILE * 0.5, lineHeight: 1, color: COLORS.ink }}>
-          ?
-        </div>
-      </div>
     </div>
   );
 

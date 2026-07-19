@@ -7,7 +7,7 @@ export const SHADE_FILL = COLORS.blue;
 /** Non-question narration durations (s), from video/voice/narration/*.mp3.
  *  score was regenerated ("So, are you smart or fart? ... certified fart smella!")
  *  -> 20.80s (was 17.44s "how did you do", orig 16.64s "rookie riddler"). */
-export const META = { intro: 6.32, timesup: 2.24, score: 20.8, outro: 6.0 } as const;
+export const META = { intro: 6.32, timesup: 1.2, score: 20.8, outro: 6.0 } as const;
 
 /**
  * The 15 CogAT items — content, colors, tiers, countdowns, answers, and

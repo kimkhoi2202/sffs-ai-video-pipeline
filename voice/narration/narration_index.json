@@ -133,11 +133,11 @@
     },
     {
       "beat": "timesup",
-      "chars": 34,
-      "dur_s": 2.24,
+      "chars": 20,
+      "dur_s": 1.2,
       "mp3": "narration/timesup.mp3",
       "wav": "/tmp/vo_r15/timesup.wav",
-      "text": "[excited] TIME'S UP! Pencils down!"
+      "text": "[excited] TIME'S UP!"
     },
     {
       "beat": "r1",

@@ -10,7 +10,7 @@ export const LEAD = 0.35; // silence before VO on a plate (Python LEAD)
 export const TRAIL = 0.8; // silence after VO on a plate (Python TRAIL)
 
 /** Existing ElevenLabs narration durations (seconds), from ffprobe. */
-export const DUR = { intro: 6.32, q3: 22.4, r3: 13.36, timesup: 2.24 };
+export const DUR = { intro: 6.32, q3: 22.4, r3: 13.36, timesup: 1.2 };
 export const Q3_COUNTDOWN = 6;
 
 export const frames = (s: number): number => Math.round(s * FPS);

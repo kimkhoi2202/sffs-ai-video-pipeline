@@ -31,11 +31,10 @@ const isNum = (s) => /^-?\d+$/.test(String(s).trim());
 const cap = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 
 const POLY_NAME = { 3: "triangle", 4: "square", 5: "pentagon", 6: "hexagon", 7: "heptagon", 8: "octagon", circle: "circle" };
-const POS_SPEAK = { tl: "top-left", tm: "the top", tr: "top-right", rm: "the right", br: "bottom-right", bm: "the bottom", bl: "bottom-left", lm: "the left", center: "the center" };
+const POS_SPEAK = { tl: "top-left", tm: "top", tr: "top-right", rm: "right", br: "bottom-right", bm: "bottom", bl: "bottom-left", lm: "left", center: "center" };
 // Spoken names for glyphs whose raw kind reads awkwardly aloud.
 const GLYPH_SPEAK = { lightning: "lightning bolt", crescent: "crescent moon" };
 const gSpeak = (shape) => GLYPH_SPEAK[shape] || shape;
-const qWord = (n) => (n === 15 ? "fifteen" : n2w(n));
 
 const TYPE_PHRASE = {
   "ODD ONE OUT": "",
@@ -65,17 +64,20 @@ function answerSpeak(q) {
   if (q.kind === "dot") return POS_SPEAK[q.ansPos];
   return isNum(q.ansLabel) ? n2w(q.ansLabel) : q.ansLabel.toLowerCase();
 }
+// Options are read exactly ONCE, as "A. Neptune, B. Hockey, C. Soccer, or D. Boxing?"
+// (letter + option, comma-separated, "or" before the last). No separate letter recital.
 const optionsListOr = (q) => {
-  const parts = q.options.map((o) => `${o.letter}, ${optionSpeak(q, o)}`);
-  return parts.slice(0, -1).join("... ") + "... or " + parts[parts.length - 1] + "?";
+  const parts = q.options.map((o) => `${o.letter}. ${cap(optionSpeak(q, o))}`);
+  return parts.slice(0, -1).join(", ") + ", or " + parts[parts.length - 1] + "?";
 };
 
 /** The spoken question stem (prompt + content), before the A..D options. */
 function questionStem(q) {
   const tier = q.tier.toUpperCase();
   if (tier === "ODD ONE OUT") {
-    const members = q.options.map((o) => o.text.toLowerCase()).join("... ");
-    return `Which one does NOT belong? ${cap(members)}.`;
+    // Options are read once by optionsListOr; do NOT list the members here too
+    // (that made odd-one-out read every option TWICE).
+    return "Which one does NOT belong?";
   }
   if (tier === "VERBAL ANALOGY") {
     const parts = q.question.split(/ AS\n/);
@@ -103,31 +105,28 @@ function questionStem(q) {
     const nums = q.seq.filter((t) => t !== "?").map((t) => n2w(t)).join(", ");
     return `${cap(nums)}, and then... what comes next?`;
   }
-  if (q.kind === "shaded") {
-    return `An empty ${gSpeak(q.leftShape)} becomes a filled-in ${gSpeak(q.leftShape)}. So an empty ${gSpeak(q.rightShape)} becomes... which one?`;
-  }
-  if (q.kind === "polygon") {
-    const grow = q.seq[1] > q.seq[0];
-    const shapes = q.seq.map((s) => POLY_NAME[s]).join(", then a ");
-    return `Watch the shapes ${grow ? "grow, gaining" : "shrink, losing"} one side each step: a ${shapes}. Which shape comes next?`;
-  }
-  if (q.kind === "dot") {
-    const path = q.seq.map((p) => POS_SPEAK[p]).join(", ");
-    return `A dot moves around a square: ${path}... where does it jump next?`;
+  // Figure/shape questions (shaded / polygon / dot): read the on-screen PROMPT
+  // only, then the options. Do NOT narrate the fill transformation, the
+  // side-count rule, or the dot path -- those give the answer away. The figures
+  // are shown on screen, so the VO stays neutral like any other question.
+  if (q.kind === "shaded" || q.kind === "polygon" || q.kind === "dot") {
+    return cap(q.prompt.toLowerCase());
   }
   return q.question.replace(/\n/g, " ");
 }
 
+// POSITION-NEUTRAL energizers: NO sequence words (no next/first/last/finally/go).
+// Every q/r clip must be reusable in ANY slot -- q1 of a short OR q7 of the full
+// round -- so the opener must never imply order. Varied but deterministic per id
+// (same clip regardless of the cut it lands in). Count/position is shown only by
+// the on-screen "QUESTION X OF Y" pill.
+const ENERGIZERS = ["Okay", "Alright", "Here's one", "Check this out"];
+
 function qBeat(q) {
   const tp = TYPE_PHRASE[q.tier.toUpperCase()] ?? "";
-  const opener =
-    q.id === 15
-      ? `Last one, question fifteen, ${tp}!`
-      : tp
-        ? `Question ${qWord(q.id)}, ${tp}!`
-        : `Question ${qWord(q.id)}!`;
-  const tail = q.id === 1 ? "Five seconds, go!" : "Five seconds!";
-  return `[excited] ${opener} ${questionStem(q)} ${optionsListOr(q)} ${tail}`;
+  const e = ENERGIZERS[(q.id - 1) % ENERGIZERS.length];
+  const opener = tp ? `${e}, ${tp}!` : `${e}!`;
+  return `[excited] ${opener} ${questionStem(q)} ${optionsListOr(q)} Five seconds!`;
 }
 
 function rBeat(q) {

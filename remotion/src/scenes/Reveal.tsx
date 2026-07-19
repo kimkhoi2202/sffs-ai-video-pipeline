@@ -10,10 +10,10 @@ import { LetterBadge } from "../components/LetterBadge";
  * Unified reveal plate (MINT field): a "CORRECT ANSWER" banner, the answer as an
  * OPTION-STYLE card (colored letter badge + text answer, OR badge + shape +
  * label), and an explanation card. NO green checkmark. Flat letter badge; the
- * correct-answer card is FLAT; the explanation card keeps its shadow. Landscape
- * uses shadow-aware optical centering (right spacer balances the left badge,
- * pill nudged up-left). Portrait centers the [badge + answer] as one group and
- * stacks the cards with room to breathe.
+ * correct-answer card is FLAT; the explanation card keeps its shadow. Both
+ * orientations pin the letter badge LEFT and optically center the answer group in
+ * the REMAINING space to its right (not the full card), so short ("TOP") and long
+ * ("FILLED ARROW") answers both land centered in that right-hand region.
  */
 type Answer = { kind: "text"; text: string } | { kind: "shape"; node: React.ReactNode; label: string };
 
@@ -42,29 +42,31 @@ export const Reveal: React.FC<{ letter: string; explanation: string; answer: Ans
           <Pill text="CORRECT ANSWER" fill={COLORS.coral} textColor={COLORS.ink} fontSize={40} tracking={3} padX={34} padY={18} shadow={PILL_SHADOW} />
         </div>
 
-        {/* answer card (FLAT): badge + answer centered together as a group */}
+        {/* answer card (FLAT): letter badge pinned LEFT; the answer group is
+            optically centered in the REMAINING space to the RIGHT of the badge
+            (from badge-right+gap to the card's right inner edge), NOT the full card. */}
         <Card x={cardX} y={cardY} w={cardW} h={cardH} radius={30} border={9} fill={COLORS.paper} shadow={0} />
+        <div style={{ position: "absolute", left: cardX + 26, top: cardY + (cardH - badge) / 2 }}>
+          <LetterBadge letter={letter} size={badge} radius={18} border={7} shadow={0} />
+        </div>
         <div
           style={{
             position: "absolute",
-            left: cardX,
+            left: cardX + 26 + badge + 40,
             top: cardY,
-            width: cardW,
+            width: cardW - 40 - (26 + badge + 40),
             height: cardH,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: answer.kind === "shape" ? 30 : 34,
+            gap: answer.kind === "shape" ? 30 : 0,
             fontFamily: ANTON,
             fontSize: answer.kind === "shape" ? 70 : 84,
             lineHeight: 1,
             color: COLORS.ink,
             textTransform: "uppercase",
-            padding: "0 40px",
-            boxSizing: "border-box",
           }}
         >
-          <LetterBadge letter={letter} size={badge} radius={18} border={7} shadow={0} />
           {answer.kind === "shape" ? (
             <>
               {answer.node}
@@ -101,14 +103,14 @@ export const Reveal: React.FC<{ letter: string; explanation: string; answer: Ans
     );
   }
 
-  // landscape (unchanged from the approved master)
+  // landscape: badge pinned left; answer group optically centered in the REMAINING
+  // space to its right (badge-right+gap -> card right inner edge), not the full card.
   const CARD = { x: 300, y: 252, w: w - 600, h: 208 };
   const INSET = 30;
   const BADGE = CARD.h - 2 * INSET; // 148
   const BADGE_X = CARD.x + INSET; // 330
-  const TEXT_LEFT = BADGE_X + BADGE + 50; // 528
-  const SIDE = TEXT_LEFT - CARD.x; // 228
-  const CONTENT_W = CARD.w - 2 * SIDE; // 864
+  const TEXT_LEFT = BADGE_X + BADGE + 50; // 528 (badge right + gap)
+  const CONTENT_W = CARD.x + CARD.w - INSET - TEXT_LEFT; // remaining space right of the badge
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.mint }}>
       <div style={{ position: "absolute", left: w / 2 - PILL_SHADOW / 2, top: 150 - PILL_SHADOW / 2, transform: "translate(-50%, -50%)" }}>

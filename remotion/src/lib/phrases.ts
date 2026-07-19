@@ -98,7 +98,7 @@ const SPOKEN_ONLY: Record<string, Sel[]> = {
   q7: [{ target: "and this one is tricky!" }],
   q15: [{ target: "Last one, question fifteen, a number puzzle, and it's sneaky!", display: "Last one, and it's sneaky!" }],
   // played at the end of EVERY countdown; fully spoken-only
-  timesup: [{ target: "TIME'S UP! Pencils down!" }],
+  timesup: [{ target: "TIME'S UP!" }],
   // score: host commentary only (skip the printed ranges + the pill opener)
   score: [
     { target: "Take a bow, you are a certified smart fella!" },

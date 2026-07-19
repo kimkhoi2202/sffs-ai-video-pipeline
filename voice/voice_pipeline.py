@@ -107,7 +107,7 @@ SAMPLES = [
      "[excited] Question one! Which one does NOT belong? Robin... sparrow... salmon... or eagle? "
      "[whispers] Five seconds on the clock... [excited] and, GO!"),
     ("03-timesup",
-     "Three... two... one... [excited] TIME'S UP! Pencils down, brainiacs!"),
+     "Three... two... one... [excited] TIME'S UP!"),
     ("04-reveal-q1",
      "[gasp] And the answer is... SALMON! Robin, sparrow, and eagle all fly, but a salmon swims. "
      "[laughs] If you got it, give yourself a point!"),
@@ -315,7 +315,7 @@ def _v3_narration_text(key, style, line):
     the Gemini style prefix and add V3 audio tags + a reveal drumroll ellipsis,
     matching the game-show dynamic range of the approved phase-1 samples."""
     if key == "timesup":
-        return "[excited] TIME'S UP! Pencils down!"
+        return "[excited] TIME'S UP!"
     body = line
     if key.startswith("r"):  # reveals: add a suspense beat before the answer
         if line.startswith("The answer is "):

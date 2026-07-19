@@ -41,7 +41,7 @@ const DEFAULT_VOICE = "lZcmpVLaoXF4v0uz4l6Q"; // cloned "Booming Ringmaster"
 const META_KEYS = ["intro", "timesup", "score", "outro", "outro-youtube", "outro-follow"];
 const META_TEXT: Record<string, string> = {
   intro: "Are you a SMART fella, or a FART smella? Let's find OUT!",
-  timesup: "TIME'S UP! Pencils down!",
+  timesup: "TIME'S UP!",
   score: "So, are you smart or fart? Count up your correct answers to find your rank!",
   "outro-youtube": "So, how did you do? Comment your score below, and subscribe for more!",
   "outro-follow": "So, how did you do? Comment your score below, and follow for more!",
