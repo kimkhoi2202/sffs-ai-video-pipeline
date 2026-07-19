@@ -33,6 +33,28 @@ const renderMath = (text: string, fontSize: number, wrap: boolean) => {
   );
 };
 
+/** One arrow-pair (e.g. "4 -> 11") as a single inline-flex UNIT (never wraps
+ *  internally): "->" -> vector arrow, math operators -> glyphs. `trail` appends a
+ *  small separator (a comma) hugging the pair when several share a row. */
+const renderArrowSeq = (pairText: string, fontSize: number, trail: string, key: number) => {
+  const parts = pairText.split("->");
+  return (
+    <span key={key} style={{ display: "inline-flex", alignItems: "center" }}>
+      {parts.map((part, pi) => (
+        <Fragment key={pi}>
+          {renderMath(part, fontSize, false)}
+          {pi < parts.length - 1 ? (
+            <span style={{ display: "inline-flex", margin: "0 0.14em", transform: `translateY(${fontSize * 0.06}px)` }}>
+              <InlineArrow h={fontSize * 0.55} />
+            </span>
+          ) : null}
+        </Fragment>
+      ))}
+      {trail ? <span>{trail}</span> : null}
+    </span>
+  );
+};
+
 const renderLines = (question: string, fontSize: number, wrap: boolean) => (
   <div
     style={{
@@ -44,9 +66,24 @@ const renderLines = (question: string, fontSize: number, wrap: boolean) => (
       lineHeight: 1.05,
     }}
   >
-    {question.split("\n").map((line, li) => {
+    {question.split("\n").flatMap((line, li) => {
+      // A number-analogy MAPPING line = comma-separated arrow pairs (>=3), e.g.
+      // "4 -> 11,   5 -> 14,   6 -> 17,   9 -> ?". Wrap it BALANCED into rows (2
+      // pairs each) so the "?" pair is never orphaned alone on a second line —
+      // the old single-row rendering overflowed the narrow portrait prompt box.
+      const pairs = line.split(",").map((s) => s.trim()).filter(Boolean);
+      const isMapping = pairs.length >= 3 && pairs.every((p) => p.includes("->"));
+      if (isMapping) {
+        const n = pairs.length;
+        const rows = n <= 3 ? [pairs] : [pairs.slice(0, Math.ceil(n / 2)), pairs.slice(Math.ceil(n / 2))];
+        return rows.map((row, ri) => (
+          <div key={`${li}-${ri}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: fontSize * 0.5 }}>
+            {row.map((p, pj) => renderArrowSeq(p, fontSize, pj < row.length - 1 ? "," : "", pj))}
+          </div>
+        ));
+      }
       const parts = line.split("->");
-      return (
+      return [
         <div key={li} style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: wrap ? "wrap" : "nowrap" }}>
           {parts.map((part, pi) => (
             <Fragment key={pi}>
@@ -58,8 +95,8 @@ const renderLines = (question: string, fontSize: number, wrap: boolean) => (
               ) : null}
             </Fragment>
           ))}
-        </div>
-      );
+        </div>,
+      ];
     })}
   </div>
 );
