@@ -93,6 +93,7 @@ function build(
   questionsSrc: Question[] = QUESTIONS,
   durs: Record<string, number> = DURS as Record<string, number>,
   qrBase = "audio/narration/",
+  withIntro = false,
 ): TimelineData {
   const D = durs;
   const questions = resolve(ids, questionsSrc);
@@ -103,19 +104,31 @@ function build(
   const swellWindows: [number, number][] = []; // countdown (timer ticking, no VO) -> music swells
   let cur = 0;
 
-  const introDur = frames(LEAD + D.intro + TRAIL);
-  segments.push({ type: "intro", start: cur, dur: introDur });
-  narration.push({ src: "audio/narration/intro.mp3", from: cur + LEAD_FRAMES });
-  voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D.intro)]);
-  cur += introDur;
+  // Shorts (IG/TikTok) run tighter + FASTER than the YouTube master: smaller
+  // LEAD/TRAIL gaps and NO long intro, so the first question (the hook) lands in
+  // the first ~1s (people scroll ~4s). The 16:9 YouTube cut is unchanged.
+  const isShort = platform !== "youtube";
+  const lead = isShort ? 0.12 : LEAD;
+  const trail = isShort ? 0.4 : TRAIL;
+  const leadFrames = frames(lead);
+
+  // Shorts default to a cold open (no intro) for the fast hook; withIntro=true
+  // re-enables the short's own brief branded intro (A/B test). YouTube always has it.
+  if (!isShort || withIntro) {
+    const introDur = frames(lead + D.intro + trail);
+    segments.push({ type: "intro", start: cur, dur: introDur });
+    narration.push({ src: "audio/narration/intro.mp3", from: cur + leadFrames });
+    voWindows.push([cur + leadFrames, cur + leadFrames + frames(D.intro)]);
+    cur += introDur;
+  }
 
   questions.forEach((q, qi) => {
     const pos = qi + 1; // 1-based position within THIS cut ("QUESTION pos OF N")
     const qDur = D[`q${q.idx}`];
-    const readDur = frames(LEAD + qDur + TRAIL);
+    const readDur = frames(lead + qDur + trail);
     segments.push({ type: "read", q, pos, start: cur, dur: readDur });
-    narration.push({ src: `${qrBase}q${q.idx}.mp3`, from: cur + LEAD_FRAMES });
-    voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(qDur)]);
+    narration.push({ src: `${qrBase}q${q.idx}.mp3`, from: cur + leadFrames });
+    voWindows.push([cur + leadFrames, cur + leadFrames + frames(qDur)]);
     cur += readDur;
 
     const cdDur = countdownFrames(q, D);
@@ -126,24 +139,24 @@ function build(
     voWindows.push([cur + frames(q.countdown), cur + frames(q.countdown) + frames(D.timesup)]);
     cur += cdDur;
 
-    const rDur = frames(LEAD + D[`r${q.idx}`] + TRAIL);
+    const rDur = frames(lead + D[`r${q.idx}`] + trail);
     segments.push({ type: "reveal", q, pos, start: cur, dur: rDur });
-    narration.push({ src: `${qrBase}r${q.idx}.mp3`, from: cur + LEAD_FRAMES });
-    voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D[`r${q.idx}`])]);
+    narration.push({ src: `${qrBase}r${q.idx}.mp3`, from: cur + leadFrames });
+    voWindows.push([cur + leadFrames, cur + leadFrames + frames(D[`r${q.idx}`])]);
     cur += rDur;
   });
 
-  const scoreDur = frames(LEAD + D.score + TRAIL);
+  const scoreDur = frames(lead + D.score + trail);
   segments.push({ type: "score", start: cur, dur: scoreDur });
-  narration.push({ src: "audio/narration/score.mp3", from: cur + LEAD_FRAMES });
-  voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D.score)]);
+  narration.push({ src: "audio/narration/score.mp3", from: cur + leadFrames });
+  voWindows.push([cur + leadFrames, cur + leadFrames + frames(D.score)]);
   cur += scoreDur;
 
   const outroKey = outroClipKey(platform);
-  const outroDur = frames(LEAD + D[outroKey] + TRAIL);
+  const outroDur = frames(lead + D[outroKey] + trail);
   segments.push({ type: "outro", start: cur, dur: outroDur });
-  narration.push({ src: `audio/narration/${outroKey}.mp3`, from: cur + LEAD_FRAMES });
-  voWindows.push([cur + LEAD_FRAMES, cur + LEAD_FRAMES + frames(D[outroKey])]);
+  narration.push({ src: `audio/narration/${outroKey}.mp3`, from: cur + leadFrames });
+  voWindows.push([cur + leadFrames, cur + leadFrames + frames(D[outroKey])]);
   cur += outroDur;
 
   // --- SFX: transition whooshes + stings + a correct-answer ding per reveal ---
@@ -191,11 +204,12 @@ export const getTimeline = (
   questionsSrc?: Question[],
   durs?: Record<string, number>,
   qrBase?: string,
+  withIntro = false,
 ): TimelineData => {
-  const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}:${qrBase ?? "def"}`;
+  const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}:${qrBase ?? "def"}:${withIntro ? "wi" : "ni"}`;
   let t = CACHE.get(key);
   if (!t) {
-    t = build(platform, ids, sfxSet, questionsSrc, durs, qrBase);
+    t = build(platform, ids, sfxSet, questionsSrc, durs, qrBase, withIntro);
     CACHE.set(key, t);
   }
   return t;

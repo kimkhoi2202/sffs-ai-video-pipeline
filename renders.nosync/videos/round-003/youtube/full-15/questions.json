@@ -1,0 +1,206 @@
+{
+  "round": 3,
+  "slug": "full-15",
+  "title": "Round 3: Animals, Shapes and Sneaky Sums — Round 15 — Full 15 (YouTube)",
+  "platform": "youtube",
+  "format": "16:9",
+  "questionCount": 15,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "C",
+        "label": "MARCH"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "22"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "difficulty": "easy",
+      "tier": "FIGURE ANALOGY",
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "answer": {
+        "letter": "A",
+        "label": "FILLED SQUARE"
+      }
+    },
+    {
+      "pos": 4,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "COW IS TO MOO AS / DOG IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "BARK"
+      }
+    },
+    {
+      "pos": 5,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "35"
+      }
+    },
+    {
+      "pos": 6,
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "SHOE IS TO FOOT AS / HAT IS TO ?",
+      "answer": {
+        "letter": "A",
+        "label": "HEAD"
+      }
+    },
+    {
+      "pos": 7,
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "23"
+      }
+    },
+    {
+      "pos": 8,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "CATERPILLAR IS TO BUTTERFLY AS / TADPOLE IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "FROG"
+      }
+    },
+    {
+      "pos": 9,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "5"
+      }
+    },
+    {
+      "pos": 10,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "D",
+        "label": "CUBE"
+      }
+    },
+    {
+      "pos": 11,
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "FIGURE SERIES",
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "SQUARE"
+      }
+    },
+    {
+      "pos": 12,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE HIKERS FELT SO ______ AFTER / CLIMBING ALL DAY THAT THEY STOPPED / TO REST BESIDE THE TRAIL.",
+      "answer": {
+        "letter": "C",
+        "label": "EXHAUSTED"
+      }
+    },
+    {
+      "pos": 13,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "TOP-RIGHT"
+      }
+    },
+    {
+      "pos": 14,
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 1 -> 4,   2 -> 6,   3 -> 8,   4 -> ?",
+      "answer": {
+        "letter": "B",
+        "label": "10"
+      }
+    },
+    {
+      "pos": 15,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  2+3=11,  4+1=9,  3+5=23 / THEN  2+4 = ?",
+      "answer": {
+        "letter": "C",
+        "label": "14"
+      }
+    }
+  ]
+}

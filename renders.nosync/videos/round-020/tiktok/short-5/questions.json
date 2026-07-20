@@ -1,0 +1,50 @@
+{
+  "round": 20,
+  "slug": "short-5",
+  "title": "Round 20: Puzzles, Patterns and Brain Teasers — Short 5 — Countdown, Analogy, Sentence",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 4 -> 11,   5 -> 14,   6 -> 17,   9 -> ?",
+      "answer": {
+        "letter": "B",
+        "label": "26"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "LIGHT IS TO DARK AS / FAST IS TO ?",
+      "answer": {
+        "letter": "A",
+        "label": "SLOW"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE RIDDLE WAS SO ______ THAT IT TOOK / HER ALL AFTERNOON TO SOLVE IT.",
+      "answer": {
+        "letter": "C",
+        "label": "DIFFICULT"
+      }
+    }
+  ]
+}

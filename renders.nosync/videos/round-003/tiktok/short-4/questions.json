@@ -1,0 +1,50 @@
+{
+  "round": 3,
+  "slug": "short-4",
+  "title": "Round 3: Animals, Shapes and Sneaky Sums — Short 4 — Doubling, Odd One Out, Puzzle",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "22"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "D",
+        "label": "CUBE"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  2+3=11,  4+1=9,  3+5=23 / THEN  2+4 = ?",
+      "answer": {
+        "letter": "C",
+        "label": "14"
+      }
+    }
+  ]
+}

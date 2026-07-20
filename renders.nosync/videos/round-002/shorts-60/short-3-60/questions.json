@@ -1,0 +1,24 @@
+{
+  "round": 2,
+  "slug": "short-3-60",
+  "title": "Round 2: Trees, Tools and Number Jumps — Short 3 (under 60s) — Dot Position",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "TOP-LEFT"
+      }
+    }
+  ]
+}

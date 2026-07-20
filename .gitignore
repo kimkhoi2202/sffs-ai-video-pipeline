@@ -38,12 +38,14 @@ renders.nosync/.trash-old/
 # regenerable from their round JSON via TTS, so keep them out of git.
 remotion/public/audio/rounds/
 
-# Fresh backup takes the voice scripts write next to the active clips — the
-# curated archive lives (tracked) under voice/_backups/ instead.
+# Fresh backup takes the voice scripts write next to the active clips.
 voice/narration/*.bak
 voice/narration/*.bak.mp3
 voice/narration/_countdownbak/
 voice/narration/_oldaccount_bak/
+
+# Local pre-op backups (atempo/TTS regen snapshots) — regenerable, keep out of git.
+voice/_backups/
 
 # Editor / OS / misc
 .DS_Store

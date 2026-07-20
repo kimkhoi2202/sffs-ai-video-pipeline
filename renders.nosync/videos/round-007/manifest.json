@@ -1,0 +1,153 @@
+{
+  "round": 7,
+  "slug": "round-007",
+  "title": "Round 7: Puzzles, Patterns and Brain Teasers",
+  "generated": "2026-07-20",
+  "cuts": [
+    {
+      "slug": "short-1",
+      "dir": "round-007/instagram/short-1",
+      "file": "short-1.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        1,
+        3,
+        7
+      ],
+      "countdownSec": 5,
+      "durationSec": 94
+    },
+    {
+      "slug": "short-2",
+      "dir": "round-007/instagram/short-2",
+      "file": "short-2.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        4,
+        9,
+        11
+      ],
+      "countdownSec": 5,
+      "durationSec": 91
+    },
+    {
+      "slug": "short-3",
+      "dir": "round-007/instagram/short-3",
+      "file": "short-3.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        6,
+        13,
+        14
+      ],
+      "countdownSec": 5,
+      "durationSec": 100
+    },
+    {
+      "slug": "short-4",
+      "dir": "round-007/instagram/short-4",
+      "file": "short-4.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        2,
+        10,
+        15
+      ],
+      "countdownSec": 5,
+      "durationSec": 107
+    },
+    {
+      "slug": "short-5",
+      "dir": "round-007/instagram/short-5",
+      "file": "short-5.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        5,
+        8,
+        12
+      ],
+      "countdownSec": 5,
+      "durationSec": 91
+    },
+    {
+      "slug": "short-1",
+      "dir": "round-007/tiktok/short-1",
+      "file": "short-1.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        1,
+        3,
+        7
+      ],
+      "countdownSec": 5,
+      "durationSec": 94,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-2",
+      "dir": "round-007/tiktok/short-2",
+      "file": "short-2.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        4,
+        9,
+        11
+      ],
+      "countdownSec": 5,
+      "durationSec": 91,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-3",
+      "dir": "round-007/tiktok/short-3",
+      "file": "short-3.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        6,
+        13,
+        14
+      ],
+      "countdownSec": 5,
+      "durationSec": 100,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-4",
+      "dir": "round-007/tiktok/short-4",
+      "file": "short-4.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        2,
+        10,
+        15
+      ],
+      "countdownSec": 5,
+      "durationSec": 107,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-5",
+      "dir": "round-007/tiktok/short-5",
+      "file": "short-5.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        5,
+        8,
+        12
+      ],
+      "countdownSec": 5,
+      "durationSec": 91,
+      "note": "byte-identical mirror of the instagram short"
+    }
+  ]
+}

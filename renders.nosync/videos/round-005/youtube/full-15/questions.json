@@ -1,0 +1,206 @@
+{
+  "round": 5,
+  "slug": "full-15",
+  "title": "Round 5: Royals, Tastes and Tricky Totals — Round 15 — Full 15 (YouTube)",
+  "platform": "youtube",
+  "format": "16:9",
+  "questionCount": 15,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "A",
+        "label": "NAIL"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "62"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "difficulty": "easy",
+      "tier": "FIGURE ANALOGY",
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "answer": {
+        "letter": "C",
+        "label": "FILLED TRIANGLE"
+      }
+    },
+    {
+      "pos": 4,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "KING IS TO QUEEN AS / PRINCE IS TO ?",
+      "answer": {
+        "letter": "D",
+        "label": "PRINCESS"
+      }
+    },
+    {
+      "pos": 5,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "48"
+      }
+    },
+    {
+      "pos": 6,
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "SUGAR IS TO SWEET AS / LEMON IS TO ?",
+      "answer": {
+        "letter": "D",
+        "label": "SOUR"
+      }
+    },
+    {
+      "pos": 7,
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "31"
+      }
+    },
+    {
+      "pos": 8,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "DAY IS TO WEEK AS / MONTH IS TO ?",
+      "answer": {
+        "letter": "C",
+        "label": "YEAR"
+      }
+    },
+    {
+      "pos": 9,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "22"
+      }
+    },
+    {
+      "pos": 10,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "A",
+        "label": "SUN"
+      }
+    },
+    {
+      "pos": 11,
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "FIGURE SERIES",
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "HEPTAGON"
+      }
+    },
+    {
+      "pos": 12,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "AFTER THE LONG DRY SUMMER, THE ONCE / GREEN FIELD LOOKED COMPLETELY ______ / WITH NO PLANTS LEFT AT ALL.",
+      "answer": {
+        "letter": "B",
+        "label": "BARREN"
+      }
+    },
+    {
+      "pos": 13,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "BOTTOM-LEFT"
+      }
+    },
+    {
+      "pos": 14,
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 1 -> 5,   2 -> 7,   3 -> 9,   4 -> ?",
+      "answer": {
+        "letter": "C",
+        "label": "11"
+      }
+    },
+    {
+      "pos": 15,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  5+3=7,  4+2=2,  6+2=4 / THEN  5+4 = ?",
+      "answer": {
+        "letter": "A",
+        "label": "11"
+      }
+    }
+  ]
+}

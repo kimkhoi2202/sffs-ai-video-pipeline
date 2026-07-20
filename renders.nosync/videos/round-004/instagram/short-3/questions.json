@@ -1,0 +1,50 @@
+{
+  "round": 4,
+  "slug": "short-3",
+  "title": "Round 4: Metals, Motion and Mystery Math — Short 3 — Analogy, Position, Number Analogy",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "PEN IS TO WRITE AS / SCISSORS IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "CUT"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "BOTTOM-RIGHT"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 2 -> 8,   3 -> 12,   4 -> 16,   5 -> ?",
+      "answer": {
+        "letter": "A",
+        "label": "20"
+      }
+    }
+  ]
+}

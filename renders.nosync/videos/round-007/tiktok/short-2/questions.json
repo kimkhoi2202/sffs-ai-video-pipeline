@@ -1,0 +1,50 @@
+{
+  "round": 7,
+  "slug": "short-2",
+  "title": "Round 7: Puzzles, Patterns and Brain Teasers — Short 2 — Analogy, Fibonacci, Polygons",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "PETAL IS TO FLOWER AS / PAGE IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "BOOK"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "40"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "FIGURE SERIES",
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "OCTAGON"
+      }
+    }
+  ]
+}

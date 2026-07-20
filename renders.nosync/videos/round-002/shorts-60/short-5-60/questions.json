@@ -1,0 +1,24 @@
+{
+  "round": 2,
+  "slug": "short-5-60",
+  "title": "Round 2: Trees, Tools and Number Jumps — Short 5 (under 60s) — Number Series",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "36"
+      }
+    }
+  ]
+}

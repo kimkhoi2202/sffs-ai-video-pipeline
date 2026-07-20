@@ -4,6 +4,7 @@ import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { HeroShapes } from "../components/HeroShapes";
 import { PerspectiveGrid } from "../components/PerspectiveGrid";
+import { SafeArea } from "../components/SafeArea";
 import type { Platform } from "../full/timeline";
 
 /**
@@ -48,10 +49,13 @@ const Pop: React.FC<{ frame: number; fps: number; delay: number; cx: number; cy:
   );
 };
 
-/** Clean ink down-chevron for the scroll-for-more affordance. */
-const ChevronDown: React.FC<{ size: number }> = ({ size }) => (
-  <svg width={size} height={size * 0.66} viewBox="0 0 40 26" style={{ display: "block" }} aria-hidden>
-    <polyline points="4,5 20,21 36,5" fill="none" stroke={COLORS.ink} strokeWidth={7} strokeLinecap="round" strokeLinejoin="round" />
+/** Full down-ARROW (vertical shaft + head) for the scroll-for-more affordance —
+ *  matches the website's scroll cue exactly (lucide `ArrowDown`, strokeWidth 2.5:
+ *  path "M12 5v14" shaft + "m19 12-7 7-7-7" head on a 24x24 viewBox). */
+const ArrowDown: React.FC<{ size: number }> = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={COLORS.ink} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }} aria-hidden>
+    <path d="M12 5v14" />
+    <path d="m19 12-7 7-7-7" />
   </svg>
 );
 
@@ -70,8 +74,11 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
   const L = portrait
     ? { l1: 636, l2: 824, comment: 998, cta: 1204, commentSize: 58, ctaSize: 74, ctaPad: "30px 62px", brain: { top: -56, right: -34, w: 140 }, scroll: 1688 }
     : { l1: 330, l2: 480, comment: 632, cta: 776, commentSize: 56, ctaSize: 66, ctaPad: "26px 60px", brain: { top: -52, right: -34, w: 132 }, scroll: 0 };
-  // looping eased downward bob (~1.1s) for the scroll-for-more chevron
-  const scrollDy = (1 - Math.cos(((frame % (1.1 * fps)) / (1.1 * fps)) * Math.PI * 2)) * 6;
+  // Whole scroll-cue bob (the circle + its border + hard shadow + arrow move as
+  // ONE unit), matching the website cue (gsap y:8 duration:0.7 yoyo sine.inOut =>
+  // a 1.4s sine-eased 0->peak->0 cycle). Amplitude scaled up for the larger video
+  // circle; transform-only, no layout shift.
+  const cueBob = 8 * (1 - Math.cos(((frame % (1.4 * fps)) / (1.4 * fps)) * Math.PI * 2)); // 0..16px, ease-in-out
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.green }}>
@@ -79,7 +86,9 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
       {/* same 6 hero shapes as the intro; hexagon recolored yellow so no shape blends into the green bg */}
       <HeroShapes overrides={{ hexagon: COLORS.yellow }} />
 
-      {/* headline + CTA render ABOVE the floating shapes (eyebrow pill removed) */}
+      {/* headline + CTA render ABOVE the floating shapes, inside the IG safe box
+          in portrait; the grid + shapes stay full-frame (SafeArea no-ops in 16:9). */}
+      <SafeArea>
       <div style={{ position: "absolute", inset: 0, zIndex: 1 }}>
       <Pop frame={frame} fps={fps} delay={4} cx={cx} cy={L.l1}>
         <div style={headWord(head, COLORS.blue)}>HOW DID</div>
@@ -132,15 +141,15 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
             <div style={{ fontFamily: ANTON, fontSize: 42, lineHeight: 1, color: COLORS.ink, textTransform: "uppercase", letterSpacing: "0.04em", whiteSpace: "nowrap" }}>
               SCROLL FOR MORE
             </div>
-            <div style={{ width: 92, height: 92, borderRadius: 9999, background: COLORS.paper, border: `6px solid ${COLORS.ink}`, boxShadow: hardShadow(8), display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{ transform: `translateY(${scrollDy}px)`, display: "flex" }}>
-                <ChevronDown size={44} />
-              </div>
+            {/* whole cue bobs as one unit (circle + border + shadow + arrow) */}
+            <div style={{ transform: `translateY(${cueBob}px)`, width: 92, height: 92, borderRadius: 9999, background: COLORS.paper, border: `6px solid ${COLORS.ink}`, boxShadow: hardShadow(8), display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <ArrowDown size={42} />
             </div>
           </div>
         </Pop>
       )}
       </div>
+      </SafeArea>
     </AbsoluteFill>
   );
 };

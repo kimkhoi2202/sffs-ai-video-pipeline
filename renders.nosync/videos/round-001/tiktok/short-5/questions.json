@@ -1,0 +1,50 @@
+{
+  "round": 1,
+  "slug": "short-5",
+  "title": "Round 1: Fruit, Patterns and Shapes — Short 5 — Countdown, Analogy, Sentence",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "32"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "FISH IS TO SWIM AS / BIRD IS TO ?",
+      "answer": {
+        "letter": "D",
+        "label": "FLY"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE LIBRARY WAS SO QUIET THAT EVEN A / WHISPER SEEMED ______, SO EVERYONE / TRIED HARD NOT TO MAKE A SOUND.",
+      "answer": {
+        "letter": "B",
+        "label": "LOUD"
+      }
+    }
+  ]
+}

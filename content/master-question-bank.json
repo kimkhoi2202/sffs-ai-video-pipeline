@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-19",
+  "updated": "2026-07-20",
   "count": 1500,
   "entries": [
     {
@@ -1275,7 +1275,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 1,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "numseries|quantitative|number-series|6~8~10~12|14",
@@ -1289,7 +1292,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 2,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "shaded|nonverbal|figure-analogy|triangle>triangle=>triangle:true|filled-triangle",
@@ -1303,7 +1309,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 3,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|verbal|verbal-analogy|petal is to flower as page is to || book~read~story~word|book",
@@ -1317,7 +1326,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 4,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "numseries|quantitative|number-series|13~19~25~31|37",
@@ -1331,7 +1343,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 5,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|verbal|verbal-analogy|lion is to roar as snake is to || bite~hiss~scale~slither|hiss",
@@ -1345,7 +1360,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 6,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "numseries|quantitative|number-series|3~5~8~13~21|34",
@@ -1359,7 +1377,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 7,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|verbal|verbal-analogy|near is to far as high is to || low~sky~tall~up|low",
@@ -1373,7 +1394,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 8,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "numseries|quantitative|number-series|12~19~26~33|40",
@@ -1387,7 +1411,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 9,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|verbal|odd-one-out|which one does not belong || circle~purple~red~yellow|circle",
@@ -1401,7 +1428,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 10,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "polygon|nonverbal|figure-series|4~5~6~7=>8|8",
@@ -1415,7 +1445,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 11,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|verbal|sentence-completion|because she practiced every single day lila became a very piano player || hungry~lazy~skilled~sleepy|skilled",
@@ -1429,7 +1462,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 12,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "dot|nonverbal|position|bl~tl=>tr|tr",
@@ -1443,7 +1479,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 13,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|quantitative|number-analogy|which number fits 3 8 4 10 7 16 8 || 16~18~19~20|18",
@@ -1457,7 +1496,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 14,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|quantitative|number-puzzle|if 3 5 24 1 3 12 5 4 27 then 6 4 || 10~20~30~40|30",
@@ -1471,7 +1513,10 @@
       "round": 7,
       "slug": "round-007",
       "id": 15,
-      "addedAt": "2026-07-19"
+      "addedAt": "2026-07-19",
+      "posted": true,
+      "postedBatch": 1,
+      "postedAt": "2026-07-20"
     },
     {
       "sig": "text|verbal|odd-one-out|which one does not belong || gold~iron~silver~wood|wood",

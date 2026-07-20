@@ -5,6 +5,7 @@ import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { HeaderPills } from "./HeaderPills";
 import { Countdown } from "./Countdown";
+import { SafeArea } from "./SafeArea";
 import type { Question } from "../data/types";
 
 /**
@@ -74,6 +75,9 @@ export const QuestionFrame: React.FC<{
   const optionsGap = portrait ? 40 : OPTIONS_GAP;
   return (
     <AbsoluteFill style={{ backgroundColor: c.bg }}>
+      {/* full-frame bg above is UNSCALED (plate's own colour); all readable content
+          lives inside the IG safe box in portrait (SafeArea passes through in 16:9). */}
+      <SafeArea>
       {/* flex body (transparent) — the header/countdown/bar chrome is drawn on top */}
       <div
         style={{
@@ -102,6 +106,7 @@ export const QuestionFrame: React.FC<{
 
       <HeaderPills idx={pos ?? q.idx} total={total ?? 15} tier={q.tier} countFill={c.countFill} topicFill={c.topicFill} />
       <Countdown elapsed={elapsed} total={q.countdown} accent={c.clock} />
+      </SafeArea>
     </AbsoluteFill>
   );
 };

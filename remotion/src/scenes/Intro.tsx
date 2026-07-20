@@ -5,6 +5,7 @@ import { ANTON } from "../theme/fonts";
 import { easeOutBack, easeOutCubic } from "../theme/easing";
 import { HeroShapes } from "../components/HeroShapes";
 import { PerspectiveGrid } from "../components/PerspectiveGrid";
+import { SafeArea } from "../components/SafeArea";
 
 /**
  * Animated branded INTRO — matches the website hero + the approved Python intro:
@@ -84,6 +85,8 @@ export const Intro: React.FC = () => {
       <PerspectiveGrid base={COLORS.yellow} />
       <HeroShapes />
 
+      {/* readable title inside the IG safe box (portrait); grid + shapes full-frame */}
+      <SafeArea>
       {/* SMART FELLA (blue) */}
       <TitleEl cx={cx} cy={L.smart} mode="riseup" start={0.08} dur={0.58} t={t}>
         <div style={titleWord(cap, COLORS.blue)}>SMART FELLA</div>
@@ -121,6 +124,7 @@ export const Intro: React.FC = () => {
       <TitleEl cx={L.brain.cx} cy={L.brain.cy} mode="logopop" start={1.6} dur={0.7} t={t}>
         <Img src={staticFile("images/sffs-logo.png")} style={{ width: L.brain.wImg, height: "auto", display: "block", filter: hardDropShadow(L.brain.shadow) }} />
       </TitleEl>
+      </SafeArea>
     </AbsoluteFill>
   );
 };

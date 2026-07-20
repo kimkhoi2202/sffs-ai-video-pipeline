@@ -78,15 +78,17 @@ export const FullVideo: React.FC<{
   questions?: Question[];
   durs?: Record<string, number>;
   qrBase?: string;
-}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase }) => {
+  /** Shorts default to a cold open; set true to include the short's brief intro. */
+  withIntro?: boolean;
+}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, withIntro }) => {
   const cut = slug ? bySlug(slug) : undefined;
   const platform: Platform = cut?.platform ?? platformProp ?? "youtube";
   const ids = cut?.ids ?? questionIds;
   const music = cut?.music ?? musicProp;
   const sfx = cut?.sfx ?? sfxProp;
   const T: TimelineData = useMemo(
-    () => getTimeline(platform, ids, sfx, questions, durs, qrBase),
-    [platform, ids, sfx, questions, durs, qrBase],
+    () => getTimeline(platform, ids, sfx, questions, durs, qrBase, withIntro),
+    [platform, ids, sfx, questions, durs, qrBase, withIntro],
   );
   const total = T.questions.length;
   const winStart = winStartFrame(T);

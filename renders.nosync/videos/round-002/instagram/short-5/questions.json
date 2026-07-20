@@ -1,0 +1,50 @@
+{
+  "round": 2,
+  "slug": "short-5",
+  "title": "Round 2: Trees, Tools and Number Jumps — Short 5 — Countdown, Analogy, Sentence",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "36"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "PUPPY IS TO DOG AS / KITTEN IS TO ?",
+      "answer": {
+        "letter": "D",
+        "label": "CAT"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE RAIN POURED ALL DAY, SO THE / SCHOOL HAD TO ______ THE OUTDOOR / GAMES UNTIL THE NEXT WEEKEND.",
+      "answer": {
+        "letter": "D",
+        "label": "POSTPONE"
+      }
+    }
+  ]
+}

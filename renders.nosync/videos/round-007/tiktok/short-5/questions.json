@@ -1,0 +1,50 @@
+{
+  "round": 7,
+  "slug": "short-5",
+  "title": "Round 7: Puzzles, Patterns and Brain Teasers — Short 5 — Countdown, Analogy, Sentence",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "37"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "NEAR IS TO FAR AS / HIGH IS TO ?",
+      "answer": {
+        "letter": "C",
+        "label": "LOW"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "BECAUSE SHE PRACTICED EVERY SINGLE DAY, / LILA BECAME A VERY ______ PIANO PLAYER.",
+      "answer": {
+        "letter": "B",
+        "label": "SKILLED"
+      }
+    }
+  ]
+}

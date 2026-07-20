@@ -5,6 +5,7 @@ import { ANTON, DM_SANS } from "../theme/fonts";
 import { Card } from "../components/Card";
 import { Pill } from "../components/Pill";
 import { LetterBadge } from "../components/LetterBadge";
+import { SafeArea } from "../components/SafeArea";
 
 /**
  * Unified reveal plate (MINT field): a "CORRECT ANSWER" banner, the answer as an
@@ -38,6 +39,7 @@ export const Reveal: React.FC<{ letter: string; explanation: string; answer: Ans
     const explH = 620;
     return (
       <AbsoluteFill style={{ backgroundColor: COLORS.mint }}>
+        <SafeArea>
         <div style={{ position: "absolute", left: w / 2 - PILL_SHADOW / 2, top: pillCy - PILL_SHADOW / 2, transform: "translate(-50%, -50%)" }}>
           <Pill text="CORRECT ANSWER" fill={COLORS.coral} textColor={COLORS.ink} fontSize={40} tracking={3} padX={34} padY={18} shadow={PILL_SHADOW} />
         </div>
@@ -99,6 +101,7 @@ export const Reveal: React.FC<{ letter: string; explanation: string; answer: Ans
         >
           {explanation}
         </div>
+        </SafeArea>
       </AbsoluteFill>
     );
   }

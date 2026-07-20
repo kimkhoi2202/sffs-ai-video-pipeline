@@ -1,0 +1,50 @@
+{
+  "round": 7,
+  "slug": "short-1",
+  "title": "Round 7: Puzzles, Patterns and Brain Teasers — Short 1 — Odd Bird, Shapes, Tricky Series",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "B",
+        "label": "THREE"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 3,
+      "kind": "shaded",
+      "category": "nonverbal",
+      "difficulty": "easy",
+      "tier": "FIGURE ANALOGY",
+      "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+      "answer": {
+        "letter": "D",
+        "label": "FILLED TRIANGLE"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "34"
+      }
+    }
+  ]
+}

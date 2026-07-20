@@ -274,6 +274,110 @@
       "mp3": "narration/outro.mp3",
       "wav": "/tmp/vo_r15/outro.wav",
       "text": "[cheerful] So, how did you do? Comment your score below, and follow or subscribe for more!"
+    },
+    {
+      "beat": "demo1",
+      "chars": 24,
+      "dur_s": 1.84,
+      "mp3": "narration/demo1.mp3",
+      "wav": "/tmp/vo_intro/demo1.wav",
+      "text": "[excited] Like THIS one!"
+    },
+    {
+      "beat": "demo2",
+      "chars": 36,
+      "dur_s": 2.48,
+      "mp3": "narration/demo2.mp3",
+      "wav": "/tmp/vo_intro/demo2.wav",
+      "text": "[excited] Orrrr... like thisss one!!"
+    },
+    {
+      "beat": "demo3",
+      "chars": 34,
+      "dur_s": 3.12,
+      "mp3": "narration/demo3.mp3",
+      "wav": "/tmp/vo_intro/demo3.wav",
+      "text": "[laughs] Ooh... can you crack it?!"
+    },
+    {
+      "beat": "mission",
+      "chars": 65,
+      "dur_s": 4.4,
+      "mp3": "narration/mission.mp3",
+      "wav": "/tmp/vo_intro/mission.wav",
+      "text": "[excited] We make tests so fun that you just can't STOP learning."
+    },
+    {
+      "beat": "cta",
+      "chars": 64,
+      "dur_s": 4.32,
+      "mp3": "narration/cta.mp3",
+      "wav": "/tmp/vo_intro/cta.wav",
+      "text": "[excited] Brand new brain challenges every day. Follow for more!"
+    },
+    {
+      "beat": "what",
+      "chars": 111,
+      "dur_s": 7.68,
+      "mp3": "narration/what.mp3",
+      "wav": "/tmp/vo_intro/what.wav",
+      "text": "[excited] It's a real, FUN, IQ-style brain test. Reasoning challenges that feel like a game show, not homework."
+    },
+    {
+      "beat": "reply-comment",
+      "chars": 32,
+      "dur_s": 2.16,
+      "mp3": "narration/reply-comment.mp3",
+      "wav": "/tmp/vo_reply/reply-comment.wav",
+      "text": "[gasp] Wait... we got a comment!"
+    },
+    {
+      "beat": "reply-fornow",
+      "chars": 97,
+      "dur_s": 6.64,
+      "mp3": "narration/reply-fornow.mp3",
+      "wav": "/tmp/vo_reply/reply-fornow.wav",
+      "text": "[excited] For now! Because starting today, there is a brand new brain challenge every single day."
+    },
+    {
+      "beat": "reply-demo",
+      "chars": 56,
+      "dur_s": 3.84,
+      "mp3": "narration/reply-demo.mp3",
+      "wav": "/tmp/vo_reply/reply-demo.wav",
+      "text": "[excited] Here is your very first one. Can you crack it?"
+    },
+    {
+      "beat": "reply-cta",
+      "chars": 51,
+      "dur_s": 3.36,
+      "mp3": "narration/reply-cta.mp3",
+      "wav": "/tmp/vo_reply/reply-cta.wav",
+      "text": "[excited] So follow now, and don't miss tomorrow's!"
+    },
+    {
+      "beat": "reply-yay",
+      "chars": 40,
+      "dur_s": 3.84,
+      "mp3": "narration/reply-yay.mp3",
+      "wav": "/tmp/vo_reply/reply-yay.wav",
+      "text": "[excited] YAYYY! Our very FIRST comment!"
+    },
+    {
+      "beat": "reply-stamp",
+      "chars": 86,
+      "dur_s": 6.64,
+      "mp3": "narration/reply-stamp.mp3",
+      "wav": "/tmp/vo_reply/reply-stamp.wav",
+      "text": "[excited] And for THAT, mai matz eight, you are officially... a CERTIFIED SMART FELLA!"
+    },
+    {
+      "beat": "reply-tease",
+      "chars": 84,
+      "dur_s": 5.6,
+      "mp3": "narration/reply-tease.mp3",
+      "wav": "/tmp/vo_reply/reply-tease.wav",
+      "text": "[excited] And this is just the start. A brand new brain challenge, every single day!"
     }
   ]
 }

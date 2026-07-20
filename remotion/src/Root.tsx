@@ -21,12 +21,13 @@ const cutDuration = (props: {
   questions?: Question[];
   durs?: Record<string, number>;
   qrBase?: string;
+  withIntro?: boolean;
 }): number => {
   const cut = props.slug ? bySlug(props.slug) : undefined;
   const platform = cut?.platform ?? (props.platform as Platform) ?? "youtube";
   const ids = cut?.ids ?? props.questionIds ?? ALL_IDS;
   const sfx = cut?.sfx ?? props.sfx;
-  return getTimeline(platform, ids, sfx, props.questions, props.durs, props.qrBase).total;
+  return getTimeline(platform, ids, sfx, props.questions, props.durs, props.qrBase, props.withIntro).total;
 };
 
 /**
@@ -68,6 +69,7 @@ export const RemotionRoot: React.FC = () => {
 
       {/* Static contact sheet of the expanded nonverbal vocabulary (still-only). */}
       <Composition id="NonverbalPreview" component={NonverbalPreview} durationInFrames={1} fps={30} width={1920} height={1600} />
+
     </>
   );
 };

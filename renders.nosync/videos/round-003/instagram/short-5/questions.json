@@ -1,0 +1,50 @@
+{
+  "round": 3,
+  "slug": "short-5",
+  "title": "Round 3: Animals, Shapes and Sneaky Sums — Short 5 — Countdown, Analogy, Sentence",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 5,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "35"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 8,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "CATERPILLAR IS TO BUTTERFLY AS / TADPOLE IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "FROG"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 12,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "hard",
+      "tier": "SENTENCE COMPLETION",
+      "prompt": "THE HIKERS FELT SO ______ AFTER / CLIMBING ALL DAY THAT THEY STOPPED / TO REST BESIDE THE TRAIL.",
+      "answer": {
+        "letter": "C",
+        "label": "EXHAUSTED"
+      }
+    }
+  ]
+}

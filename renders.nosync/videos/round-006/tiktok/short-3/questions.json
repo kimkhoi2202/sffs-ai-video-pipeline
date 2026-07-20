@@ -1,0 +1,50 @@
+{
+  "round": 6,
+  "slug": "short-3",
+  "title": "Round 6: Words, Numbers and Shapes — Short 3 — Analogy, Position, Number Analogy",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "HARD IS TO SOFT AS / HEAVY IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "LIGHT"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "BOTTOM-LEFT"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 4 -> 11,   5 -> 14,   6 -> 17,   7 -> ?",
+      "answer": {
+        "letter": "A",
+        "label": "20"
+      }
+    }
+  ]
+}

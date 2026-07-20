@@ -4,6 +4,7 @@ import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { Card } from "../components/Card";
 import { Pill } from "../components/Pill";
+import { SafeArea } from "../components/SafeArea";
 
 /**
  * Score screen (blue field). Ports render_score with SCORE_TIERS, scaled to the
@@ -76,6 +77,7 @@ export const Score: React.FC<{ total?: number }> = ({ total = 15 }) => {
     const headingCy = Math.round((pillShadowBottom + y0) / 2) + 8; // +8 optical: all-caps sits high in its line box
     return (
       <AbsoluteFill style={{ backgroundColor: COLORS.blue }}>
+        <SafeArea>
         <div style={{ position: "absolute", left: w / 2, top: pillCy, transform: "translate(-50%, -50%)" }}>
           <Pill text="ARE YOU SMART OR FART?" fill={COLORS.coral} textColor={COLORS.ink} fontSize={40} tracking={3} padX={34} padY={18} />
         </div>
@@ -100,6 +102,7 @@ export const Score: React.FC<{ total?: number }> = ({ total = 15 }) => {
             </div>
           );
         })}
+        </SafeArea>
       </AbsoluteFill>
     );
   }

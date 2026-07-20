@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-19",
+  "generated": "2026-07-20",
   "cuts": [
     {
       "slug": "full-15",
@@ -366,6 +366,13 @@
       "manifest": "round-004/manifest.json"
     },
     {
+      "round": 7,
+      "slug": "round-007",
+      "dir": "round-007",
+      "cutCount": 4,
+      "manifest": "round-007/manifest.json"
+    },
+    {
       "round": 19,
       "slug": "round-019",
       "dir": "round-019",
@@ -376,7 +383,7 @@
       "round": 20,
       "slug": "round-020",
       "dir": "round-020",
-      "cutCount": 2,
+      "cutCount": 10,
       "manifest": "round-020/manifest.json"
     },
     {

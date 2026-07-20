@@ -1,0 +1,24 @@
+{
+  "round": 4,
+  "slug": "short-1-60",
+  "title": "Round 4: Metals, Motion and Mystery Math — Short 1 (under 60s) — Odd One Out",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "D",
+        "label": "HAT"
+      }
+    }
+  ]
+}

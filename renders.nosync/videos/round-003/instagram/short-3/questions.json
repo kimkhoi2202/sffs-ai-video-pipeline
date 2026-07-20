@@ -1,0 +1,50 @@
+{
+  "round": 3,
+  "slug": "short-3",
+  "title": "Round 3: Animals, Shapes and Sneaky Sums — Short 3 — Analogy, Position, Number Analogy",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "SHOE IS TO FOOT AS / HAT IS TO ?",
+      "answer": {
+        "letter": "A",
+        "label": "HEAD"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "TOP-RIGHT"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 1 -> 4,   2 -> 6,   3 -> 8,   4 -> ?",
+      "answer": {
+        "letter": "B",
+        "label": "10"
+      }
+    }
+  ]
+}

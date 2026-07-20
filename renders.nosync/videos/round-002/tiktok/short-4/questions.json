@@ -1,0 +1,50 @@
+{
+  "round": 2,
+  "slug": "short-4",
+  "title": "Round 2: Trees, Tools and Number Jumps — Short 4 — Doubling, Odd One Out, Puzzle",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "16"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "A",
+        "label": "ROAD"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  2+3=6,  4+2=8,  5+3=15 / THEN  6+2 = ?",
+      "answer": {
+        "letter": "C",
+        "label": "12"
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "round": 5,
+  "slug": "short-2",
+  "title": "Round 5: Royals, Tastes and Tricky Totals — Short 2 — Analogy, Fibonacci, Polygons",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "KING IS TO QUEEN AS / PRINCE IS TO ?",
+      "answer": {
+        "letter": "D",
+        "label": "PRINCESS"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "22"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "FIGURE SERIES",
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "HEPTAGON"
+      }
+    }
+  ]
+}

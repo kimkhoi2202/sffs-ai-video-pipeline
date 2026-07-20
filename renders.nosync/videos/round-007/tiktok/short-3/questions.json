@@ -1,0 +1,50 @@
+{
+  "round": 7,
+  "slug": "short-3",
+  "title": "Round 7: Puzzles, Patterns and Brain Teasers — Short 3 — Analogy, Position, Number Analogy",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 6,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "LION IS TO ROAR AS / SNAKE IS TO ?",
+      "answer": {
+        "letter": "D",
+        "label": "HISS"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 13,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "TOP-RIGHT"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 14,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER ANALOGY",
+      "prompt": "WHICH NUMBER FITS? / 3 -> 8,   4 -> 10,   7 -> 16,   8 -> ?",
+      "answer": {
+        "letter": "A",
+        "label": "18"
+      }
+    }
+  ]
+}

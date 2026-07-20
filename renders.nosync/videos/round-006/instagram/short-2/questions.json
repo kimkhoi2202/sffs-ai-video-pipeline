@@ -1,0 +1,50 @@
+{
+  "round": 6,
+  "slug": "short-2",
+  "title": "Round 6: Words, Numbers and Shapes — Short 2 — Analogy, Fibonacci, Polygons",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "BIG IS TO SMALL AS / TALL IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "SHORT"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "35"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "TOP-RIGHT"
+      }
+    }
+  ]
+}

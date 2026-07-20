@@ -1,0 +1,50 @@
+{
+  "round": 3,
+  "slug": "short-2",
+  "title": "Round 3: Animals, Shapes and Sneaky Sums — Short 2 — Analogy, Fibonacci, Polygons",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "COW IS TO MOO AS / DOG IS TO ?",
+      "answer": {
+        "letter": "B",
+        "label": "BARK"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "5"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "FIGURE SERIES",
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "SQUARE"
+      }
+    }
+  ]
+}

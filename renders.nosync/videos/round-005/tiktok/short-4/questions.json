@@ -1,0 +1,50 @@
+{
+  "round": 5,
+  "slug": "short-4",
+  "title": "Round 5: Royals, Tastes and Tricky Totals — Short 4 — Doubling, Odd One Out, Puzzle",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "62"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "A",
+        "label": "SUN"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  5+3=7,  4+2=2,  6+2=4 / THEN  5+4 = ?",
+      "answer": {
+        "letter": "A",
+        "label": "11"
+      }
+    }
+  ]
+}

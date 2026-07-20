@@ -1,0 +1,260 @@
+{
+  "round": 5,
+  "slug": "round-005",
+  "title": "Round 5: Royals, Tastes and Tricky Totals",
+  "generated": "2026-07-19",
+  "cuts": [
+    {
+      "slug": "short-1",
+      "dir": "round-005/instagram/short-1",
+      "file": "short-1.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        1,
+        3,
+        7
+      ],
+      "countdownSec": 5,
+      "durationSec": 118
+    },
+    {
+      "slug": "short-2",
+      "dir": "round-005/instagram/short-2",
+      "file": "short-2.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        4,
+        9,
+        11
+      ],
+      "countdownSec": 5,
+      "durationSec": 129
+    },
+    {
+      "slug": "short-3",
+      "dir": "round-005/instagram/short-3",
+      "file": "short-3.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        6,
+        13,
+        14
+      ],
+      "countdownSec": 5,
+      "durationSec": 118
+    },
+    {
+      "slug": "short-4",
+      "dir": "round-005/instagram/short-4",
+      "file": "short-4.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        2,
+        10,
+        15
+      ],
+      "countdownSec": 5,
+      "durationSec": 133
+    },
+    {
+      "slug": "short-5",
+      "dir": "round-005/instagram/short-5",
+      "file": "short-5.mp4",
+      "platform": "instagram",
+      "format": "9:16",
+      "questionIds": [
+        5,
+        8,
+        12
+      ],
+      "countdownSec": 5,
+      "durationSec": 125
+    },
+    {
+      "slug": "short-1-60",
+      "dir": "round-005/shorts-60/short-1-60",
+      "file": "short-1-60.mp4",
+      "platform": "instagram+tiktok",
+      "format": "9:16",
+      "questionIds": [
+        1
+      ],
+      "countdownSec": 5,
+      "durationSec": 50
+    },
+    {
+      "slug": "short-2-60",
+      "dir": "round-005/shorts-60/short-2-60",
+      "file": "short-2-60.mp4",
+      "platform": "instagram+tiktok",
+      "format": "9:16",
+      "questionIds": [
+        9
+      ],
+      "countdownSec": 5,
+      "durationSec": 60
+    },
+    {
+      "slug": "short-3-60",
+      "dir": "round-005/shorts-60/short-3-60",
+      "file": "short-3-60.mp4",
+      "platform": "instagram+tiktok",
+      "format": "9:16",
+      "questionIds": [
+        13
+      ],
+      "countdownSec": 5,
+      "durationSec": 53
+    },
+    {
+      "slug": "short-4-60",
+      "dir": "round-005/shorts-60/short-4-60",
+      "file": "short-4-60.mp4",
+      "platform": "instagram+tiktok",
+      "format": "9:16",
+      "questionIds": [
+        10
+      ],
+      "countdownSec": 5,
+      "durationSec": 50
+    },
+    {
+      "slug": "short-5-60",
+      "dir": "round-005/shorts-60/short-5-60",
+      "file": "short-5-60.mp4",
+      "platform": "instagram+tiktok",
+      "format": "9:16",
+      "questionIds": [
+        5
+      ],
+      "countdownSec": 5,
+      "durationSec": 55
+    },
+    {
+      "slug": "short-1",
+      "dir": "round-005/tiktok/short-1",
+      "file": "short-1.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        1,
+        3,
+        7
+      ],
+      "countdownSec": 5,
+      "durationSec": 118,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-2",
+      "dir": "round-005/tiktok/short-2",
+      "file": "short-2.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        4,
+        9,
+        11
+      ],
+      "countdownSec": 5,
+      "durationSec": 129,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-3",
+      "dir": "round-005/tiktok/short-3",
+      "file": "short-3.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        6,
+        13,
+        14
+      ],
+      "countdownSec": 5,
+      "durationSec": 118,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-4",
+      "dir": "round-005/tiktok/short-4",
+      "file": "short-4.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        2,
+        10,
+        15
+      ],
+      "countdownSec": 5,
+      "durationSec": 133,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "short-5",
+      "dir": "round-005/tiktok/short-5",
+      "file": "short-5.mp4",
+      "platform": "tiktok",
+      "format": "9:16",
+      "questionIds": [
+        5,
+        8,
+        12
+      ],
+      "countdownSec": 5,
+      "durationSec": 125,
+      "note": "byte-identical mirror of the instagram short"
+    },
+    {
+      "slug": "cut-10",
+      "dir": "round-005/youtube/cut-10",
+      "file": "youtube-10.mp4",
+      "platform": "youtube",
+      "format": "16:9",
+      "questionIds": [
+        3,
+        6,
+        9,
+        13,
+        10,
+        7,
+        11,
+        14,
+        12,
+        15
+      ],
+      "countdownSec": 5,
+      "durationSec": 371
+    },
+    {
+      "slug": "full-15",
+      "dir": "round-005/youtube/full-15",
+      "file": "round-15-remotion-master.mp4",
+      "platform": "youtube",
+      "format": "16:9",
+      "questionIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "countdownSec": 5,
+      "durationSec": 544
+    }
+  ]
+}

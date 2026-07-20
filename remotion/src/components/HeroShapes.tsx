@@ -75,7 +75,7 @@ const ShapeVisual: React.FC<{ def: Def; color: string }> = ({ def, color }) => {
   );
 };
 
-export const HeroShapes: React.FC<{ overrides?: Partial<Record<ShapeType, string>> }> = ({ overrides }) => {
+export const HeroShapes: React.FC<{ overrides?: Partial<Record<ShapeType, string>>; posOverrides?: Record<string, { fx?: number; fy?: number }> }> = ({ overrides, posOverrides }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const t = frame / fps;
@@ -86,8 +86,9 @@ export const HeroShapes: React.FC<{ overrides?: Partial<Record<ShapeType, string
   return (
     <>
       {SHAPES.map((s, i) => {
-        const cx = s.fx * width;
-        const cy = s.fy * height;
+        const po = posOverrides?.[s.id];
+        const cx = (po?.fx ?? s.fx) * width;
+        const cy = (po?.fy ?? s.fy) * height;
         const dx = s.ax * Math.sin(2 * Math.PI * s.hz * t + s.ph);
         const dy = s.ay * Math.sin(2 * Math.PI * s.hz * t + s.ph + 1.3);
         const angle = s.spin + s.rot * t;

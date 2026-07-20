@@ -1,0 +1,50 @@
+{
+  "round": 4,
+  "slug": "short-4",
+  "title": "Round 4: Metals, Motion and Mystery Math — Short 4 — Doubling, Odd One Out, Puzzle",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 2,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "easy",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "25"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 10,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "medium",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "C",
+        "label": "WOOD"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 15,
+      "kind": "text",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER PUZZLE",
+      "prompt": "IF  1+2=9,  2+3=15,  4+1=15 / THEN  3+3 = ?",
+      "answer": {
+        "letter": "C",
+        "label": "18"
+      }
+    }
+  ]
+}

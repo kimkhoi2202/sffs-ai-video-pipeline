@@ -24,10 +24,10 @@ const SHAPE_OVERRIDES: Record<string, Partial<Record<ShapeType, string>>> = {
 
 /** Full brand backdrop: solid field + drifting perspective grid + floating hero
  *  shapes, with all foreground content rendered above (zIndex 1). */
-export const Stage: React.FC<{ bg: string; children: ReactNode }> = ({ bg, children }) => (
+export const Stage: React.FC<{ bg: string; children: ReactNode; shapePos?: Record<string, { fx?: number; fy?: number }> }> = ({ bg, children, shapePos }) => (
   <AbsoluteFill style={{ backgroundColor: bg }}>
     <PerspectiveGrid base={bg} />
-    <HeroShapes overrides={SHAPE_OVERRIDES[bg]} />
+    <HeroShapes overrides={SHAPE_OVERRIDES[bg]} posOverrides={shapePos} />
     <AbsoluteFill style={{ zIndex: 1 }}>{children}</AbsoluteFill>
   </AbsoluteFill>
 );

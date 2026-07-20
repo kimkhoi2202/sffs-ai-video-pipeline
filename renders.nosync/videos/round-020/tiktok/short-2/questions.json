@@ -1,0 +1,50 @@
+{
+  "round": 20,
+  "slug": "short-2",
+  "title": "Round 20: Puzzles, Patterns and Brain Teasers — Short 2 — Analogy, Fibonacci, Polygons",
+  "platform": "instagram",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "questions": [
+    {
+      "pos": 1,
+      "id": 4,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "VERBAL ANALOGY",
+      "prompt": "PETAL IS TO FLOWER AS / WHEEL IS TO ?",
+      "answer": {
+        "letter": "C",
+        "label": "CAR"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 9,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "medium",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "56"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "B",
+        "label": "BOTTOM-RIGHT"
+      }
+    }
+  ]
+}
