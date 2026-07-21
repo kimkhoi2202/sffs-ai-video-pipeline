@@ -21,7 +21,13 @@ remotion/build/
 # unzipped into tools/. remotion/scripts/lipsync-core.ts (findRhubarb) locates it
 # via $RHUBARB, a tools/rhubarb symlink, or a tools/Rhubarb-Lip-Sync-* dir; grab
 # it from https://github.com/DanielSWolf/rhubarb-lip-sync/releases (see README).
-tools/
+tools/*
+# ...but DO track the committable media-hosting + posting tooling (text only, no secrets).
+!tools/upload-media.ts
+!tools/README-media-hosting.md
+!tools/post-to-publer.ts
+!tools/post-variant.ts
+!tools/package.json
 
 # Python
 __pycache__/

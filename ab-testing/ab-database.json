@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-21T15:17:00-05:00",
+  "updated_at": "2026-07-21T17:07:11-05:00",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -9,8 +9,14 @@
     "paths_are": "repo-relative to the pipeline repo root"
   },
   "accounts": {
-    "6a5fc9dc4ccd63dc1f041549": { "platform": "instagram", "handle": "@smartfellafartsmellatest" },
-    "6a5fc5451bee22495517bcc5": { "platform": "tiktok", "handle": "@smartfellafartsmellatest" }
+    "6a5fc9dc4ccd63dc1f041549": {
+      "platform": "instagram",
+      "handle": "@smartfellafartsmellatest"
+    },
+    "6a5fc5451bee22495517bcc5": {
+      "platform": "tiktok",
+      "handle": "@smartfellafartsmellatest"
+    }
   },
   "inputs": {
     "publer_posts": ".ab-tmp/publer-posts-raw.json (14 posts synced from Publer; NO API key stored here)",
@@ -127,7 +133,11 @@
         "intro": true,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["word-analogy", "dot-position", "number-analogy"],
+        "question_types": [
+          "word-analogy",
+          "dot-position",
+          "number-analogy"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -162,7 +172,11 @@
         "intro": true,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["word-analogy", "dot-position", "number-analogy"],
+        "question_types": [
+          "word-analogy",
+          "dot-position",
+          "number-analogy"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -197,7 +211,11 @@
         "intro": false,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["odd-one-out", "figure-analogy", "number-series"],
+        "question_types": [
+          "odd-one-out",
+          "figure-analogy",
+          "number-series"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -232,7 +250,11 @@
         "intro": false,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["odd-one-out", "figure-analogy", "number-series"],
+        "question_types": [
+          "odd-one-out",
+          "figure-analogy",
+          "number-series"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -267,7 +289,11 @@
         "intro": false,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["word-analogy", "number-series", "figure-series"],
+        "question_types": [
+          "word-analogy",
+          "number-series",
+          "figure-series"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -302,7 +328,11 @@
         "intro": false,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["number-series", "word-analogy", "fill-in-the-blank"],
+        "question_types": [
+          "number-series",
+          "word-analogy",
+          "fill-in-the-blank"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -337,7 +367,11 @@
         "intro": false,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["number-series", "word-analogy", "fill-in-the-blank"],
+        "question_types": [
+          "number-series",
+          "word-analogy",
+          "fill-in-the-blank"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -372,7 +406,11 @@
         "intro": false,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["word-analogy", "number-series", "figure-series"],
+        "question_types": [
+          "word-analogy",
+          "number-series",
+          "figure-series"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -382,7 +420,7 @@
         "reactions": 0,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0.0,
+        "eng_rate": 0,
         "link_clicks": null,
         "ctr": null,
         "as_of": "2026-07-21",
@@ -407,7 +445,11 @@
         "intro": true,
         "narration": "full",
         "hook": "score-CTA",
-        "question_types": ["word-analogy", "dot-position", "number-analogy"],
+        "question_types": [
+          "word-analogy",
+          "dot-position",
+          "number-analogy"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -417,7 +459,7 @@
         "reactions": 1,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 25.0,
+        "eng_rate": 25,
         "link_clicks": null,
         "ctr": null,
         "as_of": "2026-07-21",
@@ -445,7 +487,11 @@
         "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
-        "question_types": ["odd-one-out", "position", "number-series"],
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -485,7 +531,11 @@
         "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
-        "question_types": ["odd-one-out", "figure-series", "number-series"],
+        "question_types": [
+          "odd-one-out",
+          "figure-series",
+          "number-series"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -495,7 +545,7 @@
         "reactions": 0,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0.0,
+        "eng_rate": 0,
         "link_clicks": null,
         "ctr": null,
         "as_of": "2026-07-21",
@@ -523,7 +573,11 @@
         "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
-        "question_types": ["odd-one-out", "position", "number-series"],
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
         "num_questions": 3
       },
       "metrics": {
@@ -541,76 +595,693 @@
       },
       "match_confidence": "medium",
       "notes": "Newest post (2026-07-21). Family = cliffhanger (HIGH: 'Did you get the last question? Comment your answer'). Exact render video-1 vs video-2 unknown -> source_video null. Metrics pending: not in the 2026-07-21 screenshot (posted after / not yet in analytics)."
+    },
+    {
+      "publer_post_id": "6a5fed32b6f3b513df2c19a4",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:05:38-05:00",
+      "caption": "This one's tricky! Comment your answer below \ud83d\udc47 #quiz #trivia #braintest #puzzle #logic",
+      "source_video": "renders.nosync/videos/ab-tests/no-answer/video-1/no-answer-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "no-answer",
+        "intro": false,
+        "narration": "full",
+        "hook": "comment-CTA",
+        "question_types": [
+          "odd-one-out",
+          "figure-series",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed2f59cd255bf51920bb",
+      "notes": "Drafted via tools/post-variant.ts (A/B no-answer / no-answer, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed2f59cd255bf51920bb."
+    },
+    {
+      "publer_post_id": "6a5fed31b6f3b513df2c19a2",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:05:38-05:00",
+      "caption": "This one's tricky! Comment your answer below \ud83d\udc47 #quiz #trivia #braintest #puzzle #logic",
+      "source_video": "renders.nosync/videos/ab-tests/no-answer/video-1/no-answer-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "no-answer",
+        "intro": false,
+        "narration": "full",
+        "hook": "comment-CTA",
+        "question_types": [
+          "odd-one-out",
+          "figure-series",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed2f59cd255bf51920bb",
+      "notes": "Drafted via tools/post-variant.ts (A/B no-answer / no-answer, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed2f59cd255bf51920bb."
+    },
+    {
+      "publer_post_id": "6a5fed48ca20cb23e05ab1d4",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:00-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-narration/video-1/dont-narrate-no-narration-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "dont-narrate",
+        "intro": false,
+        "narration": "none",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed44ca20cb23e05ab1d0",
+      "notes": "Drafted via tools/post-variant.ts (A/B dont-narrate / no-narration, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed44ca20cb23e05ab1d0."
+    },
+    {
+      "publer_post_id": "6a5fed48ca20cb23e05ab1d2",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:00-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-narration/video-1/dont-narrate-no-narration-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "dont-narrate",
+        "intro": false,
+        "narration": "none",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed44ca20cb23e05ab1d0",
+      "notes": "Drafted via tools/post-variant.ts (A/B dont-narrate / no-narration, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed44ca20cb23e05ab1d0."
+    },
+    {
+      "publer_post_id": "6a5fed5d59cd255bf51920ee",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:21-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-question-vo/video-1/dont-narrate-no-question-vo-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "dont-narrate",
+        "intro": false,
+        "narration": "no-question-vo",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed58ca20cb23e05ab1db",
+      "notes": "Drafted via tools/post-variant.ts (A/B dont-narrate / no-question-vo, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed58ca20cb23e05ab1db."
+    },
+    {
+      "publer_post_id": "6a5fed5d59cd255bf51920ec",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:21-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-question-vo/video-1/dont-narrate-no-question-vo-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "dont-narrate",
+        "intro": false,
+        "narration": "no-question-vo",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed58ca20cb23e05ab1db",
+      "notes": "Drafted via tools/post-variant.ts (A/B dont-narrate / no-question-vo, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed58ca20cb23e05ab1db."
+    },
+    {
+      "publer_post_id": "6a5fed6759cd255bf5192100",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:31-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-options-vo/video-1/dont-narrate-no-options-vo-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "dont-narrate",
+        "intro": false,
+        "narration": "no-options-vo",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed6459cd255bf51920fd",
+      "notes": "Drafted via tools/post-variant.ts (A/B dont-narrate / no-options-vo, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed6459cd255bf51920fd."
+    },
+    {
+      "publer_post_id": "6a5fed6759cd255bf51920fe",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:31-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-options-vo/video-1/dont-narrate-no-options-vo-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "dont-narrate",
+        "intro": false,
+        "narration": "no-options-vo",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed6459cd255bf51920fd",
+      "notes": "Drafted via tools/post-variant.ts (A/B dont-narrate / no-options-vo, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed6459cd255bf51920fd."
+    },
+    {
+      "publer_post_id": "6a5fed7459cd255bf519210b",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:44-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/speed/video-1/speed-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "speed",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed6fca20cb23e05ab1ff",
+      "notes": "Drafted via tools/post-variant.ts (A/B speed / speed, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed6fca20cb23e05ab1ff."
+    },
+    {
+      "publer_post_id": "6a5fed7459cd255bf5192109",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:44-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/speed/video-1/speed-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "speed",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed6fca20cb23e05ab1ff",
+      "notes": "Drafted via tools/post-variant.ts (A/B speed / speed, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed6fca20cb23e05ab1ff."
+    },
+    {
+      "publer_post_id": "6a5fed7eb6f3b513df2c19c3",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:54-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get it? Comment \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/one-question/video-1/one-question-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "one-question",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out"
+        ],
+        "num_questions": 1
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed79ca20cb23e05ab20c",
+      "notes": "Drafted via tools/post-variant.ts (A/B one-question / one-question, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed79ca20cb23e05ab20c."
+    },
+    {
+      "publer_post_id": "6a5fed7eb6f3b513df2c19c1",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:06:54-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get it? Comment \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/one-question/video-1/one-question-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "one-question",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out"
+        ],
+        "num_questions": 1
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed79ca20cb23e05ab20c",
+      "notes": "Drafted via tools/post-variant.ts (A/B one-question / one-question, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed79ca20cb23e05ab20c."
+    },
+    {
+      "publer_post_id": "6a5fed8e59cd255bf5192147",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:07:11-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/mascot/video-1/mascot-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "mascot",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed8a59cd255bf5192144",
+      "notes": "Drafted via tools/post-variant.ts (A/B mascot / mascot, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed8a59cd255bf5192144."
+    },
+    {
+      "publer_post_id": "6a5fed8e59cd255bf5192145",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "posted_at": null,
+      "drafted_at": "2026-07-21T17:07:11-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ab-tests/mascot/video-1/mascot-video-1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "mascot",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": [
+          "odd-one-out",
+          "position",
+          "number-series"
+        ],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "post_state": "draft",
+      "publer_media_id": "6a5fed8a59cd255bf5192144",
+      "notes": "Drafted via tools/post-variant.ts (A/B mascot / mascot, video-1). DRAFT only \u2014 not published; platform_post_id/permalink/posted_at fill on publish. Source render pinned (match_confidence high). Publer media_id 6a5fed8a59cd255bf5192144."
     }
   ],
   "variant_families": {
     "standard": {
       "count": 9,
       "metrics_n": 8,
-      "avg_eng_rate": 5.0,
+      "avg_eng_rate": 5,
       "avg_eng_rate_median": 1.79,
       "avg_eng_rate_excl_reach_lt10": 2.14,
       "avg_reach": 254.5,
-      "notes": "9 posts (packages 01/02/03/05, both platforms). 8 have metrics (1 pending). Mean eng_rate is skewed high by publer 195306511 (reach=4, 25% = noise); median 1.79% is more honest. Includes both TikTok (higher) and IG (lower) so platform confounds the family average."
+      "notes": "9 posts (packages 01/02/03/05, both platforms). 8 have metrics (1 pending). Mean eng_rate is skewed high by publer 195306511 (reach=4, 25% = noise); median 1.79% is more honest. Includes both TikTok (higher) and IG (lower) so platform confounds the family average.",
+      "drafts": 0
     },
     "no-answer": {
       "count": 1,
       "metrics_n": 1,
-      "avg_eng_rate": 0.0,
-      "avg_reach": 116.0,
-      "notes": "Only publer 195306509 (IG), and its family label is LOW confidence (could be cliffhanger). Treat as unconfirmed."
+      "avg_eng_rate": 0,
+      "avg_reach": 116,
+      "notes": "Only publer 195306509 (IG), and its family label is LOW confidence (could be cliffhanger). Treat as unconfirmed.",
+      "drafts": 2,
+      "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet)."
     },
     "cliffhanger": {
       "count": 2,
       "metrics_n": 1,
       "avg_eng_rate": 4.03,
-      "avg_reach": 248.0,
-      "notes": "publer 195306510 (TikTok, metrics) + 195306508 (TikTok, pending). Family HIGH confidence; exact render (video-1/2) unknown for both. 0 comments so far despite comment-for-answer CTA."
+      "avg_reach": 248,
+      "notes": "publer 195306510 (TikTok, metrics) + 195306508 (TikTok, pending). Family HIGH confidence; exact render (video-1/2) unknown for both. 0 comments so far despite comment-for-answer CTA.",
+      "drafts": 0
     },
     "intro-promo": {
       "count": 2,
       "metrics_n": 0,
       "avg_eng_rate": null,
       "avg_reach": null,
-      "notes": "Brand-intro promo (publer 195306520 TikTok + 195306521 IG). Both metrics pending (analytics page 2)."
+      "notes": "Brand-intro promo (publer 195306520 TikTok + 195306521 IG). Both metrics pending (analytics page 2).",
+      "drafts": 0
     },
     "dont-narrate": {
       "count": 0,
       "metrics_n": 0,
       "avg_eng_rate": null,
       "avg_reach": null,
-      "notes": "Rendered (6 variants: no-question-vo, no-options-vo, no-narration x video-1/2) but NOT yet posted. In render library, awaiting the loop."
+      "notes": "Rendered (6 variants: no-question-vo, no-options-vo, no-narration x video-1/2) but NOT yet posted. In render library, awaiting the loop.",
+      "drafts": 6,
+      "drafts_note": "6 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet)."
     },
     "speed": {
       "count": 0,
       "metrics_n": 0,
       "avg_eng_rate": null,
       "avg_reach": null,
-      "notes": "Rendered (video-1/2, ~1.25x VO) but NOT yet posted."
+      "notes": "Rendered (video-1/2, ~1.25x VO) but NOT yet posted.",
+      "drafts": 2,
+      "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet)."
     },
     "one-question": {
       "count": 0,
       "metrics_n": 0,
       "avg_eng_rate": null,
       "avg_reach": null,
-      "notes": "Rendered (video-1/2, single Q + verdict) but NOT yet posted."
+      "notes": "Rendered (video-1/2, single Q + verdict) but NOT yet posted.",
+      "drafts": 2,
+      "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet)."
     },
     "mascot": {
       "count": 0,
       "metrics_n": 0,
       "avg_eng_rate": null,
       "avg_reach": null,
-      "notes": "Rendered (video-1/2, talking-brain narrator) but NOT yet posted. mascot-poc.mp4 also exists."
+      "notes": "Rendered (video-1/2, talking-brain narrator) but NOT yet posted. mascot-poc.mp4 also exists.",
+      "drafts": 2,
+      "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet)."
     }
   },
   "aggregate_cuts": {
     "by_platform": {
-      "tiktok": { "posts_with_metrics": 5, "avg_reach": 364.6, "avg_eng_rate": 8.3, "median_eng_rate": 4.24, "notes": "Reach 4-991; eng 2.69-25% (25% is the reach=4 noise post). Median eng 4.24%. Far outperforms IG on reach + eng for the SAME source video." },
-      "instagram": { "posts_with_metrics": 5, "avg_reach": 115.4, "avg_eng_rate": 0.5, "median_eng_rate": 0.78, "notes": "Reach clustered 101-128; eng 0-0.88%. Consistently low." }
+      "tiktok": {
+        "posts_with_metrics": 5,
+        "avg_reach": 364.6,
+        "avg_eng_rate": 8.3,
+        "median_eng_rate": 4.24,
+        "notes": "Reach 4-991; eng 2.69-25% (25% is the reach=4 noise post). Median eng 4.24%. Far outperforms IG on reach + eng for the SAME source video."
+      },
+      "instagram": {
+        "posts_with_metrics": 5,
+        "avg_reach": 115.4,
+        "avg_eng_rate": 0.5,
+        "median_eng_rate": 0.78,
+        "notes": "Reach clustered 101-128; eng 0-0.88%. Consistently low."
+      }
     },
     "by_intro_standard_only": {
-      "with_intro": { "posts_with_metrics": 2, "posts_total": 3, "notes": "Package 03 only. TikTok reach=4 (noise) + IG reach=128/0.78%. 1 pending (TikTok). Inconclusive." },
-      "no_intro": { "posts_with_metrics": 6, "posts_total": 6, "notes": "Packages 01/02/05. Contains the 991-reach TikTok standout." }
+      "with_intro": {
+        "posts_with_metrics": 2,
+        "posts_total": 3,
+        "notes": "Package 03 only. TikTok reach=4 (noise) + IG reach=128/0.78%. 1 pending (TikTok). Inconclusive."
+      },
+      "no_intro": {
+        "posts_with_metrics": 6,
+        "posts_total": 6,
+        "notes": "Packages 01/02/05. Contains the 991-reach TikTok standout."
+      }
     }
   },
   "known_gaps": [

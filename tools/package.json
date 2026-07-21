@@ -1,0 +1,6 @@
+{
+  "name": "sffs-tools",
+  "private": true,
+  "type": "module",
+  "description": "Dependency-light pipeline tools (Node built-ins + global fetch only): media upload + Publer posting."
+}
