@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-21T17:57:00-05:00",
+  "updated_at": "2026-07-21T18:06:00-05:00",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "how_the_loop_uses_this": {
     "read": "Before generating/scheduling the next batch: read front_runners + rollups to bias toward the best-performing variant_family, hashtag_set, platform, and time_bucket; read decisions_log to avoid re-litigating settled questions (e.g. don't re-test intro).",
     "write": "After each analytics pull (see ab-testing/README.md 'refresh metrics'): recompute every rollup from ab-database.json posts[] that have metrics.source != 'pending', update front_runners (highest median eng_rate with n_with_metrics >= min_n), append any new conclusion to decisions_log, and bump updated_at. Never delete history; supersede with a new decisions_log entry."
   },
-  "status": "metrics pending — the 14 A/B posts are scheduled 2026-07-21 18:30 CDT through 2026-07-22 08:45 CDT and have not published yet. Rollups carry design counts (n_posts) with null metrics until the first analytics pull.",
+  "status": "metrics pending — the 14 A/B posts are scheduled 2026-07-21 18:30 CDT through 2026-07-22 08:30 CDT, spread across the posting window as a TIME A/B (see time_buckets), and have not published yet. Rollups carry design counts (n_posts) with null metrics until the first analytics pull.",
   "conventions": {
     "primary_metric": "eng_rate (percent)",
     "secondary_metric": "reach",
@@ -17,13 +17,21 @@
   },
   "time_buckets": {
     "definition": {
-      "morning": "05:00-11:00 America/Chicago",
-      "midday": "11:00-16:00",
-      "evening": "16:00-23:00"
+      "evening": "~17:00-22:00 America/Chicago",
+      "late-night": "~22:00-00:00",
+      "overnight": "~00:00-02:00",
+      "overnight-trough": "~02:00-05:00 (lowest-traffic slot)",
+      "early-morning": "~05:00-07:00",
+      "morning": "~07:00-11:00"
     },
+    "note": "TIME A/B (2026-07-21 batch): the 7 variants are spread across the posting window to find the best publish time; each variant's IG+TikTok posts share a time.",
     "batch_2026-07-21": {
-      "evening": ["no-answer 18:30", "dont-narrate/no-narration 19:45", "dont-narrate/no-question-vo 21:00", "dont-narrate/no-options-vo 22:15"],
-      "morning": ["speed 07:00 (+1d)", "one-question 08:00 (+1d)", "mascot 08:45 (+1d)"]
+      "evening": ["no-answer 18:30", "no-narration 20:30"],
+      "late-night": ["no-question-vo 23:00"],
+      "overnight": ["no-options-vo 01:30 (+1d)"],
+      "overnight-trough": ["speed 03:30 (+1d)"],
+      "early-morning": ["one-question 06:30 (+1d)"],
+      "morning": ["mascot 08:30 (+1d)"]
     }
   },
   "rollups": {
@@ -48,8 +56,12 @@
       "_note": "Counts are the 14 scheduled A/B variant posts (the measurable arms). The 6 control drafts also carry sets (C,A,B,C,A,B) but are undated drafts (won't auto-publish) so are excluded from arm counts."
     },
     "by_time_bucket": {
-      "evening": { "scheduled": 8, "n_with_metrics": 0, "median_eng_rate": null },
-      "morning": { "scheduled": 6, "n_with_metrics": 0, "median_eng_rate": null }
+      "evening":          { "scheduled": 4, "variants": ["no-answer", "no-narration"], "n_with_metrics": 0, "median_eng_rate": null },
+      "late-night":       { "scheduled": 2, "variants": ["no-question-vo"], "n_with_metrics": 0, "median_eng_rate": null },
+      "overnight":        { "scheduled": 2, "variants": ["no-options-vo"], "n_with_metrics": 0, "median_eng_rate": null },
+      "overnight-trough": { "scheduled": 2, "variants": ["speed"], "n_with_metrics": 0, "median_eng_rate": null },
+      "early-morning":    { "scheduled": 2, "variants": ["one-question"], "n_with_metrics": 0, "median_eng_rate": null },
+      "morning":          { "scheduled": 2, "variants": ["mascot"], "n_with_metrics": 0, "median_eng_rate": null }
     }
   },
   "front_runners": {
@@ -79,6 +91,12 @@
       "decision": "Standardized the caption to 'Are you SMART or FART? Comment your score/answer below and follow for more!!' and set Instagram share-to-Feed ON as the default for future posts.",
       "rationale": "Unify hook + add a follow CTA; 'answer' wording only for the no-answer variant (no reveal/score). share-to-Feed default baked into the poster tooling (networks.instagram.details.feed=true); it is only settable at creation, so the current batch's IG posts need a one-time manual toggle.",
       "status": "applied (tooling default); current IG batch flagged for manual toggle"
+    },
+    {
+      "date": "2026-07-21",
+      "decision": "Started a TIME A/B — spread the 7 variants across the posting window (evening 18:30/20:30, late-night 23:00, overnight 01:30, overnight-trough 03:30, early-morning 06:30, morning 08:30) instead of clustering them, each variant's IG+TikTok sharing a time.",
+      "rationale": "Find the best publish time with a research-backed spread that also samples low-traffic overnight slots. Re-timing required recreate+delete (Publer PUT cannot change scheduled_at). no-answer left at 18:30 (too close to go-live to churn). Recorded per post as time_bucket.",
+      "status": "in-flight (metrics pending)"
     }
   ]
 }

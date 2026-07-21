@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-21T17:49:54-05:00",
+  "updated_at": "2026-07-21T17:55:15-05:00",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -623,7 +623,8 @@
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T18:30:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed32b6f3b513df2c19a4 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed2f59cd255bf51920bb.",
       "prior_draft_post_id": "6a5fed32b6f3b513df2c19a4",
       "scheduled_at": "2026-07-21T18:30:00-05:00",
-      "hashtag_set": "B"
+      "hashtag_set": "B",
+      "time_bucket": "evening"
     },
     {
       "publer_post_id": "6a5ff4e8324fde90b165a21c",
@@ -667,10 +668,11 @@
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T18:30:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed31b6f3b513df2c19a2 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed2f59cd255bf51920bb.",
       "prior_draft_post_id": "6a5fed31b6f3b513df2c19a2",
       "scheduled_at": "2026-07-21T18:30:00-05:00",
-      "hashtag_set": "A"
+      "hashtag_set": "A",
+      "time_bucket": "evening"
     },
     {
-      "publer_post_id": "6a5ff59cb23bd7bf82e5b39b",
+      "publer_post_id": "6a5ff8bcb23bd7bf82e5b64d",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -708,13 +710,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed44ca20cb23e05ab1d0",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T19:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed48ca20cb23e05ab1d4 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed44ca20cb23e05ab1d0.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-21T20:30:00-05:00 (evening); recreated (reused media 6a5fed44ca20cb23e05ab1d0, no re-import) + old 6a5ff59cb23bd7bf82e5b39b deleted. Caption + hashtag_set preserved.",
       "prior_draft_post_id": "6a5fed48ca20cb23e05ab1d4",
-      "scheduled_at": "2026-07-21T19:45:00-05:00",
-      "hashtag_set": "A"
+      "scheduled_at": "2026-07-21T20:30:00-05:00",
+      "hashtag_set": "A",
+      "prior_scheduled_post_id": "6a5ff59cb23bd7bf82e5b39b",
+      "time_bucket": "evening"
     },
     {
-      "publer_post_id": "6a5ff59cb23bd7bf82e5b399",
+      "publer_post_id": "6a5ff8bd324fde90b165a671",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -752,13 +756,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed44ca20cb23e05ab1d0",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T19:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed48ca20cb23e05ab1d2 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed44ca20cb23e05ab1d0.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-21T20:30:00-05:00 (evening); recreated (reused media 6a5fed44ca20cb23e05ab1d0, no re-import) + old 6a5ff59cb23bd7bf82e5b399 deleted. Caption + hashtag_set preserved. IG share-to-Feed default on (details.feed=true).",
       "prior_draft_post_id": "6a5fed48ca20cb23e05ab1d2",
-      "scheduled_at": "2026-07-21T19:45:00-05:00",
-      "hashtag_set": "C"
+      "scheduled_at": "2026-07-21T20:30:00-05:00",
+      "hashtag_set": "C",
+      "prior_scheduled_post_id": "6a5ff59cb23bd7bf82e5b399",
+      "time_bucket": "evening"
     },
     {
-      "publer_post_id": "6a5ff59fb23bd7bf82e5b39e",
+      "publer_post_id": "6a5ff8c8324fde90b165a678",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -796,13 +802,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed58ca20cb23e05ab1db",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T21:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed5d59cd255bf51920ee + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed58ca20cb23e05ab1db.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-21T23:00:00-05:00 (late-night); recreated (reused media 6a5fed58ca20cb23e05ab1db, no re-import) + old 6a5ff59fb23bd7bf82e5b39e deleted. Caption + hashtag_set preserved.",
       "prior_draft_post_id": "6a5fed5d59cd255bf51920ee",
-      "scheduled_at": "2026-07-21T21:00:00-05:00",
-      "hashtag_set": "C"
+      "scheduled_at": "2026-07-21T23:00:00-05:00",
+      "hashtag_set": "C",
+      "prior_scheduled_post_id": "6a5ff59fb23bd7bf82e5b39e",
+      "time_bucket": "late-night"
     },
     {
-      "publer_post_id": "6a5ff59fb23bd7bf82e5b39c",
+      "publer_post_id": "6a5ff8c9324fde90b165a679",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -840,13 +848,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed58ca20cb23e05ab1db",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T21:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed5d59cd255bf51920ec + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed58ca20cb23e05ab1db.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-21T23:00:00-05:00 (late-night); recreated (reused media 6a5fed58ca20cb23e05ab1db, no re-import) + old 6a5ff59fb23bd7bf82e5b39c deleted. Caption + hashtag_set preserved. IG share-to-Feed default on (details.feed=true).",
       "prior_draft_post_id": "6a5fed5d59cd255bf51920ec",
-      "scheduled_at": "2026-07-21T21:00:00-05:00",
-      "hashtag_set": "B"
+      "scheduled_at": "2026-07-21T23:00:00-05:00",
+      "hashtag_set": "B",
+      "prior_scheduled_post_id": "6a5ff59fb23bd7bf82e5b39c",
+      "time_bucket": "late-night"
     },
     {
-      "publer_post_id": "6a5ff5a1b23bd7bf82e5b3a1",
+      "publer_post_id": "6a5ff8ca324fde90b165a67c",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -884,13 +894,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed6459cd255bf51920fd",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T22:15:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed6759cd255bf5192100 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6459cd255bf51920fd.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T01:30:00-05:00 (overnight); recreated (reused media 6a5fed6459cd255bf51920fd, no re-import) + old 6a5ff5a1b23bd7bf82e5b3a1 deleted. Caption + hashtag_set preserved.",
       "prior_draft_post_id": "6a5fed6759cd255bf5192100",
-      "scheduled_at": "2026-07-21T22:15:00-05:00",
-      "hashtag_set": "B"
+      "scheduled_at": "2026-07-22T01:30:00-05:00",
+      "hashtag_set": "B",
+      "prior_scheduled_post_id": "6a5ff5a1b23bd7bf82e5b3a1",
+      "time_bucket": "overnight"
     },
     {
-      "publer_post_id": "6a5ff5a0b23bd7bf82e5b39f",
+      "publer_post_id": "6a5ff8cbb23bd7bf82e5b65e",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -928,13 +940,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed6459cd255bf51920fd",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T22:15:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed6759cd255bf51920fe + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6459cd255bf51920fd.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T01:30:00-05:00 (overnight); recreated (reused media 6a5fed6459cd255bf51920fd, no re-import) + old 6a5ff5a0b23bd7bf82e5b39f deleted. Caption + hashtag_set preserved. IG share-to-Feed default on (details.feed=true).",
       "prior_draft_post_id": "6a5fed6759cd255bf51920fe",
-      "scheduled_at": "2026-07-21T22:15:00-05:00",
-      "hashtag_set": "A"
+      "scheduled_at": "2026-07-22T01:30:00-05:00",
+      "hashtag_set": "A",
+      "prior_scheduled_post_id": "6a5ff5a0b23bd7bf82e5b39f",
+      "time_bucket": "overnight"
     },
     {
-      "publer_post_id": "6a5ff5a2b23bd7bf82e5b3a4",
+      "publer_post_id": "6a5ff8cc324fde90b165a681",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -972,13 +986,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed6fca20cb23e05ab1ff",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T07:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7459cd255bf519210b + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6fca20cb23e05ab1ff.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T03:30:00-05:00 (overnight-trough); recreated (reused media 6a5fed6fca20cb23e05ab1ff, no re-import) + old 6a5ff5a2b23bd7bf82e5b3a4 deleted. Caption + hashtag_set preserved.",
       "prior_draft_post_id": "6a5fed7459cd255bf519210b",
-      "scheduled_at": "2026-07-22T07:00:00-05:00",
-      "hashtag_set": "A"
+      "scheduled_at": "2026-07-22T03:30:00-05:00",
+      "hashtag_set": "A",
+      "prior_scheduled_post_id": "6a5ff5a2b23bd7bf82e5b3a4",
+      "time_bucket": "overnight-trough"
     },
     {
-      "publer_post_id": "6a5ff5a2b23bd7bf82e5b3a2",
+      "publer_post_id": "6a5ff8cdfaa7c830db5458f8",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1016,13 +1032,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed6fca20cb23e05ab1ff",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T07:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7459cd255bf5192109 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6fca20cb23e05ab1ff.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T03:30:00-05:00 (overnight-trough); recreated (reused media 6a5fed6fca20cb23e05ab1ff, no re-import) + old 6a5ff5a2b23bd7bf82e5b3a2 deleted. Caption + hashtag_set preserved. IG share-to-Feed default on (details.feed=true).",
       "prior_draft_post_id": "6a5fed7459cd255bf5192109",
-      "scheduled_at": "2026-07-22T07:00:00-05:00",
-      "hashtag_set": "C"
+      "scheduled_at": "2026-07-22T03:30:00-05:00",
+      "hashtag_set": "C",
+      "prior_scheduled_post_id": "6a5ff5a2b23bd7bf82e5b3a2",
+      "time_bucket": "overnight-trough"
     },
     {
-      "publer_post_id": "6a5ff5a4b23bd7bf82e5b3a9",
+      "publer_post_id": "6a5ff8cffaa7c830db5458fa",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -1058,13 +1076,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed79ca20cb23e05ab20c",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7eb6f3b513df2c19c3 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed79ca20cb23e05ab20c.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T06:30:00-05:00 (early-morning); recreated (reused media 6a5fed79ca20cb23e05ab20c, no re-import) + old 6a5ff5a4b23bd7bf82e5b3a9 deleted. Caption + hashtag_set preserved.",
       "prior_draft_post_id": "6a5fed7eb6f3b513df2c19c3",
-      "scheduled_at": "2026-07-22T08:00:00-05:00",
-      "hashtag_set": "C"
+      "scheduled_at": "2026-07-22T06:30:00-05:00",
+      "hashtag_set": "C",
+      "prior_scheduled_post_id": "6a5ff5a4b23bd7bf82e5b3a9",
+      "time_bucket": "early-morning"
     },
     {
-      "publer_post_id": "6a5ff5a4b23bd7bf82e5b3a7",
+      "publer_post_id": "6a5ff8d0324fde90b165a684",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1100,13 +1120,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed79ca20cb23e05ab20c",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7eb6f3b513df2c19c1 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed79ca20cb23e05ab20c.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T06:30:00-05:00 (early-morning); recreated (reused media 6a5fed79ca20cb23e05ab20c, no re-import) + old 6a5ff5a4b23bd7bf82e5b3a7 deleted. Caption + hashtag_set preserved. IG share-to-Feed default on (details.feed=true).",
       "prior_draft_post_id": "6a5fed7eb6f3b513df2c19c1",
-      "scheduled_at": "2026-07-22T08:00:00-05:00",
-      "hashtag_set": "B"
+      "scheduled_at": "2026-07-22T06:30:00-05:00",
+      "hashtag_set": "B",
+      "prior_scheduled_post_id": "6a5ff5a4b23bd7bf82e5b3a7",
+      "time_bucket": "early-morning"
     },
     {
-      "publer_post_id": "6a5ff5a6b23bd7bf82e5b3ac",
+      "publer_post_id": "6a5ff8d1324fde90b165a68a",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -1144,13 +1166,15 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed8a59cd255bf5192144",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed8e59cd255bf5192147 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed8a59cd255bf5192144.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T08:30:00-05:00 (morning); recreated (reused media 6a5fed8a59cd255bf5192144, no re-import) + old 6a5ff5a6b23bd7bf82e5b3ac deleted. Caption + hashtag_set preserved.",
       "prior_draft_post_id": "6a5fed8e59cd255bf5192147",
-      "scheduled_at": "2026-07-22T08:45:00-05:00",
-      "hashtag_set": "B"
+      "scheduled_at": "2026-07-22T08:30:00-05:00",
+      "hashtag_set": "B",
+      "prior_scheduled_post_id": "6a5ff5a6b23bd7bf82e5b3ac",
+      "time_bucket": "morning"
     },
     {
-      "publer_post_id": "6a5ff5a6b23bd7bf82e5b3aa",
+      "publer_post_id": "6a5ff8d2324fde90b165a68e",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1188,10 +1212,12 @@
       "match_confidence": "high",
       "post_state": "scheduled",
       "publer_media_id": "6a5fed8a59cd255bf5192144",
-      "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed8e59cd255bf5192145 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed8a59cd255bf5192144.",
+      "notes": "Re-timed via tools/retime-variants.ts to 2026-07-22T08:30:00-05:00 (morning); recreated (reused media 6a5fed8a59cd255bf5192144, no re-import) + old 6a5ff5a6b23bd7bf82e5b3aa deleted. Caption + hashtag_set preserved. IG share-to-Feed default on (details.feed=true).",
       "prior_draft_post_id": "6a5fed8e59cd255bf5192145",
-      "scheduled_at": "2026-07-22T08:45:00-05:00",
-      "hashtag_set": "A"
+      "scheduled_at": "2026-07-22T08:30:00-05:00",
+      "hashtag_set": "A",
+      "prior_scheduled_post_id": "6a5ff5a6b23bd7bf82e5b3aa",
+      "time_bucket": "morning"
     }
   ],
   "variant_families": {

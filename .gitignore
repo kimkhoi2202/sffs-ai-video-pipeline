@@ -29,6 +29,7 @@ tools/*
 !tools/post-variant.ts
 !tools/schedule-variants.ts
 !tools/edit-captions.ts
+!tools/retime-variants.ts
 !tools/package.json
 
 # Python
