@@ -8,7 +8,7 @@ Source of truth for how to answer comments on **Smart Fella or Fart Smella** pos
 - **Concise** — 1 to 2 short lines. Confirm or react; never teach or explain the solution (no "each number is the sum of the two before it" lectures).
 - **Funny, Gen Z, lowercase-casual.** On-brand.
 - Lean on the brand binary: **Smart Fella** (got it right / smart) vs **Fart Smella** (missed it, "for now").
-- **Kid-safe** — no profanity. The audience skews young; profanity can get a minor-directed account restricted, and parents notice.
+- **Kid-safe, but real** — no HARD or explicit profanity (swears, slurs, crude or sexual language); the audience skews young and it can get a minor-directed account restricted, and parents notice. Mild Gen Z intensifiers ARE on-brand and allowed, e.g. "af" ("that first one's tricky af"), plus "lowkey / ngl / no cap". These are not treated as profanity.
 - **No em dashes.** No AI-slop tone.
 - **Exactly one** well-placed emoji when it lands (e.g. 🫡 😭 💀). Never emoji spam. Zero is fine too.
 - Always nudge: "follow for a new one every day" / "come back tomorrow and redeem yourself."

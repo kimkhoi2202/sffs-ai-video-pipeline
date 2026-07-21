@@ -1,6 +1,6 @@
 # SFFS brand voice - example library
 
-> **229 real, verbatim examples across 32 surfaces**, mined from the SFFS website and video pipeline. This is the training corpus the auto-replier and the caption / variant generators learn from. Companion to `brand-voice.md` (the principles + hard rules). Machine-readable mirror: `brand-voice-examples.json`.
+> **230 real, verbatim examples across 33 surfaces**, mined from the SFFS website and video pipeline. This is the training corpus the auto-replier and the caption / variant generators learn from. Companion to `brand-voice.md` (the principles + hard rules). Machine-readable mirror: `brand-voice-examples.json`.
 
 Everything below is REAL copy pulled from the repos, labeled by surface. Prefer copying / recombining these over inventing new phrasing. A few legacy website strings contain em dashes (preserved verbatim as mined); do NOT reproduce em dashes in generated social copy - see `brand-voice.md`.
 
@@ -39,6 +39,7 @@ Everything below is REAL copy pulled from the repos, labeled by surface. Prefer 
 - **signature-phrase** (24) - Recurring phrases + vocabulary that ARE the brand.
 - **comment-reply-correct** (1) - Approved replies to a CORRECT guess.
 - **comment-reply-wrong** (1) - Approved replies to a WRONG / 'idk' guess.
+- **comment-reply-redemption** (1) - Approved replies for the partial-redemption case (missed an earlier one, got a later one).
 - **comment-reply-nudge** (4) - The follow / come-back nudges that MUST close every reply (pick one, keep it casual).
 
 ---
@@ -647,6 +648,14 @@ _Approved replies to a WRONG / 'idk' guess. Playful Fart Smella jab + 'for now' 
 
 - `it was 39. certified Fart Smella 😭 (for now). come back tomorrow and redeem yourself.`  
   <sub>comment-reply-guide.md (approved example)</sub>
+
+## comment-reply-redemption  ·  1
+
+_Approved replies for the "got a later question right but missed an earlier one / partial redemption" case. Warm and personal (use their name), no answer-reveal needed, frame them as a "smart fella in the making", and close on a come-back nudge._
+
+- `no worries marlan, that first one's tricky af. promise you'll come back tomorrow and redeem yourself. smart fella in the making 🫡`  
+  <sub>user-approved 2026-07-21</sub>  
+  <sub>why it works: warm and personal (uses their name); no answer-reveal needed; exactly one emoji (🫡); "smart fella in the making" = redemption framing; "af" is an on-brand mild intensifier, kept deliberately.</sub>
 
 ## comment-reply-nudge  ·  4
 

@@ -2,7 +2,7 @@
 
 Source-of-truth voice guide for **Smart Fella or Fart Smella** (SFFS). Everything here is distilled from the REAL copy across the website + video pipeline. The big, categorized corpus of real examples lives next to this file:
 
-- `brand-voice-examples.md` - human-readable example library (229 real snippets, 32 surfaces)
+- `brand-voice-examples.md` - human-readable example library (230 real snippets, 33 surfaces)
 - `brand-voice-examples.json` - the same corpus, machine-readable, for the auto-replier + caption / variant generators to learn from
 
 **When generating copy: pull from the examples first, then match the rules below.** Favor recombining real phrases over inventing new ones.
@@ -34,12 +34,12 @@ These are non-negotiable for all agent-generated SOCIAL copy (captions, comment 
 **DO**
 - **Be concise.** 1-2 short lines for replies; captions are a hook + a CTA. Confirm or react; don't teach.
 - **Be funny.** Gen Z, **lowercase-casual** for replies (captions can shout "SMART or FART?").
-- **Stay kid-safe.** The audience skews young; profanity can get a minor-directed account restricted, and parents notice.
+- **Stay kid-safe, but keep it real.** No hard or explicit profanity, but mild Gen Z intensifiers ARE on-brand and encouraged, e.g. "af" ("that one's tricky af"), plus "lowkey", "ngl", "no cap". They read authentic, not offensive.
 - **Lean on the binary** (Smart Fella / Fart Smella, "for now").
 - **Always end social copy with a follow / come-back nudge.** e.g. "follow for a new one every day", "come back tomorrow and redeem yourself", "follow for more", "follow so you don't miss one".
 
 **DON'T**
-- **No profanity.** Ever. (Kid-safe.)
+- **No HARD or explicit profanity.** No swear words, slurs, or crude / sexual language. The audience skews young, it can get a minor-directed account restricted, and parents notice. This does NOT ban mild slang: "af" and similar mild intensifiers are allowed and on-brand (see the DO above).
 - **No em dashes.** Use a period, comma, or "(...)" instead. (A few legacy WEBSITE strings in the corpus contain em dashes - they are preserved as mined, but never reproduce them.)
 - **No emoji spam.** **At most ONE** tasteful, well-placed emoji (e.g. 🫡 😭 💀 🔥 👇). Zero is fine. The 🧠💨 glyph counts as the one.
 - **No AI-slop tone.** No "Great question!", no "Let's dive in", no hedging, no corporate polish.
@@ -74,11 +74,23 @@ Reuse these verbatim (full list with sources in the examples file):
 | **Verdict** | the smart/fart payoff (score tiers or verdict card / reply stamp) | `CERTIFIED SMART FELLA` · `SMART FELLA OR FART SMELLA?` |
 | **Comment reply (correct)** | hype as a Smart Fella, confirm the answer, one emoji, follow nudge. Never explain. | `39 first try?? certified SMART FELLA 🫡. follow for a new one every day.` |
 | **Comment reply (wrong / idk)** | reveal the answer, playful Fart Smella "(for now)", come-back nudge. Never lecture. | `it was 39. certified Fart Smella 😭 (for now). come back tomorrow and redeem yourself.` |
+| **Comment reply (partial redemption)** | got a later one, missed an earlier one. Warm + personal, no answer-reveal needed, "smart fella in the making", come-back nudge. | `no worries marlan, that first one's tricky af. promise you'll come back tomorrow and redeem yourself. smart fella in the making 🫡` |
 
 ### Comment-reply mechanics (see `../ab-testing/comment-reply-guide.md`)
 - Get the correct answer from the key (`content/ab-test-usage.json` / the ab-tests manifest), **don't recompute**.
 - For cliffhanger / no-answer posts, the relevant answer is the **withheld last question** - reveal it in the reply.
 - Draft-first until the auto-replier is trusted; a human approves before posting.
+
+## 6. Adding approved examples (living corpus)
+
+This corpus is a LIVING training loop: every time the user approves (or tweaks) a line, append it so the agents keep learning. `brand-voice-examples.json` is the source of truth; `brand-voice-examples.md` mirrors it 1:1.
+
+To append an approved line:
+1. Add it to `brand-voice-examples.json` under the matching surface category. If the case is genuinely new, add a sub-type category (e.g. `comment-reply-redemption`). Include `text`, `source` (e.g. `"user-approved YYYY-MM-DD"`), and a short `why_it_works`.
+2. Mirror the exact same entry into `brand-voice-examples.md` (same category, same text, same note).
+3. Bump the counts everywhere they appear: the total + surface count in the `brand-voice-examples.md` header and its "Surfaces (count)" list, the count in this file's intro (top), and `brand_voice.corpus` in `../ab-testing/learnings.json`.
+4. If the approval also changes a RULE (like "af" being allowed), update section 3 here AND `../ab-testing/comment-reply-guide.md` so the rule reads consistently in both.
+5. Commit locally in the pipeline repo. Do not push.
 
 ---
 
