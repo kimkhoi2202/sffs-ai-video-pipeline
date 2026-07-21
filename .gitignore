@@ -27,6 +27,7 @@ tools/*
 !tools/README-media-hosting.md
 !tools/post-to-publer.ts
 !tools/post-variant.ts
+!tools/schedule-variants.ts
 !tools/package.json
 
 # Python

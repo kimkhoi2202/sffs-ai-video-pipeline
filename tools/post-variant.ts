@@ -66,7 +66,7 @@ const CAPTION_NO_ANSWER =
  * num_questions are taken from ab-tests/manifest.json render tiers (id 1=ODD ONE OUT,
  * 11=POSITION/FIGURE SERIES, 7=NUMBER SERIES), mapped to the DB's lowercase-hyphen form.
  */
-interface Variant {
+export interface Variant {
   key: string;
   family: string;
   mp4: string; // repo-relative
@@ -77,7 +77,7 @@ interface Variant {
   num_questions: number;
 }
 
-const VARIANTS: Record<string, Variant> = {
+export const VARIANTS: Record<string, Variant> = {
   "no-answer": {
     key: "no-answer",
     family: "no-answer",
@@ -151,7 +151,7 @@ const VARIANTS: Record<string, Variant> = {
 };
 
 // Default "all" order: no-answer first (it's the test-me variant), then the rest.
-const ALL_ORDER = [
+export const ALL_ORDER = [
   "no-answer",
   "no-narration",
   "no-question-vo",
@@ -169,7 +169,7 @@ function log(msg: string): void {
 }
 
 /** ISO 8601 with the machine's local UTC offset, matching the DB's updated_at style. */
-function localIso(d: Date = new Date()): string {
+export function localIso(d: Date = new Date()): string {
   const pad = (n: number) => String(n).padStart(2, "0");
   const off = -d.getTimezoneOffset(); // minutes east of UTC
   const sign = off >= 0 ? "+" : "-";
@@ -182,7 +182,7 @@ function localIso(d: Date = new Date()): string {
 }
 
 /** Serialize DB as ASCII (\uXXXX for non-ASCII) to match the existing file style + minimize diff. */
-function serializeDb(db: unknown): string {
+export function serializeDb(db: unknown): string {
   const json = JSON.stringify(db, null, 2);
   const ascii = json.replace(/[\u007f-\uffff]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, "0")}`);
   return ascii + "\n";
@@ -418,7 +418,11 @@ async function main(): Promise<void> {
   if (errors.length) process.exitCode = 1;
 }
 
-main().catch((err: unknown) => {
-  console.error(`[post-variant] FATAL: ${err instanceof Error ? err.message : String(err)}`);
-  process.exit(1);
-});
+// Run as CLI only when invoked directly (so VARIANTS can be imported without side effects).
+const invokedDirectly = process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
+if (invokedDirectly) {
+  main().catch((err: unknown) => {
+    console.error(`[post-variant] FATAL: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  });
+}

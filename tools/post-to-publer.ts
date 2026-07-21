@@ -328,6 +328,83 @@ export async function createPost(args: CreatePostArgs): Promise<string> {
   return jobId;
 }
 
+/**
+ * PUT /posts/{id} — update an existing post's text/media/scheduled_at.
+ * NOTE: Publer's PUT does NOT change a post's state (draft->scheduled) and does NOT
+ * reschedule (confirmed by publer.com/docs + the publer-mcp-server author). To move a
+ * draft to scheduled, use schedulePost() to recreate then deletePost() the original.
+ * Kept for completeness / caption edits.
+ */
+export async function updatePost(postId: string | number, body: Record<string, unknown>): Promise<any> {
+  return publerRequest("PUT", `/posts/${encodeURIComponent(String(postId))}`, body);
+}
+
+/**
+ * DELETE /posts?post_ids[]=... — delete one or more posts (bulk query-param route).
+ * IMPORTANT: Publer's delete is this bulk route; `DELETE /posts/{id}` 404s (confirmed
+ * via publer.com/docs + the publer-mcp-server deletion fix). Returns { deleted_ids: [...] }.
+ */
+export async function deletePosts(postIds: Array<string | number>): Promise<any> {
+  if (!postIds.length) return { deleted_ids: [] };
+  const qs = new URLSearchParams();
+  for (const id of postIds) qs.append("post_ids[]", String(id));
+  return publerRequest("DELETE", `/posts?${qs.toString()}`);
+}
+
+/** Convenience: delete a single post by id (wraps the bulk deletePosts route). */
+export async function deletePost(postId: string | number): Promise<any> {
+  return deletePosts([postId]);
+}
+
+/**
+ * Schedule a post for future auto-publish. Thin wrapper over createPost with
+ * state defaulting to "scheduled"; scheduled_at (ISO 8601 w/ tz, >=1 min future)
+ * is applied per-account by createPost. Returns a job_id to poll.
+ *
+ * Because Publer has no in-place draft->scheduled transition, the loop's
+ * "publish a draft at time T" = schedulePost(...) to recreate + deletePost(oldId).
+ */
+export async function schedulePost(
+  args: Omit<CreatePostArgs, "state"> & { state?: PostState },
+): Promise<string> {
+  return createPost({ ...args, state: args.state ?? "scheduled" });
+}
+
+/** Media ids attached to a post object (list shape), tolerant of variations. */
+export function mediaIdsOfPost(post: any): string[] {
+  if (!post || !Array.isArray(post.media)) return [];
+  return post.media
+    .map((m: any) => (m && (m.id ?? m._id) != null ? String(m.id ?? m._id) : ""))
+    .filter(Boolean);
+}
+
+/**
+ * Find posts carrying a given media_id for specific accounts, in a given state,
+ * paging through results (scheduled/draft lists can span multiple pages). Returns
+ * at most one post per account (the match).
+ */
+export async function findPostsByMedia(
+  mediaId: string,
+  accountIds: string[],
+  opts: { state?: string; maxPages?: number } = {},
+): Promise<any[]> {
+  const state = opts.state ?? "scheduled";
+  const maxPages = opts.maxPages ?? 8;
+  const wanted = new Set(accountIds);
+  const byAccount = new Map<string, any>();
+  for (let page = 0; page < maxPages; page++) {
+    const posts = await listPosts({ state, page });
+    if (!posts.length) break;
+    for (const p of posts) {
+      if (wanted.has(p.account_id) && mediaIdsOfPost(p).includes(mediaId)) {
+        if (!byAccount.has(p.account_id)) byAccount.set(p.account_id, p);
+      }
+    }
+    if (byAccount.size >= accountIds.length) break;
+  }
+  return [...byAccount.values()];
+}
+
 export interface ListPostsParams {
   state?: string; // "draft" | "scheduled" | "published" | "all" | ...
   from?: string;
@@ -381,6 +458,11 @@ async function cli(): Promise<void> {
       console.log(JSON.stringify(await getJobStatus(jobId), null, 2));
       break;
     }
+    case "delete": {
+      if (!rest.length) throw new Error("usage: post-to-publer.ts delete <post_id> [post_id...]");
+      console.log(JSON.stringify(await deletePosts(rest), null, 2));
+      break;
+    }
     case "import": {
       const [url, name] = rest;
       if (!url || !name) throw new Error("usage: post-to-publer.ts import <url> <name>");
@@ -391,7 +473,7 @@ async function cli(): Promise<void> {
     }
     default:
       console.error(
-        "usage: node tools/post-to-publer.ts <accounts|list-posts [state] [query]|job <id>|import <url> <name>>",
+        "usage: node tools/post-to-publer.ts <accounts|list-posts [state] [query]|job <id>|delete <id>|import <url> <name>>",
       );
       process.exit(2);
   }
