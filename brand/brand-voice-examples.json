@@ -1,0 +1,442 @@
+{
+  "campaign": "Smart Fella or Fart Smella",
+  "acronym": "SFFS",
+  "generated_at": "2026-07-21",
+  "purpose": "A large, categorized corpus of REAL copy mined verbatim from the SFFS website and video pipeline. This is the training corpus the auto-replier and the caption/variant generators learn the brand voice from. Prefer real examples over prose. See brand-voice.md for the distilled principles and hard rules.",
+  "audience": "K-12 kids and the general short-form 'for you' scroller. Kid-safe, no profanity.",
+  "handles": {
+    "instagram": "@smartfellafartsmellatest",
+    "tiktok": "@smartfellafartsmellatest",
+    "website": "smartfellaorfartsmella.com"
+  },
+  "notes": [
+    "Everything here is REAL copy pulled from the repos, not invented.",
+    "The signature device is the binary: praise = Smart Fella, miss = Fart Smella (for now).",
+    "LOCKED social rules (see brand-voice.md): concise, funny, Gen Z lowercase-casual, kid-safe (NO profanity), NO em dashes, at most ONE tasteful emoji, no AI-slop, no over-explaining, always end with a follow/come-back nudge.",
+    "Some legacy WEBSITE marketing strings below contain em dashes and en dashes (e.g. a couple of FAQ answers). They are preserved verbatim as mined, but the agent must NOT produce em dashes in generated social copy.",
+    "brain+wind emoji glyph is the visual shorthand for SMART/FART and reads as one unit."
+  ],
+  "categories": {
+    "brand-name-taglines": {
+      "surface": "brand-name-taglines",
+      "description": "The name, taglines, and one-line descriptions of the product.",
+      "examples": [
+        { "text": "Smart Fella or Fart Smella?", "source": "app/layout.tsx (site title)" },
+        { "text": "The Fella Test - Smart Fella or Fart Smella?", "source": "app/page.tsx (page title)" },
+        { "text": "A brutally honest 60-second diagnostic that scores your fella-ness and reveals whether you're a Smart Fella or a Fart Smella. Backed by vibes and questionable science.", "source": "app/layout.tsx + app/page.tsx (meta description)" },
+        { "text": "Take the 60-second Fella Test and find out whether you're a Smart Fella or a Fart Smella.", "source": "app/layout.tsx (OG/Twitter description)" },
+        { "text": "Smart Fella or Fart Smella? - take the brutally honest 60-second Fella Test.", "source": "app/_og/card.tsx (ogAlt)" },
+        { "text": "The brutally honest 60-second Fella diagnostic.", "source": "app/_og/card.tsx (OG tagline)" },
+        { "text": "© 2026 Smart Fella or Fart Smella", "source": "components/sections/site-footer.tsx" }
+      ]
+    },
+    "headline": {
+      "surface": "headline",
+      "description": "Big hero / share-card headlines. The SMART FELLA vs FART SMELLA binary front and center.",
+      "examples": [
+        { "text": "Are you a", "source": "hero lead (smart-fart-hero.tsx)" },
+        { "text": "Smart Fella", "source": "hero smartWord" },
+        { "text": "or", "source": "hero orWord" },
+        { "text": "Fart Smella?", "source": "hero fartWord" },
+        { "text": "ARE YOU A", "source": "app/_og/card.tsx (share card)" },
+        { "text": "SMART FELLA", "source": "app/_og/card.tsx (share card)" },
+        { "text": "OR", "source": "app/_og/card.tsx (share card)" },
+        { "text": "FART SMELLA?", "source": "app/_og/card.tsx (share card)" },
+        { "text": "So... smart fella or fart smella?", "source": "CtaBand title (app/page.tsx)" }
+      ]
+    },
+    "subhead": {
+      "surface": "subhead",
+      "description": "Supporting lines under a headline or section title.",
+      "examples": [
+        { "text": "A brutally honest 27-question diagnostic that scores your fella-ness and tells you exactly which one you are. Backed by vibes, peer pressure, and questionable science.", "source": "hero subtitle" },
+        { "text": "Every test unlocks a full breakdown you can screenshot, share, and argue about for weeks.", "source": "FeatureGrid intro (app/page.tsx)" },
+        { "text": "for more brain-teasers", "source": "FollowUs subtitle" }
+      ]
+    },
+    "eyebrow-badge": {
+      "surface": "eyebrow-badge",
+      "description": "Small tracked labels / sticker badges above titles or on CTAs.",
+      "examples": [
+        { "text": "The 60-second fella diagnostic", "source": "hero eyebrow badge" },
+        { "text": "Takes 5 minutes", "source": "CtaBand badge (app/page.tsx)" },
+        { "text": "TikTok integration", "source": "app/tiktok/page.tsx eyebrow" },
+        { "text": "Recommended", "source": "Comparison badge (smart column)" }
+      ]
+    },
+    "cta": {
+      "surface": "cta",
+      "description": "Call-to-action button text.",
+      "examples": [
+        { "text": "Take the test", "source": "hero + nav + steps + pricing + CtaBand (app/page.tsx, quiz-nav.tsx)" },
+        { "text": "Back to the test", "source": "app/tiktok/page.tsx" }
+      ]
+    },
+    "cta-microcopy": {
+      "surface": "cta-microcopy",
+      "description": "Tiny microcopy near CTAs and scroll cues.",
+      "examples": [
+        { "text": "Press T anytime to take the test", "source": "hero (smart-fart-hero.tsx)" },
+        { "text": "Scroll", "source": "hero scroll cue" },
+        { "text": "Skip to content", "source": "app/layout.tsx skip link" }
+      ]
+    },
+    "section-heading": {
+      "surface": "section-heading",
+      "description": "Section titles down the landing page. Punchy, curiosity/verdict framed.",
+      "examples": [
+        { "text": "Three steps to the truth", "source": "Steps section" },
+        { "text": "Which one are you, really?", "source": "Comparison section" },
+        { "text": "What you actually get", "source": "FeatureGrid section" },
+        { "text": "Lives have been changed", "source": "Testimonials section" },
+        { "text": "Settle it for the price of a coffee", "source": "Pricing section" },
+        { "text": "Questions from concerned fellas", "source": "FAQ section" },
+        { "text": "Follow us", "source": "FollowUs section" }
+      ]
+    },
+    "step-howitworks": {
+      "surface": "step-howitworks",
+      "description": "The 'how it works' steps: label, title, body. Cheeky, self-deprecating about the 'science'.",
+      "examples": [
+        { "text": "Step 1 - Answer 27 questions: Rapid-fire scenarios about your daily choices, group-chat conduct, and snack ethics. Takes about five minutes and roughly zero brain cells.", "source": "Steps (app/page.tsx)" },
+        { "text": "Step 2 - The Fella Engine scores you: Our deeply unscientific algorithm weighs your answers across six fella dimensions and computes your official Fella Score.", "source": "Steps (app/page.tsx)" },
+        { "text": "Step 3 - Get your diagnosis: Receive the verdict, Smart Fella or Fart Smella, plus a shareable report you can wave triumphantly in your friends' faces.", "source": "Steps (app/page.tsx)" }
+      ]
+    },
+    "checklist-smart": {
+      "surface": "checklist-smart",
+      "description": "The 'Smart Fella' side of the 'Which one are you, really?' checklist. Aspirational-but-dry.",
+      "examples": [
+        { "text": "Reads the whole thread before replying", "source": "Comparison ourPoints" },
+        { "text": "Owns a water bottle and, crucially, uses it", "source": "Comparison ourPoints" },
+        { "text": "Inbox at zero, mind mysteriously clear", "source": "Comparison ourPoints" },
+        { "text": "Says \u201cI don't know\u201d like an absolute legend", "source": "Comparison ourPoints" }
+      ]
+    },
+    "checklist-fart": {
+      "surface": "checklist-fart",
+      "description": "The 'Fart Smella' side of the checklist. Roasty, specific, relatable-cringe.",
+      "examples": [
+        { "text": "Replies \u201clol\u201d to genuinely serious questions", "source": "Comparison theirPoints" },
+        { "text": "Microwaves fish in a shared office kitchen", "source": "Comparison theirPoints" },
+        { "text": "Has 47 unread \u201curgent\u201d emails and zero concern", "source": "Comparison theirPoints" },
+        { "text": "Confidently, cheerfully wrong about everything", "source": "Comparison theirPoints" }
+      ]
+    },
+    "feature-whatyouget": {
+      "surface": "feature-whatyouget",
+      "description": "'What you actually get' report features: title + body. Bragging rights + gentle roasting.",
+      "examples": [
+        { "text": "Your Fella Score: A single 0-100 number that settles the debate once and for all. No appeals.", "source": "FeatureGrid REPORT" },
+        { "text": "Six-dimension breakdown: See exactly where you lean smart, and where you lean, regrettably, fart.", "source": "FeatureGrid REPORT" },
+        { "text": "Red-flag detector: The three habits quietly dragging your score into the danger zone.", "source": "FeatureGrid REPORT" },
+        { "text": "Shareable result card: A bordered, brag-worthy card engineered specifically for the group chat.", "source": "FeatureGrid REPORT" },
+        { "text": "Improvement plan: Five concrete moves to climb from certified fart to respectable smart.", "source": "FeatureGrid REPORT" },
+        { "text": "Official certificate: Frame-ready proof of your fella status. Mostly a joke. Mostly.", "source": "FeatureGrid REPORT" }
+      ]
+    },
+    "testimonial": {
+      "surface": "testimonial",
+      "description": "Fake-but-funny social proof quotes with name + role. Deadpan, self-aware, roast-friendly.",
+      "examples": [
+        { "text": "I put 'Smart Fella, verified' on my r\u00e9sum\u00e9 and got two callbacks. - Leo M., Job seeker", "source": "Testimonials" },
+        { "text": "I made my whole team take it. Morale is at an all-time low and I've never been happier. - Dana R., Manager", "source": "Testimonials" },
+        { "text": "Finally, science confirms what my wife has been saying for years. - Marcus T., Smart Fella (barely)", "source": "Testimonials" },
+        { "text": "The red-flag detector called me out for microwaving fish at the office. Accurate and cruel. - Priya S., Reformed", "source": "Testimonials" },
+        { "text": "Scored a 12. Absolutely devastating. I hate this quiz - Greg P., Certified Fart Smella", "source": "Testimonials" },
+        { "text": "Took it six times hoping for a better score. The engine is incorruptible. - Sam K., Persistent", "source": "Testimonials" }
+      ]
+    },
+    "pricing": {
+      "surface": "pricing",
+      "description": "Pricing copy for the single one-time test.",
+      "examples": [
+        { "text": "The Fella Test - $67 one-time", "source": "Pricing TIERS" },
+        { "text": "One full diagnostic, your complete report, and a shareable result card.", "source": "Pricing description" },
+        { "text": "The full 27-question test", "source": "Pricing feature" },
+        { "text": "Your Fella Score + report", "source": "Pricing feature" },
+        { "text": "Shareable result card", "source": "Pricing feature" },
+        { "text": "Personal improvement plan", "source": "Pricing feature" }
+      ]
+    },
+    "faq-q": {
+      "surface": "faq-q",
+      "description": "FAQ questions, written in the voice of a nervous / defensive fella.",
+      "examples": [
+        { "text": "Is this scientifically valid?", "source": "FAQ (app/page.tsx)" },
+        { "text": "Is it rigged to call me a Fart Smella?", "source": "FAQ (app/page.tsx)" },
+        { "text": "How long does it take?", "source": "FAQ (app/page.tsx)" },
+        { "text": "Can I get a refund if I hate my score?", "source": "FAQ (app/page.tsx)" },
+        { "text": "Can my whole team take it?", "source": "FAQ (app/page.tsx)" }
+      ]
+    },
+    "faq-a": {
+      "surface": "faq-a",
+      "description": "FAQ answers. Honest, funny, never over-earnest. (Legacy site copy; a couple contain em dashes preserved verbatim.)",
+      "examples": [
+        { "text": "Absolutely not. The Fella Engine runs on vibes, stereotypes, and one very opinionated spreadsheet. It's for entertainment only.", "source": "FAQ (app/page.tsx)" },
+        { "text": "It is not, but the questions are designed to expose your worst habits, so a low score is entirely your own doing.", "source": "FAQ (app/page.tsx)" },
+        { "text": "About five minutes. Twenty-seven quick questions, no essays, and no account required to start.", "source": "FAQ (app/page.tsx)" },
+        { "text": "You can get a refund if the test won't load. You cannot get a refund simply because the truth stings.", "source": "FAQ (app/page.tsx)" },
+        { "text": "Please do - everyone grabs their own test and compares Fella Scores. Nothing bonds a team like collective public humiliation.", "source": "FAQ (app/page.tsx) [legacy em dash in source]" }
+      ]
+    },
+    "caption": {
+      "surface": "caption",
+      "description": "REAL social post captions (TikTok + Instagram). Note the hook + emoji glyph + comment CTA + follow nudge + hashtags.",
+      "examples": [
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Odd one out, figure analogy & a tricky number series. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle", "source": "ready-to-post/01 caption.txt" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, number series & figure series. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle", "source": "ready-to-post/02 caption.txt" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, dot position & number analogy. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle", "source": "ready-to-post/03 caption.txt" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Number series, odd one out & a sneaky puzzle. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle", "source": "ready-to-post/04 caption.txt" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Number series, word analogy & fill in the blank. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle", "source": "ready-to-post/05 caption.txt" },
+        { "text": "Are you a SMART fella\u2026 or a FART smella? \ud83e\udde0\ud83d\udca8\n\nOnly one way to find out.\n\n\ud83d\udd25 Brand new challenges EVERY day.\n\ud83d\udc49 Follow so you don\u2019t miss one\n\n#brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella", "source": "ab-database.json (brand intro post, multiline)" },
+        { "text": "Are you a SMART fella\u2026 or a FART smella? \ud83e\udde0\ud83d\udca8 Only one way to find out. \ud83d\udd25 Brand new challenges EVERY day. \ud83d\udc49 Follow so you don't miss one #brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella", "source": "ab-database.json (brand intro post, single line)" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, dot position & number analogy. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia", "source": "ab-database.json" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Odd one out, figure analogy & a tricky number series. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia", "source": "ab-database.json" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, number series & figure series. Can you get all 3? Comment your score \ud83d\udc47 #smartfellaorfartsmella #iqtest #brainteaser #quiz #puzzle", "source": "ab-database.json" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Number series, word analogy & fill in the blank. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia", "source": "ab-database.json" },
+        { "text": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, dot position & number analogy. Can you get all 3? Comment your score \ud83d\udc47 #riddlefun #brainteaser #puzzletok #mindgames #riddles", "source": "ab-database.json" },
+        { "text": "The last one is tricky! Comment your answer below\ud83d\udc47 #quiz #trivia #braintest #puzzle #logic", "source": "ab-database.json (cliffhanger)" },
+        { "text": "This one\u2019s tricky! Comment your answer below\ud83d\udc47 #quiz #trivia #braintest #puzzle #logic", "source": "ab-database.json (cliffhanger)" },
+        { "text": "Did you get the last question? Comment your answer below \ud83d\udc47 #quiz #logic #smart #challenge #brainteaser", "source": "ab-database.json (cliffhanger)" },
+        { "text": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your answer below \ud83d\udc47 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames", "source": "ab-database.json (no-answer variant)" },
+        { "text": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your answer below \ud83d\udc47 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser", "source": "ab-database.json (no-answer variant)" },
+        { "text": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser", "source": "ab-database.json (score-CTA)" },
+        { "text": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #quiztime #braintest #canyoupass #puzzle #trivianight", "source": "ab-database.json (score-CTA)" },
+        { "text": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames", "source": "ab-database.json (score-CTA)" }
+      ]
+    },
+    "caption-template": {
+      "surface": "caption-template",
+      "description": "Canonical caption templates the poster tooling uses. Hashtags are appended per-post from a rotating hashtag_set (A/B/C).",
+      "examples": [
+        { "text": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!!", "source": "tools/post-variant.ts CAPTION_SCORE_CTA" },
+        { "text": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your answer below \ud83d\udc47 and follow for more!!", "source": "tools/post-variant.ts CAPTION_NO_ANSWER (no-reveal variant)" },
+        { "text": "Are you SMART or FART? Comment your score/answer below and follow for more!", "source": "learnings.json decisions_log (standardized hook)" }
+      ]
+    },
+    "hashtag-set": {
+      "surface": "hashtag-set",
+      "description": "Rotating hashtag sets used in the live A/B test, plus historical sets seen on posts.",
+      "examples": [
+        { "text": "#fyp #foryou #quiz #trivia #brainteaser", "source": "learnings.json set A" },
+        { "text": "#smartorfart #iqtest #puzzletok #riddles #mindgames", "source": "learnings.json set B" },
+        { "text": "#quiztime #braintest #canyoupass #puzzle #trivianight", "source": "learnings.json set C" },
+        { "text": "#smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle", "source": "ready-to-post caption.txt" },
+        { "text": "#brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella", "source": "ab-database.json (brand post)" },
+        { "text": "#riddlefun #brainteaser #puzzletok #mindgames #riddles", "source": "ab-database.json" },
+        { "text": "#quiz #trivia #braintest #puzzle #logic", "source": "ab-database.json (cliffhanger)" },
+        { "text": "#quiz #logic #smart #challenge #brainteaser", "source": "ab-database.json (cliffhanger)" }
+      ]
+    },
+    "on-screen": {
+      "surface": "on-screen",
+      "description": "Burned-in on-screen text on the video plates (intro, score, reveal, prompts framing). All-caps Anton.",
+      "examples": [
+        { "text": "SMART FELLA", "source": "remotion Intro.tsx" },
+        { "text": "OR", "source": "remotion Intro.tsx (pill)" },
+        { "text": "FART SMELLA?", "source": "remotion Intro.tsx" },
+        { "text": "ARE YOU SMART OR FART?", "source": "remotion Score.tsx (banner)" },
+        { "text": "SCORE YOURSELF", "source": "remotion Score.tsx (heading)" },
+        { "text": "CORRECT ANSWER", "source": "remotion Reveal.tsx (banner)" },
+        { "text": "QUESTION 1 OF 15", "source": "remotion HeaderPills.tsx (count pill; hidden on 1-question cuts)" },
+        { "text": "TIME'S UP!", "source": "remotion (timesup plate / VO)" }
+      ]
+    },
+    "question-onscreen": {
+      "surface": "question-onscreen",
+      "description": "Verbatim printed quiz prompts (the puzzle question text shown on screen).",
+      "examples": [
+        { "text": "WHICH ONE DOES NOT BELONG?", "source": "questions.ts idx 1 / 10" },
+        { "text": "WHAT COMES NEXT?", "source": "questions.ts number-series prompt" },
+        { "text": "WHICH SHAPE COMPLETES THE PATTERN?", "source": "questions.ts idx 3" },
+        { "text": "GIANT IS TO TINY AS WIDE IS TO ?", "source": "questions.ts idx 4" },
+        { "text": "OCEAN IS TO PUDDLE AS MOUNTAIN IS TO ?", "source": "questions.ts idx 6" },
+        { "text": "PAINTER IS TO BRUSH AS CARPENTER IS TO ?", "source": "questions.ts idx 8" },
+        { "text": "WHICH SHAPE COMES NEXT?", "source": "questions.ts idx 11" },
+        { "text": "THE BRIDGE WAS TOO WEAK TO HOLD THE HEAVY TRUCK, SO WORKERS HAD TO ______ IT BEFORE OPENING THE ROAD.", "source": "questions.ts idx 12" },
+        { "text": "WHERE DOES THE DOT MOVE NEXT?", "source": "questions.ts idx 13" },
+        { "text": "WHICH NUMBER FITS? 2 -> 5, 3 -> 7, 4 -> 9, 5 -> ?", "source": "questions.ts idx 14" },
+        { "text": "IF 4+5=20, 3+6=18, 2+7=14 THEN 5+4 = ?", "source": "questions.ts idx 15" }
+      ]
+    },
+    "category-label": {
+      "surface": "category-label",
+      "description": "On-screen quiz category / topic pills.",
+      "examples": [
+        { "text": "ODD ONE OUT", "source": "questions.ts tier" },
+        { "text": "NUMBER SERIES", "source": "questions.ts tier" },
+        { "text": "FIGURE ANALOGY", "source": "questions.ts tier" },
+        { "text": "VERBAL ANALOGY", "source": "questions.ts tier" },
+        { "text": "FIGURE SERIES", "source": "questions.ts tier" },
+        { "text": "SENTENCE COMPLETION", "source": "questions.ts tier" },
+        { "text": "POSITION", "source": "questions.ts tier" },
+        { "text": "NUMBER ANALOGY", "source": "questions.ts tier" },
+        { "text": "NUMBER PUZZLE", "source": "questions.ts tier" }
+      ]
+    },
+    "explanation-onscreen": {
+      "surface": "explanation-onscreen",
+      "description": "On-screen answer explanations. Clear, kid-friendly teaching. (This teaching tone is for VIDEO reveals ONLY, never for comment replies.)",
+      "examples": [
+        { "text": "A robin, sparrow, and eagle are all birds. A salmon is a fish, so it does not belong.", "source": "questions.ts idx 1" },
+        { "text": "Each number doubles (x2): 3, 6, 12, 24, so the next is 24 x 2 = 48.", "source": "questions.ts idx 2" },
+        { "text": "The relation is 'get filled in' while the shape stays the same, so the empty square becomes a filled square.", "source": "questions.ts idx 3" },
+        { "text": "Giant and tiny are opposites, so the opposite of wide is narrow. It's the same relationship, flipped.", "source": "questions.ts idx 4" },
+        { "text": "An ocean shrinks to a puddle, so a mountain shrinks to a hill. It's the tiny version of the same thing.", "source": "questions.ts idx 6" },
+        { "text": "The gaps grow +4, +6, +8, +10, so the next gap is +12. That makes 30 + 12 = 42.", "source": "questions.ts idx 7" },
+        { "text": "Each number is the sum of the two before it: 3 + 5 = 8, so 5 + 8 = 13. It's the Fibonacci pattern.", "source": "questions.ts idx 9" },
+        { "text": "The sides count up by one: triangle 3, square 4, pentagon 5, so next is the hexagon with 6 sides.", "source": "questions.ts idx 11" },
+        { "text": "The dot steps clockwise corner to corner: top-left, top-right, bottom-right, then the next corner is bottom-left.", "source": "questions.ts idx 13" },
+        { "text": "The + secretly means multiply: 4x5=20, 3x6=18, 2x7=14, so 5x4 = 20.", "source": "questions.ts idx 15" }
+      ]
+    },
+    "endcard": {
+      "surface": "endcard",
+      "description": "Endcard / brand-promo on-screen lines (outro + self-contained brand intro + reply short). Loud, positive, always ends on a follow/come-back beat.",
+      "examples": [
+        { "text": "HOW DID YOU DO?", "source": "remotion Outro.tsx (standard)" },
+        { "text": "COMMENT YOUR SCORE BELOW", "source": "remotion Outro.tsx (standard)" },
+        { "text": "WHAT'S YOUR ANSWER?", "source": "remotion Outro.tsx (no-answer variant)" },
+        { "text": "COMMENT YOUR ANSWER BELOW", "source": "remotion Outro.tsx (no-answer variant)" },
+        { "text": "FOLLOW FOR MORE", "source": "remotion Outro.tsx / IntroBrand / ReplyBrand (IG/TikTok CTA)" },
+        { "text": "SUBSCRIBE FOR MORE", "source": "remotion Outro.tsx (YouTube CTA)" },
+        { "text": "SCROLL FOR MORE", "source": "remotion Outro.tsx / IntroBrand.tsx (swipe cue)" },
+        { "text": "WHAT IS IT?", "source": "remotion IntroBrand.tsx" },
+        { "text": "A REAL IQ TEST", "source": "remotion IntroBrand.tsx" },
+        { "text": "THAT'S ACTUALLY", "source": "remotion IntroBrand.tsx" },
+        { "text": "FUN!", "source": "remotion IntroBrand.tsx" },
+        { "text": "FUN BRAIN CHALLENGES, K-12", "source": "remotion IntroBrand.tsx" },
+        { "text": "TESTS SO FUN", "source": "remotion IntroBrand.tsx (mission)" },
+        { "text": "YOU CAN'T STOP", "source": "remotion IntroBrand.tsx (mission)" },
+        { "text": "LEARNING", "source": "remotion IntroBrand.tsx (mission)" },
+        { "text": "NEW CHALLENGES", "source": "remotion IntroBrand.tsx (CTA)" },
+        { "text": "EVERY DAY", "source": "remotion IntroBrand.tsx / ReplyBrand.tsx" },
+        { "text": "YAYYY!", "source": "remotion ReplyBrand.tsx (first-comment celebration)" },
+        { "text": "OUR FIRST COMMENT!", "source": "remotion ReplyBrand.tsx" },
+        { "text": "JUST THE START", "source": "remotion ReplyBrand.tsx" },
+        { "text": "NEW CHALLENGE", "source": "remotion ReplyBrand.tsx" },
+        { "text": "DON'T MISS", "source": "remotion ReplyBrand.tsx" },
+        { "text": "TOMORROW'S!", "source": "remotion ReplyBrand.tsx" }
+      ]
+    },
+    "verdict": {
+      "surface": "verdict",
+      "description": "The Smart Fella / Fart Smella verdict device: score tiers, the verdict endcard, and the rubber-stamp reward.",
+      "examples": [
+        { "text": "CERTIFIED SMART FELLA", "source": "remotion Score.tsx (top tier)" },
+        { "text": "SHARP COOKIE", "source": "remotion Score.tsx (middle tier)" },
+        { "text": "CERTIFIED FART SMELLA", "source": "remotion Score.tsx (bottom tier)" },
+        { "text": "SMART FELLA OR FART SMELLA?", "source": "remotion Outro.tsx (verdict variant)" },
+        { "text": "COMMENT YOUR VERDICT", "source": "remotion Outro.tsx (verdict variant)" },
+        { "text": "CERTIFIED SMART FELLA (rubber stamp thunked onto the winning commenter)", "source": "remotion ReplyBrand.tsx StampBadge" }
+      ]
+    },
+    "hook": {
+      "surface": "hook",
+      "description": "The hook TYPES used across posts (the opening promise + which CTA the post leans on).",
+      "examples": [
+        { "text": "score-CTA ('Comment your score')", "source": "ab-database.json variant.hook" },
+        { "text": "comment-CTA ('Comment your answer')", "source": "ab-database.json variant.hook" },
+        { "text": "brand ('Follow so you don't miss one')", "source": "ab-database.json variant.hook" },
+        { "text": "Are you SMART or FART?", "source": "primary opening hook across captions + score plate" },
+        { "text": "Can you get all 3?", "source": "quiz caption hook (ready-to-post)" },
+        { "text": "The last one is tricky!", "source": "cliffhanger hook (ab-database.json)" }
+      ]
+    },
+    "vo-host": {
+      "surface": "vo-host",
+      "description": "Game-show host narration (voice-over). High energy, warm, encouraging, always keeps the smart/fart frame.",
+      "examples": [
+        { "text": "Are you a SMART fella... or a FART smella? Let's find OUT!", "source": "captions.json intro" },
+        { "text": "So, are you smart or fart? Count up your correct answers to find your rank!", "source": "captions.json score" },
+        { "text": "Take a bow, you are a certified smart fella!", "source": "phrases.ts / score VO (top tier)" },
+        { "text": "You're one seriously sharp cookie.", "source": "phrases.ts / score VO (middle tier)" },
+        { "text": "Hey, every champion starts out a certified fart smella!", "source": "phrases.ts / score VO (bottom tier)" },
+        { "text": "So, how did you do? Comment your score below, and follow for more!", "source": "captions.json outro-follow" },
+        { "text": "So, how did you do? Comment your score below, and subscribe for more!", "source": "captions.json outro-youtube" },
+        { "text": "TIME'S UP!", "source": "captions.json timesup" },
+        { "text": "Five seconds, go!", "source": "captions.json q1 / q4" },
+        { "text": "Five seconds on the clock!", "source": "captions.json q7" }
+      ]
+    },
+    "vo-question": {
+      "surface": "vo-question",
+      "description": "Question-read narration. Names the category, reads options A-D, calls the timer. Adds spice on hard ones.",
+      "examples": [
+        { "text": "Question one! Which one does NOT belong? Robin... sparrow... salmon... eagle. Is it A, robin... B, sparrow... C, salmon... or D, eagle? Five seconds, go!", "source": "captions.json q1" },
+        { "text": "Question two, a number series! Three, six, twelve, twenty-four, and then... what comes next? A, thirty-six... B, forty-eight... C, thirty... or D, forty-two? Five seconds!", "source": "captions.json q2" },
+        { "text": "Question seven, and this one is tricky! Two, six, twelve, twenty, thirty, and then... what comes next? A, thirty-six... B, forty... C, forty-two... or D, forty-four? Five seconds on the clock!", "source": "captions.json q7" },
+        { "text": "Question eleven, a shape puzzle! Watch them grow, gaining one side each step: a triangle, then a square, then a pentagon. Which shape comes next?", "source": "captions.json q11" },
+        { "text": "Last one, question fifteen, a number puzzle, and it's sneaky! If four plus five makes twenty, three plus six makes eighteen, and two plus seven makes fourteen... then five plus four makes... what?", "source": "captions.json q15" }
+      ]
+    },
+    "vo-reveal": {
+      "surface": "vo-reveal",
+      "description": "Answer-reveal narration. Warm 'the answer is...' payoff + a one-beat memorable why.",
+      "examples": [
+        { "text": "The answer is... C, salmon! A robin, a sparrow, and an eagle all soar through the sky as birds. But a salmon? That one swims. It's a fish!", "source": "captions.json r1" },
+        { "text": "It's... B, forty-eight! Each number simply doubles: three, six, twelve, twenty-four... and twenty-four times two is forty-eight!", "source": "captions.json r2" },
+        { "text": "The answer is... B, hexagon! Count the sides: triangle three, square four, pentagon five... so next up is the six-sided hexagon!", "source": "captions.json r11" },
+        { "text": "The answer is... B, thirteen! Add the two numbers before it: five plus eight is thirteen. That's the famous Fibonacci pattern!", "source": "captions.json r9" },
+        { "text": "The answer is... C, twenty! Here's the trick: that plus sign secretly means multiply. Four times five is twenty, so five times four is twenty too!", "source": "captions.json r15" },
+        { "text": "It's... B, hill! An ocean shrinks down to a tiny puddle, so a mountain shrinks down to a little hill. Same thing, pocket-sized!", "source": "captions.json r6" }
+      ]
+    },
+    "signature-phrase": {
+      "surface": "signature-phrase",
+      "description": "Recurring phrases + vocabulary that ARE the brand. Reuse these.",
+      "examples": [
+        { "text": "Smart Fella", "source": "everywhere (the praise half of the binary)" },
+        { "text": "Fart Smella", "source": "everywhere (the miss half of the binary)" },
+        { "text": "Are you SMART or FART?", "source": "captions + score plate" },
+        { "text": "SMART or FART?", "source": "captions" },
+        { "text": "certified SMART FELLA", "source": "comment replies + score tier + reply stamp" },
+        { "text": "certified Fart Smella (for now)", "source": "comment replies (wrong-answer redemption)" },
+        { "text": "for now", "source": "the redemption softener after a Fart Smella call" },
+        { "text": "SHARP COOKIE / seriously sharp cookie", "source": "score middle tier + VO" },
+        { "text": "Fella Score", "source": "website" },
+        { "text": "The Fella Engine", "source": "website (the 'unscientific algorithm')" },
+        { "text": "fella-ness", "source": "website meta + hero" },
+        { "text": "six fella dimensions", "source": "website steps" },
+        { "text": "brutally honest", "source": "website taglines" },
+        { "text": "Backed by vibes, peer pressure, and questionable science", "source": "hero subtitle" },
+        { "text": "Can you get all 3?", "source": "quiz captions" },
+        { "text": "Comment your score", "source": "caption + endcard CTA" },
+        { "text": "Comment your answer below", "source": "caption + endcard CTA (no-reveal)" },
+        { "text": "follow for more", "source": "captions + endcards" },
+        { "text": "follow so you don't miss one", "source": "brand caption" },
+        { "text": "Brand new challenges EVERY day", "source": "brand caption + endcard" },
+        { "text": "come back tomorrow and redeem yourself", "source": "comment-reply-guide.md" },
+        { "text": "follow for a new one every day", "source": "comment-reply-guide.md" },
+        { "text": "Let's find OUT!", "source": "intro VO" },
+        { "text": "\ud83e\udde0\ud83d\udca8 (brain + wind = SMART/FART glyph)", "source": "captions" }
+      ]
+    },
+    "comment-reply-correct": {
+      "surface": "comment-reply-correct",
+      "description": "Approved replies to a CORRECT guess. Hype them as a Smart Fella, one emoji max, end on a follow nudge. Never explain the solution.",
+      "examples": [
+        { "text": "39 first try?? certified SMART FELLA \ud83e\udee1. follow for a new one every day.", "source": "comment-reply-guide.md (approved example)" }
+      ]
+    },
+    "comment-reply-wrong": {
+      "surface": "comment-reply-wrong",
+      "description": "Approved replies to a WRONG / 'idk' guess. Playful Fart Smella jab + 'for now' redemption + come-back nudge. Reveal the answer only, never a lecture.",
+      "examples": [
+        { "text": "it was 39. certified Fart Smella \ud83d\ude2d (for now). come back tomorrow and redeem yourself.", "source": "comment-reply-guide.md (approved example)" }
+      ]
+    },
+    "comment-reply-nudge": {
+      "surface": "comment-reply-nudge",
+      "description": "The follow / come-back nudges that MUST close every reply (pick one, keep it casual).",
+      "examples": [
+        { "text": "follow for a new one every day", "source": "comment-reply-guide.md" },
+        { "text": "come back tomorrow and redeem yourself", "source": "comment-reply-guide.md" },
+        { "text": "follow for more", "source": "captions/endcards" },
+        { "text": "follow so you don't miss one", "source": "brand caption" }
+      ]
+    }
+  }
+}
