@@ -54,12 +54,15 @@ const ACCOUNT_IDS = [IG_ID, TT_ID];
 const ACCOUNT_HANDLE = "@smartfellafartsmellatest";
 
 // ── Captions (task-provided; used as-is since ab-tests/manifest.json carries no caption strings) ──
+// Default captions (updated 2026-07-21). Hashtags are NO LONGER baked in here — the
+// loop appends a rotating hashtag_set (A/B/C) per post via tools/edit-captions.ts.
+// no-answer says "answer" (no reveal/score); everything else says "score".
 const CAPTION_SCORE_CTA =
-  "SMART or FART? 🧠💨 Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia";
+  "Are you SMART or FART? 🧠💨 Comment your score below 👇 and follow for more!!";
 const CAPTION_ONE_Q =
-  "SMART or FART? 🧠💨 Can you get it? Comment 👇 #smartorfart #iqtest #brainteaser #quiz #trivia";
+  "Are you SMART or FART? 🧠💨 Comment your score below 👇 and follow for more!!";
 const CAPTION_NO_ANSWER =
-  "This one's tricky! Comment your answer below 👇 #quiz #trivia #braintest #puzzle #logic";
+  "Are you SMART or FART? 🧠💨 Comment your answer below 👇 and follow for more!!";
 
 /**
  * Variant registry — the 7 remaining A/B families, video-1 each. question_types +
@@ -264,7 +267,7 @@ function buildRecord(
     source_candidates: [],
     variant: {
       family: v.family,
-      intro: false,
+      // `intro` dimension dropped 2026-07-21 — everything is cold-open now.
       narration: v.narration,
       hook: v.hook,
       question_types: v.question_types,

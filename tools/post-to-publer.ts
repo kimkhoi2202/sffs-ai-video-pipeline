@@ -313,6 +313,10 @@ export async function createPost(args: CreatePostArgs): Promise<string> {
     if (!networks[provider]) {
       const content: any = { type, text };
       if (media_ids?.length) content.media = media_ids.map((mid) => ({ id: mid }));
+      // DEFAULT for Instagram: publish as a Reel AND also share to the main Feed
+      // (Publer network option networks.instagram.details.feed; only settable at
+      // creation — the PUT update endpoint cannot change it).
+      if (provider === "instagram") content.details = { type: "reel", feed: true };
       networks[provider] = content;
     }
   }

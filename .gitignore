@@ -28,6 +28,7 @@ tools/*
 !tools/post-to-publer.ts
 !tools/post-variant.ts
 !tools/schedule-variants.ts
+!tools/edit-captions.ts
 !tools/package.json
 
 # Python

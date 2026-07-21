@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-21T17:41:42-05:00",
+  "updated_at": "2026-07-21T17:49:54-05:00",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -39,7 +39,6 @@
     },
     "variant_fields": {
       "family": "standard | no-answer | cliffhanger | dont-narrate | speed | one-question | mascot | intro-promo",
-      "intro": "true if a branded lead-in precedes Q1 (ready-to-post WITHINTRO packages, or the brand-intro promo). A/B-test shorts are permanently cold-open (intro=false).",
       "narration": "full | none | no-question-vo | no-options-vo (VO treatment; all posted-so-far are 'full')",
       "hook": "score-CTA ('Comment your score') | comment-CTA ('Comment your answer') | brand ('Follow so you don't miss one')",
       "question_types": "ordered play-order types. For no-answer/cliffhanger these are taken from the family's render tiers (identical across video-1/video-2), not the caption.",
@@ -60,7 +59,6 @@
       "source_candidates": [],
       "variant": {
         "family": "intro-promo",
-        "intro": true,
         "narration": "full",
         "hook": "brand",
         "question_types": [],
@@ -95,7 +93,6 @@
       "source_candidates": [],
       "variant": {
         "family": "intro-promo",
-        "intro": true,
         "narration": "full",
         "hook": "brand",
         "question_types": [],
@@ -130,7 +127,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": true,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -169,7 +165,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": true,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -208,7 +203,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -247,7 +241,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -286,7 +279,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -325,7 +317,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -364,7 +355,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -403,7 +393,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -442,7 +431,6 @@
       "source_candidates": [],
       "variant": {
         "family": "standard",
-        "intro": true,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -484,7 +472,6 @@
       ],
       "variant": {
         "family": "cliffhanger",
-        "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
         "question_types": [
@@ -528,7 +515,6 @@
       ],
       "variant": {
         "family": "no-answer",
-        "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
         "question_types": [
@@ -570,7 +556,6 @@
       ],
       "variant": {
         "family": "cliffhanger",
-        "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
         "question_types": [
@@ -605,12 +590,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:05:38-05:00",
-      "caption": "This one's tricky! Comment your answer below \ud83d\udc47 #quiz #trivia #braintest #puzzle #logic",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your answer below \ud83d\udc47 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "renders.nosync/videos/ab-tests/no-answer/video-1/no-answer-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "no-answer",
-        "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
         "question_types": [
@@ -638,7 +622,8 @@
       "publer_media_id": "6a5fed2f59cd255bf51920bb",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T18:30:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed32b6f3b513df2c19a4 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed2f59cd255bf51920bb.",
       "prior_draft_post_id": "6a5fed32b6f3b513df2c19a4",
-      "scheduled_at": "2026-07-21T18:30:00-05:00"
+      "scheduled_at": "2026-07-21T18:30:00-05:00",
+      "hashtag_set": "B"
     },
     {
       "publer_post_id": "6a5ff4e8324fde90b165a21c",
@@ -649,12 +634,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:05:38-05:00",
-      "caption": "This one's tricky! Comment your answer below \ud83d\udc47 #quiz #trivia #braintest #puzzle #logic",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your answer below \ud83d\udc47 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "renders.nosync/videos/ab-tests/no-answer/video-1/no-answer-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "no-answer",
-        "intro": false,
         "narration": "full",
         "hook": "comment-CTA",
         "question_types": [
@@ -682,7 +666,8 @@
       "publer_media_id": "6a5fed2f59cd255bf51920bb",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T18:30:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed31b6f3b513df2c19a2 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed2f59cd255bf51920bb.",
       "prior_draft_post_id": "6a5fed31b6f3b513df2c19a2",
-      "scheduled_at": "2026-07-21T18:30:00-05:00"
+      "scheduled_at": "2026-07-21T18:30:00-05:00",
+      "hashtag_set": "A"
     },
     {
       "publer_post_id": "6a5ff59cb23bd7bf82e5b39b",
@@ -693,12 +678,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:00-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-narration/video-1/dont-narrate-no-narration-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "dont-narrate",
-        "intro": false,
         "narration": "none",
         "hook": "score-CTA",
         "question_types": [
@@ -726,7 +710,8 @@
       "publer_media_id": "6a5fed44ca20cb23e05ab1d0",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T19:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed48ca20cb23e05ab1d4 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed44ca20cb23e05ab1d0.",
       "prior_draft_post_id": "6a5fed48ca20cb23e05ab1d4",
-      "scheduled_at": "2026-07-21T19:45:00-05:00"
+      "scheduled_at": "2026-07-21T19:45:00-05:00",
+      "hashtag_set": "A"
     },
     {
       "publer_post_id": "6a5ff59cb23bd7bf82e5b399",
@@ -737,12 +722,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:00-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-narration/video-1/dont-narrate-no-narration-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "dont-narrate",
-        "intro": false,
         "narration": "none",
         "hook": "score-CTA",
         "question_types": [
@@ -770,7 +754,8 @@
       "publer_media_id": "6a5fed44ca20cb23e05ab1d0",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T19:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed48ca20cb23e05ab1d2 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed44ca20cb23e05ab1d0.",
       "prior_draft_post_id": "6a5fed48ca20cb23e05ab1d2",
-      "scheduled_at": "2026-07-21T19:45:00-05:00"
+      "scheduled_at": "2026-07-21T19:45:00-05:00",
+      "hashtag_set": "C"
     },
     {
       "publer_post_id": "6a5ff59fb23bd7bf82e5b39e",
@@ -781,12 +766,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:21-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-question-vo/video-1/dont-narrate-no-question-vo-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "dont-narrate",
-        "intro": false,
         "narration": "no-question-vo",
         "hook": "score-CTA",
         "question_types": [
@@ -814,7 +798,8 @@
       "publer_media_id": "6a5fed58ca20cb23e05ab1db",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T21:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed5d59cd255bf51920ee + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed58ca20cb23e05ab1db.",
       "prior_draft_post_id": "6a5fed5d59cd255bf51920ee",
-      "scheduled_at": "2026-07-21T21:00:00-05:00"
+      "scheduled_at": "2026-07-21T21:00:00-05:00",
+      "hashtag_set": "C"
     },
     {
       "publer_post_id": "6a5ff59fb23bd7bf82e5b39c",
@@ -825,12 +810,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:21-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-question-vo/video-1/dont-narrate-no-question-vo-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "dont-narrate",
-        "intro": false,
         "narration": "no-question-vo",
         "hook": "score-CTA",
         "question_types": [
@@ -858,7 +842,8 @@
       "publer_media_id": "6a5fed58ca20cb23e05ab1db",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T21:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed5d59cd255bf51920ec + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed58ca20cb23e05ab1db.",
       "prior_draft_post_id": "6a5fed5d59cd255bf51920ec",
-      "scheduled_at": "2026-07-21T21:00:00-05:00"
+      "scheduled_at": "2026-07-21T21:00:00-05:00",
+      "hashtag_set": "B"
     },
     {
       "publer_post_id": "6a5ff5a1b23bd7bf82e5b3a1",
@@ -869,12 +854,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:31-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-options-vo/video-1/dont-narrate-no-options-vo-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "dont-narrate",
-        "intro": false,
         "narration": "no-options-vo",
         "hook": "score-CTA",
         "question_types": [
@@ -902,7 +886,8 @@
       "publer_media_id": "6a5fed6459cd255bf51920fd",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T22:15:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed6759cd255bf5192100 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6459cd255bf51920fd.",
       "prior_draft_post_id": "6a5fed6759cd255bf5192100",
-      "scheduled_at": "2026-07-21T22:15:00-05:00"
+      "scheduled_at": "2026-07-21T22:15:00-05:00",
+      "hashtag_set": "B"
     },
     {
       "publer_post_id": "6a5ff5a0b23bd7bf82e5b39f",
@@ -913,12 +898,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:31-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "renders.nosync/videos/ab-tests/dont-narrate/no-options-vo/video-1/dont-narrate-no-options-vo-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "dont-narrate",
-        "intro": false,
         "narration": "no-options-vo",
         "hook": "score-CTA",
         "question_types": [
@@ -946,7 +930,8 @@
       "publer_media_id": "6a5fed6459cd255bf51920fd",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-21T22:15:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed6759cd255bf51920fe + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6459cd255bf51920fd.",
       "prior_draft_post_id": "6a5fed6759cd255bf51920fe",
-      "scheduled_at": "2026-07-21T22:15:00-05:00"
+      "scheduled_at": "2026-07-21T22:15:00-05:00",
+      "hashtag_set": "A"
     },
     {
       "publer_post_id": "6a5ff5a2b23bd7bf82e5b3a4",
@@ -957,12 +942,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:44-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "renders.nosync/videos/ab-tests/speed/video-1/speed-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "speed",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -990,7 +974,8 @@
       "publer_media_id": "6a5fed6fca20cb23e05ab1ff",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T07:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7459cd255bf519210b + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6fca20cb23e05ab1ff.",
       "prior_draft_post_id": "6a5fed7459cd255bf519210b",
-      "scheduled_at": "2026-07-22T07:00:00-05:00"
+      "scheduled_at": "2026-07-22T07:00:00-05:00",
+      "hashtag_set": "A"
     },
     {
       "publer_post_id": "6a5ff5a2b23bd7bf82e5b3a2",
@@ -1001,12 +986,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:44-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "renders.nosync/videos/ab-tests/speed/video-1/speed-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "speed",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -1034,7 +1018,8 @@
       "publer_media_id": "6a5fed6fca20cb23e05ab1ff",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T07:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7459cd255bf5192109 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed6fca20cb23e05ab1ff.",
       "prior_draft_post_id": "6a5fed7459cd255bf5192109",
-      "scheduled_at": "2026-07-22T07:00:00-05:00"
+      "scheduled_at": "2026-07-22T07:00:00-05:00",
+      "hashtag_set": "C"
     },
     {
       "publer_post_id": "6a5ff5a4b23bd7bf82e5b3a9",
@@ -1045,12 +1030,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:54-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get it? Comment \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "renders.nosync/videos/ab-tests/one-question/video-1/one-question-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "one-question",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -1076,7 +1060,8 @@
       "publer_media_id": "6a5fed79ca20cb23e05ab20c",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7eb6f3b513df2c19c3 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed79ca20cb23e05ab20c.",
       "prior_draft_post_id": "6a5fed7eb6f3b513df2c19c3",
-      "scheduled_at": "2026-07-22T08:00:00-05:00"
+      "scheduled_at": "2026-07-22T08:00:00-05:00",
+      "hashtag_set": "C"
     },
     {
       "publer_post_id": "6a5ff5a4b23bd7bf82e5b3a7",
@@ -1087,12 +1072,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:06:54-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get it? Comment \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "renders.nosync/videos/ab-tests/one-question/video-1/one-question-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "one-question",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -1118,7 +1102,8 @@
       "publer_media_id": "6a5fed79ca20cb23e05ab20c",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:00:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed7eb6f3b513df2c19c1 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed79ca20cb23e05ab20c.",
       "prior_draft_post_id": "6a5fed7eb6f3b513df2c19c1",
-      "scheduled_at": "2026-07-22T08:00:00-05:00"
+      "scheduled_at": "2026-07-22T08:00:00-05:00",
+      "hashtag_set": "B"
     },
     {
       "publer_post_id": "6a5ff5a6b23bd7bf82e5b3ac",
@@ -1129,12 +1114,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:07:11-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "renders.nosync/videos/ab-tests/mascot/video-1/mascot-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "mascot",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -1162,7 +1146,8 @@
       "publer_media_id": "6a5fed8a59cd255bf5192144",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed8e59cd255bf5192147 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed8a59cd255bf5192144.",
       "prior_draft_post_id": "6a5fed8e59cd255bf5192147",
-      "scheduled_at": "2026-07-22T08:45:00-05:00"
+      "scheduled_at": "2026-07-22T08:45:00-05:00",
+      "hashtag_set": "B"
     },
     {
       "publer_post_id": "6a5ff5a6b23bd7bf82e5b3aa",
@@ -1173,12 +1158,11 @@
       "permalink": null,
       "posted_at": null,
       "drafted_at": "2026-07-21T17:07:11-05:00",
-      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "caption": "Are you SMART or FART? \ud83e\udde0\ud83d\udca8 Comment your score below \ud83d\udc47 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "renders.nosync/videos/ab-tests/mascot/video-1/mascot-video-1.mp4",
       "source_candidates": [],
       "variant": {
         "family": "mascot",
-        "intro": false,
         "narration": "full",
         "hook": "score-CTA",
         "question_types": [
@@ -1206,7 +1190,8 @@
       "publer_media_id": "6a5fed8a59cd255bf5192144",
       "notes": "Scheduled via tools/schedule-variants.ts to 2026-07-22T08:45:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed8e59cd255bf5192145 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed8a59cd255bf5192144.",
       "prior_draft_post_id": "6a5fed8e59cd255bf5192145",
-      "scheduled_at": "2026-07-22T08:45:00-05:00"
+      "scheduled_at": "2026-07-22T08:45:00-05:00",
+      "hashtag_set": "A"
     }
   ],
   "variant_families": {
@@ -1310,18 +1295,6 @@
         "avg_eng_rate": 0.5,
         "median_eng_rate": 0.78,
         "notes": "Reach clustered 101-128; eng 0-0.88%. Consistently low."
-      }
-    },
-    "by_intro_standard_only": {
-      "with_intro": {
-        "posts_with_metrics": 2,
-        "posts_total": 3,
-        "notes": "Package 03 only. TikTok reach=4 (noise) + IG reach=128/0.78%. 1 pending (TikTok). Inconclusive."
-      },
-      "no_intro": {
-        "posts_with_metrics": 6,
-        "posts_total": 6,
-        "notes": "Packages 01/02/05. Contains the 991-reach TikTok standout."
       }
     }
   },

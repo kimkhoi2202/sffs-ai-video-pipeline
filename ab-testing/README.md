@@ -13,7 +13,8 @@ and writes new records + fresh metrics back into it.
 
 | File | What it is |
 |---|---|
-| `ab-database.json` | The database. One record per published post + per-family rollups. Source of truth. |
+| `ab-database.json` | The database. One record per post (posted/scheduled/draft) + per-family rollups. Source of truth (raw facts). |
+| `learnings.json` | The **decisions brain**: aggregated rollups (family/platform/hashtag_set/time-bucket), current front-runners, and an append-only decisions log. Derived from `ab-database.json`. |
 | `README.md` | This file — schema + how to grow the DB. |
 | `analysis-2026-07-21.md` | First-look analysis with hypotheses and caveats (a dated snapshot; add new dated files over time). |
 
@@ -40,8 +41,8 @@ Top level:
   "inputs": { ...provenance, NO secrets... },
   "conventions": { ...units + how to read match_confidence/reach_rate... },
   "posts": [ /* one record per published post */ ],
-  "variant_families": { "<family>": { count, metrics_n, avg_eng_rate, avg_reach, notes } },
-  "aggregate_cuts": { "by_platform": {...}, "by_intro_standard_only": {...} },
+  "variant_families": { "<family>": { count, metrics_n, avg_eng_rate, avg_reach, drafts, scheduled, notes } },
+  "aggregate_cuts": { "by_platform": {...} },
   "known_gaps": [ ... ]
 }
 ```
@@ -64,12 +65,14 @@ Each `posts[]` record:
 
   "variant": {
     "family": "standard|no-answer|cliffhanger|dont-narrate|speed|one-question|mascot|intro-promo",
-    "intro": true | false,              // branded lead-in before Q1
     "narration": "full|none|no-question-vo|no-options-vo",
     "hook": "score-CTA|comment-CTA|brand",
     "question_types": ["odd-one-out", "figure-analogy", "number-series"],
     "num_questions": 3
   },
+  "hashtag_set": "A|B|C",               // which rotating hashtag set is appended (hashtag A/B dimension; sets in learnings.json)
+  "post_state": "scheduled|draft",      // for loop-created posts; ABSENT on historically-posted rows
+  "scheduled_at": "2026-07-21T18:30:00-05:00",  // present when post_state=scheduled (ISO, -05:00)
 
   "metrics": {
     "reach": 991, "reach_rate": "12.4%", "video_views": null,
@@ -99,8 +102,11 @@ Each `posts[]` record:
     indistinguishable siblings (`video-1` vs `video-2`). `source_video` is `null`; see
     `source_candidates`.
   - `low` — even the family is uncertain; a human should confirm.
-- **A/B-test shorts are permanently cold-open** (`intro:false`); only the `ready-to-post`
-  `WITHINTRO` packages and the brand promo have `intro:true`.
+- **The `intro` dimension was dropped (2026-07-21)** — every short is cold-open now, so
+  records no longer carry `intro` (and the old `by_intro_standard_only` cut was removed). The
+  reason (WITHINTRO underperformed) is preserved in `learnings.json` → `decisions_log`.
+- **`hashtag_set`** (`A`/`B`/`C`) records which rotating hashtag set was appended to the
+  caption — a live A/B dimension. The three sets are defined in `learnings.json`.
 - For `no-answer`/`cliffhanger`, `question_types` come from the render family's tiers (they're
   identical across `video-1`/`video-2`), not from the caption.
 
@@ -113,10 +119,10 @@ Each `posts[]` record:
 3. **Append** a `posts[]` record. Because the loop knows exactly which render it posted, set
    `source_video` to that render's repo-relative path and `match_confidence:"high"`
    (no caption-guessing needed — that's only for back-filled history like this v1 batch).
-4. Copy the render's `variant` block straight from the render metadata (family, intro,
-   narration, hook, question_types, num_questions).
+4. Copy the render's `variant` block straight from the render metadata (family, narration,
+   hook, question_types, num_questions). Set `hashtag_set` to the set you appended.
 5. Set `metrics.source:"pending"` at post time (metrics don't exist yet).
-6. Bump top-level `updated_at`.
+6. Bump top-level `updated_at`, then recompute `learnings.json` (see below).
 
 **Idempotency:** treat `platform_post_id` as the unique key. If a record with that id exists,
 update it in place instead of appending a duplicate.
@@ -130,6 +136,31 @@ update it in place instead of appending a duplicate.
    as an allowed value when you do).
 3. Recompute `variant_families` and `aggregate_cuts` rollups.
 4. Bump `updated_at`.
+5. Recompute `learnings.json` (see below).
+
+## `learnings.json` — the decisions brain
+
+`ab-database.json` is raw per-post facts; **`learnings.json` is the aggregated, decision-oriented
+view the loop actually acts on.** Keep them in sync:
+
+- **Read (before posting):** consult `front_runners` + `rollups` to bias the next batch toward
+  the best-performing `variant_family`, `hashtag_set`, `platform`, and `time_bucket`; read
+  `decisions_log` so you don't re-test settled questions (e.g. `intro` is dropped — don't
+  reintroduce it).
+- **Write (after a metrics pull):** recompute every rollup from `ab-database.json` `posts[]`
+  whose `metrics.source != "pending"`, update `front_runners` (highest median `eng_rate` with
+  `n_with_metrics >= conventions.min_n`), append any new conclusion to `decisions_log` (never
+  delete — supersede), and bump `updated_at`.
+- **Dimensions tracked:** `variant_family`, `platform`, `hashtag_set` (A/B/C), `time_bucket`
+  (morning/midday/evening, America/Chicago).
+
+## Posting defaults (poster tooling)
+
+`tools/post-variant.ts` / `tools/post-to-publer.ts` now default to: the caption
+"**Are you SMART or FART? … Comment your score/answer below … and follow for more!!**"
+(no baked-in hashtags — the loop appends a rotating `hashtag_set` via `tools/edit-captions.ts`),
+and **Instagram share-to-Feed ON** (`networks.instagram.details.feed=true`, only settable at
+creation).
 
 ## Growing the schema
 
