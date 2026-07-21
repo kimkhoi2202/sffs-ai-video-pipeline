@@ -202,3 +202,41 @@ export const ThumbWide: React.FC<{ bg?: string }> = ({ bg = COLORS.green }) => {
     </ThumbStage>
   );
 };
+
+// ---- Facebook page cover (1640x624 = 2x of the 820x312 desktop frame) --------
+// Two Facebook crops constrain the CRITICAL content (title + brain):
+//   • MOBILE crop shows only the center of the 820-wide desktop frame (shaves the
+//     outer ~90px each side → visible center 640×312 desktop = 1280×624 here), so
+//     title + brain must sit inside that center band [safeX0..safeX1].
+//   • The page PROFILE PICTURE overlaps the BOTTOM-LEFT corner (~168×168 desktop
+//     = ~336×336 here), so nothing critical may enter that box.
+// Only the floating shapes live in the outer/expendable zones — HeroShapes already
+// biases them to the frame edges (fx ~0.08–0.12 left, ~0.87–0.93 right), so in a
+// wide frame they land at/beyond the mobile-safe edges and the center stays clean.
+const FBCOVER = { W: 1640, H: 624, safeX0: 180, safeX1: 1460, pfW: 336, pfH: 336 } as const;
+
+/** Debug guide overlay (only when `safezone` is set): the mobile-safe center band
+ *  + the bottom-left profile-pic box, so nothing critical is cropped/covered. */
+const SafeZoneOverlay: React.FC = () => (
+  <AbsoluteFill style={{ zIndex: 10, pointerEvents: "none" }}>
+    <div style={{ position: "absolute", left: FBCOVER.safeX0, top: 0, width: FBCOVER.safeX1 - FBCOVER.safeX0, height: FBCOVER.H, boxSizing: "border-box", border: "4px dashed #00e5ff" }} />
+    <div style={{ position: "absolute", left: FBCOVER.safeX0 + 10, top: 10, background: "#00e5ff", color: "#000", font: "bold 22px sans-serif", padding: "3px 10px" }}>MOBILE-SAFE · center 640×312</div>
+    <div style={{ position: "absolute", left: 0, top: FBCOVER.H - FBCOVER.pfH, width: FBCOVER.pfW, height: FBCOVER.pfH, boxSizing: "border-box", border: "4px solid #ff1744", background: "rgba(255,23,68,0.16)" }} />
+    <div style={{ position: "absolute", left: 10, top: FBCOVER.H - 34, background: "#ff1744", color: "#fff", font: "bold 20px sans-serif", padding: "3px 10px" }}>PROFILE PIC</div>
+  </AbsoluteFill>
+);
+
+export const ThumbCover: React.FC<{ bg?: string; safezone?: boolean }> = ({ bg = COLORS.yellow, safezone = false }) => {
+  const s = schemeFor(bg);
+  return (
+    <ThumbStage bg={bg} shapes={s.shapes}>
+      {/* Title stack, left-of-center: left edge stays right of the profile box
+          (x > pfW=336) AND inside the mobile-safe band, so it is never cropped or
+          covered by the profile picture. */}
+      <BrandTitle cx={706} cy={320} size={106} orSize={44} rowGap={12} first={s.first} second={s.second} pill={s.pill} />
+      {/* Brain to the right, tilted like the intro/outro, inside the safe band. */}
+      <Brain w={352} rot={-8} left={1214} top={306} />
+      {safezone && <SafeZoneOverlay />}
+    </ThumbStage>
+  );
+};

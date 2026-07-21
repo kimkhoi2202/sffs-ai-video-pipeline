@@ -5,7 +5,7 @@ import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { HeaderPills } from "./HeaderPills";
 import { Countdown } from "./Countdown";
-import { SafeArea } from "./SafeArea";
+import { SafeArea, TT_BAND_TOP, TT_BAND_BOTTOM } from "./SafeArea";
 import type { Question } from "../data/types";
 
 /**
@@ -16,6 +16,14 @@ import type { Question } from "../data/types";
  * header and the bar via flex-grow spacers. Re-flows for portrait: narrower
  * margins, a taller header zone (the two header pills stack), and the options
  * stack into a single column.
+ *
+ * TikTok (portrait) TRUE-CENTERS the block instead: the flex band is set to the
+ * design-space safe band (TT_BAND_TOP..TT_BAND_BOTTOM, which the SafeArea TikTok
+ * transform maps onto the on-screen safe band 200..1440) and the spacers are 1:1,
+ * so the block's midpoint lands on the safe band's centre. Centring is shadow-
+ * aware: a marginBottom equal to the last option's hard-shadow offset is reserved
+ * so the block's OPTICAL box (shadow included) is what gets centred. IG/YT keep
+ * the 2:3 up-bias exactly.
  */
 export const HEADER_ZONE = 168; // landscape reserved top region (header + countdown + shadow)
 export const BAR_ZONE = 124; // landscape reserved bottom region (progress bar)
@@ -23,6 +31,7 @@ export const CONTENT_GAP = 44; // prompt/title -> content (tiles/shapes)
 export const OPTIONS_GAP = 40; // prompt/content -> options (G1, small; block biased up)
 const SPACER_TOP = 2;
 const SPACER_BOTTOM = 3;
+const OPT_SHADOW = 12; // option/prompt hard-shadow offset (OptionCards/Card hardShadow(12))
 
 /** The flat white prompt/question box. Natural height — grows with its text. */
 export const PromptTitle: React.FC<{ fontSize: number; radius?: number; children: ReactNode }> = ({
@@ -67,10 +76,18 @@ export const QuestionFrame: React.FC<{
   pos?: number;
   total?: number;
 }> = ({ q, elapsed, prompt, content, options, pos, total }) => {
-  const { portrait, M } = useFmt();
+  const { portrait, M, platform } = useFmt();
   const c = slotColors(q.idx);
-  const headerZone = portrait ? 250 : HEADER_ZONE;
-  const barZone = portrait ? 150 : BAR_ZONE;
+  const tiktok = portrait && platform === "tiktok";
+  // TikTok: flex band == the design-space safe band + 1:1 spacers -> the block is
+  // TRUE-centred in the on-screen safe band. IG/YT keep 250/150 zones + 2:3 bias.
+  const headerZone = tiktok ? TT_BAND_TOP : portrait ? 250 : HEADER_ZONE;
+  const barZone = tiktok ? 1920 - TT_BAND_BOTTOM : portrait ? 150 : BAR_ZONE;
+  const spacerTop = tiktok ? 1 : SPACER_TOP;
+  const spacerBottom = tiktok ? 1 : SPACER_BOTTOM;
+  // Shadow-aware centring: reserve the last option's hard-shadow so the block's
+  // OPTICAL box (shadow included) is what's centred, not just its border box.
+  const blockShadowReserve = tiktok ? OPT_SHADOW : 0;
   const contentGap = portrait ? 40 : CONTENT_GAP;
   const optionsGap = portrait ? 40 : OPTIONS_GAP;
   return (
@@ -93,15 +110,15 @@ export const QuestionFrame: React.FC<{
           paddingRight: M,
         }}
       >
-        <div style={{ flexGrow: SPACER_TOP }} />
-        <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ flexGrow: spacerTop }} />
+        <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: blockShadowReserve }}>
           {prompt}
           {content ? (
             <div style={{ marginTop: contentGap, width: "100%", display: "flex", justifyContent: "center" }}>{content}</div>
           ) : null}
           <div style={{ marginTop: optionsGap, width: "100%" }}>{options}</div>
         </div>
-        <div style={{ flexGrow: SPACER_BOTTOM }} />
+        <div style={{ flexGrow: spacerBottom }} />
       </div>
 
       <HeaderPills idx={pos ?? q.idx} total={total ?? 15} tier={q.tier} countFill={c.countFill} topicFill={c.topicFill} />

@@ -8,6 +8,9 @@ import { Pill } from "./Pill";
  * collides with the chip. Fill colors come from the rotating slot scheme, so
  * they're always distinct from each other, the background, and the clock. Both
  * keep black text/border + hard shadow.
+ *
+ * The "QUESTION X OF N" count pill is HIDDEN on single-question cuts (total <= 1),
+ * where "QUESTION 1 OF 1" is meaningless — only the topic pill shows.
  */
 export const HeaderPills: React.FC<{
   idx: number;
@@ -31,7 +34,7 @@ export const HeaderPills: React.FC<{
         alignItems: "flex-start",
       }}
     >
-      <Pill text={`QUESTION ${idx} OF ${total}`} fill={countFill} fontSize={fontSize} />
+      {total > 1 ? <Pill text={`QUESTION ${idx} OF ${total}`} fill={countFill} fontSize={fontSize} /> : null}
       <Pill text={tier} fill={topicFill} fontSize={fontSize} />
     </div>
   );

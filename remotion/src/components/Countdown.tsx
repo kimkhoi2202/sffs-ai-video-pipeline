@@ -2,6 +2,7 @@ import { BAR, CD, COLORS } from "../theme/brand";
 import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { Card } from "./Card";
+import { TT_BAR_Y } from "./SafeArea";
 
 /**
  * The top-right countdown box + the bottom depleting bar. Ports the per-frame
@@ -15,10 +16,12 @@ export const Countdown: React.FC<{
   total: number;
   accent: string;
 }> = ({ elapsed, total, accent }) => {
-  const { w, h, portrait, M } = useFmt();
-  // Chip (top-right) + depleting bar (bottom), format-aware.
+  const { w, h, portrait, M, platform } = useFmt();
+  // Chip (top-right) + depleting bar (bottom), format-aware. TikTok pulls the bar
+  // UP (TT_BAR_Y) so it clears the bottom caption band after the bigger transform.
   const chip = portrait ? { w: 118, h: 104, x0: w - M - 118, y0: 48 } : { w: CD.w, h: CD.h, x0: CD.x0, y0: CD.y0 };
-  const bar = portrait ? { x: M, y: h - 118, w: w - 2 * M, h: 42, pad: 8 } : { x: BAR.x, y: BAR.y, w: BAR.w, h: BAR.h, pad: BAR.pad };
+  const barY = platform === "tiktok" ? TT_BAR_Y : h - 118;
+  const bar = portrait ? { x: M, y: barY, w: w - 2 * M, h: 42, pad: 8 } : { x: BAR.x, y: BAR.y, w: BAR.w, h: BAR.h, pad: BAR.pad };
 
   const num = Math.max(0, Math.ceil(total - elapsed));
   const frac = Math.max(0, Math.min(1, (total - elapsed) / total));

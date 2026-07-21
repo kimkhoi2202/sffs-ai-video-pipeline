@@ -1,7 +1,7 @@
 import { Composition, registerRoot } from "remotion";
 import "../theme/fonts"; // side-effect: load Anton + DM Sans (delayRender-gated)
 import { IntroBrand } from "./IntroBrand";
-import { ThumbV, ThumbSq, ThumbWide } from "./Thumbnails";
+import { ThumbV, ThumbSq, ThumbWide, ThumbCover } from "./Thumbnails";
 import { ReplyBrand, REPLY_TOTAL } from "./ReplyBrand";
 import { FPS, TOTAL } from "./timing";
 
@@ -28,6 +28,7 @@ const IntroRoot: React.FC = () => {
       <Composition id="ThumbV" component={ThumbV} durationInFrames={90} {...portrait} />
       <Composition id="ThumbSq" component={ThumbSq} durationInFrames={90} fps={FPS} width={1080} height={1080} />
       <Composition id="ThumbWide" component={ThumbWide} durationInFrames={90} fps={FPS} width={1920} height={1080} />
+      <Composition id="ThumbCover" component={ThumbCover} durationInFrames={90} fps={FPS} width={1640} height={624} />
     </>
   );
 };
