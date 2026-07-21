@@ -11,20 +11,19 @@ import {
   useVideoConfig,
 } from "remotion";
 import { COLORS, hardDropShadow, hardShadow } from "../theme/brand";
-import { ANTON, DM_SANS } from "../theme/fonts";
 import { Stage, titleStyle, BrandPill, PopIn } from "./bits";
 
 /**
  * SELF-CONTAINED comment-reply short (IG/TikTok "reply to comment"), 9:16
- * 1080x1920, ~25s. Reuses the intro brand kit (Stage + HeroShapes, titleStyle,
- * BrandPill, PopIn) read-only, plus NEW comment-card + rubber-stamp components.
- * Its OWN composition (entry.tsx); never touches the intro or the shared
- * main-pipeline plate components.
+ * 1080x1920, ~20s. Reuses the intro brand kit (Stage + HeroShapes, titleStyle,
+ * BrandPill, PopIn) read-only, plus a rubber-stamp component. Its OWN composition
+ * (entry.tsx); never touches the intro or the shared main-pipeline plate components.
  *
- * Beats: (1) the real comment pops in, (2) YAYYY - our first comment! (confetti),
- * (3) reward gag - a CERTIFIED SMART FELLA rubber stamp THUNKS onto @mai_matz8,
- * (4) tease "just the start / new challenge every day", (5) Follow CTA. Locked IG
- * safe area applied; brand style; no em dashes.
+ * Opens straight on the celebration - TikTok's native "reply to comment" feature
+ * already pins the original comment onto the video, so there is no on-screen
+ * comment card. Beats: (1) YAYYY - our first comment! (confetti), (2) reward gag -
+ * a CERTIFIED SMART FELLA rubber stamp THUNKS onto @mai_matz8, (3) tease "just the
+ * start / new challenge every day", (4) Follow CTA. Locked IG safe area; no em dashes.
  */
 const LOGO = "images/sffs-logo.png";
 const FPS = 30;
@@ -32,7 +31,6 @@ const FPS = 30;
 // ---- Timing --------------------------------------------------------------
 const LEAD = 4;
 const BEATS = [
-  { id: "reply-comment", vo: 1.93, tail: 6 },
   { id: "reply-yay", vo: 3.44, tail: 8 },
   { id: "reply-stamp", vo: 5.93, tail: 12 },
   { id: "reply-tease", vo: 5.01, tail: 7 },
@@ -45,7 +43,7 @@ export const REPLY_TOTAL = BEATS.reduce((sum, b) => sum + beatFrames(b), 0);
  *  the VO hitting "SMART FELLA" (~1.4s before that 6.64s line ends). Its global
  *  frame is exported so the audio master can place the thunk SFX on it. */
 const STAMP_IMPACT = 150;
-export const STAMP_IMPACT_GLOBAL = beatFrames(BEATS[0]) + beatFrames(BEATS[1]) + STAMP_IMPACT; // 383
+export const STAMP_IMPACT_GLOBAL = beatFrames(BEATS[0]) + STAMP_IMPACT; // yay + stamp-local
 
 // ---- LOCKED IG safe area (same as the intro) -----------------------------
 const SAFE = { top: 220, bottom: 350 };
@@ -63,19 +61,6 @@ const BeatVO: React.FC<{ id: string }> = ({ id }) => (
   <Sequence from={LEAD} name={`vo-${id}`}>
     <Audio src={staticFile(`sffs-reply/${id}.mp3`)} volume={VO_GAIN} />
   </Sequence>
-);
-
-// ---- Comment sticker (the real comment, typo cleaned) --------------------
-const CommentCard: React.FC = () => (
-  <div style={{ width: 880, background: COLORS.paper, border: `6px solid ${COLORS.ink}`, borderRadius: 40, boxShadow: hardShadow(14), padding: "52px 54px", display: "flex", gap: 36, alignItems: "center" }}>
-    <div style={{ width: 132, height: 132, flexShrink: 0, borderRadius: 9999, background: "#e6398b", border: `5px solid ${COLORS.ink}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <span style={{ fontFamily: ANTON, fontSize: 74, color: COLORS.paper, lineHeight: 1 }}>M</span>
-    </div>
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <span style={{ fontFamily: DM_SANS, fontWeight: 700, fontSize: 40, color: "#5a5a5a" }}>mai_matz8</span>
-      <span style={{ fontFamily: DM_SANS, fontWeight: 600, fontSize: 54, color: COLORS.ink, lineHeight: 1.15 }}>thid is the only post</span>
-    </div>
-  </div>
 );
 
 // ---- Confetti burst (YAY beat; decorative, roams full frame) --------------
@@ -130,19 +115,7 @@ const StampBadge: React.FC = () => (
   </div>
 );
 
-// ---- 1) COMMENT (card only; the "YOU SAID" label is intentionally gone) ---
-const CommentBeat: React.FC = () => (
-  <Stage bg={COLORS.yellow}>
-    <BeatVO id="reply-comment" />
-    <SafeArea>
-      <PopIn delay={4} cx={540} cy={860} from={0.7} rise={30}>
-        <CommentCard />
-      </PopIn>
-    </SafeArea>
-  </Stage>
-);
-
-// ---- 2) YAY - our first comment! (confetti) ------------------------------
+// ---- 1) YAY - our first comment! (confetti; opens the short) -------------
 const YayBeat: React.FC = () => (
   <Stage bg={COLORS.coral}>
     <BeatVO id="reply-yay" />
@@ -158,7 +131,7 @@ const YayBeat: React.FC = () => (
   </Stage>
 );
 
-// ---- 3) CERTIFIED SMART FELLA stamp THUNK --------------------------------
+// ---- 2) CERTIFIED SMART FELLA stamp THUNK --------------------------------
 const StampBeat: React.FC = () => {
   const frame = useCurrentFrame();
   const clampBoth = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -194,7 +167,7 @@ const StampBeat: React.FC = () => {
   );
 };
 
-// ---- 4) TEASE - just the start / new challenge every day -----------------
+// ---- 3) TEASE - just the start / new challenge every day -----------------
 const TeaseBeat: React.FC = () => (
   <Stage bg={COLORS.yellow}>
     <BeatVO id="reply-tease" />
@@ -212,7 +185,7 @@ const TeaseBeat: React.FC = () => (
   </Stage>
 );
 
-// ---- 5) CTA --------------------------------------------------------------
+// ---- 4) CTA --------------------------------------------------------------
 const CtaBeat: React.FC = () => (
   <Stage bg={COLORS.green}>
     <BeatVO id="reply-cta" />
@@ -272,19 +245,16 @@ export const ReplyBrand: React.FC = () => (
   <AbsoluteFill style={{ backgroundColor: COLORS.yellow }}>
     <Audio src={staticFile("audio/music/bonus-round-bounce.mp3")} volume={musicVolume} />
     <Series>
-      <Series.Sequence durationInFrames={beatFrames(BEATS[0])} name="comment">
-        <CommentBeat />
-      </Series.Sequence>
-      <Series.Sequence durationInFrames={beatFrames(BEATS[1])} name="yay">
+      <Series.Sequence durationInFrames={beatFrames(BEATS[0])} name="yay">
         <YayBeat />
       </Series.Sequence>
-      <Series.Sequence durationInFrames={beatFrames(BEATS[2])} name="stamp">
+      <Series.Sequence durationInFrames={beatFrames(BEATS[1])} name="stamp">
         <StampBeat />
       </Series.Sequence>
-      <Series.Sequence durationInFrames={beatFrames(BEATS[3])} name="tease">
+      <Series.Sequence durationInFrames={beatFrames(BEATS[2])} name="tease">
         <TeaseBeat />
       </Series.Sequence>
-      <Series.Sequence durationInFrames={beatFrames(BEATS[4])} name="cta">
+      <Series.Sequence durationInFrames={beatFrames(BEATS[3])} name="cta">
         <CtaBeat />
       </Series.Sequence>
     </Series>

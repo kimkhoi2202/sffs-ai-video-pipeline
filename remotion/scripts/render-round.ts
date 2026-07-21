@@ -50,7 +50,7 @@ const META_TEXT: Record<string, string> = {
   outro: "So, how did you do? Comment your score below, and follow or subscribe for more!",
 };
 
-type Args = { rounds: string[]; cuts?: Set<string>; voiceId: string; skipNarration: boolean; skipExistingRender: boolean; withIntro: boolean };
+type Args = { rounds: string[]; cuts?: Set<string>; voiceId: string; skipNarration: boolean; skipExistingRender: boolean };
 function parseArgs(): Args {
   const a = process.argv.slice(2);
   const rounds: string[] = [];
@@ -58,7 +58,6 @@ function parseArgs(): Args {
   let voiceId = DEFAULT_VOICE;
   let skipNarration = false;
   let skipExistingRender = false;
-  let withIntro = false;
   for (let i = 0; i < a.length; i++) {
     const t = a[i];
     if (t === "--cuts") cuts = new Set(a[++i].split(","));
@@ -67,10 +66,9 @@ function parseArgs(): Args {
     else if (t.startsWith("--voice-id=")) voiceId = t.slice(11);
     else if (t === "--skip-narration") skipNarration = true;
     else if (t === "--skip-existing-render") skipExistingRender = true;
-    else if (t === "--with-intro") withIntro = true;
     else if (!t.startsWith("--")) rounds.push(t.replace(/\.json$/, ""));
   }
-  return { rounds, cuts, voiceId, skipNarration, skipExistingRender, withIntro };
+  return { rounds, cuts, voiceId, skipNarration, skipExistingRender };
 }
 
 // ---- round JSON -> runtime Question[] (fills legacy/unused fields to satisfy
@@ -165,7 +163,7 @@ function ffprobe(file: string, args: string[]): string {
 }
 
 async function main() {
-  const { rounds: roundArgs, cuts: cutFilter, voiceId, skipNarration, skipExistingRender, withIntro } = parseArgs();
+  const { rounds: roundArgs, cuts: cutFilter, voiceId, skipNarration, skipExistingRender } = parseArgs();
   const roundFiles = roundArgs.length
     ? roundArgs
     : (await import("node:fs")).readdirSync(ROUNDS).filter((f) => /^round-\d{3}\.json$/.test(f)).map((f) => f.replace(/\.json$/, "")).sort();
@@ -202,12 +200,12 @@ async function main() {
     const cutEntries: any[] = [];
     for (const cut of cutsToRun) {
       const comp = cut.format === "16:9" ? "FullVideo" : "Short";
-      const T: TimelineData = getTimeline(cut.platform as Platform, cut.ids, cut.sfx as SfxSet | undefined, questions as any, durs, qrBase, withIntro);
+      const T: TimelineData = getTimeline(cut.platform as Platform, cut.ids, cut.sfx as SfxSet | undefined, questions as any, durs, qrBase);
       const expectSec = T.total / FPS;
       const outDir = join(OUT_ROOT, slug, cut.dir);
       mkdirSync(outDir, { recursive: true });
       const outMp4 = join(outDir, cut.file);
-      const props = { slug: cut.slug, questions, durs, qrBase, withIntro };
+      const props = { slug: cut.slug, questions, durs, qrBase };
       const propsFile = join(audioDir, `_props-${cut.slug}.json`);
       writeFileSync(propsFile, JSON.stringify(props));
 

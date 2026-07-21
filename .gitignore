@@ -11,9 +11,17 @@
 # Node
 **/node_modules/
 
-# Remotion render artifacts (frame dumps / caches — regenerable)
+# Remotion render artifacts (frame dumps / caches / webpack bundle — regenerable)
 remotion/out/
 remotion/.remotion/
+remotion/build/
+
+# Downloaded build tools — NOT committed (heavy + re-downloadable). The mascot
+# lip-sync uses the Rhubarb Lip Sync release (binary + ~tens-of-MB speech models)
+# unzipped into tools/. remotion/scripts/lipsync-core.ts (findRhubarb) locates it
+# via $RHUBARB, a tools/rhubarb symlink, or a tools/Rhubarb-Lip-Sync-* dir; grab
+# it from https://github.com/DanielSWolf/rhubarb-lip-sync/releases (see README).
+tools/
 
 # Python
 __pycache__/
@@ -26,6 +34,12 @@ __pycache__/
 # questions.json / info.md / captions.srt|vtt / the manifest.json ARE tracked.
 renders.nosync/*.mp4
 renders.nosync/**/*.mp4
+# Rendered stills / thumbnails + other heavy media (regenerable) — like the mp4s,
+# keep the media OUT of git but still track the sidecar metadata next to it.
+renders.nosync/**/*.png
+renders.nosync/**/*.jpg
+renders.nosync/**/*.jpeg
+renders.nosync/**/*.wav
 
 # Local shape/preview review artifacts (regenerable from the NonverbalPreview composition)
 renders.nosync/previews/

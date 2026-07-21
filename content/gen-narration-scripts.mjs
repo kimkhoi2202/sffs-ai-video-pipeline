@@ -134,6 +134,23 @@ function rBeat(q) {
   return `[excited] ${lead} ${q.ansLetter}, ${answerSpeak(q)}! ${spellNums(q.explanation)}`;
 }
 
+/**
+ * The combined qBeat splits cleanly into a STEM beat (opener + question, no
+ * options) and an OPTIONS beat (the A..D list + "Five seconds!"). The A/B
+ * DON'T-NARRATE test voices only one of the two (or neither) while the question
+ * still displays; concatenating the two ≈ the full qBeat. Beat ids are qs<id> /
+ * qo<id> to sit alongside the full q<id> in the same per-round narration dir.
+ */
+export function qStemBeat(q) {
+  const tp = TYPE_PHRASE[q.tier.toUpperCase()] ?? "";
+  const e = ENERGIZERS[(q.id - 1) % ENERGIZERS.length];
+  const opener = tp ? `${e}, ${tp}!` : `${e}!`;
+  return `[excited] ${opener} ${questionStem(q)}`.replace(/\s+/g, " ").trim();
+}
+export function qOptionsBeat(q) {
+  return `[excited] ${optionsListOr(q)} Five seconds!`.replace(/\s+/g, " ").trim();
+}
+
 /** { q1..q15, r1..r15 } spoken scripts for a round. */
 export function roundScripts(round) {
   const out = {};

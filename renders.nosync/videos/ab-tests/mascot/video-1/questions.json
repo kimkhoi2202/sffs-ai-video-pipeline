@@ -1,0 +1,59 @@
+{
+  "test": "mascot",
+  "variant": "video-1",
+  "round": "round-023",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "treatment": {
+    "narrator": "bottom-right lip-synced talking brain",
+    "readVO": "full",
+    "dropReveal": false,
+    "dropScore": false,
+    "endCard": "default",
+    "coldOpen": true
+  },
+  "music": "gameshow-fanfare.mp3",
+  "sfx": "short-1",
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "A",
+        "label": "SNOW"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 11,
+      "kind": "dot",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "POSITION",
+      "prompt": "WHERE DOES THE DOT MOVE NEXT?",
+      "answer": {
+        "letter": "D",
+        "label": "BOTTOM"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "A",
+        "label": "45"
+      }
+    }
+  ]
+}

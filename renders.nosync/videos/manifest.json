@@ -407,5 +407,51 @@
       "cutCount": 3,
       "manifest": "round-048/manifest.json"
     }
-  ]
+  ],
+  "extras": [
+    {
+      "kind": "intro",
+      "path": "videos/intro",
+      "file": "sffs-brand-intro-v1.mp4",
+      "format": "9:16",
+      "durationSec": 28,
+      "sidecars": ["script.txt"],
+      "source": "remotion IntroBrand (src/introcut/entry.tsx) — `npm run render:intro`",
+      "note": "Brand intro, pinned first post. Consolidated from ~/Desktop/sffs-intro on 2026-07-20."
+    },
+    {
+      "kind": "reply",
+      "path": "videos/reply",
+      "file": "reply-1.mp4",
+      "format": "9:16",
+      "durationSec": 20,
+      "source": "remotion ReplyBrand (src/introcut/entry.tsx) — `npm run render:reply`",
+      "note": "Current reply short. reply-1-prev.mp4 = superseded earlier take (kept, not deleted). Consolidated from ~/Desktop/sffs-reply-1 (+ ~/Desktop/sffs-reply) on 2026-07-20."
+    },
+    {
+      "kind": "thumbnails",
+      "path": "thumbnails",
+      "files": "thumb-{16x9,1x1,9x16}-{blue,coral,cream,green,yellow}.png (15 A/B pack)",
+      "extra": "thumbnails/earlier/ = thumb-{16x9,1x1,9x16}.png (3 earlier single-variant brand thumbs)",
+      "source": "remotion ThumbWide/ThumbSq/ThumbV x 5 brand bg (src/introcut/entry.tsx) — `npm run render:thumbs`",
+      "note": "Consolidated from ~/Desktop/sffs-thumbnails (+ 3 from ~/Desktop/sffs-intro) on 2026-07-20."
+    },
+    {
+      "kind": "ready-to-post",
+      "path": "videos/ready-to-post",
+      "packages": [
+        "01-NOINTRO-oddone-figure-series",
+        "02-NOINTRO-analogy-series-figures",
+        "03-WITHINTRO-analogy-position-numanalogy",
+        "04-WITHINTRO-series-oddone-puzzle",
+        "05-NOINTRO-series-analogy-sentence"
+      ],
+      "layout": "each package = video.mp4 + captions.srt + captions.vtt + caption.txt",
+      "note": "Curated posting selects. Consolidated from ~/Desktop/sffs-ready-to-post on 2026-07-20."
+    }
+  ],
+  "workingFiles": {
+    "path": "../analysis/ig-safe-area (scripts, git-tracked) + working/ig-safe-area (PNG media, .nosync/gitignored)",
+    "note": "IG safe-area analysis: analyze_*.py + draw_*.py + measurements.json live in video/analysis/ig-safe-area/; generated proposal/crop PNGs render to renders.nosync/working/ig-safe-area/. script.txt (brand-intro narration) lives with the intro at videos/intro/script.txt."
+  }
 }

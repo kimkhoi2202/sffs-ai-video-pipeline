@@ -154,11 +154,10 @@ const MissionSection: React.FC = () => (
 );
 
 // ---- 5) CTA --------------------------------------------------------------
-/** Full down-arrow (shaft + head): replicates the website hero scroll cue
- *  (lucide ArrowDown, strokeWidth 2.5) so the intro's scroll affordance matches
- *  the site exactly instead of the old shaft-less chevron. */
+/** Clean black/ink STROKE down-arrow (shaft + arrowhead, lucide ArrowDown shape),
+ *  centered in the scroll-cue circle. */
 const DownArrow: React.FC<{ size: number }> = ({ size }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={COLORS.ink} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }} aria-hidden>
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={COLORS.ink} strokeWidth={2.75} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }} aria-hidden>
     <path d="M12 5v14" />
     <path d="m19 12-7 7-7-7" />
   </svg>
@@ -210,7 +209,7 @@ const CtaSection: React.FC = () => {
               SCROLL FOR MORE
             </div>
             <div style={{ width: 96, height: 96, borderRadius: 9999, background: COLORS.paper, border: `6px solid ${COLORS.ink}`, boxShadow: hardShadow(8), display: "flex", alignItems: "center", justifyContent: "center", transform: `translateY(${bob}px)` }}>
-              <DownArrow size={44} />
+              <DownArrow size={46} />
             </div>
           </div>
         </PopIn>

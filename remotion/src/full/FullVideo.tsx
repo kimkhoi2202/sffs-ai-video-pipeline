@@ -13,6 +13,10 @@ import {
   type Segment,
   type SfxSet,
   type TimelineData,
+  type Variant,
+  type ReadVO,
+  type EndCard,
+  type DropReveal,
   fanfareBed,
   paradeBed,
   musicLevel,
@@ -30,7 +34,7 @@ const CountdownPlate: React.FC<{ q: Question; pos: number; total: number }> = ({
   return <QuestionPlate q={q} elapsed={frame / fps} pos={pos} total={total} />;
 };
 
-const renderSegment = (seg: Segment, platform: Platform, total: number): React.ReactNode => {
+const renderSegment = (seg: Segment, platform: Platform, total: number, endCard: EndCard): React.ReactNode => {
   switch (seg.type) {
     case "intro":
       return <Intro />;
@@ -43,7 +47,7 @@ const renderSegment = (seg: Segment, platform: Platform, total: number): React.R
     case "score":
       return <Score total={total} />;
     case "outro":
-      return <Outro platform={platform} />;
+      return <Outro platform={platform} variant={endCard} />;
   }
 };
 
@@ -78,17 +82,29 @@ export const FullVideo: React.FC<{
   questions?: Question[];
   durs?: Record<string, number>;
   qrBase?: string;
-  /** Shorts default to a cold open; set true to include the short's brief intro. */
-  withIntro?: boolean;
-}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, withIntro }) => {
+  /** A/B-test variant toggles (prop-driven; omitted = the standard cut). See
+   *  Variant in timeline.ts. Shorts are always cold-open (no intro option). */
+  readVO?: ReadVO;
+  dropReveal?: DropReveal;
+  dropScore?: boolean;
+  endCard?: EndCard;
+  metaBase?: string;
+  /** Composition length is set by Root's calculateMetadata from this (when the
+   *  A/B render script supplies it); FullVideo itself ignores it. */
+  totalFrames?: number;
+}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase }) => {
   const cut = slug ? bySlug(slug) : undefined;
   const platform: Platform = cut?.platform ?? platformProp ?? "youtube";
   const ids = cut?.ids ?? questionIds;
   const music = cut?.music ?? musicProp;
   const sfx = cut?.sfx ?? sfxProp;
+  const variant: Variant = useMemo(
+    () => ({ readVO, dropReveal, dropScore, endCard, metaBase }),
+    [readVO, dropReveal, dropScore, endCard, metaBase],
+  );
   const T: TimelineData = useMemo(
-    () => getTimeline(platform, ids, sfx, questions, durs, qrBase, withIntro),
-    [platform, ids, sfx, questions, durs, qrBase, withIntro],
+    () => getTimeline(platform, ids, sfx, questions, durs, qrBase, variant),
+    [platform, ids, sfx, questions, durs, qrBase, variant],
   );
   const total = T.questions.length;
   const winStart = winStartFrame(T);
@@ -96,7 +112,7 @@ export const FullVideo: React.FC<{
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
       {T.segments.map((seg, i) => (
         <Sequence key={i} from={seg.start} durationInFrames={seg.dur} name={segName(seg)}>
-          {renderSegment(seg, platform, total)}
+          {renderSegment(seg, platform, total, endCard ?? "default")}
         </Sequence>
       ))}
 

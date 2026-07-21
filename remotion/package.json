@@ -7,6 +7,10 @@
     "studio": "remotion studio",
     "render": "remotion render",
     "still": "remotion still",
+    "render:brand": "bash scripts/render-brand.sh all",
+    "render:intro": "bash scripts/render-brand.sh intro",
+    "render:reply": "bash scripts/render-brand.sh reply",
+    "render:thumbs": "bash scripts/render-brand.sh thumbs",
     "upgrade": "remotion upgrade"
   },
   "dependencies": {

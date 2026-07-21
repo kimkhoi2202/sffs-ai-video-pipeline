@@ -1,0 +1,760 @@
+{
+  "generated": "2026-07-21",
+  "voiceId": "lZcmpVLaoXF4v0uz4l6Q",
+  "format": "9:16 (1080x1920)",
+  "global": "cold open, 5s countdown/question, distinct per-video music + SFX, cloned ElevenLabs voice, ffprobe-verified",
+  "notes": [
+    "Shorts are now PERMANENTLY cold-open: the `withIntro` flag + the short intro-prepend branch were retired, so a 9:16 short can never render with a branded intro again. The YouTube long-form title intro and the standalone brand-intro promo (IntroBrand / sffs-brand-intro-v1) are unchanged."
+  ],
+  "speed": {
+    "atempo": 1.1161,
+    "baseline": "1.12x",
+    "target": "~1.25x",
+    "expectedClipRatio": 0.896
+  },
+  "tests": [
+    {
+      "test": "no-answer",
+      "description": "Ask 3 questions with a 5s countdown each, DROP the reveal + score, end on a comment-for-the-answer CTA. Baseline = existing full shorts.",
+      "videos": [
+        {
+          "variant": "video-1",
+          "path": "ab-tests/no-answer/video-1/no-answer-video-1.mp4",
+          "thumbnail": "no-answer-video-1.thumb.png",
+          "round": "round-008",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "B · WOOD"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "FIGURE SERIES",
+              "answer": "C · OCTAGON"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "D · 37"
+            }
+          ],
+          "durationSec": 68.93,
+          "frames": 2066,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": true,
+            "dropScore": true,
+            "endCard": "noanswer",
+            "speed": false
+          },
+          "music": "gameshow-fanfare.mp3",
+          "sfx": "short-1",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "video-2",
+          "path": "ab-tests/no-answer/video-2/no-answer-video-2.mp4",
+          "thumbnail": "no-answer-video-2.thumb.png",
+          "round": "round-009",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "B · LION"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "FIGURE SERIES",
+              "answer": "A · OCTAGON"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "C · 24"
+            }
+          ],
+          "durationSec": 67.69,
+          "frames": 2029,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": true,
+            "dropScore": true,
+            "endCard": "noanswer",
+            "speed": false
+          },
+          "music": "prize-wheel-parade.mp3",
+          "sfx": "short-2",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        }
+      ]
+    },
+    {
+      "test": "dont-narrate",
+      "description": "Standard 3Q + reveal + score, selectively drop question/options VO (question still displays). Baseline = existing full-narration shorts.",
+      "videos": [
+        {
+          "variant": "no-question-vo/video-1",
+          "path": "ab-tests/dont-narrate/no-question-vo/video-1/dont-narrate-no-question-vo-video-1.mp4",
+          "thumbnail": "dont-narrate-no-question-vo-video-1.thumb.png",
+          "round": "round-010",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "B · MILK"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "A · BOTTOM-RIGHT"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "B · 38"
+            }
+          ],
+          "durationSec": 82.05,
+          "frames": 2460,
+          "treatment": {
+            "readVO": "options",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": false
+          },
+          "music": "winner-spin.mp3",
+          "sfx": "short-3",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "no-question-vo/video-2",
+          "path": "ab-tests/dont-narrate/no-question-vo/video-2/dont-narrate-no-question-vo-video-2.mp4",
+          "thumbnail": "dont-narrate-no-question-vo-video-2.thumb.png",
+          "round": "round-011",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "C · RIVER"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "FIGURE SERIES",
+              "answer": "B · OCTAGON"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "B · 48"
+            }
+          ],
+          "durationSec": 83.35,
+          "frames": 2499,
+          "treatment": {
+            "readVO": "options",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": false
+          },
+          "music": "bonus-round-bounce.mp3",
+          "sfx": "short-4",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "no-options-vo/video-1",
+          "path": "ab-tests/dont-narrate/no-options-vo/video-1/dont-narrate-no-options-vo-video-1.mp4",
+          "thumbnail": "dont-narrate-no-options-vo-video-1.thumb.png",
+          "round": "round-012",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "A · BOAT"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "A · BOTTOM-LEFT"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "B · 18"
+            }
+          ],
+          "durationSec": 77.08,
+          "frames": 2311,
+          "treatment": {
+            "readVO": "stem",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": false
+          },
+          "music": "final-round-fanfare.mp3",
+          "sfx": "short-5",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "no-options-vo/video-2",
+          "path": "ab-tests/dont-narrate/no-options-vo/video-2/dont-narrate-no-options-vo-video-2.mp4",
+          "thumbnail": "dont-narrate-no-options-vo-video-2.thumb.png",
+          "round": "round-013",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "A · GLASS"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "FIGURE SERIES",
+              "answer": "D · TRIANGLE"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "B · 27"
+            }
+          ],
+          "durationSec": 76.18,
+          "frames": 2284,
+          "treatment": {
+            "readVO": "stem",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": false
+          },
+          "music": "fanfare.mp3",
+          "sfx": "short-1",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "no-narration/video-1",
+          "path": "ab-tests/dont-narrate/no-narration/video-1/dont-narrate-no-narration-video-1.mp4",
+          "thumbnail": "dont-narrate-no-narration-video-1.thumb.png",
+          "round": "round-014",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "C · BRICK"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "D · TOP-RIGHT"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "B · 26"
+            }
+          ],
+          "durationSec": 62.29,
+          "frames": 1867,
+          "treatment": {
+            "readVO": "none",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": false
+          },
+          "music": "parade.mp3",
+          "sfx": "short-2",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "no-narration/video-2",
+          "path": "ab-tests/dont-narrate/no-narration/video-2/dont-narrate-no-narration-video-2.mp4",
+          "thumbnail": "dont-narrate-no-narration-video-2.thumb.png",
+          "round": "round-015",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "C · SQUARE"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "FIGURE SERIES",
+              "answer": "A · SQUARE"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "B · 43"
+            }
+          ],
+          "durationSec": 62.19,
+          "frames": 1864,
+          "treatment": {
+            "readVO": "none",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": false
+          },
+          "music": "winner.mp3",
+          "sfx": "short-3",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        }
+      ]
+    },
+    {
+      "test": "speed",
+      "description": "Standard 3Q + reveal + score, VO sped to ~1.25x (1.12x baseline x1.116 atempo). Baseline = existing 1.12x shorts.",
+      "videos": [
+        {
+          "variant": "video-1",
+          "path": "ab-tests/speed/video-1/speed-video-1.mp4",
+          "thumbnail": "speed-video-1.thumb.png",
+          "round": "round-016",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "C · BANANA"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "D · TOP-LEFT"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "D · 29"
+            }
+          ],
+          "durationSec": 91.18,
+          "frames": 2734,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": true,
+            "atempo": 1.1161,
+            "targetRatio": 0.896
+          },
+          "music": "gameshow-fanfare.mp3",
+          "sfx": "short-4",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "video-2",
+          "path": "ab-tests/speed/video-2/speed-video-2.mp4",
+          "thumbnail": "speed-video-2.thumb.png",
+          "round": "round-017",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "B · PIANO"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "FIGURE SERIES",
+              "answer": "C · HEXAGON"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "C · 42"
+            }
+          ],
+          "durationSec": 92.95,
+          "frames": 2787,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": false,
+            "dropScore": false,
+            "endCard": "default",
+            "speed": true,
+            "atempo": 1.1161,
+            "targetRatio": 0.896
+          },
+          "music": "prize-wheel-parade.mp3",
+          "sfx": "short-5",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        }
+      ]
+    },
+    {
+      "test": "one-question",
+      "description": "Exactly 1 question + 5s + reveal, then a one-shot smart-fella/fart-smella verdict (no score screen).",
+      "videos": [
+        {
+          "variant": "video-1",
+          "path": "ab-tests/one-question/video-1/one-question-video-1.mp4",
+          "thumbnail": "one-question-video-1.thumb.png",
+          "round": "round-018",
+          "questionIds": [
+            1
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "A · ROSE"
+            }
+          ],
+          "durationSec": 32.32,
+          "frames": 968,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": false,
+            "dropScore": true,
+            "endCard": "verdict",
+            "speed": false
+          },
+          "music": "winner-spin.mp3",
+          "sfx": "short-1",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "video-2",
+          "path": "ab-tests/one-question/video-2/one-question-video-2.mp4",
+          "thumbnail": "one-question-video-2.thumb.png",
+          "round": "round-019",
+          "questionIds": [
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "C · 41"
+            }
+          ],
+          "durationSec": 37.65,
+          "frames": 1128,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": false,
+            "dropScore": true,
+            "endCard": "verdict",
+            "speed": false
+          },
+          "music": "bonus-round-bounce.mp3",
+          "sfx": "short-2",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        }
+      ]
+    },
+    {
+      "test": "cliffhanger",
+      "description": "3Q + 5s each; reveal Q1 and Q2 normally, but NO reveal for Q3 — end on the comment-for-the-answer CTA (no score screen).",
+      "videos": [
+        {
+          "variant": "video-1",
+          "path": "ab-tests/cliffhanger/video-1/cliffhanger-video-1.mp4",
+          "thumbnail": "cliffhanger-video-1.thumb.png",
+          "round": "round-021",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "A · MOTORCYCLE"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "A · TOP"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "C · 22"
+            }
+          ],
+          "durationSec": 87.74,
+          "frames": 2631,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": "last",
+            "dropScore": true,
+            "endCard": "noanswer",
+            "speed": false
+          },
+          "music": "final-round-fanfare.mp3",
+          "sfx": "short-3",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "video-2",
+          "path": "ab-tests/cliffhanger/video-2/cliffhanger-video-2.mp4",
+          "thumbnail": "cliffhanger-video-2.thumb.png",
+          "round": "round-022",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "A · RADISH"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "A · TOP-RIGHT"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "C · 39"
+            }
+          ],
+          "durationSec": 87.49,
+          "frames": 2623,
+          "treatment": {
+            "readVO": "full",
+            "dropReveal": "last",
+            "dropScore": true,
+            "endCard": "noanswer",
+            "speed": false
+          },
+          "music": "gameshow-fanfare.mp3",
+          "sfx": "short-5",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        }
+      ]
+    },
+    {
+      "test": "mascot",
+      "description": "Standard cold-open 3Q + reveal + score (5s countdowns, distinct music+SFX) WITH a bottom-right talking-brain narrator lip-synced to every VO clip across the whole video. Baseline = the existing full shorts (no narrator).",
+      "videos": [
+        {
+          "variant": "video-1",
+          "path": "ab-tests/mascot/video-1/mascot-video-1.mp4",
+          "thumbnail": "mascot-video-1.thumb.png",
+          "round": "round-023",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "A · SNOW"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "D · BOTTOM"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "A · 45"
+            }
+          ],
+          "durationSec": 100.52,
+          "frames": 3014,
+          "treatment": {
+            "narrator": "bottom-right lip-synced talking brain",
+            "coldOpen": true
+          },
+          "music": "gameshow-fanfare.mp3",
+          "sfx": "short-1",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        },
+        {
+          "variant": "video-2",
+          "path": "ab-tests/mascot/video-2/mascot-video-2.mp4",
+          "thumbnail": "mascot-video-2.thumb.png",
+          "round": "round-024",
+          "questionIds": [
+            1,
+            11,
+            7
+          ],
+          "questions": [
+            {
+              "pos": 1,
+              "id": 1,
+              "tier": "ODD ONE OUT",
+              "answer": "C · SLEET"
+            },
+            {
+              "pos": 2,
+              "id": 11,
+              "tier": "POSITION",
+              "answer": "B · BOTTOM"
+            },
+            {
+              "pos": 3,
+              "id": 7,
+              "tier": "NUMBER SERIES",
+              "answer": "B · 23"
+            }
+          ],
+          "durationSec": 101.01,
+          "frames": 3029,
+          "treatment": {
+            "narrator": "bottom-right lip-synced talking brain",
+            "coldOpen": true
+          },
+          "music": "prize-wheel-parade.mp3",
+          "sfx": "short-2",
+          "captions": {
+            "srt": "captions.srt",
+            "vtt": "captions.vtt"
+          }
+        }
+      ]
+    }
+  ],
+  "updated": "2026-07-21"
+}

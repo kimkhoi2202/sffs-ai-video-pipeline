@@ -58,6 +58,43 @@ const SFX_LEADIN = frames(0.25); // a transition whoosh starts this far before t
 const countdownFrames = (q: Question, durs: Record<string, number>): number =>
   Math.max(frames(q.countdown + 1), frames(q.countdown + durs.timesup + 0.3));
 
+/**
+ * A/B-test variant toggles (prop-driven; the committed masters/shorts omit them
+ * and behave exactly as before). Purely additive on top of the shared timeline:
+ *  - `readVO`  which question VO plays while the question is on screen — "full"
+ *              (the combined q clip, default), "options" only (drop the question
+ *              text VO), "stem" only (drop the options VO), or "none" (silent;
+ *              the question still DISPLAYS for a short read + its 5s countdown).
+ *              The split clips are qs<id>.mp3 (stem) / qo<id>.mp3 (options).
+ *  - `dropReveal`  answer-reveal control: `false` reveals every question (default),
+ *              `true` omits every reveal (NO-ANSWER), `"last"` reveals all but the
+ *              final question (CLIFFHANGER — end on the CTA before the last answer).
+ *              A dropped reveal omits its segment + r<id> VO + ding.
+ *  - `dropScore`   omit the score screen (segment + score VO).
+ *  - `endCard`     which end card + end VO: "default" (platform outro), "noanswer"
+ *                  (comment-for-the-answer CTA), or "verdict" (smart-fella payoff).
+ *  - `metaBase`    dir for the round-agnostic meta clips (timesup/score/outro/…).
+ *                  Defaults to the committed audio/narration/; the SPEED test
+ *                  points it at a per-video atempo'd copy so the meta VO is sped too.
+ */
+export type ReadVO = "full" | "options" | "stem" | "none";
+export type EndCard = "default" | "noanswer" | "verdict";
+/** Reveal control: false=reveal all, true=reveal none, "last"=reveal all but the last. */
+export type DropReveal = boolean | "last";
+export type Variant = {
+  readVO?: ReadVO;
+  dropReveal?: DropReveal;
+  dropScore?: boolean;
+  endCard?: EndCard;
+  metaBase?: string;
+};
+/** Silent-read hold (frames) for readVO="none": the question flashes on screen
+ *  before its 5s countdown so a viewer can register it with no VO to pace them. */
+const SILENT_READ = frames(1.5);
+/** End-card VO/duration key for a variant (default -> the platform outro clip). */
+const endCardKey = (endCard: EndCard, platform: Platform): string =>
+  endCard === "noanswer" ? "outro-noanswer" : endCard === "verdict" ? "verdict" : outroClipKey(platform);
+
 export type TimelineData = {
   platform: Platform;
   questions: Question[];
@@ -93,8 +130,9 @@ function build(
   questionsSrc: Question[] = QUESTIONS,
   durs: Record<string, number> = DURS as Record<string, number>,
   qrBase = "audio/narration/",
-  withIntro = false,
+  variant: Variant = {},
 ): TimelineData {
+  const { readVO = "full", dropReveal = false, dropScore = false, endCard = "default", metaBase = "audio/narration/" } = variant;
   const D = durs;
   const questions = resolve(ids, questionsSrc);
   const segments: Segment[] = [];
@@ -112,51 +150,72 @@ function build(
   const trail = isShort ? 0.4 : TRAIL;
   const leadFrames = frames(lead);
 
-  // Shorts default to a cold open (no intro) for the fast hook; withIntro=true
-  // re-enables the short's own brief branded intro (A/B test). YouTube always has it.
-  if (!isShort || withIntro) {
+  // Shorts are PERMANENTLY cold-open (no branded intro): the A/B test chose no-intro,
+  // so the withIntro option was retired and a short can never render with an intro.
+  // YouTube 16:9 long-form keeps its title intro; the standalone brand-intro promo
+  // (IntroBrand / sffs-brand-intro-v1) is a separate composition and is unaffected.
+  if (!isShort) {
     const introDur = frames(lead + D.intro + trail);
     segments.push({ type: "intro", start: cur, dur: introDur });
-    narration.push({ src: "audio/narration/intro.mp3", from: cur + leadFrames });
+    narration.push({ src: `${metaBase}intro.mp3`, from: cur + leadFrames });
     voWindows.push([cur + leadFrames, cur + leadFrames + frames(D.intro)]);
     cur += introDur;
   }
 
+  // Which question VO (if any) plays over the read segment, per the A/B `readVO`
+  // mode. "none" keeps a short SILENT_READ hold so the question still displays.
+  const readClip = (id: number): { src: string; dur: number } | null => {
+    if (readVO === "options") return { src: `${qrBase}qo${id}.mp3`, dur: D[`qo${id}`] };
+    if (readVO === "stem") return { src: `${qrBase}qs${id}.mp3`, dur: D[`qs${id}`] };
+    if (readVO === "none") return null;
+    return { src: `${qrBase}q${id}.mp3`, dur: D[`q${id}`] };
+  };
+
   questions.forEach((q, qi) => {
     const pos = qi + 1; // 1-based position within THIS cut ("QUESTION pos OF N")
-    const qDur = D[`q${q.idx}`];
-    const readDur = frames(lead + qDur + trail);
+    const rc = readClip(q.idx);
+    const readDur = rc ? frames(lead + rc.dur + trail) : SILENT_READ;
     segments.push({ type: "read", q, pos, start: cur, dur: readDur });
-    narration.push({ src: `${qrBase}q${q.idx}.mp3`, from: cur + leadFrames });
-    voWindows.push([cur + leadFrames, cur + leadFrames + frames(qDur)]);
+    if (rc) {
+      narration.push({ src: rc.src, from: cur + leadFrames });
+      voWindows.push([cur + leadFrames, cur + leadFrames + frames(rc.dur)]);
+    }
     cur += readDur;
 
     const cdDur = countdownFrames(q, D);
     segments.push({ type: "countdown", q, pos, start: cur, dur: cdDur });
     ticks.push({ src: "audio/sfx/tick.wav", from: cur, durationInFrames: frames(q.countdown) });
     swellWindows.push([cur, cur + frames(q.countdown)]); // swell across the tick, before "time's up"
-    narration.push({ src: "audio/narration/timesup.mp3", from: cur + frames(q.countdown) });
+    narration.push({ src: `${metaBase}timesup.mp3`, from: cur + frames(q.countdown) });
     voWindows.push([cur + frames(q.countdown), cur + frames(q.countdown) + frames(D.timesup)]);
     cur += cdDur;
 
-    const rDur = frames(lead + D[`r${q.idx}`] + trail);
-    segments.push({ type: "reveal", q, pos, start: cur, dur: rDur });
-    narration.push({ src: `${qrBase}r${q.idx}.mp3`, from: cur + leadFrames });
-    voWindows.push([cur + leadFrames, cur + leadFrames + frames(D[`r${q.idx}`])]);
-    cur += rDur;
+    // Per-question reveal: drop all (true), drop only the final one ("last",
+    // the cliffhanger), or keep every reveal (false/default).
+    const isLastQ = qi === questions.length - 1;
+    const revealThis = dropReveal === "last" ? !isLastQ : !dropReveal;
+    if (revealThis) {
+      const rDur = frames(lead + D[`r${q.idx}`] + trail);
+      segments.push({ type: "reveal", q, pos, start: cur, dur: rDur });
+      narration.push({ src: `${qrBase}r${q.idx}.mp3`, from: cur + leadFrames });
+      voWindows.push([cur + leadFrames, cur + leadFrames + frames(D[`r${q.idx}`])]);
+      cur += rDur;
+    }
   });
 
-  const scoreDur = frames(lead + D.score + trail);
-  segments.push({ type: "score", start: cur, dur: scoreDur });
-  narration.push({ src: "audio/narration/score.mp3", from: cur + leadFrames });
-  voWindows.push([cur + leadFrames, cur + leadFrames + frames(D.score)]);
-  cur += scoreDur;
+  if (!dropScore) {
+    const scoreDur = frames(lead + D.score + trail);
+    segments.push({ type: "score", start: cur, dur: scoreDur });
+    narration.push({ src: `${metaBase}score.mp3`, from: cur + leadFrames });
+    voWindows.push([cur + leadFrames, cur + leadFrames + frames(D.score)]);
+    cur += scoreDur;
+  }
 
-  const outroKey = outroClipKey(platform);
-  const outroDur = frames(lead + D[outroKey] + trail);
+  const endKey = endCardKey(endCard, platform);
+  const outroDur = frames(lead + D[endKey] + trail);
   segments.push({ type: "outro", start: cur, dur: outroDur });
-  narration.push({ src: `audio/narration/${outroKey}.mp3`, from: cur + leadFrames });
-  voWindows.push([cur + leadFrames, cur + leadFrames + frames(D[outroKey])]);
+  narration.push({ src: `${metaBase}${endKey}.mp3`, from: cur + leadFrames });
+  voWindows.push([cur + leadFrames, cur + leadFrames + frames(D[endKey])]);
   cur += outroDur;
 
   // --- SFX: transition whooshes + stings + a correct-answer ding per reveal ---
@@ -178,6 +237,7 @@ function build(
     if (prev === "intro" && t === "read") addSfx(wEnter, b - SFX_LEADIN, SFX_VOL.whoosh); // intro -> Q1
     else if (t === "reveal") addSfx(wReveal, b - SFX_LEADIN, SFX_VOL.whoosh); // question -> reveal
     else if (prev === "reveal" && t === "read") addSfx(wAdvance, b - SFX_LEADIN, SFX_VOL.whoosh); // reveal -> next question
+    else if (prev === "countdown" && t === "read") addSfx(wAdvance, b - SFX_LEADIN, SFX_VOL.whoosh); // no-reveal (NO-ANSWER) flow: countdown -> next question
     else if (t === "score") addSfx(stScore, b - SFX_LEADIN, SFX_VOL.sting); // last reveal -> score
     else if (t === "outro") addSfx(stOutro, b - SFX_LEADIN, SFX_VOL.sting); // score -> outro
   }
@@ -204,12 +264,14 @@ export const getTimeline = (
   questionsSrc?: Question[],
   durs?: Record<string, number>,
   qrBase?: string,
-  withIntro = false,
+  variant: Variant = {},
 ): TimelineData => {
-  const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}:${qrBase ?? "def"}:${withIntro ? "wi" : "ni"}`;
+  const drKey = variant.dropReveal === "last" ? "drL" : variant.dropReveal ? "dr" : "";
+  const vKey = `${variant.readVO ?? "full"}|${drKey}|${variant.dropScore ? "ds" : ""}|${variant.endCard ?? "default"}|${variant.metaBase ?? "def"}`;
+  const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}:${qrBase ?? "def"}:${vKey}`;
   let t = CACHE.get(key);
   if (!t) {
-    t = build(platform, ids, sfxSet, questionsSrc, durs, qrBase, withIntro);
+    t = build(platform, ids, sfxSet, questionsSrc, durs, qrBase, variant);
     CACHE.set(key, t);
   }
   return t;

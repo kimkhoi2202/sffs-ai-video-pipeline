@@ -1,0 +1,32 @@
+{
+  "test": "one-question",
+  "variant": "video-1",
+  "round": "round-018",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "treatment": {
+    "readVO": "full",
+    "dropReveal": false,
+    "dropScore": true,
+    "endCard": "verdict",
+    "speed": false
+  },
+  "music": "winner-spin.mp3",
+  "sfx": "short-1",
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "A",
+        "label": "ROSE"
+      }
+    }
+  ]
+}

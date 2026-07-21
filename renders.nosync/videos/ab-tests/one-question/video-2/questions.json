@@ -1,0 +1,32 @@
+{
+  "test": "one-question",
+  "variant": "video-2",
+  "round": "round-019",
+  "format": "9:16",
+  "questionCount": 1,
+  "countdownSec": 5,
+  "treatment": {
+    "readVO": "full",
+    "dropReveal": false,
+    "dropScore": true,
+    "endCard": "verdict",
+    "speed": false
+  },
+  "music": "bonus-round-bounce.mp3",
+  "sfx": "short-2",
+  "questions": [
+    {
+      "pos": 1,
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "41"
+      }
+    }
+  ]
+}

@@ -9,6 +9,8 @@ import { Round15Slice } from "./slice/Round15Slice";
 import { SEG, TOTAL as SLICE_TOTAL } from "./slice/timeline";
 import { Intro } from "./scenes/Intro";
 import { NonverbalPreview } from "./preview/NonverbalPreview";
+import { MascotPoc, MASCOT_POC_DURATION } from "./mascot/MascotPoc";
+import { MascotShort } from "./mascot/MascotShort";
 
 /** Duration for a cut: prefer the named cut (by slug) from src/data/cuts.ts;
  *  fall back to explicit props. Per-round overrides (questions/durs/qrBase) are
@@ -21,13 +23,12 @@ const cutDuration = (props: {
   questions?: Question[];
   durs?: Record<string, number>;
   qrBase?: string;
-  withIntro?: boolean;
 }): number => {
   const cut = props.slug ? bySlug(props.slug) : undefined;
   const platform = cut?.platform ?? (props.platform as Platform) ?? "youtube";
   const ids = cut?.ids ?? props.questionIds ?? ALL_IDS;
   const sfx = cut?.sfx ?? props.sfx;
-  return getTimeline(platform, ids, sfx, props.questions, props.durs, props.qrBase, props.withIntro).total;
+  return getTimeline(platform, ids, sfx, props.questions, props.durs, props.qrBase).total;
 };
 
 /**
@@ -60,7 +61,7 @@ export const RemotionRoot: React.FC = () => {
         component={FullVideo}
         durationInFrames={FULL_TOTAL}
         defaultProps={{ slug: "short-1" }}
-        calculateMetadata={({ props }) => ({ durationInFrames: cutDuration(props) })}
+        calculateMetadata={({ props }) => ({ durationInFrames: (props.totalFrames as number | undefined) ?? cutDuration(props) })}
         {...portrait}
       />
 
@@ -69,6 +70,21 @@ export const RemotionRoot: React.FC = () => {
 
       {/* Static contact sheet of the expanded nonverbal vocabulary (still-only). */}
       <Composition id="NonverbalPreview" component={NonverbalPreview} durationInFrames={1} fps={30} width={1920} height={1600} />
+
+      {/* POC: lip-synced talking brain-mascot narrator (Rhubarb-driven visemes). */}
+      <Composition id="MascotPoc" component={MascotPoc} durationInFrames={MASCOT_POC_DURATION} {...portrait} />
+
+      {/* Full mascot short: FullVideo + the bottom-right lip-synced brain narrator.
+          Driven entirely by --props (questions/durs/qrBase/variant/narratorClips)
+          from scripts/render-mascot.ts; length from props.totalFrames. */}
+      <Composition
+        id="MascotShort"
+        component={MascotShort}
+        durationInFrames={FULL_TOTAL}
+        defaultProps={{ slug: "short-1" }}
+        calculateMetadata={({ props }) => ({ durationInFrames: (props.totalFrames as number | undefined) ?? cutDuration(props) })}
+        {...portrait}
+      />
 
     </>
   );

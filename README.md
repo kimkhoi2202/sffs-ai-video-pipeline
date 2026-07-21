@@ -122,6 +122,13 @@ updating to run, since they moved under `legacy/`.)
   images, timelines, the per-video `questions.json` / `info.md` / `captions.srt`/`.vtt` + `manifest.json`
   under `renders/videos/`, and archived voice takes under `voice/_backups/`. No secrets, no
   `node_modules`, no `.mp4` masters.
+- **Lip-sync tool (not committed):** the mascot narrator's mouth timing is generated with
+  [Rhubarb Lip Sync](https://github.com/DanielSWolf/rhubarb-lip-sync/releases). Its binary + speech
+  models (tens of MB) live under `tools/` and are **git-ignored** — as is the Remotion webpack bundle
+  `remotion/build/`. `remotion/scripts/lipsync-core.ts` (`findRhubarb`, used by `scripts/lipsync.ts`
+  and the mascot render) resolves the binary in order: `$RHUBARB` → a `tools/rhubarb` symlink → any
+  extracted `tools/Rhubarb-Lip-Sync-*` dir → `PATH`. It does **not** auto-download: unzip the release
+  for your OS into `video/tools/` (or point `$RHUBARB` at the binary) before running the lip-sync.
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) typechecks the Remotion project on every
 push/PR (`npm ci` + `tsc --noEmit`). This is a render pipeline, not a deployed app — **there is no CD

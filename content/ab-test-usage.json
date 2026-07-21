@@ -1,0 +1,398 @@
+{
+  "note": "Questions consumed by A/B-test renders (fresh pulls from the append-only master bank; every sig is a tracked bank entry).",
+  "videos": [
+    {
+      "videoSlug": "one-question-video-1",
+      "test": "one-question",
+      "variant": "video-1",
+      "round": "round-018",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || car~plane~rose~train|rose",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "rose"
+        }
+      ]
+    },
+    {
+      "videoSlug": "one-question-video-2",
+      "test": "one-question",
+      "variant": "video-2",
+      "round": "round-019",
+      "questions": [
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|1~5~11~19~29|41",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "41"
+        }
+      ]
+    },
+    {
+      "videoSlug": "no-answer-video-1",
+      "test": "no-answer",
+      "variant": "video-1",
+      "round": "round-008",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || gold~iron~silver~wood|wood",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "wood"
+        },
+        {
+          "id": 11,
+          "sig": "polygon|nonverbal|figure-series|5~6~7=>8|8",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "8"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|4~5~9~14~23|37",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "37"
+        }
+      ]
+    },
+    {
+      "videoSlug": "no-answer-video-2",
+      "test": "no-answer",
+      "variant": "video-2",
+      "round": "round-009",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || apple~grape~lemon~lion|lion",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "lion"
+        },
+        {
+          "id": 11,
+          "sig": "polygon|nonverbal|figure-series|4~6=>8|8",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "8"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|4~6~9~13~18|24",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "24"
+        }
+      ]
+    },
+    {
+      "videoSlug": "dont-narrate-no-question-vo-video-1",
+      "test": "dont-narrate",
+      "variant": "no-question-vo/video-1",
+      "round": "round-010",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || drill~hammer~milk~saw|milk",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "milk"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|tl~bl=>br|br",
+          "tier": "POSITION",
+          "answerNorm": "br"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|3~6~11~18~27|38",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "38"
+        }
+      ]
+    },
+    {
+      "videoSlug": "dont-narrate-no-question-vo-video-2",
+      "test": "dont-narrate",
+      "variant": "no-question-vo/video-2",
+      "round": "round-011",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || coat~dress~river~shirt|river",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "river"
+        },
+        {
+          "id": 11,
+          "sig": "polygon|nonverbal|figure-series|6~7=>8|8",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "8"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|3~6~12~21~33|48",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "48"
+        }
+      ]
+    },
+    {
+      "videoSlug": "dont-narrate-no-options-vo-video-1",
+      "test": "dont-narrate",
+      "variant": "no-options-vo/video-1",
+      "round": "round-012",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || boat~bus~car~truck|boat",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "boat"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|tr~tl=>bl|bl",
+          "tier": "POSITION",
+          "answerNorm": "bl"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|3~4~6~9~13|18",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "18"
+        }
+      ]
+    },
+    {
+      "videoSlug": "dont-narrate-no-options-vo-video-2",
+      "test": "dont-narrate",
+      "variant": "no-options-vo/video-2",
+      "round": "round-013",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || glass~hammer~saw~wrench|glass",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "glass"
+        },
+        {
+          "id": 11,
+          "sig": "polygon|nonverbal|figure-series|7~6~5~4=>3|3",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "3"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|4~3~7~10~17|27",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "27"
+        }
+      ]
+    },
+    {
+      "videoSlug": "dont-narrate-no-narration-video-1",
+      "test": "dont-narrate",
+      "variant": "no-narration/video-1",
+      "round": "round-014",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || brick~dog~mouse~rabbit|brick",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "brick"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|bl~br=>tr|tr",
+          "tier": "POSITION",
+          "answerNorm": "tr"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|2~4~6~10~16|26",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "26"
+        }
+      ]
+    },
+    {
+      "videoSlug": "dont-narrate-no-narration-video-2",
+      "test": "dont-narrate",
+      "variant": "no-narration/video-2",
+      "round": "round-015",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || five~nine~one~square|square",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "square"
+        },
+        {
+          "id": 11,
+          "sig": "polygon|nonverbal|figure-series|8~7~6~5=>4|4",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "4"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|3~5~10~18~29|43",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "43"
+        }
+      ]
+    },
+    {
+      "videoSlug": "speed-video-1",
+      "test": "speed",
+      "variant": "video-1",
+      "round": "round-016",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || banana~hockey~soccer~tennis|banana",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "banana"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|bl~br~tr=>tl|tl",
+          "tier": "POSITION",
+          "answerNorm": "tl"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|4~7~11~16~22|29",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "29"
+        }
+      ]
+    },
+    {
+      "videoSlug": "speed-video-2",
+      "test": "speed",
+      "variant": "video-2",
+      "round": "round-017",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || apple~mango~orange~piano|piano",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "piano"
+        },
+        {
+          "id": 11,
+          "sig": "polygon|nonverbal|figure-series|4~5=>6|6",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "6"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|4~6~10~16~26|42",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "42"
+        }
+      ]
+    },
+    {
+      "videoSlug": "cliffhanger-video-1",
+      "test": "cliffhanger",
+      "variant": "video-1",
+      "round": "round-021",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || axe~hammer~motorcycle~shovel|motorcycle",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "motorcycle"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|bm~br~rm~tr=>tm|tm",
+          "tier": "POSITION",
+          "answerNorm": "tm"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|4~2~6~8~14|22",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "22"
+        }
+      ]
+    },
+    {
+      "videoSlug": "cliffhanger-video-2",
+      "test": "cliffhanger",
+      "variant": "video-2",
+      "round": "round-022",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || cabinet~chair~dresser~radish|radish",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "radish"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|rm~tl~bm=>tr|tr",
+          "tier": "POSITION",
+          "answerNorm": "tr"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|3~6~9~15~24|39",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "39"
+        }
+      ]
+    },
+    {
+      "videoSlug": "mascot-video-1",
+      "test": "mascot",
+      "variant": "video-1",
+      "round": "round-023",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || ant~beetle~moth~snow|snow",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "snow"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|br~lm~tr=>bm|bm",
+          "tier": "POSITION",
+          "answerNorm": "bm"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|5~6~11~17~28|45",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "45"
+        }
+      ]
+    },
+    {
+      "videoSlug": "mascot-video-2",
+      "test": "mascot",
+      "variant": "video-2",
+      "round": "round-024",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || cricket~rugby~sleet~volleyball|sleet",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "sleet"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|tm~rm~bm~lm~tm~rm=>bm|bm",
+          "tier": "POSITION",
+          "answerNorm": "bm"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|3~5~8~12~17|23",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "23"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-07-21"
+}

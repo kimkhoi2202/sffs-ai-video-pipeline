@@ -1,0 +1,60 @@
+{
+  "test": "speed",
+  "variant": "video-2",
+  "round": "round-017",
+  "format": "9:16",
+  "questionCount": 3,
+  "countdownSec": 5,
+  "treatment": {
+    "readVO": "full",
+    "dropReveal": false,
+    "dropScore": false,
+    "endCard": "default",
+    "speed": true,
+    "atempo": 1.1161,
+    "targetRatio": 0.896
+  },
+  "music": "prize-wheel-parade.mp3",
+  "sfx": "short-5",
+  "questions": [
+    {
+      "pos": 1,
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "difficulty": "easy",
+      "tier": "ODD ONE OUT",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "answer": {
+        "letter": "B",
+        "label": "PIANO"
+      }
+    },
+    {
+      "pos": 2,
+      "id": 11,
+      "kind": "polygon",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "FIGURE SERIES",
+      "prompt": "WHICH SHAPE COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "HEXAGON"
+      }
+    },
+    {
+      "pos": 3,
+      "id": 7,
+      "kind": "numseries",
+      "category": "quantitative",
+      "difficulty": "hard",
+      "tier": "NUMBER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": {
+        "letter": "C",
+        "label": "42"
+      }
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { ANTON } from "../theme/fonts";
 import { HeroShapes } from "../components/HeroShapes";
 import { PerspectiveGrid } from "../components/PerspectiveGrid";
 import { SafeArea } from "../components/SafeArea";
-import type { Platform } from "../full/timeline";
+import type { Platform, EndCard } from "../full/timeline";
 
 /**
  * Outro / end card — the closing hero moment matching the intro/website hero:
@@ -15,7 +15,7 @@ import type { Platform } from "../full/timeline";
  * removed for a cleaner, more minimal end card): "HOW DID / YOU DO?" -> "COMMENT
  * YOUR SCORE BELOW" -> platform CTA pill (YouTube "SUBSCRIBE FOR MORE", IG/TikTok
  * "FOLLOW FOR MORE"). SHORT/portrait outros also get a "SCROLL FOR MORE" hint
- * pinned near the bottom -- a white circle + ink down-chevron (hard shadow) that
+ * pinned near the bottom -- a white circle + ink stroke down-arrow (hard shadow) that
  * loop-bobs downward as a swipe-to-next affordance; the 16:9 YouTube outro omits
  * it. Text renders ABOVE the floating shapes. Re-flows + enlarges for portrait.
  */
@@ -49,26 +49,38 @@ const Pop: React.FC<{ frame: number; fps: number; delay: number; cx: number; cy:
   );
 };
 
-/** Full down-ARROW (vertical shaft + head) for the scroll-for-more affordance —
- *  matches the website's scroll cue exactly (lucide `ArrowDown`, strokeWidth 2.5:
- *  path "M12 5v14" shaft + "m19 12-7 7-7-7" head on a 24x24 viewBox). */
+/** Clean ink STROKE arrow (lucide `ArrowDown`), pointing DOWN — the scroll-
+ *  for-more affordance. A plain vertical shaft + arrowhead drawn as ink
+ *  (#000) strokes with NO fill, round caps/joins, on a 24x24 viewBox. */
 const ArrowDown: React.FC<{ size: number }> = ({ size }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={COLORS.ink} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }} aria-hidden>
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={COLORS.ink} strokeWidth={2.75} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }} aria-hidden>
     <path d="M12 5v14" />
     <path d="m19 12-7 7-7-7" />
   </svg>
 );
 
-export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" }) => {
+export const Outro: React.FC<{ platform?: Platform; variant?: EndCard }> = ({ platform = "youtube", variant = "default" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { w, portrait } = useFmt();
-  const cta = platform === "youtube" ? "SUBSCRIBE FOR MORE" : "FOLLOW FOR MORE";
+  const followCta = platform === "youtube" ? "SUBSCRIBE FOR MORE" : "FOLLOW FOR MORE";
   const cx = w / 2;
+
+  // The end card is prop-driven: the standard outro asks the score, the NO-ANSWER
+  // test asks for the answer in the comments, and the ONE-QUESTION verdict delivers
+  // the smart-fella/fart-smella payoff. All share the same on-brand green field,
+  // floating shapes, two-color Anton headline, CTA pill, and scroll cue.
+  const COPY =
+    variant === "noanswer"
+      ? { l1: "WHAT'S YOUR", l2: "ANSWER?", sub: "COMMENT YOUR ANSWER BELOW", cta: followCta, headScale: 0.94 }
+      : variant === "verdict"
+        ? { l1: "SMART FELLA", l2: "OR FART SMELLA?", sub: "COMMENT YOUR VERDICT", cta: followCta, headScale: 0.72 }
+        : { l1: "HOW DID", l2: "YOU DO?", sub: "COMMENT YOUR SCORE BELOW", cta: followCta, headScale: 1 };
+  const cta = COPY.cta;
 
   // Eyebrow removed -> bigger headline + re-centered block using the freed space.
   // Portrait is enlarged noticeably to fill the tall frame (text sits above shapes).
-  const head = portrait ? 170 : 150;
+  const head = Math.round((portrait ? 170 : 150) * COPY.headScale);
   // Portrait: the main block sits a touch higher to make room for the SCROLL FOR
   // MORE hint pinned near the bottom (with safe-area padding). Landscape unchanged.
   const L = portrait
@@ -91,15 +103,15 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
       <SafeArea>
       <div style={{ position: "absolute", inset: 0, zIndex: 1 }}>
       <Pop frame={frame} fps={fps} delay={4} cx={cx} cy={L.l1}>
-        <div style={headWord(head, COLORS.blue)}>HOW DID</div>
+        <div style={headWord(head, COLORS.blue)}>{COPY.l1}</div>
       </Pop>
       <Pop frame={frame} fps={fps} delay={12} cx={cx} cy={L.l2}>
-        <div style={headWord(head, COLORS.coral)}>YOU DO?</div>
+        <div style={headWord(head, COLORS.coral)}>{COPY.l2}</div>
       </Pop>
 
       <Pop frame={frame} fps={fps} delay={18} cx={cx} cy={L.comment}>
         <div style={{ fontFamily: ANTON, fontSize: L.commentSize, lineHeight: 1, color: COLORS.ink, textTransform: "uppercase", letterSpacing: "0.01em", whiteSpace: "nowrap" }}>
-          COMMENT YOUR SCORE BELOW
+          {COPY.sub}
         </div>
       </Pop>
 
@@ -143,7 +155,7 @@ export const Outro: React.FC<{ platform?: Platform }> = ({ platform = "youtube" 
             </div>
             {/* whole cue bobs as one unit (circle + border + shadow + arrow) */}
             <div style={{ transform: `translateY(${cueBob}px)`, width: 92, height: 92, borderRadius: 9999, background: COLORS.paper, border: `6px solid ${COLORS.ink}`, boxShadow: hardShadow(8), display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <ArrowDown size={42} />
+              <ArrowDown size={44} />
             </div>
           </div>
         </Pop>
