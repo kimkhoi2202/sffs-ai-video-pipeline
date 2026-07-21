@@ -1,0 +1,622 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-21T15:17:00-05:00",
+  "campaign": "Smart Fella or Fart Smella",
+  "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
+  "repo": {
+    "git_remote": "sffs-ai-video-pipeline",
+    "root": "video/ (this repo root)",
+    "paths_are": "repo-relative to the pipeline repo root"
+  },
+  "accounts": {
+    "6a5fc9dc4ccd63dc1f041549": { "platform": "instagram", "handle": "@smartfellafartsmellatest" },
+    "6a5fc5451bee22495517bcc5": { "platform": "tiktok", "handle": "@smartfellafartsmellatest" }
+  },
+  "inputs": {
+    "publer_posts": ".ab-tmp/publer-posts-raw.json (14 posts synced from Publer; NO API key stored here)",
+    "metrics_screenshot": "Publer post-analytics table, page 1 of 2, captured ~2026-07-21 15:11 -05:00 (10 of 13 analytics rows). Page 2 (3 rows) + the newest 2026-07-21 post were not in the screenshot -> metrics 'pending'.",
+    "variant_metadata": [
+      "renders.nosync/videos/ab-tests/manifest.json (A/B families: no-answer, dont-narrate, speed, one-question, cliffhanger, mascot)",
+      "renders.nosync/videos/manifest.json (cut/round catalog + extras: intro, ready-to-post)",
+      "renders.nosync/videos/ready-to-post/*/caption.txt (verbatim caption bodies used for the standard quiz posts)",
+      "content/ab-test-usage.json (questions consumed per A/B render)"
+    ]
+  },
+  "conventions": {
+    "eng_rate_unit": "percent (e.g. 4.03 == 4.03%)",
+    "reach_rate": "stored as the raw string shown by Publer (e.g. '3.1K%', '12.8%', null). TikTok reach-rate values are unreliable here because the follower base is ~0 (near-zero denominator).",
+    "metrics_source": "'screenshot' = read from the 2026-07-21 analytics screenshot; 'pending' = not yet captured (fill on next analytics pull).",
+    "match_confidence": {
+      "high": "exact source render pinned: caption body matches a ready-to-post caption.txt verbatim (unique question-type fingerprint), or it is the one brand-intro asset.",
+      "medium": "variant FAMILY is certain from the caption, but the exact render is 1 of 2 indistinguishable siblings (video-1 vs video-2) that the caption cannot disambiguate. See source_candidates.",
+      "low": "even the family is uncertain; needs human confirmation. See notes + source_candidates."
+    },
+    "variant_fields": {
+      "family": "standard | no-answer | cliffhanger | dont-narrate | speed | one-question | mascot | intro-promo",
+      "intro": "true if a branded lead-in precedes Q1 (ready-to-post WITHINTRO packages, or the brand-intro promo). A/B-test shorts are permanently cold-open (intro=false).",
+      "narration": "full | none | no-question-vo | no-options-vo (VO treatment; all posted-so-far are 'full')",
+      "hook": "score-CTA ('Comment your score') | comment-CTA ('Comment your answer') | brand ('Follow so you don't miss one')",
+      "question_types": "ordered play-order types. For no-answer/cliffhanger these are taken from the family's render tiers (identical across video-1/video-2), not the caption.",
+      "num_questions": "count of quiz questions (0 for the brand promo)"
+    }
+  },
+  "posts": [
+    {
+      "publer_post_id": 195306521,
+      "platform_post_id": "17875414719527136",
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.instagram.com/reel/Da_g9GJAIow/",
+      "posted_at": "2026-07-19T18:12:18-05:00",
+      "caption": "Are you a SMART fella\u2026 or a FART smella? \ud83e\udde0\ud83d\udca8\n\nOnly one way to find out.\n\n\ud83d\udd25 Brand new challenges EVERY day.\n\ud83d\udc49 Follow so you don\u2019t miss one\n\n#brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella",
+      "source_video": "renders.nosync/videos/intro/sffs-brand-intro-v1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "intro-promo",
+        "intro": true,
+        "narration": "full",
+        "hook": "brand",
+        "question_types": [],
+        "num_questions": 0
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Brand-intro promo (not a quiz short); caption matches the 'Follow so you don't miss one' brand copy. Source = the single brand-intro asset (sffs-brand-intro-v1). Metrics pending: on analytics page 2 (not in screenshot)."
+    },
+    {
+      "publer_post_id": 195306520,
+      "platform_post_id": "7664402257546415373",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664402257546415373",
+      "posted_at": "2026-07-19T19:35:31-05:00",
+      "caption": "Are you a SMART fella\u2026 or a FART smella? \ud83e\udde0\ud83d\udca8 Only one way to find out. \ud83d\udd25 Brand new challenges EVERY day. \ud83d\udc49 Follow so you don't miss one #brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella",
+      "source_video": "renders.nosync/videos/intro/sffs-brand-intro-v1.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "intro-promo",
+        "intro": true,
+        "narration": "full",
+        "hook": "brand",
+        "question_types": [],
+        "num_questions": 0
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Brand-intro promo cross-post of the IG brand reel. Source = brand-intro asset. Metrics pending: on analytics page 2 (not in screenshot)."
+    },
+    {
+      "publer_post_id": 195306518,
+      "platform_post_id": "7664661129481833741",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664661129481833741",
+      "posted_at": "2026-07-20T12:20:24-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, dot position & number analogy. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ready-to-post/03-WITHINTRO-analogy-position-numanalogy/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": true,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["word-analogy", "dot-position", "number-analogy"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, WITH INTRO (package 03). Caption body matches ready-to-post/03 caption.txt verbatim. Metrics pending: on analytics page 2 (not in screenshot)."
+    },
+    {
+      "publer_post_id": 195306519,
+      "platform_post_id": "17881110531476716",
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.instagram.com/reel/DbBihmmR6ai/",
+      "posted_at": "2026-07-20T13:05:49-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, dot position & number analogy. Can you get all 3? Comment your score \ud83d\udc47\n\n#smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ready-to-post/03-WITHINTRO-analogy-position-numanalogy/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": true,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["word-analogy", "dot-position", "number-analogy"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 128,
+        "reach_rate": "12.8%",
+        "video_views": 136,
+        "reactions": 1,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0.78,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, WITH INTRO (package 03). IG cross-post of the same source video as publer 195306518/195306511."
+    },
+    {
+      "publer_post_id": 195306517,
+      "platform_post_id": "7664675246712163614",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664675246712163614",
+      "posted_at": "2026-07-20T13:14:55-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Odd one out, figure analogy & a tricky number series. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ready-to-post/01-NOINTRO-oddone-figure-series/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["odd-one-out", "figure-analogy", "number-series"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 991,
+        "reach_rate": "12.4%",
+        "video_views": null,
+        "reactions": 55,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 5.55,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, NO INTRO (package 01). Highest-reach post in the dataset (991 reach, 55 reactions, 5.55% eng). TikTok."
+    },
+    {
+      "publer_post_id": 195306516,
+      "platform_post_id": "18632670970032565",
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.instagram.com/reel/DbBw4DxC_nh/",
+      "posted_at": "2026-07-20T15:10:31-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Odd one out, figure analogy & a tricky number series. Can you get all 3? Comment your score \ud83d\udc47\n\n#smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ready-to-post/01-NOINTRO-oddone-figure-series/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["odd-one-out", "figure-analogy", "number-series"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 113,
+        "reach_rate": "11.3%",
+        "video_views": 126,
+        "reactions": 0,
+        "comments": 1,
+        "shares": 0,
+        "eng_rate": 0.88,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, NO INTRO (package 01). IG twin of the 991-reach TikTok post (publer 195306517) but only 113 reach / 0.88% eng -> platform is the dominant confound. Only post with a comment (1)."
+    },
+    {
+      "publer_post_id": 195306515,
+      "platform_post_id": "7664718972360723743",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664718972360723743",
+      "posted_at": "2026-07-20T16:04:33-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, number series & figure series. Can you get all 3? Comment your score \ud83d\udc47 #smartfellaorfartsmella #iqtest #brainteaser #quiz #puzzle",
+      "source_video": "renders.nosync/videos/ready-to-post/02-NOINTRO-analogy-series-figures/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["word-analogy", "number-series", "figure-series"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 297,
+        "reach_rate": "3.7%",
+        "video_views": null,
+        "reactions": 8,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 2.69,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, NO INTRO (package 02). TikTok."
+    },
+    {
+      "publer_post_id": 195306513,
+      "platform_post_id": "7664737430003666207",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664737430003666207",
+      "posted_at": "2026-07-20T17:16:14-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Number series, word analogy & fill in the blank. Can you get all 3? Comment your score \ud83d\udc47 #smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ready-to-post/05-NOINTRO-series-analogy-sentence/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["number-series", "word-analogy", "fill-in-the-blank"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 283,
+        "reach_rate": "3.5K%",
+        "video_views": null,
+        "reactions": 12,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 4.24,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, NO INTRO (package 05). TikTok. reach_rate '3.5K%' is a Publer artifact (near-zero follower denominator)."
+    },
+    {
+      "publer_post_id": 195306514,
+      "platform_post_id": "18087380909540755",
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.instagram.com/reel/DbB_y-qgyCQ/",
+      "posted_at": "2026-07-20T17:19:29-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Number series, word analogy & fill in the blank. Can you get all 3? Comment your score \ud83d\udc47\n\n#smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ready-to-post/05-NOINTRO-series-analogy-sentence/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["number-series", "word-analogy", "fill-in-the-blank"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 119,
+        "reach_rate": "11.9%",
+        "video_views": 126,
+        "reactions": 1,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0.84,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, NO INTRO (package 05). IG twin of publer 195306513."
+    },
+    {
+      "publer_post_id": 195306512,
+      "platform_post_id": "18612135376008328",
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.instagram.com/reel/DbCMMKnAncy/",
+      "posted_at": "2026-07-20T19:07:48-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, number series & figure series. Can you get all 3? Comment your score \ud83d\udc47\n\n#smartorfart #iqtest #brainteaser #quiz #trivia",
+      "source_video": "renders.nosync/videos/ready-to-post/02-NOINTRO-analogy-series-figures/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": false,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["word-analogy", "number-series", "figure-series"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 101,
+        "reach_rate": null,
+        "video_views": 105,
+        "reactions": 0,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0.0,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, NO INTRO (package 02). IG twin of publer 195306515."
+    },
+    {
+      "publer_post_id": 195306511,
+      "platform_post_id": "7664770507060874526",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664770507060874526",
+      "posted_at": "2026-07-20T19:24:30-05:00",
+      "caption": "SMART or FART? \ud83e\udde0\ud83d\udca8 Word analogy, dot position & number analogy. Can you get all 3? Comment your score \ud83d\udc47 #riddlefun #brainteaser #puzzletok #mindgames #riddles",
+      "source_video": "renders.nosync/videos/ready-to-post/03-WITHINTRO-analogy-position-numanalogy/video.mp4",
+      "source_candidates": [],
+      "variant": {
+        "family": "standard",
+        "intro": true,
+        "narration": "full",
+        "hook": "score-CTA",
+        "question_types": ["word-analogy", "dot-position", "number-analogy"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 4,
+        "reach_rate": "50%",
+        "video_views": null,
+        "reactions": 1,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 25.0,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "high",
+      "notes": "Standard 3Q, WITH INTRO (package 03). reach=4 -> essentially undelivered (cold start / throttle), so eng_rate 25% (1 reaction / 4 reach) is NOISE, not a real win. Different hashtag set than the IG twins but identical caption body + question mix."
+    },
+    {
+      "publer_post_id": 195306510,
+      "platform_post_id": "7664804452393618719",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664804452393618719",
+      "posted_at": "2026-07-20T21:36:10-05:00",
+      "caption": "The last one is tricky! Comment your answer below\ud83d\udc47 #quiz #trivia #braintest #puzzle #logic",
+      "source_video": null,
+      "source_candidates": [
+        "renders.nosync/videos/ab-tests/cliffhanger/video-1/cliffhanger-video-1.mp4",
+        "renders.nosync/videos/ab-tests/cliffhanger/video-2/cliffhanger-video-2.mp4"
+      ],
+      "variant": {
+        "family": "cliffhanger",
+        "intro": false,
+        "narration": "full",
+        "hook": "comment-CTA",
+        "question_types": ["odd-one-out", "position", "number-series"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 248,
+        "reach_rate": "3.1K%",
+        "video_views": null,
+        "reactions": 10,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 4.03,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "medium",
+      "notes": "Family = cliffhanger (HIGH confidence: 'The last one is tricky! Comment your answer' = last-question-withheld). EXACT render is video-1 or video-2 (identical tiers, caption cannot disambiguate) -> source_video null, see source_candidates. Despite the comment-for-answer mechanic, 0 comments."
+    },
+    {
+      "publer_post_id": 195306509,
+      "platform_post_id": "18137400259598790",
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.instagram.com/reel/DbCdxJXsBdw/",
+      "posted_at": "2026-07-20T21:42:09-05:00",
+      "caption": "This one\u2019s tricky! Comment your answer below\ud83d\udc47 #quiz #trivia #braintest #puzzle #logic",
+      "source_video": null,
+      "source_candidates": [
+        "renders.nosync/videos/ab-tests/no-answer/video-1/no-answer-video-1.mp4",
+        "renders.nosync/videos/ab-tests/no-answer/video-2/no-answer-video-2.mp4",
+        "renders.nosync/videos/ab-tests/cliffhanger/video-1/cliffhanger-video-1.mp4",
+        "renders.nosync/videos/ab-tests/cliffhanger/video-2/cliffhanger-video-2.mp4"
+      ],
+      "variant": {
+        "family": "no-answer",
+        "intro": false,
+        "narration": "full",
+        "hook": "comment-CTA",
+        "question_types": ["odd-one-out", "figure-series", "number-series"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": 116,
+        "reach_rate": null,
+        "video_views": 123,
+        "reactions": 0,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0.0,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": "2026-07-21",
+        "source": "screenshot"
+      },
+      "match_confidence": "low",
+      "notes": "NEEDS HUMAN CONFIRM. Classified no-answer per guidance ('Comment your answer below', no score ask, no 'last question' signal). BUT 'This one's tricky!' could also be a cliffhanger. If no-answer, question_types = odd-one-out/figure-series/number-series (assumed here); if cliffhanger, they would be odd-one-out/position/number-series. Exact render (video-1 vs video-2) also unknown."
+    },
+    {
+      "publer_post_id": 195306508,
+      "platform_post_id": "7664995258723224863",
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": "https://www.tiktok.com/@smartfellafartsmellatest/video/7664995258723224863",
+      "posted_at": "2026-07-21T09:56:48-05:00",
+      "caption": "Did you get the last question? Comment your answer below \ud83d\udc47 #quiz #logic #smart #challenge #brainteaser",
+      "source_video": null,
+      "source_candidates": [
+        "renders.nosync/videos/ab-tests/cliffhanger/video-1/cliffhanger-video-1.mp4",
+        "renders.nosync/videos/ab-tests/cliffhanger/video-2/cliffhanger-video-2.mp4"
+      ],
+      "variant": {
+        "family": "cliffhanger",
+        "intro": false,
+        "narration": "full",
+        "hook": "comment-CTA",
+        "question_types": ["odd-one-out", "position", "number-series"],
+        "num_questions": 3
+      },
+      "metrics": {
+        "reach": null,
+        "reach_rate": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "link_clicks": null,
+        "ctr": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "medium",
+      "notes": "Newest post (2026-07-21). Family = cliffhanger (HIGH: 'Did you get the last question? Comment your answer'). Exact render video-1 vs video-2 unknown -> source_video null. Metrics pending: not in the 2026-07-21 screenshot (posted after / not yet in analytics)."
+    }
+  ],
+  "variant_families": {
+    "standard": {
+      "count": 9,
+      "metrics_n": 8,
+      "avg_eng_rate": 5.0,
+      "avg_eng_rate_median": 1.79,
+      "avg_eng_rate_excl_reach_lt10": 2.14,
+      "avg_reach": 254.5,
+      "notes": "9 posts (packages 01/02/03/05, both platforms). 8 have metrics (1 pending). Mean eng_rate is skewed high by publer 195306511 (reach=4, 25% = noise); median 1.79% is more honest. Includes both TikTok (higher) and IG (lower) so platform confounds the family average."
+    },
+    "no-answer": {
+      "count": 1,
+      "metrics_n": 1,
+      "avg_eng_rate": 0.0,
+      "avg_reach": 116.0,
+      "notes": "Only publer 195306509 (IG), and its family label is LOW confidence (could be cliffhanger). Treat as unconfirmed."
+    },
+    "cliffhanger": {
+      "count": 2,
+      "metrics_n": 1,
+      "avg_eng_rate": 4.03,
+      "avg_reach": 248.0,
+      "notes": "publer 195306510 (TikTok, metrics) + 195306508 (TikTok, pending). Family HIGH confidence; exact render (video-1/2) unknown for both. 0 comments so far despite comment-for-answer CTA."
+    },
+    "intro-promo": {
+      "count": 2,
+      "metrics_n": 0,
+      "avg_eng_rate": null,
+      "avg_reach": null,
+      "notes": "Brand-intro promo (publer 195306520 TikTok + 195306521 IG). Both metrics pending (analytics page 2)."
+    },
+    "dont-narrate": {
+      "count": 0,
+      "metrics_n": 0,
+      "avg_eng_rate": null,
+      "avg_reach": null,
+      "notes": "Rendered (6 variants: no-question-vo, no-options-vo, no-narration x video-1/2) but NOT yet posted. In render library, awaiting the loop."
+    },
+    "speed": {
+      "count": 0,
+      "metrics_n": 0,
+      "avg_eng_rate": null,
+      "avg_reach": null,
+      "notes": "Rendered (video-1/2, ~1.25x VO) but NOT yet posted."
+    },
+    "one-question": {
+      "count": 0,
+      "metrics_n": 0,
+      "avg_eng_rate": null,
+      "avg_reach": null,
+      "notes": "Rendered (video-1/2, single Q + verdict) but NOT yet posted."
+    },
+    "mascot": {
+      "count": 0,
+      "metrics_n": 0,
+      "avg_eng_rate": null,
+      "avg_reach": null,
+      "notes": "Rendered (video-1/2, talking-brain narrator) but NOT yet posted. mascot-poc.mp4 also exists."
+    }
+  },
+  "aggregate_cuts": {
+    "by_platform": {
+      "tiktok": { "posts_with_metrics": 5, "avg_reach": 364.6, "avg_eng_rate": 8.3, "median_eng_rate": 4.24, "notes": "Reach 4-991; eng 2.69-25% (25% is the reach=4 noise post). Median eng 4.24%. Far outperforms IG on reach + eng for the SAME source video." },
+      "instagram": { "posts_with_metrics": 5, "avg_reach": 115.4, "avg_eng_rate": 0.5, "median_eng_rate": 0.78, "notes": "Reach clustered 101-128; eng 0-0.88%. Consistently low." }
+    },
+    "by_intro_standard_only": {
+      "with_intro": { "posts_with_metrics": 2, "posts_total": 3, "notes": "Package 03 only. TikTok reach=4 (noise) + IG reach=128/0.78%. 1 pending (TikTok). Inconclusive." },
+      "no_intro": { "posts_with_metrics": 6, "posts_total": 6, "notes": "Packages 01/02/05. Contains the 991-reach TikTok standout." }
+    }
+  },
+  "known_gaps": [
+    "4 posts have pending metrics: publer 195306508 (newest cliffhanger), 195306518 (std-03 TikTok), 195306520 + 195306521 (brand promo). Fill from analytics page 2 + next pull.",
+    "2 low/medium-confidence family+render matches need human confirmation: publer 195306509 (no-answer vs cliffhanger) and the exact video-1/video-2 for both cliffhanger posts (195306510, 195306508) and the no-answer post.",
+    "ready-to-post package 04-WITHINTRO-series-oddone-puzzle was rendered but NOT posted (no matching caption).",
+    "link_clicks / ctr are '-' for every post (no link in these organic posts)."
+  ]
+}
