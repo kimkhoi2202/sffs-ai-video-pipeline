@@ -1,0 +1,45 @@
+{
+  "generated": "2026-07-22",
+  "voiceId": "lZcmpVLaoXF4v0uz4l6Q",
+  "format": "9:16 (1080x1920)",
+  "composition": "Short (FullVideo)",
+  "variant": "default (full VO + reveal + score + follow outro)",
+  "staging": "content/staging-new-types-text.json",
+  "samples": [
+    {
+      "type": "letter-series",
+      "file": "/Users/khoilam/Documents/Crossover/30mpc-website-design-cursor/video/wt-qtypes-text/renders.nosync/new-types-samples/text/letter-series.mp4",
+      "durationSec": 110.89,
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "type": "synonyms-antonyms",
+      "file": "/Users/khoilam/Documents/Crossover/30mpc-website-design-cursor/video/wt-qtypes-text/renders.nosync/new-types-samples/text/synonyms-antonyms.mp4",
+      "durationSec": 95.08,
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "type": "quantitative-comparison",
+      "file": "/Users/khoilam/Documents/Crossover/30mpc-website-design-cursor/video/wt-qtypes-text/renders.nosync/new-types-samples/text/quantitative-comparison.mp4",
+      "durationSec": 105.34,
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "type": "deductive-logic",
+      "file": "/Users/khoilam/Documents/Crossover/30mpc-website-design-cursor/video/wt-qtypes-text/renders.nosync/new-types-samples/text/deductive-logic.mp4",
+      "durationSec": 105.96,
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "type": "math-word-problems",
+      "file": "/Users/khoilam/Documents/Crossover/30mpc-website-design-cursor/video/wt-qtypes-text/renders.nosync/new-types-samples/text/math-word-problems.mp4",
+      "durationSec": 111.36,
+      "w": 1080,
+      "h": 1920
+    }
+  ]
+}

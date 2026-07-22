@@ -1,0 +1,36 @@
+{
+  "type": "letter-series",
+  "title": "Letter Series",
+  "tier": "LETTER SERIES",
+  "kind": "numseries",
+  "category": "verbal",
+  "file": "letter-series.mp4",
+  "format": "9:16 (1080x1920)",
+  "durationSec": 110.89,
+  "music": "gameshow-fanfare.mp3",
+  "sfx": "short-1",
+  "voiceId": "lZcmpVLaoXF4v0uz4l6Q",
+  "questions": [
+    {
+      "id": 1,
+      "tier": "LETTER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": "B · I",
+      "countdown": 5
+    },
+    {
+      "id": 2,
+      "tier": "LETTER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": "A · P",
+      "countdown": 5
+    },
+    {
+      "id": 3,
+      "tier": "LETTER SERIES",
+      "prompt": "WHAT COMES NEXT?",
+      "answer": "C · R",
+      "countdown": 5
+    }
+  ]
+}

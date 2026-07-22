@@ -1,0 +1,103 @@
+{
+  "round": 0,
+  "slug": "sample-math-word-problems",
+  "title": "SAMPLE — Math Word Problems",
+  "grade": 5,
+  "cogatLevel": 11,
+  "sampleOf": "math-word-problems",
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "A PIZZA HAS 8 SLICES. 3 KIDS EAT\n2 SLICES EACH. HOW MANY ARE LEFT?",
+      "questionFontSize": 60,
+      "options": [
+        {
+          "letter": "A",
+          "text": "4"
+        },
+        {
+          "letter": "B",
+          "text": "2"
+        },
+        {
+          "letter": "C",
+          "text": "3"
+        },
+        {
+          "letter": "D",
+          "text": "6"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "2",
+      "explanation": "Three kids each eat two slices, that is six eaten, and eight take away six leaves two."
+    },
+    {
+      "id": 2,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "20% OF THE 30 KIDS IN CLASS WEAR\nGLASSES. HOW MANY IS THAT?",
+      "questionFontSize": 60,
+      "options": [
+        {
+          "letter": "A",
+          "text": "6"
+        },
+        {
+          "letter": "B",
+          "text": "5"
+        },
+        {
+          "letter": "C",
+          "text": "10"
+        },
+        {
+          "letter": "D",
+          "text": "3"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "6",
+      "explanation": "Twenty percent means one fifth, and one fifth of thirty kids is six kids."
+    },
+    {
+      "id": 3,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "A $40 TOY IS 25% OFF TODAY.\nWHAT IS THE SALE PRICE?",
+      "questionFontSize": 64,
+      "options": [
+        {
+          "letter": "A",
+          "text": "$35"
+        },
+        {
+          "letter": "B",
+          "text": "$32"
+        },
+        {
+          "letter": "C",
+          "text": "$30"
+        },
+        {
+          "letter": "D",
+          "text": "$10"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "$30",
+      "explanation": "One quarter of forty dollars is ten dollars off, so the toy costs thirty dollars."
+    }
+  ]
+}

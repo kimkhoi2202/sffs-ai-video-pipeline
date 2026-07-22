@@ -1,0 +1,91 @@
+{
+  "round": 0,
+  "slug": "sample-deductive-logic",
+  "title": "SAMPLE — Deductive Logic (True / False / Can't Tell)",
+  "grade": 5,
+  "cogatLevel": 11,
+  "sampleOf": "deductive-logic",
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "difficulty": "easy",
+      "countdown": 7,
+      "question": "ALL CATS PURR.\nMILO IS A CAT.\nSO MILO PURRS.",
+      "questionFontSize": 66,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TRUE"
+        },
+        {
+          "letter": "B",
+          "text": "FALSE"
+        },
+        {
+          "letter": "C",
+          "text": "CAN'T TELL"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "TRUE",
+      "explanation": "If every cat purrs and Milo is a cat, then Milo must purr."
+    },
+    {
+      "id": 2,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "difficulty": "hard",
+      "countdown": 7,
+      "question": "ALL ROSES ARE FLOWERS.\nSOME FLOWERS FADE FAST.\nSO ALL ROSES FADE FAST.",
+      "questionFontSize": 58,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TRUE"
+        },
+        {
+          "letter": "B",
+          "text": "FALSE"
+        },
+        {
+          "letter": "C",
+          "text": "CAN'T TELL"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "CAN'T TELL",
+      "explanation": "Only some flowers fade fast, and we are not told the roses are those ones."
+    },
+    {
+      "id": 3,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "difficulty": "medium",
+      "countdown": 7,
+      "question": "NO FISH CAN FLY.\nA SHARK IS A FISH.\nSO A SHARK CAN FLY.",
+      "questionFontSize": 64,
+      "options": [
+        {
+          "letter": "A",
+          "text": "TRUE"
+        },
+        {
+          "letter": "B",
+          "text": "FALSE"
+        },
+        {
+          "letter": "C",
+          "text": "CAN'T TELL"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "FALSE",
+      "explanation": "No fish can fly and a shark is a fish, so a shark cannot fly."
+    }
+  ]
+}
