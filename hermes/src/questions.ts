@@ -201,7 +201,21 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
     return q;
   }
 
-  return null; // shaded/polygon/dot need shape components — not headless-safe here
+  // dot / shaded / polygon: EXCLUDED (still). NOT because FullVideo can't render
+  // them — it CAN (DotQuestion/ShadedQuestion/PolygonQuestion types + DotSquare/
+  // Polygon/ShapeGlyph components exist and were verified rendering authored
+  // samples). The blocker is DATA: these bank entries are compact HermesQuiz-era
+  // codes (payloadNorm like "bl~tl~tr=>br" / "6~5~4=>3" / "circle>triangle=>
+  // triangle:true") with NO structured payload and NO A-D distractor options —
+  // unlike fold/matrix/analogy2/figure-odd, which carry a render-ready `figure`.
+  // ponytail: re-enabling is a content-pipeline feature, not a flag flip — it needs
+  //   (1) a per-kind parser here (payloadNorm -> stimulus + answer),
+  //   (2) deterministic distractor generation -> a typed Dot/Shaded/Polygon Question
+  //       in render.ts mapProps, and (3) a dimension in dimensions.ts that requests
+  //   them. Auto-generated distractors are a question-QUALITY decision, so this was
+  //   left out of the draft-only safety remediation pass (see report). Until then,
+  //   these ~285 fresh entries stay out of the candidate pool.
+  return null;
 }
 
 /**

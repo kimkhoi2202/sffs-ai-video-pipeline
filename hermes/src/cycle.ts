@@ -43,8 +43,8 @@ import { markUsed, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
 import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
-import { importMediaFromUrl, createPost, pollJob, listAllPosts, postId } from "./publer.ts";
-import { ping, chat } from "./llm.ts";
+import { importMediaFromUrl, pollJob, listAllPosts, postId } from "./publer.ts";
+import { ping } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
 const DRY = process.env.HERMES_DRY_RUN === "1";
@@ -305,6 +305,13 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
   writeJSONAtomic(CONFIG.AB_DB, db);
 }
 
+// The loop's auto-commit identity. Pinned to a BOT here (NOT the box's ambient
+// git user) so the daily data commits are never authored as a human's personal
+// account — deterministic regardless of box/global git config. (Existing history
+// authored under a personal email can't be safely rewritten; only future commits.)
+const BOT_NAME = "SFFS Hermes Bot";
+const BOT_EMAIL = "deploy@sffs.local";
+
 function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
   const files = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
   const run = (args: string[]) => spawnSync("git", args, { cwd: CONFIG.REPO_DIR, encoding: "utf8", env: { ...process.env } });
@@ -313,7 +320,8 @@ function gitCommitPush(runId: string, summary: RunState["summary"]): { committed
     const status = run(["status", "--porcelain"]).stdout || "";
     if (!status.trim()) return { committed: false, pushed: false, note: "nothing to commit" };
     const msg = `hermes: cycle ${runId} — ${summary.drafted} drafts, ${summary.rejected} rejected [draft-only]`;
-    const c = run(["commit", "-m", msg]);
+    // -c pins author AND committer identity for THIS commit (belt: also set in box git config).
+    const c = run(["-c", `user.name=${BOT_NAME}`, "-c", `user.email=${BOT_EMAIL}`, "commit", "-m", msg]);
     if (c.status !== 0) return { committed: false, pushed: false, note: "commit failed: " + (c.stderr || "").slice(-200) };
     run(["pull", "--rebase", "origin", "main"]);
     const p = run(["push", "origin", "HEAD:main"]);

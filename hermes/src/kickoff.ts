@@ -102,11 +102,6 @@ export function isArmed(env: NodeJS.ProcessEnv = process.env): boolean {
   }
 }
 
-/** The kickoff instant (ISO) = t0 for the 7-day goal clock, or null when off. */
-export function kickoffSince(env: NodeJS.ProcessEnv = process.env): string | null {
-  return kickoffStatus(env).since;
-}
-
 /**
  * Throw unless autonomy is armed. Every kickoff-gated write path calls this
  * immediately before it can schedule, so an un-armed cycle physically cannot

@@ -16,7 +16,6 @@
 export const TZ = "America/Chicago";
 /** Allowed wall-clock band: [07:00, 01:00 next day). Dead hours = [01:00, 07:00). */
 export const WINDOW_OPEN_HOUR = 7;
-export const WINDOW_CLOSE_HOUR = 1;
 
 interface Parts {
   y: number;
@@ -90,7 +89,7 @@ function intoWindow(date: Date, rng: () => number): Date {
   return fromChicago(p.y, p.mo, p.d, WINDOW_OPEN_HOUR, jitterMin);
 }
 
-const PLATFORM_SHIFT: Record<string, number> = { instagram: 3, tiktok: 8, youtube: 5 };
+const PLATFORM_SHIFT: Record<string, number> = { instagram: 3, tiktok: 8 };
 
 export interface SlotOpts {
   fromMs?: number; // base instant (default: now)
@@ -129,9 +128,4 @@ export function nextSlots(count: number, opts: SlotOpts = {}): string[] {
     out.push(iso);
   }
   return out;
-}
-
-/** Human-readable policy summary (for the dashboard + logs). */
-export function describeWindow(): string {
-  return `schedule window ${WINDOW_OPEN_HOUR}:00am–${WINDOW_CLOSE_HOUR}:00am ${TZ} (nothing 1:00am–7:00am), natural odd-minute jitter + per-platform shift`;
 }

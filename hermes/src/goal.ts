@@ -166,20 +166,17 @@ function round2(n: number): number {
 /** Read the optional per-platform follower snapshot (honest "pending" when absent). */
 export function readFollowers(env: NodeJS.ProcessEnv = process.env): Record<string, number> {
   const dir = (env.HERMES_DATA_DIR || "").trim() || "/home/ec2-user/hermes-data";
-  for (const path of [`${dir}/account-metrics.json`]) {
-    try {
-      const j = JSON.parse(readFileSync(path, "utf8"));
-      const out: Record<string, number> = {};
-      for (const p of GOAL.platforms) {
-        const v = j?.[p]?.followers ?? j?.[p]?.follower_count ?? j?.followers?.[p];
-        if (Number.isFinite(Number(v))) out[p] = Number(v);
-      }
-      return out;
-    } catch {
-      /* absent -> pending */
+  try {
+    const j = JSON.parse(readFileSync(`${dir}/account-metrics.json`, "utf8"));
+    const out: Record<string, number> = {};
+    for (const p of GOAL.platforms) {
+      const v = j?.[p]?.followers ?? j?.[p]?.follower_count ?? j?.followers?.[p];
+      if (Number.isFinite(Number(v))) out[p] = Number(v);
     }
+    return out;
+  } catch {
+    return {}; // absent -> pending
   }
-  return {};
 }
 
 /** Loop-side convenience: read ab-database.json + kickoff + followers -> progress. */

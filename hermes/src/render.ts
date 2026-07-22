@@ -43,7 +43,7 @@ import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
-import { generateVO, type RevealBeatInput } from "./narration.ts";
+import { generateVO, type RevealBeatInput, type NarrationMode, resolveFfprobe, isNum, spellNums } from "./narration.ts";
 import { isShapeKind, type Figure } from "./state.ts";
 // Reuse the pipeline's canonical number-speller so "25" reads "twenty-five".
 import { n2w } from "../../content/gen-narration-scripts.mjs";
@@ -68,7 +68,6 @@ export const RENDER_PLATFORMS: Platform[] = ["instagram", "tiktok"];
  *  box is the tightest (⊆ the IG box), so a single tiktok render is safe on both. */
 const DEFAULT_PLATFORM: Platform = "tiktok";
 
-type NarrationMode = "full" | "none" | "no-question-vo" | "no-options-vo";
 type Ending = { dropReveal: boolean | "last"; dropScore: boolean; endCard: "default" | "noanswer" | "verdict" };
 
 export interface RenderResult {
@@ -84,8 +83,6 @@ export interface PlatformRender extends RenderResult {
 // Small pure helpers
 // ---------------------------------------------------------------------------
 const norm = (s: unknown): string => String(s ?? "").trim().toLowerCase();
-const isNum = (s: unknown): boolean => /^-?\d+$/.test(String(s ?? "").trim());
-const spellNums = (s: string): string => String(s).replace(/\b\d+\b/g, (m) => n2w(m));
 const LETTERS = ["A", "B", "C", "D"];
 
 /** Ending arm -> the Short variant toggles (mirrors defaults.ts semantics):
@@ -121,13 +118,6 @@ const sfxSet = (slug: string) => ({ whoosh: `${slug}/whoosh.mp3`, ding: `${slug}
 // ffprobe (committed meta beats) — mirrors render-ab.ts audio hygiene: measure
 // the ACTUAL played copy under remotion/public/audio/narration/.
 // ---------------------------------------------------------------------------
-function resolveFfprobe(): string {
-  if (process.env.FFPROBE) return process.env.FFPROBE;
-  for (const c of ["/opt/homebrew/bin/ffprobe", "/usr/local/bin/ffprobe", "/usr/bin/ffprobe"]) {
-    if (existsSync(c)) return c;
-  }
-  return "ffprobe";
-}
 const NARR_DIR = join(CONFIG.REMOTION_DIR, "public", "audio", "narration");
 function metaDur(beat: string): number {
   const file = join(NARR_DIR, `${beat}.mp3`);
@@ -398,6 +388,32 @@ function runRemotion(id: string, platform: Platform, sp: any, outMp4: string): v
 }
 
 /**
+ * Render ONE platform (idempotent: reuse an existing non-trivial render unless
+ * force). Shared by renderForPlatforms + renderVideo so the reuse/shortProps/
+ * runRemotion logic lives in one place.
+ */
+function renderOne(
+  id: string,
+  mapped: Mapped,
+  durs: Record<string, number>,
+  qrBase: string,
+  props: any,
+  platform: Platform,
+  totalFrames: number,
+  opts: { force?: boolean },
+): PlatformRender {
+  const outMp4 = join(CONFIG.RENDERS_DIR, `${id}.${platform}.mp4`);
+  if (!opts.force && existsSync(outMp4) && statSync(outMp4).size > 100_000) {
+    info("render reused", { id, platform, out: outMp4 });
+    return { platform, path: outMp4, frames: totalFrames, reused: true };
+  }
+  const sp = shortProps(mapped, durs, qrBase, props, id, platform, totalFrames);
+  runRemotion(id, platform, sp, outMp4);
+  info("rendered", { id, platform, out: outMp4, bytes: statSync(outMp4).size });
+  return { platform, path: outMp4, frames: totalFrames, reused: false };
+}
+
+/**
  * Render `id`'s video for EVERY platform in RENDER_PLATFORMS (each with its own
  * SAFE ZONES). VO is synthesized once and shared across platforms. Idempotent:
  * an existing non-trivial per-platform render is reused unless force=true.
@@ -415,20 +431,9 @@ export function renderForPlatforms(id: string, props: any, opts: { force?: boole
   props.__short = { totalFrames, durs, qrBase };
   props.totalFrames = totalFrames;
 
-  const out: PlatformRender[] = [];
-  for (const platform of RENDER_PLATFORMS) {
-    const outMp4 = join(CONFIG.RENDERS_DIR, `${id}.${platform}.mp4`);
-    if (!opts.force && existsSync(outMp4) && statSync(outMp4).size > 100_000) {
-      info("render reused", { id, platform, out: outMp4 });
-      out.push({ platform, path: outMp4, frames: totalFrames, reused: true });
-      continue;
-    }
-    const sp = shortProps(mapped, durs, qrBase, props, id, platform, totalFrames);
-    runRemotion(id, platform, sp, outMp4);
-    info("rendered", { id, platform, out: outMp4, bytes: statSync(outMp4).size });
-    out.push({ platform, path: outMp4, frames: totalFrames, reused: false });
-  }
-  return out;
+  return RENDER_PLATFORMS.map((platform) =>
+    renderOne(id, mapped, durs, qrBase, props, platform, totalFrames, opts),
+  );
 }
 
 /**
@@ -443,15 +448,8 @@ export function renderVideo(id: string, props: any, opts: { force?: boolean } = 
   props.__short = { totalFrames, durs, qrBase };
   props.totalFrames = totalFrames;
 
-  const outMp4 = join(CONFIG.RENDERS_DIR, `${id}.${DEFAULT_PLATFORM}.mp4`);
-  if (!opts.force && existsSync(outMp4) && statSync(outMp4).size > 100_000) {
-    info("render reused", { id, platform: DEFAULT_PLATFORM, out: outMp4 });
-    return { path: outMp4, frames: totalFrames, reused: true };
-  }
-  const sp = shortProps(mapped, durs, qrBase, props, id, DEFAULT_PLATFORM, totalFrames);
-  runRemotion(id, DEFAULT_PLATFORM, sp, outMp4);
-  info("rendered", { id, platform: DEFAULT_PLATFORM, out: outMp4, bytes: statSync(outMp4).size });
-  return { path: outMp4, frames: totalFrames, reused: false };
+  const { path, frames, reused } = renderOne(id, mapped, durs, qrBase, props, DEFAULT_PLATFORM, totalFrames, opts);
+  return { path, frames, reused };
 }
 
 /**
