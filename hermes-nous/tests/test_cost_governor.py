@@ -332,6 +332,12 @@ def test_pre_llm_call_injects_only_when_constrained(tmp_path, monkeypatch):
 def test_status_snapshot(tmp_path, monkeypatch):
     monkeypatch.setenv("SFFS_COST_GOVERNOR_DIR", str(tmp_path))
     monkeypatch.setenv("SFFS_FACTORY_KILL", "1")
+    # Hermetic: isolate from ambient operator cap overrides (e.g. a scaled-up
+    # deployment that exports SFFS_COST_* in the service env) so this snapshot
+    # asserts the built-in DEFAULT ceilings regardless of the runtime environment.
+    for _k in ("SFFS_COST_MAX_USD_PER_DAY", "SFFS_COST_MAX_TOKENS_PER_DAY",
+               "SFFS_MAX_CONCURRENT_CHILDREN", "SFFS_MAX_SUBAGENT_SPAWNS_PER_DAY"):
+        monkeypatch.delenv(_k, raising=False)
     s = cg.status()
     assert s["kill_switch"]["engaged"] is True
     assert s["limits"]["max_usd_per_day"] == 75.0
