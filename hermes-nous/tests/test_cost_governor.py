@@ -348,3 +348,95 @@ def test_governor_and_publish_guard_are_independent(tmp_path):
     # publish_guard: a real publish is STILL blocked regardless of the governor
     assert pg.refusal_reason("publer_publish_post_now", {"post_id": "p"}) is not None
     assert pg.refusal_reason("some_tool", {"scheduled_at": "2026-08-01T00:00:00Z"}) is not None
+
+
+# ===========================================================================
+# Observable snapshot (for a spend panel) — compact state + idempotent write
+# ===========================================================================
+def test_snapshot_shape_and_metrics(tmp_path):
+    cg.record_llm_usage(1000, 3000, "opus", sdir=tmp_path, now=FIXED_NOW)  # 4000 tokens
+    cg.record_spawn(2, sdir=tmp_path, now=FIXED_NOW)
+    cg.note_child_start("c1", sdir=tmp_path)
+    cg.note_child_start("c2", sdir=tmp_path)
+
+    s = cg.snapshot(env={}, sdir=tmp_path, now=FIXED_NOW)
+
+    assert set(s) >= {"ts", "day", "kill_switch", "metrics", "ceiling_reason", "state_dir"}
+    assert s["day"] == "2026-07-22"
+    assert s["state_dir"] == str(tmp_path)
+    assert s["kill_switch"] == {"engaged": False, "reason": None}
+
+    m = s["metrics"]
+    assert set(m) == {"usd", "tokens", "spawns", "concurrent_children"}
+    for name in m:
+        assert set(m[name]) == {"value", "ceiling", "over"}  # each metric vs its ceiling
+    # values reflect the ledger tally
+    assert m["tokens"]["value"] == 4000
+    assert m["spawns"]["value"] == 2
+    assert m["concurrent_children"]["value"] == 2
+    assert m["usd"]["value"] > 0
+    # ceilings mirror the HIGH-but-finite defaults (env={} => defaults)
+    assert m["usd"]["ceiling"] == 75.0
+    assert m["tokens"]["ceiling"] == 40_000_000
+    assert m["spawns"]["ceiling"] == 500
+    assert m["concurrent_children"]["ceiling"] == 8
+    # comfortably under everything => nothing over, no ceiling reason
+    assert all(m[n]["over"] is False for n in m)
+    assert s["ceiling_reason"] is None
+
+
+def test_snapshot_reflects_ceilings_and_over_flag(tmp_path):
+    env = {"SFFS_COST_MAX_USD_PER_DAY": "1", "SFFS_MAX_CONCURRENT_CHILDREN": "1"}
+    cg.record_llm_usage(1_000_000, 1_000_000, "opus", sdir=tmp_path, now=FIXED_NOW)  # ~$90 > $1
+    cg.note_child_start("c1", sdir=tmp_path)
+
+    s = cg.snapshot(env=env, sdir=tmp_path, now=FIXED_NOW)
+    assert s["metrics"]["usd"]["ceiling"] == 1.0
+    assert s["metrics"]["usd"]["over"] is True
+    assert s["metrics"]["concurrent_children"]["ceiling"] == 1
+    assert s["metrics"]["concurrent_children"]["over"] is True
+    # a metric under its (default) ceiling stays not-over
+    assert s["metrics"]["tokens"]["over"] is False
+    assert s["ceiling_reason"] is not None and "spend" in s["ceiling_reason"]
+
+
+def test_snapshot_reports_kill_switch(tmp_path):
+    s = cg.snapshot(env={"SFFS_FACTORY_KILL": "1"}, sdir=tmp_path, now=FIXED_NOW)
+    assert s["kill_switch"]["engaged"] is True
+    assert "kill-switch" in s["kill_switch"]["reason"]
+
+
+def test_snapshot_is_side_effect_free(tmp_path):
+    cg.record_llm_usage(100, 100, "opus", sdir=tmp_path, now=FIXED_NOW)
+    before = cg.read_tally(sdir=tmp_path, now=FIXED_NOW)
+    cg.snapshot(env={}, sdir=tmp_path, now=FIXED_NOW)
+    cg.snapshot(env={}, sdir=tmp_path, now=FIXED_NOW)  # repeatable
+    after = cg.read_tally(sdir=tmp_path, now=FIXED_NOW)
+    assert before == after                                    # accounting untouched
+    assert not (tmp_path / cg.SNAPSHOT_FILENAME).exists()     # snapshot() never writes
+
+
+def test_write_snapshot_writes_into_existing_state_dir(tmp_path):
+    cg.record_spawn(1, sdir=tmp_path, now=FIXED_NOW)
+    p = cg.write_snapshot(env={}, sdir=tmp_path, now=FIXED_NOW)
+    assert p == tmp_path / "snapshot.json"
+    assert p.exists()
+    data = json.loads(p.read_text())
+    assert data["metrics"]["spawns"]["value"] == 1
+    # idempotent: rewriting is safe and stays a valid snapshot at the same path
+    p2 = cg.write_snapshot(env={}, sdir=tmp_path, now=FIXED_NOW)
+    assert p2 == p
+    assert json.loads(p.read_text())["metrics"]["spawns"]["value"] == 1
+
+
+def test_write_snapshot_path_reuses_governor_state_dir(tmp_path):
+    # path derivation must reuse state_dir() (SFFS_COST_GOVERNOR_DIR override wins),
+    # NOT a new config path.
+    env = {"SFFS_COST_GOVERNOR_DIR": str(tmp_path)}
+    p = cg.write_snapshot(env=env, now=FIXED_NOW)  # no explicit sdir -> derived from env
+    assert p == cg.state_dir(env) / "snapshot.json"
+    assert p.exists()
+
+
+def test_write_snapshot_none_when_no_state_dir():
+    assert cg.write_snapshot(env={}) is None  # no dir hints -> nothing written, no raise
