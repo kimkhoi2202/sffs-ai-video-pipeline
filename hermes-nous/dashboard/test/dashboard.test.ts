@@ -17,6 +17,7 @@ import {
   evaluateKillSwitch, computeBankCoverage, redactRunForPublic,
   publicPublerCdnUrl, sanitizeDraftsForPublic, resolveDraftMediaUrl,
 } from "../data.ts";
+import { computeGoalProgress, GOAL } from "../goal.ts";
 import { esc, page } from "../render.ts";
 import { checkBasicAuth, eq } from "../server.ts";
 import type { GateAttempt } from "../types.ts";
@@ -592,4 +593,143 @@ test("LAYOUT: page guards horizontal scroll (overflow-x hidden + wrapped tables 
   // the run-selector must be able to shrink (not overflow the viewport) on narrow screens
   assert.match(html, /select\{[^}]*max-width:100%/);
   assert.match(html, /\.card h2\{[^}]*flex-wrap:wrap/);
+});
+
+// ── GOAL-PROGRESS (Hermes's 7-day mandate) — pure math ───────────────────────
+const goalPosts = [
+  { platform: "instagram", posted_at: "2026-07-20T10:00:00Z", metrics: { video_views: 100, reactions: 10 }, variant: { arm: "hook-a", family: "hook" } },
+  { platform: "tiktok", posted_at: "2026-07-20T11:00:00Z", metrics: { video_views: 200, reactions: 20 }, variant: { arm: "hook-b", family: "hook" } },
+  { platform: "instagram", posted_at: "2026-07-21T10:00:00Z", metrics: { video_views: 400, reactions: 5 }, variant: { arm: "hook-a", family: "hook" } },
+];
+
+test("computeGoalProgress: BEFORE kickoff ⇒ pending, full 7d clock, running totals, followers pending", () => {
+  const gp = computeGoalProgress(goalPosts, null, null, new Date("2026-07-22T00:00:00Z"));
+  // pending: not armed, no t0, clock reads the full 7 days, not started
+  assert.equal(gp.armed, false);
+  assert.equal(gp.since, null);
+  assert.equal(gp.daysLeft, 7);
+  assert.equal(gp.hoursLeft, 0);
+  assert.equal(gp.windowClosed, false);
+  // running totals over ALL posts (t0 null)
+  assert.equal(gp.instagram.views.value, 500); // 100 + 400
+  assert.equal(gp.instagram.likes.value, 15); // 10 + 5
+  assert.equal(gp.tiktok.views.value, 200);
+  assert.equal(gp.combined.views.value, 700);
+  assert.equal(gp.combined.likes.value, 35);
+  assert.equal(gp.combined.posts, 3);
+  // mandate targets (combined full; per-platform half; followers 1k each / 2k combined)
+  assert.equal(gp.combined.views.target, 1_000_000);
+  assert.equal(gp.combined.likes.target, 200_000);
+  assert.equal(gp.instagram.views.target, 500_000);
+  assert.equal(gp.instagram.likes.target, 100_000);
+  assert.equal(gp.instagram.followers.target, 1_000);
+  assert.equal(gp.combined.followers.target, 2_000);
+  // followers absent ⇒ pending (null), NOT 0/fake
+  assert.equal(gp.followersPending, true);
+  assert.equal(gp.instagram.followers.value, null);
+  assert.equal(gp.combined.followers.value, null);
+  // no observed pace before kickoff, but the honest "needed/day" mountain is finite over 7d
+  assert.equal(gp.instagram.paceViewsPerDay, null);
+  assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 700) / 7);
+  assert.ok(gp.combined.neededViewsPerDay > 100_000); // cold account ⇒ huge daily pace needed
+  // "what's moving the needle": arms aggregated by views
+  assert.equal(gp.topArmsByViews[0].arm, "hook-a");
+  assert.equal(gp.topArmsByViews[0].views, 500);
+  assert.equal(gp.topArmsByViews[0].family, "hook");
+});
+
+test("computeGoalProgress: AFTER kickoff ⇒ windowed per-platform aggregation + days-left + observed/needed pace", () => {
+  const t0 = "2026-07-20T10:30:00Z"; // between post1 (10:00, excluded) and post3
+  const gp = computeGoalProgress(
+    goalPosts,
+    t0,
+    { instagram: { followers: 120 }, tiktok: { followers: 340 } },
+    new Date("2026-07-22T10:30:00Z"), // exactly 2 days after t0
+  );
+  assert.equal(gp.armed, true);
+  assert.equal(gp.since, new Date(t0).toISOString());
+  assert.equal(gp.daysLeft, 5); // 7 - 2
+  assert.equal(gp.hoursLeft, 0);
+  assert.equal(gp.windowClosed, false);
+  // windowing: the pre-t0 IG post (10:00) is excluded; only post3 (IG) + post2 (TikTok) count
+  assert.equal(gp.instagram.views.value, 400);
+  assert.equal(gp.instagram.posts, 1);
+  assert.equal(gp.tiktok.views.value, 200);
+  assert.equal(gp.combined.views.value, 600);
+  assert.equal(gp.combined.likes.value, 25);
+  assert.equal(gp.combined.posts, 2);
+  // observed pace over the 2 elapsed days
+  assert.equal(gp.combined.paceViewsPerDay, 300); // 600 / 2
+  assert.equal(gp.combined.paceLikesPerDay, 12.5); // 25 / 2
+  // needed pace over the remaining 5 days
+  assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 600) / 5);
+  // followers now come from the snapshot (not pending)
+  assert.equal(gp.followersPending, false);
+  assert.equal(gp.instagram.followers.value, 120);
+  assert.equal(gp.tiktok.followers.value, 340);
+  assert.equal(gp.combined.followers.value, 460);
+});
+
+test("computeGoalProgress: window closed unmet ⇒ needed=null (∞); target met ⇒ needed=0", () => {
+  const t0 = "2026-07-20T00:00:00Z";
+  const closed = computeGoalProgress(goalPosts, t0, null, new Date("2026-07-28T00:00:00Z")); // 8d > 7d
+  assert.equal(closed.windowClosed, true);
+  assert.equal(closed.daysLeft, 0);
+  assert.equal(closed.combined.neededViewsPerDay, null); // unmet + closed ⇒ impossible
+  // a post that blows past the target ⇒ needed drops to 0 (already met)
+  const met = computeGoalProgress(
+    [{ platform: "tiktok", posted_at: "2026-07-21T00:00:00Z", metrics: { video_views: 2_000_000, reactions: 300_000 } }],
+    t0, null, new Date("2026-07-22T00:00:00Z"),
+  );
+  assert.equal(met.combined.neededViewsPerDay, 0);
+  assert.ok(met.combined.views.pct >= 100);
+});
+
+// ── GOAL-PROGRESS panel renders FRONT-AND-CENTER ─────────────────────────────
+test("page: GOAL panel renders FRONT-AND-CENTER with the exact mandate targets + pure-CSS bars", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /Hermes mandate — live 7-day trajectory/);
+  assert.match(html, /KICKOFF PENDING/); // no goal data ⇒ pending panel
+  // the exact mandate numbers are on the page
+  assert.match(html, /1,000,000/);
+  assert.match(html, /200,000/);
+  assert.match(html, /1,000/);
+  // FRONT-AND-CENTER: the GOAL card comes before DRAFTS and Cycle status
+  const goalIdx = html.indexOf("Hermes mandate");
+  const draftsIdx = html.indexOf("Drafts awaiting review");
+  const cycleIdx = html.indexOf("Cycle status");
+  assert.ok(goalIdx > -1 && draftsIdx > goalIdx, "GOAL panel must render before DRAFTS");
+  assert.ok(cycleIdx > goalIdx, "GOAL panel must render before Cycle status");
+  // pure CSS/inline-style progress bars, no external assets
+  assert.match(html, /class="gbar"/);
+  assert.match(html, /class="gfill" style="width:/);
+});
+
+test("page: GOAL panel shows ARMED state, honest pace gap, snapshot followers, and top arms", () => {
+  const goal = computeGoalProgress(
+    [
+      { platform: "instagram", posted_at: "2026-07-21T00:00:00Z", metrics: { video_views: 500, reactions: 15 }, variant: { arm: "hook-a", family: "hook" } },
+      { platform: "tiktok", posted_at: "2026-07-21T00:00:00Z", metrics: { video_views: 993, reactions: 40 }, variant: { arm: "speed-fast", family: "speed" } },
+    ],
+    "2026-07-20T00:00:00Z",
+    { instagram: { followers: 120 }, tiktok: { followers: 88 } },
+    new Date("2026-07-22T00:00:00Z"),
+  );
+  const html = page(emptyPageData({ goal }));
+  assert.match(html, /KICKOFF ARMED/);
+  assert.match(html, /views\/day observed/);
+  assert.match(html, /views\/day needed/); // the honest gap is surfaced
+  assert.match(html, /hook-a/);
+  assert.match(html, /speed-fast/); // top arms by views/likes
+  assert.doesNotMatch(html, /followers snapshot<\/b>pending/); // snapshot loaded ⇒ not pending
+});
+
+test("GUARDRAIL: GOAL panel adds NO mutating control and leaks NO secrets", () => {
+  const goal = computeGoalProgress(goalPosts, "2026-07-20T00:00:00Z", { instagram: { followers: 5 }, tiktok: { followers: 9 } }, new Date("2026-07-22T00:00:00Z"));
+  const html = page(emptyPageData({ goal }));
+  assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
+  assert.doesNotMatch(html, /<button[^>]*>\s*(publish|schedule|merge|post|go live|approve|reject|arm)/i);
+  assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["']/i);
+  // no secrets / no S3 presigned material introduced by this panel
+  assert.doesNotMatch(html, /X-Amz-|amazonaws\.com|Bearer\s|api[_-]?key/i);
 });

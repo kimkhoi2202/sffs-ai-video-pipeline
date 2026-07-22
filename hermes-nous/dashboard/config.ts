@@ -76,6 +76,17 @@ export const CONFIG = Object.freeze({
       ? join((process.env.SFFS_FACTORY_DAEMON_DIR as string).trim(), "factory-status.json")
       : join(DATA_DIR, "factory-daemon", "factory-status.json")),
 
+  // ── GOAL-PROGRESS panel (Hermes's 7-day mandate) ─────────────────────────
+  // The 7-day clock is ARMED by a box-only file: it must EXIST and its CONTENT
+  // must contain the exact phrase below. t0 = that file's mtime. Read-only: the
+  // dashboard only reports the state; arming is a human/box action, never a web
+  // action. Both paths default under DATA_DIR and are env-overridable.
+  KICKOFF_FILE: process.env.HERMES_KICKOFF_FILE || join(DATA_DIR, "KICKOFF_ARMED"),
+  /** exact phrase the KICKOFF_ARMED file must contain to arm the clock. */
+  KICKOFF_PHRASE: (process.env.HERMES_KICKOFF_PHRASE || "ARM SFFS AUTONOMY").trim(),
+  /** optional per-platform follower snapshot ({instagram:{followers},tiktok:{followers}}). */
+  ACCOUNT_METRICS: process.env.HERMES_ACCOUNT_METRICS || join(DATA_DIR, "account-metrics.json"),
+
   // ── question-bank runway estimate (coverage panel) ───────────────────────
   /** est. videos/day and questions/video, used only to estimate days-of-runway. */
   VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 10),
