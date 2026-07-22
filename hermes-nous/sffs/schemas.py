@@ -374,3 +374,68 @@ SFFS_GATES_SCHEMA = {
         "required": ["what"],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# QUESTIONS — never-repeat question SELECTION (read-only). Selects fresh,
+# never-before-used questions from the bank; it can NEVER mark questions used
+# (no markUsed import) or touch any post (see questions.py + bridge/questions.ts).
+# No state/schedule/publish vocabulary is exposed (schema-as-guardrail).
+# ---------------------------------------------------------------------------
+
+SFFS_QUESTIONS_SCHEMA = {
+    "name": "sffs_questions",
+    "description": (
+        "READ-ONLY question selection with a strong never-repeat guarantee. Use "
+        "what='candidates' (default) to get FRESH, never-before-used questions in a "
+        "stable seeded order — every returned question is excluded from both dedup "
+        "ledgers (so it has never been used across the campaign) and from any "
+        "'exclude' sigs you already claimed in this batch. Only the two "
+        "headless-renderable kinds are returned (text = verbal odd-one-out/analogy, "
+        "numseries = number series). Use what='stats' for bank freshness counts "
+        "(total / usable / fresh / used). This only reads the local bank + ledgers; "
+        "it never marks questions used, and never touches any post. Set dry_run=true "
+        "to preview the request."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "what": {
+                "type": "string",
+                "enum": ["candidates", "stats"],
+                "description": "'candidates' (default): fresh questions. 'stats': bank freshness counts.",
+            },
+            "category": {
+                "type": "string",
+                "enum": ["verbal", "quantitative", "nonverbal", "mixed"],
+                "description": (
+                    "For 'candidates': restrict to a category ('mixed' or omitted = no "
+                    "filter). Note only text/numseries render, so 'nonverbal' yields ~0."
+                ),
+            },
+            "kinds": {
+                "type": "array",
+                "items": {"type": "string", "enum": ["text", "numseries"]},
+                "description": "For 'candidates': restrict to these question kinds (default both).",
+            },
+            "seed": {
+                "type": "string",
+                "description": "For 'candidates': a seed for the deterministic ordering (e.g. run+dimension).",
+            },
+            "exclude": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "For 'candidates': question sigs already claimed earlier in THIS batch, to skip.",
+            },
+            "limit": {
+                "type": "integer",
+                "description": "For 'candidates': max questions to return (default 20; max 200).",
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, preview the request WITHOUT any network call.",
+            },
+        },
+        "required": [],
+    },
+}
