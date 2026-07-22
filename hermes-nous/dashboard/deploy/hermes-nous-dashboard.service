@@ -1,0 +1,33 @@
+# systemd unit for the hermes-nous READ-ONLY dashboard.
+# Mirrors ops/systemd/hermes-dashboard.service (the live loop's dashboard) but
+# runs the rebuilt agent's dashboard on a SEPARATE port (default 8081) so both
+# can run side-by-side during cutover. Copy to /etc/systemd/system/ on the VPS.
+#
+#   sudo cp hermes-nous/dashboard/deploy/hermes-nous-dashboard.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now hermes-nous-dashboard
+#
+# Restrict the port to the operator's IP at the security-group / firewall layer
+# (as the live dashboard does) AND set HERMES_DASH_PASS for basic auth.
+
+[Unit]
+Description=Hermes-Nous SFFS dashboard (READ-ONLY supervisor for the draft-only loop + software factory)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/sffs-ai-video-pipeline
+EnvironmentFile=/etc/hermes/hermes.env
+# Read-only supervisor. Node runs the .ts entry directly (native type stripping).
+ExecStart=/usr/bin/env node hermes-nous/dashboard/server.ts
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+# Defense-in-depth: the process never needs to write the repo or data dirs.
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=
+
+[Install]
+WantedBy=multi-user.target

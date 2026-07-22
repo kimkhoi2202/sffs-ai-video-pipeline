@@ -1,0 +1,12 @@
+{
+  "name": "hermes-nous-dashboard",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "READ-ONLY web dashboard for the rebuilt hermes-nous DRAFT-ONLY agent: cycle status, A/B results, software-factory PR view (review-agent verdict + test status), loop health + kill-switch. Display-only — never posts, schedules, publishes, or merges.",
+  "scripts": {
+    "dashboard": "node server.ts",
+    "start": "node server.ts",
+    "test": "node --test"
+  }
+}
