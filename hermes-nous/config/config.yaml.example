@@ -8,6 +8,12 @@ model:
   base_url: "https://tfy.promptlens.trilogy.com/api/llm/v1"     # TrueFoundry gateway
   default: "claude-opus-4-8"                                    # design/validation/factory brain
   # caption/routine copy can pin claude-haiku-4-5 via auxiliary/per-call model override
+  # The `custom` provider has env_vars=() and is EXCLUDED from Hermes's auto
+  # env-key registry, so it does NOT read OPENAI_API_KEY on its own. Feed it via
+  # this ${VAR} reference — hermes loads $HERMES_HOME/.env at startup and expands
+  # ${OPENAI_API_KEY} from the process env, keeping the real secret out of git.
+  # (Verified iteration 2: raw curl 200 but the agent loop 401'd until this line.)
+  api_key: "${OPENAI_API_KEY}"
 
 delegation:                 # cost guardrails for the subagent software factory
   max_concurrent_children: 2
@@ -20,3 +26,7 @@ agent:
 memory:
   memory_enabled: true
   user_profile_enabled: true
+
+plugins:                    # user plugins are opt-in; the sffs safety core must be enabled
+  enabled:
+    - sffs                  # run scripts/link-plugin.sh to symlink + enable it in $HERMES_HOME

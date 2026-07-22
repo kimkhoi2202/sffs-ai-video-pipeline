@@ -73,8 +73,26 @@ export interface DraftInput {
   type?: CreatePostArgs["type"];
 }
 
-/** The ONLY sanctioned Publer write. Creates a DRAFT and nothing else. */
-export async function createDraftOnly(input: DraftInput & Record<string, unknown>): Promise<string> {
+/** A validated, normalized draft payload — state is frozen to "draft". */
+export interface DraftPayload {
+  account_ids: string[];
+  text: string;
+  media_ids?: string[];
+  media_objects?: Array<Record<string, unknown>>;
+  type: CreatePostArgs["type"];
+  state: typeof CONFIG.ALLOWED_POST_STATE; // "draft"
+}
+
+/**
+ * The single source of truth for the DRAFT-ONLY guard, with NO network call.
+ * Re-asserts CONFIG.DRAFT_ONLY, refuses any non-draft state or any scheduled_at,
+ * requires account_ids, and forces state="draft". createDraftOnly() calls this
+ * before it ever talks to Publer; the Nous plugin bridge (hermes-nous/bridge/
+ * publer-draft.ts) also calls it for a network-free dry-run validation. This
+ * lets the DRAFT-ONLY invariant be tested without keys or network. Throws on any
+ * violation.
+ */
+export function validateDraftOnly(input: DraftInput & Record<string, unknown>): DraftPayload {
   assertDraftOnly();
   if ("state" in input && (input as any).state !== undefined && (input as any).state !== "draft") {
     throw new Error(`createDraftOnly: refusing non-draft state "${(input as any).state}"`);
@@ -83,12 +101,19 @@ export async function createDraftOnly(input: DraftInput & Record<string, unknown
     throw new Error("createDraftOnly: refusing scheduled_at — the loop is draft-only");
   }
   if (!input.account_ids?.length) throw new Error("createDraftOnly: account_ids required");
-  return createPost({
+  return {
     account_ids: input.account_ids,
     text: input.text,
     media_ids: input.media_ids,
     media_objects: input.media_objects,
     type: input.type ?? "video",
     state: CONFIG.ALLOWED_POST_STATE, // "draft", frozen
-  });
+  };
+}
+
+/** The ONLY sanctioned Publer write. Creates a DRAFT and nothing else. */
+export async function createDraftOnly(input: DraftInput & Record<string, unknown>): Promise<string> {
+  // Validate first (belt): refuses non-draft state / scheduled_at, forces draft.
+  // Then create — createPost re-applies state="draft" from the validated payload.
+  return createPost(validateDraftOnly(input));
 }
