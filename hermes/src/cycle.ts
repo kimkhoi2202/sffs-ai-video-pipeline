@@ -118,6 +118,15 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
     return;
   }
 
+  // Optional run/validation TAG on the DRAFT caption (env-gated). The live VPS
+  // loop leaves HERMES_CAPTION_TAG unset, so real captions are unchanged
+  // (behavior-preserving). A supervised hermes-nous validation run sets it (e.g.
+  // "[hermes-nous validation]") so the created DRAFTS are clearly labeled and
+  // trivial for a human to find + delete. Applied AFTER the copy gate so it can
+  // never affect a gate decision, and reflected in the ab-database annotation.
+  const captionTag = (process.env.HERMES_CAPTION_TAG || "").trim();
+  if (captionTag) v.caption = `${captionTag}\n${v.caption}`;
+
   // 7) upload to S3 (presigned)
   const key = `hermes/${todayRunId()}/${v.id}.mp4`;
   const url = uploadToS3(r.path, key);
