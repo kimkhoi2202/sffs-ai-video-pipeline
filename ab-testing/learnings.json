@@ -11,8 +11,8 @@
       "examples_json": "brand/brand-voice-examples.json"
     },
     "corpus": {
-      "surfaces": 33,
-      "examples": 230
+      "surfaces": 37,
+      "examples": 262
     },
     "hard_rules": "concise; funny; Gen Z lowercase-casual; kid-safe (no HARD/explicit profanity, but mild slang like 'af' is on-brand and allowed); NO em dashes; at most ONE tasteful emoji (never spam); no AI-slop tone; no over-explaining/lecturing; always end social copy with a follow / come-back nudge.",
     "signature_device": "SMART FELLA vs FART SMELLA binary: praise = Smart Fella, miss = Fart Smella '(for now)'."
