@@ -1,5 +1,5 @@
 name: sffs
-version: 0.11.0
+version: 0.12.0
 description: >-
   SFFS DRAFT-ONLY A/B quiz-video agent — safety core + read-only cycle data
   tools + the batch designer + the quality gates + never-repeat question
@@ -18,9 +18,13 @@ description: >-
   (pre_tool_call/pre_llm_call/post_llm_call/subagent_start/subagent_stop hooks)
   that halts the factory + the loop + subagent fan-out on a kill-switch or a
   HIGH-but-finite daily $/token/spawn/concurrency ceiling (spend brake only —
-  posting stays frozen at draft-only). It can never publish or schedule a live
-  post and can never push to main (belt AND suspenders AND framework-layer
-  defense-in-depth DRAFT-ONLY).
+  posting stays frozen at draft-only), plus the SOFTWARE FACTORY tool
+  (sffs_factory) — the autonomous CODE self-improvement engine that proposes code
+  changes (delegate_task fan-out) and auto-merges each ONLY on the two-key gate
+  (harness GREEN AND review-agent APPROVE), cost-governed + kill-switched, scoped
+  to the build branch (never main), dry-run by default. It can never publish or
+  schedule a live post and can never push to main (belt AND suspenders AND
+  framework-layer defense-in-depth DRAFT-ONLY).
 author: "hermes-nous rebuild (ralph-wiggum overnight build)"
 provides_tools:
   - sffs_publer_draft
@@ -35,6 +39,7 @@ provides_tools:
   - sffs_upload_s3
   - sffs_score_rollup
   - sffs_cycle
+  - sffs_factory
 provides_hooks:
   - pre_tool_call     # publish_guard (DRAFT-ONLY belt) + cost_governor (spend brake)
   - pre_llm_call      # cost_governor advisory wind-down nudge

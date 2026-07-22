@@ -695,3 +695,86 @@ SFFS_CYCLE_SCHEMA = {
         "required": [],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# FACTORY — the software-factory self-improvement engine. Proposes CODE changes
+# (delegate_task fan-out) and auto-merges each ONLY on the TWO-KEY gate (harness
+# GREEN AND review-agent APPROVE), honoring the cost governor + kill-switch,
+# scoped to the build branch (never main). DRY-RUN by default. This tool changes
+# CODE only — it exposes NO state/schedule/publish vocabulary (schema-as-guardrail)
+# and can never post/publish/schedule.
+# ---------------------------------------------------------------------------
+
+SFFS_FACTORY_SCHEMA = {
+    "name": "sffs_factory",
+    "description": (
+        "Run the SFFS software factory: the autonomous CODE self-improvement engine. "
+        "It proposes code-change workstreams (fanned out to delegate_task subagents) "
+        "and auto-merges each proposed branch ONLY when the two-key gate turns BOTH "
+        "keys — the E2E harness is GREEN AND an independent review-agent APPROVES "
+        "(fail-closed). It honors the cost governor + kill-switch, never targets a "
+        "protected branch (main/master/prod), scopes out prod infra/secrets, and "
+        "keeps a rollback path. DRY-RUN by DEFAULT: it plans workstreams and runs the "
+        "gate WITHOUT spawning subagents or merging. A real run requires BOTH "
+        "execute=true AND dry_run=false. It changes CODE only — it can never publish, "
+        "schedule, or post. Pass a prepared branch as 'source' to gate it, and/or "
+        "'goals' to plan the fan-out."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "dry_run": {
+                "type": "boolean",
+                "description": (
+                    "If true (default), NO subagent is spawned and NO merge happens; the "
+                    "two-key gate runs in dry-run on any prepared branch so the decision "
+                    "is computed and proven safely."
+                ),
+            },
+            "goals": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": (
+                    "High-level code-improvement goals to fan out to delegate_task "
+                    "subagents (each becomes a bounded workstream on its own branch)."
+                ),
+            },
+            "source": {
+                "type": "string",
+                "description": (
+                    "An already-prepared branch to run the two-key gate on (its diff vs "
+                    "target is what the harness + review-agent judge)."
+                ),
+            },
+            "target": {
+                "type": "string",
+                "description": (
+                    "Branch to merge INTO (default 'hermes-nous'). NEVER a protected "
+                    "branch (main/master/prod) — that is refused."
+                ),
+            },
+            "execute": {
+                "type": "boolean",
+                "description": (
+                    "If true AND dry_run=false, actually spawn the fan-out and perform "
+                    "the merge (only on GREEN+APPROVE). Default false. Both flags are "
+                    "required for a real run."
+                ),
+            },
+            "offline_review": {
+                "type": "boolean",
+                "description": (
+                    "If true (default for a cheap dry-run proof), the review-agent runs "
+                    "its deterministic static-safety floor only (no model tokens). Set "
+                    "false to require the full fresh review-agent sign-off."
+                ),
+            },
+            "max_workstreams": {
+                "type": "integer",
+                "description": "Cap on how many workstreams to plan/fan out (default 8, aggressive-but-bounded).",
+            },
+        },
+        "required": [],
+    },
+}
