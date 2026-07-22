@@ -57,6 +57,86 @@ export function loadUsedSigs(): Set<string> {
 
 const norm = (s: string) => s.trim().toLowerCase();
 
+// ── Fuzzy near-duplicate signature (computed at LOAD-TIME; NEVER persisted) ───
+// A SECOND, conservative dedup key that catches what the exact `sig` is blind to:
+// paraphrases, reordered options, and structurally-identical number series
+// (e.g. "5 10 15 20 -> ?" vs "10 20 30 40 -> ?"). It is deliberately narrow: it
+// only collides on genuine structural identity so it excludes real near-dups
+// WITHOUT over-rejecting genuinely different questions. Computed on the in-memory
+// HermesQ only — it is never written into the bank file or config.
+
+// A number series is only folded into a scale-invariant "shape" when it has at
+// least this many terms; anything shorter falls back to a literal key so we never
+// collapse too aggressively. (LIMITS.minSeq already guarantees >= 3, so this is a
+// belt-and-suspenders floor rather than a real gate — the one conservatism knob.)
+const MIN_SERIES_TERMS_FOR_PATTERN = 3;
+
+/** Aggressive text normalizer for fuzzy matching: fold case, punctuation, and
+ * runs of whitespace so "New-York!", "new  york", and "New York" all collapse. */
+const fuzzyNorm = (s: string): string =>
+  String(s ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+function gcd2(a: number, b: number): number {
+  a = Math.abs(a);
+  b = Math.abs(b);
+  while (b) [a, b] = [b, a % b];
+  return a;
+}
+
+/** Scale-invariant "step pattern" of a numeric series, or null if it isn't a
+ * clean integer series. We hash the first-differences reduced by their GCD, so
+ * proportional series ("5 10 15 20" -> steps 5,5,5 ; "10 20 30 40" -> 10,10,10)
+ * both reduce to "1,1,1" and collide, while a different shape (arithmetic vs
+ * geometric, different ratio, different length) stays distinct. Non-integer or
+ * unparseable series return null and fall back to a literal key (never more
+ * aggressive than exact). */
+function numericStepPattern(terms: string[]): string | null {
+  if (terms.length < MIN_SERIES_TERMS_FOR_PATTERN) return null;
+  const nums: number[] = [];
+  for (const t of terms) {
+    const n = Number(String(t).trim());
+    if (!Number.isFinite(n) || !Number.isInteger(n)) return null; // non-integer -> literal fallback
+    nums.push(n);
+  }
+  const diffs: number[] = [];
+  for (let i = 1; i < nums.length; i++) diffs.push(nums[i] - nums[i - 1]);
+  const g = diffs.reduce((acc, d) => gcd2(acc, d), 0);
+  const shape = g === 0 ? diffs.map(() => 0) : diffs.map((d) => d / g);
+  return shape.join(",");
+}
+
+/** Canonical fuzzy signature for a validated question (computed in-memory only).
+ * Two questions with the SAME fuzzy sig are treated as near-duplicates. */
+export function fuzzySig(q: HermesQ): string {
+  if (q.kind === "numseries") {
+    const seq = q.seq ?? [];
+    const pat = numericStepPattern(seq);
+    // Key on the scale-invariant step pattern (+ term count) so the literal
+    // numbers don't matter; fall back to the normalized literal series otherwise.
+    return pat !== null ? `n|${seq.length}|${pat}` : `n|lit|${seq.map(fuzzyNorm).join("~")}`;
+  }
+  // text (verbal odd-one-out / analogy): key on the *set* of normalized options
+  // plus the normalized answer, IGNORING prompt wording — so paraphrases and
+  // reordered options collide, while a different option set / answer does not.
+  const opts = (q.options ?? []).map(fuzzyNorm).filter(Boolean).sort();
+  return `t|${fuzzyNorm(q.answer)}|${opts.join("~")}`;
+}
+
+/** Fuzzy sigs of every already-used question we can still resolve from the bank
+ * (used exact-sig -> bank entry -> fuzzySig). Used questions no longer present in
+ * the bank aren't covered here — the exact-sig ledger still guards those. */
+export function loadUsedFuzzySigs(): Set<string> {
+  const used = loadUsedSigs();
+  const out = new Set<string>();
+  if (used.size === 0) return out;
+  for (const e of loadBank()) {
+    if (!used.has(e.sig)) continue;
+    const q = toHermesQ(e);
+    if (q) out.add(fuzzySig(q));
+  }
+  return out;
+}
+
 /** Turn a bank entry into a validated HermesQ, or null if unusable/would overflow. */
 export function toHermesQ(e: BankEntry): HermesQ | null {
   if (!e || !e.sig || !e.answerNorm) return null;
@@ -117,7 +197,8 @@ export interface CandidateFilter {
   category?: string; // "verbal" | "quantitative" | "nonverbal" | "mixed"/undefined
   kinds?: Array<"text" | "numseries">;
   seed?: string; // for deterministic ordering
-  exclude?: Set<string>; // additional sigs to skip (in-batch claims)
+  exclude?: Set<string>; // additional exact sigs to skip (in-batch claims)
+  excludeFuzzy?: Set<string>; // additional fuzzy sigs to skip (near-dup claims)
 }
 
 /** Return validated, fresh (never-used) candidate questions in a stable order. */
@@ -125,13 +206,23 @@ export function candidateQuestions(filter: CandidateFilter = {}): HermesQ[] {
   const used = loadUsedSigs();
   const extra = filter.exclude ?? new Set<string>();
   const kinds = filter.kinds ?? ["text", "numseries"];
+  // SECOND dedup key (additive; exact-sig behavior below is unchanged): skip any
+  // candidate that is a near-duplicate of an already-used question, of a caller-
+  // supplied fuzzy claim, or of an earlier candidate already kept in this pool.
+  const usedFuzzy = loadUsedFuzzySigs();
+  const extraFuzzy = filter.excludeFuzzy ?? new Set<string>();
+  const seenFuzzy = new Set<string>();
   const pool: HermesQ[] = [];
   for (const e of loadBank()) {
     if (!kinds.includes(e.kind as any)) continue;
     if (filter.category && filter.category !== "mixed" && e.category !== filter.category) continue;
     if (used.has(e.sig) || extra.has(e.sig)) continue;
     const q = toHermesQ(e);
-    if (q) pool.push(q);
+    if (!q) continue;
+    const f = fuzzySig(q);
+    if (usedFuzzy.has(f) || extraFuzzy.has(f) || seenFuzzy.has(f)) continue; // near-duplicate
+    seenFuzzy.add(f);
+    pool.push(q);
   }
   return seededShuffle(pool, hashSeed(filter.seed ?? "hermes"));
 }
