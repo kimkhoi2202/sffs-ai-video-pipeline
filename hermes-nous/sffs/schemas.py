@@ -60,3 +60,66 @@ SFFS_PUBLER_DRAFT_SCHEMA = {
         "required": ["account_ids", "text"],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# Do-not-touch (READ-ONLY) — snapshot before a cycle, verify after. These only
+# ever LIST scheduled + published posts; they can never write/schedule/publish/
+# delete/update anything (see donottouch.py + bridge/donottouch.ts).
+# ---------------------------------------------------------------------------
+
+SFFS_DONOTTOUCH_SNAPSHOT_SCHEMA = {
+    "name": "sffs_donottouch_snapshot",
+    "description": (
+        "READ-ONLY safety tool. Capture a snapshot of the ids of every EXISTING "
+        "scheduled and published Publer post, to be verified unchanged after a "
+        "drafting cycle. Call this BEFORE the agent creates any drafts, then pass "
+        "the returned 'snapshot' to sffs_donottouch_verify afterward. This never "
+        "writes, schedules, publishes, deletes, or modifies any post. Set "
+        "dry_run=true to skip the live read (no network call)."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, make NO network call (returns a stub).",
+            },
+        },
+        "required": [],
+    },
+}
+
+SFFS_DONOTTOUCH_VERIFY_SCHEMA = {
+    "name": "sffs_donottouch_verify",
+    "description": (
+        "READ-ONLY safety tool. Verify that no PRE-EXISTING scheduled or published "
+        "Publer post was touched during a cycle. Pass the 'snapshot' returned by "
+        "sffs_donottouch_snapshot (taken before the cycle); this re-lists the live "
+        "posts and reports a violation if any of them vanished or changed state. It "
+        "never writes/schedules/publishes/deletes/modifies anything. Set "
+        "dry_run=true to validate the snapshot shape without a network call."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "snapshot": {
+                "type": "object",
+                "description": (
+                    "The snapshot object returned by sffs_donottouch_snapshot "
+                    "(contains scheduled_ids and published_ids)."
+                ),
+                "properties": {
+                    "scheduled_ids": {"type": "array", "items": {"type": "string"}},
+                    "published_ids": {"type": "array", "items": {"type": "string"}},
+                    "captured_at": {"type": "string"},
+                },
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, validate the snapshot shape only (no network call).",
+            },
+        },
+        "required": ["snapshot"],
+    },
+}

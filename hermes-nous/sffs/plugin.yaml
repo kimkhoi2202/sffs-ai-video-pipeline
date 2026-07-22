@@ -1,12 +1,18 @@
 name: sffs
-version: 0.1.0
+version: 0.2.0
 description: >-
   SFFS DRAFT-ONLY A/B quiz-video agent — safety core. Registers the Publer
-  draft-only tool that wraps the pipeline's createDraftOnly path. It can never
-  publish or schedule a live post (belt-and-suspenders DRAFT-ONLY).
+  draft-only write tool + read-only do-not-touch snapshot/verify tools, plus a
+  pre_tool_call hook that hard-refuses any publish/schedule/post-mutation call
+  across ALL tools. It can never publish or schedule a live post (belt AND
+  suspenders AND framework-layer defense-in-depth DRAFT-ONLY).
 author: "hermes-nous rebuild (ralph-wiggum overnight build)"
 provides_tools:
   - sffs_publer_draft
-# NOTE: intentionally NO `requires_env` for Publer keys — the tool must still be
+  - sffs_donottouch_snapshot
+  - sffs_donottouch_verify
+provides_hooks:
+  - pre_tool_call
+# NOTE: intentionally NO `requires_env` for Publer keys — the tools must still be
 # discoverable (and refuse/dry-run safely) without keys. The real network call
 # gates on PUBLER_API_KEY / PUBLER_WORKSPACE_ID at runtime in the Node bridge.

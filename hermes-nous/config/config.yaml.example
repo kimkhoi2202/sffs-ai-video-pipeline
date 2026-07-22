@@ -15,10 +15,22 @@ model:
   # (Verified iteration 2: raw curl 200 but the agent loop 401'd until this line.)
   api_key: "${OPENAI_API_KEY}"
 
-delegation:                 # cost guardrails for the subagent software factory
-  max_concurrent_children: 2
-  max_spawn_depth: 1
-  subagent_auto_approve: false
+# ── Subagent software factory — AGGRESSIVE-BUT-BOUNDED cost stance ──────
+# Revised iteration 3 (directive): go FAST — run MANY parallel subagents and use
+# Opus generously — but under a HIGH REAL CEILING with a HARD STOP, never
+# unbounded. This is a SHARED COMPANY SANDBOX (billing is the company's/Grace's),
+# so a runaway MUST be catchable + stoppable. "Unlimited / 10,000 concurrent Opus
+# agents" is infeasible (gateway concurrency + rate limits) AND unsafe — do NOT
+# design for it.
+#   PREREQUISITE (later iteration): the cost governor (a pre_llm_call/pre_tool_call
+#   hook that tallies daily $/tokens and HARD-STOPS at the ceiling) + a kill-switch
+#   env (HERMES_SFFS_FACTORY_KILL=1 halts all new subagent/LLM work instantly) MUST
+#   land before the factory actually runs at this concurrency on shared billing.
+#   Until then subagent_auto_approve stays false so nothing auto-spawns unbounded.
+delegation:
+  max_concurrent_children: 8   # high-but-finite (was 2). At cutover on c6i.4xlarge–8xlarge, ~16.
+  max_spawn_depth: 2           # bounded fan-out depth
+  subagent_auto_approve: false # flip to true (bounded) once the cost governor + kill-switch exist
 
 agent:
   reasoning_effort: "medium"

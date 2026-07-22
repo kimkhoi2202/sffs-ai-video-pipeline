@@ -131,6 +131,26 @@ def _bridge_entry() -> Path:
     return _repo_dir() / "hermes-nous" / "bridge" / "publer-draft.ts"
 
 
+def _parse_last_json(stdout: str) -> Dict[str, Any] | None:
+    """Return the last stdout line that decodes to a JSON object, else None.
+
+    The Node bridge shares the pipeline's logger (hermes/src/log.ts), which writes
+    human-readable INFO/WARN lines to STDOUT (for journald) BEFORE the
+    machine-readable result. Those lines start with a timestamp and never parse as
+    JSON; the result JSON is emitted last. So scan lines bottom-up and return the
+    first that decodes to a dict. (Dry-run emits a single clean JSON line, so this
+    is behaviour-preserving there.)
+    """
+    for line in reversed([ln for ln in stdout.splitlines() if ln.strip()]):
+        try:
+            obj = json.loads(line)
+        except Exception:
+            continue
+        if isinstance(obj, dict):
+            return obj
+    return None
+
+
 def run_node_bridge(payload: Dict[str, Any], *, dry_run: bool, timeout: int = 240) -> Dict[str, Any]:
     """Shell out to the Node ``createDraftOnly`` path (the suspenders layer).
 
@@ -167,10 +187,10 @@ def run_node_bridge(payload: Dict[str, Any], *, dry_run: bool, timeout: int = 24
         raise DraftGuardError(f"{prefix}: {detail[:500]}")
 
     out = (proc.stdout or "").strip()
-    try:
-        return json.loads(out)
-    except Exception:
+    parsed = _parse_last_json(out)
+    if parsed is None:
         raise DraftGuardError(f"bridge returned non-JSON: {out[:300]}")
+    return parsed
 
 
 def sffs_publer_draft(args: Dict[str, Any], **kwargs: Any) -> str:

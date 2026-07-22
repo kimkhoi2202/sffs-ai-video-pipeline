@@ -12,7 +12,10 @@ VENV="$WORKSPACE/.venv-hermes"
 source "$VENV/bin/activate"
 
 # Ensure pytest is available in the isolated venv (dev-only; not committed).
-python -c "import pytest" 2>/dev/null || pip install -q pytest
+# NOTE: uv-created venvs ship WITHOUT pip (failure F5), so prefer `uv pip`.
+python -c "import pytest" 2>/dev/null \
+  || uv pip install -q pytest 2>/dev/null \
+  || pip install -q pytest
 
 cd "$REPO"
 exec python -m pytest hermes-nous/tests -v "$@"
