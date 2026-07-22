@@ -36,9 +36,29 @@ agent:
   reasoning_effort: "medium"
 
 memory:
-  memory_enabled: true
-  user_profile_enabled: true
+  memory_enabled: true       # curated MEMORY.md ($HERMES_HOME/memories/) is the cross-run A/B
+  user_profile_enabled: true # narrative memory; the durable A/B DATA lives in ab-testing/
+  #                            learnings.json + ab-database.json (refreshed by sffs_score_rollup).
+  #                            Install the SFFS MEMORY.md nudges via scripts/link-skills.sh.
 
 plugins:                    # user plugins are opt-in; the sffs safety core must be enabled
   enabled:
     - sffs                  # run scripts/link-plugin.sh to symlink + enable it in $HERMES_HOME
+
+# ── Skills ─────────────────────────────────────────────────────────────
+# Point Hermes at the repo's skill playbooks (the `sffs-ab-cycle` cycle skill the
+# sffs-nightly cron loads). Run scripts/link-skills.sh to wire this + install the
+# curated MEMORY.md. Relative paths resolve against HERMES_HOME; ${VAR}/~ expand.
+skills:
+  external_dirs:
+    - "/Users/khoilam/hermes-nous-build/sffs-ai-video-pipeline/hermes-nous/skills"
+
+# ── Cron (the autonomous cadence) ──────────────────────────────────────
+# Cron jobs live in $HERMES_HOME/cron/jobs.json (not here). Register the nightly
+# DRAFT-ONLY cycle with:
+#     bash hermes-nous/scripts/cron-setup.sh
+# It creates `sffs-nightly` — schedule "every 24h" (recurring; aligned to Publer's
+# ~24h analytics lag — bare "24h" would be a ONE-SHOT), skills: [sffs-ab-cycle],
+# enabled_toolsets: [sffs] — and leaves it PAUSED. A human RESUMES it at the
+# human-gated cutover (`hermes cron resume sffs-nightly`); nothing fires before that.
+# When it runs it is DRAFT-ONLY and can never push to main (HERMES_SKIP_GIT=1).
