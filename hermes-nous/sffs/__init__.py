@@ -12,14 +12,25 @@ Safety core (belt AND suspenders, in three layers):
     carrying publish / schedule / go-live / post-mutation intent.
 
 No publish or schedule path is imported or exposed anywhere in this plugin. Later
-iterations add score-rollup / upload tools, skills, cron, the cost governor, and
-the software-factory subagents (render / design / quality-gate / read tools are in
-place).
+iterations add score-rollup, skills, cron, the cost governor, and the
+software-factory subagents (render / design / quality-gate / read / upload tools
+are in place).
 """
 
 from __future__ import annotations
 
-from . import design, donottouch, draft_guard, gates, publish_guard, questions, reads, render, schemas
+from . import (
+    design,
+    donottouch,
+    draft_guard,
+    gates,
+    publish_guard,
+    questions,
+    reads,
+    render,
+    schemas,
+    upload_s3,
+)
 
 
 def register(ctx) -> None:
@@ -114,6 +125,18 @@ def register(ctx) -> None:
         handler=render.sffs_render,
         emoji="🎥",
         description="Render a quiz short (HermesQuiz 1080x1920) to an mp4, with optional cloned-voice narration.",
+    )
+
+    # --- UPLOAD a rendered mp4 to S3 (private bucket + presigned GET URL). ---
+    # Wraps tools/upload-media.ts uploadFile (media hosting only); no Publer/post
+    # path is imported or reachable. Returns a fetchable URL for a later DRAFT.
+    ctx.register_tool(
+        name="sffs_upload_s3",
+        toolset="sffs",
+        schema=schemas.SFFS_UPLOAD_S3_SCHEMA,
+        handler=upload_s3.sffs_upload_s3,
+        emoji="☁️",
+        description="Upload a rendered mp4 to S3 and return a presigned fetchable URL (media hosting; never posts).",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---

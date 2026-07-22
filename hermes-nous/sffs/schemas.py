@@ -541,3 +541,46 @@ SFFS_RENDER_SCHEMA = {
         "required": ["props"],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# UPLOAD (S3) — host a rendered mp4, return a presigned fetchable URL. Wraps
+# tools/upload-media.ts uploadFile (media hosting only). No Publer/post path is
+# imported or reachable (see upload_s3.py + bridge/upload-s3.ts). No state/
+# schedule/publish vocabulary is exposed (schema-as-guardrail).
+# ---------------------------------------------------------------------------
+
+SFFS_UPLOAD_S3_SCHEMA = {
+    "name": "sffs_upload_s3",
+    "description": (
+        "Upload a rendered mp4 (from sffs_render) to object storage (MEDIA_HOST=s3: "
+        "a PRIVATE bucket) and return a PRESIGNED GET URL that Publer can fetch "
+        "during a later DRAFT import. Credentials come from AWS env vars or the EC2 "
+        "instance role (IMDSv2); S3_BUCKET defaults to hermes-sffs-media. This only "
+        "HOSTS media — it never creates, publishes, schedules, or mutates any post "
+        "(attach the returned URL to a draft with sffs_publer_draft next). Set "
+        "dry_run=true to validate + preview the destination key with no upload and "
+        "no credentials."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "local_path": {
+                "type": "string",
+                "description": "Absolute path to the local mp4 to upload (e.g. the sffs_render 'path').",
+            },
+            "dest_key": {
+                "type": "string",
+                "description": (
+                    "Optional destination object key (defaults to the file's basename; "
+                    "MEDIA_DEST_PREFIX is prepended if set). No '..' path segments."
+                ),
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, validate + preview the destination WITHOUT uploading (no network/creds).",
+            },
+        },
+        "required": ["local_path"],
+    },
+}
