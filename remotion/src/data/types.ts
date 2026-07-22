@@ -2,6 +2,7 @@ import type { GlyphKind } from "../components/ShapeGlyph";
 import type { PolyShape } from "../components/Polygon";
 import type { DotPos } from "../components/DotSquare";
 import type { FoldDir, HoleCell } from "./fold";
+import type { FigState } from "../components/FigureCell";
 
 export type TextOption = { letter: string; text: string };
 export type ShapeOption = { letter: string; shape: GlyphKind; filled: boolean };
@@ -9,6 +10,8 @@ export type PolyOption = { letter: string; poly: PolyShape };
 export type DotOption = { letter: string; pos: DotPos };
 /** PAPER FOLDING option: an unfolded sheet's hole pattern (grid cells). */
 export type FoldOption = { letter: string; holes: HoleCell[] };
+/** MATRIX-FAMILY option: a figure described by the shared transform vocabulary. */
+export type FigureOption = { letter: string; fig: FigState };
 
 type Common = {
   idx: number;
@@ -73,4 +76,48 @@ export type FoldQuestion = Common & {
   ansHoles: HoleCell[]; // the correct unfolded pattern (shown on the reveal)
 };
 
-export type Question = TextQuestion | NumSeriesQuestion | ShadedQuestion | PolygonQuestion | DotQuestion | FoldQuestion;
+// --- MATRIX-FAMILY nonverbal types (new; see content/new-question-types-proposal.md
+//     tiers 6-8). All three share the FigState transform vocabulary (FigureCell). ---
+
+/** Figure Matrix 2x2: a 2x2 grid whose top row states the rule (cell 0 -> cell 1)
+ *  and whose bottom row applies it (cell 2 -> ?). `cells` are [TL, TR, BL]; the
+ *  bottom-right is the "?" the viewer must complete. `ans` is the correct figure. */
+export type MatrixQuestion = Common & {
+  kind: "matrix";
+  prompt: string;
+  cells: [FigState, FigState, FigState];
+  options: FigureOption[];
+  ans: FigState;
+};
+
+/** Figure Analogy v2: A : B :: C : ? with the full transform vocabulary (rotate /
+ *  count / size / fill), not just the empty->filled shade of the `shaded` kind. */
+export type Analogy2Question = Common & {
+  kind: "analogy2";
+  prompt: string;
+  a: FigState;
+  b: FigState;
+  c: FigState;
+  options: FigureOption[];
+  ans: FigState;
+};
+
+/** Visual Odd-One-Out (Figure Classification): four figures, one differs by
+ *  shape / fill / rotation / count. The odd one is `ansLetter`; `ans` mirrors it. */
+export type FigureOddQuestion = Common & {
+  kind: "figure-odd";
+  prompt: string;
+  options: FigureOption[];
+  ans: FigState;
+};
+
+export type Question =
+  | TextQuestion
+  | NumSeriesQuestion
+  | ShadedQuestion
+  | PolygonQuestion
+  | DotQuestion
+  | FoldQuestion
+  | MatrixQuestion
+  | Analogy2Question
+  | FigureOddQuestion;

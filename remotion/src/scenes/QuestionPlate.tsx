@@ -5,6 +5,9 @@ import { ShadedQuestion } from "./questions/ShadedQuestion";
 import { PolygonQuestion } from "./questions/PolygonQuestion";
 import { DotQuestion } from "./questions/DotQuestion";
 import { FoldQuestion } from "./questions/FoldQuestion";
+import { MatrixQuestion } from "./questions/MatrixQuestion";
+import { Analogy2Question } from "./questions/Analogy2Question";
+import { FigureOddQuestion } from "./questions/FigureOddQuestion";
 
 /** Dispatches to the right question-type plate. `elapsed` (seconds) drives the
  *  countdown; pass 0 for the static "read" plate (timer full). `pos`/`total`
@@ -30,5 +33,12 @@ export const QuestionPlate: React.FC<{ q: Question; elapsed: number; pos?: numbe
     // PAPER FOLDING (new nonverbal type; heavy fold/punch/mirror render)
     case "fold":
       return <FoldQuestion q={q} {...p} />;
+    // MATRIX-FAMILY (new nonverbal types; share the FigState transform vocabulary)
+    case "matrix":
+      return <MatrixQuestion q={q} {...p} />;
+    case "analogy2":
+      return <Analogy2Question q={q} {...p} />;
+    case "figure-odd":
+      return <FigureOddQuestion q={q} {...p} />;
   }
 };

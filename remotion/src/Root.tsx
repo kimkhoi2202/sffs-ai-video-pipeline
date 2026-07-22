@@ -10,6 +10,7 @@ import { SEG, TOTAL as SLICE_TOTAL } from "./slice/timeline";
 import { Intro } from "./scenes/Intro";
 import { NonverbalPreview } from "./preview/NonverbalPreview";
 import { PaperFoldPreview } from "./preview/PaperFoldPreview";
+import { MatrixPreview } from "./preview/MatrixPreview";
 import { MascotPoc, MASCOT_POC_DURATION } from "./mascot/MascotPoc";
 import { MascotShort } from "./mascot/MascotShort";
 
@@ -81,6 +82,12 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ which: 0, mode: "read" as const }}
         {...portrait}
       />
+
+      {/* MATRIX-FAMILY new nonverbal plates (Figure Matrix 2x2 / Figure Analogy v2 /
+          Visual Odd-One-Out). Still-only dev preview: renders any question or its
+          reveal full-frame at 1080x1920 via --props for a fast on-brand check.
+          The real samples render through the Short (FullVideo) comp above. */}
+      <Composition id="MatrixPreview" component={MatrixPreview} durationInFrames={1} fps={30} width={1080} height={1920} />
 
       {/* POC: lip-synced talking brain-mascot narrator (Rhubarb-driven visemes). */}
       <Composition id="MascotPoc" component={MascotPoc} durationInFrames={MASCOT_POC_DURATION} {...portrait} />

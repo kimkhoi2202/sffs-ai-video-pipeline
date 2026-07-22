@@ -4,6 +4,7 @@ import { Polygon } from "../components/Polygon";
 import { DotSquare } from "../components/DotSquare";
 import { HoleGrid } from "./questions/FoldQuestion";
 import { foldAxes } from "../data/fold";
+import { FigGlyphGroup } from "../components/FigureCell";
 import { SHADE_FILL } from "../data/questions";
 import type { Question } from "../data/types";
 import { Reveal } from "./Reveal";
@@ -46,6 +47,17 @@ export const QuestionReveal: React.FC<{ q: Question }> = ({ q }) => {
           letter={letter}
           explanation={q.explanation}
           answer={{ kind: "shape", label: q.ansLabel, node: <HoleGrid size={150} n={q.grid ?? 4} holes={q.ansHoles} creases={foldAxes(q.folds)} border={8} radius={16} /> }}
+        />
+      );
+    // MATRIX-FAMILY: reveal the correct figure (drawn with the shared vocabulary).
+    case "matrix":
+    case "analogy2":
+    case "figure-odd":
+      return (
+        <Reveal
+          letter={letter}
+          explanation={q.explanation}
+          answer={{ kind: "shape", label: q.ansLabel, node: <FigGlyphGroup fig={q.ans} base={44} border={7} /> }}
         />
       );
   }
