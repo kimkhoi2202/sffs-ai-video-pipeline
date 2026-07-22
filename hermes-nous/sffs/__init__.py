@@ -18,7 +18,7 @@ cron, the cost governor, and the software-factory subagents.
 
 from __future__ import annotations
 
-from . import donottouch, draft_guard, publish_guard, schemas
+from . import donottouch, draft_guard, publish_guard, reads, schemas
 
 
 def register(ctx) -> None:
@@ -49,6 +49,24 @@ def register(ctx) -> None:
         handler=donottouch.sffs_donottouch_verify,
         emoji="✅",
         description="Verify no pre-existing scheduled/published post changed (read-only, after a cycle).",
+    )
+
+    # --- READ-ONLY data tools the cycle reasons about A/B performance with. ---
+    ctx.register_tool(
+        name="sffs_publer_read",
+        toolset="sffs",
+        schema=schemas.SFFS_PUBLER_READ_SCHEMA,
+        handler=reads.sffs_publer_read,
+        emoji="📖",
+        description="List Publer accounts or posts (read-only; can never write/schedule/publish).",
+    )
+    ctx.register_tool(
+        name="sffs_score",
+        toolset="sffs",
+        schema=schemas.SFFS_SCORE_SCHEMA,
+        handler=reads.sffs_score,
+        emoji="📊",
+        description="Read per-post analytics (the A/B scoring input; read-only).",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---
