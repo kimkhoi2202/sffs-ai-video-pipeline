@@ -20,6 +20,7 @@ are in place).
 from __future__ import annotations
 
 from . import (
+    cycle,
     design,
     donottouch,
     draft_guard,
@@ -151,6 +152,20 @@ def register(ctx) -> None:
         handler=score_rollup.sffs_score_rollup,
         emoji="🧮",
         description="Refresh A/B metrics + recompute learnings.json rollups (the durable cross-run memory; write-side of scoring).",
+    )
+
+    # --- CYCLE: run ONE full DRAFT-ONLY A/B cycle end to end (ties the tools). ---
+    # Wraps cycle.ts runCycle: snapshot -> score -> design -> per-video gates ->
+    # render -> (live) upload -> createDraftOnly -> verify. It can ONLY create
+    # DRAFTS and can NEVER push to main (HERMES_SKIP_GIT is forced by the bridge
+    # AND the handler env). No publish/schedule path is reachable.
+    ctx.register_tool(
+        name="sffs_cycle",
+        toolset="sffs",
+        schema=schemas.SFFS_CYCLE_SCHEMA,
+        handler=cycle.sffs_cycle,
+        emoji="🔁",
+        description="Run one full DRAFT-ONLY A/B cycle end to end (design->gates->render->upload->Publer DRAFTS; never publishes/schedules; never pushes to main).",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---

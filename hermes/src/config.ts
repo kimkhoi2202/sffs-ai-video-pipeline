@@ -27,7 +27,12 @@ export const CONFIG = Object.freeze({
 
   // ── LLM (TrueFoundry gateway) ──────────────────────────────────────────
   TFY_BASE_URL: (process.env.TFY_LLM_BASE_URL || "https://tfy.promptlens.trilogy.com/api/llm/v1").trim(),
-  TFY_API_KEY: (process.env.TFY_API_KEY || "").trim(),
+  // The TrueFoundry key. Prefer TFY_API_KEY (what the VPS hermes.env sets — it
+  // still wins there). Fall back to OPENAI_API_KEY so the SAME TrueFoundry key
+  // works when it is only stored under that name (e.g. the isolated hermes-nous
+  // build $HERMES_HOME/.env, where the Nous `custom` provider reads it too). One
+  // key, two consumers; behavior-preserving where TFY_API_KEY is set.
+  TFY_API_KEY: (process.env.TFY_API_KEY || process.env.OPENAI_API_KEY || "").trim(),
   MODEL: (process.env.HERMES_MODEL || "claude-opus-4-8").trim(),
   CAPTION_MODEL: (process.env.HERMES_CAPTION_MODEL || "claude-haiku-4-5").trim(),
 

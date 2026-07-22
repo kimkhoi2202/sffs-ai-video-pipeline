@@ -317,11 +317,19 @@ export async function runCycle(): Promise<RunState> {
     }
   }
 
-  // 3) commit + push data files
-  if (!DRY) {
+  // 3) commit + push data files.
+  // HERMES_SKIP_GIT=1 disables the commit/push entirely. The hermes-nous build
+  // wrapper (bridge/cycle.ts / sffs_cycle) ALWAYS sets it, so a cycle run from the
+  // isolated sandbox can NEVER `git push origin HEAD:main`. The live loop leaves it
+  // unset and commits/pushes exactly as before — behavior-preserving.
+  const SKIP_GIT = process.env.HERMES_SKIP_GIT === "1";
+  if (!DRY && !SKIP_GIT) {
     const git = gitCommitPush(runId, state.summary);
     (state as any).git = git;
     info("git", git);
+  } else if (SKIP_GIT) {
+    (state as any).git = { committed: false, pushed: false, note: "skipped (HERMES_SKIP_GIT=1)" };
+    info("git", (state as any).git);
   }
 
   state.status = state.summary.failed > 0 || state.errors.length ? (state.summary.drafted > 0 ? "partial" : "failed") : "success";
