@@ -20,6 +20,7 @@ are in place).
 from __future__ import annotations
 
 from . import (
+    cost_governor,
     cycle,
     design,
     donottouch,
@@ -171,4 +172,25 @@ def register(ctx) -> None:
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---
     # A belt across ALL tools (not just ours) at the framework layer. Returns a
     # {"action":"block","message":...} directive to hard-refuse; None to allow.
+    # MUST be registered FIRST among pre_tool_call hooks: the DRAFT-ONLY belt is
+    # the priority guard and the one sffs_selfcheck exercises (it grabs the first
+    # pre_tool_call callback).
     ctx.register_hook("pre_tool_call", publish_guard.pre_tool_call)
+
+    # --- COST GOVERNOR + kill-switch: the AGGRESSIVE-BUT-BOUNDED spend brake. ---
+    # A SEPARATE concern from the DRAFT-ONLY belt above: this halts SPEND (the
+    # factory + the loop + subagent fan-out) when the kill-switch is engaged or a
+    # HIGH-but-finite daily $/token/spawn or concurrent-child ceiling is hit — it
+    # NEVER affects posting autonomy (still frozen at draft-only). Registered
+    # AFTER publish_guard so the DRAFT-ONLY hook stays first.
+    #   * pre_tool_call  — HARD-STOP: block delegate_task/sffs_factory (factory),
+    #                      sffs_cycle (loop), and heavy render/rollup on kill or
+    #                      over-ceiling (cheap read/draft tools stay usable).
+    #   * pre_llm_call   — advisory nudge to wind down (pre_llm_call can't block).
+    #   * post_llm_call  — record an estimated $/token usage event (append-only).
+    #   * subagent_start/stop — track concurrent children + the daily spawn tally.
+    ctx.register_hook("pre_tool_call", cost_governor.pre_tool_call)
+    ctx.register_hook("pre_llm_call", cost_governor.pre_llm_call)
+    ctx.register_hook("post_llm_call", cost_governor.post_llm_call)
+    ctx.register_hook("subagent_start", cost_governor.subagent_start)
+    ctx.register_hook("subagent_stop", cost_governor.subagent_stop)

@@ -1,5 +1,5 @@
 name: sffs
-version: 0.10.0
+version: 0.11.0
 description: >-
   SFFS DRAFT-ONLY A/B quiz-video agent — safety core + read-only cycle data
   tools + the batch designer + the quality gates + never-repeat question
@@ -14,9 +14,13 @@ description: >-
   (refresh ab-database.json + learnings.json — the cross-run A/B memory), and the
   cycle orchestrator (one full DRAFT-ONLY cycle end to end; ties every tool
   together), plus a pre_tool_call hook that hard-refuses any publish/schedule/
-  post-mutation call across ALL tools. It can never publish or schedule a live post
-  and can never push to main (belt AND suspenders AND framework-layer defense-in-
-  depth DRAFT-ONLY).
+  post-mutation call across ALL tools, plus a COST GOVERNOR + kill-switch
+  (pre_tool_call/pre_llm_call/post_llm_call/subagent_start/subagent_stop hooks)
+  that halts the factory + the loop + subagent fan-out on a kill-switch or a
+  HIGH-but-finite daily $/token/spawn/concurrency ceiling (spend brake only —
+  posting stays frozen at draft-only). It can never publish or schedule a live
+  post and can never push to main (belt AND suspenders AND framework-layer
+  defense-in-depth DRAFT-ONLY).
 author: "hermes-nous rebuild (ralph-wiggum overnight build)"
 provides_tools:
   - sffs_publer_draft
@@ -32,7 +36,11 @@ provides_tools:
   - sffs_score_rollup
   - sffs_cycle
 provides_hooks:
-  - pre_tool_call
+  - pre_tool_call     # publish_guard (DRAFT-ONLY belt) + cost_governor (spend brake)
+  - pre_llm_call      # cost_governor advisory wind-down nudge
+  - post_llm_call     # cost_governor estimated $/token accounting
+  - subagent_start    # cost_governor concurrency + spawn tally
+  - subagent_stop     # cost_governor concurrency release
 # NOTE: intentionally NO `requires_env` for Publer keys — the tools must still be
 # discoverable (and refuse/dry-run safely) without keys. The real network call
 # gates on PUBLER_API_KEY / PUBLER_WORKSPACE_ID at runtime in the Node bridge.
