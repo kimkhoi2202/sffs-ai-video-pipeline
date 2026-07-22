@@ -10,6 +10,24 @@ import type { FoldQuestion as FoldQ } from "../../data/types";
 const FLAP_TINT = "rgba(253, 121, 98, 0.30)"; // COLORS.coral @ 30%
 const CREASE = COLORS.ink;
 
+/**
+ * Canonical FOLD ARROW — a bold curved "fold-over" arrow that points LEFT, drawn
+ * in a 0..100 local box (centred ~50,50). A thick curved shaft leads into a large
+ * arrowhead whose barbs sit tangent to the curve's tip, so it reads unmistakably
+ * as a CURVED ARROW (not a hook) even at phone size. Rendered coral with a hard
+ * ink border (paint-order: stroke) to match the neo-brutalist plate style, then
+ * rotated per fold direction so vertical + horizontal folds all read the same.
+ */
+const FOLD_ARROW = {
+  shaft: "M80,64 Q60,22 30,31", // tail (lower-right) -> arcs up -> tip base (left)
+  head: "6,37 33,12 37,52", // big triangle: tip (left) + two barbs, tangent to the arc
+  coralW: 12, // shaft coral stroke (local units; scales with the arrow)
+  inkW: 19, // shaft ink border under the coral
+  headInkW: 4.5, // arrowhead ink border
+};
+/** Rotation (deg) turning the LEFT-pointing canonical arrow to each fold dir. */
+const FOLD_ARROW_ANGLE: Record<FoldDir, number> = { left: 0, up: 90, right: 180, down: 270 };
+
 /* -------------------------------------------------------------------------- */
 /* HoleGrid — an UNFOLDED sheet: white paper, faint fold-crease line(s), and the */
 /* punched holes as solid ink discs. Used for every A-D option + the reveal.    */
@@ -76,30 +94,22 @@ const PaperMini: React.FC<{
     return [px(rect.x0), px(rect.y0), px(rect.x1), px(rect.y0)]; // down
   };
 
-  // fold arrow: a clean curved "fold-over" arc sweeping from the flap's OUTER edge
-  // across to the crease, arrowhead pointing in the fold direction. Communicates
-  // "this whole half folds THIS way onto the other half".
+  // fold arrow: the canonical curved arrow, scaled to the flap and rotated so its
+  // tip points in the fold direction (toward the crease / the half it lands on).
+  // Coral shaft + arrowhead with a hard ink border, matching the plate style.
   const arrow = () => {
     if (!nextFold || !flap) return null;
     const fcx = px((flap.x0 + flap.x1) / 2);
     const fcy = px((flap.y0 + flap.y1) / 2);
-    const bulge = Math.min(paper.w, paper.h) * 0.22;
-    let sx = fcx, sy = fcy, ex = fcx, ey = fcy, ctrlx = fcx, ctrly = fcy;
-    if (nextFold === "left") { sx = px(flap.x1) - 6; ex = mx - 4; sy = ey = fcy; ctrlx = (sx + ex) / 2; ctrly = fcy - bulge; }
-    else if (nextFold === "right") { sx = px(flap.x0) + 6; ex = mx + 4; sy = ey = fcy; ctrlx = (sx + ex) / 2; ctrly = fcy - bulge; }
-    else if (nextFold === "up") { sy = px(flap.y1) - 6; ey = my - 4; sx = ex = fcx; ctrly = (sy + ey) / 2; ctrlx = fcx + bulge; }
-    else { sy = px(flap.y0) + 6; ey = my + 4; sx = ex = fcx; ctrly = (sy + ey) / 2; ctrlx = fcx - bulge; }
-    const a = 15; // arrowhead size
-    const head =
-      nextFold === "left" ? `${ex},${ey} ${ex + a},${ey - a} ${ex + a},${ey + a}`
-      : nextFold === "right" ? `${ex},${ey} ${ex - a},${ey - a} ${ex - a},${ey + a}`
-      : nextFold === "up" ? `${ex},${ey} ${ex - a},${ey + a} ${ex + a},${ey + a}`
-      : `${ex},${ey} ${ex - a},${ey - a} ${ex + a},${ey - a}`;
+    const L = Math.min(px(flap.x1 - flap.x0), px(flap.y1 - flap.y0)) * 0.94; // footprint
+    const s = L / 100;
+    const ang = FOLD_ARROW_ANGLE[nextFold];
     return (
-      <>
-        <path d={`M ${sx} ${sy} Q ${ctrlx} ${ctrly} ${ex} ${ey}`} fill="none" stroke={COLORS.coral} strokeWidth={6} strokeLinecap="round" />
-        <polygon points={head} fill={COLORS.coral} stroke={COLORS.coral} strokeWidth={1} strokeLinejoin="round" />
-      </>
+      <g transform={`translate(${fcx} ${fcy}) rotate(${ang}) scale(${s}) translate(-50 -50)`}>
+        <path d={FOLD_ARROW.shaft} fill="none" stroke={COLORS.ink} strokeWidth={FOLD_ARROW.inkW} strokeLinecap="round" />
+        <path d={FOLD_ARROW.shaft} fill="none" stroke={COLORS.coral} strokeWidth={FOLD_ARROW.coralW} strokeLinecap="round" />
+        <polygon points={FOLD_ARROW.head} fill={COLORS.coral} stroke={COLORS.ink} strokeWidth={FOLD_ARROW.headInkW} strokeLinejoin="round" paintOrder="stroke" />
+      </g>
     );
   };
 

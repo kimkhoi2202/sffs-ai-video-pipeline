@@ -69,6 +69,35 @@ const SAMPLES: FoldQuestion[] = [
     "4 HOLES",
     "Two folds make two mirrors, so one hole becomes four, one in each corner.",
   ),
+  // right + down single folds — verify the fold arrow reads in every orientation.
+  mk(
+    3,
+    ["right"],
+    [{ r: 1, c: 3 }],
+    [
+      { letter: "A", holes: [{ r: 1, c: 0 }, { r: 1, c: 3 }] },
+      { letter: "B", holes: [{ r: 1, c: 3 }] },
+      { letter: "C", holes: [{ r: 1, c: 2 }, { r: 1, c: 3 }] },
+      { letter: "D", holes: [{ r: 0, c: 3 }, { r: 3, c: 3 }] },
+    ],
+    "A",
+    "2 HOLES",
+    "The fold is a mirror, so the one hole copies across the crease to make two holes.",
+  ),
+  mk(
+    4,
+    ["down"],
+    [{ r: 3, c: 1 }],
+    [
+      { letter: "A", holes: [{ r: 3, c: 1 }] },
+      { letter: "B", holes: [{ r: 0, c: 1 }, { r: 3, c: 1 }] },
+      { letter: "C", holes: [{ r: 2, c: 1 }, { r: 3, c: 1 }] },
+      { letter: "D", holes: [{ r: 3, c: 1 }, { r: 3, c: 2 }] },
+    ],
+    "B",
+    "2 HOLES",
+    "Folding bottom to top is a mirror, so the hole copies straight up to make a pair.",
+  ),
 ];
 
 export const PaperFoldPreview: React.FC<{ which?: number; mode?: "read" | "reveal" }> = ({ which = 0, mode = "read" }) => {
