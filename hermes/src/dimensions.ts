@@ -16,6 +16,7 @@
  * See defaults.ts.
  */
 import { type NarrationMode } from "./narration.ts";
+import type { HermesQ } from "./state.ts";
 import {
   contentDefaults,
   narrationModeForArm,
@@ -174,6 +175,89 @@ export function resolveArm(spec: DimSpec, defaults: ContentDefaults): ResolvedAr
     endingArm,
     reveal: revealForEnding(endingArm),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Question TYPE variety (P1): per-video type/tier spread + per-batch
+// anti-clustering. Complements the fuzzy near-dup guard in questions.ts — that
+// stops duplicate/near-dup QUESTIONS; this stops a video being all one TYPE and
+// the day's batch clustering the same few types.
+//
+// `tier` is the question TYPE (ODD ONE OUT / VERBAL ANALOGY / NUMBER SERIES /
+// NUMBER ANALOGY / …), so spreading on tier maximizes on-screen variety within a
+// video AND balances type coverage across the batch (the seeded pool otherwise
+// over-samples the biggest bucket). Pure + deterministic — ties break on the
+// candidate's position in the already-seeded pool, so a resumed run reselects
+// identically.
+// ---------------------------------------------------------------------------
+
+/** Running per-batch tally of how many questions of each tier/kind were used. */
+export interface SpreadTally {
+  tier: Record<string, number>;
+  kind: Record<string, number>;
+}
+
+export function newSpreadTally(): SpreadTally {
+  return { tier: {}, kind: {} };
+}
+
+/** Lexicographic "a < b" over equal-length numeric tuples. */
+function lexLess(a: number[], b: number[]): boolean {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return a[i] < b[i];
+  }
+  return false;
+}
+
+/**
+ * Greedily pick `numQ` questions from an ALREADY-FILTERED, seeded `pool`
+ * (candidateQuestions output) to maximize per-video TYPE/tier spread and, across
+ * the whole batch, avoid clustering the same types. Mutates `batch` with the picks
+ * so later videos in the same batch are balanced against them.
+ *
+ * Each pick minimizes this lexicographic key:
+ *   1. count of this tier ALREADY in THIS video  (per-video type spread)
+ *   2. count of this kind  already in this video  (per-video kind spread)
+ *   3. count of this tier across the batch so far (anti-clustering)
+ *   4. count of this kind across the batch so far
+ *   5. original pool index                         (stable, deterministic)
+ *
+ * Returns fewer than `numQ` only when the pool is too small (the caller drops the
+ * video, exactly as before). Never repeats a pool entry.
+ */
+export function selectSpread(pool: HermesQ[], numQ: number, batch: SpreadTally = newSpreadTally()): HermesQ[] {
+  const chosen: HermesQ[] = [];
+  const remaining = pool.map((q, i) => ({ q, i }));
+  const vid = newSpreadTally();
+  while (chosen.length < numQ && remaining.length > 0) {
+    let bestPos = 0;
+    let bestKey: number[] | null = null;
+    for (let r = 0; r < remaining.length; r++) {
+      const { q, i } = remaining[r];
+      const t = q.tier ?? "";
+      const k = q.kind ?? "";
+      const key = [
+        vid.tier[t] ?? 0,
+        vid.kind[k] ?? 0,
+        (batch.tier[t] ?? 0) + (vid.tier[t] ?? 0),
+        (batch.kind[k] ?? 0) + (vid.kind[k] ?? 0),
+        i,
+      ];
+      if (bestKey === null || lexLess(key, bestKey)) {
+        bestKey = key;
+        bestPos = r;
+      }
+    }
+    const { q } = remaining.splice(bestPos, 1)[0];
+    chosen.push(q);
+    vid.tier[q.tier] = (vid.tier[q.tier] ?? 0) + 1;
+    vid.kind[q.kind] = (vid.kind[q.kind] ?? 0) + 1;
+  }
+  for (const q of chosen) {
+    batch.tier[q.tier] = (batch.tier[q.tier] ?? 0) + 1;
+    batch.kind[q.kind] = (batch.kind[q.kind] ?? 0) + 1;
+  }
+  return chosen;
 }
 
 /** Which single axis an arm deviates from the defaults. */

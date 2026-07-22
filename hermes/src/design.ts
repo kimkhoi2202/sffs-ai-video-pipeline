@@ -27,7 +27,7 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode } from "./defaults.ts";
-import { buildDimensions, resolveArm } from "./dimensions.ts";
+import { buildDimensions, resolveArm, selectSpread, newSpreadTally } from "./dimensions.ts";
 
 // Re-export the catalog surface so existing importers (bridge/design.ts) are
 // unchanged, while the actual definitions live in the dependency-free module.
@@ -92,6 +92,10 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   const learnings = readJSON<Learnings>(CONFIG.LEARNINGS, {});
   const defaults = contentDefaults();
   const claimed = new Set<string>(); // in-batch question dedup
+  // Running per-batch TYPE/tier tally so questions spread across types within each
+  // video AND don't cluster the same types across the day's batch (P1). Shared
+  // across every video in this batch. See dimensions.ts selectSpread.
+  const batchSpread = newSpreadTally();
   const specs = seededOrder(buildDimensions(defaults), seedOf(runId)).slice(0, target);
   const plans: VideoPlan[] = [];
 
@@ -108,7 +112,9 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       seed: `${runId}:${spec.dimension}:${spec.arm}`,
       exclude: claimed,
     });
-    const chosen: HermesQ[] = pool.slice(0, spec.numQ);
+    // Pick with per-video type/tier spread + per-batch anti-clustering (P1),
+    // instead of just taking the first numQ of the seeded pool.
+    const chosen: HermesQ[] = selectSpread(pool, spec.numQ, batchSpread);
     if (chosen.length < spec.numQ) {
       warn("dropping video: not enough fresh questions", { id, dimension: spec.dimension, want: spec.numQ, got: chosen.length });
       decision(`DROP ${id} (${spec.dimension}/${spec.arm}): only ${chosen.length}/${spec.numQ} fresh questions`);
