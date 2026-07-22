@@ -17,6 +17,7 @@ try {
 
 const REPO_DIR = process.env.HERMES_REPO_DIR || resolve(import.meta.dirname, "..", "..");
 const DATA_DIR = process.env.HERMES_DATA_DIR || "/home/ec2-user/hermes-data";
+const HERMES_HOME = (process.env.HERMES_HOME || "").trim();
 
 export const CONFIG = Object.freeze({
   // ── HARD SAFETY CONSTANTS ──────────────────────────────────────────────
@@ -86,6 +87,13 @@ export const CONFIG = Object.freeze({
   BRAND_VOICE: join(REPO_DIR, "brand", "brand-voice.md"),
   BRAND_EXAMPLES: join(REPO_DIR, "brand", "brand-voice-examples.json"),
   HERMES_USED: join(DATA_DIR, "hermes-used-sigs.json"),
+  // The framework's live agent memory. Each cycle appends a bounded one-line
+  // takeaway here (see memory.ts). On the VPS this is $HERMES_HOME/memories/
+  // MEMORY.md (what the agent actually reads); locally it falls back to DATA_DIR
+  // so a dev run never churns the repo's MEMORY.md template.
+  MEMORY_FILE:
+    process.env.HERMES_MEMORY_FILE ||
+    (HERMES_HOME ? join(HERMES_HOME, "memories", "MEMORY.md") : join(DATA_DIR, "memories", "MEMORY.md")),
 
   // ── Dashboard ──────────────────────────────────────────────────────────
   DASH_PORT: Number(process.env.HERMES_DASH_PORT || 8080),

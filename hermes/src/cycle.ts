@@ -34,7 +34,8 @@ import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
-import { markUsed } from "./questions.ts";
+import { markUsed, bankStats } from "./questions.ts";
+import { appendTakeaway, formatTakeaway } from "./memory.ts";
 import { renderVideo, computeFrames } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
 import { importMediaFromUrl, createPost, pollJob, listAllPosts, postId } from "./publer.ts";
@@ -364,6 +365,30 @@ export async function runCycle(): Promise<RunState> {
   }
 
   state.status = state.summary.failed > 0 || state.errors.length ? (state.summary.drafted > 0 ? "partial" : "failed") : "success";
+
+  // (P3) memory hygiene: append a bounded one-line takeaway to MEMORY.md so the
+  // agent keeps the narrative (not just the numbers) across cycles. Best-effort —
+  // a memory note must NEVER break a cycle.
+  try {
+    const learn = readJSON<any>(CONFIG.LEARNINGS, {});
+    const rec = (state as any).reconcile;
+    const line = formatTakeaway({
+      run_id: runId,
+      drafted: state.summary.drafted,
+      rejected: state.summary.rejected,
+      failed: state.summary.failed,
+      frontFamily: learn?.front_runners?.variant_family ?? null,
+      frontTimeBucket: learn?.front_runners?.time_bucket ?? null,
+      freshQuestions: bankStats().fresh,
+      reconciled: rec && typeof rec.records_changed === "number" ? rec.records_changed : null,
+    });
+    const mem = appendTakeaway(line);
+    (state as any).memory = { appended: mem.ok, path: mem.path, line };
+    info("memory takeaway", (state as any).memory);
+  } catch (e) {
+    warn("memory takeaway failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+  }
+
   state.finished_at = new Date().toISOString();
   saveRun(state);
   info(`=== cycle ${runId} done: ${state.summary.drafted} drafted, ${state.summary.rejected} rejected, ${state.summary.failed} failed ===`);
