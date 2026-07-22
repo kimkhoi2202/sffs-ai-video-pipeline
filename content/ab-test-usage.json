@@ -713,6 +713,60 @@
           "answerNorm": "57"
         }
       ]
+    },
+    {
+      "videoSlug": "hermes-nous-cutover-validation-20260722-154854-v02",
+      "test": "narration",
+      "variant": "full-narration",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "2a3ff8a4bf57",
+          "sig": "text|verbal|sentence-completion|after running the whole race the runner felt very and sat down to rest || early~fast~happy~tired|tired",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "tired"
+        },
+        {
+          "hash": "75f124c04284",
+          "sig": "text|verbal|verbal-analogy|bear is to cub as cat is to || calf~duckling~kitten~puppy|kitten",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "kitten"
+        },
+        {
+          "hash": "da691b24cdd0",
+          "sig": "text|verbal|verbal-analogy|sailor is to ship as farmer is to || bakery~farm~kitchen~school|farm",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "farm"
+        }
+      ]
+    },
+    {
+      "videoSlug": "hermes-nous-showcase-1-v01",
+      "test": "control",
+      "variant": "control",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "a66da0120c38",
+          "sig": "text|verbal|odd-one-out|which one does not belong || kayak~raft~sailboat~willow|willow",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "willow"
+        },
+        {
+          "hash": "ea5df87b2983",
+          "sig": "numseries|quantitative|number-series|4~5~9~16~26|39",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "39"
+        },
+        {
+          "hash": "bfd27a7c0cdb",
+          "sig": "text|verbal|verbal-analogy|near is to far as old is to || new~night~short~soft|new",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "new"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"

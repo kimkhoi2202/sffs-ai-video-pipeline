@@ -12,14 +12,13 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats, BankCoverage } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo } from "./data.ts";
 import type { PRView } from "./prs.ts";
 
 // ── html helpers ──────────────────────────────────────────────────────────────
 export const esc = (s: unknown): string =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 const n = (v: unknown): string => (v === null || v === undefined || v === "" ? "—" : String(v));
-const publerPostUrl = (id: string): string => `https://app.publer.com/#/scheduler/posts/${encodeURIComponent(id)}`;
 const short = (s: string | undefined, len = 10): string => (s ? esc(String(s).slice(0, len)) : "—");
 
 function badge(pass: boolean | undefined, label: string): string {
@@ -44,9 +43,9 @@ function videoCard(v: VideoPlan): string {
     badge(g.copy?.pass, "copy"),
     badge(g.render?.pass, "render"),
   ].join(" ");
-  const posts = (v.publer?.post_ids || [])
-    .map((id) => `<a href="${publerPostUrl(id)}" target="_blank" rel="noopener">${esc(id)}</a>`)
-    .join(", ");
+  // Publer exposes no stable/public per-post URL, so show ids as PLAIN TEXT — not
+  // a dead #/scheduler/posts deep-link (consistent with the drafts panel).
+  const posts = (v.publer?.post_ids || []).map((id) => esc(id)).join(", ");
   const media = v.media_url
     ? `<a class="media" href="${esc(v.media_url)}" target="_blank" rel="noopener">▶ preview rendered mp4 (presigned)</a>`
     : "";
@@ -94,9 +93,9 @@ function analyticsTable(db: any): string {
       </tr>`;
     })
     .join("");
-  return `<table class="tbl">
+  return `<div class="tblwrap"><table class="tbl">
     <thead><tr><th>platform</th><th>experiment</th><th>reach</th><th>views</th><th>reactions</th><th>comments</th><th>shares</th><th>eng</th><th>as of</th></tr></thead>
-    <tbody>${rows}</tbody></table>`;
+    <tbody>${rows}</tbody></table></div>`;
 }
 
 function rollupTable(l: any): string {
@@ -112,7 +111,7 @@ function rollupTable(l: any): string {
         <td>${n(v.n_posts)}</td><td>${n(v.n_with_metrics)}</td><td>${v.median_eng_rate != null ? esc(v.median_eng_rate) + "%" : "—"}</td><td>${n(v.avg_reach)}</td></tr>`;
     })
     .join("");
-  return `<table class="tbl"><thead><tr><th>variant family</th><th>posts</th><th>w/ metrics</th><th>median eng</th><th>avg reach</th></tr></thead><tbody>${rows}</tbody></table>`;
+  return `<div class="tblwrap"><table class="tbl"><thead><tr><th>variant family</th><th>posts</th><th>w/ metrics</th><th>median eng</th><th>avg reach</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function frontRunners(l: any): string {
@@ -162,7 +161,7 @@ function bankCoverageCard(cov: BankCoverage): string {
     <span class="hpill"><b>days of runway</b><span class="chip ${runwayCls}">${esc(runway)}</span></span>
     <span class="hpill"><b>est. burn</b>~${n(cov.perDay)} q/day</span>
   </div>
-  ${cov.byType.length ? `<table class="tbl"><thead><tr><th>question type</th><th>usable</th><th>fresh</th></tr></thead><tbody>${rows}</tbody></table>` : `<p class="muted">No question-bank entries found.</p>`}
+  ${cov.byType.length ? `<div class="tblwrap"><table class="tbl"><thead><tr><th>question type</th><th>usable</th><th>fresh</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<p class="muted">No question-bank entries found.</p>`}
   <p class="muted" style="margin-top:8px">Runway = fresh usable questions ÷ est. burn (${n(cov.perDay)}/day). The near-dup + type-spread guards keep variety; this flags a TYPE running low.</p>`;
 }
 
@@ -192,7 +191,7 @@ function armLeaderboard(l: any): string {
     })
     .join("");
   return `<p class="muted">Ranked by median engagement rate (arms with n≥${esc(minN)} matured posts lead; "low n" arms are shown but not crowned). This ARM-level cut is what the default-promotion engine compares against the control.</p>
-    <table class="tbl"><thead><tr><th>#</th><th>arm</th><th>posts</th><th>w/ metrics</th><th>median eng</th><th>avg reach</th></tr></thead><tbody>${rows}</tbody></table>`;
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>#</th><th>arm</th><th>posts</th><th>w/ metrics</th><th>median eng</th><th>avg reach</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 // ── published-post map — off the reconcile-backfilled native ids/permalinks ────
@@ -220,7 +219,7 @@ function publishedMap(db: any): string {
     })
     .join("");
   return `<p class="muted">${pub.length} published/reconciled post(s). Native id + permalink + posted_at are back-filled by <code>sffs_reconcile</code> (matching publer_post_id → the published post).</p>
-    <table class="tbl"><thead><tr><th>platform</th><th>posted at</th><th>permalink</th><th>arm</th><th>native id</th><th>eng</th></tr></thead><tbody>${rows}</tbody></table>`;
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>platform</th><th>posted at</th><th>permalink</th><th>arm</th><th>native id</th><th>eng</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 // ── spend / cost-governor snapshot (P2; read-only) ────────────────────────────
@@ -379,8 +378,8 @@ function ledgerOnlyHtml(attempts: GateAttempt[]): string {
     )
     .join("");
   return `<h3 style="margin-top:16px">Gate attempts with no matching open/merged PR</h3>
-    <table class="tbl"><thead><tr><th>merge</th><th>tests</th><th>review-agent</th><th>gate</th><th>merged</th><th>at</th></tr></thead>
-    <tbody>${rows}</tbody></table>`;
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>merge</th><th>tests</th><th>review-agent</th><th>gate</th><th>merged</th><th>at</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
 }
 
 function prView(pv: PRView): string {
@@ -391,6 +390,152 @@ function prView(pv: PRView): string {
   const errNote = pv.error ? `<div class="reject">gh warning: ${esc(pv.error)}</div>` : "";
   const rows = pv.rows.length ? pv.rows.map(prRowHtml).join("") : `<p class="muted">No open or merged PRs found for this repo yet.</p>`;
   return `${head}${errNote}${rows}${ledgerOnlyHtml(pv.ledgerOnly)}`;
+}
+
+// ── ALWAYS-ON software factory: live daemon status ───────────────────────────
+function factoryStateChip(state: string): string {
+  const s = String(state || "unknown");
+  const cls =
+    s === "running" ? "c-run"
+    : s === "idle-no-goals" || s === "stopped" ? "c-idle"
+    : s.startsWith("paused") || s === "error-backoff" ? "c-no"
+    : "c-warn";
+  return `<span class="chip ${cls}">${esc(s)}</span>`;
+}
+function factoryPanel(fs: any): string {
+  if (!fs || typeof fs !== "object") {
+    return `<p class="muted">No factory daemon status yet. The always-on daemon writes <code>factory-status.json</code> each cycle (goals generated, merges, refusals, spend vs cap, kill-switch). If this stays empty, the <code>factory-daemon</code> service may be stopped.</p>`;
+  }
+  const sp = fs.spend || {};
+  const usd = (v: any) => `$${Number(v ?? 0).toFixed(2)}`;
+  const int = (v: any) => Number(v ?? 0).toLocaleString("en-US");
+  const t = fs.totals || {};
+  const lc = fs.last_cycle || {};
+  const kill = fs.kill_switch || {};
+  const suite = fs.suite || {};
+  const cad = fs.cadence || {};
+  const killPill = kill.engaged
+    ? `<span class="hpill" style="background:var(--coral);color:#fff"><b>kill-switch</b>ENGAGED${kill.reason ? " · " + esc(String(kill.reason).slice(0, 44)) : ""}</span>`
+    : `<span class="hpill" style="background:var(--green)"><b>kill-switch</b>clear</span>`;
+  const suitePill = `<span class="hpill" ${suite.verdict === "RED" ? 'style="background:var(--coral);color:#fff"' : suite.verdict === "GREEN" ? 'style="background:var(--green)"' : ""}><b>suite</b>${esc(suite.verdict || "?")}${suite.sha ? " · " + short(suite.sha) : ""}</span>`;
+  const usdOver = sp.usd_cap && sp.usd >= sp.usd_cap;
+  const head = `<div class="health" style="margin-bottom:10px">
+    <span class="hpill"><b>state</b>${factoryStateChip(fs.state)}</span>
+    <span class="hpill" style="max-width:340px"><b>reason</b>${esc(String(fs.state_reason || "—").slice(0, 70))}</span>
+    <span class="hpill"><b>cycle</b>#${esc(fs.cycle)}</span>
+    <span class="hpill"><b>hermes-nous tip</b>${short(fs.hermes_nous_tip)}</span>
+    ${suitePill}
+    ${killPill}
+  </div>`;
+  const spendRow = `<div class="health" style="margin-bottom:10px">
+    <span class="hpill" ${usdOver ? 'style="background:var(--coral);color:#fff"' : ""}><b>spend today / $2k cap</b>${usd(sp.usd)} / ${usd(sp.usd_cap)}</span>
+    <span class="hpill"><b>tokens / cap</b>${int(sp.tokens)} / ${int(sp.tokens_cap)}</span>
+    <span class="hpill"><b>cadence</b>base ${esc(cad.base_sleep_s)}s · next ${esc(cad.next_sleep_s)}s${cad.backoff_s ? ` · backoff ${esc(cad.backoff_s)}s` : ""}</span>
+    <span class="hpill"><b>as of (UTC)</b>${esc(String(fs.ts || "").slice(11, 19))}</span>
+  </div>`;
+  const totals = `<div class="health" style="margin-bottom:10px">
+    <span class="hpill"><b>merged (total)</b>${esc(t.merged ?? 0)}</span>
+    <span class="hpill"><b>refused (total)</b>${esc(t.refused ?? 0)}</span>
+    <span class="hpill"><b>deferred (total)</b>${esc(t.deferred ?? 0)}</span>
+    <span class="hpill"><b>cycles</b>${esc(t.cycles ?? 0)}</span>
+    <span class="hpill"><b>no-merge streak</b>${esc(fs.consecutive_no_merge ?? 0)}</span>
+  </div>`;
+  const bl = fs.backlog || {};
+  const backlogPills = Object.keys(bl).length
+    ? `<div class="cap"><b>detected backlog (real signals, ranked):</b></div><div class="health" style="margin:6px 0 10px">${Object.entries(bl).map(([k, v]) => `<span class="hpill"><b>${esc(k)}</b>${esc(v)}</span>`).join("")}</div>`
+    : "";
+  const goals = Array.isArray(fs.recent_goals) && fs.recent_goals.length
+    ? `<div class="cap"><b>goals generated this cycle:</b></div><ul class="qs">${fs.recent_goals.map((g: any) => `<li><b>${esc(g.kind)}</b> <span class="muted">score ${esc(g.score)}</span> — ${esc(g.text)}</li>`).join("")}</ul>`
+    : `<p class="muted">No goals in the current batch (idle / backed off — nothing high-value pending).</p>`;
+  const merged = Array.isArray(lc.merged) ? lc.merged : [];
+  const refused = Array.isArray(lc.refused) ? lc.refused : [];
+  const deferred = Array.isArray(lc.deferred) ? lc.deferred : [];
+  const lastCycle = `<div class="cap" style="margin-top:8px"><b>last cycle #${esc(lc.cycle ?? "—")}</b> — ${merged.length} merged · ${refused.length} refused · ${deferred.length} deferred</div>
+    <div style="margin-top:4px">
+    ${merged.map((m: any) => `<span class="b b-ok" style="display:inline-block;margin:3px 4px 0 0">MERGE ${short(m.commit)} · ${esc(String(m.goal || "").split("helper ").pop())}</span>`).join("")}
+    ${refused.map((m: any) => `<span class="b b-no" style="display:inline-block;margin:3px 4px 0 0">REFUSE · ${esc(String(m.reason || "").slice(0, 52))}</span>`).join("")}
+    </div>`;
+  const flag = fs.flag_flailing ? `<div class="reject">⚠ FLAG raised — the daemon auto-paused for attention (see FLAILING.flag on the box).</div>` : "";
+  const howto = `<p class="muted">STOP instantly: <code>touch /home/ec2-user/hermes-data/FACTORY_STOP</code> (or env <code>SFFS_FACTORY_KILL=1</code>); resume by removing it. Every merge requires the TWO-KEY gate (tests GREEN + independent model review APPROVE); merges land on <code>hermes-nous</code> only; DRAFT-ONLY posting is never touched.</p>`;
+  return `${head}${spendRow}${totals}${backlogPills}${goals}${lastCycle}${flag}${howto}`;
+}
+
+// ── DRAFTS awaiting review (READ-ONLY) ───────────────────────────────────────
+// Mirrors the sffs-drafts-to-review board: one card per video (IG + TikTok pair)
+// with thumbnail, hook, A/B variant (dimension + arm), question types, and the
+// Publer draft deep-link for each platform. Look-only: the ONLY interactive
+// elements are <a> links that open Publer in a new tab — no publish/schedule
+// buttons (the human publishes from Publer).
+function platformLabel(p: string): string {
+  const s = String(p || "").toLowerCase();
+  if (s === "instagram" || s === "ig" || s === "ig_business") return "Instagram";
+  if (s === "tiktok") return "TikTok";
+  return p ? esc(p) : "link";
+}
+
+/** Same-origin READ-ONLY proxy URL for a draft's PUBLIC Publer CDN asset. */
+function draftMediaSrc(videoKey: string, kind: "video" | "thumb"): string {
+  return `/api/draft-media?v=${encodeURIComponent(videoKey)}&kind=${kind}`;
+}
+
+function draftCard(v: DraftVideo): string {
+  const inferred = v.variant_source === "inferred";
+  const srcChip = inferred
+    ? `<span class="chip c-warn" title="No run/ab-database record matched this Publer draft id — label inferred from the caption">inferred</span>`
+    : `<span class="chip c-ok" title="Correlated from ${esc(v.variant_source)} by publer_post_id">from ${esc(v.variant_source)}</span>`;
+  // Inline preview. The PUBLIC Publer CDN mp4 is Referer-gated (403 cross-origin),
+  // so it is streamed same-origin via the read-only /api/draft-media proxy; the
+  // poster is the draft's thumbnail (also proxied). Never an S3 presigned url.
+  const posterAttr = v.thumbnail ? ` poster="${esc(draftMediaSrc(v.video_key, "thumb"))}"` : "";
+  const preview = v.media_url
+    ? `<video class="dvid" controls preload="metadata" playsinline${posterAttr}>
+        <source src="${esc(draftMediaSrc(v.video_key, "video"))}" type="video/mp4"/>
+      </video>`
+    : v.thumbnail
+      ? `<img class="dthumb-img" loading="lazy" src="${esc(draftMediaSrc(v.video_key, "thumb"))}" alt="draft preview"/>`
+      : `<div class="dthumb-none">no preview</div>`;
+  const qtypes = v.question_types.length
+    ? v.question_types.map((t) => `<span class="b b-na">${esc(t)}</span>`).join(" ")
+    : `<span class="muted">question types: —</span>`;
+  // Publer exposes no public/stable per-draft URL, so we label the target
+  // platform(s) as plain text (no dead deep-links). The preview above is the
+  // review surface; publishing stays inside Publer.
+  const platforms = v.drafts.length
+    ? `<span class="muted">drafted to</span> ${v.drafts.map((d) => `<span class="dplat">${platformLabel(d.platform)}</span>`).join(" ")}`
+    : `<span class="muted">no platform drafts</span>`;
+  return `<div class="draftcard">
+    <div class="dthumb">${preview}</div>
+    <div class="dbody">
+      <div class="vid-h">
+        <div><span class="dim">${esc(v.dimension)}</span> <span class="arm">/ ${esc(v.arm)}</span></div>
+        ${srcChip}
+      </div>
+      <div class="rationale">${esc(v.hook)}</div>
+      <div class="gates">${qtypes}</div>
+      <div class="draftplatforms">${platforms}</div>
+      ${v.run_id ? `<div class="cap muted">run ${esc(v.run_id)}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+function draftsPanel(view: DraftsView | undefined): string {
+  if (!view) {
+    return `<p class="muted">Drafts are loaded live from Publer (read-only). None loaded yet.</p>`;
+  }
+  if (!view.ok && !view.videos.length) {
+    return `<p class="muted">Couldn't load pending Publer drafts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls the drafts live via the pipeline's read-only Publer bridge; it retries on the next refresh. READ-ONLY — no publish/schedule here (publish from Publer).</p>`;
+  }
+  if (!view.videos.length) {
+    return `<p class="muted">No pending Publer drafts right now. When the daily draft loop creates the next batch (IG + TikTok per video), each will appear here for you to review and publish from Publer.</p>`;
+  }
+  const head = `<div class="health" style="margin-bottom:12px">
+    <span class="hpill"><b>videos awaiting review</b>${esc(view.count_videos)}</span>
+    <span class="hpill"><b>publer drafts</b>${esc(view.count_drafts)} (IG + TikTok)</span>
+    <span class="hpill"><b>source</b>${esc(view.source)}</span>
+    <span class="hpill"><b>as of</b>${esc((view.as_of || "").slice(11, 19))}Z</span>
+  </div>
+  <p class="muted" style="margin-bottom:12px">Each card is one video with an inline preview (streamed read-only from Publer's CDN via this dashboard) and which platform(s) it is drafted to. A/B variant is correlated from the loop's run state / ab-database by <code>publer_post_id</code>; where no record matches, the arm is inferred from the caption and tagged <span class="chip c-warn">inferred</span>. READ-ONLY — preview only; publishing stays in Publer and nothing is published or scheduled from here.</p>`;
+  return `${head}<div class="draftgrid">${view.videos.map(draftCard).join("")}</div>`;
 }
 
 // ── kill-switch banner ────────────────────────────────────────────────────────
@@ -421,6 +566,10 @@ export interface PageData {
   coverage?: BankCoverage;
   /** cost-governor spend snapshot (optional; degrades to "no snapshot"). */
   snapshot?: any;
+  /** always-on factory daemon status (optional; degrades to "no daemon status"). */
+  factory?: any;
+  /** pending Publer drafts awaiting human review (optional; degrades to empty). */
+  drafts?: DraftsView;
 }
 
 export function page(opts: PageData): string {
@@ -442,6 +591,7 @@ export function page(opts: PageData): string {
 <style>
 :root{--ink:#000;--paper:#fff;--blue:#839aff;--mint:#c6fcd0;--coral:#fd7962;--yellow:#fce552;--cream:#f6f4ee;--green:#63c088}
 *{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
 body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
 a{color:#1b3bd1}
 header{background:var(--blue);border-bottom:5px solid var(--ink);padding:18px 22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
@@ -457,7 +607,7 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .kpi .v{font:800 34px/1 "Segoe UI",sans-serif}
 .kpi .k{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#444;margin-top:6px}
 .card{background:var(--paper);border:4px solid var(--ink);border-radius:18px;box-shadow:8px 8px 0 0 var(--ink);padding:20px;margin-bottom:22px}
-.card h2{margin:0 0 14px;font-size:20px;display:flex;gap:10px;align-items:center}
+.card h2{margin:0 0 14px;font-size:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .card h2 .pin{background:var(--coral);border:3px solid var(--ink);border-radius:8px;padding:2px 8px;font-size:12px;font-weight:800}
 .card h2 .pin.pr{background:var(--yellow)}
 .vid{border:3px solid var(--ink);border-radius:14px;padding:14px;margin-bottom:14px;background:var(--cream)}
@@ -466,18 +616,19 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .rationale{color:#333;margin:6px 0 10px;font-size:14px}
 .rationale code{background:#eee;border:1px solid #ccc;border-radius:5px;padding:1px 5px;font-size:12px}
 .gates{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.b{font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;border:2px solid var(--ink)}
+.b{display:inline-block;vertical-align:middle;font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;border:2px solid var(--ink)}
 .b-ok{background:var(--green)}.b-no{background:var(--coral);color:#fff}.b-na{background:#ddd}
 .reject{background:#ffe3de;border:2px solid var(--coral);border-radius:8px;padding:6px 10px;font-size:13px;margin-bottom:8px}
 .qs{margin:8px 0;padding-left:18px}.qs .ans{color:var(--green);font-weight:700}
 .cap{font-size:13px;color:#333;margin-top:4px}
 .vid-f{margin-top:10px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:13px}
 .media{font-weight:700}
-.chip{font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px;border:2px solid var(--ink)}
+.chip{display:inline-block;vertical-align:middle;white-space:nowrap;font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px;border:2px solid var(--ink)}
 .c-ok{background:var(--green)}.c-warn{background:var(--yellow)}.c-no{background:var(--coral);color:#fff}.c-run{background:var(--blue)}.c-idle{background:#e5e5e5}
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th,.tbl td{border:2px solid var(--ink);padding:6px 8px;text-align:left}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;max-width:100%}
+.tbl th,.tbl td{border:2px solid var(--ink);padding:6px 8px;text-align:left;overflow-wrap:anywhere}
 .tbl th{background:var(--mint)}
+.tblwrap{max-width:100%;overflow-x:auto}
 .tbl .front{background:var(--yellow)}
 .star{font-size:11px;font-weight:800}
 .live{background:var(--coral);color:#fff;font-size:10px;padding:1px 5px;border-radius:4px;font-weight:800}
@@ -488,16 +639,25 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .log li{padding:6px 0;border-bottom:1px solid #e2e2e2}
 .date{font-weight:800;margin-right:6px}
 .health{display:flex;flex-wrap:wrap;gap:10px}
-.hpill{background:var(--cream);border:3px solid var(--ink);border-radius:10px;padding:8px 12px;font-size:13px}
+.hpill{background:var(--cream);border:3px solid var(--ink);border-radius:10px;padding:8px 12px;font-size:13px;overflow-wrap:anywhere}
 .hpill b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#555}
 .logbox{max-height:340px;overflow:auto;background:#0d0d0d;color:#d6d6d6;border-radius:12px;padding:12px;font:12px/1.5 ui-monospace,Menlo,monospace}
 .lg{padding:2px 0;white-space:pre-wrap}.lt{color:#7bd88f}.ll{color:#f5c451;font-weight:700}
 .lg-error .ll{color:#ff7a6b}
-form.runsel{display:flex;gap:8px;align-items:center}
-select{padding:6px 8px;border:3px solid var(--ink);border-radius:8px;font-size:13px;background:#fff}
+form.runsel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0;max-width:100%}
+select{padding:6px 8px;border:3px solid var(--ink);border-radius:8px;font-size:13px;background:#fff;min-width:0;max-width:100%}
 .foot{color:#666;font-size:12px;text-align:center;padding:14px}
 details summary{cursor:pointer;font-size:13px;color:#333;margin-top:6px}
-code{font:12px/1.4 ui-monospace,Menlo,monospace}
+code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
+.draftgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.draftcard{display:flex;flex-direction:column;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--cream)}
+.dthumb{background:#000;border-bottom:3px solid var(--ink);aspect-ratio:9/16;max-height:320px;display:flex;align-items:center;justify-content:center}
+.dthumb-img{width:100%;height:100%;object-fit:cover;display:block}
+.dvid{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.dthumb-none{color:#888;font-size:12px;font-weight:700}
+.dbody{padding:12px;display:flex;flex-direction:column;gap:6px}
+.draftplatforms{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px}
+.dplat{display:inline-block;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:8px;padding:3px 9px;background:var(--mint);color:#111}
 </style></head>
 <body>
 <header>
@@ -513,6 +673,12 @@ ${killBanner(kill)}
     <div class="kpi"><div class="v">${s.rejected}</div><div class="k">rejected (gates)</div></div>
     <div class="kpi"><div class="v">${bank.fresh}</div><div class="k">fresh questions</div></div>
     <div class="kpi"><div class="v">${cov.runwayDays == null ? "—" : cov.runwayDays}</div><div class="k">days runway</div></div>
+    <div class="kpi"><div class="v">${opts.drafts ? opts.drafts.count_videos : "—"}</div><div class="k">drafts awaiting review</div></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">DRAFTS</span> Drafts awaiting review <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
+    ${draftsPanel(opts.drafts)}
   </div>
 
   <div class="card">
@@ -540,6 +706,11 @@ ${killBanner(kill)}
   <div class="card">
     <h2><span class="pin">A/B</span> Designed batch &amp; quality gates</h2>
     ${videos}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">FACTORY</span> Always-on software factory — live daemon (goals · merges · refusals · spend · kill-switch)</h2>
+    ${factoryPanel(opts.factory)}
   </div>
 
   <div class="card">

@@ -13,7 +13,10 @@ import assert from "node:assert/strict";
 import {
   parseGateLedger, latestBySource, normalizeCheck, rollupCi, toPRRow, correlate,
 } from "../prs.ts";
-import { evaluateKillSwitch, computeBankCoverage } from "../data.ts";
+import {
+  evaluateKillSwitch, computeBankCoverage, redactRunForPublic,
+  publicPublerCdnUrl, sanitizeDraftsForPublic, resolveDraftMediaUrl,
+} from "../data.ts";
 import { esc, page } from "../render.ts";
 import { checkBasicAuth, eq } from "../server.ts";
 import type { GateAttempt } from "../types.ts";
@@ -390,4 +393,203 @@ test("page: PR view shows the review-agent verdict + CI status", () => {
   assert.match(html, /tests: GREEN/);
   assert.match(html, /CI: pass/);
   assert.match(html, /gate: MERGE/);
+});
+
+// ── Drafts awaiting review (READ-ONLY) ───────────────────────────────────────
+const draftsFixture = {
+  ok: true,
+  as_of: "2026-07-22T21:00:00Z",
+  source: "publer (live, read-only bridge)",
+  count_videos: 2,
+  count_drafts: 3,
+  videos: [
+    {
+      video_key: "m1",
+      hook: "bet you got this one wrong lol",
+      caption: "bet you got this one wrong lol #quiz",
+      thumbnail: "https://cdn.publer.com/uploads/photos/x.jpg",
+      media_url: "https://cdn.publer.com/uploads/videos/m1/259e8a.mp4",
+      dimension: "cliffhanger",
+      arm: "last-hidden",
+      variant_source: "run" as const,
+      question_types: ["VERBAL ANALOGY", "NUMBER SERIES"],
+      run_id: "2026-07-22",
+      drafts: [
+        { platform: "instagram", publer_id: "IG1" },
+        { platform: "tiktok", publer_id: "TT1" },
+      ],
+    },
+    {
+      video_key: "m2",
+      hook: "which one are you picking?",
+      caption: "which one are you picking? #quiz",
+      thumbnail: null,
+      media_url: null,
+      dimension: "hook",
+      arm: "which-one-are-you",
+      variant_source: "inferred" as const,
+      question_types: [],
+      drafts: [{ platform: "tiktok", publer_id: "TT2" }],
+    },
+  ],
+};
+
+test("page: renders the Drafts awaiting review panel + empty state", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /Drafts awaiting review/);
+  assert.match(html, /None loaded yet|No pending Publer drafts/);
+});
+
+test("page: drafts panel shows variant, question types, inline video preview + platform labels", () => {
+  const html = page(emptyPageData({ drafts: draftsFixture as any }));
+  assert.match(html, /Drafts awaiting review/);
+  assert.match(html, /cliffhanger/);
+  assert.match(html, /last-hidden/);
+  assert.match(html, /VERBAL ANALOGY/);
+  // inline <video> preview streamed via the SAME-ORIGIN read-only proxy
+  assert.match(html, /<video[^>]*\bcontrols\b/);
+  assert.match(html, /preload="metadata"/);
+  assert.match(html, /playsinline/);
+  assert.match(html, /src="\/api\/draft-media\?v=m1&amp;kind=video"/);
+  assert.match(html, /poster="\/api\/draft-media\?v=m1&amp;kind=thumb"/);
+  // platform labels present as plain text (dead Publer deep-links removed)
+  assert.match(html, /Instagram/);
+  assert.match(html, /TikTok/);
+  assert.match(html, /inferred/);
+  // the second video has no playable media_url ⇒ graceful "no preview"
+  assert.match(html, /no preview/);
+});
+
+test("GUARDRAIL: drafts panel adds NO publish/schedule control (inline preview, no POST, no dead links)", () => {
+  const html = page(emptyPageData({ drafts: draftsFixture as any }));
+  assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
+  assert.doesNotMatch(html, /<button[^>]*>\s*(publish|schedule|merge|post|go live|approve|reject)/i);
+  assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["']/i);
+  // the review surface is a read-only <video>; the dead Publer deep-links are gone
+  assert.match(html, /<video[^>]*\bcontrols\b/);
+  assert.doesNotMatch(html, /app\.publer\.com/);
+  assert.doesNotMatch(html, /class="draftlink"/);
+});
+
+test("SECURITY: redactRunForPublic strips the presigned media_url from every video", () => {
+  const run = {
+    run_id: "r", started_at: "", updated_at: "", status: "success",
+    videos: [
+      { id: "v1", index: 0, dimension: "d", arm: "a", rationale: "", status: "drafted", media_url: "https://b.s3.amazonaws.com/o?X-Amz-Signature=abc&X-Amz-Credential=ASIA" },
+      { id: "v2", index: 1, dimension: "d", arm: "a", rationale: "", status: "drafted" },
+    ],
+  } as any;
+  const out = redactRunForPublic(run)!;
+  assert.ok(!("media_url" in out.videos[0]));
+  assert.doesNotMatch(JSON.stringify(out), /X-Amz-Signature|X-Amz-Credential/);
+  assert.equal(out.videos.length, 2);
+});
+
+// ── Inline draft video preview: PUBLIC-CDN-only + same-origin proxy (SECURITY) ─
+test("publicPublerCdnUrl: accepts clean cdn.publer.com asset; rejects S3-signed / off-host / query / non-https", () => {
+  const mp4 = "https://cdn.publer.com/uploads/videos/abc/def.mp4";
+  const jpg = "https://cdn.publer.com/uploads/photos/x.jpg";
+  assert.equal(publicPublerCdnUrl(mp4), mp4);
+  assert.equal(publicPublerCdnUrl(jpg), jpg);
+  // the FORBIDDEN one: an S3 presigned url (amazonaws host + X-Amz-* query/tokens)
+  assert.equal(publicPublerCdnUrl("https://bkt.s3.amazonaws.com/o.mp4?X-Amz-Signature=a&X-Amz-Credential=ASIA"), null);
+  assert.equal(publicPublerCdnUrl("https://cdn.publer.com/x.mp4?X-Amz-Signature=a"), null); // cdn host but query ⇒ reject
+  assert.equal(publicPublerCdnUrl("http://cdn.publer.com/x.mp4"), null); // not https
+  assert.equal(publicPublerCdnUrl("https://evil.com/x.mp4"), null); // wrong host
+  assert.equal(publicPublerCdnUrl("https://cdn.publer.com.evil.com/x.mp4"), null); // suffix host spoof
+  assert.equal(publicPublerCdnUrl("https://user:pass@cdn.publer.com/x.mp4"), null); // userinfo
+  assert.equal(publicPublerCdnUrl(null), null);
+  assert.equal(publicPublerCdnUrl(""), null);
+  assert.equal(publicPublerCdnUrl(123 as any), null);
+});
+
+test("SECURITY: sanitizeDraftsForPublic forces media_url/thumbnail to PUBLIC-CDN-only (nulls S3-signed)", () => {
+  const view = {
+    ok: true, source: "t", as_of: "t", count_videos: 2, count_drafts: 0,
+    videos: [
+      { video_key: "a", hook: "", caption: "", thumbnail: "https://cdn.publer.com/uploads/photos/a.jpg",
+        media_url: "https://cdn.publer.com/uploads/videos/a/a.mp4", dimension: "d", arm: "a",
+        variant_source: "run", question_types: [], drafts: [] },
+      { video_key: "b", hook: "", caption: "",
+        thumbnail: "https://bkt.s3.amazonaws.com/t.jpg?X-Amz-Signature=z",
+        media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z&X-Amz-Credential=ASIA",
+        dimension: "d", arm: "b", variant_source: "inferred", question_types: [], drafts: [] },
+    ],
+  } as any;
+  const out = sanitizeDraftsForPublic(view);
+  assert.equal(out.videos[0].media_url, "https://cdn.publer.com/uploads/videos/a/a.mp4"); // clean kept
+  assert.equal(out.videos[0].thumbnail, "https://cdn.publer.com/uploads/photos/a.jpg");
+  assert.equal(out.videos[1].media_url, null); // S3-signed nulled
+  assert.equal(out.videos[1].thumbnail, null);
+  assert.doesNotMatch(JSON.stringify(out), /X-Amz-Signature|X-Amz-Credential|amazonaws\.com/);
+});
+
+test("resolveDraftMediaUrl: resolves by video_key+kind to a validated cdn url, else null", () => {
+  const view = {
+    ok: true, source: "t", as_of: "t", count_videos: 2, count_drafts: 0,
+    videos: [
+      { video_key: "m1", hook: "", caption: "", thumbnail: "https://cdn.publer.com/uploads/photos/p.jpg",
+        media_url: "https://cdn.publer.com/uploads/videos/m1/v.mp4", dimension: "d", arm: "a",
+        variant_source: "run", question_types: [], drafts: [] },
+      { video_key: "bad", hook: "", caption: "", thumbnail: null,
+        media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z", dimension: "d", arm: "a",
+        variant_source: "run", question_types: [], drafts: [] },
+    ],
+  } as any;
+  assert.equal(resolveDraftMediaUrl(view, "m1", "video"), "https://cdn.publer.com/uploads/videos/m1/v.mp4");
+  assert.equal(resolveDraftMediaUrl(view, "m1", "thumb"), "https://cdn.publer.com/uploads/photos/p.jpg");
+  assert.equal(resolveDraftMediaUrl(view, "nope", "video"), null); // unknown key
+  assert.equal(resolveDraftMediaUrl(view, "bad", "video"), null); // S3-signed ⇒ rejected by allowlist
+  assert.equal(resolveDraftMediaUrl(null, "m1", "video"), null);
+});
+
+test("SECURITY: rendered drafts page proxies media (no raw CDN url, no S3-signed url in HTML)", () => {
+  const html = page(emptyPageData({ drafts: draftsFixture as any }));
+  // preview src goes through the same-origin proxy …
+  assert.match(html, /src="\/api\/draft-media\?v=m1&amp;kind=video"/);
+  // … so the raw cdn.publer.com url and any S3 signing material never appear in the HTML
+  assert.doesNotMatch(html, /cdn\.publer\.com/);
+  assert.doesNotMatch(html, /amazonaws|X-Amz-/);
+});
+
+test("GUARDRAIL: cycle-status batch shows Publer post ids as plain text (no dead app.publer.com deep-link)", () => {
+  const run = {
+    run_id: "2026-07-22", started_at: "s", updated_at: "u", status: "success",
+    summary: { planned: 1, drafted: 1, rejected: 0, failed: 0 },
+    videos: [{
+      id: "v1", index: 0, dimension: "cliffhanger", arm: "last-hidden", rationale: "r",
+      status: "drafted", caption: "c", hashtag_set: "A",
+      publer: { post_ids: ["PUB123", "PUB456"] },
+    }],
+  } as any;
+  const html = page(emptyPageData({ latest: run, runs: [run] }));
+  assert.match(html, /PUB123/); // ids still shown for reference …
+  assert.match(html, /PUB456/);
+  assert.doesNotMatch(html, /app\.publer\.com/); // … but NOT as a dead deep-link
+});
+
+test("LAYOUT: page guards horizontal scroll (overflow-x hidden + wrapped tables + inline-block chips)", () => {
+  const pr = {
+    ok: true, repo: "owner/repo", rows: [], gh_available: true,
+    counts: { open: 0, merged: 0, ledger: 1 },
+    ledgerOnly: [{
+      source: "sffs-factory/safe-add-tested-clamp-helper-alpha-191124-really-long-unbreakable-branch",
+      target: "hermes-nous", harness: "GREEN", review: "APPROVE", decision: "MERGE", merged: false, ts: "2026-07-22T19:09:04Z",
+    }],
+  };
+  const html = page(emptyPageData({ pr: pr as any }));
+  // page-level guard: the document body must never scroll horizontally
+  assert.match(html, /html,body\{[^}]*overflow-x:hidden/);
+  // chips render as ONE crisp single-line box (inline-block + nowrap ⇒ no fragmentation)
+  assert.match(html, /\.chip\{[^}]*display:inline-block/);
+  assert.match(html, /\.chip\{[^}]*white-space:nowrap/);
+  // wide tables live inside their own horizontal-scroll container …
+  assert.match(html, /\.tblwrap\{[^}]*overflow-x:auto/);
+  assert.match(html, /<div class="tblwrap"><table class="tbl">/);
+  // … and long unbreakable branch names can wrap instead of overflowing the page
+  assert.match(html, /overflow-wrap:anywhere/);
+  assert.match(html, /safe-add-tested-clamp-helper-alpha-191124-really-long-unbreakable-branch/);
+  // the run-selector must be able to shrink (not overflow the viewport) on narrow screens
+  assert.match(html, /select\{[^}]*max-width:100%/);
+  assert.match(html, /\.card h2\{[^}]*flex-wrap:wrap/);
 });

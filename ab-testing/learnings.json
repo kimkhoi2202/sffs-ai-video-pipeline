@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T04:26:15.684Z",
+  "updated_at": "2026-07-22T16:28:22.832Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -71,26 +71,26 @@
       "intro-promo": {
         "n_posts": 2,
         "n_with_metrics": 2,
-        "median_eng_rate": 5.26,
-        "avg_reach": 245
+        "median_eng_rate": 5.23,
+        "avg_reach": 249.5
       },
       "standard": {
         "n_posts": 9,
         "n_with_metrics": 9,
-        "median_eng_rate": 2.69,
-        "avg_reach": 128
+        "median_eng_rate": 2.62,
+        "avg_reach": 130
       },
       "cliffhanger": {
-        "n_posts": 4,
+        "n_posts": 6,
         "n_with_metrics": 2,
-        "median_eng_rate": 3.35,
-        "avg_reach": 199
+        "median_eng_rate": 4.04,
+        "avg_reach": 380
       },
       "no-answer": {
         "n_posts": 3,
-        "n_with_metrics": 1,
-        "median_eng_rate": 0,
-        "avg_reach": 116
+        "n_with_metrics": 2,
+        "median_eng_rate": 0.94,
+        "avg_reach": 113
       },
       "dont-narrate": {
         "n_posts": 6,
@@ -115,91 +115,140 @@
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
-      }
-    },
-    "by_platform": {
-      "instagram": {
-        "n_posts": 14,
-        "n_with_metrics": 6,
-        "median_eng_rate": 0.81,
-        "avg_reach": 117.5
       },
-      "tiktok": {
-        "n_posts": 16,
-        "n_with_metrics": 8,
-        "median_eng_rate": 3.74,
-        "avg_reach": 272.5
-      }
-    },
-    "by_hashtag_set": {
-      "B": {
-        "n_posts": 5,
+      "hook": {
+        "n_posts": 2,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
       },
+      "length": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "control": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "category-mix": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "tempo": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "narration": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      }
+    },
+    "by_platform": {
+      "instagram": {
+        "n_posts": 21,
+        "n_with_metrics": 6,
+        "median_eng_rate": 0.8,
+        "avg_reach": 119
+      },
+      "tiktok": {
+        "n_posts": 23,
+        "n_with_metrics": 9,
+        "median_eng_rate": 3.85,
+        "avg_reach": 291
+      }
+    },
+    "by_hashtag_set": {
+      "B": {
+        "n_posts": 9,
+        "n_with_metrics": 1,
+        "median_eng_rate": 1.87,
+        "avg_reach": 107
+      },
       "A": {
-        "n_posts": 7,
+        "n_posts": 11,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
       },
       "C": {
-        "n_posts": 4,
+        "n_posts": 10,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
       }
     },
     "by_time_bucket": {
-      "evening": {
-        "scheduled": 4,
-        "variants": [
-          "no-answer",
-          "no-narration"
-        ],
-        "n_with_metrics": 0,
-        "median_eng_rate": null
+      "evening (18-24)": {
+        "n_posts": 8,
+        "n_with_metrics": 7,
+        "median_eng_rate": 2.89,
+        "avg_reach": 119
       },
-      "late-night": {
-        "scheduled": 2,
-        "variants": [
-          "no-question-vo"
-        ],
-        "n_with_metrics": 0,
-        "median_eng_rate": null
+      "afternoon (12-18)": {
+        "n_posts": 7,
+        "n_with_metrics": 7,
+        "median_eng_rate": 2.62,
+        "avg_reach": 269
       },
-      "overnight": {
-        "scheduled": 2,
-        "variants": [
-          "no-options-vo"
-        ],
+      "morning (6-12)": {
+        "n_posts": 1,
+        "n_with_metrics": 1,
+        "median_eng_rate": 4.22,
+        "avg_reach": 474
+      }
+    },
+    "by_variant_arm": {
+      "last-hidden": {
+        "n_posts": 4,
         "n_with_metrics": 0,
-        "median_eng_rate": null
+        "median_eng_rate": null,
+        "avg_reach": null
       },
-      "overnight-trough": {
-        "scheduled": 2,
-        "variants": [
-          "speed"
-        ],
+      "challenge-opener": {
+        "n_posts": 2,
         "n_with_metrics": 0,
-        "median_eng_rate": null
+        "median_eng_rate": null,
+        "avg_reach": null
       },
-      "early-morning": {
-        "scheduled": 2,
-        "variants": [
-          "one-question"
-        ],
+      "one-question": {
+        "n_posts": 2,
         "n_with_metrics": 0,
-        "median_eng_rate": null
+        "median_eng_rate": null,
+        "avg_reach": null
       },
-      "morning": {
-        "scheduled": 2,
-        "variants": [
-          "mascot"
-        ],
+      "baseline": {
+        "n_posts": 2,
         "n_with_metrics": 0,
-        "median_eng_rate": null
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "quant-only": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "slow-7s": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "full-narration": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
       }
     }
   },
@@ -208,7 +257,7 @@
     "variant_family": "standard",
     "platform": "tiktok",
     "hashtag_set": null,
-    "time_bucket": null,
+    "time_bucket": "evening (18-24)",
     "confidence": "medium",
     "notes": "Only platform has a historical read (TikTok median eng 4.24% vs IG 0.78% on identical source videos). Family/hashtag_set/time_bucket front-runners are unknown until the A/B arms publish and metrics are pulled."
   },
@@ -260,6 +309,22 @@
       "pulled": 14,
       "updated": 14,
       "n_with_metrics": 14
+    },
+    {
+      "date": "2026-07-22",
+      "from": "2026-06-22",
+      "to": "2026-07-22",
+      "pulled": 21,
+      "updated": 15,
+      "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-22",
+      "from": "2026-06-22",
+      "to": "2026-07-22",
+      "pulled": 21,
+      "updated": 15,
+      "n_with_metrics": 15
     }
   ]
 }

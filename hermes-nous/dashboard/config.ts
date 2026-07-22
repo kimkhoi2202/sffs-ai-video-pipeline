@@ -67,6 +67,15 @@ export const CONFIG = Object.freeze({
       ? join((process.env.SFFS_COST_GOVERNOR_DIR as string).trim(), "snapshot.json")
       : join(DATA_DIR, "cost-governor", "snapshot.json")),
 
+  // Always-on software-factory DAEMON status (factory-status.json), for the live
+  // FACTORY panel. Mirrors the daemon's SFFS_FACTORY_DAEMON_DIR (default
+  // DATA_DIR/factory-daemon). Read-only; degrades to "no daemon status" if absent.
+  FACTORY_STATUS:
+    process.env.HERMES_FACTORY_STATUS ||
+    ((process.env.SFFS_FACTORY_DAEMON_DIR || "").trim()
+      ? join((process.env.SFFS_FACTORY_DAEMON_DIR as string).trim(), "factory-status.json")
+      : join(DATA_DIR, "factory-daemon", "factory-status.json")),
+
   // ── question-bank runway estimate (coverage panel) ───────────────────────
   /** est. videos/day and questions/video, used only to estimate days-of-runway. */
   VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 10),
@@ -107,6 +116,40 @@ export const CONFIG = Object.freeze({
   DASH_PORT: Number(process.env.HERMES_NOUS_DASH_PORT || 8081),
   DASH_USER: (process.env.HERMES_DASH_USER || "hermes").trim(),
   DASH_PASS: (process.env.HERMES_DASH_PASS || "").trim(),
+
+  // ── "Drafts awaiting review" panel (READ-ONLY) ───────────────────────────
+  // The panel lists the pending Publer drafts via the pipeline's VETTED
+  // read-only Publer bridge (bridge/publer-read.ts) — which imports ONLY GET
+  // primitives and is physically unable to create/publish/schedule/mutate a
+  // post. The dashboard NEVER holds or renders the Publer key; it only spawns
+  // that read-only bridge and reads the JSON it prints. Results are cached
+  // in-memory (TTL) with single-flight so public traffic can't hammer Publer.
+  PUBLER_READ_BRIDGE:
+    (process.env.HERMES_PUBLER_READ_BRIDGE || join(HERMES_NOUS_DIR, "bridge", "publer-read.ts")).trim(),
+  /** in-memory cache TTL for the live drafts list (ms). */
+  DRAFTS_TTL_MS: Number(process.env.HERMES_DRAFTS_TTL_MS || 120_000),
+  /** hard timeout for the read-only bridge subprocess (ms). */
+  DRAFTS_BRIDGE_TIMEOUT_MS: Number(process.env.HERMES_DRAFTS_BRIDGE_TIMEOUT_MS || 20_000),
+  /** max Publer pages to page through when listing drafts. */
+  DRAFTS_MAX_PAGES: Number(process.env.HERMES_DRAFTS_MAX_PAGES || 10),
+
+  // ── inline draft video preview: read-only same-origin media proxy ─────────
+  // Publer's CDN is hotlink-protected: it 403s unless the request Referer is its
+  // OWN ecosystem, so a <video src="cdn.publer.com/…mp4"> embedded on this public
+  // dashboard would not play. /api/draft-media proxies the PUBLIC CDN asset from
+  // this origin, adding the Referer below server-side. This Referer is a PUBLIC
+  // URL constant — NOT a credential — and is only ever a request header we send
+  // upstream; it never appears in any response. No AWS creds / S3 presigned url /
+  // Publer API key is involved in the proxy at all.
+  PUBLER_CDN_REFERER: (process.env.HERMES_PUBLER_CDN_REFERER || "https://app.publer.com/").trim(),
+  /** hard timeout for the media-proxy upstream fetch, ms (connect+headers). */
+  MEDIA_PROXY_TIMEOUT_MS: Number(process.env.HERMES_MEDIA_PROXY_TIMEOUT_MS || 12_000),
+
+  /** fallback account_id → platform map (also read live from ab-database.json accounts). */
+  ACCOUNT_PLATFORMS: Object.freeze({
+    "6a5fc5451bee22495517bcc5": "tiktok",
+    "6a5fc9dc4ccd63dc1f041549": "instagram",
+  }) as Record<string, string>,
 });
 
 /** Fail-closed boot assertion: refuse to run if the read-only invariant is off. */
