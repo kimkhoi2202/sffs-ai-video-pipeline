@@ -1,5 +1,5 @@
 name: sffs
-version: 0.12.0
+version: 0.13.0
 description: >-
   SFFS DRAFT-ONLY A/B quiz-video agent — safety core + read-only cycle data
   tools + the batch designer + the quality gates + never-repeat question
@@ -10,8 +10,11 @@ description: >-
   tool (design-only), the hard quality-gate tool (dedup/validity/brand/render;
   fail-closed), the read-only never-repeat question selector, the video render tool
   (HermesQuiz mp4 + cloned-voice narration arms; DRAFT media only), the S3 media
-  upload tool (private bucket + presigned GET URL), the score-rollup write tool
-  (refresh ab-database.json + learnings.json — the cross-run A/B memory), and the
+  upload tool (private bucket + presigned GET URL),   the score-rollup write tool
+  (refresh ab-database.json + learnings.json — the cross-run A/B memory), the
+  reconcile tool (back-fill native post ids/permalinks onto ab-database.json by
+  matching publer_post_id -> the published post, so scoring can learn from the
+  agent's OWN posts; read-only on Publer, idempotent), and the
   cycle orchestrator (one full DRAFT-ONLY cycle end to end; ties every tool
   together), plus a pre_tool_call hook that hard-refuses any publish/schedule/
   post-mutation call across ALL tools, plus a COST GOVERNOR + kill-switch
@@ -38,7 +41,9 @@ provides_tools:
   - sffs_render
   - sffs_upload_s3
   - sffs_score_rollup
+  - sffs_reconcile
   - sffs_cycle
+  - sffs_promote
   - sffs_factory
 provides_hooks:
   - pre_tool_call     # publish_guard (DRAFT-ONLY belt) + cost_governor (spend brake)

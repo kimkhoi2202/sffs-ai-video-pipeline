@@ -630,6 +630,52 @@ SFFS_SCORE_ROLLUP_SCHEMA = {
 
 
 # ---------------------------------------------------------------------------
+# RECONCILE — close the A/B LEARNING LOOP for the agent's OWN posts by matching
+# each ab-database record's publer_post_id to the native published post and
+# back-filling platform_post_id / permalink / posted_at (the join keys scoring
+# needs). Read Publer (GET only) + write ONE local JSON file; idempotent;
+# no state/schedule/publish vocabulary is exposed (schema-as-guardrail).
+# ---------------------------------------------------------------------------
+
+SFFS_RECONCILE_SCHEMA = {
+    "name": "sffs_reconcile",
+    "description": (
+        "Close the A/B learning loop for the agent's OWN posts: for each "
+        "ab-database.json record, match its publer_post_id (Publer's internal id, "
+        "recorded when the loop created the DRAFT) to the native published post and "
+        "back-fill platform_post_id (the network-native TikTok video id / Instagram "
+        "media id), permalink, and posted_at. Those native ids are the join keys "
+        "sffs_score / sffs_score_rollup attach matured analytics on, so without this "
+        "back-fill the agent can never learn from a post a human published from one of "
+        "its drafts. It only reads Publer (analytics + published-post GETs) and writes "
+        "ONE local JSON file (ab-database.json), only when a field actually changed; it "
+        "never creates, publishes, schedules, or mutates any post. IDEMPOTENT (a field "
+        "is filled only when currently empty). Run it after scoring in a cycle (or on "
+        "its own). Set dry_run=true (the default) to preview WITHOUT any network call "
+        "and WITHOUT writing any file."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "dry_run": {
+                "type": "boolean",
+                "description": (
+                    "If true (default), preview WITHOUT any network call and WITHOUT "
+                    "writing ab-database.json. Set false to actually read Publer and "
+                    "back-fill the native post ids/permalinks/posted_at."
+                ),
+            },
+            "data_dir": {
+                "type": "string",
+                "description": "Override HERMES_DATA_DIR for auxiliary data paths (optional).",
+            },
+        },
+        "required": [],
+    },
+}
+
+
+# ---------------------------------------------------------------------------
 # CYCLE — run ONE full DRAFT-ONLY A/B cycle end to end (ties all the tools
 # together by wrapping cycle.ts runCycle). It can ONLY ever create DRAFTS
 # (createDraftOnly), and it can NEVER push to main (HERMES_SKIP_GIT is forced).
