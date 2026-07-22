@@ -300,3 +300,77 @@ SFFS_SCORE_SCHEMA = {
         "required": [],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# QUALITY GATES — the fail-closed checks nothing becomes a draft without.
+# READ/JUDGE-only: no create / schedule / publish / delete / update path is
+# reachable (see gates.py + bridge/gates.ts). No state/schedule/publish
+# vocabulary is exposed (schema-as-guardrail).
+# ---------------------------------------------------------------------------
+
+SFFS_GATES_SCHEMA = {
+    "name": "sffs_gates",
+    "description": (
+        "Run a HARD QUALITY GATE (fail-closed; nothing should become a draft unless "
+        "it passes). Pick one with 'what': 'dedup' = never-repeat check (refuse any "
+        "question already used, claimed in this batch, or duplicated internally; "
+        "deterministic, no LLM); 'validity' = LLM rubric per question (exactly one "
+        "unambiguous correct answer, factual, grade-appropriate, plausible "
+        "distractors; fails closed if unsure); 'copy' = brand-voice + kid-safe check "
+        "on caption/on-screen text (deterministic hard rules first, then an LLM "
+        "judge); 'render' = render sanity via ffprobe (1080x1920, video+audio, "
+        "duration ~ expected). Returns a {pass, reason, detail} verdict; treat "
+        "pass=false as 'do not draft'. This never posts. Set dry_run=true to preview "
+        "the request with no LLM/network call."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "what": {
+                "type": "string",
+                "enum": ["dedup", "validity", "copy", "render"],
+                "description": "Which gate to run.",
+            },
+            "questions": {
+                "type": "array",
+                "items": {"type": "object"},
+                "description": (
+                    "For 'dedup' / 'validity': the question objects to check (each with "
+                    "at least a 'sig'; 'validity' also needs a 'hash'). Use the objects "
+                    "returned by sffs_design / sffs_questions."
+                ),
+            },
+            "claimed": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "For 'dedup': question sigs already claimed earlier in THIS batch.",
+            },
+            "pieces": {
+                "type": "array",
+                "items": {"type": "object"},
+                "description": (
+                    "For 'copy': the text pieces to judge, each {label, text} (e.g. "
+                    "{label:'caption', text:'...'})."
+                ),
+            },
+            "path": {
+                "type": "string",
+                "description": "For 'render': the rendered mp4 path to probe.",
+            },
+            "expected_frames": {
+                "type": "integer",
+                "description": "For 'render': expected frame count (from the render step) to check duration against.",
+            },
+            "fps": {
+                "type": "integer",
+                "description": "For 'render': frames per second (default 30).",
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, preview the request WITHOUT any LLM/network call.",
+            },
+        },
+        "required": ["what"],
+    },
+}
