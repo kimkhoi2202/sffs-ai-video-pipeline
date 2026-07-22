@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 import {
   parseGateLedger, latestBySource, normalizeCheck, rollupCi, toPRRow, correlate,
 } from "../prs.ts";
-import { evaluateKillSwitch } from "../data.ts";
+import { evaluateKillSwitch, computeBankCoverage } from "../data.ts";
 import { esc, page } from "../render.ts";
 import { checkBasicAuth, eq } from "../server.ts";
 import type { GateAttempt } from "../types.ts";
@@ -262,6 +262,112 @@ test("GUARDRAIL: the proposals card adds NO approve/reject button or POST form",
   assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
   assert.doesNotMatch(html, /<button[^>]*>\s*(approve|reject|promote|apply)/i);
   assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["']/i);
+});
+
+// ── P2: question-bank coverage (pure) ────────────────────────────────────────
+test("computeBankCoverage: usable/fresh + per-type + runway (renderable kinds only)", () => {
+  const entries = [
+    { sig: "a1", kind: "text", tier: "VERBAL ANALOGY" },
+    { sig: "a2", kind: "text", tier: "VERBAL ANALOGY" },
+    { sig: "a3", kind: "numseries", tier: "NUMBER SERIES" },
+    { sig: "a4", kind: "dot", tier: "POSITION" }, // NOT renderable -> excluded from usable
+  ];
+  const used = new Set<string>(["a1"]); // one used
+  const cov = computeBankCoverage(entries, used, 3);
+  assert.equal(cov.total, 4);
+  assert.equal(cov.usable, 3); // a1,a2,a3 (a4 excluded)
+  assert.equal(cov.fresh, 2); // a2,a3 (a1 used)
+  assert.equal(cov.used, 1);
+  assert.equal(cov.perDay, 3);
+  assert.equal(cov.runwayDays, 0); // floor(2/3)
+  const verbal = cov.byType.find((t) => t.tier === "VERBAL ANALOGY")!;
+  assert.equal(verbal.usable, 2);
+  assert.equal(verbal.fresh, 1);
+  assert.ok(!cov.byType.some((t) => t.tier === "POSITION")); // non-renderable excluded
+});
+
+test("computeBankCoverage: runway null when perDay is 0", () => {
+  const cov = computeBankCoverage([{ sig: "x", kind: "text", tier: "T" }], new Set(), 0);
+  assert.equal(cov.runwayDays, null);
+  assert.equal(cov.freshPct, 100);
+});
+
+// ── P2: dashboard panels render ───────────────────────────────────────────────
+test("page: renders all four P2 panels (coverage, spend, published map, arm leaderboard)", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /Question-bank coverage/);
+  assert.match(html, /days-of-runway|days runway/);
+  assert.match(html, /Cost governor/);
+  assert.match(html, /Published posts/);
+  assert.match(html, /Per-arm A\/B leaderboard/);
+});
+
+test("page: spend panel shows metrics + OVER flag from a snapshot", () => {
+  const html = page(
+    emptyPageData({
+      snapshot: {
+        day: "2026-07-22",
+        kill_switch: { engaged: false, reason: null },
+        metrics: {
+          usd: { value: 12.5, ceiling: 75, over: false },
+          tokens: { value: 41_000_000, ceiling: 40_000_000, over: true },
+          spawns: { value: 3, ceiling: 500, over: false },
+          concurrent_children: { value: 1, ceiling: 8, over: false },
+        },
+        ceiling_reason: "daily token ceiling reached",
+      },
+    }),
+  );
+  assert.match(html, /\$12\.50 \/ \$75\.00/);
+  assert.match(html, /⛔ OVER/); // tokens over its ceiling
+  assert.match(html, /daily token ceiling reached/);
+});
+
+test("page: published map lists reconciled posts with permalinks", () => {
+  const html = page(
+    emptyPageData({
+      db: {
+        posts: [
+          { publer_post_id: 1, platform_post_id: "NAT1", platform: "tiktok", permalink: "https://tiktok.com/@x/video/NAT1", posted_at: "2026-07-20", variant: { arm: "control" }, metrics: { eng_rate: 5.1 } },
+          { publer_post_id: 2, platform_post_id: null, permalink: null, post_state: "draft" }, // draft -> excluded
+        ],
+      },
+    }),
+  );
+  assert.match(html, /https:\/\/tiktok\.com\/@x\/video\/NAT1/);
+  assert.match(html, /1 published\/reconciled post/);
+});
+
+test("page: arm leaderboard ranks arms by median eng, crowns the leader", () => {
+  const html = page(
+    emptyPageData({
+      l: {
+        conventions: { min_n: 3 },
+        rollups: {
+          by_variant_arm: {
+            "full-narration": { n_posts: 5, n_with_metrics: 4, median_eng_rate: 6.4, avg_reach: 120 },
+            "no-narration": { n_posts: 5, n_with_metrics: 4, median_eng_rate: 3.2, avg_reach: 90 },
+            "tempo-fast": { n_posts: 1, n_with_metrics: 1, median_eng_rate: 9.9, avg_reach: 50 }, // low n -> not crowned
+          },
+        },
+      },
+    }),
+  );
+  assert.match(html, /★ leader/);
+  assert.match(html, /full-narration/);
+  assert.match(html, /low n/); // tempo-fast shown but flagged
+});
+
+test("GUARDRAIL: P2 panels add NO mutating control (populated)", () => {
+  const html = page(
+    emptyPageData({
+      snapshot: { day: "d", kill_switch: { engaged: true, reason: "kill" }, metrics: { usd: { value: 1, ceiling: 75, over: false } } },
+      coverage: { total: 10, usable: 8, fresh: 6, used: 2, freshPct: 75, perDay: 30, runwayDays: 0, byType: [{ tier: "T", usable: 8, fresh: 6 }] },
+      db: { posts: [{ publer_post_id: 1, platform_post_id: "N", permalink: "https://x/1", posted_at: "d", variant: { arm: "a" }, metrics: {} }] },
+    }),
+  );
+  assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
+  assert.doesNotMatch(html, /<button[^>]*>\s*(publish|schedule|merge|post|go live|approve|reject)/i);
 });
 
 test("page: PR view shows the review-agent verdict + CI status", () => {

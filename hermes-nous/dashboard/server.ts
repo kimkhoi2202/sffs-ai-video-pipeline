@@ -18,7 +18,7 @@ import { timingSafeEqual } from "node:crypto";
 import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
-  proposals, contentDefaults,
+  proposals, contentDefaults, bankCoverage, costSnapshot,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
@@ -124,6 +124,8 @@ const server = createServer(async (req, res) => {
           logItems: runLog(selected || latest?.run_id || ""),
           proposals: proposals(),
           defaults: contentDefaults(),
+          coverage: bankCoverage(),
+          snapshot: costSnapshot(),
         }),
       );
     }
