@@ -36,6 +36,31 @@ export function hasMatureMetrics(p: any): boolean {
   return !!p && p.metrics && p.metrics.source !== "pending" && p.metrics.eng_rate != null;
 }
 
+/**
+ * Time-of-day bucket for a post's `posted_at` (back-filled by reconcile.ts). Uses
+ * the hour AS WRITTEN in the timestamp (respecting its own tz offset), so it
+ * reflects the account's local posting time — the signal for "best time to post".
+ * Returns undefined for missing/unparseable timestamps (excluded from the rollup).
+ */
+export function timeBucket(postedAt: unknown): string | undefined {
+  if (postedAt == null || postedAt === "") return undefined;
+  const s = String(postedAt);
+  let hour: number;
+  const m = s.match(/T(\d{2}):/); // ISO time portion — local hour as written
+  if (m) {
+    hour = Number(m[1]);
+  } else {
+    const d = new Date(s);
+    if (Number.isNaN(d.getTime())) return undefined;
+    hour = d.getUTCHours();
+  }
+  if (!Number.isFinite(hour) || hour < 0 || hour > 23) return undefined;
+  if (hour < 6) return "night (0-6)";
+  if (hour < 12) return "morning (6-12)";
+  if (hour < 18) return "afternoon (12-18)";
+  return "evening (18-24)";
+}
+
 /** Group posts by a key function and summarize each group into a RollupCell. */
 export function groupMedian(posts: any[], key: (p: any) => string | undefined): Record<string, RollupCell> {
   const map: Record<string, { eng: number[]; reach: number[]; n: number }> = {};
@@ -66,6 +91,7 @@ export interface Rollups {
   by_variant_arm: Record<string, RollupCell>;
   by_platform: Record<string, RollupCell>;
   by_hashtag_set: Record<string, RollupCell>;
+  by_time_bucket: Record<string, RollupCell>;
 }
 
 /** Compute all decision rollups from ab-database posts[]. Pure. */
@@ -76,5 +102,7 @@ export function computeRollups(posts: any[]): Rollups {
     by_variant_arm: groupMedian(arr, (p) => p.variant?.label ?? p.variant?.arm),
     by_platform: groupMedian(arr, (p) => p.platform),
     by_hashtag_set: groupMedian(arr, (p) => p.hashtag_set),
+    // by time-of-day the post went live (from posted_at, back-filled by reconcile).
+    by_time_bucket: groupMedian(arr, (p) => timeBucket(p.posted_at)),
   };
 }

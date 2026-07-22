@@ -10,7 +10,7 @@ import { getPostInsights, flattenPostInsights, type FlatPostInsight } from "./pu
 import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
-import { groupMedian } from "./rollup.ts";
+import { groupMedian, timeBucket } from "./rollup.ts";
 import { indexInsights, matchInsight } from "./reconcile.ts";
 
 export interface ScoreResult {
@@ -85,6 +85,9 @@ export async function pullAndScore(): Promise<ScoreResult> {
   const armRollup = groupMedian(db.posts, (p) => p.variant?.label ?? p.variant?.arm);
   const platRollup = groupMedian(db.posts, (p) => p.platform);
   const tagRollup = groupMedian(db.posts, (p) => p.hashtag_set);
+  // by time-of-day the post went live (from posted_at, back-filled by reconcile) —
+  // the "best time to post" signal. Posts without a posted_at are excluded.
+  const timeRollup = groupMedian(db.posts, (p) => timeBucket(p.posted_at));
 
   db.updated_at = new Date().toISOString();
   // merge counts into existing variant_families without destroying notes
@@ -93,6 +96,7 @@ export async function pullAndScore(): Promise<ScoreResult> {
   db.aggregate_cuts = db.aggregate_cuts ?? {};
   db.aggregate_cuts.by_platform = platRollup;
   db.aggregate_cuts.by_variant_arm = armRollup;
+  db.aggregate_cuts.by_time_bucket = timeRollup;
   writeJSONAtomic(CONFIG.AB_DB, db);
 
   // learnings
@@ -104,6 +108,7 @@ export async function pullAndScore(): Promise<ScoreResult> {
   learnings.rollups.by_variant_arm = armRollup;
   learnings.rollups.by_platform = platRollup;
   learnings.rollups.by_hashtag_set = tagRollup;
+  learnings.rollups.by_time_bucket = timeRollup;
 
   const minN = learnings.conventions?.min_n ?? 3;
   const pickFront = (roll: Record<string, any>) => {
@@ -125,6 +130,8 @@ export async function pullAndScore(): Promise<ScoreResult> {
     variant_family: newFrontFam ?? learnings.front_runners?.variant_family ?? null,
     platform: pickFront(platRollup) ?? learnings.front_runners?.platform ?? "tiktok",
     hashtag_set: pickFront(tagRollup) ?? learnings.front_runners?.hashtag_set ?? null,
+    // best-performing time-of-day bucket (from posted_at) — the dashboard surfaces it.
+    time_bucket: pickFront(timeRollup) ?? learnings.front_runners?.time_bucket ?? null,
     confidence: withMetrics.length >= minN ? "medium" : "low",
   };
   learnings.scoring_log = learnings.scoring_log ?? [];
