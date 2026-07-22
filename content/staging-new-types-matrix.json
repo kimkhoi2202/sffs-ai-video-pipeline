@@ -1,0 +1,280 @@
+{
+  "note": "STAGING ONLY - MATRIX-FAMILY nonverbal question types (Figure Matrix 2x2, Figure Analogy v2, Visual Odd-One-Out). NOT the master bank; do not merge into master-question-bank.json. Authored for the new render kinds matrix / analogy2 / figure-odd. Figures use the shared FigState transform vocabulary (shape, filled, color, rotate[deg cw], count[1-4], size[s|m|l]). Options are A-D (renderer badge scheme). Explanations are one line, kid-appropriate, no em dashes.",
+  "grade": "Grade 5 / CogAT Level 11",
+  "types": [
+    {
+      "kind": "matrix",
+      "tier": "FIGURE MATRIX",
+      "category": "nonverbal",
+      "sampleIds": [1103, 1101],
+      "questions": [
+        {
+          "idx": 1101,
+          "countdown": 7,
+          "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+          "cells": [
+            { "shape": "star", "filled": true, "count": 1 },
+            { "shape": "star", "filled": true, "count": 2 },
+            { "shape": "heart", "filled": true, "count": 1 }
+          ],
+          "options": [
+            { "letter": "A", "fig": { "shape": "heart", "filled": true, "count": 2 } },
+            { "letter": "B", "fig": { "shape": "heart", "filled": true, "count": 1 } },
+            { "letter": "C", "fig": { "shape": "heart", "filled": true, "count": 3 } },
+            { "letter": "D", "fig": { "shape": "star", "filled": true, "count": 2 } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "TWO HEARTS",
+          "explanation": "The count doubles from one to two while the shape stays the same, so one heart becomes two hearts."
+        },
+        {
+          "idx": 1102,
+          "countdown": 7,
+          "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+          "cells": [
+            { "shape": "circle", "filled": true, "size": "l" },
+            { "shape": "circle", "filled": true, "size": "s" },
+            { "shape": "square", "filled": true, "size": "l" }
+          ],
+          "options": [
+            { "letter": "A", "fig": { "shape": "square", "filled": true, "size": "s" } },
+            { "letter": "B", "fig": { "shape": "square", "filled": true, "size": "l" } },
+            { "letter": "C", "fig": { "shape": "circle", "filled": true, "size": "s" } },
+            { "letter": "D", "fig": { "shape": "triangle", "filled": true, "size": "s" } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "SMALL SQUARE",
+          "explanation": "The shape stays the same but shrinks, so the big square becomes a small square."
+        },
+        {
+          "idx": 1103,
+          "countdown": 7,
+          "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+          "cells": [
+            { "shape": "arrow", "filled": false },
+            { "shape": "arrow", "filled": true, "rotate": 90 },
+            { "shape": "triangle", "filled": false }
+          ],
+          "options": [
+            { "letter": "A", "fig": { "shape": "triangle", "filled": true, "rotate": 90 } },
+            { "letter": "B", "fig": { "shape": "triangle", "filled": true } },
+            { "letter": "C", "fig": { "shape": "triangle", "filled": false, "rotate": 90 } },
+            { "letter": "D", "fig": { "shape": "arrow", "filled": true, "rotate": 90 } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "FILLED, TURNED RIGHT",
+          "explanation": "Each shape turns a quarter-turn clockwise and gets filled in, so the empty triangle becomes a filled triangle pointing right."
+        },
+        {
+          "idx": 1104,
+          "countdown": 7,
+          "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+          "cells": [
+            { "shape": "diamond", "filled": false },
+            { "shape": "diamond", "filled": true },
+            { "shape": "cross", "filled": false }
+          ],
+          "options": [
+            { "letter": "A", "fig": { "shape": "cross", "filled": true } },
+            { "letter": "B", "fig": { "shape": "cross", "filled": false } },
+            { "letter": "C", "fig": { "shape": "diamond", "filled": true } },
+            { "letter": "D", "fig": { "shape": "star", "filled": true } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "FILLED CROSS",
+          "explanation": "Each empty shape gets filled in while it stays the same, so the empty cross becomes a filled cross."
+        },
+        {
+          "idx": 1105,
+          "countdown": 7,
+          "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+          "cells": [
+            { "shape": "arrow", "filled": true },
+            { "shape": "arrow", "filled": true, "rotate": 180 },
+            { "shape": "triangle", "filled": true }
+          ],
+          "options": [
+            { "letter": "A", "fig": { "shape": "triangle", "filled": true, "rotate": 180 } },
+            { "letter": "B", "fig": { "shape": "triangle", "filled": true } },
+            { "letter": "C", "fig": { "shape": "triangle", "filled": true, "rotate": 90 } },
+            { "letter": "D", "fig": { "shape": "arrow", "filled": true, "rotate": 180 } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "FLIPPED TRIANGLE",
+          "explanation": "Each shape flips upside down, so the upward triangle becomes a downward triangle."
+        }
+      ]
+    },
+    {
+      "kind": "analogy2",
+      "tier": "FIGURE ANALOGY",
+      "category": "nonverbal",
+      "sampleIds": [1201, 1203],
+      "questions": [
+        {
+          "idx": 1201,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+          "a": { "shape": "arrow", "filled": true },
+          "b": { "shape": "arrow", "filled": true, "rotate": 90 },
+          "c": { "shape": "triangle", "filled": true },
+          "options": [
+            { "letter": "A", "fig": { "shape": "triangle", "filled": true, "rotate": 90 } },
+            { "letter": "B", "fig": { "shape": "triangle", "filled": true } },
+            { "letter": "C", "fig": { "shape": "triangle", "filled": true, "rotate": 180 } },
+            { "letter": "D", "fig": { "shape": "arrow", "filled": true, "rotate": 90 } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "TURNED RIGHT",
+          "explanation": "The first shape turns a quarter-turn to the right, so the triangle turns to point right too."
+        },
+        {
+          "idx": 1202,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+          "a": { "shape": "circle", "filled": true, "count": 1 },
+          "b": { "shape": "circle", "filled": true, "count": 2 },
+          "c": { "shape": "square", "filled": true, "count": 1 },
+          "options": [
+            { "letter": "A", "fig": { "shape": "square", "filled": true, "count": 2 } },
+            { "letter": "B", "fig": { "shape": "square", "filled": true, "count": 3 } },
+            { "letter": "C", "fig": { "shape": "square", "filled": true, "count": 1 } },
+            { "letter": "D", "fig": { "shape": "circle", "filled": true, "count": 2 } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "TWO SQUARES",
+          "explanation": "The shape doubles in number, so one square becomes two squares."
+        },
+        {
+          "idx": 1203,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+          "a": { "shape": "star", "filled": true, "size": "s" },
+          "b": { "shape": "star", "filled": true, "size": "l" },
+          "c": { "shape": "diamond", "filled": true, "size": "s" },
+          "options": [
+            { "letter": "A", "fig": { "shape": "diamond", "filled": true, "size": "l" } },
+            { "letter": "B", "fig": { "shape": "diamond", "filled": true, "size": "s" } },
+            { "letter": "C", "fig": { "shape": "star", "filled": true, "size": "l" } },
+            { "letter": "D", "fig": { "shape": "circle", "filled": true, "size": "l" } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "BIG DIAMOND",
+          "explanation": "The shape grows bigger, so the small diamond becomes a big diamond."
+        },
+        {
+          "idx": 1204,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+          "a": { "shape": "heart", "filled": false },
+          "b": { "shape": "heart", "filled": true },
+          "c": { "shape": "star", "filled": false },
+          "options": [
+            { "letter": "A", "fig": { "shape": "star", "filled": true } },
+            { "letter": "B", "fig": { "shape": "star", "filled": false } },
+            { "letter": "C", "fig": { "shape": "heart", "filled": true } },
+            { "letter": "D", "fig": { "shape": "circle", "filled": true } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "FILLED STAR",
+          "explanation": "The shape gets filled in, so the empty star becomes a filled star."
+        },
+        {
+          "idx": 1205,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+          "a": { "shape": "triangle", "filled": true },
+          "b": { "shape": "triangle", "filled": true, "rotate": 180 },
+          "c": { "shape": "arrow", "filled": true },
+          "options": [
+            { "letter": "A", "fig": { "shape": "arrow", "filled": true, "rotate": 180 } },
+            { "letter": "B", "fig": { "shape": "arrow", "filled": true } },
+            { "letter": "C", "fig": { "shape": "arrow", "filled": true, "rotate": 90 } },
+            { "letter": "D", "fig": { "shape": "triangle", "filled": true, "rotate": 180 } }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "FLIPPED ARROW",
+          "explanation": "The shape flips upside down, so the upward arrow becomes a downward arrow."
+        }
+      ]
+    },
+    {
+      "kind": "figure-odd",
+      "tier": "ODD SHAPE OUT",
+      "category": "nonverbal",
+      "sampleIds": [1302, 1303],
+      "questions": [
+        {
+          "idx": 1301,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE DOES NOT BELONG?",
+          "options": [
+            { "letter": "A", "fig": { "shape": "star", "filled": true } },
+            { "letter": "B", "fig": { "shape": "star", "filled": false } },
+            { "letter": "C", "fig": { "shape": "star", "filled": true } },
+            { "letter": "D", "fig": { "shape": "star", "filled": true } }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "EMPTY STAR",
+          "explanation": "Three stars are filled in and one is empty, so the empty star is the odd one out."
+        },
+        {
+          "idx": 1302,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE DOES NOT BELONG?",
+          "options": [
+            { "letter": "A", "fig": { "shape": "triangle", "filled": true } },
+            { "letter": "B", "fig": { "shape": "square", "filled": true } },
+            { "letter": "C", "fig": { "shape": "diamond", "filled": true } },
+            { "letter": "D", "fig": { "shape": "circle", "filled": true } }
+          ],
+          "ansLetter": "D",
+          "ansLabel": "CIRCLE",
+          "explanation": "The others all have straight sides and corners, but the circle has none, so it does not belong."
+        },
+        {
+          "idx": 1303,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE DOES NOT BELONG?",
+          "options": [
+            { "letter": "A", "fig": { "shape": "arrow", "filled": true } },
+            { "letter": "B", "fig": { "shape": "arrow", "filled": true } },
+            { "letter": "C", "fig": { "shape": "arrow", "filled": true, "rotate": 180 } },
+            { "letter": "D", "fig": { "shape": "arrow", "filled": true } }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "DOWNWARD ARROW",
+          "explanation": "Three arrows point up and one points down, so the downward arrow is the odd one out."
+        },
+        {
+          "idx": 1304,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE DOES NOT BELONG?",
+          "options": [
+            { "letter": "A", "fig": { "shape": "heart", "filled": true, "count": 2 } },
+            { "letter": "B", "fig": { "shape": "heart", "filled": true, "count": 2 } },
+            { "letter": "C", "fig": { "shape": "heart", "filled": true, "count": 1 } },
+            { "letter": "D", "fig": { "shape": "heart", "filled": true, "count": 2 } }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "ONE HEART",
+          "explanation": "Three cards show two hearts and one shows a single heart, so the single heart is the odd one out."
+        },
+        {
+          "idx": 1305,
+          "countdown": 6,
+          "prompt": "WHICH SHAPE DOES NOT BELONG?",
+          "options": [
+            { "letter": "A", "fig": { "shape": "crescent", "filled": true } },
+            { "letter": "B", "fig": { "shape": "crescent", "filled": true } },
+            { "letter": "C", "fig": { "shape": "crescent", "filled": true } },
+            { "letter": "D", "fig": { "shape": "lightning", "filled": true } }
+          ],
+          "ansLetter": "D",
+          "ansLabel": "LIGHTNING BOLT",
+          "explanation": "Three shapes are moons and one is a lightning bolt, so the lightning bolt does not belong."
+        }
+      ]
+    }
+  ]
+}
