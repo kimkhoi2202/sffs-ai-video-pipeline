@@ -29,6 +29,7 @@ from . import (
     reads,
     render,
     schemas,
+    score_rollup,
     upload_s3,
 )
 
@@ -137,6 +138,19 @@ def register(ctx) -> None:
         handler=upload_s3.sffs_upload_s3,
         emoji="☁️",
         description="Upload a rendered mp4 to S3 and return a presigned fetchable URL (media hosting; never posts).",
+    )
+
+    # --- SCORE ROLLUP: refresh the durable A/B memory (write-side of scoring). ---
+    # Wraps score.ts pullAndScore (pull analytics -> refresh ab-database.json +
+    # recompute learnings.json). Read-only on Publer (GET); writes only local JSON.
+    # Deliberately separate from the read-only sffs_score. Cannot post/publish/schedule.
+    ctx.register_tool(
+        name="sffs_score_rollup",
+        toolset="sffs",
+        schema=schemas.SFFS_SCORE_ROLLUP_SCHEMA,
+        handler=score_rollup.sffs_score_rollup,
+        emoji="🧮",
+        description="Refresh A/B metrics + recompute learnings.json rollups (the durable cross-run memory; write-side of scoring).",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---

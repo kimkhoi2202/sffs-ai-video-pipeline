@@ -584,3 +584,46 @@ SFFS_UPLOAD_S3_SCHEMA = {
         "required": ["local_path"],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# SCORE-ROLLUP — the WRITE-side of scoring (deliberately separate from the
+# read-only sffs_score). Pulls matured analytics + recomputes the durable A/B
+# memory (ab-database.json + learnings.json). Wraps score.ts pullAndScore; no
+# create/schedule/publish/delete/update path is reachable (see score_rollup.py +
+# bridge/score-rollup.ts). No state/schedule/publish vocabulary is exposed.
+# ---------------------------------------------------------------------------
+
+SFFS_SCORE_ROLLUP_SCHEMA = {
+    "name": "sffs_score_rollup",
+    "description": (
+        "Refresh the A/B decision memory: pull matured Publer analytics (~24h lag) "
+        "over the last 30 days, join them onto ab-database.json to refresh per-post "
+        "metrics, and recompute the rollups + front-runners in learnings.json (the "
+        "loop's durable, cross-run A/B memory the designer biases toward). This is "
+        "the WRITE-side of scoring — deliberately separate from the read-only "
+        "sffs_score (which never writes those files). It only reads Publer analytics "
+        "(GET) and writes two LOCAL JSON files; it never creates, publishes, "
+        "schedules, or mutates any post. Run this at the START of a cycle (or nightly "
+        "on its own). Set dry_run=true (the default) to preview the window WITHOUT "
+        "any network call and WITHOUT writing any file."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "dry_run": {
+                "type": "boolean",
+                "description": (
+                    "If true (default), preview the 30-day window WITHOUT any network "
+                    "call and WITHOUT writing ab-database.json/learnings.json. Set "
+                    "false to actually pull analytics and recompute the rollups."
+                ),
+            },
+            "data_dir": {
+                "type": "string",
+                "description": "Override HERMES_DATA_DIR for auxiliary data paths (optional).",
+            },
+        },
+        "required": [],
+    },
+}
