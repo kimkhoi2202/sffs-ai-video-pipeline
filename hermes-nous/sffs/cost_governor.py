@@ -547,6 +547,88 @@ def status(*, env: Optional[Dict[str, str]] = None, now: Optional[datetime] = No
 
 
 # ---------------------------------------------------------------------------
+# Observable snapshot (for a spend panel) — pure read + idempotent projection
+# ---------------------------------------------------------------------------
+SNAPSHOT_FILENAME = "snapshot.json"
+
+
+def _metric(value: Any, ceiling: Any) -> Dict[str, Any]:
+    """One `{value, ceiling, over}` triple. `over` mirrors the ceiling_reason /
+    concurrency_reason semantics (a ceiling of 0 means 'disabled' -> never over)."""
+    return {"value": value, "ceiling": ceiling, "over": bool(ceiling) and value >= ceiling}
+
+
+def snapshot(
+    *,
+    env: Optional[Dict[str, str]] = None,
+    now: Optional[datetime] = None,
+    sdir: Optional[Path] = None,
+) -> Dict[str, Any]:
+    """A compact, SIDE-EFFECT-FREE snapshot of governor state (for a spend panel).
+
+    Pure read: it sums the append-only ledgers and reads the kill-switch/limits but
+    NEVER mutates accounting state. Each of the four ceilinged metrics (daily spend
+    estimate, tokens, subagent spawns, concurrent children) is paired with its
+    ceiling and an ``over`` flag, alongside kill-switch status. Persist it with
+    :func:`write_snapshot`.
+    """
+    env = env if env is not None else os.environ
+    sdir = sdir if sdir is not None else state_dir(env)
+    limits = load_limits(env)
+    tally = read_tally(env=env, now=now, sdir=sdir)
+    active = active_child_count(env=env, sdir=sdir)
+    kr = kill_switch_reason(env)
+    return {
+        "ts": time.time(),
+        "day": _today(now),
+        "kill_switch": {"engaged": kr is not None, "reason": kr},
+        "metrics": {
+            "usd": _metric(round(float(tally.get("usd", 0.0)), 6), limits.max_usd_per_day),
+            "tokens": _metric(int(tally.get("tokens", 0)), limits.max_tokens_per_day),
+            "spawns": _metric(int(tally.get("spawns", 0)), limits.max_spawns_per_day),
+            "concurrent_children": _metric(int(active), limits.max_concurrent_children),
+        },
+        "ceiling_reason": ceiling_reason(tally, limits),
+        "state_dir": str(sdir or ""),
+    }
+
+
+def _write_json_atomic(path: Path, obj: Any) -> None:
+    """Best-effort atomic JSON write (tmp + os.replace); never raises."""
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_name(f"{path.name}.tmp-{os.getpid()}")
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump(obj, fh, default=str, indent=2)
+        os.replace(tmp, path)
+    except OSError:
+        pass  # a status projection must never crash the agent
+
+
+def write_snapshot(
+    *,
+    env: Optional[Dict[str, str]] = None,
+    now: Optional[datetime] = None,
+    sdir: Optional[Path] = None,
+    snap: Optional[Dict[str, Any]] = None,
+) -> Optional[Path]:
+    """Idempotently write :func:`snapshot` into the governor's EXISTING state dir
+    (``state_dir()/snapshot.json`` — path derivation reuses :func:`state_dir`, no
+    new config path). Returns the written path, or ``None`` if no state dir is
+    resolvable. The write only overwrites the snapshot file; it is read-safe w.r.t.
+    the accounting ledgers and idempotent for a given state.
+    """
+    env = env if env is not None else os.environ
+    sdir = sdir if sdir is not None else state_dir(env)
+    if sdir is None:
+        return None
+    snap = snap if snap is not None else snapshot(env=env, now=now, sdir=sdir)
+    path = sdir / SNAPSHOT_FILENAME
+    _write_json_atomic(path, snap)
+    return path
+
+
+# ---------------------------------------------------------------------------
 # Nous plugin hooks (registered in sffs/__init__.py) — never raise
 # ---------------------------------------------------------------------------
 def pre_tool_call(tool_name: str = "", args: Any = None, **_kwargs: Any) -> Optional[Dict[str, str]]:

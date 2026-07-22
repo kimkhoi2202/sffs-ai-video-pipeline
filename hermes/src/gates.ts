@@ -15,7 +15,7 @@ import { existsSync } from "node:fs";
 import { chatJSON } from "./llm.ts";
 import { loadBrandVoice, ruleCheckCopy } from "./brand.ts";
 import { readJSON, writeJSONAtomic, type HermesQ, type GateResult } from "./state.ts";
-import { loadUsedSigs } from "./questions.ts";
+import { loadUsedSigs, loadUsedFuzzySigs, fuzzySig } from "./questions.ts";
 import { CONFIG } from "./config.ts";
 import { gate } from "./log.ts";
 import { join } from "node:path";
@@ -33,8 +33,30 @@ export function gateDedup(questions: HermesQ[], claimedThisBatch: Set<string>): 
     if (internal.has(q.sig)) dupInternal.push(q.sig);
     internal.add(q.sig);
   }
-  const pass = dupUsed.length === 0 && dupBatch.length === 0 && dupInternal.length === 0;
-  return { pass, reason: pass ? "all questions fresh + unique" : "duplicate question(s) detected", detail: { dupUsed, dupBatch, dupInternal } };
+  // SECOND key: fuzzy near-duplicate guard (paraphrase / reordered options /
+  // same-structure series) that the exact sig above is blind to. Additive only —
+  // exact-dup sigs are NOT re-reported here, so the exact reason is unchanged when
+  // there are no *new* near-dups. See questions.ts fuzzySig for the (conservative)
+  // structural key.
+  const exactDup = new Set<string>([...dupUsed, ...dupBatch, ...dupInternal]);
+  const usedFuzzy = loadUsedFuzzySigs();
+  const seenFuzzy = new Set<string>();
+  const nearDup: string[] = [];
+  for (const q of questions) {
+    const f = fuzzySig(q);
+    const isNear = usedFuzzy.has(f) || seenFuzzy.has(f);
+    seenFuzzy.add(f);
+    if (isNear && !exactDup.has(q.sig)) nearDup.push(q.sig);
+  }
+  const reasons: string[] = [];
+  if (exactDup.size) reasons.push("duplicate question(s) detected");
+  if (nearDup.length) reasons.push("near_duplicate question(s) detected");
+  const pass = reasons.length === 0;
+  return {
+    pass,
+    reason: pass ? "all questions fresh + unique" : reasons.join("; "),
+    detail: { dupUsed, dupBatch, dupInternal, nearDup },
+  };
 }
 
 // ── Gate 2: question validity (LLM rubric, cached by hash) ───────────────────
