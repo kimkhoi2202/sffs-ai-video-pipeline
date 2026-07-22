@@ -21,12 +21,15 @@ export const COLORS = {
   ghostGray: "#b0b0b0",
 } as const;
 
-/** A/B/C/D letter-badge fills (render_demo_quiz.py BADGE_COLORS). */
+/** A/B/C/D letter-badge fills (render_demo_quiz.py BADGE_COLORS). "?" is the
+ *  fill-in-the-blank badge used by optionless number-series reveals (the loop's
+ *  numseries has no A-D options, so its "missing value" answer reads as `?`). */
 export const BADGE_COLORS: Record<string, string> = {
   A: COLORS.blue,
   B: COLORS.mint,
   C: COLORS.coral,
   D: COLORS.yellow,
+  "?": COLORS.green,
 };
 
 /**

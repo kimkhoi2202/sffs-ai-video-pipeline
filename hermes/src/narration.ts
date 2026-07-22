@@ -205,3 +205,103 @@ export function readFramesFor(clip: NarrationClip | undefined, fps = FPS): numbe
   if (!clip || !(clip.durSec > 0)) return 0;
   return Math.round(clip.durSec * fps) + READ_TAIL;
 }
+
+// ---------------------------------------------------------------------------
+// FULL-VIDEO VO (read + reveal) — for the Short/FullVideo render path.
+//
+// The production Short/FullVideo timeline (remotion/src/full/timeline.ts) reads
+// per-question VO by NAME from a per-video dir: the READ clip `q<idx>.mp3` (whose
+// AUDIO is the mode-appropriate stem/options/full text — the readVO="full" branch
+// just plays whatever that clip contains, which is why the four narration modes
+// need no separate qo/qs files) and, for every REVEALING question, a `r<idx>.mp3`
+// reveal clip. The meta beats (timesup/score/outro-*) are round-agnostic and
+// served from the committed audio/narration/ dir. This synthesizes both the read
+// and reveal clips for a video in ONE tts_batch.py call and returns each clip's
+// MEASURED duration so render.ts can build the timeline `durs` map.
+// ---------------------------------------------------------------------------
+
+/** A reveal beat to voice: r<index> with its spoken text (built by render.ts). */
+export interface RevealBeatInput {
+  index: number; // 0-based question index (matches the read clip index)
+  text: string; // spoken reveal line ("The answer is ...")
+}
+
+export interface VOResult {
+  voiceId: string;
+  /** staticFile base for this video's clips (append "<beat>.mp3"), e.g.
+   *  "audio/hermes-vo/<id>/". */
+  qrBase: string;
+  /** measured seconds per beat: q<idx> (read, when narrated) + r<idx> (reveal). */
+  durs: Record<string, number>;
+  /** the read clips (for annotation/debug); empty for mode "none". */
+  readClips: NarrationClip[];
+}
+
+/** Run tts_batch.py for a set of beats into outDir; returns durations.json. */
+function runTts(outDir: string, beats: Array<{ beat: string; text: string }>, voiceId: string, id: string): Record<string, number> {
+  mkdirSync(outDir, { recursive: true });
+  const beatsFile = join(outDir, "_beats.json");
+  writeFileSync(beatsFile, JSON.stringify(beats, null, 2));
+  const script = join(CONFIG.REPO_DIR, "voice", "tts_batch.py");
+  const args = [script, "--beats", beatsFile, "--voice-id", voiceId, "--out-dir", outDir, "--skip-existing"];
+  const res = spawnSync("python3", args, {
+    encoding: "utf8",
+    timeout: 6 * 60_000,
+    env: { ...process.env, FFPROBE: resolveFfprobe() },
+  });
+  if (res.status !== 0) {
+    throw new Error(`narration TTS failed for ${id} (status ${res.status}): ${(res.stderr || res.stdout || "").slice(-500)}`);
+  }
+  return readJSON<Record<string, number>>(join(outDir, "durations.json"), {});
+}
+
+/**
+ * Synthesize (idempotently) the cloned-voice READ + REVEAL VO the Short/FullVideo
+ * timeline needs for one video, under remotion/public/audio/hermes-vo/<id>/.
+ *   - READ  : one `q<idx>.mp3` per question (mode-appropriate text), unless mode="none".
+ *   - REVEAL: one `r<idx>.mp3` per revealing question (caller supplies the text).
+ * Returns the qrBase + the MEASURED per-beat durations (q<idx>/r<idx>). Reuses the
+ * existing voice/tts_batch.py end to end (ElevenLabs + ffprobe). Idempotent
+ * (--skip-existing), so a second platform render of the same id makes zero API calls.
+ */
+export function generateVO(
+  id: string,
+  questions: RenderQ[],
+  mode: NarrationMode,
+  reveals: RevealBeatInput[],
+  opts: { force?: boolean } = {},
+): VOResult {
+  const voiceId = resolveVoiceId();
+  const relDir = join("audio", "hermes-vo", id);
+  const qrBase = `${relDir.replace(/\\/g, "/")}/`;
+  const outDir = join(CONFIG.REMOTION_DIR, "public", relDir);
+  if (opts.force) rmSync(outDir, { recursive: true, force: true });
+
+  const readBeats = planBeats(questions, mode); // [] when mode==="none"
+  const revealBeats = reveals.map((r) => ({ index: r.index, beat: `r${r.index}`, text: r.text }));
+  const allBeats = [
+    ...readBeats.map((b) => ({ beat: b.beat, text: b.text })),
+    ...revealBeats.map((b) => ({ beat: b.beat, text: b.text })),
+  ];
+  if (!allBeats.length) {
+    info("narration: no VO beats (music-only, no reveals)", { id, mode });
+    return { voiceId, qrBase, durs: {}, readClips: [] };
+  }
+
+  info("narration: synth read+reveal", { id, mode, read: readBeats.length, reveal: revealBeats.length, voiceId });
+  const durs = runTts(outDir, allBeats, voiceId, id);
+
+  // Validate every beat got a positive measured duration.
+  for (const b of allBeats) {
+    if (!(Number(durs[b.beat]) > 0)) throw new Error(`narration: missing/zero duration for ${id} ${b.beat}`);
+  }
+
+  const readClips: NarrationClip[] = readBeats.map((b) => ({
+    index: b.index,
+    src: `${qrBase}${b.beat}.mp3`,
+    durSec: Number(durs[b.beat]),
+    kind: b.kind,
+  }));
+  info("narration: VO ready", { id, mode, read: readClips.length, reveal: revealBeats.length });
+  return { voiceId, qrBase, durs, readClips };
+}

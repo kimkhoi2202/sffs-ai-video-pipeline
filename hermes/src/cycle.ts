@@ -9,8 +9,10 @@
  *   (a) pull matured analytics + score + update learnings
  *   (b) plan the batch (up to N videos, each a different A/B dimension)
  *   for each video: dedup gate -> question-validity gate -> mark used ->
- *                   copy gate -> render -> render-sanity gate -> S3 upload ->
- *                   Publer media import -> createDraftOnly -> annotate ab-database
+ *                   copy gate -> render (Short/FullVideo, ONE per platform with
+ *                   its own SAFE ZONES) -> render-sanity gate -> per platform:
+ *                   S3 upload -> Publer media import -> createDraftOnly ->
+ *                   annotate ab-database
  *   2. verify do-not-touch untouched (proves nothing went live)
  *   3. commit + push data files (best-effort)
  *
@@ -36,7 +38,7 @@ import { planBatch } from "./design.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
 import { markUsed, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
-import { renderVideo, computeFrames } from "./render.ts";
+import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
 import { importMediaFromUrl, createPost, pollJob, listAllPosts, postId } from "./publer.ts";
 import { ping, chat } from "./llm.ts";
@@ -101,13 +103,25 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
     return;
   }
 
-  // 5) render
-  const r = renderVideo(v.id, v.props);
-  v.render_path = r.path;
+  // 5) render — the REAL Short/FullVideo composition, ONE render per platform so
+  // each draft carries that platform's SAFE ZONES (TikTok transform vs IG box).
+  // VO is synthesized once and shared across the platform renders.
+  const renders = renderForPlatforms(v.id, v.props);
+  v.render_path = renders[0]?.path;
   v.status = "rendered";
 
-  // 6) render-sanity gate
-  v.gates.render = gateRenderSanity(r.path, computeFrames(v.props));
+  // 6) render-sanity gate — EVERY platform render must pass (1080x1920 + audio +
+  // duration matches the composition's computed frames).
+  {
+    const problems: string[] = [];
+    for (const r of renders) {
+      const g = gateRenderSanity(r.path, r.frames);
+      if (!g.pass) problems.push(`${r.platform}: ${g.reason}`);
+    }
+    v.gates.render = problems.length
+      ? { pass: false, reason: problems.join("; ") }
+      : { pass: true, reason: `ok ${renders.map((r) => r.platform).join("+")} 1080x1920 video+audio` };
+  }
   if (!v.gates.render.pass) {
     v.status = "rejected";
     v.reject_reason = "render sanity: " + v.gates.render.reason;
@@ -129,35 +143,57 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
   const captionTag = (process.env.HERMES_CAPTION_TAG || "").trim();
   if (captionTag) v.caption = `${captionTag}\n${v.caption}`;
 
-  // 7) upload to S3 (presigned)
-  const key = `hermes/${todayRunId()}/${v.id}.mp4`;
-  const url = uploadToS3(r.path, key);
-  v.media_url = url;
+  // 7-8) per platform: upload its OWN safe-zone render to S3, import the media,
+  // and create a DRAFT on that platform's account only (createDraftOnly forces
+  // state="draft"; the loop can never publish/schedule). Each platform draft thus
+  // carries the render made for that platform's UI-safe zones.
+  const results: PlatformDraft[] = [];
+  for (const r of renders) {
+    const platform = r.platform as "instagram" | "tiktok";
+    const account_id = CONFIG.ACCOUNTS[platform];
+    const key = `hermes/${todayRunId()}/${v.id}.${platform}.mp4`;
+    const url = uploadToS3(r.path, key);
+    const { mediaId } = await importMediaFromUrl(url, `${v.id}.${platform}.mp4`);
+    const jobId = await createDraftOnly({
+      account_ids: [account_id],
+      text: v.caption,
+      media_ids: [mediaId],
+      type: "video",
+    });
+    const job = await pollJob(jobId, { label: `create-draft-${platform}`, timeoutMs: 180_000 });
+    // Publer's job_status returns only {status:"complete"} (no post ids), so resolve
+    // the created draft post id by matching the (unique) uploaded media id.
+    let postIds = extractPostIds(job.payload);
+    if (!postIds.length) postIds = await findDraftPostIds(mediaId);
+    results.push({ platform, account_id, media_url: url, media_id: mediaId, post_id: postIds[0] ?? null, job_id: jobId });
+  }
+  v.media_url = results[0]?.media_url;
   v.status = "uploaded";
-
-  // 8) Publer: import media -> create DRAFT (both accounts)
-  const { mediaId } = await importMediaFromUrl(url, `${v.id}.mp4`);
-  const jobId = await createDraftOnly({
-    account_ids: CONFIG.ACCOUNT_IDS,
-    text: v.caption,
-    media_ids: [mediaId],
-    type: "video",
-  });
-  const job = await pollJob(jobId, { label: "create-draft", timeoutMs: 180_000 });
-  // Publer's job_status returns only {status:"complete"} (no post ids), so resolve the
-  // created draft post ids by matching the uploaded media id against the draft list.
-  let postIds = extractPostIds(job.payload);
-  if (!postIds.length) postIds = await findDraftPostIds(mediaId);
-  v.publer = { job_id: jobId, media_id: mediaId, post_ids: postIds, permalinks: [] };
+  v.publer = {
+    job_id: results[0]?.job_id,
+    media_id: results[0]?.media_id,
+    post_ids: results.map((r) => r.post_id).filter((x): x is string => Boolean(x)),
+    permalinks: [],
+  };
   v.status = "drafted";
-  decision(`DRAFT created ${v.id}`, { dimension: v.dimension, arm: v.arm, postIds });
+  decision(`DRAFT created ${v.id}`, { dimension: v.dimension, arm: v.arm, drafts: results.map((r) => ({ platform: r.platform, post_id: r.post_id })) });
 
-  // 9) annotate ab-database.json (best-effort; draft success is what matters)
+  // 9) annotate ab-database.json per platform (best-effort; draft success is what matters)
   try {
-    annotateDb(v, postIds);
+    annotateDb(v, results);
   } catch (e) {
     warn(`${v.id} db annotate failed`, { err: e instanceof Error ? e.message : String(e) });
   }
+}
+
+/** One platform's rendered+uploaded+drafted result (per-platform SAFE ZONES). */
+interface PlatformDraft {
+  platform: "instagram" | "tiktok";
+  account_id: string;
+  media_url: string;
+  media_id: string;
+  post_id: string | null;
+  job_id: string;
 }
 
 function extractPostIds(payload: any): string[] {
@@ -191,16 +227,13 @@ async function findDraftPostIds(mediaId: string): Promise<string[]> {
   }
 }
 
-function annotateDb(v: VideoPlan, postIds: string[]): void {
+function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
   const db = readJSON<any>(CONFIG.AB_DB, null);
   if (!db || !Array.isArray(db.posts)) return;
-  const platforms: Array<["instagram" | "tiktok", string]> = [
-    ["instagram", CONFIG.ACCOUNTS.instagram],
-    ["tiktok", CONFIG.ACCOUNTS.tiktok],
-  ];
-  for (let i = 0; i < platforms.length; i++) {
-    const [platform, account_id] = platforms[i];
-    const publer_post_id = postIds[i] ?? null;
+  for (const pr of results) {
+    const platform = pr.platform;
+    const account_id = pr.account_id;
+    const publer_post_id = pr.post_id;
     const key = `hermes:${v.id}:${platform}`;
     const existing = db.posts.find((p: any) => p._hermes_key === key);
     const rec = existing ?? {};
@@ -213,7 +246,7 @@ function annotateDb(v: VideoPlan, postIds: string[]): void {
       account_handle: "@smartfellafartsmellatest",
       permalink: null,
       caption: v.caption,
-      source_video: `hermes-render:${v.id}.mp4`,
+      source_video: `hermes-render:${v.id}.${platform}.mp4`,
       media_url_note: "S3 private object (presigned at post time)",
       variant: {
         family: v.dimension,

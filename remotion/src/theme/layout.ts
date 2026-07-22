@@ -24,6 +24,21 @@ export const PlatformProvider: React.FC<{ platform: Platform; children: ReactNod
   createElement(PlatformContext.Provider, { value: platform }, children);
 export const usePlatform = (): Platform => useContext(PlatformContext);
 
+/**
+ * Header-counter config, provided at the <FullVideo/> root (like PlatformProvider).
+ * Drives the "QUESTION X OF N" count pill in HeaderPills, so the loop's
+ * progress-counter A/B dimension (hide the pill / short "Q1" vs full "QUESTION 1
+ * OF 3") is a prop, not a code change. Defaults preserve the committed master /
+ * render-ab behavior EXACTLY (pill shown, full "QUESTION X OF N"), so any tree
+ * without a provider is unchanged.
+ */
+export type ProgressStyle = "short" | "full";
+export type HeaderConfig = { showProgress: boolean; progressStyle: ProgressStyle };
+const HeaderConfigContext = createContext<HeaderConfig>({ showProgress: true, progressStyle: "full" });
+export const HeaderConfigProvider: React.FC<{ config: HeaderConfig; children: ReactNode }> = ({ config, children }) =>
+  createElement(HeaderConfigContext.Provider, { value: config }, children);
+export const useHeaderConfig = (): HeaderConfig => useContext(HeaderConfigContext);
+
 export type FmtInfo = {
   w: number;
   h: number;
