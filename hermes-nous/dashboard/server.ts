@@ -24,7 +24,7 @@ import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
   proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, draftsAwaitingReview,
-  resolveDraftMediaUrl,
+  resolveDraftMediaUrl, goalProgress,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
@@ -175,6 +175,11 @@ const server = createServer(async (req, res) => {
       return send(res, 200, JSON.stringify(factoryStatus() ?? { error: "no factory daemon status" }), "application/json");
     }
 
+    if (url.pathname === "/api/goal") {
+      // READ-ONLY: live GOAL-PROGRESS toward the 7-day mandate. Pure numbers, no secrets.
+      return send(res, 200, JSON.stringify(goalProgress()), "application/json");
+    }
+
     if (url.pathname === "/api/drafts") {
       // READ-ONLY: pending Publer drafts (public-CDN media_url + poster + hook + variant). No secrets.
       return send(res, 200, JSON.stringify(await draftsAwaitingReview()), "application/json");
@@ -226,6 +231,7 @@ const server = createServer(async (req, res) => {
           coverage: bankCoverage(),
           snapshot: costSnapshot(),
           factory: factoryStatus(),
+          goal: goalProgress(),
         }),
       );
     }

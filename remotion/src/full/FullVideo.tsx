@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS } from "../theme/brand";
-import { PlatformProvider } from "../theme/layout";
+import { PlatformProvider, HeaderConfigProvider, type ProgressStyle } from "../theme/layout";
 import { DebugSafeZones } from "../components/DebugSafeZones";
 import { Intro } from "../scenes/Intro";
 import { QuestionPlate } from "../scenes/QuestionPlate";
@@ -91,13 +91,19 @@ export const FullVideo: React.FC<{
   dropScore?: boolean;
   endCard?: EndCard;
   metaBase?: string;
+  /** Progress-counter A/B controls (the loop's progress-counter dimension). When
+   *  omitted the count pill shows in full "QUESTION X OF N" form (unchanged for
+   *  the committed masters / render-ab). `showProgress=false` hides it; "short"
+   *  renders the compact "Q1". */
+  showProgress?: boolean;
+  progressStyle?: ProgressStyle;
   /** Composition length is set by Root's calculateMetadata from this (when the
    *  A/B render script supplies it); FullVideo itself ignores it. */
   totalFrames?: number;
   /** DEV preview only: overlay TikTok's UI danger zones (top/right/bottom) so a
    *  still can confirm the plate clears them. Off in every real render. */
   debugSafeZones?: boolean;
-}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, debugSafeZones }) => {
+}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, showProgress, progressStyle, debugSafeZones }) => {
   const cut = slug ? bySlug(slug) : undefined;
   const platform: Platform = cut?.platform ?? platformProp ?? "youtube";
   const ids = cut?.ids ?? questionIds;
@@ -113,8 +119,13 @@ export const FullVideo: React.FC<{
   );
   const total = T.questions.length;
   const winStart = winStartFrame(T);
+  const headerConfig = useMemo(
+    () => ({ showProgress: showProgress ?? true, progressStyle: progressStyle ?? "full" }),
+    [showProgress, progressStyle],
+  );
   return (
     <PlatformProvider platform={platform}>
+    <HeaderConfigProvider config={headerConfig}>
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
       {T.segments.map((seg, i) => (
         <Sequence key={i} from={seg.start} durationInFrames={seg.dur} name={segName(seg)}>
@@ -165,6 +176,7 @@ export const FullVideo: React.FC<{
       {/* DEV preview overlay (off in every real render): TikTok UI danger zones. */}
       {debugSafeZones ? <DebugSafeZones /> : null}
     </AbsoluteFill>
+    </HeaderConfigProvider>
     </PlatformProvider>
   );
 };

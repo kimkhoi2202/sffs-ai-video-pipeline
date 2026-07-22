@@ -1,0 +1,103 @@
+{
+  "round": 0,
+  "slug": "sample-synonyms-antonyms",
+  "title": "SAMPLE — Synonyms & Antonyms",
+  "grade": 5,
+  "cogatLevel": 11,
+  "sampleOf": "synonyms-antonyms",
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ANTONYM",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH WORD MEANS THE\nOPPOSITE OF ANCIENT?",
+      "questionFontSize": 76,
+      "options": [
+        {
+          "letter": "A",
+          "text": "OLD"
+        },
+        {
+          "letter": "B",
+          "text": "MODERN"
+        },
+        {
+          "letter": "C",
+          "text": "HUGE"
+        },
+        {
+          "letter": "D",
+          "text": "QUIET"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "MODERN",
+      "explanation": "Ancient means very old, so its opposite is modern."
+    },
+    {
+      "id": 2,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SYNONYM",
+      "difficulty": "easy",
+      "countdown": 5,
+      "question": "WHICH WORD MEANS THE\nSAME AS ENORMOUS?",
+      "questionFontSize": 76,
+      "options": [
+        {
+          "letter": "A",
+          "text": "GIGANTIC"
+        },
+        {
+          "letter": "B",
+          "text": "TINY"
+        },
+        {
+          "letter": "C",
+          "text": "HAPPY"
+        },
+        {
+          "letter": "D",
+          "text": "FAST"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "GIGANTIC",
+      "explanation": "Enormous and gigantic both mean very big."
+    },
+    {
+      "id": 3,
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ANTONYM",
+      "difficulty": "medium",
+      "countdown": 5,
+      "question": "WHICH WORD MEANS THE\nOPPOSITE OF GENEROUS?",
+      "questionFontSize": 76,
+      "options": [
+        {
+          "letter": "A",
+          "text": "KIND"
+        },
+        {
+          "letter": "B",
+          "text": "RICH"
+        },
+        {
+          "letter": "C",
+          "text": "SELFISH"
+        },
+        {
+          "letter": "D",
+          "text": "LOUD"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "SELFISH",
+      "explanation": "A generous person loves to share, and a selfish one does not."
+    }
+  ]
+}

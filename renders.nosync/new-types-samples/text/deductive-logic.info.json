@@ -1,0 +1,36 @@
+{
+  "type": "deductive-logic",
+  "title": "Deductive Logic (True / False / Can't Tell)",
+  "tier": "LOGIC",
+  "kind": "text",
+  "category": "verbal",
+  "file": "deductive-logic.mp4",
+  "format": "9:16 (1080x1920)",
+  "durationSec": 105.96,
+  "music": "final-round-fanfare.mp3",
+  "sfx": "short-4",
+  "voiceId": "lZcmpVLaoXF4v0uz4l6Q",
+  "questions": [
+    {
+      "id": 1,
+      "tier": "LOGIC",
+      "prompt": "ALL CATS PURR. / MILO IS A CAT. / SO MILO PURRS.",
+      "answer": "A · TRUE",
+      "countdown": 7
+    },
+    {
+      "id": 2,
+      "tier": "LOGIC",
+      "prompt": "ALL ROSES ARE FLOWERS. / SOME FLOWERS FADE FAST. / SO ALL ROSES FADE FAST.",
+      "answer": "C · CAN'T TELL",
+      "countdown": 7
+    },
+    {
+      "id": 3,
+      "tier": "LOGIC",
+      "prompt": "NO FISH CAN FLY. / A SHARK IS A FISH. / SO A SHARK CAN FLY.",
+      "answer": "B · FALSE",
+      "countdown": 7
+    }
+  ]
+}

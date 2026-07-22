@@ -435,6 +435,62 @@
         { "text": "no worries marlan, that first one's tricky af. promise you'll come back tomorrow and redeem yourself. smart fella in the making \ud83e\udee1", "source": "user-approved 2026-07-21", "why_it_works": "Warm and personal (uses their name); no answer-reveal needed; exactly one emoji; 'smart fella in the making' = redemption framing; 'af' is an on-brand mild intensifier, kept deliberately." }
       ]
     },
+    "comment-reply-perfect": {
+      "surface": "comment-reply-perfect",
+      "description": "Reply BANK for a PERFECT full-quiz score (3/3, all correct). Score bucket: perfect (3/3). Hype as a certified SMART FELLA, one emoji max (zero is fine), never explain the answers, and ROTATE (never reuse a line). Personalize with {handle} + {score}; VARY the closing nudge (keep your streak / come back tomorrow / follow / try the next one / tag a friend).",
+      "examples": [
+        { "text": "3 for 3 kootcp?? certified SMART FELLA \ud83e\udd73 come back tomorrow to see if you can keep your streak", "source": "user-approved 2026-07-22", "why_it_works": "User-approved perfect-score (3/3) reply for commenter kootcp. Personalizes with the handle; hypes as a certified SMART FELLA; exactly one emoji, the user's deliberate tweak from \ud83e\udee1 to \ud83e\udd73; closes on a streak nudge (come back tomorrow / keep your streak) instead of a plain follow, the user's other deliberate tweak." },
+        { "text": "{score} on the dot {handle}?? certified SMART FELLA \ud83e\udee1 follow for a new one every day", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "full marks {handle}, no notes. certified SMART FELLA. come back tomorrow and keep that streak alive", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{handle} really said all correct and dipped. certified SMART FELLA \ud83d\udd25 try tomorrow's, it's sneakier", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "okay big brain {handle}, clean {score}. certified SMART FELLA. tag a friend who'd fail this", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "nobody warned me {handle} was built different. perfect {score}, certified SMART FELLA. follow so you don't miss one", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "perfect run {handle} \ud83e\udde0\ud83d\udca8 certified SMART FELLA. can you go back to back? new one drops tomorrow", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{score}?? flawless {handle}. certified SMART FELLA. tag someone who'd get zero", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "didn't miss a single one {handle}, certified SMART FELLA. keep the streak going, come back tomorrow", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{handle} ate that up, perfect {score} \ud83d\udc80 certified SMART FELLA. follow for more brain teasers", "source": "reply bank 2026-07-22 (rotation)" }
+      ]
+    },
+    "comment-reply-strong": {
+      "surface": "comment-reply-strong",
+      "description": "Reply BANK for a STRONG score (most correct, e.g. 2/3). Score bucket: strong (2/3). Hype + a gentle tease about the one they missed (never reveal it) + a nudge. ROTATE lines; personalize with {handle} + {score}; VARY the nudge.",
+      "examples": [
+        { "text": "{score} {handle}, so close to perfect. certified SMART FELLA. come back tomorrow and go all the way", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{handle} got {score}, one away from a clean sweep. certified SMART FELLA (almost) \ud83e\udee1 follow for a new one every day", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "so close {handle}, {score} is nothing to sneeze at. try the next one tomorrow and get all 3", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{score}?? smart fella behavior {handle}, just missed the sneaky one. come back tomorrow and redeem it", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{handle} really fumbled the last one \ud83d\ude2d still a {score}, still smart. follow so you don't miss the next", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{score} is strong {handle}, that third one was a trap. keep the streak going, new one drops tomorrow", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "almost had it {handle}, {score} is sharp cookie energy \ud83d\udd25 tag a friend who'd get fewer", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{handle} out here with a {score}, so close. come back tomorrow, that perfect run is right there", "source": "reply bank 2026-07-22 (rotation)" }
+      ]
+    },
+    "comment-reply-low": {
+      "surface": "comment-reply-low",
+      "description": "Reply BANK for a LOW score (0-1/3). Score bucket: low (0-1/3). Kind, funny, playful certified FART SMELLA ALWAYS softened with '(for now)', frame them as a smart fella in the making, encourage a comeback (matches the approved Marlan tone). No answer-reveal, no lecture. ROTATE lines; personalize with {handle} + {score}; VARY the nudge.",
+      "examples": [
+        { "text": "no worries {handle}, that one was tricky af. certified FART SMELLA (for now) \ud83e\udee1 come back tomorrow and redeem yourself", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{score}?? it's ok {handle}, everybody starts somewhere. certified FART SMELLA for now, smart fella in the making. come back tomorrow", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{handle} we've all been there \ud83d\ude2d certified FART SMELLA (for now). follow and redeem yourself tomorrow", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "hey a {score} is just chapter one {handle}. certified FART SMELLA for now. come back tomorrow, you got this", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "not your day {handle}, those were sneaky. certified FART SMELLA (for now). try the next one tomorrow", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{handle} lowkey robbed on that one. certified FART SMELLA for now, smart fella loading. follow for a new one every day", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "{score} happens to the best of us {handle} \ud83d\udc80 certified FART SMELLA (for now). come back tomorrow and turn it around", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "chin up {handle}, even champs start as a certified FART SMELLA (for now). tag a friend who'd also flop, then redeem tomorrow", "source": "reply bank 2026-07-22 (rotation)" }
+      ]
+    },
+    "comment-reply-guess": {
+      "surface": "comment-reply-guess",
+      "description": "Reply BANK for a commenter who left a GUESS or asked 'what's the answer?'. Keep the answer HIDDEN on purpose (engagement / ragebait per brand preference), e.g. 'not telling \ud83d\udc40 comment your guess and see who's right'. ROTATE lines; personalize with {handle}; VARY the nudge; every line invites a guess and closes on a nudge.",
+      "examples": [
+        { "text": "not telling \ud83d\udc40 comment your guess and see who's right, then follow for the reveal tomorrow", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "nice try {handle}, my lips are sealed. drop your real guess and come back tomorrow for the answer", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "no spoilers here \ud83e\udd2b comment your final answer, follow so you don't miss the reveal", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "you really thought i'd just tell you {handle}? guess in the comments, tag a friend who'd get it wrong", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "the answer stays a secret for now \ud83d\udc40 comment your guess, come back tomorrow to see if you nailed it", "source": "reply bank 2026-07-22 (rotation)" },
+        { "text": "not that easy {handle}. lock in your guess below and follow for a new one every day", "source": "reply bank 2026-07-22 (rotation)" }
+      ]
+    },
     "comment-reply-nudge": {
       "surface": "comment-reply-nudge",
       "description": "The follow / come-back nudges that MUST close every reply (pick one, keep it casual).",

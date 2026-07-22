@@ -16,7 +16,7 @@
  * See defaults.ts.
  */
 import { type NarrationMode } from "./narration.ts";
-import type { HermesQ } from "./state.ts";
+import type { HermesQ, ShapeKind } from "./state.ts";
 import {
   contentDefaults,
   narrationModeForArm,
@@ -34,8 +34,8 @@ export interface DimSpec {
   arm: string; // canonical rollup label (shared with the Python promotion engine)
   rationale: string;
   numQ: number;
-  category: "verbal" | "quantitative" | "mixed";
-  kinds?: Array<"text" | "numseries">;
+  category: "verbal" | "quantitative" | "mixed" | "nonverbal";
+  kinds?: Array<"text" | "numseries" | ShapeKind>;
   showProgress: boolean;
   progressStyle: "short" | "full";
   countdownSec: number;
@@ -128,6 +128,35 @@ const OTHER_DIMENSIONS: DimSpec[] = [
 ];
 
 /**
+ * The NONVERBAL SHAPE/FIGURE dimension: paper-folding + the figure-matrix family
+ * (matrix / analogy2 / figure-odd). Its answer options are FIGURES, not text, so
+ * the render path (render.ts mapProps) voices only the PROMPT (+ the reveal
+ * ansLabel) and never the options — no per-option TTS. It inherits the current
+ * narration + ending defaults (deviates only the question TYPE axis), so it stays
+ * a clean single-axis "other" dimension alongside category-mix.
+ */
+const SHAPE_DIMENSION: DimSpec = {
+  ...BASE,
+  dimension: "type-nonverbal-shapes",
+  arm: "shapes",
+  rationale:
+    "nonverbal variety: paper-folding + figure matrix/analogy/odd-one-out (options are figures; prompt-only VO)",
+  category: "nonverbal",
+  kinds: ["fold", "matrix", "analogy2", "figure-odd"],
+};
+
+/**
+ * Whether the nonverbal shape dimension is ELIGIBLE this run. Default ON (the
+ * FullVideo render path for shapes is proven). Set HERMES_ENABLE_SHAPE_QUESTIONS
+ * to 0/false/off/no to force it OFF — a kill switch that leaves the loop's
+ * text/numseries behavior completely unchanged.
+ */
+export function shapeQuestionsEnabled(): boolean {
+  const v = (process.env.HERMES_ENABLE_SHAPE_QUESTIONS ?? "").trim().toLowerCase();
+  return !(v === "0" || v === "false" || v === "off" || v === "no");
+}
+
+/**
  * Build the rotating dimension catalog for the CURRENT defaults: control first,
  * then the narration + ending challengers (arm universe minus the current default),
  * then the other single-axis dimensions.
@@ -150,7 +179,10 @@ export function buildDimensions(defaults: ContentDefaults = contentDefaults()): 
     endingArm: a,
     rationale: `TEST ARM vs the '${defaults.ending}' ending default: ${ENDING_ARM_META[a]} (keeps ${defaults.narration} narration)`,
   }));
-  return [CONTROL, ...narrationArms, ...endingArms, ...OTHER_DIMENSIONS];
+  // The nonverbal shape dimension is appended only when enabled (default ON;
+  // HERMES_ENABLE_SHAPE_QUESTIONS=0 removes it and restores the exact prior list).
+  const shapeDims: DimSpec[] = shapeQuestionsEnabled() ? [SHAPE_DIMENSION] : [];
+  return [CONTROL, ...narrationArms, ...endingArms, ...OTHER_DIMENSIONS, ...shapeDims];
 }
 
 /** The effective render axes for a spec under the CURRENT defaults. */

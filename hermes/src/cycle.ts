@@ -9,8 +9,10 @@
  *   (a) pull matured analytics + score + update learnings
  *   (b) plan the batch (up to N videos, each a different A/B dimension)
  *   for each video: dedup gate -> question-validity gate -> mark used ->
- *                   copy gate -> render -> render-sanity gate -> S3 upload ->
- *                   Publer media import -> createDraftOnly -> annotate ab-database
+ *                   copy gate -> render (Short/FullVideo, ONE per platform with
+ *                   its own SAFE ZONES) -> render-sanity gate -> per platform:
+ *                   S3 upload -> Publer media import -> createDraftOnly ->
+ *                   annotate ab-database
  *   2. verify do-not-touch untouched (proves nothing went live)
  *   3. commit + push data files (best-effort)
  *
@@ -30,19 +32,33 @@ import {
   type VideoPlan,
 } from "./state.ts";
 import { snapshotDoNotTouch, verifyDoNotTouch, createDraftOnly } from "./guardrails.ts";
+import { kickoffStatus, type KickoffStatus } from "./kickoff.ts";
+import { nextSlots } from "./scheduler.ts";
+import { goalProgress } from "./goal.ts";
 import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
 import { markUsed, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
-import { renderVideo, computeFrames } from "./render.ts";
+import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
 import { importMediaFromUrl, createPost, pollJob, listAllPosts, postId } from "./publer.ts";
 import { ping, chat } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
 const DRY = process.env.HERMES_DRY_RUN === "1";
+
+/**
+ * Per-cycle scheduling context. OFF (default) => draft-only: every video takes the
+ * unchanged createDraftOnly path. ARMED (human kickoff) => each platform draft is
+ * ALSO scheduled at a policy time (scheduler.ts) via the gated kickoff_schedule.ts.
+ */
+interface SchedCtx {
+  armed: boolean;
+  slot: (platform: string, index: number) => string | null;
+}
+const DRAFT_ONLY_SCHED: SchedCtx = { armed: false, slot: () => null };
 
 function newRun(runId: string, target: number): RunState {
   return {
@@ -60,7 +76,7 @@ function newRun(runId: string, target: number): RunState {
   };
 }
 
-async function draftForVideo(v: VideoPlan): Promise<void> {
+async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): Promise<void> {
   // idempotent: already drafted
   if (v.status === "drafted") return;
 
@@ -101,13 +117,25 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
     return;
   }
 
-  // 5) render
-  const r = renderVideo(v.id, v.props);
-  v.render_path = r.path;
+  // 5) render — the REAL Short/FullVideo composition, ONE render per platform so
+  // each draft carries that platform's SAFE ZONES (TikTok transform vs IG box).
+  // VO is synthesized once and shared across the platform renders.
+  const renders = renderForPlatforms(v.id, v.props);
+  v.render_path = renders[0]?.path;
   v.status = "rendered";
 
-  // 6) render-sanity gate
-  v.gates.render = gateRenderSanity(r.path, computeFrames(v.props));
+  // 6) render-sanity gate — EVERY platform render must pass (1080x1920 + audio +
+  // duration matches the composition's computed frames).
+  {
+    const problems: string[] = [];
+    for (const r of renders) {
+      const g = gateRenderSanity(r.path, r.frames);
+      if (!g.pass) problems.push(`${r.platform}: ${g.reason}`);
+    }
+    v.gates.render = problems.length
+      ? { pass: false, reason: problems.join("; ") }
+      : { pass: true, reason: `ok ${renders.map((r) => r.platform).join("+")} 1080x1920 video+audio` };
+  }
   if (!v.gates.render.pass) {
     v.status = "rejected";
     v.reject_reason = "render sanity: " + v.gates.render.reason;
@@ -129,35 +157,71 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
   const captionTag = (process.env.HERMES_CAPTION_TAG || "").trim();
   if (captionTag) v.caption = `${captionTag}\n${v.caption}`;
 
-  // 7) upload to S3 (presigned)
-  const key = `hermes/${todayRunId()}/${v.id}.mp4`;
-  const url = uploadToS3(r.path, key);
-  v.media_url = url;
+  // 7-8) per platform: upload its OWN safe-zone render to S3, import the media,
+  // and create a DRAFT on that platform's account only (createDraftOnly forces
+  // state="draft"; the loop can never publish/schedule). Each platform draft thus
+  // carries the render made for that platform's UI-safe zones.
+  const results: PlatformDraft[] = [];
+  for (const r of renders) {
+    const platform = r.platform as "instagram" | "tiktok";
+    const account_id = CONFIG.ACCOUNTS[platform];
+    const key = `hermes/${todayRunId()}/${v.id}.${platform}.mp4`;
+    const url = uploadToS3(r.path, key);
+    const { mediaId } = await importMediaFromUrl(url, `${v.id}.${platform}.mp4`);
+    // KICKOFF gate: OFF => createDraftOnly (unchanged draft-only path). ARMED =>
+    // schedule at a policy time via the gated kickoff_schedule.ts (dynamic-imported
+    // ONLY here, so the OFF loop never even loads a module that can schedule).
+    let jobId: string;
+    let scheduled_at: string | null = null;
+    if (sched.armed) {
+      scheduled_at = sched.slot(platform, v.index);
+      if (!scheduled_at) throw new Error(`no schedule slot for ${platform}#${v.index}`);
+      const { createScheduledPostArmed } = await import("./kickoff_schedule.ts");
+      jobId = await createScheduledPostArmed({ account_ids: [account_id], text: v.caption, media_ids: [mediaId], type: "video" }, scheduled_at);
+    } else {
+      jobId = await createDraftOnly({ account_ids: [account_id], text: v.caption, media_ids: [mediaId], type: "video" });
+    }
+    const job = await pollJob(jobId, { label: `create-${sched.armed ? "scheduled" : "draft"}-${platform}`, timeoutMs: 180_000 });
+    // Publer's job_status returns only {status:"complete"} (no post ids), so resolve
+    // the created draft post id by matching the (unique) uploaded media id.
+    let postIds = extractPostIds(job.payload);
+    if (!postIds.length) postIds = await findDraftPostIds(mediaId);
+    results.push({ platform, account_id, media_url: url, media_id: mediaId, post_id: postIds[0] ?? null, job_id: jobId, scheduled_at });
+  }
+  v.media_url = results[0]?.media_url;
   v.status = "uploaded";
-
-  // 8) Publer: import media -> create DRAFT (both accounts)
-  const { mediaId } = await importMediaFromUrl(url, `${v.id}.mp4`);
-  const jobId = await createDraftOnly({
-    account_ids: CONFIG.ACCOUNT_IDS,
-    text: v.caption,
-    media_ids: [mediaId],
-    type: "video",
-  });
-  const job = await pollJob(jobId, { label: "create-draft", timeoutMs: 180_000 });
-  // Publer's job_status returns only {status:"complete"} (no post ids), so resolve the
-  // created draft post ids by matching the uploaded media id against the draft list.
-  let postIds = extractPostIds(job.payload);
-  if (!postIds.length) postIds = await findDraftPostIds(mediaId);
-  v.publer = { job_id: jobId, media_id: mediaId, post_ids: postIds, permalinks: [] };
+  v.publer = {
+    job_id: results[0]?.job_id,
+    media_id: results[0]?.media_id,
+    post_ids: results.map((r) => r.post_id).filter((x): x is string => Boolean(x)),
+    permalinks: [],
+  };
   v.status = "drafted";
-  decision(`DRAFT created ${v.id}`, { dimension: v.dimension, arm: v.arm, postIds });
+  const anyScheduled = results.some((r) => r.scheduled_at);
+  decision(`${anyScheduled ? "SCHEDULED (kickoff armed)" : "DRAFT"} created ${v.id}`, {
+    dimension: v.dimension,
+    arm: v.arm,
+    posts: results.map((r) => ({ platform: r.platform, post_id: r.post_id, scheduled_at: r.scheduled_at })),
+  });
 
-  // 9) annotate ab-database.json (best-effort; draft success is what matters)
+  // 9) annotate ab-database.json per platform (best-effort; draft success is what matters)
   try {
-    annotateDb(v, postIds);
+    annotateDb(v, results);
   } catch (e) {
     warn(`${v.id} db annotate failed`, { err: e instanceof Error ? e.message : String(e) });
   }
+}
+
+/** One platform's rendered+uploaded+drafted result (per-platform SAFE ZONES). */
+interface PlatformDraft {
+  platform: "instagram" | "tiktok";
+  account_id: string;
+  media_url: string;
+  media_id: string;
+  post_id: string | null;
+  job_id: string;
+  /** set only when kickoff is armed (autonomous scheduling); null = draft-only. */
+  scheduled_at: string | null;
 }
 
 function extractPostIds(payload: any): string[] {
@@ -191,16 +255,13 @@ async function findDraftPostIds(mediaId: string): Promise<string[]> {
   }
 }
 
-function annotateDb(v: VideoPlan, postIds: string[]): void {
+function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
   const db = readJSON<any>(CONFIG.AB_DB, null);
   if (!db || !Array.isArray(db.posts)) return;
-  const platforms: Array<["instagram" | "tiktok", string]> = [
-    ["instagram", CONFIG.ACCOUNTS.instagram],
-    ["tiktok", CONFIG.ACCOUNTS.tiktok],
-  ];
-  for (let i = 0; i < platforms.length; i++) {
-    const [platform, account_id] = platforms[i];
-    const publer_post_id = postIds[i] ?? null;
+  for (const pr of results) {
+    const platform = pr.platform;
+    const account_id = pr.account_id;
+    const publer_post_id = pr.post_id;
     const key = `hermes:${v.id}:${platform}`;
     const existing = db.posts.find((p: any) => p._hermes_key === key);
     const rec = existing ?? {};
@@ -213,7 +274,7 @@ function annotateDb(v: VideoPlan, postIds: string[]): void {
       account_handle: "@smartfellafartsmellatest",
       permalink: null,
       caption: v.caption,
-      source_video: `hermes-render:${v.id}.mp4`,
+      source_video: `hermes-render:${v.id}.${platform}.mp4`,
       media_url_note: "S3 private object (presigned at post time)",
       variant: {
         family: v.dimension,
@@ -232,7 +293,8 @@ function annotateDb(v: VideoPlan, postIds: string[]): void {
       },
       experiment: { dimension: v.dimension, arm: v.arm, rationale: v.rationale, hermes_video_id: v.id },
       hashtag_set: v.hashtag_set,
-      post_state: "draft",
+      post_state: pr.scheduled_at ? "scheduled" : "draft",
+      scheduled_at: pr.scheduled_at ?? null,
       metrics: { reach: null, video_views: null, reactions: null, comments: null, shares: null, eng_rate: null, as_of: null, source: "pending" },
       match_confidence: "high",
       notes: "Created by the Hermes autonomous loop (DRAFT-ONLY).",
@@ -279,6 +341,19 @@ export async function runCycle(): Promise<RunState> {
   const health = await ping();
   info("LLM ping", health);
 
+  // KICKOFF + GOAL surfacing (logged every cycle; the read-only dashboard reads
+  // these). OFF => draft-only; ARMED => autonomous scheduling in the window.
+  const kickoff: KickoffStatus = kickoffStatus();
+  (state as any).kickoff = kickoff;
+  info(kickoff.armed ? "KICKOFF: ARMED — autonomy ON" : "KICKOFF: OFF — draft-only", { source: kickoff.source, since: kickoff.since, note: kickoff.note });
+  try {
+    const goal = goalProgress();
+    (state as any).goal = goal;
+    info("GOAL trajectory", { started: goal.started, views: goal.totals.views, likes: goal.totals.likes, days_left: goal.days_left, on_track_views: goal.pace.on_track_views, note: goal.note });
+  } catch (e) {
+    warn("goal progress failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+  }
+
   // 1) do-not-touch snapshot
   try {
     const snap = await snapshotDoNotTouch();
@@ -320,11 +395,29 @@ export async function runCycle(): Promise<RunState> {
     saveRun(state);
   }
 
+  // KICKOFF: OFF => draft-only (unchanged). ARMED => build per-platform jittered
+  // schedule slots (7am-1am CST window) so each draft is auto-scheduled. DRY never
+  // schedules (renders/gates only). Nothing here can publish "now".
+  let sched: SchedCtx = DRAFT_ONLY_SCHED;
+  if (kickoff.armed && !DRY) {
+    const n = state.videos.length;
+    const slots: Record<string, string[]> = {
+      instagram: nextSlots(n, { seed: runId, platform: "instagram" }),
+      tiktok: nextSlots(n, { seed: runId, platform: "tiktok" }),
+    };
+    sched = { armed: true, slot: (platform, index) => slots[platform]?.[index] ?? null };
+    info("KICKOFF ARMED — autonomous scheduling ON", {
+      videos: n,
+      window: "7:00am-1:00am America/Chicago",
+      first: { instagram: slots.instagram[0], tiktok: slots.tiktok[0] },
+    });
+  }
+
   // per-video pipeline (resume-safe)
   for (const v of state.videos) {
     if (v.status === "drafted" || v.status === "rejected") continue;
     try {
-      await draftForVideo(v);
+      await draftForVideo(v, sched);
     } catch (e) {
       v.status = "failed";
       v.errors = [...(v.errors ?? []), e instanceof Error ? e.message : String(e)];

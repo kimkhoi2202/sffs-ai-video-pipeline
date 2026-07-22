@@ -14,6 +14,7 @@
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
 import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo } from "./data.ts";
 import type { PRView } from "./prs.ts";
+import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
 
 // ── html helpers ──────────────────────────────────────────────────────────────
 export const esc = (s: unknown): string =>
@@ -546,6 +547,114 @@ function killBanner(k: KillSwitchState): string {
   return `<div class="kill kill-off">✅ kill-switch clear — factory auto-merge is armed (two-key gate). Display-only indicator.</div>`;
 }
 
+// ── GOAL-PROGRESS (Hermes's 7-day mandate) — front-and-center ─────────────────
+const gInt = (v: number | null | undefined): string =>
+  v == null ? "—" : Math.round(v).toLocaleString("en-US");
+/** compact rate: 1 decimal under 100, whole thousands above (honest, readable). */
+function gPace(v: number | null): string {
+  if (v == null) return "—";
+  if (v <= 0) return "0";
+  return v >= 100 ? Math.round(v).toLocaleString("en-US") : String(Math.round(v * 10) / 10);
+}
+function gPct(p: number | null): string {
+  if (p == null) return "—";
+  if (p <= 0) return "0%";
+  if (p >= 10) return `${Math.round(p)}%`;
+  if (p >= 1) return `${Math.round(p * 10) / 10}%`;
+  return `${Math.round(p * 100) / 100}%`; // sub-1% cold-start: show 2dp so it isn't a fake 0
+}
+/** pure CSS/inline-style progress bar (no external assets). `good` tints it green. */
+function gBar(pct: number | null, pending = false): string {
+  const w = pending || pct == null ? 0 : Math.max(0, Math.min(100, pct));
+  const cls = pct != null && pct >= 100 ? "gfill gfill-done" : "gfill";
+  const inner = pending ? "" : `<i class="${cls}" style="width:${w.toFixed(2)}%"></i>`;
+  return `<div class="gbar${pending ? " gbar-pending" : ""}">${inner}</div>`;
+}
+function gMetricRow(label: string, m: GoalMetric): string {
+  return `<div class="gmetric">
+    <div class="gm-h"><span class="gm-l">${esc(label)}</span><span class="gm-v">${gInt(m.value)} <span class="muted">/ ${gInt(m.target)}</span> · <b>${gPct(m.pct)}</b></span></div>
+    ${gBar(m.pct)}
+  </div>`;
+}
+function gFollowerRow(label: string, f: FollowerMetric): string {
+  if (f.value == null) {
+    return `<div class="gmetric">
+      <div class="gm-h"><span class="gm-l">${esc(label)}</span><span class="gm-v"><span class="muted">pending / ${gInt(f.target)}</span></span></div>
+      ${gBar(null, true)}
+    </div>`;
+  }
+  return `<div class="gmetric">
+    <div class="gm-h"><span class="gm-l">${esc(label)}</span><span class="gm-v">${gInt(f.value)} <span class="muted">/ ${gInt(f.target)}</span> · <b>${gPct(f.pct)}</b></span></div>
+    ${gBar(f.pct)}
+  </div>`;
+}
+/** observed-vs-needed pace pills; the "needed" pill goes coral when we're behind. */
+function gPacePills(observed: number | null, needed: number | null, unit: string, armed: boolean): string {
+  const neededTxt = needed == null ? "∞ (window closed)" : `${gPace(needed)}${needed > 0 ? "" : " (met ✓)"}`;
+  const behind = needed != null && needed > 0 && (observed == null || observed < needed);
+  const obsTxt = observed == null ? (armed ? "0" : "—") : gPace(observed);
+  return `<span class="hpill"><b>${esc(unit)}/day observed</b>${esc(obsTxt)}</span>
+    <span class="hpill" ${behind ? 'style="background:var(--coral);color:#fff"' : "" }><b>${esc(unit)}/day needed</b>${esc(neededTxt)}</span>`;
+}
+function gScopeBlock(title: string, sp: ScopeProgress, armed: boolean, big = false): string {
+  return `<div class="gscope${big ? " gscope-big" : ""}">
+    <div class="gscope-h"><span class="gscope-t">${esc(title)}</span> <span class="muted">${sp.posts} post(s) ${armed ? "in window" : "all-time"}</span></div>
+    ${gMetricRow("views", sp.views)}
+    ${gMetricRow("likes", sp.likes)}
+    ${gFollowerRow("followers", sp.followers)}
+    <div class="health gpace">
+      ${gPacePills(sp.paceViewsPerDay, sp.neededViewsPerDay, "views", armed)}
+      ${gPacePills(sp.paceLikesPerDay, sp.neededLikesPerDay, "likes", armed)}
+    </div>
+  </div>`;
+}
+function gArmsTable(caption: string, arms: ArmAgg[], sortLabel: string): string {
+  if (!arms.length) {
+    return `<p class="muted">${esc(caption)}: no matured ${esc(sortLabel)} on any arm within the window yet.</p>`;
+  }
+  const rows = arms
+    .map(
+      (a, i) =>
+        `<tr><td>${i + 1}</td><td>${esc(a.arm)}<br><span class="muted">${esc(a.family)}</span></td><td>${gInt(a.views)}</td><td>${gInt(a.likes)}</td><td>${gInt(a.posts)}</td></tr>`,
+    )
+    .join("");
+  return `<div class="gcol"><div class="gcol-h">${esc(caption)}</div>
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>#</th><th>arm / family</th><th>views</th><th>likes</th><th>posts</th></tr></thead><tbody>${rows}</tbody></table></div>
+  </div>`;
+}
+
+function goalPanel(gp: GoalProgress): string {
+  const kickoffChip = gp.armed
+    ? `<span class="chip c-ok">KICKOFF ARMED · since ${esc(gp.since)}</span>`
+    : `<span class="chip c-warn">KICKOFF PENDING — draft-only</span>`;
+  const timeLeft = gp.armed
+    ? `${gp.daysLeft}d ${gp.hoursLeft}h left${gp.windowClosed ? " · WINDOW CLOSED" : ""}`
+    : `${gp.windowDays}d 0h (not started)`;
+  const mandate = `<p class="muted" style="margin:2px 0 12px">TARGET (7 days from kickoff): <b>${gInt(GOAL.views)}</b> views + <b>${gInt(GOAL.likes)}</b> likes combined, and <b>${gInt(GOAL.followersPerPlatform)}</b> followers on EACH of Instagram &amp; TikTok. Real live trajectory below — no vanity metrics.</p>`;
+  const pendingNote = gp.armed
+    ? ""
+    : `<div class="reject">KICKOFF PENDING — the 7-day clock has not started. It arms when <code>${esc("<DATA_DIR>/KICKOFF_ARMED")}</code> exists and contains the phrase <code>ARM SFFS AUTONOMY</code>; t0 = that file's mtime. Totals shown are running (all posts, all-time); the window is not counting yet. DRAFT-ONLY until a human arms it.</div>`;
+  const topBar = `<div class="health" style="margin-bottom:8px">
+    ${kickoffChip}
+    <span class="hpill"><b>window</b>${esc(String(gp.windowDays))} days</span>
+    <span class="hpill"><b>time left</b>${esc(timeLeft)}</span>
+    <span class="hpill"><b>followers snapshot</b>${gp.followersPending ? "pending" : "loaded"}</span>
+    <span class="hpill"><b>as of (UTC)</b>${esc((gp.now || "").slice(0, 19).replace("T", " "))}</span>
+  </div>`;
+  const combined = gScopeBlock("Combined (IG + TikTok)", gp.combined, gp.armed, true);
+  const perPlatform = `<div class="gtwo">
+    ${gScopeBlock("Instagram", gp.instagram, gp.armed)}
+    ${gScopeBlock("TikTok", gp.tiktok, gp.armed)}
+  </div>`;
+  const perPlatNote = `<p class="muted" style="margin:10px 0 4px">Per-platform view/like bars measure against ½ of the combined mandate (${gInt(GOAL.views / 2)} views / ${gInt(GOAL.likes / 2)} likes each); the combined bars use the full target. Followers are ${gInt(GOAL.followersPerPlatform)} on each platform.</p>`;
+  const arms = `<div class="gscope-h" style="margin-top:14px"><span class="gscope-t">What's moving the needle</span> <span class="muted">top arms within the window (ab-database variant.arm / family)</span></div>
+    <div class="gtwo">
+      ${gArmsTable("Top arms by views", gp.topArmsByViews, "views")}
+      ${gArmsTable("Top arms by likes", gp.topArmsByLikes, "likes")}
+    </div>`;
+  return `${mandate}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
+}
+
 // ── the page ──────────────────────────────────────────────────────────────────
 export interface PageData {
   latest: RunState | null;
@@ -570,12 +679,16 @@ export interface PageData {
   factory?: any;
   /** pending Publer drafts awaiting human review (optional; degrades to empty). */
   drafts?: DraftsView;
+  /** GOAL-PROGRESS toward Hermes's 7-day mandate (optional; degrades to pending/empty). */
+  goal?: GoalProgress;
 }
 
 export function page(opts: PageData): string {
   const { runs, db, l, bank, schedule, kill, disk, selected, pr, logItems } = opts;
   const cov: BankCoverage =
     opts.coverage ?? { total: 0, usable: bank.usable, fresh: bank.fresh, used: bank.used, freshPct: 0, perDay: 0, runwayDays: null, byType: [] };
+  // GOAL-PROGRESS is FRONT-AND-CENTER; default to a "pending" panel so it always renders.
+  const goal: GoalProgress = opts.goal ?? computeGoalProgress([], null, null, new Date());
   const cur = selected ? runs.find((r) => r.run_id === selected) || opts.latest : opts.latest;
   const s = cur?.summary || { planned: 0, drafted: 0, rejected: 0, failed: 0 };
   const drafts = (cur?.videos || []).filter((v) => v.status === "drafted");
@@ -658,6 +771,22 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .dbody{padding:12px;display:flex;flex-direction:column;gap:6px}
 .draftplatforms{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px}
 .dplat{display:inline-block;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:8px;padding:3px 9px;background:var(--mint);color:#111}
+.goalcard{background:linear-gradient(180deg,#fffdf3,var(--paper))}
+.gtwo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:4px}
+.gscope{border:3px solid var(--ink);border-radius:14px;padding:14px;background:var(--cream);margin-top:10px}
+.gscope-big{background:var(--paper);box-shadow:6px 6px 0 0 var(--ink)}
+.gscope-h{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:8px}
+.gscope-t{font-weight:800;font-size:16px}
+.gmetric{margin:8px 0}
+.gm-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:4px}
+.gm-l{font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:11px;color:#555}
+.gm-v{font-variant-numeric:tabular-nums}
+.gbar{height:16px;border:2px solid var(--ink);border-radius:9px;background:#fff;overflow:hidden;max-width:100%}
+.gbar .gfill{display:block;height:100%;background:var(--blue);border-right:2px solid var(--ink);min-width:0;transition:none}
+.gbar .gfill-done{background:var(--green)}
+.gbar-pending{background:repeating-linear-gradient(45deg,#eee,#eee 6px,#f6f4ee 6px,#f6f4ee 12px)}
+.gpace{margin-top:10px}
+.gcol-h{font-weight:800;font-size:14px;margin-bottom:6px}
 </style></head>
 <body>
 <header>
@@ -666,6 +795,11 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 </header>
 ${killBanner(kill)}
 <div class="wrap">
+  <div class="card goalcard">
+    <h2><span class="pin" style="background:var(--yellow)">GOAL</span> Hermes mandate — live 7-day trajectory <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
+    ${goalPanel(goal)}
+  </div>
+
   <div class="grid">
     <div class="kpi"><div class="v">${s.planned}</div><div class="k">planned</div></div>
     <div class="kpi"><div class="v">${s.drafted}</div><div class="k">videos drafted</div></div>

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updated": "2026-07-20",
-  "count": 1500,
+  "updated": "2026-07-22",
+  "count": 1544,
   "entries": [
     {
       "sig": "text|verbal|odd-one-out|which one does not belong || apple~banana~carrot~grape|carrot",
@@ -21047,6 +21047,1730 @@
       "slug": "round-100",
       "id": 15,
       "addedAt": "2026-07-19"
+    },
+    {
+      "sig": "numseries|verbal|letter-series|A~C~E~G|i",
+      "hash": "bf7ee17dfd58",
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "promptNorm": "what comes next",
+      "payloadNorm": "A~C~E~G",
+      "answerNorm": "i",
+      "round": 900,
+      "slug": "staging-text-0",
+      "id": 1,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "numseries|verbal|letter-series|B~D~G~K|p",
+      "hash": "53a0fb0b2c20",
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "promptNorm": "what comes next",
+      "payloadNorm": "B~D~G~K",
+      "answerNorm": "p",
+      "round": 900,
+      "slug": "staging-text-0",
+      "id": 2,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "numseries|verbal|letter-series|Z~X~V~T|r",
+      "hash": "8ee9bac1c81a",
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "promptNorm": "what comes next",
+      "payloadNorm": "Z~X~V~T",
+      "answerNorm": "r",
+      "round": 900,
+      "slug": "staging-text-0",
+      "id": 3,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "numseries|verbal|letter-series|A~B~D~G|k",
+      "hash": "a4c55c212ef0",
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "promptNorm": "what comes next",
+      "payloadNorm": "A~B~D~G",
+      "answerNorm": "k",
+      "round": 900,
+      "slug": "staging-text-0",
+      "id": 4,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "numseries|verbal|letter-series|AZ~BY~CX|dw",
+      "hash": "c59b63f4b644",
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "promptNorm": "what comes next",
+      "payloadNorm": "AZ~BY~CX",
+      "answerNorm": "dw",
+      "round": 900,
+      "slug": "staging-text-0",
+      "id": 5,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|antonym|which word means the opposite of ancient || huge~modern~old~quiet|modern",
+      "hash": "8cfcca526f24",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ANTONYM",
+      "promptNorm": "which word means the opposite of ancient",
+      "payloadNorm": "which word means the opposite of ancient || huge~modern~old~quiet",
+      "answerNorm": "modern",
+      "round": 901,
+      "slug": "staging-text-1",
+      "id": 1,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|synonym|which word means the same as enormous || fast~gigantic~happy~tiny|gigantic",
+      "hash": "8c3cdb4abfd2",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SYNONYM",
+      "promptNorm": "which word means the same as enormous",
+      "payloadNorm": "which word means the same as enormous || fast~gigantic~happy~tiny",
+      "answerNorm": "gigantic",
+      "round": 901,
+      "slug": "staging-text-1",
+      "id": 2,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|antonym|which word means the opposite of generous || kind~loud~rich~selfish|selfish",
+      "hash": "1b3e5cdee4e5",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ANTONYM",
+      "promptNorm": "which word means the opposite of generous",
+      "payloadNorm": "which word means the opposite of generous || kind~loud~rich~selfish",
+      "answerNorm": "selfish",
+      "round": 901,
+      "slug": "staging-text-1",
+      "id": 3,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|synonym|which word means the same as rapid || empty~heavy~quick~slow|quick",
+      "hash": "a678ca4a499f",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SYNONYM",
+      "promptNorm": "which word means the same as rapid",
+      "payloadNorm": "which word means the same as rapid || empty~heavy~quick~slow",
+      "answerNorm": "quick",
+      "round": 901,
+      "slug": "staging-text-1",
+      "id": 4,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|antonym|which word means the opposite of brave || bold~calm~fearful~strong|fearful",
+      "hash": "315edc440705",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "ANTONYM",
+      "promptNorm": "which word means the opposite of brave",
+      "payloadNorm": "which word means the opposite of brave || bold~calm~fearful~strong",
+      "answerNorm": "fearful",
+      "round": 901,
+      "slug": "staging-text-1",
+      "id": 5,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|compare|which fraction is the largest || 1 2~2 5~3 8~4 9|1 2",
+      "hash": "4604c053e10f",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "promptNorm": "which fraction is the largest",
+      "payloadNorm": "which fraction is the largest || 1 2~2 5~3 8~4 9",
+      "answerNorm": "1 2",
+      "round": 902,
+      "slug": "staging-text-2",
+      "id": 1,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|compare|which is the greatest || 2 3~3 5~5 8~7 12|2 3",
+      "hash": "6e352a1eacc1",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "promptNorm": "which is the greatest",
+      "payloadNorm": "which is the greatest || 2 3~3 5~5 8~7 12",
+      "answerNorm": "2 3",
+      "round": 902,
+      "slug": "staging-text-2",
+      "id": 2,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|compare|which decimal is the smallest || 0 45~0 5~0 55~0 6|0 45",
+      "hash": "343d3e0f8cc8",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "promptNorm": "which decimal is the smallest",
+      "payloadNorm": "which decimal is the smallest || 0 45~0 5~0 55~0 6",
+      "answerNorm": "0 45",
+      "round": 902,
+      "slug": "staging-text-2",
+      "id": 3,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|compare|which fraction is the smallest || 1 2~1 3~1 4~2 5|1 4",
+      "hash": "88a085dc5846",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "promptNorm": "which fraction is the smallest",
+      "payloadNorm": "which fraction is the smallest || 1 2~1 3~1 4~2 5",
+      "answerNorm": "1 4",
+      "round": 902,
+      "slug": "staging-text-2",
+      "id": 4,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|compare|which decimal is the largest || 0 29~0 3~0 35~0 4|0 4",
+      "hash": "6e48c1315c3a",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "promptNorm": "which decimal is the largest",
+      "payloadNorm": "which decimal is the largest || 0 29~0 3~0 35~0 4",
+      "answerNorm": "0 4",
+      "round": 902,
+      "slug": "staging-text-2",
+      "id": 5,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|logic|all cats purr milo is a cat so milo purrs || can t tell~false~true|true",
+      "hash": "f618cfda0122",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "promptNorm": "all cats purr milo is a cat so milo purrs",
+      "payloadNorm": "all cats purr milo is a cat so milo purrs || can t tell~false~true",
+      "answerNorm": "true",
+      "round": 903,
+      "slug": "staging-text-3",
+      "id": 1,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|logic|all roses are flowers some flowers fade fast so all roses fade fast || can t tell~false~true|can t tell",
+      "hash": "a4bb5316a41b",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "promptNorm": "all roses are flowers some flowers fade fast so all roses fade fast",
+      "payloadNorm": "all roses are flowers some flowers fade fast so all roses fade fast || can t tell~false~true",
+      "answerNorm": "can t tell",
+      "round": 903,
+      "slug": "staging-text-3",
+      "id": 2,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|logic|no fish can fly a shark is a fish so a shark can fly || can t tell~false~true|false",
+      "hash": "d66b96742672",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "promptNorm": "no fish can fly a shark is a fish so a shark can fly",
+      "payloadNorm": "no fish can fly a shark is a fish so a shark can fly || can t tell~false~true",
+      "answerNorm": "false",
+      "round": 903,
+      "slug": "staging-text-3",
+      "id": 3,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|logic|all birds have wings a penguin is a bird so a penguin has wings || can t tell~false~true|true",
+      "hash": "9c043b316da6",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "promptNorm": "all birds have wings a penguin is a bird so a penguin has wings",
+      "payloadNorm": "all birds have wings a penguin is a bird so a penguin has wings || can t tell~false~true",
+      "answerNorm": "true",
+      "round": 903,
+      "slug": "staging-text-3",
+      "id": 4,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|verbal|logic|some toys are red my ball is a toy so my ball is red || can t tell~false~true|can t tell",
+      "hash": "893b55884c2c",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "promptNorm": "some toys are red my ball is a toy so my ball is red",
+      "payloadNorm": "some toys are red my ball is a toy so my ball is red || can t tell~false~true",
+      "answerNorm": "can t tell",
+      "round": 903,
+      "slug": "staging-text-3",
+      "id": 5,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|word-problem|a pizza has 8 slices 3 kids eat 2 slices each how many are left || 2~3~4~6|2",
+      "hash": "58864dd978da",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "promptNorm": "a pizza has 8 slices 3 kids eat 2 slices each how many are left",
+      "payloadNorm": "a pizza has 8 slices 3 kids eat 2 slices each how many are left || 2~3~4~6",
+      "answerNorm": "2",
+      "round": 904,
+      "slug": "staging-text-4",
+      "id": 1,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|word-problem|20 of the 30 kids in class wear glasses how many is that || 10~3~5~6|6",
+      "hash": "3fe4fd1832ac",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "promptNorm": "20 of the 30 kids in class wear glasses how many is that",
+      "payloadNorm": "20 of the 30 kids in class wear glasses how many is that || 10~3~5~6",
+      "answerNorm": "6",
+      "round": 904,
+      "slug": "staging-text-4",
+      "id": 2,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|word-problem|a 40 toy is 25 off today what is the sale price || 10~30~32~35|30",
+      "hash": "85f2a1312cee",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "promptNorm": "a 40 toy is 25 off today what is the sale price",
+      "payloadNorm": "a 40 toy is 25 off today what is the sale price || 10~30~32~35",
+      "answerNorm": "30",
+      "round": 904,
+      "slug": "staging-text-4",
+      "id": 3,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|word-problem|a book has 90 pages sam read half of it how many pages left || 30~40~45~50|45",
+      "hash": "3f510ba29d13",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "promptNorm": "a book has 90 pages sam read half of it how many pages left",
+      "payloadNorm": "a book has 90 pages sam read half of it how many pages left || 30~40~45~50",
+      "answerNorm": "45",
+      "round": 904,
+      "slug": "staging-text-4",
+      "id": 4,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "text|quantitative|word-problem|3 pencils cost 60 cents how much do 5 pencils cost || 1 00~1 20~80 cents~90 cents|1 00",
+      "hash": "33bcabe2bc10",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "promptNorm": "3 pencils cost 60 cents how much do 5 pencils cost",
+      "payloadNorm": "3 pencils cost 60 cents how much do 5 pencils cost || 1 00~1 20~80 cents~90 cents",
+      "answerNorm": "1 00",
+      "round": 904,
+      "slug": "staging-text-4",
+      "id": 5,
+      "addedAt": "2026-07-22"
+    },
+    {
+      "sig": "fold|nonverbal|paper-folding|fold:d426592adac3|2 holes",
+      "hash": "08fddd14a558",
+      "kind": "fold",
+      "category": "nonverbal",
+      "tier": "PAPER FOLDING",
+      "promptNorm": "what does it look like unfolded",
+      "payloadNorm": "fold:d426592adac3",
+      "answerNorm": "2 holes",
+      "round": 910,
+      "slug": "staging-fold",
+      "id": 1,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "id": 1,
+        "kind": "fold",
+        "category": "nonverbal",
+        "difficulty": "easy",
+        "tier": "PAPER FOLDING",
+        "countdown": 6,
+        "grid": 4,
+        "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+        "folds": [
+          "left"
+        ],
+        "punches": [
+          {
+            "r": 1,
+            "c": 0
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "holes": [
+              {
+                "r": 1,
+                "c": 0
+              },
+              {
+                "r": 1,
+                "c": 3
+              }
+            ]
+          },
+          {
+            "letter": "B",
+            "holes": [
+              {
+                "r": 1,
+                "c": 0
+              }
+            ]
+          },
+          {
+            "letter": "C",
+            "holes": [
+              {
+                "r": 1,
+                "c": 0
+              },
+              {
+                "r": 1,
+                "c": 1
+              }
+            ]
+          },
+          {
+            "letter": "D",
+            "holes": [
+              {
+                "r": 0,
+                "c": 0
+              },
+              {
+                "r": 3,
+                "c": 0
+              }
+            ]
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "2 HOLES",
+        "explanation": "The fold works like a mirror, so the one hole copies across the crease to make two holes, one on each side."
+      }
+    },
+    {
+      "sig": "fold|nonverbal|paper-folding|fold:0edf6d0feab6|2 holes",
+      "hash": "f14251e2b7b9",
+      "kind": "fold",
+      "category": "nonverbal",
+      "tier": "PAPER FOLDING",
+      "promptNorm": "what does it look like unfolded",
+      "payloadNorm": "fold:0edf6d0feab6",
+      "answerNorm": "2 holes",
+      "round": 910,
+      "slug": "staging-fold",
+      "id": 2,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "id": 2,
+        "kind": "fold",
+        "category": "nonverbal",
+        "difficulty": "easy",
+        "tier": "PAPER FOLDING",
+        "countdown": 6,
+        "grid": 4,
+        "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+        "folds": [
+          "up"
+        ],
+        "punches": [
+          {
+            "r": 0,
+            "c": 1
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "holes": [
+              {
+                "r": 0,
+                "c": 1
+              }
+            ]
+          },
+          {
+            "letter": "B",
+            "holes": [
+              {
+                "r": 0,
+                "c": 1
+              },
+              {
+                "r": 3,
+                "c": 1
+              }
+            ]
+          },
+          {
+            "letter": "C",
+            "holes": [
+              {
+                "r": 0,
+                "c": 1
+              },
+              {
+                "r": 1,
+                "c": 1
+              }
+            ]
+          },
+          {
+            "letter": "D",
+            "holes": [
+              {
+                "r": 0,
+                "c": 1
+              },
+              {
+                "r": 0,
+                "c": 2
+              }
+            ]
+          }
+        ],
+        "ansLetter": "B",
+        "ansLabel": "2 HOLES",
+        "explanation": "Folding top to bottom is a mirror, so the top hole copies straight down to make a matching pair."
+      }
+    },
+    {
+      "sig": "fold|nonverbal|paper-folding|fold:8bf366f27e5d|4 corners",
+      "hash": "6b141e38ff2d",
+      "kind": "fold",
+      "category": "nonverbal",
+      "tier": "PAPER FOLDING",
+      "promptNorm": "what does it look like unfolded",
+      "payloadNorm": "fold:8bf366f27e5d",
+      "answerNorm": "4 corners",
+      "round": 910,
+      "slug": "staging-fold",
+      "id": 3,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "id": 3,
+        "kind": "fold",
+        "category": "nonverbal",
+        "difficulty": "medium",
+        "tier": "PAPER FOLDING",
+        "countdown": 7,
+        "grid": 4,
+        "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+        "folds": [
+          "left",
+          "up"
+        ],
+        "punches": [
+          {
+            "r": 0,
+            "c": 0
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "holes": [
+              {
+                "r": 0,
+                "c": 0
+              },
+              {
+                "r": 0,
+                "c": 3
+              }
+            ]
+          },
+          {
+            "letter": "B",
+            "holes": [
+              {
+                "r": 0,
+                "c": 0
+              },
+              {
+                "r": 0,
+                "c": 3
+              },
+              {
+                "r": 3,
+                "c": 0
+              },
+              {
+                "r": 3,
+                "c": 3
+              }
+            ]
+          },
+          {
+            "letter": "C",
+            "holes": [
+              {
+                "r": 0,
+                "c": 0
+              }
+            ]
+          },
+          {
+            "letter": "D",
+            "holes": [
+              {
+                "r": 0,
+                "c": 0
+              },
+              {
+                "r": 3,
+                "c": 3
+              }
+            ]
+          }
+        ],
+        "ansLetter": "B",
+        "ansLabel": "4 CORNERS",
+        "explanation": "Two folds make two mirror lines, so the corner hole becomes four holes, one in every corner."
+      }
+    },
+    {
+      "sig": "fold|nonverbal|paper-folding|fold:8bf366f27e5d|4 in center",
+      "hash": "d23cd9c2ebfc",
+      "kind": "fold",
+      "category": "nonverbal",
+      "tier": "PAPER FOLDING",
+      "promptNorm": "what does it look like unfolded",
+      "payloadNorm": "fold:8bf366f27e5d",
+      "answerNorm": "4 in center",
+      "round": 910,
+      "slug": "staging-fold",
+      "id": 4,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "id": 4,
+        "kind": "fold",
+        "category": "nonverbal",
+        "difficulty": "hard",
+        "tier": "PAPER FOLDING",
+        "countdown": 8,
+        "grid": 4,
+        "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+        "folds": [
+          "left",
+          "up"
+        ],
+        "punches": [
+          {
+            "r": 1,
+            "c": 1
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "holes": [
+              {
+                "r": 1,
+                "c": 1
+              }
+            ]
+          },
+          {
+            "letter": "B",
+            "holes": [
+              {
+                "r": 1,
+                "c": 1
+              },
+              {
+                "r": 1,
+                "c": 2
+              }
+            ]
+          },
+          {
+            "letter": "C",
+            "holes": [
+              {
+                "r": 1,
+                "c": 1
+              },
+              {
+                "r": 1,
+                "c": 2
+              },
+              {
+                "r": 2,
+                "c": 1
+              },
+              {
+                "r": 2,
+                "c": 2
+              }
+            ]
+          },
+          {
+            "letter": "D",
+            "holes": [
+              {
+                "r": 0,
+                "c": 0
+              },
+              {
+                "r": 0,
+                "c": 3
+              },
+              {
+                "r": 3,
+                "c": 0
+              },
+              {
+                "r": 3,
+                "c": 3
+              }
+            ]
+          }
+        ],
+        "ansLetter": "C",
+        "ansLabel": "4 IN CENTER",
+        "explanation": "The hole sits next to the center, so its four copies land in a tight block around the middle, not in the corners."
+      }
+    },
+    {
+      "sig": "matrix|nonverbal|figure-matrix|matrix:83d6ae2870b7|two hearts",
+      "hash": "a03c2383fdb3",
+      "kind": "matrix",
+      "category": "nonverbal",
+      "tier": "FIGURE MATRIX",
+      "promptNorm": "which shape completes the grid",
+      "payloadNorm": "matrix:83d6ae2870b7",
+      "answerNorm": "two hearts",
+      "round": 920,
+      "slug": "staging-matrix-0",
+      "id": 1101,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1101,
+        "countdown": 7,
+        "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+        "cells": [
+          {
+            "shape": "star",
+            "filled": true,
+            "count": 1
+          },
+          {
+            "shape": "star",
+            "filled": true,
+            "count": 2
+          },
+          {
+            "shape": "heart",
+            "filled": true,
+            "count": 1
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "heart",
+              "filled": true,
+              "count": 2
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "heart",
+              "filled": true,
+              "count": 1
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "heart",
+              "filled": true,
+              "count": 3
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "star",
+              "filled": true,
+              "count": 2
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "TWO HEARTS",
+        "explanation": "The count doubles from one to two while the shape stays the same, so one heart becomes two hearts.",
+        "kind": "matrix",
+        "tier": "FIGURE MATRIX",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "matrix|nonverbal|figure-matrix|matrix:ad22567f687e|small square",
+      "hash": "bc0a7ed7bbb0",
+      "kind": "matrix",
+      "category": "nonverbal",
+      "tier": "FIGURE MATRIX",
+      "promptNorm": "which shape completes the grid",
+      "payloadNorm": "matrix:ad22567f687e",
+      "answerNorm": "small square",
+      "round": 920,
+      "slug": "staging-matrix-0",
+      "id": 1102,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1102,
+        "countdown": 7,
+        "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+        "cells": [
+          {
+            "shape": "circle",
+            "filled": true,
+            "size": "l"
+          },
+          {
+            "shape": "circle",
+            "filled": true,
+            "size": "s"
+          },
+          {
+            "shape": "square",
+            "filled": true,
+            "size": "l"
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "square",
+              "filled": true,
+              "size": "s"
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "square",
+              "filled": true,
+              "size": "l"
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "circle",
+              "filled": true,
+              "size": "s"
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "triangle",
+              "filled": true,
+              "size": "s"
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "SMALL SQUARE",
+        "explanation": "The shape stays the same but shrinks, so the big square becomes a small square.",
+        "kind": "matrix",
+        "tier": "FIGURE MATRIX",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "matrix|nonverbal|figure-matrix|matrix:1e2483350233|filled turned right",
+      "hash": "27a03ee2a3ad",
+      "kind": "matrix",
+      "category": "nonverbal",
+      "tier": "FIGURE MATRIX",
+      "promptNorm": "which shape completes the grid",
+      "payloadNorm": "matrix:1e2483350233",
+      "answerNorm": "filled turned right",
+      "round": 920,
+      "slug": "staging-matrix-0",
+      "id": 1103,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1103,
+        "countdown": 7,
+        "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+        "cells": [
+          {
+            "shape": "arrow",
+            "filled": false
+          },
+          {
+            "shape": "arrow",
+            "filled": true,
+            "rotate": 90
+          },
+          {
+            "shape": "triangle",
+            "filled": false
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "triangle",
+              "filled": true,
+              "rotate": 90
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "triangle",
+              "filled": true
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "triangle",
+              "filled": false,
+              "rotate": 90
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "arrow",
+              "filled": true,
+              "rotate": 90
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "FILLED, TURNED RIGHT",
+        "explanation": "Each shape turns a quarter-turn clockwise and gets filled in, so the empty triangle becomes a filled triangle pointing right.",
+        "kind": "matrix",
+        "tier": "FIGURE MATRIX",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "matrix|nonverbal|figure-matrix|matrix:cac8e2c52522|filled cross",
+      "hash": "9e6daba8ee65",
+      "kind": "matrix",
+      "category": "nonverbal",
+      "tier": "FIGURE MATRIX",
+      "promptNorm": "which shape completes the grid",
+      "payloadNorm": "matrix:cac8e2c52522",
+      "answerNorm": "filled cross",
+      "round": 920,
+      "slug": "staging-matrix-0",
+      "id": 1104,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1104,
+        "countdown": 7,
+        "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+        "cells": [
+          {
+            "shape": "diamond",
+            "filled": false
+          },
+          {
+            "shape": "diamond",
+            "filled": true
+          },
+          {
+            "shape": "cross",
+            "filled": false
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "cross",
+              "filled": true
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "cross",
+              "filled": false
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "diamond",
+              "filled": true
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "star",
+              "filled": true
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "FILLED CROSS",
+        "explanation": "Each empty shape gets filled in while it stays the same, so the empty cross becomes a filled cross.",
+        "kind": "matrix",
+        "tier": "FIGURE MATRIX",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "matrix|nonverbal|figure-matrix|matrix:c3544b7e96dd|flipped triangle",
+      "hash": "789b121e0b14",
+      "kind": "matrix",
+      "category": "nonverbal",
+      "tier": "FIGURE MATRIX",
+      "promptNorm": "which shape completes the grid",
+      "payloadNorm": "matrix:c3544b7e96dd",
+      "answerNorm": "flipped triangle",
+      "round": 920,
+      "slug": "staging-matrix-0",
+      "id": 1105,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1105,
+        "countdown": 7,
+        "prompt": "WHICH SHAPE COMPLETES THE GRID?",
+        "cells": [
+          {
+            "shape": "arrow",
+            "filled": true
+          },
+          {
+            "shape": "arrow",
+            "filled": true,
+            "rotate": 180
+          },
+          {
+            "shape": "triangle",
+            "filled": true
+          }
+        ],
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "triangle",
+              "filled": true,
+              "rotate": 180
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "triangle",
+              "filled": true
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "triangle",
+              "filled": true,
+              "rotate": 90
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "arrow",
+              "filled": true,
+              "rotate": 180
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "FLIPPED TRIANGLE",
+        "explanation": "Each shape flips upside down, so the upward triangle becomes a downward triangle.",
+        "kind": "matrix",
+        "tier": "FIGURE MATRIX",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "analogy2|nonverbal|figure-analogy|analogy2:f5a6f755348b|turned right",
+      "hash": "f13efce51c75",
+      "kind": "analogy2",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "promptNorm": "which shape completes the pattern",
+      "payloadNorm": "analogy2:f5a6f755348b",
+      "answerNorm": "turned right",
+      "round": 921,
+      "slug": "staging-matrix-1",
+      "id": 1201,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1201,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+        "a": {
+          "shape": "arrow",
+          "filled": true
+        },
+        "b": {
+          "shape": "arrow",
+          "filled": true,
+          "rotate": 90
+        },
+        "c": {
+          "shape": "triangle",
+          "filled": true
+        },
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "triangle",
+              "filled": true,
+              "rotate": 90
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "triangle",
+              "filled": true
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "triangle",
+              "filled": true,
+              "rotate": 180
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "arrow",
+              "filled": true,
+              "rotate": 90
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "TURNED RIGHT",
+        "explanation": "The first shape turns a quarter-turn to the right, so the triangle turns to point right too.",
+        "kind": "analogy2",
+        "tier": "FIGURE ANALOGY",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "analogy2|nonverbal|figure-analogy|analogy2:b106f5aaa811|two squares",
+      "hash": "e28041826162",
+      "kind": "analogy2",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "promptNorm": "which shape completes the pattern",
+      "payloadNorm": "analogy2:b106f5aaa811",
+      "answerNorm": "two squares",
+      "round": 921,
+      "slug": "staging-matrix-1",
+      "id": 1202,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1202,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+        "a": {
+          "shape": "circle",
+          "filled": true,
+          "count": 1
+        },
+        "b": {
+          "shape": "circle",
+          "filled": true,
+          "count": 2
+        },
+        "c": {
+          "shape": "square",
+          "filled": true,
+          "count": 1
+        },
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "square",
+              "filled": true,
+              "count": 2
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "square",
+              "filled": true,
+              "count": 3
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "square",
+              "filled": true,
+              "count": 1
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "circle",
+              "filled": true,
+              "count": 2
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "TWO SQUARES",
+        "explanation": "The shape doubles in number, so one square becomes two squares.",
+        "kind": "analogy2",
+        "tier": "FIGURE ANALOGY",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "analogy2|nonverbal|figure-analogy|analogy2:a04d28c845b5|big diamond",
+      "hash": "7154f655af3b",
+      "kind": "analogy2",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "promptNorm": "which shape completes the pattern",
+      "payloadNorm": "analogy2:a04d28c845b5",
+      "answerNorm": "big diamond",
+      "round": 921,
+      "slug": "staging-matrix-1",
+      "id": 1203,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1203,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+        "a": {
+          "shape": "star",
+          "filled": true,
+          "size": "s"
+        },
+        "b": {
+          "shape": "star",
+          "filled": true,
+          "size": "l"
+        },
+        "c": {
+          "shape": "diamond",
+          "filled": true,
+          "size": "s"
+        },
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "diamond",
+              "filled": true,
+              "size": "l"
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "diamond",
+              "filled": true,
+              "size": "s"
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "star",
+              "filled": true,
+              "size": "l"
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "circle",
+              "filled": true,
+              "size": "l"
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "BIG DIAMOND",
+        "explanation": "The shape grows bigger, so the small diamond becomes a big diamond.",
+        "kind": "analogy2",
+        "tier": "FIGURE ANALOGY",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "analogy2|nonverbal|figure-analogy|analogy2:a4864f82333a|filled star",
+      "hash": "c2e3440364a5",
+      "kind": "analogy2",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "promptNorm": "which shape completes the pattern",
+      "payloadNorm": "analogy2:a4864f82333a",
+      "answerNorm": "filled star",
+      "round": 921,
+      "slug": "staging-matrix-1",
+      "id": 1204,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1204,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+        "a": {
+          "shape": "heart",
+          "filled": false
+        },
+        "b": {
+          "shape": "heart",
+          "filled": true
+        },
+        "c": {
+          "shape": "star",
+          "filled": false
+        },
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "star",
+              "filled": true
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "star",
+              "filled": false
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "heart",
+              "filled": true
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "circle",
+              "filled": true
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "FILLED STAR",
+        "explanation": "The shape gets filled in, so the empty star becomes a filled star.",
+        "kind": "analogy2",
+        "tier": "FIGURE ANALOGY",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "analogy2|nonverbal|figure-analogy|analogy2:77bc6e6ac856|flipped arrow",
+      "hash": "ee7eecfba08e",
+      "kind": "analogy2",
+      "category": "nonverbal",
+      "tier": "FIGURE ANALOGY",
+      "promptNorm": "which shape completes the pattern",
+      "payloadNorm": "analogy2:77bc6e6ac856",
+      "answerNorm": "flipped arrow",
+      "round": 921,
+      "slug": "staging-matrix-1",
+      "id": 1205,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1205,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE COMPLETES THE PATTERN?",
+        "a": {
+          "shape": "triangle",
+          "filled": true
+        },
+        "b": {
+          "shape": "triangle",
+          "filled": true,
+          "rotate": 180
+        },
+        "c": {
+          "shape": "arrow",
+          "filled": true
+        },
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "arrow",
+              "filled": true,
+              "rotate": 180
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "arrow",
+              "filled": true
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "arrow",
+              "filled": true,
+              "rotate": 90
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "triangle",
+              "filled": true,
+              "rotate": 180
+            }
+          }
+        ],
+        "ansLetter": "A",
+        "ansLabel": "FLIPPED ARROW",
+        "explanation": "The shape flips upside down, so the upward arrow becomes a downward arrow.",
+        "kind": "analogy2",
+        "tier": "FIGURE ANALOGY",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:06f98b54eb13|empty star",
+      "hash": "8468f28b89f3",
+      "kind": "figure-odd",
+      "category": "nonverbal",
+      "tier": "VISUAL ODD ONE OUT",
+      "promptNorm": "which shape does not belong",
+      "payloadNorm": "figure-odd:06f98b54eb13",
+      "answerNorm": "empty star",
+      "round": 922,
+      "slug": "staging-matrix-2",
+      "id": 1301,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1301,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE DOES NOT BELONG?",
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "star",
+              "filled": true
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "star",
+              "filled": false
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "star",
+              "filled": true
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "star",
+              "filled": true
+            }
+          }
+        ],
+        "ansLetter": "B",
+        "ansLabel": "EMPTY STAR",
+        "explanation": "Three stars are filled in and one is empty, so the empty star is the odd one out.",
+        "kind": "figure-odd",
+        "tier": "VISUAL ODD ONE OUT",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:7124bbc89b3e|circle",
+      "hash": "7c6cb895427c",
+      "kind": "figure-odd",
+      "category": "nonverbal",
+      "tier": "VISUAL ODD ONE OUT",
+      "promptNorm": "which shape does not belong",
+      "payloadNorm": "figure-odd:7124bbc89b3e",
+      "answerNorm": "circle",
+      "round": 922,
+      "slug": "staging-matrix-2",
+      "id": 1302,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1302,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE DOES NOT BELONG?",
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "triangle",
+              "filled": true
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "square",
+              "filled": true
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "diamond",
+              "filled": true
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "circle",
+              "filled": true
+            }
+          }
+        ],
+        "ansLetter": "D",
+        "ansLabel": "CIRCLE",
+        "explanation": "The others all have straight sides and corners, but the circle has none, so it does not belong.",
+        "kind": "figure-odd",
+        "tier": "VISUAL ODD ONE OUT",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:5e69fb11b2e3|downward arrow",
+      "hash": "21125473f106",
+      "kind": "figure-odd",
+      "category": "nonverbal",
+      "tier": "VISUAL ODD ONE OUT",
+      "promptNorm": "which shape does not belong",
+      "payloadNorm": "figure-odd:5e69fb11b2e3",
+      "answerNorm": "downward arrow",
+      "round": 922,
+      "slug": "staging-matrix-2",
+      "id": 1303,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1303,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE DOES NOT BELONG?",
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "arrow",
+              "filled": true
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "arrow",
+              "filled": true
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "arrow",
+              "filled": true,
+              "rotate": 180
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "arrow",
+              "filled": true
+            }
+          }
+        ],
+        "ansLetter": "C",
+        "ansLabel": "DOWNWARD ARROW",
+        "explanation": "Three arrows point up and one points down, so the downward arrow is the odd one out.",
+        "kind": "figure-odd",
+        "tier": "VISUAL ODD ONE OUT",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:6f54367950ff|one heart",
+      "hash": "292d01a124d2",
+      "kind": "figure-odd",
+      "category": "nonverbal",
+      "tier": "VISUAL ODD ONE OUT",
+      "promptNorm": "which shape does not belong",
+      "payloadNorm": "figure-odd:6f54367950ff",
+      "answerNorm": "one heart",
+      "round": 922,
+      "slug": "staging-matrix-2",
+      "id": 1304,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1304,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE DOES NOT BELONG?",
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "heart",
+              "filled": true,
+              "count": 2
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "heart",
+              "filled": true,
+              "count": 2
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "heart",
+              "filled": true,
+              "count": 1
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "heart",
+              "filled": true,
+              "count": 2
+            }
+          }
+        ],
+        "ansLetter": "C",
+        "ansLabel": "ONE HEART",
+        "explanation": "Three cards show two hearts and one shows a single heart, so the single heart is the odd one out.",
+        "kind": "figure-odd",
+        "tier": "VISUAL ODD ONE OUT",
+        "category": "nonverbal"
+      }
+    },
+    {
+      "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:720b7899037f|lightning bolt",
+      "hash": "f13f3bc02e3d",
+      "kind": "figure-odd",
+      "category": "nonverbal",
+      "tier": "VISUAL ODD ONE OUT",
+      "promptNorm": "which shape does not belong",
+      "payloadNorm": "figure-odd:720b7899037f",
+      "answerNorm": "lightning bolt",
+      "round": 922,
+      "slug": "staging-matrix-2",
+      "id": 1305,
+      "addedAt": "2026-07-22",
+      "figure": {
+        "idx": 1305,
+        "countdown": 6,
+        "prompt": "WHICH SHAPE DOES NOT BELONG?",
+        "options": [
+          {
+            "letter": "A",
+            "fig": {
+              "shape": "crescent",
+              "filled": true
+            }
+          },
+          {
+            "letter": "B",
+            "fig": {
+              "shape": "crescent",
+              "filled": true
+            }
+          },
+          {
+            "letter": "C",
+            "fig": {
+              "shape": "crescent",
+              "filled": true
+            }
+          },
+          {
+            "letter": "D",
+            "fig": {
+              "shape": "lightning",
+              "filled": true
+            }
+          }
+        ],
+        "ansLetter": "D",
+        "ansLabel": "LIGHTNING BOLT",
+        "explanation": "Three shapes are moons and one is a lightning bolt, so the lightning bolt does not belong.",
+        "kind": "figure-odd",
+        "tier": "VISUAL ODD ONE OUT",
+        "category": "nonverbal"
+      }
     }
   ]
 }

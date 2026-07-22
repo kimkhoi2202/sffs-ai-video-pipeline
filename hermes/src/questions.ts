@@ -11,7 +11,7 @@
  * Length guards here PREVENT on-screen overflow BY CONSTRUCTION (reject anything
  * that would clip), which is far more reliable than pixel-diffing a render.
  */
-import { readJSON, writeJSONAtomic, type HermesQ } from "./state.ts";
+import { readJSON, writeJSONAtomic, isShapeKind, type HermesQ, type Figure } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
 
@@ -27,6 +27,9 @@ interface BankEntry {
   round?: number;
   slug?: string;
   id?: number;
+  /** Render-ready payload for the nonverbal shape/figure kinds (fold + matrix
+   *  family). Absent for text/numseries. */
+  figure?: Figure;
 }
 
 export const LIMITS = {
@@ -115,6 +118,14 @@ export function fuzzySig(q: HermesQ): string {
     // numbers don't matter; fall back to the normalized literal series otherwise.
     return pat !== null ? `n|${seq.length}|${pat}` : `n|lit|${seq.map(fuzzyNorm).join("~")}`;
   }
+  if (isShapeKind(q.kind)) {
+    // Shape/figure questions are AUTHORED distinct and already guaranteed unique
+    // by their exact `sig`. The text/number fuzzy keys below ignore the figure
+    // and would WRONGLY collapse different figures that share an answer LABEL
+    // (e.g. two folds both "2 holes"). Key on kind+sig so shapes are deduped by
+    // exact sig only and never dropped as false near-duplicates.
+    return `${q.kind}|${q.sig}`;
+  }
   // text (verbal odd-one-out / analogy): key on the *set* of normalized options
   // plus the normalized answer, IGNORING prompt wording — so paraphrases and
   // reordered options collide, while a different option set / answer does not.
@@ -169,7 +180,69 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
     return { sig: e.sig, hash: e.hash, kind: "numseries", category: e.category, tier: e.tier, prompt, seq, answer };
   }
 
+  // Nonverbal SHAPE/FIGURE kinds (fold + matrix family) — reconstruct from the
+  // bank entry's structured `figure` field, then run the shared structural guard.
+  if (isShapeKind(e.kind)) {
+    const fig = e.figure;
+    if (!fig || typeof fig !== "object") return null;
+    const prompt = String(fig.prompt || e.promptNorm || "").trim();
+    if (!prompt || prompt.length > LIMITS.maxPrompt) return null;
+    const q: HermesQ = {
+      sig: e.sig,
+      hash: e.hash,
+      kind: e.kind,
+      category: e.category,
+      tier: e.tier,
+      prompt,
+      answer, // normalized answer label (== figure.ansLabel, normalized)
+      figure: fig,
+    };
+    if (shapeStructuralIssue(q)) return null; // malformed figure -> unusable
+    return q;
+  }
+
   return null; // shaded/polygon/dot need shape components — not headless-safe here
+}
+
+/**
+ * Structural validity of a nonverbal shape/figure question's `figure` payload.
+ * Returns null when well-formed, else a short human reason. NEVER throws — every
+ * access is guarded — so it is safe to call on raw bank data. Shared by toHermesQ
+ * (drop malformed entries) and gates.validateQuestions (the shape rubric).
+ */
+export function shapeStructuralIssue(q: HermesQ): string | null {
+  if (!isShapeKind(q.kind)) return "not a shape kind";
+  const f = q.figure;
+  if (!f || typeof f !== "object") return "missing figure payload";
+  if (f.kind !== q.kind) return `figure.kind "${f.kind}" != "${q.kind}"`;
+  const opts = Array.isArray(f.options) ? f.options : [];
+  if (opts.length < LIMITS.minOptions || opts.length > LIMITS.maxOptions) {
+    return `needs ${LIMITS.minOptions}-${LIMITS.maxOptions} options, got ${opts.length}`;
+  }
+  if (opts.some((o) => !o || typeof o.letter !== "string" || !o.letter)) return "an option is missing its letter";
+  const ansMatches = opts.filter((o) => o.letter === f.ansLetter);
+  if (ansMatches.length !== 1) return `ansLetter "${f.ansLetter}" matches ${ansMatches.length} option(s)`;
+  if (!f.ansLabel || !String(f.ansLabel).trim()) return "missing ansLabel";
+  const isCell = (x: unknown): boolean => !!x && Number.isFinite((x as any).r) && Number.isFinite((x as any).c);
+  const isFig = (x: unknown): boolean => !!x && typeof x === "object" && typeof (x as any).shape === "string" && !!(x as any).shape;
+  if (q.kind === "fold") {
+    const DIRS = new Set(["left", "right", "up", "down"]);
+    const folds = Array.isArray(f.folds) ? f.folds : [];
+    const punches = Array.isArray(f.punches) ? f.punches : [];
+    if (folds.length < 1 || !folds.every((d) => DIRS.has(d))) return "fold needs >=1 valid fold direction";
+    if (punches.length < 1 || !punches.every(isCell)) return "fold needs >=1 valid punch cell";
+    const grid = f.grid ?? 4;
+    if (!Number.isInteger(grid) || grid < 2 || grid % 2 !== 0) return `fold grid ${grid} must be an even int >= 2`;
+    if (!opts.every((o) => Array.isArray(o.holes) && o.holes.every(isCell))) return "a fold option is missing hole cells";
+    return null;
+  }
+  // matrix / analogy2 / figure-odd: every option is a figure
+  if (!opts.every((o) => isFig(o.fig))) return "a figure option is missing a valid fig";
+  if (q.kind === "matrix" && !(Array.isArray(f.cells) && f.cells.length === 3 && f.cells.every(isFig))) {
+    return "matrix needs exactly 3 valid cells";
+  }
+  if (q.kind === "analogy2" && !([f.a, f.b, f.c].every(isFig))) return "analogy2 needs valid a/b/c figures";
+  return null;
 }
 
 /** Deterministic shuffle (seeded) so resuming a run reselects the same pool. */
@@ -195,7 +268,7 @@ function hashSeed(s: string): number {
 
 export interface CandidateFilter {
   category?: string; // "verbal" | "quantitative" | "nonverbal" | "mixed"/undefined
-  kinds?: Array<"text" | "numseries">;
+  kinds?: Array<"text" | "numseries" | "fold" | "matrix" | "analogy2" | "figure-odd">;
   seed?: string; // for deterministic ordering
   exclude?: Set<string>; // additional exact sigs to skip (in-batch claims)
   excludeFuzzy?: Set<string>; // additional fuzzy sigs to skip (near-dup claims)

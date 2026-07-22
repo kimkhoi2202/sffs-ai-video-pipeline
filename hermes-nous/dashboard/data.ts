@@ -7,9 +7,10 @@
  * and (optionally) pings the LLM gateway with a short timeout.
  */
 import { execFileSync, spawn } from "node:child_process";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { CONFIG } from "./config.ts";
 import type { RunState } from "./types.ts";
+import { computeGoalProgress, type GoalProgress, type FollowerSnapshot } from "./goal.ts";
 
 // ── JSON + runs ───────────────────────────────────────────────────────────────
 
@@ -215,6 +216,51 @@ export function costSnapshot(): any {
 /** The always-on software-factory daemon status (factory-status.json) or null. */
 export function factoryStatus(): any {
   return readJSON<any>(CONFIG.FACTORY_STATUS, null);
+}
+
+// ── GOAL-PROGRESS (Hermes's 7-day mandate) ───────────────────────────────────
+
+export interface KickoffState {
+  /** true iff the KICKOFF file exists AND its content contains the arm phrase. */
+  armed: boolean;
+  /** t0 (ISO) = the KICKOFF file's mtime when armed, else null. */
+  since: string | null;
+}
+
+/**
+ * Read the box-only KICKOFF file: armed iff it EXISTS and its CONTENT contains the
+ * exact arm phrase; t0 = its mtime. READ-ONLY — the dashboard never writes/arms it
+ * (arming is a human/box action). Degrades to "pending" on any error.
+ */
+export function kickoffState(): KickoffState {
+  try {
+    const path = CONFIG.KICKOFF_FILE;
+    if (!path || !existsSync(path)) return { armed: false, since: null };
+    const content = readFileSync(path, "utf8");
+    if (!content.includes(CONFIG.KICKOFF_PHRASE)) return { armed: false, since: null };
+    return { armed: true, since: statSync(path).mtime.toISOString() };
+  } catch {
+    return { armed: false, since: null };
+  }
+}
+
+/**
+ * Optional per-platform follower snapshot (account-metrics.json), shape
+ * {instagram:{followers:N}, tiktok:{followers:N}}. null when absent ⇒ followers
+ * render as "pending" (never 0/fake).
+ */
+export function accountFollowers(): FollowerSnapshot | null {
+  return readJSON<FollowerSnapshot | null>(CONFIG.ACCOUNT_METRICS, null);
+}
+
+/**
+ * Live GOAL-PROGRESS: aggregate ab-database posts (windowed at kickoff) against
+ * the mandate, with the optional follower snapshot. Pure math lives in goal.ts.
+ */
+export function goalProgress(): GoalProgress {
+  const posts = Array.isArray(abDb()?.posts) ? abDb().posts : [];
+  const k = kickoffState();
+  return computeGoalProgress(posts, k.since, accountFollowers(), new Date());
 }
 
 // ── kill-switch (DISPLAY-ONLY) ────────────────────────────────────────────────

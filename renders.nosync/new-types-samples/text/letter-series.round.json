@@ -1,0 +1,121 @@
+{
+  "round": 0,
+  "slug": "sample-letter-series",
+  "title": "SAMPLE — Letter Series",
+  "grade": 5,
+  "cogatLevel": 11,
+  "sampleOf": "letter-series",
+  "questions": [
+    {
+      "id": 1,
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "difficulty": "easy",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "A",
+        "C",
+        "E",
+        "G",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "H"
+        },
+        {
+          "letter": "B",
+          "text": "I"
+        },
+        {
+          "letter": "C",
+          "text": "J"
+        },
+        {
+          "letter": "D",
+          "text": "K"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "I",
+      "explanation": "Skip one letter each time: A, C, E, G, so the next letter is I."
+    },
+    {
+      "id": 2,
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "B",
+        "D",
+        "G",
+        "K",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "P"
+        },
+        {
+          "letter": "B",
+          "text": "O"
+        },
+        {
+          "letter": "C",
+          "text": "N"
+        },
+        {
+          "letter": "D",
+          "text": "Q"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "P",
+      "explanation": "The gaps grow by one: 2, then 3, then 4, then 5, so K plus 5 letters is P."
+    },
+    {
+      "id": 3,
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "difficulty": "medium",
+      "countdown": 5,
+      "prompt": "WHAT COMES NEXT?",
+      "seq": [
+        "Z",
+        "X",
+        "V",
+        "T",
+        "?"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "text": "S"
+        },
+        {
+          "letter": "B",
+          "text": "Q"
+        },
+        {
+          "letter": "C",
+          "text": "R"
+        },
+        {
+          "letter": "D",
+          "text": "U"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "R",
+      "explanation": "Go back two letters each time: Z, X, V, T, so the next letter is R."
+    }
+  ]
+}

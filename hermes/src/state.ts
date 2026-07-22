@@ -27,16 +27,91 @@ export interface GateResult {
   detail?: unknown;
 }
 
+// ── Nonverbal SHAPE/FIGURE question kinds ────────────────────────────────────
+// The paper-folding ("fold") + figure-matrix family ("matrix"/"analogy2"/
+// "figure-odd") kinds render from a structured `figure` payload (see Figure)
+// instead of text options. These types are dependency-light + React-free on
+// purpose (state.ts is imported everywhere): they STRUCTURALLY mirror the
+// remotion Question shapes (remotion/src/data/types.ts) + FigState
+// (remotion/src/components/FigureCell.tsx) without importing them.
+
+/** The nonverbal shape/figure kinds (options are figures, not text). */
+export const SHAPE_KINDS = ["fold", "matrix", "analogy2", "figure-odd"] as const;
+export type ShapeKind = (typeof SHAPE_KINDS)[number];
+const SHAPE_KIND_SET: ReadonlySet<string> = new Set(SHAPE_KINDS);
+/** True if `kind` is one of the nonverbal shape/figure kinds. */
+export function isShapeKind(kind: string | undefined): kind is ShapeKind {
+  return kind !== undefined && SHAPE_KIND_SET.has(kind);
+}
+
+/** A grid cell (row, col) — a paper-folding hole/punch coordinate. */
+export interface FigureCell {
+  r: number;
+  c: number;
+}
+
+/** One figure in the matrix-family transform vocabulary. Mirrors the remotion
+ *  `FigState` (shape + fill/rotate/count/size transforms). */
+export interface FigureState {
+  shape: string;
+  filled?: boolean;
+  color?: string;
+  rotate?: number;
+  count?: number;
+  size?: "s" | "m" | "l";
+}
+
+/** A shape-question option: fold options carry unfolded `holes`; matrix-family
+ *  options carry a `fig`. */
+export interface FigureOption {
+  letter: string;
+  holes?: FigureCell[];
+  fig?: FigureState;
+}
+
+/**
+ * The render-ready payload copied verbatim from a bank entry's `figure` field
+ * (fold / matrix / analogy2 / figure-odd). Structurally mirrors the remotion
+ * Question shapes MINUS the fields render.ts derives at map time:
+ *   fold.ansHoles = unfold(folds, punches, grid);
+ *   matrix/analogy2/figure-odd `ans` = the ansLetter option's `fig`.
+ */
+export interface Figure {
+  kind: ShapeKind;
+  category?: string;
+  tier?: string;
+  difficulty?: string;
+  countdown?: number;
+  prompt: string;
+  ansLetter: string;
+  ansLabel: string;
+  explanation: string;
+  options: FigureOption[];
+  // fold-only stimulus
+  grid?: number;
+  folds?: string[];
+  punches?: FigureCell[];
+  // matrix-family stimulus
+  cells?: FigureState[];
+  a?: FigureState;
+  b?: FigureState;
+  c?: FigureState;
+}
+
 export interface HermesQ {
   sig: string;
   hash: string;
-  kind: "text" | "numseries";
+  kind: "text" | "numseries" | ShapeKind;
   category: string;
   tier: string;
   prompt: string;
   options?: string[];
   seq?: string[];
   answer: string;
+  /** Structured render-ready payload for the nonverbal shape/figure kinds
+   *  (undefined for text/numseries). Reconstructed by toHermesQ from the bank
+   *  entry's `figure` field; consumed by render.ts mapProps. */
+  figure?: Figure;
 }
 
 export interface VideoPlan {
