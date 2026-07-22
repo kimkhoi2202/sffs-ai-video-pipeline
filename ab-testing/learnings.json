@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-21T18:06:00-05:00",
+  "updated_at": "2026-07-22T04:21:00.123Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -10,7 +10,10 @@
       "examples_md": "brand/brand-voice-examples.md",
       "examples_json": "brand/brand-voice-examples.json"
     },
-    "corpus": { "surfaces": 33, "examples": 230 },
+    "corpus": {
+      "surfaces": 33,
+      "examples": 230
+    },
     "hard_rules": "concise; funny; Gen Z lowercase-casual; kid-safe (no HARD/explicit profanity, but mild slang like 'af' is on-brand and allowed); NO em dashes; at most ONE tasteful emoji (never spam); no AI-slop tone; no over-explaining/lecturing; always end social copy with a follow / come-back nudge.",
     "signature_device": "SMART FELLA vs FART SMELLA binary: praise = Smart Fella, miss = Fart Smella '(for now)'."
   },
@@ -24,7 +27,12 @@
     "secondary_metric": "reach",
     "aggregation": "use median, not mean (small sample, outliers like reach<10 noise posts); require min_n before acting",
     "min_n": 3,
-    "dimensions": ["variant_family", "platform", "hashtag_set", "time_bucket"]
+    "dimensions": [
+      "variant_family",
+      "platform",
+      "hashtag_set",
+      "time_bucket"
+    ]
   },
   "time_buckets": {
     "definition": {
@@ -37,51 +45,171 @@
     },
     "note": "TIME A/B (2026-07-21 batch): the 7 variants are spread across the posting window to find the best publish time; each variant's IG+TikTok posts share a time.",
     "batch_2026-07-21": {
-      "evening": ["no-answer 18:30", "no-narration 20:30"],
-      "late-night": ["no-question-vo 23:00"],
-      "overnight": ["no-options-vo 01:30 (+1d)"],
-      "overnight-trough": ["speed 03:30 (+1d)"],
-      "early-morning": ["one-question 06:30 (+1d)"],
-      "morning": ["mascot 08:30 (+1d)"]
+      "evening": [
+        "no-answer 18:30",
+        "no-narration 20:30"
+      ],
+      "late-night": [
+        "no-question-vo 23:00"
+      ],
+      "overnight": [
+        "no-options-vo 01:30 (+1d)"
+      ],
+      "overnight-trough": [
+        "speed 03:30 (+1d)"
+      ],
+      "early-morning": [
+        "one-question 06:30 (+1d)"
+      ],
+      "morning": [
+        "mascot 08:30 (+1d)"
+      ]
     }
   },
   "rollups": {
     "by_variant_family": {
-      "no-answer":    { "scheduled": 2, "posted": 1, "n_with_metrics": 0, "median_eng_rate": null, "avg_reach": null },
-      "dont-narrate": { "scheduled": 6, "posted": 0, "n_with_metrics": 0, "median_eng_rate": null, "avg_reach": null },
-      "speed":        { "scheduled": 2, "posted": 0, "n_with_metrics": 0, "median_eng_rate": null, "avg_reach": null },
-      "one-question": { "scheduled": 2, "posted": 0, "n_with_metrics": 0, "median_eng_rate": null, "avg_reach": null },
-      "mascot":       { "scheduled": 2, "posted": 0, "n_with_metrics": 0, "median_eng_rate": null, "avg_reach": null },
-      "standard":     { "scheduled": 0, "posted": 9, "n_with_metrics": 8, "median_eng_rate": 1.79, "avg_reach": 254.5, "note": "historical baseline from ab-database.json" },
-      "cliffhanger":  { "scheduled": 0, "posted": 2, "n_with_metrics": 1, "median_eng_rate": 4.03, "avg_reach": 248.0, "note": "historical; 0 comments despite comment-for-answer CTA" },
-      "intro-promo":  { "scheduled": 0, "posted": 2, "n_with_metrics": 0, "median_eng_rate": null, "avg_reach": null, "note": "brand promo; retired concept" }
+      "intro-promo": {
+        "n_posts": 2,
+        "n_with_metrics": 2,
+        "median_eng_rate": 5.26,
+        "avg_reach": 245
+      },
+      "standard": {
+        "n_posts": 9,
+        "n_with_metrics": 9,
+        "median_eng_rate": 2.69,
+        "avg_reach": 128
+      },
+      "cliffhanger": {
+        "n_posts": 2,
+        "n_with_metrics": 2,
+        "median_eng_rate": 3.35,
+        "avg_reach": 199
+      },
+      "no-answer": {
+        "n_posts": 3,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0,
+        "avg_reach": 116
+      },
+      "dont-narrate": {
+        "n_posts": 6,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "speed": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "one-question": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "mascot": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      }
     },
     "by_platform": {
-      "instagram": { "scheduled": 7, "posted": 5, "n_with_metrics": 5, "median_eng_rate": 0.78, "avg_reach": 115.4, "note": "historical: consistently low reach/eng" },
-      "tiktok":    { "scheduled": 7, "posted": 5, "n_with_metrics": 5, "median_eng_rate": 4.24, "avg_reach": 364.6, "note": "historical: far outperforms IG on the SAME source video" }
+      "instagram": {
+        "n_posts": 13,
+        "n_with_metrics": 6,
+        "median_eng_rate": 0.81,
+        "avg_reach": 117.5
+      },
+      "tiktok": {
+        "n_posts": 15,
+        "n_with_metrics": 8,
+        "median_eng_rate": 3.74,
+        "avg_reach": 272.5
+      }
     },
     "by_hashtag_set": {
-      "A": { "tags": "#fyp #foryou #quiz #trivia #brainteaser",        "scheduled_ab_posts": 5, "n_with_metrics": 0, "median_eng_rate": null },
-      "B": { "tags": "#smartorfart #iqtest #puzzletok #riddles #mindgames", "scheduled_ab_posts": 5, "n_with_metrics": 0, "median_eng_rate": null },
-      "C": { "tags": "#quiztime #braintest #canyoupass #puzzle #trivianight", "scheduled_ab_posts": 4, "n_with_metrics": 0, "median_eng_rate": null },
-      "_note": "Counts are the 14 scheduled A/B variant posts (the measurable arms). The 6 control drafts also carry sets (C,A,B,C,A,B) but are undated drafts (won't auto-publish) so are excluded from arm counts."
+      "B": {
+        "n_posts": 5,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "A": {
+        "n_posts": 5,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "C": {
+        "n_posts": 4,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      }
     },
     "by_time_bucket": {
-      "evening":          { "scheduled": 4, "variants": ["no-answer", "no-narration"], "n_with_metrics": 0, "median_eng_rate": null },
-      "late-night":       { "scheduled": 2, "variants": ["no-question-vo"], "n_with_metrics": 0, "median_eng_rate": null },
-      "overnight":        { "scheduled": 2, "variants": ["no-options-vo"], "n_with_metrics": 0, "median_eng_rate": null },
-      "overnight-trough": { "scheduled": 2, "variants": ["speed"], "n_with_metrics": 0, "median_eng_rate": null },
-      "early-morning":    { "scheduled": 2, "variants": ["one-question"], "n_with_metrics": 0, "median_eng_rate": null },
-      "morning":          { "scheduled": 2, "variants": ["mascot"], "n_with_metrics": 0, "median_eng_rate": null }
+      "evening": {
+        "scheduled": 4,
+        "variants": [
+          "no-answer",
+          "no-narration"
+        ],
+        "n_with_metrics": 0,
+        "median_eng_rate": null
+      },
+      "late-night": {
+        "scheduled": 2,
+        "variants": [
+          "no-question-vo"
+        ],
+        "n_with_metrics": 0,
+        "median_eng_rate": null
+      },
+      "overnight": {
+        "scheduled": 2,
+        "variants": [
+          "no-options-vo"
+        ],
+        "n_with_metrics": 0,
+        "median_eng_rate": null
+      },
+      "overnight-trough": {
+        "scheduled": 2,
+        "variants": [
+          "speed"
+        ],
+        "n_with_metrics": 0,
+        "median_eng_rate": null
+      },
+      "early-morning": {
+        "scheduled": 2,
+        "variants": [
+          "one-question"
+        ],
+        "n_with_metrics": 0,
+        "median_eng_rate": null
+      },
+      "morning": {
+        "scheduled": 2,
+        "variants": [
+          "mascot"
+        ],
+        "n_with_metrics": 0,
+        "median_eng_rate": null
+      }
     }
   },
   "front_runners": {
-    "as_of": null,
-    "variant_family": null,
+    "as_of": "2026-07-22",
+    "variant_family": "standard",
     "platform": "tiktok",
     "hashtag_set": null,
     "time_bucket": null,
-    "confidence": "low",
+    "confidence": "medium",
     "notes": "Only platform has a historical read (TikTok median eng 4.24% vs IG 0.78% on identical source videos). Family/hashtag_set/time_bucket front-runners are unknown until the A/B arms publish and metrics are pulled."
   },
   "decisions_log": [
@@ -108,6 +236,22 @@
       "decision": "Started a TIME A/B — spread the 7 variants across the posting window (evening 18:30/20:30, late-night 23:00, overnight 01:30, overnight-trough 03:30, early-morning 06:30, morning 08:30) instead of clustering them, each variant's IG+TikTok sharing a time.",
       "rationale": "Find the best publish time with a research-backed spread that also samples low-traffic overnight slots. Re-timing required recreate+delete (Publer PUT cannot change scheduled_at). no-answer left at 18:30 (too close to go-live to churn). Recorded per post as time_bucket.",
       "status": "in-flight (metrics pending)"
+    },
+    {
+      "date": "2026-07-22",
+      "decision": "Front-runner variant_family -> standard (median eng_rate 2.69%, n=9).",
+      "rationale": "Recomputed by the Hermes loop from matured Publer analytics.",
+      "status": "auto"
+    }
+  ],
+  "scoring_log": [
+    {
+      "date": "2026-07-22",
+      "from": "2026-06-22",
+      "to": "2026-07-22",
+      "pulled": 14,
+      "updated": 14,
+      "n_with_metrics": 14
     }
   ]
 }

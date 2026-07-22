@@ -536,6 +536,33 @@
           "answerNorm": "13"
         }
       ]
+    },
+    {
+      "videoSlug": "validate-20260722-042057-v01",
+      "test": "cliffhanger",
+      "variant": "last-hidden",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "23e3ddbc9e85",
+          "sig": "text|verbal|verbal-analogy|wide is to narrow as begin is to || cold~dark~end~sink|end",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "end"
+        },
+        {
+          "hash": "44745a399cea",
+          "sig": "numseries|quantitative|number-series|9~18~27~36|45",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "45"
+        },
+        {
+          "hash": "bcb3434ae8b5",
+          "sig": "text|verbal|verbal-analogy|cat is to kitten as dog is to || duckling~fawn~foal~puppy|puppy",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "puppy"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
