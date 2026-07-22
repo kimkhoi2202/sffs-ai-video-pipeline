@@ -54,6 +54,16 @@ export function learnings(): any {
   return readJSON<any>(CONFIG.LEARNINGS, {});
 }
 
+/** The durable default-promotion queue (proposals + decisions_log). Read-only. */
+export function proposals(): any {
+  return readJSON<any>(CONFIG.PROPOSALS, { proposals: [], decisions_log: [] });
+}
+
+/** The current CONTENT defaults + promotion policy (content-defaults.json). Read-only. */
+export function contentDefaults(): any {
+  return readJSON<any>(CONFIG.CONTENT_DEFAULTS, { defaults: {}, promotion: {} });
+}
+
 // ── per-run structured log stream (JSONL) ─────────────────────────────────────
 
 export function runLog(runId: string, maxLines = 400): any[] {

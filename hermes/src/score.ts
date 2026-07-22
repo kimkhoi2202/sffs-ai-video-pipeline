@@ -10,6 +10,7 @@ import { getPostInsights, flattenPostInsights, type FlatPostInsight } from "./pu
 import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
+import { groupMedian } from "./rollup.ts";
 
 export interface ScoreResult {
   from: string;
@@ -21,15 +22,6 @@ export interface ScoreResult {
 
 function ymd(d: Date): string {
   return d.toISOString().slice(0, 10);
-}
-function median(nums: number[]): number | null {
-  const a = nums.filter((n) => typeof n === "number" && !Number.isNaN(n)).sort((x, y) => x - y);
-  if (!a.length) return null;
-  const m = Math.floor(a.length / 2);
-  return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
-}
-function round2(n: number | null): number | null {
-  return n == null ? null : Math.round(n * 100) / 100;
 }
 
 async function pullAccount(accountId: string, from: string, to: string): Promise<FlatPostInsight[]> {
@@ -80,30 +72,17 @@ export async function pullAndScore(): Promise<ScoreResult> {
     updated++;
   }
 
-  // recompute variant_families + by_platform rollups from posts that have metrics
+  // recompute variant_families + by_platform rollups from posts that have metrics.
+  // Rollup math is the pure, dependency-free rollup.ts (also used by the offline
+  // introspection probe + shared shape with the Python promotion engine).
   const withMetrics = db.posts.filter((p: any) => p.metrics && p.metrics.source !== "pending" && p.metrics.eng_rate != null);
-  const groupMedian = (key: (p: any) => string | undefined) => {
-    const map: Record<string, { eng: number[]; reach: number[]; n: number }> = {};
-    for (const p of db.posts) {
-      const k = key(p);
-      if (!k) continue;
-      map[k] = map[k] ?? { eng: [], reach: [], n: 0 };
-      map[k].n++;
-      if (p.metrics && p.metrics.source !== "pending" && p.metrics.eng_rate != null) {
-        map[k].eng.push(Number(p.metrics.eng_rate));
-        if (p.metrics.reach != null) map[k].reach.push(Number(p.metrics.reach));
-      }
-    }
-    const out: Record<string, any> = {};
-    for (const [k, v] of Object.entries(map)) {
-      out[k] = { n_posts: v.n, n_with_metrics: v.eng.length, median_eng_rate: round2(median(v.eng)), avg_reach: round2(median(v.reach)) };
-    }
-    return out;
-  };
 
-  const famRollup = groupMedian((p) => p.variant?.family);
-  const platRollup = groupMedian((p) => p.platform);
-  const tagRollup = groupMedian((p) => p.hashtag_set);
+  const famRollup = groupMedian(db.posts, (p) => p.variant?.family);
+  // ARM-level rollup (variant.label, falling back to variant.arm): the granularity
+  // the default-promotion engine compares against the incumbent "control".
+  const armRollup = groupMedian(db.posts, (p) => p.variant?.label ?? p.variant?.arm);
+  const platRollup = groupMedian(db.posts, (p) => p.platform);
+  const tagRollup = groupMedian(db.posts, (p) => p.hashtag_set);
 
   db.updated_at = new Date().toISOString();
   // merge counts into existing variant_families without destroying notes
@@ -111,12 +90,16 @@ export async function pullAndScore(): Promise<ScoreResult> {
   for (const [k, v] of Object.entries(famRollup)) db.variant_families[k] = { ...(db.variant_families[k] ?? {}), ...(v as object) };
   db.aggregate_cuts = db.aggregate_cuts ?? {};
   db.aggregate_cuts.by_platform = platRollup;
+  db.aggregate_cuts.by_variant_arm = armRollup;
   writeJSONAtomic(CONFIG.AB_DB, db);
 
   // learnings
   const learnings = readJSON<any>(CONFIG.LEARNINGS, {});
   learnings.rollups = learnings.rollups ?? {};
   learnings.rollups.by_variant_family = famRollup;
+  // by_variant_arm is what hermes-nous/sffs/promote.py reads to detect a test arm
+  // that clearly beats the current default ("control"). See promote.py.
+  learnings.rollups.by_variant_arm = armRollup;
   learnings.rollups.by_platform = platRollup;
   learnings.rollups.by_hashtag_set = tagRollup;
 

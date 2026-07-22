@@ -206,6 +206,64 @@ test("GUARDRAIL: page exposes NO publish/schedule/merge action (no POST form)", 
   assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["'][^>]*(publish|schedule|merge)/i);
 });
 
+// ── CONTENT default-promotion card (read-only; approval = human CLI) ──────────
+test("page: renders the Pending default changes card + empty state", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /Pending default changes/);
+  assert.match(html, /HUMAN-APPROVED/);
+  assert.match(html, /No pending default changes/);
+});
+
+test("page: renders a pending default-promotion proposal + human CLI command", () => {
+  const html = page(
+    emptyPageData({
+      defaults: { defaults: { narration: "full", ending: "cliffhanger" }, promotion: { metric: "median_eng_rate", min_sample: 5, min_abs_improvement_pp: 1, min_rel_improvement: 0.2 } },
+      proposals: {
+        proposals: [
+          {
+            id: "promote-ending-full-reveal",
+            dimension: "ending",
+            current_default: "cliffhanger",
+            recommended_default: "full-reveal",
+            incumbent_label: "control",
+            metric: "median_eng_rate",
+            challenger: { arm: "full-reveal", median_eng_rate: 6.2, n_with_metrics: 7 },
+            incumbent: { arm: "control", median_eng_rate: 3.1, n_with_metrics: 8 },
+            delta_abs_pp: 3.1,
+            delta_rel: 1.0,
+            min_sample: 5,
+            confidence: "high",
+            status: "pending",
+            rationale: "full-reveal beat control clearly",
+          },
+        ],
+      },
+    }),
+  );
+  assert.match(html, /narration default/); // current defaults surfaced
+  assert.match(html, /ending default/);
+  assert.match(html, /full-reveal/); // the recommended new default
+  assert.match(html, /high confidence/);
+  assert.match(html, /\+3\.1pp/);
+  // the exact HUMAN command (shown as text, not a button)
+  assert.match(html, /sffs_promote_default --approve promote-ending-full-reveal/);
+});
+
+test("GUARDRAIL: the proposals card adds NO approve/reject button or POST form", () => {
+  const html = page(
+    emptyPageData({
+      proposals: {
+        proposals: [
+          { id: "promote-narration-no-narration", dimension: "narration", recommended_default: "no-narration", status: "pending", metric: "median_eng_rate", challenger: {}, incumbent: {} } as any,
+        ],
+      },
+    }),
+  );
+  assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
+  assert.doesNotMatch(html, /<button[^>]*>\s*(approve|reject|promote|apply)/i);
+  assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["']/i);
+});
+
 test("page: PR view shows the review-agent verdict + CI status", () => {
   const html = page(
     emptyPageData({

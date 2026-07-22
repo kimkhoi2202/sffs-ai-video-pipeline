@@ -216,7 +216,15 @@ function annotateDb(v: VideoPlan, postIds: string[]): void {
       variant: {
         family: v.dimension,
         arm: v.arm,
+        // Canonical arm ROLLUP LABEL (== v.arm) — the key score.ts aggregates
+        // by_variant_arm on, and the key the default-promotion engine compares
+        // against the incumbent "control". Kept explicit so a future arm rename
+        // never silently breaks the promotion read-side.
+        label: v.arm,
         narration: (v.props as any)?.narration?.mode ?? "none",
+        // The ENDING arm this video used (cliffhanger | full-reveal | no-answer),
+        // so the dashboard + promotion read-side can see the ending axis directly.
+        ending: (v.props as any)?.ending ?? null,
         question_types: v.questions.map((q) => q.tier),
         num_questions: v.questions.length,
       },
@@ -234,7 +242,7 @@ function annotateDb(v: VideoPlan, postIds: string[]): void {
 }
 
 function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
-  const files = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
+  const files = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
   const run = (args: string[]) => spawnSync("git", args, { cwd: CONFIG.REPO_DIR, encoding: "utf8", env: { ...process.env } });
   try {
     run(["add", ...files]);

@@ -52,6 +52,9 @@ export const CONFIG = Object.freeze({
   /** per-run structured log lines (JSONL): DATA_DIR/runs/<run_id>.log */
   AB_DB: process.env.HERMES_AB_DB || join(REPO_DIR, "ab-testing", "ab-database.json"),
   LEARNINGS: process.env.HERMES_LEARNINGS || join(REPO_DIR, "ab-testing", "learnings.json"),
+  // CONTENT baseline defaults + the human-approved default-promotion queue.
+  CONTENT_DEFAULTS: process.env.HERMES_CONTENT_DEFAULTS || join(REPO_DIR, "ab-testing", "content-defaults.json"),
+  PROPOSALS: process.env.HERMES_PROPOSALS || join(REPO_DIR, "ab-testing", "proposals.json"),
   BANK: process.env.HERMES_BANK || join(REPO_DIR, "content", "master-question-bank.json"),
   USAGE: process.env.HERMES_USAGE || join(REPO_DIR, "content", "ab-test-usage.json"),
   HERMES_USED: process.env.HERMES_USED || join(DATA_DIR, "hermes-used-sigs.json"),

@@ -79,6 +79,38 @@ export interface RunState {
   errors?: string[];
 }
 
+// ── default-promotion (CONTENT gate) view models ─────────────────────────────
+
+/** One default-promotion proposal (ab-testing/proposals.json). Loose/forward-compat. */
+export interface PromotionProposal {
+  id: string;
+  dimension: string;
+  current_default?: string;
+  recommended_default?: string;
+  incumbent_label?: string;
+  metric?: string;
+  challenger?: Record<string, unknown> & { arm?: string; n_with_metrics?: number };
+  incumbent?: Record<string, unknown> & { arm?: string; n_with_metrics?: number };
+  delta_abs_pp?: number;
+  delta_rel?: number | null;
+  min_sample?: number;
+  confidence?: string;
+  status: string;
+  detected_at?: string;
+  updated_at?: string;
+  rationale?: string;
+}
+
+export interface ProposalsQueue {
+  proposals?: PromotionProposal[];
+  decisions_log?: unknown[];
+}
+
+export interface ContentDefaultsFile {
+  defaults?: Record<string, string>;
+  promotion?: Record<string, unknown>;
+}
+
 // ── software-factory PR view models ───────────────────────────────────────────
 
 /** One line of the two-key auto-merge gate ledger (scripts/gate/logs/auto_merge.log). */
