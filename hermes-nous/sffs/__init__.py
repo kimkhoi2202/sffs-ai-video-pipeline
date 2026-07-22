@@ -18,7 +18,7 @@ cron, the cost governor, and the software-factory subagents.
 
 from __future__ import annotations
 
-from . import design, donottouch, draft_guard, gates, publish_guard, reads, schemas
+from . import design, donottouch, draft_guard, gates, publish_guard, questions, reads, schemas
 
 
 def register(ctx) -> None:
@@ -91,6 +91,16 @@ def register(ctx) -> None:
         handler=gates.sffs_gates,
         emoji="🚦",
         description="Run a quality gate (dedup/validity/brand-copy/render-sanity; fail-closed).",
+    )
+
+    # --- Never-repeat question SELECTION (read-only; cannot mark used or post). ---
+    ctx.register_tool(
+        name="sffs_questions",
+        toolset="sffs",
+        schema=schemas.SFFS_QUESTIONS_SCHEMA,
+        handler=questions.sffs_questions,
+        emoji="❓",
+        description="Select fresh never-repeated questions or read bank stats (read-only).",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---
