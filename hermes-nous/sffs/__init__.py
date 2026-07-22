@@ -18,7 +18,7 @@ cron, the cost governor, and the software-factory subagents.
 
 from __future__ import annotations
 
-from . import donottouch, draft_guard, publish_guard, reads, schemas
+from . import design, donottouch, draft_guard, publish_guard, reads, schemas
 
 
 def register(ctx) -> None:
@@ -67,6 +67,18 @@ def register(ctx) -> None:
         handler=reads.sffs_score,
         emoji="📊",
         description="Read per-post analytics (the A/B scoring input; read-only).",
+    )
+
+    # --- DESIGN the day's A/B batch (or introspect the dimension catalog). ---
+    # DESIGN/READ-only: selects fresh questions + writes gated captions; it can
+    # never create/publish/schedule/mutate a post.
+    ctx.register_tool(
+        name="sffs_design",
+        toolset="sffs",
+        schema=schemas.SFFS_DESIGN_SCHEMA,
+        handler=design.sffs_design,
+        emoji="🎬",
+        description="Design the A/B batch or list the A/B dimension catalog (design-only).",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---
