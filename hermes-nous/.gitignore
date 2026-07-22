@@ -1,0 +1,11 @@
+# Never commit secrets or local runtime state for the Nous-based rebuild.
+*.env
+.env
+.env.*
+!*.example
+secrets/
+.hermes-home/
+.venv*/
+runs/
+renders/
+*.log

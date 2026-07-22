@@ -1,0 +1,22 @@
+# EXAMPLE Hermes config for the SFFS Nous-based agent.
+# Copy to $HERMES_HOME/config.yaml. HERMES_HOME must be an ISOLATED dir
+# (e.g. /Users/khoilam/hermes-nous-build/.hermes-home), never the real ~/.hermes.
+# Put the TrueFoundry key in $HERMES_HOME/.env (see hermes.env.example) — NOT here.
+
+model:
+  provider: "custom"                                            # OpenAI-compatible endpoint
+  base_url: "https://tfy.promptlens.trilogy.com/api/llm/v1"     # TrueFoundry gateway
+  default: "claude-opus-4-8"                                    # design/validation/factory brain
+  # caption/routine copy can pin claude-haiku-4-5 via auxiliary/per-call model override
+
+delegation:                 # cost guardrails for the subagent software factory
+  max_concurrent_children: 2
+  max_spawn_depth: 1
+  subagent_auto_approve: false
+
+agent:
+  reasoning_effort: "medium"
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
