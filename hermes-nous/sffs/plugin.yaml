@@ -1,15 +1,17 @@
 name: sffs
-version: 0.6.0
+version: 0.7.0
 description: >-
   SFFS DRAFT-ONLY A/B quiz-video agent — safety core + read-only cycle data
   tools + the batch designer + the quality gates + never-repeat question
-  selection. Registers the Publer draft-only write tool, read-only do-not-touch
-  snapshot/verify tools, read-only account/post listing + per-post analytics
-  (scoring) tools, the A/B batch design tool (design-only), the hard quality-gate
-  tool (dedup/validity/brand/render; fail-closed), the read-only never-repeat
-  question selector, plus a pre_tool_call hook that hard-refuses any publish/
-  schedule/post-mutation call across ALL tools. It can never publish or schedule a
-  live post (belt AND suspenders AND framework-layer defense-in-depth DRAFT-ONLY).
+  selection + the video render tool. Registers the Publer draft-only write tool,
+  read-only do-not-touch snapshot/verify tools, read-only account/post listing +
+  per-post analytics (scoring) tools, the A/B batch design tool (design-only), the
+  hard quality-gate tool (dedup/validity/brand/render; fail-closed), the read-only
+  never-repeat question selector, the video render tool (HermesQuiz mp4 +
+  cloned-voice narration arms; DRAFT media only), plus a pre_tool_call hook that
+  hard-refuses any publish/schedule/post-mutation call across ALL tools. It can
+  never publish or schedule a live post (belt AND suspenders AND framework-layer
+  defense-in-depth DRAFT-ONLY).
 author: "hermes-nous rebuild (ralph-wiggum overnight build)"
 provides_tools:
   - sffs_publer_draft
@@ -20,6 +22,7 @@ provides_tools:
   - sffs_design
   - sffs_gates
   - sffs_questions
+  - sffs_render
 provides_hooks:
   - pre_tool_call
 # NOTE: intentionally NO `requires_env` for Publer keys — the tools must still be
