@@ -123,3 +123,123 @@ SFFS_DONOTTOUCH_VERIFY_SCHEMA = {
         "required": ["snapshot"],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# READ-ONLY data tools (list accounts/posts + read per-post analytics). These
+# only ever issue GET requests; they can never write/schedule/publish/delete/
+# update anything (see reads.py + bridge/publer-read.ts).
+#
+# NOTE: the post-state filter is deliberately named ``state_filter`` (not
+# ``state``) so the framework publish guard never mistakes a READ filter value
+# like "published"/"scheduled" for an attempt to SET a live post state.
+# ---------------------------------------------------------------------------
+
+SFFS_PUBLER_READ_SCHEMA = {
+    "name": "sffs_publer_read",
+    "description": (
+        "READ-ONLY. List the connected Publer social accounts, or list posts. Use "
+        "what='accounts' to get account ids/providers (Instagram + TikTok), or "
+        "what='posts' to list posts filtered by state_filter (draft|scheduled|"
+        "published), account_ids, and/or a text query. This only reads (GET); it "
+        "can never create, publish, schedule, delete, or modify any post. Set "
+        "dry_run=true to preview the request with no network call."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "what": {
+                "type": "string",
+                "enum": ["accounts", "posts"],
+                "description": "What to read: 'accounts' (default) or 'posts'.",
+            },
+            "state_filter": {
+                "type": "string",
+                "enum": ["draft", "scheduled", "published"],
+                "description": (
+                    "For what='posts': only list posts in this state. This is a "
+                    "read FILTER, not a state to set."
+                ),
+            },
+            "account_ids": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "For what='posts': restrict to these Publer account ids.",
+            },
+            "query": {
+                "type": "string",
+                "description": "For what='posts': a free-text search over post captions.",
+            },
+            "page": {
+                "type": "integer",
+                "description": "For what='posts': 0-based page (Publer pages are ~10 posts).",
+            },
+            "all_pages": {
+                "type": "boolean",
+                "description": (
+                    "For what='posts': page through and return ALL posts in the "
+                    "state_filter (defaults to 'published' if state_filter is unset)."
+                ),
+            },
+            "max_pages": {
+                "type": "integer",
+                "description": "For what='posts' with all_pages: cap on pages to fetch.",
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, preview the request WITHOUT any network call.",
+            },
+        },
+        "required": [],
+    },
+}
+
+SFFS_SCORE_SCHEMA = {
+    "name": "sffs_score",
+    "description": (
+        "READ-ONLY analytics reader — the A/B scoring input. Pull per-post metrics "
+        "(reach, views, likes, comments, shares, saves, engagement, engagement_rate) "
+        "from Publer post_insights for the SFFS accounts over a date window "
+        "(defaults to the last 30 days). Returns flattened per-post insights plus a "
+        "per-account count. Publer analytics lag ~24h, so recent posts may have no "
+        "metrics yet. This only reads (GET); it never writes, schedules, publishes, "
+        "or modifies anything, and it does not itself mutate local A/B files. Set "
+        "dry_run=true to preview the request with no network call."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "from": {
+                "type": "string",
+                "description": "Window start, YYYY-MM-DD (defaults to 30 days ago).",
+            },
+            "to": {
+                "type": "string",
+                "description": "Window end, YYYY-MM-DD (defaults to today, UTC).",
+            },
+            "account_ids": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Publer account ids to pull (defaults to the SFFS IG + TikTok accounts).",
+            },
+            "sort_by": {
+                "type": "string",
+                "description": "Metric to sort by (e.g. reach, engagement, engagement_rate, likes). Default reach.",
+            },
+            "sort_type": {
+                "type": "string",
+                "enum": ["ASC", "DESC"],
+                "description": "Sort direction. Default DESC.",
+            },
+            "max_pages": {
+                "type": "integer",
+                "description": "Cap on analytics pages per account (each page = 10 posts). Default 20.",
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, preview the request WITHOUT any network call.",
+            },
+        },
+        "required": [],
+    },
+}
