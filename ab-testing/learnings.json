@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T04:21:00.123Z",
+  "updated_at": "2026-07-22T04:26:15.684Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -81,7 +81,7 @@
         "avg_reach": 128
       },
       "cliffhanger": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 2,
         "median_eng_rate": 3.35,
         "avg_reach": 199
@@ -119,13 +119,13 @@
     },
     "by_platform": {
       "instagram": {
-        "n_posts": 13,
+        "n_posts": 14,
         "n_with_metrics": 6,
         "median_eng_rate": 0.81,
         "avg_reach": 117.5
       },
       "tiktok": {
-        "n_posts": 15,
+        "n_posts": 16,
         "n_with_metrics": 8,
         "median_eng_rate": 3.74,
         "avg_reach": 272.5
@@ -139,7 +139,7 @@
         "avg_reach": null
       },
       "A": {
-        "n_posts": 5,
+        "n_posts": 7,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
@@ -245,6 +245,14 @@
     }
   ],
   "scoring_log": [
+    {
+      "date": "2026-07-22",
+      "from": "2026-06-22",
+      "to": "2026-07-22",
+      "pulled": 14,
+      "updated": 14,
+      "n_with_metrics": 14
+    },
     {
       "date": "2026-07-22",
       "from": "2026-06-22",

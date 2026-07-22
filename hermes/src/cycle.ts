@@ -133,8 +133,11 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
     type: "video",
   });
   const job = await pollJob(jobId, { label: "create-draft", timeoutMs: 180_000 });
-  const postIds = extractPostIds(job.payload);
-  v.publer = { job_id: jobId, post_ids: postIds, permalinks: [] };
+  // Publer's job_status returns only {status:"complete"} (no post ids), so resolve the
+  // created draft post ids by matching the uploaded media id against the draft list.
+  let postIds = extractPostIds(job.payload);
+  if (!postIds.length) postIds = await findDraftPostIds(mediaId);
+  v.publer = { job_id: jobId, media_id: mediaId, post_ids: postIds, permalinks: [] };
   v.status = "drafted";
   decision(`DRAFT created ${v.id}`, { dimension: v.dimension, arm: v.arm, postIds });
 
@@ -158,6 +161,23 @@ function extractPostIds(payload: any): string[] {
   };
   walk(payload);
   return [...new Set(ids)];
+}
+
+/**
+ * Resolve the draft post ids created for an uploaded media. Publer's job_status
+ * payload contains no post ids, so we match the (unique-per-video) media id against
+ * the current draft list. Returns one id per account (e.g. TikTok + Instagram).
+ */
+async function findDraftPostIds(mediaId: string): Promise<string[]> {
+  try {
+    const drafts = await listAllPosts("draft", 5);
+    return drafts
+      .filter((p: any) => Array.isArray(p.media) && p.media.some((m: any) => String(m?.id) === String(mediaId)))
+      .map(postId)
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
 }
 
 function annotateDb(v: VideoPlan, postIds: string[]): void {

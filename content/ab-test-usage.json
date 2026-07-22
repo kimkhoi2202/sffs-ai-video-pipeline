@@ -563,6 +563,156 @@
           "answerNorm": "puppy"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-22-v01",
+      "test": "hook",
+      "variant": "challenge-opener",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "46fc633a26fa",
+          "sig": "numseries|quantitative|number-series|10~16~22~28|34",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "34"
+        },
+        {
+          "hash": "dc90e64c5735",
+          "sig": "text|verbal|verbal-analogy|clean is to dirty as win is to || lose~new~right~sell|lose",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "lose"
+        },
+        {
+          "hash": "38f70c35f932",
+          "sig": "text|verbal|verbal-analogy|tall is to short as begin is to || down~end~quiet~sink|end",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "end"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-22-v03",
+      "test": "cliffhanger",
+      "variant": "last-hidden",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "2cc312281244",
+          "sig": "text|verbal|verbal-analogy|oven is to heat as ruler is to || cut~hear~measure~write|measure",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "measure"
+        },
+        {
+          "hash": "725dfd501add",
+          "sig": "text|verbal|sentence-completion|we could not hear the teacher at all because the room was far too || clean~empty~noisy~quiet|noisy",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "noisy"
+        },
+        {
+          "hash": "2a940d3d986c",
+          "sig": "text|verbal|verbal-analogy|loud is to quiet as wide is to || late~narrow~short~thin|narrow",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "narrow"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-22-v05",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "936f8b565264",
+          "sig": "numseries|quantitative|number-series|1~4~10~19~31|46",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "46"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-22-v06",
+      "test": "control",
+      "variant": "baseline",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "d11b0b6993f4",
+          "sig": "text|quantitative|number-analogy|which number fits 2 9 3 12 6 21 5 || 18~21~23~8|18",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "18"
+        },
+        {
+          "hash": "692019f32623",
+          "sig": "numseries|quantitative|number-series|5~9~13~17|21",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "21"
+        },
+        {
+          "hash": "6fef583f7363",
+          "sig": "text|verbal|verbal-analogy|light is to dark as loud is to || pull~quiet~sad~weak|quiet",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "quiet"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-22-v09",
+      "test": "category-mix",
+      "variant": "quant-only",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "9cc7d810962d",
+          "sig": "numseries|quantitative|number-series|3~5~11~21~35|53",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "53"
+        },
+        {
+          "hash": "bb623f257dc4",
+          "sig": "numseries|quantitative|number-series|8~12~20~32~48|68",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "68"
+        },
+        {
+          "hash": "4022bcad8a5e",
+          "sig": "numseries|quantitative|number-series|18~30~42~54|66",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "66"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-22-v10",
+      "test": "tempo",
+      "variant": "slow-7s",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "e66e8cc6084e",
+          "sig": "text|verbal|odd-one-out|which one does not belong || jupiter~mars~sun~venus|sun",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "sun"
+        },
+        {
+          "hash": "db4a3c67f89d",
+          "sig": "text|verbal|odd-one-out|which one does not belong || axe~drizzle~fog~wind|axe",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "axe"
+        },
+        {
+          "hash": "c85239489952",
+          "sig": "numseries|quantitative|number-series|9~21~33~45|57",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "57"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"

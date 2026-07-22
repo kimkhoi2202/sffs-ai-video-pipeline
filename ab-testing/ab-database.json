@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T04:22:19.142Z",
+  "updated_at": "2026-07-22T04:34:44.556Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -1920,6 +1920,518 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v01:instagram",
+      "publer_post_id": "6a6046d6a6b5db1e658a52f5",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "got that big brain energy or nah? drop your score in the comments and follow for more brain rot content 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-22-v01.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "hook",
+        "arm": "challenge-opener",
+        "narration": "none",
+        "question_types": [
+          "NUMBER SERIES",
+          "VERBAL ANALOGY",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "hook",
+        "arm": "challenge-opener",
+        "rationale": "hard-challenge opener vs neutral opener",
+        "hermes_video_id": "2026-07-22-v01"
+      },
+      "hashtag_set": "A",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v01:tiktok",
+      "publer_post_id": "6a6046d6a6b5db1e658a52f3",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "got that big brain energy or nah? drop your score in the comments and follow for more brain rot content 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-22-v01.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "hook",
+        "arm": "challenge-opener",
+        "narration": "none",
+        "question_types": [
+          "NUMBER SERIES",
+          "VERBAL ANALOGY",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "hook",
+        "arm": "challenge-opener",
+        "rationale": "hard-challenge opener vs neutral opener",
+        "hermes_video_id": "2026-07-22-v01"
+      },
+      "hashtag_set": "A",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v03:instagram",
+      "publer_post_id": "6a60472ca6b5db1e658a531a",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "did you ace it or did you fumble the bag? drop your score in the comments and follow so you don't miss the next one 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-22-v03.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "cliffhanger",
+        "arm": "last-hidden",
+        "narration": "none",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "cliffhanger",
+        "arm": "last-hidden",
+        "rationale": "reveal all but the last -> comment CTA",
+        "hermes_video_id": "2026-07-22-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v03:tiktok",
+      "publer_post_id": "6a60472ca6b5db1e658a5318",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "did you ace it or did you fumble the bag? drop your score in the comments and follow so you don't miss the next one 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-22-v03.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "cliffhanger",
+        "arm": "last-hidden",
+        "narration": "none",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "cliffhanger",
+        "arm": "last-hidden",
+        "rationale": "reveal all but the last -> comment CTA",
+        "hermes_video_id": "2026-07-22-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v05:instagram",
+      "publer_post_id": "6a60475de6d05c066be426ee",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "got brain cells? drop your score in the comments and follow if you didn't fart smella this one 🧠\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:2026-07-22-v05.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "length",
+        "arm": "one-question",
+        "narration": "none",
+        "question_types": [
+          "NUMBER SERIES"
+        ],
+        "num_questions": 1
+      },
+      "experiment": {
+        "dimension": "length",
+        "arm": "one-question",
+        "rationale": "single-question payoff vs three",
+        "hermes_video_id": "2026-07-22-v05"
+      },
+      "hashtag_set": "B",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v05:tiktok",
+      "publer_post_id": "6a60475de6d05c066be426ec",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "got brain cells? drop your score in the comments and follow if you didn't fart smella this one 🧠\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:2026-07-22-v05.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "length",
+        "arm": "one-question",
+        "narration": "none",
+        "question_types": [
+          "NUMBER SERIES"
+        ],
+        "num_questions": 1
+      },
+      "experiment": {
+        "dimension": "length",
+        "arm": "one-question",
+        "rationale": "single-question payoff vs three",
+        "hermes_video_id": "2026-07-22-v05"
+      },
+      "hashtag_set": "B",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v06:instagram",
+      "publer_post_id": "6a6047aee6d05c066be4271d",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "nailed it or totally botched it? drop your score in the comments and follow for more brain melters 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-22-v06.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "control",
+        "arm": "baseline",
+        "narration": "none",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "NUMBER SERIES",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "control",
+        "arm": "baseline",
+        "rationale": "baseline: short counter, reveal all, 5s, mixed 3Q",
+        "hermes_video_id": "2026-07-22-v06"
+      },
+      "hashtag_set": "C",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v06:tiktok",
+      "publer_post_id": "6a6047aee6d05c066be4271b",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "nailed it or totally botched it? drop your score in the comments and follow for more brain melters 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-22-v06.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "control",
+        "arm": "baseline",
+        "narration": "none",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "NUMBER SERIES",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "control",
+        "arm": "baseline",
+        "rationale": "baseline: short counter, reveal all, 5s, mixed 3Q",
+        "hermes_video_id": "2026-07-22-v06"
+      },
+      "hashtag_set": "C",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v09:instagram",
+      "publer_post_id": "6a6048035c5153cca06e9920",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "which one are you picking? don't scroll past without dropping your score in the comments. follow for more brain tests that'll make you question everything 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-22-v09.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "category-mix",
+        "arm": "quant-only",
+        "narration": "none",
+        "question_types": [
+          "NUMBER SERIES",
+          "NUMBER SERIES",
+          "NUMBER SERIES"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "category-mix",
+        "arm": "quant-only",
+        "rationale": "quantitative-only (number series)",
+        "hermes_video_id": "2026-07-22-v09"
+      },
+      "hashtag_set": "C",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v09:tiktok",
+      "publer_post_id": "6a6048035c5153cca06e991e",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "which one are you picking? don't scroll past without dropping your score in the comments. follow for more brain tests that'll make you question everything 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-22-v09.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "category-mix",
+        "arm": "quant-only",
+        "narration": "none",
+        "question_types": [
+          "NUMBER SERIES",
+          "NUMBER SERIES",
+          "NUMBER SERIES"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "category-mix",
+        "arm": "quant-only",
+        "rationale": "quantitative-only (number series)",
+        "hermes_video_id": "2026-07-22-v09"
+      },
+      "hashtag_set": "C",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v10:instagram",
+      "publer_post_id": "6a604864a6b5db1e658a53d5",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you're gonna get this wrong lol. drop your score in the comments and follow if you actually got it right 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-22-v10.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "tempo",
+        "arm": "slow-7s",
+        "narration": "none",
+        "question_types": [
+          "ODD ONE OUT",
+          "ODD ONE OUT",
+          "NUMBER SERIES"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "tempo",
+        "arm": "slow-7s",
+        "rationale": "patience test: 7s countdown (more solve time)",
+        "hermes_video_id": "2026-07-22-v10"
+      },
+      "hashtag_set": "A",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-22-v10:tiktok",
+      "publer_post_id": "6a604864a6b5db1e658a53d3",
+      "platform_post_id": null,
+      "platform": "tiktok",
+      "account_id": "6a5fc5451bee22495517bcc5",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you're gonna get this wrong lol. drop your score in the comments and follow if you actually got it right 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-22-v10.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "tempo",
+        "arm": "slow-7s",
+        "narration": "none",
+        "question_types": [
+          "ODD ONE OUT",
+          "ODD ONE OUT",
+          "NUMBER SERIES"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "tempo",
+        "arm": "slow-7s",
+        "rationale": "patience test: 7s countdown (more solve time)",
+        "hermes_video_id": "2026-07-22-v10"
+      },
+      "hashtag_set": "A",
+      "post_state": "draft",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
     }
   ],
   "variant_families": {
@@ -1959,7 +2471,7 @@
       "notes": "publer 195306510 (TikTok, metrics) + 195306508 (TikTok, pending). Family HIGH confidence; exact render (video-1/2) unknown for both. 0 comments so far despite comment-for-answer CTA.",
       "drafts": 0,
       "scheduled": 0,
-      "n_posts": 2,
+      "n_posts": 4,
       "n_with_metrics": 2,
       "median_eng_rate": 3.35
     },
@@ -2035,13 +2547,13 @@
   "aggregate_cuts": {
     "by_platform": {
       "instagram": {
-        "n_posts": 13,
+        "n_posts": 14,
         "n_with_metrics": 6,
         "median_eng_rate": 0.81,
         "avg_reach": 117.5
       },
       "tiktok": {
-        "n_posts": 15,
+        "n_posts": 16,
         "n_with_metrics": 8,
         "median_eng_rate": 3.74,
         "avg_reach": 272.5

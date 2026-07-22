@@ -54,7 +54,7 @@ export interface VideoPlan {
   reject_reason?: string;
   render_path?: string;
   media_url?: string;
-  publer?: { job_id?: string; post_ids?: string[]; permalinks?: string[] };
+  publer?: { job_id?: string; media_id?: string; post_ids?: string[]; permalinks?: string[] };
   errors?: string[];
 }
 
