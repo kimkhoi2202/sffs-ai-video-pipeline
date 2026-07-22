@@ -2,6 +2,8 @@ import { BADGE_COLORS, COLORS } from "../theme/brand";
 import { ShapeGlyph } from "../components/ShapeGlyph";
 import { Polygon } from "../components/Polygon";
 import { DotSquare } from "../components/DotSquare";
+import { HoleGrid } from "./questions/FoldQuestion";
+import { foldAxes } from "../data/fold";
 import { SHADE_FILL } from "../data/questions";
 import type { Question } from "../data/types";
 import { Reveal } from "./Reveal";
@@ -36,6 +38,14 @@ export const QuestionReveal: React.FC<{ q: Question }> = ({ q }) => {
           letter={letter}
           explanation={q.explanation}
           answer={{ kind: "shape", label: q.ansLabel, node: <DotSquare size={150} pos={q.ansPos} dotColor={BADGE_COLORS[letter]} border={8} sqRadius={12} /> }}
+        />
+      );
+    case "fold":
+      return (
+        <Reveal
+          letter={letter}
+          explanation={q.explanation}
+          answer={{ kind: "shape", label: q.ansLabel, node: <HoleGrid size={150} n={q.grid ?? 4} holes={q.ansHoles} creases={foldAxes(q.folds)} border={8} radius={16} /> }}
         />
       );
   }

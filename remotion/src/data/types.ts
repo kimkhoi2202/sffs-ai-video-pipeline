@@ -1,11 +1,14 @@
 import type { GlyphKind } from "../components/ShapeGlyph";
 import type { PolyShape } from "../components/Polygon";
 import type { DotPos } from "../components/DotSquare";
+import type { FoldDir, HoleCell } from "./fold";
 
 export type TextOption = { letter: string; text: string };
 export type ShapeOption = { letter: string; shape: GlyphKind; filled: boolean };
 export type PolyOption = { letter: string; poly: PolyShape };
 export type DotOption = { letter: string; pos: DotPos };
+/** PAPER FOLDING option: an unfolded sheet's hole pattern (grid cells). */
+export type FoldOption = { letter: string; holes: HoleCell[] };
 
 type Common = {
   idx: number;
@@ -56,5 +59,18 @@ export type DotQuestion = Common & {
   options: DotOption[];
   ansPos: DotPos;
 };
+/** PAPER FOLDING (nonverbal): a sheet folded 1-2 times with a hole punched; the
+ *  answer is the unfolded hole pattern (each punch mirrored across every crease).
+ *  `folds` are applied in order to the flat sheet; `punches` are cells in the
+ *  folded packet; `ansHoles` (the reveal grid) = unfold(folds, punches, grid). */
+export type FoldQuestion = Common & {
+  kind: "fold";
+  prompt: string;
+  grid?: number; // NxN hole-slot grid (even; default 4)
+  folds: FoldDir[]; // <= one vertical (left/right) + <= one horizontal (up/down)
+  punches: HoleCell[]; // hole(s) punched through the folded stack
+  options: FoldOption[];
+  ansHoles: HoleCell[]; // the correct unfolded pattern (shown on the reveal)
+};
 
-export type Question = TextQuestion | NumSeriesQuestion | ShadedQuestion | PolygonQuestion | DotQuestion;
+export type Question = TextQuestion | NumSeriesQuestion | ShadedQuestion | PolygonQuestion | DotQuestion | FoldQuestion;
