@@ -26,6 +26,8 @@ tools/*
 !tools/upload-media.ts
 !tools/README-media-hosting.md
 !tools/post-to-publer.ts
+!tools/reslot-swap.ts
+!tools/apply-covers.ts
 !tools/post-variant.ts
 !tools/schedule-variants.ts
 !tools/edit-captions.ts

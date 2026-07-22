@@ -68,6 +68,15 @@ export interface CreatePostArgs {
   account_ids: string[];
   text: string;
   media_ids?: string[];
+  /**
+   * Full per-network media objects, used INSTEAD of media_ids when you need to
+   * carry extra media fields Publer only accepts at create time — most notably a
+   * CUSTOM VIDEO COVER: `{ id, thumbnails:[...existing, {small, real}], default_thumbnail:<idx> }`.
+   * (Publer's PUT /posts/{id} only updates text/title, so a custom cover can only
+   * be set by recreating the post — see tools/apply-covers.ts.) When provided,
+   * the SAME objects are shared across every network provider in account_ids.
+   */
+  media_objects?: Array<Record<string, unknown>>;
   state?: PostState; // defaults to "draft"
   type?: ContentType; // defaults to "video" (these are video shorts)
   scheduled_at?: string; // ISO 8601; only for state="scheduled"
@@ -292,7 +301,7 @@ export async function importMediaFromUrl(
  * carrying the same text + media). Mirrors the publer-mcp-server bulk body exactly.
  */
 export async function createPost(args: CreatePostArgs): Promise<string> {
-  const { account_ids, text, media_ids, scheduled_at } = args;
+  const { account_ids, text, media_ids, media_objects, scheduled_at } = args;
   const state: PostState = args.state ?? "draft";
   const type: ContentType = args.type ?? "video";
   if (!account_ids?.length) throw new Error("createPost: account_ids is required");
@@ -312,7 +321,10 @@ export async function createPost(args: CreatePostArgs): Promise<string> {
     }
     if (!networks[provider]) {
       const content: any = { type, text };
-      if (media_ids?.length) content.media = media_ids.map((mid) => ({ id: mid }));
+      // Prefer full media objects (carry custom cover thumbnails/default_thumbnail);
+      // otherwise fall back to bare {id} objects from media_ids.
+      if (media_objects?.length) content.media = media_objects;
+      else if (media_ids?.length) content.media = media_ids.map((mid) => ({ id: mid }));
       // DEFAULT for Instagram: publish as a Reel AND also share to the main Feed
       // (Publer network option networks.instagram.details.feed; only settable at
       // creation — the PUT update endpoint cannot change it).
@@ -440,6 +452,248 @@ export async function listPosts(params: ListPostsParams = {}): Promise<any[]> {
 }
 
 // ---------------------------------------------------------------------------
+// Analytics (Publer API v1 — Business/Enterprise plans only; scope: analytics)
+// ---------------------------------------------------------------------------
+/**
+ * VERIFIED analytics endpoints (tested live against our Business-plan workspace).
+ *
+ * WHY THIS SECTION EXISTS / the 404 gotcha:
+ *   The `publer-mcp-server` wrapper v1.0.0 (what `npx -y publer-mcp-server`
+ *   currently caches) ships WRONG analytics paths and 404/403s:
+ *       post insights  /analytics/{id}/posts     (404)  ← wrong
+ *       charts         /analytics/{id}/charts     (404)  ← wrong
+ *       hashtags       /analytics/{id}/hashtags   (403)  ← wrong
+ *   The CORRECT Publer v1 paths (per https://publer.com/docs, and confirmed by
+ *   real 200s below) are:
+ *       GET /analytics/charts?account_type=...                       → chart defs (ids)
+ *       GET /analytics/{account_id}/chart_data?chart_ids[]=&from=&to= → account series
+ *       GET /analytics/{account_id}/post_insights?from=&to=&...       → per-post metrics
+ *       GET /analytics/{account_id}/hashtag_insights?from=&to=&...    → per-hashtag metrics
+ *       GET /analytics/{account_id}/best_times?from=&to=             → day/hour heatmap
+ *   Pass accountId="" to aggregate across the whole workspace.
+ *
+ * DATA FRESHNESS: Publer syncs these from each network's own API roughly every
+ *   ~24h, so expect up to a day of lag (fine for a daily A/B scoring loop; not
+ *   real-time). `from`/`to` are YYYY-MM-DD and are REQUIRED for post_insights,
+ *   best_times, and members.
+ */
+
+export interface PostInsightMetric {
+  name?: string;
+  value: number | null;
+  tooltip?: unknown;
+}
+
+export interface PostInsightRaw {
+  id: number | string; // Publer's internal post id
+  post_id?: string; // network-native id (TikTok video id / IG media id)
+  account_id: string;
+  account_type?: string; // "tiktok" | "ig_business" | ...
+  type?: string; // "video" | "reel" | ...
+  text?: string;
+  post_link?: string;
+  scheduled_at?: string;
+  analytics?: Record<string, PostInsightMetric>;
+  [k: string]: unknown;
+}
+
+export interface PostInsightsResult {
+  posts: PostInsightRaw[];
+  total: number; // total matching posts (for pagination: 10 per page)
+  raw: any;
+}
+
+export interface PostInsightsParams {
+  from: string; // YYYY-MM-DD (REQUIRED)
+  to: string; // YYYY-MM-DD (REQUIRED)
+  sort_by?: string; // reach|engagement|engagement_rate|likes|video_views|comments|shares|saves|link_clicks|post_clicks|scheduled_at|postType
+  sort_type?: "ASC" | "DESC";
+  page?: number; // 0-based; each page = 10 posts
+  query?: string;
+  postType?: string; // video|reel|photo|carousel|status|link|gif|document|short|article|story
+  member_id?: string;
+  competitors?: boolean;
+  competitor_id?: string;
+}
+
+/** Build a query string, dropping undefined/null/empty values. */
+function analyticsQS(params: Record<string, unknown>): string {
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v === undefined || v === null || v === "") continue;
+    qs.set(k, String(v));
+  }
+  const s = qs.toString();
+  return s ? `?${s}` : "";
+}
+
+/**
+ * GET /analytics/{account_id}/post_insights — per-post metrics for one social
+ * account (pass accountId="" for the whole workspace). `from`/`to` REQUIRED.
+ * Paginate with `page` (0-based) using the returned `total` (10 posts/page).
+ */
+export async function getPostInsights(
+  accountId: string,
+  params: PostInsightsParams,
+): Promise<PostInsightsResult> {
+  const seg = accountId ? `/${encodeURIComponent(accountId)}` : "";
+  const qs = analyticsQS({
+    ...params,
+    competitors: params.competitors ? "true" : undefined,
+  });
+  const res = await publerRequest<any>("GET", `/analytics${seg}/post_insights${qs}`);
+  return {
+    posts: Array.isArray(res?.posts) ? res.posts : [],
+    total: Number(res?.total ?? 0),
+    raw: res,
+  };
+}
+
+export interface FlatPostInsight {
+  post_id: string; // network-native id
+  publer_id: string;
+  account_id: string;
+  network?: string;
+  type?: string;
+  scheduled_at?: string;
+  post_link?: string;
+  text?: string;
+  views: number | null;
+  reach: number | null;
+  likes: number | null;
+  comments: number | null;
+  shares: number | null;
+  saves: number | null;
+  engagement: number | null;
+  engagement_rate: number | null;
+}
+
+/**
+ * Flatten Publer's { name, value, tooltip } metric objects into plain numbers,
+ * ready for A/B scoring. Normalizes "views" across networks: TikTok reports
+ * plays under `reach`, while Instagram reports plays under `video_views`.
+ */
+export function flattenPostInsights(posts: PostInsightRaw[]): FlatPostInsight[] {
+  const num = (m?: PostInsightMetric): number | null => {
+    if (!m || m.value == null) return null;
+    return typeof m.value === "number" ? m.value : Number(m.value);
+  };
+  return posts.map((p) => {
+    const a = p.analytics ?? {};
+    const reach = num(a.reach);
+    const videoViews = num(a.video_views);
+    const views = p.account_type === "tiktok" ? reach : videoViews ?? reach;
+    const likes = num(a.likes);
+    const comments = num(a.comments);
+    const shares = num(a.shares);
+    const saves = num(a.saves);
+    let engagement = num(a.engagement);
+    if (engagement == null) {
+      const parts = [likes, comments, shares, saves].filter((x): x is number => x != null);
+      engagement = parts.length ? parts.reduce((s, x) => s + x, 0) : null;
+    }
+    return {
+      post_id: String(p.post_id ?? ""),
+      publer_id: String(p.id),
+      account_id: p.account_id,
+      network: p.account_type,
+      type: p.type,
+      scheduled_at: p.scheduled_at,
+      post_link: p.post_link,
+      text: p.text,
+      views,
+      reach,
+      likes,
+      comments,
+      shares,
+      saves,
+      engagement,
+      engagement_rate: num(a.engagement_rate),
+    };
+  });
+}
+
+/** GET /analytics/charts?account_type=... — chart definitions (ids + titles). */
+export async function listCharts(
+  accountType?: string,
+): Promise<Array<{ id: string; title?: string; group_id?: string }>> {
+  const res = await publerRequest<any>(
+    "GET",
+    `/analytics/charts${analyticsQS({ account_type: accountType })}`,
+  );
+  return Array.isArray(res) ? res : [];
+}
+
+/**
+ * GET /analytics/{account_id}/chart_data — account-level time series for the
+ * given chart ids. Returns { current, previous } keyed by chart id.
+ */
+export async function getChartData(
+  accountId: string,
+  chartIds: string[],
+  opts: { from?: string; to?: string } = {},
+): Promise<{ current: Record<string, any>; previous: Record<string, any>; raw: any }> {
+  const seg = accountId ? `/${encodeURIComponent(accountId)}` : "";
+  const qs = new URLSearchParams();
+  for (const id of chartIds) qs.append("chart_ids[]", id);
+  if (opts.from) qs.set("from", opts.from);
+  if (opts.to) qs.set("to", opts.to);
+  const res = await publerRequest<any>("GET", `/analytics${seg}/chart_data?${qs.toString()}`);
+  return { current: res?.current ?? {}, previous: res?.previous ?? {}, raw: res };
+}
+
+/**
+ * Convenience: discover the charts for an account_type then fetch their data in
+ * one call. accountType uses Publer's values: "tiktok", "ig_business", etc.
+ */
+export async function getAnalytics(
+  accountId: string,
+  opts: { accountType?: string; from?: string; to?: string; chartIds?: string[] } = {},
+): Promise<{ current: Record<string, any>; previous: Record<string, any>; chartIds: string[] }> {
+  let chartIds = opts.chartIds;
+  if (!chartIds?.length) {
+    chartIds = (await listCharts(opts.accountType)).map((c) => c.id).filter(Boolean);
+  }
+  const { current, previous } = await getChartData(accountId, chartIds, {
+    from: opts.from,
+    to: opts.to,
+  });
+  return { current, previous, chartIds };
+}
+
+/** GET /analytics/{account_id}/best_times?from=&to= — 24-slot/day heatmap. */
+export async function getBestTimes(
+  accountId: string,
+  opts: { from: string; to: string; competitors?: boolean; competitor_id?: string },
+): Promise<Record<string, number[]>> {
+  const seg = accountId ? `/${encodeURIComponent(accountId)}` : "";
+  const qs = analyticsQS({ ...opts, competitors: opts.competitors ? "true" : undefined });
+  return publerRequest<Record<string, number[]>>("GET", `/analytics${seg}/best_times${qs}`);
+}
+
+/** GET /analytics/{account_id}/hashtag_insights — per-hashtag aggregate metrics. */
+export async function getHashtagInsights(
+  accountId: string,
+  params: {
+    from?: string;
+    to?: string;
+    sort_by?: string;
+    sort_type?: "ASC" | "DESC";
+    page?: number;
+    query?: string;
+    member_id?: string;
+  } = {},
+): Promise<{ records: any[]; total: number; raw: any }> {
+  const seg = accountId ? `/${encodeURIComponent(accountId)}` : "";
+  const res = await publerRequest<any>("GET", `/analytics${seg}/hashtag_insights${analyticsQS(params)}`);
+  return {
+    records: Array.isArray(res?.records) ? res.records : [],
+    total: Number(res?.total ?? 0),
+    raw: res,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // CLI (probing / debugging only)
 // ---------------------------------------------------------------------------
 async function cli(): Promise<void> {
@@ -475,9 +729,42 @@ async function cli(): Promise<void> {
       console.log(JSON.stringify({ mediaId, status: job.status }, null, 2));
       break;
     }
+    case "insights": {
+      // insights <account_id|-> <from> <to> [sort_by]   ("-" = whole workspace)
+      const [accountId, from, to, sortBy] = rest;
+      if (!accountId || !from || !to) {
+        throw new Error("usage: post-to-publer.ts insights <account_id|-> <from YYYY-MM-DD> <to YYYY-MM-DD> [sort_by]");
+      }
+      const { posts, total } = await getPostInsights(accountId === "-" ? "" : accountId, {
+        from,
+        to,
+        sort_by: sortBy ?? "reach",
+        sort_type: "DESC",
+      });
+      console.log(JSON.stringify({ total, posts: flattenPostInsights(posts) }, null, 2));
+      break;
+    }
+    case "analytics": {
+      // analytics <account_id|-> [account_type] [from] [to]
+      const [accountId, accountType, from, to] = rest;
+      if (!accountId) {
+        throw new Error("usage: post-to-publer.ts analytics <account_id|-> [account_type] [from] [to]");
+      }
+      const out = await getAnalytics(accountId === "-" ? "" : accountId, { accountType, from, to });
+      console.log(JSON.stringify(out, null, 2));
+      break;
+    }
+    case "best-times": {
+      const [accountId, from, to] = rest;
+      if (!accountId || !from || !to) {
+        throw new Error("usage: post-to-publer.ts best-times <account_id|-> <from> <to>");
+      }
+      console.log(JSON.stringify(await getBestTimes(accountId === "-" ? "" : accountId, { from, to }), null, 2));
+      break;
+    }
     default:
       console.error(
-        "usage: node tools/post-to-publer.ts <accounts|list-posts [state] [query]|job <id>|delete <id>|import <url> <name>>",
+        "usage: node tools/post-to-publer.ts <accounts|list-posts [state] [query]|job <id>|delete <id>|import <url> <name>|insights <account_id|-> <from> <to> [sort_by]|analytics <account_id|-> [account_type] [from] [to]|best-times <account_id|-> <from> <to>>",
       );
       process.exit(2);
   }

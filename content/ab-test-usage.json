@@ -392,6 +392,150 @@
           "answerNorm": "23"
         }
       ]
+    },
+    {
+      "videoSlug": "reslot-s6-one-question",
+      "test": "one-question",
+      "variant": "one-question (reslot 2026-07-21, round-030)",
+      "round": "round-030",
+      "questions": [
+        {
+          "id": 3,
+          "sig": "shaded|nonverbal|figure-analogy|lightning>diamond=>diamond:true|filled-diamond",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "filled-diamond"
+        }
+      ]
+    },
+    {
+      "videoSlug": "reslot-s2-no-narration",
+      "test": "dont-narrate",
+      "variant": "no-narration (reslot 2026-07-21, round-026)",
+      "round": "round-026",
+      "questions": [
+        {
+          "id": 4,
+          "sig": "text|verbal|verbal-analogy|finger is to hand as sail is to || boat~book~flower~mouth|boat",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "boat"
+        },
+        {
+          "id": 3,
+          "sig": "shaded|nonverbal|figure-analogy|star>crescent=>crescent:true|filled-crescent",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "filled-crescent"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|5~7~10~14~19|25",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "25"
+        }
+      ]
+    },
+    {
+      "videoSlug": "reslot-s3-no-question-vo",
+      "test": "dont-narrate",
+      "variant": "no-question-vo (reslot 2026-07-21, round-027)",
+      "round": "round-027",
+      "questions": [
+        {
+          "id": 1,
+          "sig": "text|verbal|odd-one-out|which one does not belong || mars~saturn~shirt~venus|shirt",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "shirt"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|bm~br~rm=>tr|tr",
+          "tier": "POSITION",
+          "answerNorm": "tr"
+        },
+        {
+          "id": 14,
+          "sig": "text|quantitative|number-analogy|which number fits 2 7 3 9 7 17 5 || 10~11~13~15|13",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "13"
+        }
+      ]
+    },
+    {
+      "videoSlug": "reslot-s4-no-options-vo",
+      "test": "dont-narrate",
+      "variant": "no-options-vo (reslot 2026-07-21, round-028)",
+      "round": "round-028",
+      "questions": [
+        {
+          "id": 3,
+          "sig": "shaded|nonverbal|figure-analogy|star>arrow=>arrow:true|filled-arrow",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "filled-arrow"
+        },
+        {
+          "id": 12,
+          "sig": "text|verbal|sentence-completion|since the hallway was completely we turned on a lamp so we could see || bright~dark~large~warm|dark",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "dark"
+        },
+        {
+          "id": 15,
+          "sig": "text|quantitative|number-puzzle|if 9 6 39 5 6 19 1 9 1 then 3 6 || 14~18~7~9|9",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "9"
+        }
+      ]
+    },
+    {
+      "videoSlug": "reslot-s5-speed",
+      "test": "speed",
+      "variant": "speed (reslot 2026-07-21, round-029)",
+      "round": "round-029",
+      "questions": [
+        {
+          "id": 10,
+          "sig": "text|verbal|odd-one-out|which one does not belong || bronze~cider~milk~tea|bronze",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "bronze"
+        },
+        {
+          "id": 13,
+          "sig": "dot|nonverbal|position|tl~lm~bl~bm~br=>rm|rm",
+          "tier": "POSITION",
+          "answerNorm": "rm"
+        },
+        {
+          "id": 7,
+          "sig": "numseries|quantitative|number-series|3~2~5~7~12|19",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "19"
+        }
+      ]
+    },
+    {
+      "videoSlug": "reslot-s7-mascot",
+      "test": "mascot",
+      "variant": "mascot (reslot 2026-07-21, round-031)",
+      "round": "round-031",
+      "questions": [
+        {
+          "id": 8,
+          "sig": "text|verbal|verbal-analogy|ant is to anthill as pig is to || den~pen~pond~stable|pen",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "pen"
+        },
+        {
+          "id": 11,
+          "sig": "dot|nonverbal|position|lm~tl~tm~tr~rm=>br|br",
+          "tier": "POSITION",
+          "answerNorm": "br"
+        },
+        {
+          "id": 14,
+          "sig": "text|quantitative|number-analogy|which number fits 3 7 4 10 7 19 5 || 13~14~16~23|13",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "13"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
