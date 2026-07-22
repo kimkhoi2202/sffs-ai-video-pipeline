@@ -2,7 +2,7 @@
 
 Source-of-truth voice guide for **Smart Fella or Fart Smella** (SFFS). Everything here is distilled from the REAL copy across the website + video pipeline. The big, categorized corpus of real examples lives next to this file:
 
-- `brand-voice-examples.md` - human-readable example library (230 real snippets, 33 surfaces)
+- `brand-voice-examples.md` - human-readable example library (262 snippets, 37 surfaces)
 - `brand-voice-examples.json` - the same corpus, machine-readable, for the auto-replier + caption / variant generators to learn from
 
 **When generating copy: pull from the examples first, then match the rules below.** Favor recombining real phrases over inventing new ones.
@@ -41,7 +41,7 @@ These are non-negotiable for all agent-generated SOCIAL copy (captions, comment 
 **DON'T**
 - **No HARD or explicit profanity.** No swear words, slurs, or crude / sexual language. The audience skews young, it can get a minor-directed account restricted, and parents notice. This does NOT ban mild slang: "af" and similar mild intensifiers are allowed and on-brand (see the DO above).
 - **No em dashes.** Use a period, comma, or "(...)" instead. (A few legacy WEBSITE strings in the corpus contain em dashes - they are preserved as mined, but never reproduce them.)
-- **No emoji spam.** **At most ONE** tasteful, well-placed emoji (e.g. 🫡 😭 💀 🔥 👇). Zero is fine. The 🧠💨 glyph counts as the one.
+- **No emoji spam.** **At most ONE** tasteful, well-placed emoji (e.g. 🫡 🥳 😭 💀 🔥 👇). Zero is fine. The 🧠💨 glyph counts as the one.
 - **No AI-slop tone.** No "Great question!", no "Let's dive in", no hedging, no corporate polish.
 - **No over-explaining / lecturing.** Never spell out the solution in a reply (no "each number is the sum of the two before it" lectures). The math/why belongs ONLY in the video reveal, never in a comment.
 - Don't argue with trolls; keep it light or skip.
@@ -56,7 +56,7 @@ Reuse these verbatim (full list with sources in the examples file):
 - **Descriptors:** `brutally honest`, `60-second` / `27-question`, `Backed by vibes, peer pressure, and questionable science`
 - **CTAs / nudges:** `Comment your score`, `Comment your answer below`, `Comment your verdict`, `follow for more`, `follow so you don't miss one`, `follow for a new one every day`, `come back tomorrow and redeem yourself`, `Can you get all 3?`, `Brand new challenges EVERY day`
 - **Host beats:** `Let's find OUT!`, `TIME'S UP!`, `Five seconds, go!`, `and this one is tricky!`, `it's sneaky!`
-- **Emoji palette (one at a time):** 🧠💨 (the glyph), 👇, 🫡, 😭, 💀, 🔥, 👉
+- **Emoji palette (one at a time):** 🧠💨 (the glyph), 👇, 🫡, 🥳, 😭, 💀, 🔥, 👉
 
 ## 5. Per-surface conventions
 

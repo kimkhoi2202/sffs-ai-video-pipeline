@@ -12,11 +12,13 @@ Source of truth for how to answer comments on **Smart Fella or Fart Smella** pos
 - **No em dashes.** No AI-slop tone.
 - **Exactly one** well-placed emoji when it lands (e.g. 🫡 😭 💀). Never emoji spam. Zero is fine too.
 - Always nudge: "follow for a new one every day" / "come back tomorrow and redeem yourself."
+- **VARY replies. Never send the same line twice.** Rotate from the reply bank (below), personalize with the commenter's handle + score, and keep each reply fresh. Identical copy-paste replies read as botty and can hurt reach / authenticity. VARY the nudge across replies too (follow / come back tomorrow / keep your streak / try the next one / tag a friend who'd fail / comment your guess).
 
 ## How to find the correct answer (use the key, don't recompute)
 1. Identify the post (URL or Publer `post_id`) and look it up in `ab-testing/ab-database.json` to get the variant family + `source_video` / round.
 2. Get the answers from `content/ab-test-usage.json` (each question has `answerNorm` + a `sig`) or `renders.nosync/videos/ab-tests/manifest.json` (human form like `"C · 39"`).
 3. For **cliffhanger** and **no-answer** posts, the relevant question is the **withheld last one** (what people are guessing). Reveal that answer in the reply — it rewards commenters and pulls more replies.
+4. **Answer-hidden preference:** when a commenter is just fishing for the answer or dropping a guess (a "what's the answer?" comment), the brand preference is to keep the answer **HIDDEN** for engagement / ragebait ("not telling 👀 comment your guess and see who's right") rather than revealing it. Reserve answer reveals for the wrong / "idk" redemption reply. Use the `comment-reply-guess` bank.
 
 ## Patterns (approved examples)
 - **Correct guess** → hype as a Smart Fella:
@@ -24,6 +26,15 @@ Source of truth for how to answer comments on **Smart Fella or Fart Smella** pos
 - **Wrong / "idk"** → playful Fart Smella jab + redemption:
   `it was 39. certified Fart Smella 😭 (for now). come back tomorrow and redeem yourself.`
 - **Other / general** → short, on-brand, funny; answer only if they asked; always end on a follow / come-back nudge.
+
+## Reply bank (rotate, don't repeat)
+
+A score-bucketed BANK of ready replies lives in the brand-voice DB (`../brand/brand-voice-examples.md` + `.json`). ROTATE through it so no two commenters get the same line, personalize each with the commenter's `{handle}` and `{score}`, keep one emoji max, and always close on a nudge (and VARY the nudge). Never copy-paste the same reply.
+
+- **Perfect / all correct (3/3)** → surface `comment-reply-perfect` (10). Hype as a certified SMART FELLA. e.g. `3 for 3 kootcp?? certified SMART FELLA 🥳 come back tomorrow to see if you can keep your streak` (user-approved).
+- **Strong / most correct (2/3)** → surface `comment-reply-strong` (8). Hype + gentle tease about the miss (never reveal it) + nudge.
+- **Low (0-1/3)** → surface `comment-reply-low` (8). Kind, funny, playful certified FART SMELLA (for now) + comeback (matches the Marlan tone).
+- **Guess / "what's the answer?"** → surface `comment-reply-guess` (6). Keep the answer HIDDEN for engagement, e.g. `not telling 👀 comment your guess and see who's right`, always nudge.
 
 ## Safety
 - **Draft-first** until the auto-replier is trusted — a human approves before it posts.
