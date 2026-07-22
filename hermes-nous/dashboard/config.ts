@@ -58,6 +58,19 @@ export const CONFIG = Object.freeze({
   BANK: process.env.HERMES_BANK || join(REPO_DIR, "content", "master-question-bank.json"),
   USAGE: process.env.HERMES_USAGE || join(REPO_DIR, "content", "ab-test-usage.json"),
   HERMES_USED: process.env.HERMES_USED || join(DATA_DIR, "hermes-used-sigs.json"),
+  // Cost-governor spend snapshot (snapshot.json), for the read-only SPEND panel.
+  // Mirrors cost_governor.state_dir() precedence: SFFS_COST_GOVERNOR_DIR override,
+  // else DATA_DIR/cost-governor. Read-only; degrades to "no snapshot" if absent.
+  COST_SNAPSHOT:
+    process.env.HERMES_COST_SNAPSHOT ||
+    ((process.env.SFFS_COST_GOVERNOR_DIR || "").trim()
+      ? join((process.env.SFFS_COST_GOVERNOR_DIR as string).trim(), "snapshot.json")
+      : join(DATA_DIR, "cost-governor", "snapshot.json")),
+
+  // ── question-bank runway estimate (coverage panel) ───────────────────────
+  /** est. videos/day and questions/video, used only to estimate days-of-runway. */
+  VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 10),
+  AVG_Q_PER_VIDEO: Number(process.env.HERMES_AVG_Q_PER_VIDEO || 3),
 
   // ── software factory: the two-key auto-merge gate + its JSONL ledger ─────
   // auto_merge.py appends one JSON line per merge attempt to scripts/gate/logs/

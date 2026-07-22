@@ -124,6 +124,79 @@ function loadUsedSigs(): Set<string> {
   return used;
 }
 
+// ── question-bank COVERAGE + days-of-runway ──────────────────────────────────
+
+export interface TypeCoverage {
+  tier: string; // the question TYPE (ODD ONE OUT / VERBAL ANALOGY / NUMBER SERIES / …)
+  usable: number;
+  fresh: number;
+}
+
+export interface BankCoverage extends BankStats {
+  /** fresh as a percentage of usable (0–100). */
+  freshPct: number;
+  /** estimated questions consumed per day (VIDEOS_PER_DAY × AVG_Q_PER_VIDEO). */
+  perDay: number;
+  /** estimated days until the fresh usable pool runs out, or null if perDay ≤ 0. */
+  runwayDays: number | null;
+  /** per-TYPE coverage (only the headless-renderable kinds), most-fresh first. */
+  byType: TypeCoverage[];
+}
+
+/**
+ * Pure coverage projection over bank entries + the used-sig set. Only the
+ * headless-renderable kinds (text/numseries) count as usable (matches
+ * questions.ts). Split out so it is unit-testable without touching disk.
+ */
+export function computeBankCoverage(entries: any[], used: Set<string>, perDay: number): BankCoverage {
+  const list = Array.isArray(entries) ? entries : [];
+  const byTierU: Record<string, number> = {};
+  const byTierF: Record<string, number> = {};
+  let usable = 0;
+  let fresh = 0;
+  for (const e of list) {
+    if (!e || !RENDERABLE_KINDS.has(e.kind)) continue;
+    const tier = String(e.tier ?? "(untyped)");
+    usable++;
+    byTierU[tier] = (byTierU[tier] ?? 0) + 1;
+    if (e.sig && !used.has(e.sig)) {
+      fresh++;
+      byTierF[tier] = (byTierF[tier] ?? 0) + 1;
+    }
+  }
+  const byType: TypeCoverage[] = Object.keys(byTierU)
+    .map((tier) => ({ tier, usable: byTierU[tier], fresh: byTierF[tier] ?? 0 }))
+    .sort((a, b) => b.fresh - a.fresh || a.tier.localeCompare(b.tier));
+  return {
+    total: list.length,
+    usable,
+    fresh,
+    used: used.size,
+    freshPct: usable > 0 ? Math.round((fresh / usable) * 1000) / 10 : 0,
+    perDay,
+    runwayDays: perDay > 0 ? Math.floor(fresh / perDay) : null,
+    byType,
+  };
+}
+
+export function bankCoverage(): BankCoverage {
+  try {
+    const raw = readJSON<{ entries?: any[] }>(CONFIG.BANK, {});
+    const entries = Array.isArray(raw.entries) ? raw.entries : [];
+    const perDay = Math.max(0, CONFIG.VIDEOS_PER_DAY * CONFIG.AVG_Q_PER_VIDEO);
+    return computeBankCoverage(entries, loadUsedSigs(), perDay);
+  } catch {
+    return { total: 0, usable: 0, fresh: 0, used: 0, freshPct: 0, perDay: 0, runwayDays: null, byType: [] };
+  }
+}
+
+// ── cost-governor SPEND snapshot (read-only) ─────────────────────────────────
+
+/** The cost-governor snapshot.json (cost_governor.snapshot() shape) or null. */
+export function costSnapshot(): any {
+  return readJSON<any>(CONFIG.COST_SNAPSHOT, null);
+}
+
 // ── kill-switch (DISPLAY-ONLY) ────────────────────────────────────────────────
 
 export interface KillSwitchState {

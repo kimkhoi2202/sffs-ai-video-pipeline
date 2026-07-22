@@ -12,7 +12,7 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage } from "./data.ts";
 import type { PRView } from "./prs.ts";
 
 // ── html helpers ──────────────────────────────────────────────────────────────
@@ -142,6 +142,115 @@ function decisionsList(l: any): string {
     ? sco.slice(-8).reverse().map((s) => `<li><span class="date">${esc(s.date)}</span> pulled ${n(s.pulled)}, updated ${n(s.updated)}, w/metrics ${n(s.n_with_metrics)}</li>`).join("")
     : `<li class="muted">No scoring runs yet.</li>`;
   return `<div class="two"><div><h3>Decisions</h3><ul class="log">${decHtml}</ul></div><div><h3>Scoring log</h3><ul class="log">${scoHtml}</ul></div></div>`;
+}
+
+// ── question-bank COVERAGE + days-of-runway (P2) ──────────────────────────────
+function bankCoverageCard(cov: BankCoverage): string {
+  const rows = cov.byType
+    .map((t) => {
+      const low = t.fresh <= 5;
+      return `<tr class="${low ? "front" : ""}"><td>${esc(t.tier)}${low ? ' <span class="star">⚠ low</span>' : ""}</td><td>${n(t.usable)}</td><td>${n(t.fresh)}</td></tr>`;
+    })
+    .join("");
+  const runway = cov.runwayDays == null ? "—" : `${cov.runwayDays} day${cov.runwayDays === 1 ? "" : "s"}`;
+  const runwayCls =
+    cov.runwayDays != null && cov.runwayDays <= 7 ? "c-no" : cov.runwayDays != null && cov.runwayDays <= 21 ? "c-warn" : "c-ok";
+  return `<div class="health" style="margin-bottom:12px">
+    <span class="hpill"><b>usable</b>${n(cov.usable)} / ${n(cov.total)}</span>
+    <span class="hpill"><b>fresh (never used)</b>${n(cov.fresh)} (${esc(cov.freshPct)}%)</span>
+    <span class="hpill"><b>used</b>${n(cov.used)}</span>
+    <span class="hpill"><b>days of runway</b><span class="chip ${runwayCls}">${esc(runway)}</span></span>
+    <span class="hpill"><b>est. burn</b>~${n(cov.perDay)} q/day</span>
+  </div>
+  ${cov.byType.length ? `<table class="tbl"><thead><tr><th>question type</th><th>usable</th><th>fresh</th></tr></thead><tbody>${rows}</tbody></table>` : `<p class="muted">No question-bank entries found.</p>`}
+  <p class="muted" style="margin-top:8px">Runway = fresh usable questions ÷ est. burn (${n(cov.perDay)}/day). The near-dup + type-spread guards keep variety; this flags a TYPE running low.</p>`;
+}
+
+// ── per-ARM A/B leaderboard (P2) ──────────────────────────────────────────────
+function armLeaderboard(l: any): string {
+  const arms = l?.rollups?.by_variant_arm || {};
+  const keys = Object.keys(arms);
+  if (!keys.length) return `<p class="muted">No per-arm rollups yet (need matured metrics; run scoring).</p>`;
+  const minN = l?.conventions?.min_n ?? 3;
+  const ranked = keys
+    .map((k) => ({ arm: k, ...(arms[k] || {}) }))
+    .sort((a: any, b: any) => {
+      const am = a.median_eng_rate;
+      const bm = b.median_eng_rate;
+      if (am == null && bm == null) return (b.n_with_metrics ?? 0) - (a.n_with_metrics ?? 0);
+      if (am == null) return 1;
+      if (bm == null) return -1;
+      return bm - am;
+    });
+  const leader = ranked.find((r: any) => (r.n_with_metrics ?? 0) >= minN && r.median_eng_rate != null);
+  const rows = ranked
+    .map((r: any, i: number) => {
+      const isLeader = !!leader && r.arm === leader.arm;
+      const enough = (r.n_with_metrics ?? 0) >= minN;
+      return `<tr class="${isLeader ? "front" : ""}"><td>${i + 1}</td><td>${esc(r.arm)}${isLeader ? ' <span class="star">★ leader</span>' : ""}${!enough ? ' <span class="muted">(low n)</span>' : ""}</td>
+        <td>${n(r.n_posts)}</td><td>${n(r.n_with_metrics)}</td><td>${r.median_eng_rate != null ? esc(r.median_eng_rate) + "%" : "—"}</td><td>${n(r.avg_reach)}</td></tr>`;
+    })
+    .join("");
+  return `<p class="muted">Ranked by median engagement rate (arms with n≥${esc(minN)} matured posts lead; "low n" arms are shown but not crowned). This ARM-level cut is what the default-promotion engine compares against the control.</p>
+    <table class="tbl"><thead><tr><th>#</th><th>arm</th><th>posts</th><th>w/ metrics</th><th>median eng</th><th>avg reach</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+// ── published-post map — off the reconcile-backfilled native ids/permalinks ────
+function publishedMap(db: any): string {
+  const posts: any[] = Array.isArray(db?.posts) ? db.posts : [];
+  const pub = posts.filter((p) => p && (p.platform_post_id || p.permalink || (p.post_state && p.post_state !== "draft")));
+  if (!pub.length) {
+    return `<p class="muted">No published posts mapped yet. Once a human publishes a draft, <code>sffs_reconcile</code> back-fills its native id + permalink + posted_at here (off ab-database.json) — the data that closes the A/B learning loop for the agent's own posts.</p>`;
+  }
+  const rows = pub
+    .slice(-80)
+    .reverse()
+    .map((p) => {
+      const m = p.metrics || {};
+      const link = p.permalink ? `<a href="${esc(p.permalink)}" target="_blank" rel="noopener">link</a>` : "—";
+      const arm = p.variant?.arm || p.variant?.label || p.experiment?.arm || "—";
+      return `<tr>
+        <td>${esc(p.platform || "—")}</td>
+        <td class="muted">${esc(p.posted_at || "—")}</td>
+        <td>${link}</td>
+        <td>${esc(arm)}</td>
+        <td class="muted">${esc(String(p.platform_post_id ?? "—")).slice(0, 20)}</td>
+        <td>${m.eng_rate != null ? esc(m.eng_rate) + "%" : "—"}</td>
+      </tr>`;
+    })
+    .join("");
+  return `<p class="muted">${pub.length} published/reconciled post(s). Native id + permalink + posted_at are back-filled by <code>sffs_reconcile</code> (matching publer_post_id → the published post).</p>
+    <table class="tbl"><thead><tr><th>platform</th><th>posted at</th><th>permalink</th><th>arm</th><th>native id</th><th>eng</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+// ── spend / cost-governor snapshot (P2; read-only) ────────────────────────────
+function spendMetric(label: string, m: any, fmt: (v: any) => string): string {
+  if (!m || typeof m !== "object") return `<span class="hpill"><b>${esc(label)}</b>—</span>`;
+  const over = m.over === true;
+  const ceil = m.ceiling ? fmt(m.ceiling) : "∞";
+  return `<span class="hpill" ${over ? 'style="background:var(--coral);color:#fff"' : ""}><b>${esc(label)}${over ? " ⛔ OVER" : ""}</b>${fmt(m.value)} / ${esc(ceil)}</span>`;
+}
+function spendPanel(snap: any): string {
+  if (!snap || typeof snap !== "object" || !snap.metrics) {
+    return `<p class="muted">No spend snapshot yet. The cost governor writes <code>snapshot.json</code> during LLM/subagent activity; this panel shows the day's estimated $/tokens/spawns + concurrency vs their HIGH-but-finite ceilings. Spend brake only — DRAFT-ONLY posting is unaffected.</p>`;
+  }
+  const met = snap.metrics || {};
+  const usd = (v: any) => `$${Number(v ?? 0).toFixed(2)}`;
+  const int = (v: any) => Number(v ?? 0).toLocaleString("en-US");
+  const kill = snap.kill_switch || {};
+  const killPill = kill.engaged
+    ? `<span class="hpill" style="background:var(--coral);color:#fff"><b>kill-switch</b>ENGAGED${kill.reason ? " · " + esc(String(kill.reason).slice(0, 40)) : ""}</span>`
+    : `<span class="hpill" style="background:var(--green)"><b>kill-switch</b>clear</span>`;
+  const ceilNote = snap.ceiling_reason ? `<div class="reject">ceiling: ${esc(snap.ceiling_reason)}</div>` : "";
+  return `<div class="health" style="margin-bottom:8px">
+    ${spendMetric("est. spend (day)", met.usd, usd)}
+    ${spendMetric("tokens (day)", met.tokens, int)}
+    ${spendMetric("subagent spawns (day)", met.spawns, int)}
+    ${spendMetric("concurrent children", met.concurrent_children, int)}
+    ${killPill}
+    <span class="hpill"><b>as of</b>${esc(snap.day || "—")}</span>
+  </div>${ceilNote}
+  <p class="muted">Estimated (the gateway doesn't surface exact usage); the spawn/concurrency caps + kill-switch are exact. A SPEND brake only — orthogonal to the DRAFT-ONLY posting lock.</p>`;
 }
 
 // ── CONTENT default-promotion view (read-only; approval is a HUMAN CLI action) ─
@@ -308,10 +417,16 @@ export interface PageData {
   /** default-promotion queue + current content defaults (optional; degrades to empty). */
   proposals?: ProposalsQueue;
   defaults?: ContentDefaultsFile;
+  /** question-bank coverage + days-of-runway (optional; degrades to empty). */
+  coverage?: BankCoverage;
+  /** cost-governor spend snapshot (optional; degrades to "no snapshot"). */
+  snapshot?: any;
 }
 
 export function page(opts: PageData): string {
   const { runs, db, l, bank, schedule, kill, disk, selected, pr, logItems } = opts;
+  const cov: BankCoverage =
+    opts.coverage ?? { total: 0, usable: bank.usable, fresh: bank.fresh, used: bank.used, freshPct: 0, perDay: 0, runwayDays: null, byType: [] };
   const cur = selected ? runs.find((r) => r.run_id === selected) || opts.latest : opts.latest;
   const s = cur?.summary || { planned: 0, drafted: 0, rejected: 0, failed: 0 };
   const drafts = (cur?.videos || []).filter((v) => v.status === "drafted");
@@ -397,6 +512,7 @@ ${killBanner(kill)}
     <div class="kpi"><div class="v">${draftTotal}</div><div class="k">publer drafts</div></div>
     <div class="kpi"><div class="v">${s.rejected}</div><div class="k">rejected (gates)</div></div>
     <div class="kpi"><div class="v">${bank.fresh}</div><div class="k">fresh questions</div></div>
+    <div class="kpi"><div class="v">${cov.runwayDays == null ? "—" : cov.runwayDays}</div><div class="k">days runway</div></div>
   </div>
 
   <div class="card">
@@ -417,6 +533,11 @@ ${killBanner(kill)}
   </div>
 
   <div class="card">
+    <h2><span class="pin">BANK</span> Question-bank coverage &amp; days-of-runway</h2>
+    ${bankCoverageCard(cov)}
+  </div>
+
+  <div class="card">
     <h2><span class="pin">A/B</span> Designed batch &amp; quality gates</h2>
     ${videos}
   </div>
@@ -427,14 +548,29 @@ ${killBanner(kill)}
   </div>
 
   <div class="card">
+    <h2><span class="pin">SPEND</span> Cost governor — daily spend vs ceilings</h2>
+    ${spendPanel(opts.snapshot)}
+  </div>
+
+  <div class="card">
     <h2><span class="pin">DATA</span> A/B results — analytics per post</h2>
     ${analyticsTable(db)}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">MAP</span> Published posts — permalinks &amp; native ids (reconciled)</h2>
+    ${publishedMap(db)}
   </div>
 
   <div class="card">
     <h2><span class="pin">LEARN</span> Front-runners &amp; variant-family rollups</h2>
     ${frontRunners(l)}
     ${rollupTable(l)}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">ARM</span> Per-arm A/B leaderboard</h2>
+    ${armLeaderboard(l)}
   </div>
 
   <div class="card">

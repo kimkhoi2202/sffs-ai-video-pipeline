@@ -690,6 +690,9 @@ def post_llm_call(**kwargs: Any) -> None:
         response = kwargs.get("assistant_response")
         response = response if isinstance(response, str) else ""
         record_llm_usage(estimate_tokens(last_user), estimate_tokens(response), model)
+        # Refresh the observable spend snapshot (snapshot.json) the read-only
+        # dashboard spend panel reads. Best-effort + idempotent; never raises.
+        write_snapshot()
     except Exception:
         pass
 
@@ -700,6 +703,7 @@ def subagent_start(**kwargs: Any) -> None:
         cid = kwargs.get("child_session_id") or kwargs.get("child_subagent_id") or ""
         note_child_start(cid)
         record_spawn(1)
+        write_snapshot()  # keep the spend-panel snapshot current (best-effort)
     except Exception:
         pass
 
@@ -709,5 +713,6 @@ def subagent_stop(**kwargs: Any) -> None:
     try:
         cid = kwargs.get("child_session_id") or kwargs.get("child_subagent_id") or ""
         note_child_stop(cid)
+        write_snapshot()  # keep the spend-panel snapshot current (best-effort)
     except Exception:
         pass
