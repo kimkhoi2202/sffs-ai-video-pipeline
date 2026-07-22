@@ -627,3 +627,71 @@ SFFS_SCORE_ROLLUP_SCHEMA = {
         "required": [],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# CYCLE — run ONE full DRAFT-ONLY A/B cycle end to end (ties all the tools
+# together by wrapping cycle.ts runCycle). It can ONLY ever create DRAFTS
+# (createDraftOnly), and it can NEVER push to main (HERMES_SKIP_GIT is forced).
+# No state/schedule/publish vocabulary is exposed (schema-as-guardrail).
+# ---------------------------------------------------------------------------
+
+SFFS_CYCLE_SCHEMA = {
+    "name": "sffs_cycle",
+    "description": (
+        "Run ONE full DRAFT-ONLY A/B quiz-video cycle end to end. In order: snapshot "
+        "do-not-touch (read-only) -> refresh scoring (ab-database.json + "
+        "learnings.json) -> design the A/B batch (rotating dimensions incl. the "
+        "narration family and progress-counter arms) -> per video [dedup -> validity "
+        "-> mark-used -> brand copy -> render -> render-sanity -> S3 upload -> create "
+        "a Publer DRAFT] -> verify do-not-touch (read-only). It can ONLY create "
+        "DRAFTS (never publishes or schedules a live post) and it can NEVER push to "
+        "main. Set preview=true to see the resolved run config WITHOUT running "
+        "anything (no network/render). Set dry_run=true (default) to run the pipeline "
+        "in DRY mode (design + gates + render, but NO S3 upload / NO Publer draft / "
+        "NO git push); dry_run=false runs a REAL draft-only cycle (also uploads to S3 "
+        "and creates Publer DRAFTS). Use 'target' to bound how many videos to make."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "dry_run": {
+                "type": "boolean",
+                "description": (
+                    "If true (default), the cycle runs in DRY mode: it designs, gates, "
+                    "and renders, but creates NO drafts, uploads nothing, and pushes "
+                    "nothing. If false, a REAL draft-only cycle (renders + S3 uploads + "
+                    "creates Publer DRAFTS). Never publishes/schedules; never pushes to main."
+                ),
+            },
+            "preview": {
+                "type": "boolean",
+                "description": (
+                    "If true, do NOT run the cycle — just validate and return the "
+                    "resolved run config (target, dry_run, skip_git). No network/render."
+                ),
+            },
+            "target": {
+                "type": "integer",
+                "description": (
+                    "How many videos to make (each a different A/B dimension). 1..50; "
+                    "defaults to the configured VIDEOS_PER_DAY (10). Fewer are produced "
+                    "if the bank lacks fresh questions (quality > volume)."
+                ),
+            },
+            "run_id": {
+                "type": "string",
+                "description": (
+                    "Resumable run id (also the per-video id prefix), e.g. a date like "
+                    "'2026-07-22'. Re-running the same id resumes (completed steps are "
+                    "skipped). Defaults to today's UTC date."
+                ),
+            },
+            "data_dir": {
+                "type": "string",
+                "description": "Override where renders/runs land (HERMES_DATA_DIR; defaults outside the repo).",
+            },
+        },
+        "required": [],
+    },
+}

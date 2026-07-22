@@ -164,7 +164,8 @@ def _parse_last_json(stdout: str) -> Optional[Dict[str, Any]]:
 
 def _bridge_env() -> Dict[str, str]:
     """Env for the Node bridge — ensures gates.ts can load the LLM (TFY) key for
-    the ``validity`` / ``copy`` judges (``dedup`` / ``render`` need no key)."""
+    the ``validity`` / ``copy`` judges (``dedup`` / ``render`` need no key), and
+    resolves ffprobe for the ``render`` sanity gate."""
     env = os.environ.copy()
     if not env.get("HERMES_ENV_FILE"):
         home = env.get("HERMES_HOME")
@@ -172,6 +173,13 @@ def _bridge_env() -> Dict[str, str]:
             candidate = Path(home) / ".env"
             if candidate.exists():
                 env["HERMES_ENV_FILE"] = str(candidate)
+    # The render-sanity gate shells to ffprobe (gates.ts default /usr/local/bin/
+    # ffprobe). Resolve the real ffprobe on PATH so the gate works on any host
+    # (e.g. Apple Silicon: /opt/homebrew/bin/ffprobe).
+    if not env.get("FFPROBE"):
+        ffprobe = shutil.which("ffprobe")
+        if ffprobe:
+            env["FFPROBE"] = ffprobe
     return env
 
 
