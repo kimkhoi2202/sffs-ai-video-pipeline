@@ -439,3 +439,105 @@ SFFS_QUESTIONS_SCHEMA = {
         "required": [],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# RENDER — turn a video plan's props into an mp4 (DRAFT media). Wraps render.ts
+# renderVideo (+ narration.ts cloned-voice VO). It produces a LOCAL file only; no
+# create / schedule / publish / delete / update path is reachable (see render.py +
+# bridge/render.ts). No state/schedule/publish vocabulary is exposed (the
+# narration ARM lives under the non-state key `mode`; schema-as-guardrail).
+# ---------------------------------------------------------------------------
+
+SFFS_RENDER_SCHEMA = {
+    "name": "sffs_render",
+    "description": (
+        "Render a quiz short (the self-contained HermesQuiz composition, 1080x1920, "
+        "30fps) to an mp4. Pass the render 'props' from an sffs_design plan (or an "
+        "equivalent object) and an optional 'id' (the output filename stem). If "
+        "props.narration.mode is 'full' / 'no-question-vo' / 'no-options-vo', the "
+        "cloned-voice voiceover for that A/B arm is synthesized and muxed (needs "
+        "ELEVENLABS_API_KEY); 'none' (default) is music-only (no key needed). "
+        "Idempotent: an existing non-trivial render is reused unless force=true. "
+        "Returns {path, frames, reused, bytes}. This produces a LOCAL mp4 (DRAFT "
+        "media) only — it never uploads, posts, publishes, or schedules anything "
+        "(use sffs_upload_s3 then sffs_publer_draft next). Set dry_run=true to "
+        "validate the request without rendering (no network/Chromium/ffmpeg)."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string",
+                "description": (
+                    "Output filename stem (filesystem-safe: letters/digits/._-). "
+                    "Defaults to a UTC timestamp. Use the plan's video id (e.g. "
+                    "'2026-07-22-v01')."
+                ),
+            },
+            "props": {
+                "type": "object",
+                "description": (
+                    "The HermesQuiz render props (as produced by sffs_design plan): "
+                    "title/subtitle/outro/music, showProgress/progressStyle, reveal, "
+                    "countdownSec, the narration arm, and the questions."
+                ),
+                "properties": {
+                    "title": {"type": "string"},
+                    "subtitle": {"type": "string"},
+                    "outro": {"type": "string"},
+                    "music": {
+                        "type": "string",
+                        "description": "staticFile path to a music bed (e.g. 'audio/music/gameshow-fanfare.mp3').",
+                    },
+                    "showProgress": {"type": "boolean"},
+                    "progressStyle": {"type": "string", "enum": ["short", "full"]},
+                    "reveal": {
+                        "type": "string",
+                        "enum": ["all", "none", "last"],
+                        "description": "Answer-reveal mode: all / none (comment-for-answer) / last (cliffhanger).",
+                    },
+                    "countdownSec": {"type": "number", "description": "Per-question countdown seconds (tempo)."},
+                    "narration": {
+                        "type": "object",
+                        "description": "The cloned-voice A/B arm.",
+                        "properties": {
+                            "mode": {
+                                "type": "string",
+                                "enum": ["full", "none", "no-question-vo", "no-options-vo"],
+                                "description": "Voiceover arm; 'none' = music-only (default).",
+                            },
+                            "clips": {
+                                "type": "array",
+                                "items": {"type": "object"},
+                                "description": "Usually empty; the VO clips are synthesized at render time.",
+                            },
+                        },
+                    },
+                    "questions": {
+                        "type": "array",
+                        "items": {"type": "object"},
+                        "description": (
+                            "The questions to render, each {kind:'text'|'numseries', tier, "
+                            "prompt, answer, options?(text), seq?(numseries)}."
+                        ),
+                    },
+                },
+                "required": ["questions"],
+            },
+            "force": {
+                "type": "boolean",
+                "description": "If true, re-render (and re-synthesize VO) even if a prior render exists.",
+            },
+            "data_dir": {
+                "type": "string",
+                "description": "Override where the mp4 lands (CONFIG.RENDERS_DIR = <data_dir>/renders).",
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, validate the request WITHOUT rendering (no network/Chromium/ffmpeg).",
+            },
+        },
+        "required": ["props"],
+    },
+}

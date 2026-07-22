@@ -12,13 +12,14 @@ Safety core (belt AND suspenders, in three layers):
     carrying publish / schedule / go-live / post-mutation intent.
 
 No publish or schedule path is imported or exposed anywhere in this plugin. Later
-iterations add render / score / design / quality-gate / upload tools, skills,
-cron, the cost governor, and the software-factory subagents.
+iterations add score-rollup / upload tools, skills, cron, the cost governor, and
+the software-factory subagents (render / design / quality-gate / read tools are in
+place).
 """
 
 from __future__ import annotations
 
-from . import design, donottouch, draft_guard, gates, publish_guard, questions, reads, schemas
+from . import design, donottouch, draft_guard, gates, publish_guard, questions, reads, render, schemas
 
 
 def register(ctx) -> None:
@@ -101,6 +102,18 @@ def register(ctx) -> None:
         handler=questions.sffs_questions,
         emoji="❓",
         description="Select fresh never-repeated questions or read bank stats (read-only).",
+    )
+
+    # --- RENDER a quiz short to an mp4 (DRAFT media; produces a local file only). ---
+    # Wraps render.ts renderVideo (+ narration.ts cloned-voice VO arms); it can never
+    # create/publish/schedule/mutate a post. Uploading + drafting are separate steps.
+    ctx.register_tool(
+        name="sffs_render",
+        toolset="sffs",
+        schema=schemas.SFFS_RENDER_SCHEMA,
+        handler=render.sffs_render,
+        emoji="🎥",
+        description="Render a quiz short (HermesQuiz 1080x1920) to an mp4, with optional cloned-voice narration.",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---
