@@ -77,6 +77,10 @@ export const CONFIG = Object.freeze({
   CACHE_DIR: join(DATA_DIR, "cache"),
   AB_DB: join(REPO_DIR, "ab-testing", "ab-database.json"),
   LEARNINGS: join(REPO_DIR, "ab-testing", "learnings.json"),
+  // CONTENT baseline defaults + human-approved default-promotion policy (see defaults.ts).
+  CONTENT_DEFAULTS: join(REPO_DIR, "ab-testing", "content-defaults.json"),
+  // Durable default-promotion proposal queue (written by the Python promotion engine).
+  PROPOSALS: join(REPO_DIR, "ab-testing", "proposals.json"),
   USAGE: join(REPO_DIR, "content", "ab-test-usage.json"),
   BANK: join(REPO_DIR, "content", "master-question-bank.json"),
   BRAND_VOICE: join(REPO_DIR, "brand", "brand-voice.md"),

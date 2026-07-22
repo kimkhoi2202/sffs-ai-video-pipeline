@@ -778,3 +778,52 @@ SFFS_FACTORY_SCHEMA = {
         "required": [],
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# PROMOTE — the CONTENT default-promotion read-side. This tool DETECTS/LISTS/SHOWS
+# proposals where an A/B test arm beat the current default; it can NEVER approve or
+# apply one. Flipping a default is a HUMAN action via the sffs_promote_default CLI.
+# The schema is itself a guardrail: it exposes NO approve/reject/apply vocabulary,
+# so the autonomous agent has no way to change a default through this tool.
+# ---------------------------------------------------------------------------
+
+SFFS_PROMOTE_SCHEMA = {
+    "name": "sffs_promote",
+    "description": (
+        "Read the CONTENT default-promotion queue (the analog of the code factory's "
+        "gate, but for content defaults — and HUMAN-gated, never auto-applied). It "
+        "detects when an A/B TEST ARM clearly beats the current default (control) on "
+        "the configured metric with enough samples, and records a PROPOSAL to flip "
+        "that default. This tool is READ/DETECT ONLY: 'list' pending proposals, "
+        "'detect'/'refresh' to re-scan learnings.json and persist fresh proposals, "
+        "'show' one proposal by id, or 'status' for the current defaults + policy + "
+        "counts. It can NEVER approve, reject, or apply a proposal — flipping a "
+        "default is an explicit HUMAN action via `sffs_promote_default --approve <id>` "
+        "in a shell. It never posts, publishes, schedules, or mutates any post."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "action": {
+                "type": "string",
+                "enum": ["list", "detect", "refresh", "show", "status"],
+                "description": (
+                    "list (default) = show proposals; detect/refresh = re-scan the A/B "
+                    "memory and upsert fresh proposals into the queue; show = one "
+                    "proposal by id; status = current defaults + promotion policy + "
+                    "counts. (approve/reject are NOT available — human CLI only.)"
+                ),
+            },
+            "id": {
+                "type": "string",
+                "description": "Proposal id (required for action='show').",
+            },
+            "status": {
+                "type": "string",
+                "description": "Optional filter for action='list' (pending|approved|rejected|expired).",
+            },
+        },
+        "required": [],
+    },
+}

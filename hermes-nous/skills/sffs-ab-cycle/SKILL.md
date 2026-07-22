@@ -50,16 +50,31 @@ Use these when you want to drive or debug one stage at a time. Do them IN THIS O
 
 1. **Refresh memory (scoring).** `sffs_score_rollup { "dry_run": false }` — pull matured
    Publer analytics (~24h lag, last 30 days), refresh `ab-database.json` metrics, and
-   recompute `learnings.json` rollups + front-runners. (Read-only vs `sffs_score`, which
+   recompute `learnings.json` rollups + front-runners (now including `by_variant_arm`, the
+   per-arm rollup the default-promotion read-side needs). (Read-only vs `sffs_score`, which
    never writes.) This is what makes the loop self-improving across runs.
+
+1b. **Detect default promotions (read-only).** `sffs_promote { "action": "detect" }` — re-scan
+   `learnings.json` and record a PROPOSAL whenever a test ARM clearly beats the current
+   default (control) on the configured metric with enough samples. This ONLY writes the
+   proposals queue (`ab-testing/proposals.json`); it NEVER flips a default. Flipping a
+   default is a HUMAN action via `sffs_promote_default --approve <id>` (see "Default
+   promotions" below) — you may detect + surface, never approve.
 2. **Snapshot do-not-touch.** `sffs_donottouch_snapshot {}` — capture the ids of every
    existing scheduled + published post. Keep the returned `snapshot`.
 3. **Design the batch.** `sffs_design { "what": "plan", "run_id": "<date>", "target": 10 }`
    — one video per A/B dimension, biased by `learnings.json` front-runners, with FRESH
-   never-repeated questions and on-brand gated captions. Dimensions rotate through
-   progress-counter (hidden/verbose), answer-reveal, cliffhanger, tempo, length,
-   category-mix, hook, and the **narration family** (full / none / no-question-vo /
-   no-options-vo). (`what: "catalog"` lists the whole A/B space with no LLM call.)
+   never-repeated questions and on-brand gated captions. **Every video gets the current
+   DEFAULTS unless it is the arm under test:** narration defaults to `full` (narrate every
+   video) and the ending defaults to `cliffhanger` (reveal the early questions, withhold the
+   last + comment-CTA, no score screen; on a 1-question video this collapses to withholding
+   that single verdict + comment-CTA). The **control/baseline** video is exactly full
+   narration + cliffhanger. Arms DEVIATE one axis from those defaults: the narration family
+   (`no-narration` / `no-question-vo` / `no-options-vo`) tests the narration axis; the ending
+   family (`full-reveal` / `no-answer`) tests the ending axis; progress-counter / tempo /
+   length / category-mix / hook test their own axis while keeping both defaults. The current
+   defaults live in `ab-testing/content-defaults.json`. (`what: "catalog"` lists the whole
+   A/B space with no LLM call — control has `deviates:"none"`, arms show which axis they test.)
 4. **For each planned video**, fail-closed:
    a. `sffs_gates { "what": "dedup", ... }` — never-repeat check. Fail -> DROP.
    b. `sffs_gates { "what": "validity", ... }` — LLM rubric (one unambiguous answer, factual,
@@ -86,6 +101,26 @@ Use these when you want to drive or debug one stage at a time. Do them IN THIS O
   loop learns which A/B arms win over time.
 - Also record a one-line takeaway of each cycle (drafts created, any new front-runner) in your
   own MEMORY so future runs have the narrative, not just the numbers.
+
+## Default promotions (HUMAN-gated — the content analog of the code gate)
+
+The loop A/B-tests every axis against the current DEFAULT (the control). When a test arm
+clearly beats the default, that is a candidate to become the NEW default — but flipping a
+default is a **human** action, never the loop's (the content analog of the software factory's
+two-key CODE gate, kept clearly separate from it):
+
+- **Detect (you, read-only):** `sffs_promote { "action": "detect" }` scans `learnings.json`
+  `rollups.by_variant_arm` and records a proposal in `ab-testing/proposals.json` when an arm
+  beats the control by the config-driven margin (default: `median_eng_rate`, `min_sample` 5 on
+  BOTH sides, `+1.0pp` absolute AND `+20%` relative). Thresholds live in
+  `ab-testing/content-defaults.json` → `promotion`. `sffs_promote { "action": "list" }` shows
+  pending proposals; `"show"`/`"status"` for details. **You may detect + surface only.**
+- **Approve/reject (HUMAN, in a shell):** a human runs
+  `hermes-nous/scripts/sffs_promote_default --approve <id>` to flip the config default (takes
+  effect next design pass, logged to `content-defaults.json` history + `learnings.json`
+  decisions), or `--reject <id> --reason "…"` to keep the arm testing. The autonomous agent
+  and the `sffs_promote` tool can NEVER approve — the tool refuses approve/reject and points to
+  the CLI. Pending proposals also show on the read-only dashboard ("Pending default changes").
 
 ## Cadence
 

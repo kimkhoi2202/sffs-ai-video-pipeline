@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-22T00:00:00.000Z",
+  "campaign": "Smart Fella or Fart Smella",
+  "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the human-approved default-promotion policy. Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect + record proposals. The ONLY writer of `defaults`/`history` is the HUMAN approval CLI (sffs_promote_default --approve <id>); the autonomous loop never flips a default. This is the CONTENT analog of the code factory's two-key gate and is deliberately SEPARATE from it (that gate is scripts/gate/*; this is human-only, no auto-apply).",
+  "defaults": {
+    "narration": "full",
+    "ending": "cliffhanger"
+  },
+  "defaults_meaning": {
+    "narration": "Arm label of the current NARRATION default. 'full' = the cloned-voice host reads every question + options aloud on EVERY video. Deviation test arms: no-narration | no-question-vo | no-options-vo.",
+    "ending": "Arm label of the current ENDING default. 'cliffhanger' = reveal the early questions but leave the LAST one unresolved + comment-CTA, no score screen (on a 1-question video this collapses to withholding that single verdict + comment-CTA). Deviation test arms: full-reveal | no-answer."
+  },
+  "promotion": {
+    "metric": "median_eng_rate",
+    "metric_units": "percent (median engagement rate; matches ab-testing/learnings.json conventions.primary_metric)",
+    "min_sample": 5,
+    "min_abs_improvement_pp": 1.0,
+    "min_rel_improvement": 0.2,
+    "incumbent_label": "control",
+    "notes": "A test arm is PROPOSED as the new default only when it beats the incumbent 'control' (the current defaults) with CLEAR signal: BOTH the challenger AND the incumbent have >= min_sample posts-with-metrics, AND the challenger's median_eng_rate exceeds the incumbent by >= min_abs_improvement_pp percentage points AND by >= min_rel_improvement (relative). min_sample=5 is deliberately stricter than learnings.json front-runner min_n=3 because flipping a sticky DEFAULT is a bigger decision than naming a transient front-runner. All four values are config-driven here."
+  }
+}

@@ -33,7 +33,10 @@
  * EXIT CODES: 0 ok · 1 runtime error · 2 bad stdin JSON · 3 bad usage.
  * Diagnostics -> stderr; the machine-readable result -> one JSON line on stdout.
  */
-import { planBatch, dimensionCatalog } from "../../hermes/src/design.ts";
+// `catalog` is dependency-free (dimensions.ts pulls only node builtins), so it runs
+// even where node_modules is absent. `plan` needs the LLM/gates chain (design.ts ->
+// openai etc.), so it is DYNAMICALLY imported only inside the plan branch below.
+import { dimensionCatalog } from "../../hermes/src/dimensions.ts";
 
 async function readStdin(): Promise<string> {
   const chunks: Buffer[] = [];
@@ -103,6 +106,7 @@ async function main(): Promise<void> {
   }
 
   // DESIGN ONLY: selects fresh questions + generates gated captions. No post I/O.
+  const { planBatch } = await import("../../hermes/src/design.ts");
   const plans = await planBatch(runId, target);
   console.log(JSON.stringify({ ok: true, run_id: runId, target, planned: plans.length, plans }));
 }

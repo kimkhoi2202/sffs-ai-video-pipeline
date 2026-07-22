@@ -97,16 +97,20 @@ export type HermesQuizProps = {
   narration?: Narration;
 };
 
+// Preview defaults mirror the loop's CONTENT defaults (see hermes/src/defaults.ts):
+// full narration + cliffhanger ending (reveal="last"; the last verdict is withheld
+// with a comment-CTA). clips[] are empty here so Studio preview is music-only; the
+// loop fills clips at render for the narrated arms.
 export const DEFAULT_PROPS: HermesQuizProps = {
   title: "SMART or FART?",
   subtitle: "how many can you get?",
-  outro: "comment your score \uD83D\uDC47  follow for more",
+  outro: "comment your answer \uD83D\uDC47  follow for more",
   music: "audio/music/gameshow-fanfare.mp3",
   showProgress: true,
   progressStyle: "short",
-  reveal: "all",
+  reveal: "last",
   countdownSec: 5,
-  narration: { mode: "none", clips: [] },
+  narration: { mode: "full", clips: [] },
   questions: [
     { kind: "text", tier: "ODD ONE OUT", prompt: "which one does not belong?", options: ["apple", "banana", "carrot", "grape"], answer: "carrot" },
     { kind: "numseries", tier: "NUMBER SERIES", prompt: "what comes next?", seq: ["5", "10", "15", "20"], answer: "25" },
