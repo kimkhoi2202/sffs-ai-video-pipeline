@@ -1,0 +1,5 @@
+# Local, regenerable gate runtime output — never committed.
+logs/
+*.log
+__pycache__/
+.pytest_cache/
