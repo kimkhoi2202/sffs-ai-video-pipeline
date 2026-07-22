@@ -10,9 +10,10 @@
  *   category mix (verbal / quantitative / mixed), and hook/opener style. Hashtag
  *   set (A/B/C) rotates as a secondary dimension on every video.
  *
- * NOTE: the "narration" family (full / no-question-vo / no-options-vo) needs the
- * cloned-voice TTS render (render-ab.ts) and is intentionally NOT in this set — it
- * is listed as a TODO for the full-render enrichment.
+ * The "narration" family (full / none / no-question-vo / no-options-vo) is now
+ * wired into the self-contained composition: hermes/src/render.ts synthesizes the
+ * cloned-voice VO (voice/tts_batch.py) per question and HermesQuiz muxes it, so
+ * these arms render on the loop's own path (no dependency on render-ab.ts).
  */
 import { readJSON, type HermesQ, type VideoPlan } from "./state.ts";
 import { candidateQuestions } from "./questions.ts";
@@ -21,6 +22,7 @@ import { chat } from "./llm.ts";
 import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
+import { type NarrationMode } from "./narration.ts";
 
 type RevealMode = "all" | "none" | "last";
 
@@ -36,6 +38,7 @@ interface DimSpec {
   reveal: RevealMode;
   countdownSec: number;
   hook?: { title: string; subtitle: string };
+  narration?: NarrationMode; // cloned-voice VO arm (default: none = music-only)
 }
 
 const BASE = {
@@ -65,6 +68,12 @@ const DIMENSIONS: DimSpec[] = [
     rationale: "hard-challenge opener vs neutral opener",
     hook: { title: "ONLY 1% PASS", subtitle: "can you get all 3?" },
   },
+  // ── Narration family (cloned-voice VO on/off) — the "don't narrate" A/B test.
+  // Verbal/text 3Q so every question has A–D options (clean stem vs options split).
+  { ...BASE, dimension: "narration", arm: "full-narration", rationale: "host reads each question + options aloud (cloned voice) vs silent baseline", narration: "full", category: "verbal", kinds: ["text"] },
+  { ...BASE, dimension: "narration", arm: "no-narration", rationale: "music-only control (no voiceover)", narration: "none", category: "verbal", kinds: ["text"] },
+  { ...BASE, dimension: "narration", arm: "no-question-vo", rationale: "voice the OPTIONS only; the question shows but is not read", narration: "no-question-vo", category: "verbal", kinds: ["text"] },
+  { ...BASE, dimension: "narration", arm: "no-options-vo", rationale: "voice the QUESTION only; the options show but are not read", narration: "no-options-vo", category: "verbal", kinds: ["text"] },
   { ...BASE, dimension: "control", arm: "baseline", rationale: "baseline: short counter, reveal all, 5s, mixed 3Q" },
 ];
 
@@ -191,11 +200,13 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
         progressStyle: spec.progressStyle,
         reveal: spec.reveal,
         countdownSec: spec.countdownSec,
+        // clips[] are synthesized at render time by hermes/src/render.ts; "none" = music-only.
+        narration: { mode: spec.narration ?? "none", clips: [] },
         questions: renderQuestions,
       },
     };
     plans.push(plan);
-    decision(`PLAN ${id}: dimension=${spec.dimension} arm=${spec.arm} q=${chosen.length} tags=${hashtagSet}`, {
+    decision(`PLAN ${id}: dimension=${spec.dimension} arm=${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${spec.narration ?? "none"}`, {
       questions: chosen.map((q) => q.tier),
     });
   }

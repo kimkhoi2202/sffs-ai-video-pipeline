@@ -63,6 +63,11 @@ renders.nosync/.trash-old/
 # regenerable from their round JSON via TTS, so keep them out of git.
 remotion/public/audio/rounds/
 
+# Hermes loop's per-video cloned-voice VO (question/options narration). Written by
+# hermes/src/narration.ts -> tts_batch.py at render time and muxed by HermesQuiz;
+# regenerable + potentially large, so keep it out of git (never contains secrets).
+remotion/public/audio/hermes-vo/
+
 # Fresh backup takes the voice scripts write next to the active clips.
 voice/narration/*.bak
 voice/narration/*.bak.mp3

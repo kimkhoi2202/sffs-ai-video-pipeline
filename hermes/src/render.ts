@@ -8,6 +8,7 @@ import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
+import { generateNarration, READ_TAIL, type NarrationMode } from "./narration.ts";
 
 const FPS = 30;
 const INTRO = 60;
@@ -21,13 +22,22 @@ function willReveal(reveal: string, i: number, n: number): boolean {
   return i === n - 1 ? false : true; // "last" = cliffhanger
 }
 
-/** MUST match remotion/hermes/HermesQuiz.tsx computeDuration exactly. */
+/** Frames of the spoken read window for question i (0 when there is no VO clip).
+ *  MUST match remotion/hermes/HermesQuiz.tsx readFrames exactly. */
+function readFrames(props: any, i: number): number {
+  const clip = (props?.narration?.clips ?? []).find((c: any) => c && c.index === i);
+  const dur = clip && Number(clip.durSec) > 0 ? Number(clip.durSec) : 0;
+  return dur > 0 ? Math.round(dur * FPS) + READ_TAIL : 0;
+}
+
+/** MUST match remotion/hermes/HermesQuiz.tsx computeDuration exactly (now
+ *  narration-aware: each question's read window precedes its countdown). */
 export function computeFrames(props: any): number {
   const qs = props.questions ?? [];
   const n = Math.max(1, qs.length);
   const cd = Math.round(Number(props.countdownSec ?? 5) * FPS);
   let sum = INTRO + OUTRO;
-  for (let i = 0; i < n; i++) sum += cd + (willReveal(props.reveal ?? "all", i, n) ? REVEAL : HOLD);
+  for (let i = 0; i < n; i++) sum += readFrames(props, i) + cd + (willReveal(props.reveal ?? "all", i, n) ? REVEAL : HOLD);
   return sum;
 }
 
@@ -41,6 +51,17 @@ export function renderVideo(id: string, props: any, opts: { force?: boolean } = 
   mkdirSync(CONFIG.RENDERS_DIR, { recursive: true });
   const out = join(CONFIG.RENDERS_DIR, `${id}.mp4`);
   const propsFile = join(CONFIG.RENDERS_DIR, `${id}.props.json`);
+
+  // Narration (cloned-voice question/options VO). Generate/reuse BEFORE computing
+  // frames (read windows change the duration) AND before the reuse check (so the
+  // caller's later computeFrames(v.props) sees the injected clips). Idempotent:
+  // tts_batch.py --skip-existing => zero API calls when the clips already exist.
+  const mode: NarrationMode = props?.narration?.mode ?? "none";
+  if (mode !== "none") {
+    const narr = generateNarration(id, props.questions ?? [], mode, { force: opts.force });
+    props.narration = { ...(props.narration ?? {}), mode, voiceId: narr.voiceId, clips: narr.clips };
+  }
+
   const frames = computeFrames(props);
   writeFileSync(propsFile, JSON.stringify(props));
 

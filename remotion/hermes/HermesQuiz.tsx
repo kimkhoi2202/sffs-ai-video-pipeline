@@ -57,6 +57,8 @@ const INTRO = 60;
 const OUTRO = 75;
 const REVEAL = 45; // frames held on the answer reveal
 const HOLD = 18; // frames held after countdown when NOT revealing (no-answer)
+const READ_TAIL = 12; // frames of breathing room after VO before the countdown starts
+// ^ MUST match hermes/src/narration.ts READ_TAIL (the loop derives frames the same way).
 
 export type RevealMode = "all" | "none" | "last";
 
@@ -69,6 +71,19 @@ export type HermesQuestion = {
   answer: string;
 };
 
+// ── Narration (cloned-voice question/options VO) ──────────────────────────────
+// The loop's render step fills `clips` (via hermes/src/narration.ts -> tts_batch.py)
+// before render; the composition just plays each clip and sizes the read window to
+// its measured duration. `mode` is the A/B arm; `clips` empty => music-only.
+export type NarrationMode = "full" | "none" | "no-question-vo" | "no-options-vo";
+export type NarrationClip = {
+  index: number; // question index (0-based)
+  src: string; // staticFile path under remotion/public
+  durSec: number; // measured VO duration
+  kind: "full" | "stem" | "options";
+};
+export type Narration = { mode: NarrationMode; voiceId?: string; clips: NarrationClip[] };
+
 export type HermesQuizProps = {
   title: string;
   subtitle: string;
@@ -79,6 +94,7 @@ export type HermesQuizProps = {
   progressStyle: "short" | "full"; // "Q1" vs "QUESTION 1 OF 3"
   reveal: RevealMode;
   countdownSec: number;
+  narration?: Narration;
 };
 
 export const DEFAULT_PROPS: HermesQuizProps = {
@@ -90,6 +106,7 @@ export const DEFAULT_PROPS: HermesQuizProps = {
   progressStyle: "short",
   reveal: "all",
   countdownSec: 5,
+  narration: { mode: "none", clips: [] },
   questions: [
     { kind: "text", tier: "ODD ONE OUT", prompt: "which one does not belong?", options: ["apple", "banana", "carrot", "grape"], answer: "carrot" },
     { kind: "numseries", tier: "NUMBER SERIES", prompt: "what comes next?", seq: ["5", "10", "15", "20"], answer: "25" },
@@ -103,8 +120,19 @@ const willReveal = (p: HermesQuizProps, i: number): boolean => {
   return i === p.questions.length - 1 ? false : true; // "last" = cliffhanger: reveal all but the last
 };
 
+/** The VO clip for question i (if any). */
+const clipFor = (p: HermesQuizProps, i: number): NarrationClip | undefined =>
+  p.narration?.clips?.find((c) => c.index === i);
+
+/** Frames of the spoken read window before the countdown (0 = no VO / music-only).
+ *  MUST match hermes/src/narration.ts readFramesFor (loop + render agree on frames). */
+const readFrames = (p: HermesQuizProps, i: number): number => {
+  const c = clipFor(p, i);
+  return c && c.durSec > 0 ? Math.round(c.durSec * FPS) + READ_TAIL : 0;
+};
+
 const qFrames = (p: HermesQuizProps, i: number): number =>
-  Math.round(p.countdownSec * FPS) + (willReveal(p, i) ? REVEAL : HOLD);
+  readFrames(p, i) + Math.round(p.countdownSec * FPS) + (willReveal(p, i) ? REVEAL : HOLD);
 
 export function computeDuration(p: HermesQuizProps): number {
   const n = Math.max(1, p.questions?.length ?? 0);
@@ -203,10 +231,11 @@ const Card: React.FC<{ label: string; text: string; correct: boolean; revealed: 
   );
 };
 
-const Countdown: React.FC<{ seconds: number; color: string }> = ({ seconds, color }) => {
+const Countdown: React.FC<{ seconds: number; color: string; startAt?: number }> = ({ seconds, color, startAt = 0 }) => {
   const frame = useCurrentFrame();
-  const remaining = Math.max(1, seconds - Math.floor(frame / FPS));
-  const pct = interpolate(frame, [0, seconds * FPS], [1, 0], { extrapolateRight: "clamp" });
+  const local = Math.max(0, frame - startAt); // countdown clock starts after the read window
+  const remaining = Math.max(1, seconds - Math.floor(local / FPS));
+  const pct = interpolate(local, [0, seconds * FPS], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "center", width: "100%" }}>
       <div
@@ -244,11 +273,15 @@ const QuestionScene: React.FC<{
   reveals: boolean;
   showProgress: boolean;
   progressStyle: "short" | "full";
-}> = ({ q, idx, total, countdownSec, reveals, showProgress, progressStyle }) => {
+  readFramesN: number; // spoken-read window before the countdown (0 = music-only)
+}> = ({ q, idx, total, countdownSec, reveals, showProgress, progressStyle, readFramesN }) => {
   const frame = useCurrentFrame();
   const bg = PALETTE[idx % PALETTE.length];
   const accent = PALETTE[(idx + 2) % PALETTE.length];
-  const revealed = reveals && frame >= countdownSec * FPS;
+  const cdFrames = Math.round(countdownSec * FPS);
+  const reading = frame < readFramesN; // host is reading the question/options
+  const counting = frame >= readFramesN && frame < readFramesN + cdFrames;
+  const revealed = reveals && frame >= readFramesN + cdFrames;
   const letters = ["A", "B", "C", "D"];
   const progressText = progressStyle === "full" ? `QUESTION ${idx + 1} OF ${total}` : `Q${idx + 1}`;
 
@@ -331,8 +364,11 @@ const QuestionScene: React.FC<{
         >
           answer: {q.answer}
         </div>
-      ) : frame < countdownSec * FPS ? (
-        <Countdown seconds={countdownSec} color={accent} />
+      ) : reading ? (
+        <ListenChip />
+      ) : counting ? (
+        // Countdown clock starts when the spoken read finishes (startAt=readFramesN).
+        <Countdown seconds={countdownSec} color={accent} startAt={readFramesN} />
       ) : (
         <div
           style={{
@@ -352,6 +388,32 @@ const QuestionScene: React.FC<{
         </div>
       )}
     </AbsoluteFill>
+  );
+};
+
+/** Shown while the host is reading the question/options aloud (narration read
+ *  window). A calm "listen" cue so viewers don't answer before the countdown. */
+const ListenChip: React.FC = () => {
+  const s = pop(2);
+  return (
+    <div
+      style={{
+        alignSelf: "center",
+        transform: `scale(${interpolate(s, [0, 1], [0.7, 1])})`,
+        fontFamily: DISPLAY,
+        fontSize: 54,
+        color: C.ink,
+        background: C.mint,
+        border: `7px solid ${C.ink}`,
+        boxShadow: HARD(10),
+        borderRadius: 22,
+        padding: "18px 40px",
+        textAlign: "center",
+        letterSpacing: 1,
+      }}
+    >
+      {"listen up \uD83D\uDD0A"}
+    </div>
   );
 };
 
@@ -381,25 +443,32 @@ const CenteredCard: React.FC<{ big: string; small?: string; bg: string }> = ({ b
 export const HermesQuiz: React.FC<HermesQuizProps> = (props) => {
   const total = computeDuration(props);
   const offs = offsets(props);
+  // Duck the music bed under the spoken voiceover so the host stays intelligible.
+  const hasVO = (props.narration?.clips?.length ?? 0) > 0;
   return (
     <AbsoluteFill style={{ background: C.cream }}>
-      <Audio src={staticFile(props.music)} volume={0.28} loop />
+      <Audio src={staticFile(props.music)} volume={hasVO ? 0.12 : 0.28} loop />
       <Sequence durationInFrames={INTRO}>
         <CenteredCard big={props.title} small={props.subtitle} bg={C.blue} />
       </Sequence>
-      {props.questions.map((q, i) => (
-        <Sequence key={i} from={offs[i]} durationInFrames={qFrames(props, i)}>
-          <QuestionScene
-            q={q}
-            idx={i}
-            total={props.questions.length}
-            countdownSec={props.countdownSec}
-            reveals={willReveal(props, i)}
-            showProgress={props.showProgress}
-            progressStyle={props.progressStyle}
-          />
-        </Sequence>
-      ))}
+      {props.questions.map((q, i) => {
+        const clip = clipFor(props, i);
+        return (
+          <Sequence key={i} from={offs[i]} durationInFrames={qFrames(props, i)}>
+            {clip ? <Audio src={staticFile(clip.src)} volume={1} /> : null}
+            <QuestionScene
+              q={q}
+              idx={i}
+              total={props.questions.length}
+              countdownSec={props.countdownSec}
+              reveals={willReveal(props, i)}
+              showProgress={props.showProgress}
+              progressStyle={props.progressStyle}
+              readFramesN={readFrames(props, i)}
+            />
+          </Sequence>
+        );
+      })}
       <Sequence from={total - OUTRO} durationInFrames={OUTRO}>
         <CenteredCard big="SMART FELLA?" small={props.outro} bg={C.coral} />
       </Sequence>
