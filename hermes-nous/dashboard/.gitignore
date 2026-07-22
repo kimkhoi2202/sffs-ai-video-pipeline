@@ -1,0 +1,9 @@
+# Never commit secrets or local runtime state for the dashboard.
+*.env
+.env
+.env.*
+!*.example
+*.log
+runs/
+node_modules/
+.DS_Store
