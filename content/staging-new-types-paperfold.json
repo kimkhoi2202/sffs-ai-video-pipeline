@@ -1,0 +1,94 @@
+{
+  "slug": "staging-new-types-paperfold",
+  "tier": "PAPER FOLDING",
+  "kind": "fold",
+  "category": "nonverbal",
+  "grade": "Grade 5 / CogAT Level 11",
+  "note": "STAGING ONLY — new PAPER FOLDING nonverbal type (kind: fold). NOT the master bank. Each item: a square sheet folded 1-2 times, one hole punched through the stack; the answer is the unfolded pattern = each punch mirrored across every crease. grid = 4x4 hole slots; cells are {r,c} with r,c in 0..3 (row 0 = top, col 0 = left). folds apply in order to the flat sheet: left/right = vertical crease (mirror left-right), up/down = horizontal crease (mirror top-bottom). The render script derives ansHoles = unfold(folds, punches, grid) and asserts it equals the option marked ansLetter, so the key is machine-verified.",
+  "questions": [
+    {
+      "id": 1,
+      "kind": "fold",
+      "category": "nonverbal",
+      "difficulty": "easy",
+      "tier": "PAPER FOLDING",
+      "countdown": 6,
+      "grid": 4,
+      "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+      "folds": ["left"],
+      "punches": [{ "r": 1, "c": 0 }],
+      "options": [
+        { "letter": "A", "holes": [{ "r": 1, "c": 0 }, { "r": 1, "c": 3 }] },
+        { "letter": "B", "holes": [{ "r": 1, "c": 0 }] },
+        { "letter": "C", "holes": [{ "r": 1, "c": 0 }, { "r": 1, "c": 1 }] },
+        { "letter": "D", "holes": [{ "r": 0, "c": 0 }, { "r": 3, "c": 0 }] }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "2 HOLES",
+      "explanation": "The fold works like a mirror, so the one hole copies across the crease to make two holes, one on each side."
+    },
+    {
+      "id": 2,
+      "kind": "fold",
+      "category": "nonverbal",
+      "difficulty": "easy",
+      "tier": "PAPER FOLDING",
+      "countdown": 6,
+      "grid": 4,
+      "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+      "folds": ["up"],
+      "punches": [{ "r": 0, "c": 1 }],
+      "options": [
+        { "letter": "A", "holes": [{ "r": 0, "c": 1 }] },
+        { "letter": "B", "holes": [{ "r": 0, "c": 1 }, { "r": 3, "c": 1 }] },
+        { "letter": "C", "holes": [{ "r": 0, "c": 1 }, { "r": 1, "c": 1 }] },
+        { "letter": "D", "holes": [{ "r": 0, "c": 1 }, { "r": 0, "c": 2 }] }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "2 HOLES",
+      "explanation": "Folding top to bottom is a mirror, so the top hole copies straight down to make a matching pair."
+    },
+    {
+      "id": 3,
+      "kind": "fold",
+      "category": "nonverbal",
+      "difficulty": "medium",
+      "tier": "PAPER FOLDING",
+      "countdown": 7,
+      "grid": 4,
+      "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+      "folds": ["left", "up"],
+      "punches": [{ "r": 0, "c": 0 }],
+      "options": [
+        { "letter": "A", "holes": [{ "r": 0, "c": 0 }, { "r": 0, "c": 3 }] },
+        { "letter": "B", "holes": [{ "r": 0, "c": 0 }, { "r": 0, "c": 3 }, { "r": 3, "c": 0 }, { "r": 3, "c": 3 }] },
+        { "letter": "C", "holes": [{ "r": 0, "c": 0 }] },
+        { "letter": "D", "holes": [{ "r": 0, "c": 0 }, { "r": 3, "c": 3 }] }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "4 CORNERS",
+      "explanation": "Two folds make two mirror lines, so the corner hole becomes four holes, one in every corner."
+    },
+    {
+      "id": 4,
+      "kind": "fold",
+      "category": "nonverbal",
+      "difficulty": "hard",
+      "tier": "PAPER FOLDING",
+      "countdown": 8,
+      "grid": 4,
+      "prompt": "WHAT DOES IT LOOK LIKE UNFOLDED?",
+      "folds": ["left", "up"],
+      "punches": [{ "r": 1, "c": 1 }],
+      "options": [
+        { "letter": "A", "holes": [{ "r": 1, "c": 1 }] },
+        { "letter": "B", "holes": [{ "r": 1, "c": 1 }, { "r": 1, "c": 2 }] },
+        { "letter": "C", "holes": [{ "r": 1, "c": 1 }, { "r": 1, "c": 2 }, { "r": 2, "c": 1 }, { "r": 2, "c": 2 }] },
+        { "letter": "D", "holes": [{ "r": 0, "c": 0 }, { "r": 0, "c": 3 }, { "r": 3, "c": 0 }, { "r": 3, "c": 3 }] }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "4 IN CENTER",
+      "explanation": "The hole sits next to the center, so its four copies land in a tight block around the middle, not in the corners."
+    }
+  ]
+}

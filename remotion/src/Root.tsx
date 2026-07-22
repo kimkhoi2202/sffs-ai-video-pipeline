@@ -9,6 +9,7 @@ import { Round15Slice } from "./slice/Round15Slice";
 import { SEG, TOTAL as SLICE_TOTAL } from "./slice/timeline";
 import { Intro } from "./scenes/Intro";
 import { NonverbalPreview } from "./preview/NonverbalPreview";
+import { PaperFoldPreview } from "./preview/PaperFoldPreview";
 import { MascotPoc, MASCOT_POC_DURATION } from "./mascot/MascotPoc";
 import { MascotShort } from "./mascot/MascotShort";
 
@@ -70,6 +71,16 @@ export const RemotionRoot: React.FC = () => {
 
       {/* Static contact sheet of the expanded nonverbal vocabulary (still-only). */}
       <Composition id="NonverbalPreview" component={NonverbalPreview} durationInFrames={1} fps={30} width={1920} height={1600} />
+
+      {/* DEV still: PAPER FOLDING plate/reveal for fast visual iteration (new type).
+          Props: {"which":0|1,"mode":"read"|"reveal"}. Not part of any cut. */}
+      <Composition
+        id="PaperFoldPreview"
+        component={PaperFoldPreview}
+        durationInFrames={1}
+        defaultProps={{ which: 0, mode: "read" as const }}
+        {...portrait}
+      />
 
       {/* POC: lip-synced talking brain-mascot narrator (Rhubarb-driven visemes). */}
       <Composition id="MascotPoc" component={MascotPoc} durationInFrames={MASCOT_POC_DURATION} {...portrait} />
