@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T04:26:15.684Z",
+  "updated_at": "2026-07-22T14:04:53.704Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -71,26 +71,26 @@
       "intro-promo": {
         "n_posts": 2,
         "n_with_metrics": 2,
-        "median_eng_rate": 5.26,
-        "avg_reach": 245
+        "median_eng_rate": 5.23,
+        "avg_reach": 249.5
       },
       "standard": {
         "n_posts": 9,
         "n_with_metrics": 9,
-        "median_eng_rate": 2.69,
-        "avg_reach": 128
+        "median_eng_rate": 2.62,
+        "avg_reach": 130
       },
       "cliffhanger": {
-        "n_posts": 4,
+        "n_posts": 6,
         "n_with_metrics": 2,
-        "median_eng_rate": 3.35,
-        "avg_reach": 199
+        "median_eng_rate": 4.04,
+        "avg_reach": 380
       },
       "no-answer": {
         "n_posts": 3,
-        "n_with_metrics": 1,
-        "median_eng_rate": 0,
-        "avg_reach": 116
+        "n_with_metrics": 2,
+        "median_eng_rate": 0.94,
+        "avg_reach": 113
       },
       "dont-narrate": {
         "n_posts": 6,
@@ -115,37 +115,67 @@
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
-      }
-    },
-    "by_platform": {
-      "instagram": {
-        "n_posts": 14,
-        "n_with_metrics": 6,
-        "median_eng_rate": 0.81,
-        "avg_reach": 117.5
       },
-      "tiktok": {
-        "n_posts": 16,
-        "n_with_metrics": 8,
-        "median_eng_rate": 3.74,
-        "avg_reach": 272.5
-      }
-    },
-    "by_hashtag_set": {
-      "B": {
-        "n_posts": 5,
+      "hook": {
+        "n_posts": 2,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
       },
-      "A": {
+      "length": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "control": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "category-mix": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      },
+      "tempo": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
+      }
+    },
+    "by_platform": {
+      "instagram": {
+        "n_posts": 20,
+        "n_with_metrics": 6,
+        "median_eng_rate": 0.8,
+        "avg_reach": 119
+      },
+      "tiktok": {
+        "n_posts": 22,
+        "n_with_metrics": 9,
+        "median_eng_rate": 3.85,
+        "avg_reach": 291
+      }
+    },
+    "by_hashtag_set": {
+      "B": {
         "n_posts": 7,
+        "n_with_metrics": 1,
+        "median_eng_rate": 1.87,
+        "avg_reach": 107
+      },
+      "A": {
+        "n_posts": 11,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
       },
       "C": {
-        "n_posts": 4,
+        "n_posts": 10,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
@@ -260,6 +290,14 @@
       "pulled": 14,
       "updated": 14,
       "n_with_metrics": 14
+    },
+    {
+      "date": "2026-07-22",
+      "from": "2026-06-22",
+      "to": "2026-07-22",
+      "pulled": 21,
+      "updated": 15,
+      "n_with_metrics": 15
     }
   ]
 }
