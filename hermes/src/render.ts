@@ -44,8 +44,11 @@ import { join } from "node:path";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
 import { generateVO, type RevealBeatInput } from "./narration.ts";
+import { isShapeKind, type Figure } from "./state.ts";
 // Reuse the pipeline's canonical number-speller so "25" reads "twenty-five".
 import { n2w } from "../../content/gen-narration-scripts.mjs";
+// Pure paper-folding solver (no React) — derives fold.ansHoles for the reveal.
+import { unfold, type FoldDir, type HoleCell } from "../../remotion/src/data/fold.ts";
 
 const FPS = 30;
 /** Frames of breathing room after the VO finishes before the countdown starts.
@@ -141,12 +144,15 @@ const NOMINAL = { timesup: 1.2, score: 20.8, "outro-follow": 6.0, "outro-youtube
 // Question mapping: loop HermesQuiz question -> Short/FullVideo Question.
 // ---------------------------------------------------------------------------
 interface LoopQ {
-  kind: "text" | "numseries";
+  kind: "text" | "numseries" | "fold" | "matrix" | "analogy2" | "figure-odd";
   tier: string;
   prompt: string;
   options?: string[];
   seq?: string[];
   answer: string;
+  /** Structured render-ready payload for the shape/figure kinds (undefined for
+   *  text/numseries). Carried through from the bank via toHermesQ + design.ts. */
+  figure?: Figure;
 }
 
 /** A short, HONEST explanation for the reveal plate + reveal VO (no LLM, never a
@@ -193,13 +199,64 @@ interface Mapped {
   readVO: "full" | "none";
 }
 
+/**
+ * Reconstruct a Short/FullVideo shape Question (fold / matrix family) from a loop
+ * question's `figure` payload. Fills the Common fields (idx/countdown/tier + the
+ * never-read bg/tierColor/accent) and DERIVES the fields the bank omits:
+ *   fold.ansHoles = unfold(folds, punches, grid)     (each punch mirrored per crease)
+ *   matrix/analogy2/figure-odd.ans = the ansLetter option's `fig`.
+ * The figure is guaranteed present + structurally valid here (toHermesQ gate).
+ */
+function mapShapeQuestion(lq: LoopQ, common: Record<string, unknown>): any {
+  const f = lq.figure as Figure;
+  const base = {
+    ...common,
+    countdown: Number(f.countdown ?? common.countdown), // authored per-question solve time
+    tier: lq.tier,
+    ansLetter: f.ansLetter,
+    ansLabel: f.ansLabel,
+    explanation: f.explanation,
+    prompt: f.prompt,
+  };
+  if (f.kind === "fold") {
+    const grid = f.grid ?? 4;
+    const folds = (f.folds ?? []) as FoldDir[];
+    const punches = (f.punches ?? []) as HoleCell[];
+    return {
+      ...base,
+      kind: "fold",
+      grid,
+      folds,
+      punches,
+      options: (f.options ?? []).map((o) => ({ letter: o.letter, holes: o.holes ?? [] })),
+      ansHoles: unfold(folds, punches, grid),
+    };
+  }
+  // matrix-family: the correct figure is the ansLetter option's `fig`.
+  const options = (f.options ?? []).map((o) => ({ letter: o.letter, fig: o.fig }));
+  const ans = options.find((o) => o.letter === f.ansLetter)?.fig;
+  if (f.kind === "matrix") return { ...base, kind: "matrix", cells: f.cells ?? [], options, ans };
+  if (f.kind === "analogy2") return { ...base, kind: "analogy2", a: f.a, b: f.b, c: f.c, options, ans };
+  return { ...base, kind: "figure-odd", options, ans }; // figure-odd: options only
+}
+
 /** Map the loop's props (questions + reveal/ending + narration mode) onto the
  *  Short question shape + the reveal-VO plan + the variant toggles. Pure. */
-function mapProps(props: any): Mapped {
+export function mapProps(props: any): Mapped {
   const loopQs: LoopQ[] = (props.questions ?? []) as LoopQ[];
   const countdownSec = Number(props.countdownSec ?? 5);
   const ending = endingFor(props.reveal);
-  const mode: NarrationMode = (props?.narration?.mode as NarrationMode) ?? "none";
+  let mode: NarrationMode = (props?.narration?.mode as NarrationMode) ?? "none";
+  // SHAPE-SAFE NARRATION: shape options are FIGURES (not TTS-able). If any question
+  // is a shape kind and the requested mode would read the options ("full" reads
+  // stem+options, "no-question-vo" reads options), downgrade to "no-options-vo" so
+  // we voice only the PROMPT (+ the reveal ansLabel) and never synthesize option
+  // audio. "none" (music-only) is left untouched. This reuses the existing
+  // no-options-vo/none handling end to end (buildDurs/generateVO make no per-option
+  // clips because the mapped shape questions carry no text options).
+  if (loopQs.some((q) => isShapeKind(q.kind)) && (mode === "full" || mode === "no-question-vo")) {
+    mode = "no-options-vo";
+  }
   const readVO = mode === "none" ? "none" : "full";
   const revealIdxs = revealIndexes(loopQs.length, ending);
 
@@ -230,7 +287,7 @@ function mapProps(props: any): Mapped {
       answerSpoken = isNum(ansLabel) ? n2w(ansLabel) : String(ansLabel).toLowerCase();
       const explanation = explanationFor(lq, ansLabel);
       q = { ...common, ansLetter, ansLabel, explanation, kind: "text", question: lq.prompt, questionFontSize: 62, options };
-    } else {
+    } else if (lq.kind === "numseries") {
       // numseries: fill-in-the-blank (no A-D options). Show the series with a "?"
       // tile; the reveal badge is "?" (== the missing value) -> the answer.
       ansLetter = "?";
@@ -240,6 +297,13 @@ function mapProps(props: any): Mapped {
       const seq = [...(lq.seq ?? [])];
       if (!seq.includes("?")) seq.push("?");
       q = { ...common, ansLetter, ansLabel, explanation, kind: "numseries", prompt: lq.prompt, seq, options: [] };
+    } else {
+      // SHAPE/FIGURE kinds (fold + matrix family): rebuild from the figure payload.
+      q = mapShapeQuestion(lq, common);
+      ansLetter = q.ansLetter;
+      ansLabel = q.ansLabel;
+      // The label is a spoken phrase ("two hearts", "2 holes"); read it as-is.
+      answerSpoken = String(ansLabel).toLowerCase();
     }
     questions.push(q);
     if (revealIdxs.includes(i)) reveals.push({ index: i, text: revealVoText(lq.kind, ansLetter, answerSpoken, q.explanation, i) });

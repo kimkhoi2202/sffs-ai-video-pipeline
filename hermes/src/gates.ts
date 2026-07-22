@@ -14,8 +14,8 @@ import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { chatJSON } from "./llm.ts";
 import { loadBrandVoice, ruleCheckCopy } from "./brand.ts";
-import { readJSON, writeJSONAtomic, type HermesQ, type GateResult } from "./state.ts";
-import { loadUsedSigs, loadUsedFuzzySigs, fuzzySig } from "./questions.ts";
+import { readJSON, writeJSONAtomic, isShapeKind, type HermesQ, type GateResult } from "./state.ts";
+import { loadUsedSigs, loadUsedFuzzySigs, fuzzySig, shapeStructuralIssue } from "./questions.ts";
 import { CONFIG } from "./config.ts";
 import { gate } from "./log.ts";
 import { join } from "node:path";
@@ -78,7 +78,22 @@ export async function validateQuestions(
 ): Promise<{ results: Record<string, QVerdict>; gate: GateResult }> {
   const cache = loadQCache();
   const results: Record<string, QVerdict> = {};
-  const todo = questions.filter((q) => !cache[q.hash]);
+
+  // Nonverbal SHAPE/FIGURE questions are validated STRUCTURALLY here — their
+  // options are figures (not text), so the verbal/number LLM rubric below does
+  // not apply. shapeStructuralIssue is total (never throws) so this can't crash;
+  // a malformed figure fails closed with its reason. Rubric (text/numseries)
+  // questions take the existing cached-LLM path, unchanged.
+  const rubricQuestions = questions.filter((q) => !isShapeKind(q.kind));
+  for (const q of questions) {
+    if (!isShapeKind(q.kind)) continue;
+    const issue = shapeStructuralIssue(q);
+    results[q.sig] = issue
+      ? { valid: false, reason: issue }
+      : { valid: true, reason: "structural shape check passed", difficulty: q.figure?.difficulty };
+  }
+
+  const todo = rubricQuestions.filter((q) => !cache[q.hash]);
 
   if (todo.length) {
     const payload = todo.map((q, i) => ({
@@ -114,7 +129,7 @@ export async function validateQuestions(
     saveQCache(cache);
   }
 
-  for (const q of questions) results[q.sig] = cache[q.hash] ?? { valid: false, reason: "uncached (fail-closed)" };
+  for (const q of rubricQuestions) results[q.sig] = cache[q.hash] ?? { valid: false, reason: "uncached (fail-closed)" };
   const invalid = questions.filter((q) => !results[q.sig].valid);
   const g: GateResult = {
     pass: invalid.length === 0,
