@@ -207,7 +207,7 @@ function annotateDb(v: VideoPlan, postIds: string[]): void {
       variant: {
         family: v.dimension,
         arm: v.arm,
-        narration: "none",
+        narration: (v.props as any)?.narration?.mode ?? "none",
         question_types: v.questions.map((q) => q.tier),
         num_questions: v.questions.length,
       },
