@@ -11,6 +11,7 @@ import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
 import { groupMedian } from "./rollup.ts";
+import { indexInsights, matchInsight } from "./reconcile.ts";
 
 export interface ScoreResult {
   from: string;
@@ -44,8 +45,10 @@ export async function pullAndScore(): Promise<ScoreResult> {
   } catch (e) {
     warn("analytics pull failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
   }
-  const byPid = new Map<string, FlatPostInsight>();
-  for (const f of flat) if (f.post_id) byPid.set(String(f.post_id), f);
+  // Index by BOTH native post_id and Publer id so the join can fall back to
+  // publer_post_id when platform_post_id is null (the agent's own posts whose
+  // native id has not been reconciled yet). See reconcile.ts.
+  const idx = indexInsights(flat);
 
   const db = readJSON<any>(CONFIG.AB_DB, null);
   if (!db || !Array.isArray(db.posts)) {
@@ -54,8 +57,7 @@ export async function pullAndScore(): Promise<ScoreResult> {
 
   let updated = 0;
   for (const p of db.posts) {
-    const pid = String(p.platform_post_id ?? "");
-    const f = byPid.get(pid);
+    const f = matchInsight(p, idx);
     if (!f) continue;
     p.metrics = {
       ...(p.metrics ?? {}),

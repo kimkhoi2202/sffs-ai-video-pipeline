@@ -31,6 +31,7 @@ import {
 } from "./state.ts";
 import { snapshotDoNotTouch, verifyDoNotTouch, createDraftOnly } from "./guardrails.ts";
 import { pullAndScore } from "./score.ts";
+import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
 import { markUsed } from "./questions.ts";
@@ -296,6 +297,19 @@ export async function runCycle(): Promise<RunState> {
   } catch (e) {
     warn("scoring step failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
     state.errors.push("score: " + (e instanceof Error ? e.message : String(e)));
+  }
+
+  // (a2) reconcile — close the A/B learning loop for the agent's OWN posts:
+  // back-fill platform_post_id / permalink / posted_at onto ab-database.json by
+  // matching publer_post_id -> the native post (Publer GET only; local write only;
+  // idempotent). Runs after scoring so each cycle folds in whatever a human has
+  // since published. DRAFT-SAFE: reconcile.ts imports zero publish/schedule paths.
+  try {
+    (state as any).reconcile = await reconcile();
+    saveRun(state);
+  } catch (e) {
+    warn("reconcile step failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+    state.errors.push("reconcile: " + (e instanceof Error ? e.message : String(e)));
   }
 
   // (b) plan

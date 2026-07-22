@@ -31,6 +31,7 @@ from . import (
     publish_guard,
     questions,
     reads,
+    reconcile,
     render,
     schemas,
     score_rollup,
@@ -155,6 +156,21 @@ def register(ctx) -> None:
         handler=score_rollup.sffs_score_rollup,
         emoji="🧮",
         description="Refresh A/B metrics + recompute learnings.json rollups (the durable cross-run memory; write-side of scoring).",
+    )
+
+    # --- RECONCILE: close the A/B learning loop for the agent's OWN posts. ---
+    # Wraps reconcile.ts reconcile: match each ab-database record's publer_post_id
+    # to the native published post and back-fill platform_post_id/permalink/posted_at
+    # (the join keys scoring needs). Read-only on Publer (GET); writes only the local
+    # ab-database.json, and only when a field changed (idempotent). Cannot post/
+    # publish/schedule/delete/mutate — reconcile.ts imports no such path.
+    ctx.register_tool(
+        name="sffs_reconcile",
+        toolset="sffs",
+        schema=schemas.SFFS_RECONCILE_SCHEMA,
+        handler=reconcile.sffs_reconcile,
+        emoji="🔗",
+        description="Back-fill native post ids/permalinks onto ab-database.json (match publer_post_id -> published post) so scoring can learn from the agent's OWN posts; read-only on Publer, idempotent, never posts.",
     )
 
     # --- CYCLE: run ONE full DRAFT-ONLY A/B cycle end to end (ties the tools). ---
