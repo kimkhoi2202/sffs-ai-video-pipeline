@@ -11,7 +11,7 @@
  * button, or link here that posts, schedules, publishes, or merges anything —
  * this is a display-only surface (guardrail-locked by a test).
  */
-import type { RunState, VideoPlan, GateAttempt, PRRow } from "./types.ts";
+import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
 import type { KillSwitchState, Schedule, BankStats } from "./data.ts";
 import type { PRView } from "./prs.ts";
 
@@ -144,6 +144,61 @@ function decisionsList(l: any): string {
   return `<div class="two"><div><h3>Decisions</h3><ul class="log">${decHtml}</ul></div><div><h3>Scoring log</h3><ul class="log">${scoHtml}</ul></div></div>`;
 }
 
+// ── CONTENT default-promotion view (read-only; approval is a HUMAN CLI action) ─
+function defaultsPills(cd: ContentDefaultsFile | undefined): string {
+  const d = cd?.defaults || {};
+  const p = (cd?.promotion || {}) as Record<string, unknown>;
+  const pill = (k: string, v: unknown) => (v == null || v === "" ? "" : `<span class="hpill"><b>${esc(k)}</b>${esc(v)}</span>`);
+  const rel = p.min_rel_improvement != null ? `${Number(p.min_rel_improvement) * 100}%` : "—";
+  const policy = `min sample ${n(p.min_sample)} · +${n(p.min_abs_improvement_pp)}pp abs · +${rel} rel · metric ${esc(p.metric || "median_eng_rate")}`;
+  return `<div class="health" style="margin-bottom:10px">
+    ${pill("narration default", d.narration)}
+    ${pill("ending default", d.ending)}
+    <span class="hpill"><b>promotion policy</b>${esc(policy)}</span>
+  </div>`;
+}
+
+function proposalCard(p: PromotionProposal): string {
+  const metric = p.metric || "median_eng_rate";
+  const chal = (p.challenger || {}) as Record<string, unknown>;
+  const inc = (p.incumbent || {}) as Record<string, unknown>;
+  const chalM = chal[metric];
+  const incM = inc[metric];
+  const rel = p.delta_rel == null ? "∞" : `${(Number(p.delta_rel) * 100).toFixed(1)}%`;
+  const conf = (p.confidence || "").toLowerCase();
+  const confCls = conf === "high" ? "c-ok" : conf === "medium" ? "c-warn" : "c-idle";
+  // READ-ONLY: the exact HUMAN commands are shown as copyable text, NOT buttons —
+  // this dashboard never approves/applies anything (guardrail-locked by a test).
+  const approveCmd = `sffs_promote_default --approve ${p.id}`;
+  const rejectCmd = `sffs_promote_default --reject ${p.id} --reason "…"`;
+  return `<div class="vid">
+    <div class="vid-h">
+      <div><span class="dim">${esc(p.dimension)}</span> <span class="arm">→ ${esc(p.recommended_default)}</span></div>
+      <span class="chip ${confCls}">${esc(p.confidence || "?")} confidence</span>
+    </div>
+    <div class="rationale">
+      current default <code>${esc(p.current_default)}</code> → proposed <code>${esc(p.recommended_default)}</code>
+      · ${esc(metric)} ${incM != null ? esc(incM) + "%" : "—"} (control) → ${chalM != null ? esc(chalM) + "%" : "—"} (arm)
+      · <b>+${n(p.delta_abs_pp)}pp</b> / +${esc(rel)}
+      · n=${n((chal as any).n_with_metrics)}/${n((inc as any).n_with_metrics)} (min ${n(p.min_sample)})
+    </div>
+    ${p.rationale ? `<div class="cap">${esc(p.rationale)}</div>` : ""}
+    <div class="cap"><b>human approve:</b> <code>${esc(approveCmd)}</code></div>
+    <div class="cap"><b>human reject:</b> <code>${esc(rejectCmd)}</code></div>
+  </div>`;
+}
+
+function defaultPromotions(q: ProposalsQueue | undefined, cd: ContentDefaultsFile | undefined): string {
+  const all = Array.isArray(q?.proposals) ? (q!.proposals as PromotionProposal[]) : [];
+  const pending = all.filter((p) => p.status === "pending");
+  const head = defaultsPills(cd);
+  if (!pending.length) {
+    return `${head}<p class="muted">No pending default changes. When an A/B test arm clearly beats the current default (control) on the configured metric with enough samples, a proposal appears here for a human to approve/reject via the <code>sffs_promote_default</code> CLI. The loop never flips a default on its own.</p>`;
+  }
+  const cards = pending.map(proposalCard).join("");
+  return `${head}<p class="muted">${pending.length} proposal(s) awaiting a HUMAN decision. Approving flips the config default (takes effect next design pass); rejecting keeps the arm testing. Display-only — run the CLI in a shell.</p>${cards}`;
+}
+
 function logStream(runId: string | null, items: any[]): string {
   if (!runId) return "";
   const filtered = items.filter((r) => r.level === "decision" || r.level === "gate" || r.level === "error");
@@ -250,6 +305,9 @@ export interface PageData {
   selected: string | null;
   pr: PRView;
   logItems: any[];
+  /** default-promotion queue + current content defaults (optional; degrades to empty). */
+  proposals?: ProposalsQueue;
+  defaults?: ContentDefaultsFile;
 }
 
 export function page(opts: PageData): string {
@@ -377,6 +435,11 @@ ${killBanner(kill)}
     <h2><span class="pin">LEARN</span> Front-runners &amp; variant-family rollups</h2>
     ${frontRunners(l)}
     ${rollupTable(l)}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">GATE</span> Pending default changes <span class="pin" style="background:var(--mint)">HUMAN-APPROVED</span></h2>
+    ${defaultPromotions(opts.proposals, opts.defaults)}
   </div>
 
   <div class="card">

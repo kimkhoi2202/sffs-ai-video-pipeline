@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-22T15:50:36.452014Z",
+  "campaign": "Smart Fella or Fart Smella",
+  "description": "Durable DEFAULT-PROMOTION proposal queue. The promotion engine (hermes-nous/sffs/promote.py) DETECTS when an A/B test arm clearly beats the current default and writes a `pending` proposal here (arm, metric deltas, sample size, confidence, recommended new default). Proposals are NEVER auto-applied: a human approves/rejects each via `sffs_promote_default --approve <id>` / `--reject <id>`. Every decision is appended to decisions_log (append-only) and, on approval, to ab-testing/content-defaults.json history + learnings.json decisions_log. The autonomous agent can only DETECT/LIST/SHOW (sffs_promote); it can NOT approve.",
+  "proposals": [],
+  "decisions_log": []
+}

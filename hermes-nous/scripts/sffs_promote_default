@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# sffs_promote_default — the HUMAN gate for CONTENT default promotions.
+#
+# This is the CONTENT analog of the software factory's two-key CODE gate, but it is
+# HUMAN-ONLY: there is NO auto-apply path. When an A/B test arm beats the current
+# default (control) with clear signal, the loop records a PROPOSAL; a human flips the
+# default here, or rejects it (and the arm keeps testing). It NEVER posts/publishes.
+#
+# Usage (both forms work):
+#   sffs_promote_default --list                 # show pending proposals
+#   sffs_promote_default --detect               # re-scan learnings.json + persist proposals
+#   sffs_promote_default --show   <id>          # show one proposal
+#   sffs_promote_default --approve <id>         # flip the config default + log it
+#   sffs_promote_default --reject  <id> --reason "…"   # log + keep the arm testing
+#   sffs_promote_default approve <id>           # (positional form also accepted)
+#
+# It just forwards to hermes-nous/sffs/promote.py (stdlib-only). The isolated venv
+# is used if present, else any python3 works.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROMOTE="$HERE/../sffs/promote.py"
+WORKSPACE="${WORKSPACE:-/Users/khoilam/hermes-nous-build}"
+VENV="${HERMES_VENV:-$WORKSPACE/.venv-hermes}"
+
+if [[ -f "$VENV/bin/activate" ]]; then
+  # shellcheck disable=SC1091
+  source "$VENV/bin/activate"
+fi
+
+PY="$(command -v python3 || command -v python)"
+exec "$PY" "$PROMOTE" "$@"

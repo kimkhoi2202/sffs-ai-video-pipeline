@@ -4,16 +4,20 @@
  * on-brand, gated copy. Quality > volume: if a slot can't be filled with fresh
  * valid questions, it's dropped (logged), not padded with junk.
  *
- * Dimensions rotated (all faithfully renderable by the self-contained composition):
- *   progress-counter on/off, progress-counter style, answer-reveal vs no-answer,
- *   cliffhanger, tempo (fast/slow countdown), one-question vs three, question
- *   category mix (verbal / quantitative / mixed), and hook/opener style. Hashtag
- *   set (A/B/C) rotates as a secondary dimension on every video.
+ * NEW BASELINE DEFAULTS (content-defaults.json, see defaults.ts + dimensions.ts):
+ *   EVERY video is NARRATED (narration="full") and ends on a CLIFFHANGER (reveal
+ *   the early questions, withhold the last + comment-CTA, no score screen) UNLESS
+ *   it is the specific arm under test. The "control/baseline" video is exactly
+ *   full-narration + cliffhanger. Each A/B arm DEVIATES ONE axis from those
+ *   defaults (see dimensions.ts DIMENSIONS). The current default VALUES are read
+ *   from content-defaults.json, so a human-approved promotion
+ *   (sffs_promote_default --approve) flips them for the next design pass — no code
+ *   change. The narration voiceover is synthesized at render time by
+ *   hermes/src/render.ts; music-only is the no-narration arm.
  *
- * The "narration" family (full / none / no-question-vo / no-options-vo) is now
- * wired into the self-contained composition: hermes/src/render.ts synthesizes the
- * cloned-voice VO (voice/tts_batch.py) per question and HermesQuiz muxes it, so
- * these arms render on the loop's own path (no dependency on render-ab.ts).
+ * The DIMENSION catalog + its defaults-resolution live in the dependency-free
+ * dimensions.ts (so `sffs_design catalog` runs offline); design.ts adds the
+ * LLM/gates/questions batch build on top.
  */
 import { readJSON, type HermesQ, type VideoPlan } from "./state.ts";
 import { candidateQuestions } from "./questions.ts";
@@ -22,60 +26,12 @@ import { chat } from "./llm.ts";
 import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
-import { type NarrationMode } from "./narration.ts";
+import { contentDefaults, captionAsk, defaultOutro, type RevealMode } from "./defaults.ts";
+import { buildDimensions, resolveArm } from "./dimensions.ts";
 
-type RevealMode = "all" | "none" | "last";
-
-interface DimSpec {
-  dimension: string;
-  arm: string;
-  rationale: string;
-  numQ: number;
-  category: "verbal" | "quantitative" | "mixed";
-  kinds?: Array<"text" | "numseries">;
-  showProgress: boolean;
-  progressStyle: "short" | "full";
-  reveal: RevealMode;
-  countdownSec: number;
-  hook?: { title: string; subtitle: string };
-  narration?: NarrationMode; // cloned-voice VO arm (default: none = music-only)
-}
-
-const BASE = {
-  numQ: 3,
-  category: "mixed" as const,
-  showProgress: true,
-  progressStyle: "short" as const,
-  reveal: "all" as RevealMode,
-  countdownSec: 5,
-};
-
-/** The rotating dimension catalog. Each entry varies ONE axis off the baseline. */
-const DIMENSIONS: DimSpec[] = [
-  { ...BASE, dimension: "progress-counter", arm: "hidden", rationale: "retention test: hide the QUESTION x/N pill", showProgress: false },
-  { ...BASE, dimension: "progress-counter", arm: "verbose", rationale: "retention test: full 'QUESTION 1 OF 3' vs short 'Q1'", progressStyle: "full" },
-  { ...BASE, dimension: "answer-reveal", arm: "no-answer", rationale: "comment-for-answer hook: drop the reveal", reveal: "none" },
-  { ...BASE, dimension: "cliffhanger", arm: "last-hidden", rationale: "reveal all but the last -> comment CTA", reveal: "last" },
-  { ...BASE, dimension: "tempo", arm: "fast-3s", rationale: "speed test: 3s countdown (faster pace)", countdownSec: 3 },
-  { ...BASE, dimension: "tempo", arm: "slow-7s", rationale: "patience test: 7s countdown (more solve time)", countdownSec: 7 },
-  { ...BASE, dimension: "length", arm: "one-question", rationale: "single-question payoff vs three", numQ: 1 },
-  { ...BASE, dimension: "category-mix", arm: "verbal-only", rationale: "verbal-only (odd-one-out / analogy)", category: "verbal", kinds: ["text"] },
-  { ...BASE, dimension: "category-mix", arm: "quant-only", rationale: "quantitative-only (number series)", category: "quantitative", kinds: ["numseries"] },
-  {
-    ...BASE,
-    dimension: "hook",
-    arm: "challenge-opener",
-    rationale: "hard-challenge opener vs neutral opener",
-    hook: { title: "ONLY 1% PASS", subtitle: "can you get all 3?" },
-  },
-  // ── Narration family (cloned-voice VO on/off) — the "don't narrate" A/B test.
-  // Verbal/text 3Q so every question has A–D options (clean stem vs options split).
-  { ...BASE, dimension: "narration", arm: "full-narration", rationale: "host reads each question + options aloud (cloned voice) vs silent baseline", narration: "full", category: "verbal", kinds: ["text"] },
-  { ...BASE, dimension: "narration", arm: "no-narration", rationale: "music-only control (no voiceover)", narration: "none", category: "verbal", kinds: ["text"] },
-  { ...BASE, dimension: "narration", arm: "no-question-vo", rationale: "voice the OPTIONS only; the question shows but is not read", narration: "no-question-vo", category: "verbal", kinds: ["text"] },
-  { ...BASE, dimension: "narration", arm: "no-options-vo", rationale: "voice the QUESTION only; the options show but are not read", narration: "no-options-vo", category: "verbal", kinds: ["text"] },
-  { ...BASE, dimension: "control", arm: "baseline", rationale: "baseline: short counter, reveal all, 5s, mixed 3Q" },
-];
+// Re-export the catalog surface so existing importers (bridge/design.ts) are
+// unchanged, while the actual definitions live in the dependency-free module.
+export { dimensionCatalog, type DimensionInfo } from "./dimensions.ts";
 
 function seededOrder<T>(arr: T[], seed: number): T[] {
   const a = arr.slice();
@@ -93,17 +49,14 @@ function seedOf(s: string): number {
   return h >>> 0;
 }
 
-function defaultOutro(reveal: RevealMode): string {
-  return reveal === "none" ? "comment your answer \uD83D\uDC47 follow for more" : "comment your score \uD83D\uDC47 follow for more";
-}
 function fallbackCaption(reveal: RevealMode, tags: string[]): string {
-  const ask = reveal === "none" ? "comment your answer" : "comment your score";
+  const ask = captionAsk(reveal);
   return `are you a SMART fella or a FART smella? ${ask} below and follow for more \uD83D\uDC47\n\n${tags.join(" ")}`;
 }
 
 /** Generate an on-brand caption, gated + reject/regenerate, safe fallback. */
-async function makeCaption(spec: DimSpec, tags: string[]): Promise<{ caption: string; source: string }> {
-  const ask = spec.reveal === "none" ? "comment your ANSWER" : "comment your SCORE";
+async function makeCaption(reveal: RevealMode, tags: string[]): Promise<{ caption: string; source: string }> {
+  const ask = captionAsk(reveal).toUpperCase();
   const system =
     "You write captions for 'Smart Fella or Fart Smella', a Gen-Z brain-quiz brand. Voice: concise, funny, " +
     "lowercase-casual, kid-safe, NO em dashes, at most ONE emoji, no AI-slop, always end with a follow/come-back nudge. " +
@@ -124,7 +77,7 @@ async function makeCaption(spec: DimSpec, tags: string[]): Promise<{ caption: st
       warn("caption gen attempt failed", { attempt, err: e instanceof Error ? e.message : String(e) });
     }
   }
-  return { caption: fallbackCaption(spec.reveal, tags), source: "fallback" };
+  return { caption: fallbackCaption(reveal, tags), source: "fallback" };
 }
 
 const HASHTAG_ROTATION = ["A", "B", "C"];
@@ -137,12 +90,14 @@ export interface Learnings {
 /** Build the day's batch: up to `target` videos, each a different dimension. */
 export async function planBatch(runId: string, target: number): Promise<VideoPlan[]> {
   const learnings = readJSON<Learnings>(CONFIG.LEARNINGS, {});
+  const defaults = contentDefaults();
   const claimed = new Set<string>(); // in-batch question dedup
-  const specs = seededOrder(DIMENSIONS, seedOf(runId)).slice(0, target);
+  const specs = seededOrder(buildDimensions(defaults), seedOf(runId)).slice(0, target);
   const plans: VideoPlan[] = [];
 
   for (let i = 0; i < specs.length; i++) {
     const spec = specs[i];
+    const resolved = resolveArm(spec, defaults);
     const idxNN = String(i + 1).padStart(2, "0");
     const id = `${runId}-v${idxNN}`;
 
@@ -163,11 +118,11 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
 
     const hashtagSet = HASHTAG_ROTATION[i % HASHTAG_ROTATION.length];
     const tags = CONFIG.HASHTAG_SETS[hashtagSet];
-    const { caption, source } = await makeCaption(spec, tags);
+    const { caption, source } = await makeCaption(resolved.reveal, tags);
 
     const title = spec.hook?.title ?? "SMART or FART?";
     const subtitle = spec.hook?.subtitle ?? "how many can you get?";
-    const outro = defaultOutro(spec.reveal);
+    const outro = defaultOutro(resolved.reveal);
 
     const renderQuestions = chosen.map((q) => ({
       kind: q.kind,
@@ -198,55 +153,24 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
         music,
         showProgress: spec.showProgress,
         progressStyle: spec.progressStyle,
-        reveal: spec.reveal,
+        reveal: resolved.reveal,
         countdownSec: spec.countdownSec,
-        // clips[] are synthesized at render time by hermes/src/render.ts; "none" = music-only.
-        narration: { mode: spec.narration ?? "none", clips: [] },
+        // The narration axis (default: full). clips[] are synthesized at render time
+        // by hermes/src/render.ts; "none" = music-only (the no-narration test arm).
+        narration: { mode: resolved.narration, clips: [] },
+        // Symbolic ending arm (for the ab-database annotation + dashboard); the
+        // composition itself is driven by `reveal` above.
+        ending: resolved.endingArm,
         questions: renderQuestions,
       },
     };
     plans.push(plan);
-    decision(`PLAN ${id}: dimension=${spec.dimension} arm=${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${spec.narration ?? "none"}`, {
-      questions: chosen.map((q) => q.tier),
-    });
+    decision(
+      `PLAN ${id}: dimension=${spec.dimension} arm=${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${resolved.narration} ending=${resolved.endingArm} reveal=${resolved.reveal}`,
+      { questions: chosen.map((q) => q.tier) },
+    );
   }
 
-  info("batch planned", { runId, planned: plans.length, target, frontRunner: learnings.front_runners });
+  info("batch planned", { runId, planned: plans.length, target, defaults, frontRunner: learnings.front_runners });
   return plans;
-}
-
-/** A read-only entry in the A/B dimension catalog (one variable axis per entry). */
-export interface DimensionInfo {
-  dimension: string;
-  arm: string;
-  rationale: string;
-  numQ: number;
-  category: string;
-  narration: NarrationMode;
-  showProgress: boolean;
-  progressStyle: string;
-  reveal: RevealMode;
-  countdownSec: number;
-}
-
-/**
- * Read-only view of the A/B dimension catalog (dimension / arm / rationale + the
- * key render axes, incl. the narration arm and progress-counter settings). This
- * runs NO LLM and makes NO network call — it just surfaces the static DIMENSIONS
- * table so the `sffs_design` tool (and the agent) can introspect the A/B space
- * cheaply. The full, caption-generating design is planBatch() above.
- */
-export function dimensionCatalog(): DimensionInfo[] {
-  return DIMENSIONS.map((d) => ({
-    dimension: d.dimension,
-    arm: d.arm,
-    rationale: d.rationale,
-    numQ: d.numQ,
-    category: d.category,
-    narration: d.narration ?? "none",
-    showProgress: d.showProgress,
-    progressStyle: d.progressStyle,
-    reveal: d.reveal,
-    countdownSec: d.countdownSec,
-  }));
 }

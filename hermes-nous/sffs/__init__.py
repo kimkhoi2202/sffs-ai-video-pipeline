@@ -27,6 +27,7 @@ from . import (
     draft_guard,
     factory,
     gates,
+    promote,
     publish_guard,
     questions,
     reads,
@@ -168,6 +169,21 @@ def register(ctx) -> None:
         handler=cycle.sffs_cycle,
         emoji="🔁",
         description="Run one full DRAFT-ONLY A/B cycle end to end (design->gates->render->upload->Publer DRAFTS; never publishes/schedules; never pushes to main).",
+    )
+
+    # --- DEFAULT-PROMOTION (read-side): detect/list proposals to flip a CONTENT default. ---
+    # The CONTENT analog of the software factory's gate, but HUMAN-gated: this tool
+    # only ever DETECTS/LISTS/SHOWS proposals where an A/B test arm beat the current
+    # default. It can NEVER approve/apply one — flipping a default is a human CLI
+    # action (scripts/sffs_promote_default --approve <id>). It reads learnings.json +
+    # content-defaults.json and writes only the proposals queue; it never posts.
+    ctx.register_tool(
+        name="sffs_promote",
+        toolset="sffs",
+        schema=schemas.SFFS_PROMOTE_SCHEMA,
+        handler=promote.sffs_promote,
+        emoji="🗳️",
+        description="Detect/list CONTENT default-promotion proposals (read-only; approving a default flip is a human CLI action, never this tool).",
     )
 
     # --- SOFTWARE FACTORY: autonomous CODE self-improvement on the two-key gate. ---
