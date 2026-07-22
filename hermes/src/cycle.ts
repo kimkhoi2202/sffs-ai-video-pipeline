@@ -32,6 +32,9 @@ import {
   type VideoPlan,
 } from "./state.ts";
 import { snapshotDoNotTouch, verifyDoNotTouch, createDraftOnly } from "./guardrails.ts";
+import { kickoffStatus, type KickoffStatus } from "./kickoff.ts";
+import { nextSlots } from "./scheduler.ts";
+import { goalProgress } from "./goal.ts";
 import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
@@ -45,6 +48,17 @@ import { ping, chat } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
 const DRY = process.env.HERMES_DRY_RUN === "1";
+
+/**
+ * Per-cycle scheduling context. OFF (default) => draft-only: every video takes the
+ * unchanged createDraftOnly path. ARMED (human kickoff) => each platform draft is
+ * ALSO scheduled at a policy time (scheduler.ts) via the gated kickoff_schedule.ts.
+ */
+interface SchedCtx {
+  armed: boolean;
+  slot: (platform: string, index: number) => string | null;
+}
+const DRAFT_ONLY_SCHED: SchedCtx = { armed: false, slot: () => null };
 
 function newRun(runId: string, target: number): RunState {
   return {
@@ -62,7 +76,7 @@ function newRun(runId: string, target: number): RunState {
   };
 }
 
-async function draftForVideo(v: VideoPlan): Promise<void> {
+async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): Promise<void> {
   // idempotent: already drafted
   if (v.status === "drafted") return;
 
@@ -154,18 +168,25 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
     const key = `hermes/${todayRunId()}/${v.id}.${platform}.mp4`;
     const url = uploadToS3(r.path, key);
     const { mediaId } = await importMediaFromUrl(url, `${v.id}.${platform}.mp4`);
-    const jobId = await createDraftOnly({
-      account_ids: [account_id],
-      text: v.caption,
-      media_ids: [mediaId],
-      type: "video",
-    });
-    const job = await pollJob(jobId, { label: `create-draft-${platform}`, timeoutMs: 180_000 });
+    // KICKOFF gate: OFF => createDraftOnly (unchanged draft-only path). ARMED =>
+    // schedule at a policy time via the gated kickoff_schedule.ts (dynamic-imported
+    // ONLY here, so the OFF loop never even loads a module that can schedule).
+    let jobId: string;
+    let scheduled_at: string | null = null;
+    if (sched.armed) {
+      scheduled_at = sched.slot(platform, v.index);
+      if (!scheduled_at) throw new Error(`no schedule slot for ${platform}#${v.index}`);
+      const { createScheduledPostArmed } = await import("./kickoff_schedule.ts");
+      jobId = await createScheduledPostArmed({ account_ids: [account_id], text: v.caption, media_ids: [mediaId], type: "video" }, scheduled_at);
+    } else {
+      jobId = await createDraftOnly({ account_ids: [account_id], text: v.caption, media_ids: [mediaId], type: "video" });
+    }
+    const job = await pollJob(jobId, { label: `create-${sched.armed ? "scheduled" : "draft"}-${platform}`, timeoutMs: 180_000 });
     // Publer's job_status returns only {status:"complete"} (no post ids), so resolve
     // the created draft post id by matching the (unique) uploaded media id.
     let postIds = extractPostIds(job.payload);
     if (!postIds.length) postIds = await findDraftPostIds(mediaId);
-    results.push({ platform, account_id, media_url: url, media_id: mediaId, post_id: postIds[0] ?? null, job_id: jobId });
+    results.push({ platform, account_id, media_url: url, media_id: mediaId, post_id: postIds[0] ?? null, job_id: jobId, scheduled_at });
   }
   v.media_url = results[0]?.media_url;
   v.status = "uploaded";
@@ -176,7 +197,12 @@ async function draftForVideo(v: VideoPlan): Promise<void> {
     permalinks: [],
   };
   v.status = "drafted";
-  decision(`DRAFT created ${v.id}`, { dimension: v.dimension, arm: v.arm, drafts: results.map((r) => ({ platform: r.platform, post_id: r.post_id })) });
+  const anyScheduled = results.some((r) => r.scheduled_at);
+  decision(`${anyScheduled ? "SCHEDULED (kickoff armed)" : "DRAFT"} created ${v.id}`, {
+    dimension: v.dimension,
+    arm: v.arm,
+    posts: results.map((r) => ({ platform: r.platform, post_id: r.post_id, scheduled_at: r.scheduled_at })),
+  });
 
   // 9) annotate ab-database.json per platform (best-effort; draft success is what matters)
   try {
@@ -194,6 +220,8 @@ interface PlatformDraft {
   media_id: string;
   post_id: string | null;
   job_id: string;
+  /** set only when kickoff is armed (autonomous scheduling); null = draft-only. */
+  scheduled_at: string | null;
 }
 
 function extractPostIds(payload: any): string[] {
@@ -265,7 +293,8 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
       },
       experiment: { dimension: v.dimension, arm: v.arm, rationale: v.rationale, hermes_video_id: v.id },
       hashtag_set: v.hashtag_set,
-      post_state: "draft",
+      post_state: pr.scheduled_at ? "scheduled" : "draft",
+      scheduled_at: pr.scheduled_at ?? null,
       metrics: { reach: null, video_views: null, reactions: null, comments: null, shares: null, eng_rate: null, as_of: null, source: "pending" },
       match_confidence: "high",
       notes: "Created by the Hermes autonomous loop (DRAFT-ONLY).",
@@ -312,6 +341,19 @@ export async function runCycle(): Promise<RunState> {
   const health = await ping();
   info("LLM ping", health);
 
+  // KICKOFF + GOAL surfacing (logged every cycle; the read-only dashboard reads
+  // these). OFF => draft-only; ARMED => autonomous scheduling in the window.
+  const kickoff: KickoffStatus = kickoffStatus();
+  (state as any).kickoff = kickoff;
+  info(kickoff.armed ? "KICKOFF: ARMED — autonomy ON" : "KICKOFF: OFF — draft-only", { source: kickoff.source, since: kickoff.since, note: kickoff.note });
+  try {
+    const goal = goalProgress();
+    (state as any).goal = goal;
+    info("GOAL trajectory", { started: goal.started, views: goal.totals.views, likes: goal.totals.likes, days_left: goal.days_left, on_track_views: goal.pace.on_track_views, note: goal.note });
+  } catch (e) {
+    warn("goal progress failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+  }
+
   // 1) do-not-touch snapshot
   try {
     const snap = await snapshotDoNotTouch();
@@ -353,11 +395,29 @@ export async function runCycle(): Promise<RunState> {
     saveRun(state);
   }
 
+  // KICKOFF: OFF => draft-only (unchanged). ARMED => build per-platform jittered
+  // schedule slots (7am-1am CST window) so each draft is auto-scheduled. DRY never
+  // schedules (renders/gates only). Nothing here can publish "now".
+  let sched: SchedCtx = DRAFT_ONLY_SCHED;
+  if (kickoff.armed && !DRY) {
+    const n = state.videos.length;
+    const slots: Record<string, string[]> = {
+      instagram: nextSlots(n, { seed: runId, platform: "instagram" }),
+      tiktok: nextSlots(n, { seed: runId, platform: "tiktok" }),
+    };
+    sched = { armed: true, slot: (platform, index) => slots[platform]?.[index] ?? null };
+    info("KICKOFF ARMED — autonomous scheduling ON", {
+      videos: n,
+      window: "7:00am-1:00am America/Chicago",
+      first: { instagram: slots.instagram[0], tiktok: slots.tiktok[0] },
+    });
+  }
+
   // per-video pipeline (resume-safe)
   for (const v of state.videos) {
     if (v.status === "drafted" || v.status === "rejected") continue;
     try {
-      await draftForVideo(v);
+      await draftForVideo(v, sched);
     } catch (e) {
       v.status = "failed";
       v.errors = [...(v.errors ?? []), e instanceof Error ? e.message : String(e)];
