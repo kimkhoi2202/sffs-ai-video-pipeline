@@ -6,7 +6,7 @@
  * mutates anything — it only reads local JSON, queries `systemctl`/`df` for health,
  * and (optionally) pings the LLM gateway with a short timeout.
  */
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { CONFIG } from "./config.ts";
 import type { RunState } from "./types.ts";
@@ -34,9 +34,24 @@ export function listRuns(): string[] {
   }
 }
 
+/**
+ * Redact fields that must never reach a PUBLIC response. Currently: the per-video
+ * `media_url` is a PRESIGNED S3 URL (carries X-Amz-Signature / X-Amz-Credential /
+ * X-Amz-Security-Token — temporary credentials). The dashboard is now public, so
+ * we strip it here at the single load point (covers /, /api/state, /api/run,
+ * /api/health). The video itself is reviewable via the Publer draft/permalink.
+ */
+export function redactRunForPublic(run: RunState | null): RunState | null {
+  if (!run || !Array.isArray(run.videos)) return run;
+  for (const v of run.videos) {
+    if (v && typeof v === "object" && "media_url" in v) delete (v as { media_url?: unknown }).media_url;
+  }
+  return run;
+}
+
 export function loadRun(runId: string): RunState | null {
   if (!runId || /[\\/]/.test(runId)) return null; // no path traversal
-  return readJSON<RunState | null>(`${CONFIG.RUNS_DIR}/${runId}.json`, null);
+  return redactRunForPublic(readJSON<RunState | null>(`${CONFIG.RUNS_DIR}/${runId}.json`, null));
 }
 
 export function runSummaries(limit = 30): RunState[] {
@@ -197,6 +212,11 @@ export function costSnapshot(): any {
   return readJSON<any>(CONFIG.COST_SNAPSHOT, null);
 }
 
+/** The always-on software-factory daemon status (factory-status.json) or null. */
+export function factoryStatus(): any {
+  return readJSON<any>(CONFIG.FACTORY_STATUS, null);
+}
+
 // ── kill-switch (DISPLAY-ONLY) ────────────────────────────────────────────────
 
 export interface KillSwitchState {
@@ -328,4 +348,313 @@ function execFileSyncSafe(cmd: string, args: string[]): string {
   } catch {
     return "";
   }
+}
+
+// ── "Drafts awaiting review" (READ-ONLY) ─────────────────────────────────────
+// Lists the pending Publer drafts by spawning the pipeline's VETTED read-only
+// Publer bridge (bridge/publer-read.ts) — it only issues GET requests and cannot
+// create/publish/schedule/mutate a post. The Publer key stays server-side (in the
+// bridge's env); it is NEVER rendered. Each video is enriched (best-effort) with
+// its A/B variant + question types by correlating the Publer draft id against the
+// loop's RunState (publer.post_ids) and ab-database.json; where no record exists
+// the label is INFERRED from the caption and clearly tagged.
+
+export interface DraftPlatformLink {
+  platform: string; // instagram | tiktok | unknown
+  publer_id: string; // Publer post id (opaque; NOT a secret). No public per-draft URL exists.
+}
+
+export interface DraftVideo {
+  video_key: string; // shared Publer media id (groups the IG + TikTok pair)
+  hook: string; // the caption hook (first meaningful line, hashtags stripped)
+  caption: string; // full draft caption/text
+  thumbnail: string | null; // validated PUBLIC Publer CDN poster image (or null)
+  /**
+   * The PUBLIC Publer CDN mp4 (media[].path) — NOT the S3 presigned url (which
+   * carries AWS tokens and must never reach this public page). It is Referer-gated
+   * to Publer's ecosystem, so the browser cannot load it cross-origin; the page
+   * renders it same-origin via the read-only /api/draft-media proxy. null if the
+   * draft has no clean public CDN video.
+   */
+  media_url: string | null;
+  dimension: string; // A/B dimension (from run) or "hook" (inferred)
+  arm: string; // A/B arm (from run) or an inferred slug of the hook
+  variant_source: "run" | "ab-database" | "inferred";
+  question_types: string[]; // ordered question TYPES/tiers (empty if unknown)
+  run_id?: string;
+  drafts: DraftPlatformLink[]; // 1–2 platform drafts (IG + TikTok)
+  updated_at?: string;
+}
+
+export interface DraftsView {
+  ok: boolean;
+  videos: DraftVideo[];
+  count_videos: number;
+  count_drafts: number;
+  source: string;
+  as_of: string;
+  error?: string;
+}
+
+/**
+ * PUBLIC Publer CDN allowlist — the single validator that decides whether a URL
+ * may appear in a public drafts response or be proxied. Returns the URL iff it is
+ * a clean, PUBLIC Publer CDN asset: https + host EXACTLY `cdn.publer.com` + no
+ * userinfo + NO query string / fragment. Publer's CDN mp4/jpg paths are all
+ * query-less; an S3 PRESIGNED url (the thing we must never expose) lives on
+ * *.amazonaws.com and ALWAYS carries X-Amz-* query params — so it can never pass
+ * this check. Returns null for anything else. This is the drafts-surface analogue
+ * of redactRunForPublic: a signed/secret-bearing url is structurally excluded.
+ */
+export function publicPublerCdnUrl(u: unknown): string | null {
+  if (typeof u !== "string" || !u) return null;
+  let parsed: URL;
+  try {
+    parsed = new URL(u);
+  } catch {
+    return null;
+  }
+  if (parsed.protocol !== "https:") return null;
+  if (parsed.hostname !== "cdn.publer.com") return null;
+  if (parsed.username || parsed.password) return null;
+  if (parsed.search || parsed.hash) return null; // presigned/signed URLs always carry a query
+  if (/x-amz-|amazonaws\.com|credential=|signature=|security-token/i.test(u)) return null; // defense-in-depth
+  return parsed.href;
+}
+
+/**
+ * Resolve a pending draft's validated PUBLIC-CDN asset URL by video_key + kind.
+ * Used by the read-only media proxy so it can ONLY ever fetch a cdn.publer.com
+ * asset that belongs to a CURRENT draft (allowlist ⇒ no open-proxy / SSRF).
+ */
+export function resolveDraftMediaUrl(view: DraftsView | null, videoKey: string, kind: "video" | "thumb"): string | null {
+  if (!view || !Array.isArray(view.videos) || !videoKey) return null;
+  const v = view.videos.find((x) => x.video_key === videoKey);
+  if (!v) return null;
+  return publicPublerCdnUrl(kind === "thumb" ? v.thumbnail : v.media_url);
+}
+
+/**
+ * Public choke point: force every media_url + thumbnail through the PUBLIC-CDN
+ * allowlist (nulls anything that is not a clean cdn.publer.com asset — e.g. a
+ * stray S3 presigned URL). Mirrors redactRunForPublic for the drafts surface, so
+ * the public-CDN-only invariant holds no matter how a DraftVideo was built.
+ */
+export function sanitizeDraftsForPublic(view: DraftsView): DraftsView {
+  for (const v of view.videos || []) {
+    v.media_url = publicPublerCdnUrl(v.media_url);
+    v.thumbnail = publicPublerCdnUrl(v.thumbnail);
+  }
+  return view;
+}
+
+function platformForAccount(accountId: string, accountsMap: Record<string, any>): string {
+  const live = accountsMap?.[accountId]?.platform;
+  if (typeof live === "string" && live) return live;
+  return CONFIG.ACCOUNT_PLATFORMS[accountId] || "unknown";
+}
+
+/** First meaningful caption line (drops the showcase tag + trailing hashtags). */
+export function draftHook(text: string): string {
+  const t = String(text || "").replace(/\[hermes-nous showcase\]/i, "").trim();
+  const line = t.split("\n").map((s) => s.trim()).filter(Boolean)[0] || t;
+  const cleaned = line.replace(/#\S+/g, "").replace(/\s+/g, " ").trim();
+  return cleaned.slice(0, 160) || "(no caption)";
+}
+
+/** Inferred arm slug from the caption hook (used only when no run record matches). */
+export function inferArm(text: string): string {
+  const h = draftHook(text).toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+  const slug = h.split(/\s+/).filter(Boolean).slice(0, 4).join("-");
+  return slug || "variant";
+}
+
+/** Map every known Publer post id → its A/B variant, from RunState + ab-database. */
+export function buildPublerVariantMap(): Map<
+  string,
+  { dimension: string; arm: string; question_types: string[]; run_id?: string; source: "run" | "ab-database" }
+> {
+  const m = new Map<string, { dimension: string; arm: string; question_types: string[]; run_id?: string; source: "run" | "ab-database" }>();
+  // RunState is the richest source (dimension + arm + ordered question tiers).
+  for (const r of runSummaries(50)) {
+    for (const v of r.videos || []) {
+      const ids = v.publer?.post_ids || [];
+      if (!ids.length) continue;
+      const tiers = (v.questions || []).map((q) => q.tier).filter((t): t is string => !!t);
+      for (const id of ids) {
+        if (id === undefined || id === null) continue;
+        m.set(String(id), { dimension: v.dimension || "—", arm: v.arm || "—", question_types: tiers, run_id: r.run_id, source: "run" });
+      }
+    }
+  }
+  // ab-database.json (published posts) — fills any id the runs don't have.
+  const posts: any[] = Array.isArray(abDb()?.posts) ? abDb().posts : [];
+  for (const p of posts) {
+    const id = p?.publer_post_id;
+    if (id === undefined || id === null || m.has(String(id))) continue;
+    const va = p.variant || {};
+    const qt = Array.isArray(va.question_types) ? va.question_types.map((x: unknown) => String(x)) : [];
+    m.set(String(id), {
+      dimension: va.family || p.experiment?.dimension || "—",
+      arm: va.arm || va.hook || p.experiment?.arm || "—",
+      question_types: qt,
+      source: "ab-database",
+    });
+  }
+  return m;
+}
+
+/** Spawn the READ-ONLY publer bridge and parse its single JSON stdout line. */
+function runReadBridge(sub: string, params: Record<string, unknown>, timeoutMs: number): Promise<any> {
+  return new Promise((resolvePromise) => {
+    let done = false;
+    let stdout = "";
+    let stderr = "";
+    const finish = (v: any): void => {
+      if (!done) {
+        done = true;
+        resolvePromise(v);
+      }
+    };
+    let child;
+    try {
+      child = spawn(process.execPath, [CONFIG.PUBLER_READ_BRIDGE, sub], {
+        cwd: CONFIG.REPO_DIR,
+        env: process.env,
+        stdio: ["pipe", "pipe", "pipe"],
+      });
+    } catch (e) {
+      return finish({ ok: false, error: e instanceof Error ? e.message : String(e) });
+    }
+    const timer = setTimeout(() => {
+      try {
+        child.kill("SIGKILL");
+      } catch {
+        /* ignore */
+      }
+      finish({ ok: false, error: "bridge timeout" });
+    }, timeoutMs);
+    child.stdout.on("data", (d) => (stdout += d.toString()));
+    child.stderr.on("data", (d) => (stderr += d.toString()));
+    child.on("error", (e) => {
+      clearTimeout(timer);
+      finish({ ok: false, error: e instanceof Error ? e.message : String(e) });
+    });
+    child.on("close", () => {
+      clearTimeout(timer);
+      const line = stdout.trim().split("\n").filter(Boolean).pop() || "";
+      try {
+        finish(JSON.parse(line));
+      } catch {
+        finish({ ok: false, error: (stderr.trim() || "unparseable bridge output").slice(0, 200) });
+      }
+    });
+    try {
+      child.stdin.write(JSON.stringify(params));
+      child.stdin.end();
+    } catch {
+      /* the close/error handler will resolve */
+    }
+  });
+}
+
+let _draftsCache: { at: number; view: DraftsView } | null = null;
+let _draftsInflight: Promise<DraftsView> | null = null;
+
+/** Live pending Publer drafts, grouped into videos, cached (TTL) + single-flight. */
+export async function draftsAwaitingReview(): Promise<DraftsView> {
+  const now = Date.now();
+  if (_draftsCache && now - _draftsCache.at < CONFIG.DRAFTS_TTL_MS) return _draftsCache.view;
+  if (_draftsInflight) return _draftsInflight;
+  _draftsInflight = (async () => {
+    let view: DraftsView;
+    try {
+      view = await computeDrafts();
+    } catch (e) {
+      view = { ok: false, videos: [], count_videos: 0, count_drafts: 0, source: "publer (read-only bridge)", as_of: new Date().toISOString(), error: e instanceof Error ? e.message : String(e) };
+    }
+    // Only cache good results; keep serving the last good view on transient errors.
+    if (view.ok) _draftsCache = { at: Date.now(), view };
+    else if (_draftsCache) view = _draftsCache.view;
+    _draftsInflight = null;
+    // Choke point: guarantee public-CDN-only media_url/thumbnail on EVERY served view.
+    return sanitizeDraftsForPublic(view);
+  })();
+  return _draftsInflight;
+}
+
+async function computeDrafts(): Promise<DraftsView> {
+  const asOf = new Date().toISOString();
+  const res = await runReadBridge("posts", { all: true, state: "draft", max_pages: CONFIG.DRAFTS_MAX_PAGES }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS);
+  if (!res || res.ok !== true || !Array.isArray(res.posts)) {
+    return {
+      ok: false,
+      videos: [],
+      count_videos: 0,
+      count_drafts: 0,
+      source: "publer (read-only bridge)",
+      as_of: asOf,
+      error: res && res.error ? String(res.error).slice(0, 200) : "drafts unavailable (bridge returned no posts)",
+    };
+  }
+  const posts: any[] = res.posts;
+  const accountsMap = (abDb() && abDb().accounts) || {};
+  const variantMap = buildPublerVariantMap();
+
+  // Group by the shared Publer media id → one "video" per IG+TikTok pair.
+  const groups = new Map<string, any[]>();
+  for (const p of posts) {
+    const mediaId = (p.media && p.media[0] && p.media[0].id) || p.id;
+    const key = String(mediaId);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(p);
+  }
+
+  const videos: DraftVideo[] = [];
+  for (const [key, ps] of groups) {
+    const rep = ps[0];
+    const media = (rep.media && rep.media[0]) || {};
+    const thumbs: any[] = Array.isArray(media.thumbnails) ? media.thumbnails : [];
+    const ti = Number.isInteger(media.default_thumbnail) ? media.default_thumbnail : 0;
+    const thumbRaw = (thumbs[ti] && thumbs[ti].real) || (thumbs[0] && (thumbs[0].real || thumbs[0].small)) || null;
+    const thumbnail = publicPublerCdnUrl(thumbRaw); // validated PUBLIC CDN poster (never S3-signed)
+    // The PUBLIC Publer CDN mp4 (media[].path) — NOT the S3 presigned url. Rendered
+    // same-origin via the read-only /api/draft-media proxy (CDN is Referer-gated).
+    const media_url = publicPublerCdnUrl(media.path);
+
+    let variant: { dimension: string; arm: string; question_types: string[]; run_id?: string; source: "run" | "ab-database" } | null = null;
+    for (const p of ps) {
+      const hit = variantMap.get(String(p.id));
+      if (hit) {
+        variant = hit;
+        break;
+      }
+    }
+
+    // Publer exposes NO stable/public per-draft URL (a draft's `url`/`post_link`/
+    // `linkie` are all null; there is no permalink/edit-link field), so we keep the
+    // platform + opaque id for labelling but DO NOT emit a (dead) deep-link.
+    const drafts: DraftPlatformLink[] = ps
+      .map((p) => ({ platform: platformForAccount(String(p.account_id), accountsMap), publer_id: String(p.id) }))
+      .sort((a, b) => a.platform.localeCompare(b.platform));
+
+    videos.push({
+      video_key: key,
+      hook: draftHook(rep.text),
+      caption: String(rep.text || ""),
+      thumbnail,
+      media_url,
+      dimension: variant ? variant.dimension : "hook",
+      arm: variant ? variant.arm : inferArm(rep.text),
+      variant_source: variant ? variant.source : "inferred",
+      question_types: variant ? variant.question_types : [],
+      run_id: variant?.run_id,
+      drafts,
+      updated_at: rep.updated_at,
+    });
+  }
+
+  videos.sort((a, b) => (Date.parse(b.updated_at || "") || 0) - (Date.parse(a.updated_at || "") || 0) || a.video_key.localeCompare(b.video_key));
+  const count_drafts = videos.reduce((n, v) => n + v.drafts.length, 0);
+  return { ok: true, videos, count_videos: videos.length, count_drafts, source: "publer (live, read-only bridge)", as_of: asOf };
 }

@@ -8,17 +8,23 @@
  * SECURITY / GUARDRAILS:
  *   - Read-only: there is NO route that posts, schedules, publishes, merges, or
  *     mutates anything. Every route only READS local files / GitHub (via `gh` read
- *     subcommands). The read-only invariant is asserted at boot (assertReadOnly).
- *   - HTTP Basic Auth (timing-safe), exactly like the current live dashboard. If
- *     no password is configured it relies on the network/SG restriction (parity
- *     with hermes/src/dashboard.ts) — set HERMES_DASH_PASS in prod.
+ *     subcommands) / Publer (via the read-only publer-read bridge). The read-only
+ *     invariant is asserted at boot (assertReadOnly).
+ *   - PUBLIC: served with NO authentication (no login). This is safe because the
+ *     surface is strictly read-only and renders NO secrets/credentials/env values
+ *     in any HTML or /api/* response. The kill-switch, factory, merges and posting
+ *     controls remain box-only (stop-file/env/CLI), never a web action. The
+ *     timing-safe basic-auth helpers are retained for tests / optional re-locking
+ *     but do NOT gate any request.
  */
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import { Readable } from "node:stream";
 import { timingSafeEqual } from "node:crypto";
 import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
-  proposals, contentDefaults, bankCoverage, costSnapshot,
+  proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, draftsAwaitingReview,
+  resolveDraftMediaUrl,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
@@ -49,17 +55,86 @@ function send(res: ServerResponse, code: number, body: string, type = "text/html
   res.end(body);
 }
 
+/**
+ * READ-ONLY media proxy: stream a pending draft's PUBLIC Publer CDN asset (mp4 or
+ * poster) back from THIS origin. Publer's CDN is hotlink-protected — it only
+ * serves media when the Referer is its own ecosystem — so a <video> pointing at
+ * cdn.publer.com would 403 on this public dashboard. We add that PUBLIC (non-secret)
+ * Referer server-side so the preview plays. Guarantees:
+ *   - GET/stream only; mutates nothing (read-only, like llmPing + the read bridge).
+ *   - `target` is pre-validated to https://cdn.publer.com/… (no S3 presigned url,
+ *     no query/tokens) AND is resolved from the current drafts allowlist by the
+ *     caller (no arbitrary URL ⇒ no open-proxy / SSRF).
+ *   - Injects NO credentials; forwards only a clean, minimal set of response
+ *     headers (never upstream x-amz-* or server metadata) so nothing secret leaks.
+ *   - Forwards Range so the browser can seek.
+ */
+async function streamPublerMedia(req: IncomingMessage, res: ServerResponse, target: string): Promise<void> {
+  const ctrl = new AbortController();
+  const to = setTimeout(() => ctrl.abort(), CONFIG.MEDIA_PROXY_TIMEOUT_MS);
+  res.on("close", () => {
+    try { ctrl.abort(); } catch { /* ignore */ }
+  });
+  try {
+    const headers: Record<string, string> = {
+      referer: CONFIG.PUBLER_CDN_REFERER, // PUBLIC constant, not a credential
+      "user-agent": "hermes-nous-dashboard/read-only-media-proxy",
+      accept: "*/*",
+    };
+    const range = req.headers.range;
+    if (typeof range === "string" && /^bytes=/i.test(range)) headers.range = range;
+    const up = await fetch(target, { method: "GET", headers, redirect: "follow", signal: ctrl.signal });
+    clearTimeout(to);
+    if (up.status !== 200 && up.status !== 206) {
+      return send(res, 502, `upstream ${up.status}`, "text/plain");
+    }
+    // Build CLEAN response headers — deliberately do NOT echo upstream headers.
+    const out: Record<string, string> = {
+      "content-type": up.headers.get("content-type") || "application/octet-stream",
+      "accept-ranges": "bytes",
+      "cache-control": "private, max-age=300",
+      "x-content-type-options": "nosniff",
+    };
+    const cl = up.headers.get("content-length");
+    if (cl) out["content-length"] = cl;
+    const cr = up.headers.get("content-range");
+    if (cr) out["content-range"] = cr;
+    res.writeHead(up.status, out);
+    if (up.body) {
+      // Handle stream errors (client disconnect / upstream abort) so an unhandled
+      // 'error' can never crash this public server.
+      const rs = Readable.fromWeb(up.body as any);
+      rs.on("error", () => {
+        try { res.destroy(); } catch { /* ignore */ }
+      });
+      rs.pipe(res);
+    } else {
+      res.end();
+    }
+  } catch {
+    clearTimeout(to);
+    try {
+      if (!res.headersSent) send(res, 502, "media proxy error", "text/plain");
+      else res.end();
+    } catch { /* ignore */ }
+  }
+}
+
 const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
 
-    // liveness probe: no data, no auth needed (leaks nothing)
+    // liveness probe: no data (leaks nothing)
     if (url.pathname === "/healthz") return send(res, 200, "ok", "text/plain");
 
-    if (!authed(req)) {
-      res.writeHead(401, { "www-authenticate": 'Basic realm="Hermes-Nous", charset="UTF-8"', "content-type": "text/plain" });
-      return res.end("Authentication required");
-    }
+    // PUBLIC: this dashboard is intentionally served with NO authentication.
+    // It is safe to expose because it is strictly READ-ONLY (every route only
+    // READS local JSON / GitHub via read-only `gh` / a read-only Publer bridge)
+    // and renders NO secrets/credentials/env values. There is deliberately no
+    // 401 challenge and no mutating route. The pure basic-auth helpers below
+    // (checkBasicAuth/eq/authed) are retained for unit tests / future re-locking
+    // but are NOT used to gate any request. Access is open to anyone who can
+    // reach the port (network/SG controls the audience).
 
     if (url.pathname === "/api/health") {
       const [llm, pr] = await Promise.all([llmPing(), buildPRView()]);
@@ -96,6 +171,29 @@ const server = createServer(async (req, res) => {
       return send(res, 200, JSON.stringify(await buildPRView()), "application/json");
     }
 
+    if (url.pathname === "/api/factory") {
+      return send(res, 200, JSON.stringify(factoryStatus() ?? { error: "no factory daemon status" }), "application/json");
+    }
+
+    if (url.pathname === "/api/drafts") {
+      // READ-ONLY: pending Publer drafts (public-CDN media_url + poster + hook + variant). No secrets.
+      return send(res, 200, JSON.stringify(await draftsAwaitingReview()), "application/json");
+    }
+
+    if (url.pathname === "/api/draft-media") {
+      // PUBLIC, READ-ONLY inline-preview proxy. Streams a CURRENT draft's PUBLIC
+      // Publer CDN asset (mp4 or poster) from OUR origin, adding the (non-secret)
+      // Referer Publer's hotlink-protected CDN requires. It can ONLY fetch a
+      // cdn.publer.com asset mapped to a live draft (allowlist by video_key ⇒ no
+      // open-proxy/SSRF), exposes NO S3 presigned url, and injects NO credentials.
+      const key = url.searchParams.get("v") || "";
+      const kind = url.searchParams.get("kind") === "thumb" ? "thumb" : "video";
+      const view = await draftsAwaitingReview();
+      const target = resolveDraftMediaUrl(view, key, kind);
+      if (!target) return send(res, 404, JSON.stringify({ error: "not found" }), "application/json");
+      return streamPublerMedia(req, res, target);
+    }
+
     if (url.pathname === "/api/run") {
       const { loadRun } = await import("./data.ts");
       const id = url.searchParams.get("id") || "";
@@ -107,12 +205,13 @@ const server = createServer(async (req, res) => {
       const runs = runSummaries();
       const latest = runs[0] ?? null;
       const selected = url.searchParams.get("run");
-      const pr = await buildPRView();
+      const [pr, drafts] = await Promise.all([buildPRView(), draftsAwaitingReview()]);
       return send(
         res, 200,
         page({
           latest,
           runs,
+          drafts,
           db: abDb(),
           l: learnings(),
           bank: bankStats(),
@@ -126,6 +225,7 @@ const server = createServer(async (req, res) => {
           defaults: contentDefaults(),
           coverage: bankCoverage(),
           snapshot: costSnapshot(),
+          factory: factoryStatus(),
         }),
       );
     }
@@ -141,7 +241,7 @@ if (import.meta.main) {
   const port = CONFIG.DASH_PORT;
   server.listen(port, "0.0.0.0", () => {
     // eslint-disable-next-line no-console
-    console.log(`[hermes-nous-dashboard] listening on :${port} (read-only; basic auth: ${CONFIG.DASH_PASS ? "on" : "OFF"})`);
+    console.log(`[hermes-nous-dashboard] listening on :${port} (READ-ONLY; auth: PUBLIC — no login)`);
   });
 }
 
