@@ -25,6 +25,7 @@ from . import (
     design,
     donottouch,
     draft_guard,
+    factory,
     gates,
     publish_guard,
     questions,
@@ -167,6 +168,21 @@ def register(ctx) -> None:
         handler=cycle.sffs_cycle,
         emoji="🔁",
         description="Run one full DRAFT-ONLY A/B cycle end to end (design->gates->render->upload->Publer DRAFTS; never publishes/schedules; never pushes to main).",
+    )
+
+    # --- SOFTWARE FACTORY: autonomous CODE self-improvement on the two-key gate. ---
+    # Proposes code changes (delegate_task fan-out) and auto-merges each ONLY on
+    # GREEN harness AND review-agent APPROVE (consumes scripts/gate/*, never
+    # reimplements it), honoring the cost governor + kill-switch, scoped to the
+    # build branch (never main), with rollback. DRY-RUN by default; a real run
+    # needs execute=true AND dry_run=false. It changes CODE only — never posts.
+    ctx.register_tool(
+        name="sffs_factory",
+        toolset="sffs",
+        schema=schemas.SFFS_FACTORY_SCHEMA,
+        handler=factory.sffs_factory,
+        emoji="🏭",
+        description="Run the software factory: propose code changes + auto-merge ONLY on the two-key gate (harness GREEN AND review-agent APPROVE); cost-governed + kill-switched; dry-run by default; never posts.",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---
