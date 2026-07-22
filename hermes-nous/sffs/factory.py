@@ -78,8 +78,13 @@ DEFAULT_MAX_WORKSTREAMS = 8
 # Planning
 # ---------------------------------------------------------------------------
 def slugify(text: Any) -> str:
+    # Collapse to lowercase alnum + single hyphens, then trim separators. The
+    # final .strip("-") is applied AFTER the 48-char truncation too: truncating
+    # can land on a hyphen boundary and leave a trailing "-", which would make an
+    # awkward git branch name (e.g. "sffs-factory/some-long-goal-"). Stripping
+    # after the slice keeps every generated workstream branch clean.
     s = re.sub(r"[^a-z0-9]+", "-", str(text or "").strip().lower()).strip("-")
-    return s[:48] or "workstream"
+    return s[:48].strip("-") or "workstream"
 
 
 def plan_workstreams(
