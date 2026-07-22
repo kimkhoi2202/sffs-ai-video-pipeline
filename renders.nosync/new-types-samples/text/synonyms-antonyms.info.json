@@ -1,0 +1,36 @@
+{
+  "type": "synonyms-antonyms",
+  "title": "Synonyms & Antonyms",
+  "tier": "SYNONYM / ANTONYM",
+  "kind": "text",
+  "category": "verbal",
+  "file": "synonyms-antonyms.mp4",
+  "format": "9:16 (1080x1920)",
+  "durationSec": 95.08,
+  "music": "prize-wheel-parade.mp3",
+  "sfx": "short-2",
+  "voiceId": "lZcmpVLaoXF4v0uz4l6Q",
+  "questions": [
+    {
+      "id": 1,
+      "tier": "ANTONYM",
+      "prompt": "WHICH WORD MEANS THE / OPPOSITE OF ANCIENT?",
+      "answer": "B · MODERN",
+      "countdown": 5
+    },
+    {
+      "id": 2,
+      "tier": "SYNONYM",
+      "prompt": "WHICH WORD MEANS THE / SAME AS ENORMOUS?",
+      "answer": "A · GIGANTIC",
+      "countdown": 5
+    },
+    {
+      "id": 3,
+      "tier": "ANTONYM",
+      "prompt": "WHICH WORD MEANS THE / OPPOSITE OF GENEROUS?",
+      "answer": "C · SELFISH",
+      "countdown": 5
+    }
+  ]
+}

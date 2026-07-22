@@ -1,0 +1,103 @@
+{
+  "round": 0,
+  "slug": "sample-quantitative-comparison",
+  "title": "SAMPLE — Quantitative Comparison",
+  "grade": 5,
+  "cogatLevel": 11,
+  "sampleOf": "quantitative-comparison",
+  "questions": [
+    {
+      "id": 1,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "WHICH FRACTION IS\nTHE LARGEST?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "2/5"
+        },
+        {
+          "letter": "B",
+          "text": "1/2"
+        },
+        {
+          "letter": "C",
+          "text": "3/8"
+        },
+        {
+          "letter": "D",
+          "text": "4/9"
+        }
+      ],
+      "ansLetter": "B",
+      "ansLabel": "1/2",
+      "explanation": "One half is the biggest, because every other choice is smaller than one half."
+    },
+    {
+      "id": 2,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "difficulty": "hard",
+      "countdown": 6,
+      "question": "WHICH IS THE GREATEST?",
+      "questionFontSize": 84,
+      "options": [
+        {
+          "letter": "A",
+          "text": "2/3"
+        },
+        {
+          "letter": "B",
+          "text": "5/8"
+        },
+        {
+          "letter": "C",
+          "text": "3/5"
+        },
+        {
+          "letter": "D",
+          "text": "7/12"
+        }
+      ],
+      "ansLetter": "A",
+      "ansLabel": "2/3",
+      "explanation": "Two thirds is the largest, since it is the closest one to a whole."
+    },
+    {
+      "id": 3,
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "difficulty": "medium",
+      "countdown": 6,
+      "question": "WHICH DECIMAL IS\nTHE SMALLEST?",
+      "questionFontSize": 80,
+      "options": [
+        {
+          "letter": "A",
+          "text": "0.6"
+        },
+        {
+          "letter": "B",
+          "text": "0.55"
+        },
+        {
+          "letter": "C",
+          "text": "0.45"
+        },
+        {
+          "letter": "D",
+          "text": "0.5"
+        }
+      ],
+      "ansLetter": "C",
+      "ansLabel": "0.45",
+      "explanation": "Forty five hundredths is the least, because all the others are one half or more."
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "type": "math-word-problems",
+  "title": "Math Word Problems",
+  "tier": "WORD PROBLEM",
+  "kind": "text",
+  "category": "quantitative",
+  "file": "math-word-problems.mp4",
+  "format": "9:16 (1080x1920)",
+  "durationSec": 111.36,
+  "music": "winner-spin.mp3",
+  "sfx": "short-5",
+  "voiceId": "lZcmpVLaoXF4v0uz4l6Q",
+  "questions": [
+    {
+      "id": 1,
+      "tier": "WORD PROBLEM",
+      "prompt": "A PIZZA HAS 8 SLICES. 3 KIDS EAT / 2 SLICES EACH. HOW MANY ARE LEFT?",
+      "answer": "B · 2",
+      "countdown": 6
+    },
+    {
+      "id": 2,
+      "tier": "WORD PROBLEM",
+      "prompt": "20% OF THE 30 KIDS IN CLASS WEAR / GLASSES. HOW MANY IS THAT?",
+      "answer": "A · 6",
+      "countdown": 6
+    },
+    {
+      "id": 3,
+      "tier": "WORD PROBLEM",
+      "prompt": "A $40 TOY IS 25% OFF TODAY. / WHAT IS THE SALE PRICE?",
+      "answer": "C · $30",
+      "countdown": 6
+    }
+  ]
+}

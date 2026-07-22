@@ -1,0 +1,529 @@
+{
+  "note": "STAGING ONLY — 5 new TEXT-based question types from content/new-question-types-proposal.md (Tier 1 + Tier 2). NOT the master bank. Do not merge into master-question-bank.json without review. Each type has 4-5 hand-authored Grade-5 / CogAT-Level-11 questions in the render-ready round-question shape. The first 3 of each type (ids 1,2,3) are used to render the on-brand sample short. All use EXISTING plates (text / numseries) — no new render code. Render guards respected: prompt <= 92 chars, option <= 24 chars, 3-4 options, seq <= 6 tokens.",
+  "grade": 5,
+  "cogatLevel": 11,
+  "generated": "2026-07-22",
+  "sampleIds": [1, 2, 3],
+  "types": [
+    {
+      "type": "letter-series",
+      "title": "Letter Series",
+      "kind": "numseries",
+      "category": "verbal",
+      "tier": "LETTER SERIES",
+      "sampleSlug": "sample-letter-series",
+      "questions": [
+        {
+          "id": 1,
+          "kind": "numseries",
+          "category": "verbal",
+          "tier": "LETTER SERIES",
+          "difficulty": "easy",
+          "countdown": 5,
+          "prompt": "WHAT COMES NEXT?",
+          "seq": ["A", "C", "E", "G", "?"],
+          "options": [
+            { "letter": "A", "text": "H" },
+            { "letter": "B", "text": "I" },
+            { "letter": "C", "text": "J" },
+            { "letter": "D", "text": "K" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "I",
+          "explanation": "Skip one letter each time: A, C, E, G, so the next letter is I."
+        },
+        {
+          "id": 2,
+          "kind": "numseries",
+          "category": "verbal",
+          "tier": "LETTER SERIES",
+          "difficulty": "medium",
+          "countdown": 5,
+          "prompt": "WHAT COMES NEXT?",
+          "seq": ["B", "D", "G", "K", "?"],
+          "options": [
+            { "letter": "A", "text": "P" },
+            { "letter": "B", "text": "O" },
+            { "letter": "C", "text": "N" },
+            { "letter": "D", "text": "Q" }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "P",
+          "explanation": "The gaps grow by one: 2, then 3, then 4, then 5, so K plus 5 letters is P."
+        },
+        {
+          "id": 3,
+          "kind": "numseries",
+          "category": "verbal",
+          "tier": "LETTER SERIES",
+          "difficulty": "medium",
+          "countdown": 5,
+          "prompt": "WHAT COMES NEXT?",
+          "seq": ["Z", "X", "V", "T", "?"],
+          "options": [
+            { "letter": "A", "text": "S" },
+            { "letter": "B", "text": "Q" },
+            { "letter": "C", "text": "R" },
+            { "letter": "D", "text": "U" }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "R",
+          "explanation": "Go back two letters each time: Z, X, V, T, so the next letter is R."
+        },
+        {
+          "id": 4,
+          "kind": "numseries",
+          "category": "verbal",
+          "tier": "LETTER SERIES",
+          "difficulty": "hard",
+          "countdown": 5,
+          "prompt": "WHAT COMES NEXT?",
+          "seq": ["A", "B", "D", "G", "?"],
+          "options": [
+            { "letter": "A", "text": "J" },
+            { "letter": "B", "text": "K" },
+            { "letter": "C", "text": "L" },
+            { "letter": "D", "text": "H" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "K",
+          "explanation": "The gaps grow by one: 1, then 2, then 3, then 4, so G plus 4 letters is K."
+        },
+        {
+          "id": 5,
+          "kind": "numseries",
+          "category": "verbal",
+          "tier": "LETTER SERIES",
+          "difficulty": "hard",
+          "countdown": 5,
+          "prompt": "WHAT COMES NEXT?",
+          "seq": ["AZ", "BY", "CX", "?"],
+          "options": [
+            { "letter": "A", "text": "DV" },
+            { "letter": "B", "text": "EW" },
+            { "letter": "C", "text": "DW" },
+            { "letter": "D", "text": "DX" }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "DW",
+          "explanation": "First letters climb A, B, C, D and second letters fall Z, Y, X, W, so it is DW."
+        }
+      ]
+    },
+    {
+      "type": "synonyms-antonyms",
+      "title": "Synonyms & Antonyms",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "SYNONYM / ANTONYM",
+      "sampleSlug": "sample-synonyms-antonyms",
+      "questions": [
+        {
+          "id": 1,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "ANTONYM",
+          "difficulty": "easy",
+          "countdown": 5,
+          "question": "WHICH WORD MEANS THE\nOPPOSITE OF ANCIENT?",
+          "questionFontSize": 76,
+          "options": [
+            { "letter": "A", "text": "OLD" },
+            { "letter": "B", "text": "MODERN" },
+            { "letter": "C", "text": "HUGE" },
+            { "letter": "D", "text": "QUIET" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "MODERN",
+          "explanation": "Ancient means very old, so its opposite is modern."
+        },
+        {
+          "id": 2,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "SYNONYM",
+          "difficulty": "easy",
+          "countdown": 5,
+          "question": "WHICH WORD MEANS THE\nSAME AS ENORMOUS?",
+          "questionFontSize": 76,
+          "options": [
+            { "letter": "A", "text": "GIGANTIC" },
+            { "letter": "B", "text": "TINY" },
+            { "letter": "C", "text": "HAPPY" },
+            { "letter": "D", "text": "FAST" }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "GIGANTIC",
+          "explanation": "Enormous and gigantic both mean very big."
+        },
+        {
+          "id": 3,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "ANTONYM",
+          "difficulty": "medium",
+          "countdown": 5,
+          "question": "WHICH WORD MEANS THE\nOPPOSITE OF GENEROUS?",
+          "questionFontSize": 76,
+          "options": [
+            { "letter": "A", "text": "KIND" },
+            { "letter": "B", "text": "RICH" },
+            { "letter": "C", "text": "SELFISH" },
+            { "letter": "D", "text": "LOUD" }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "SELFISH",
+          "explanation": "A generous person loves to share, and a selfish one does not."
+        },
+        {
+          "id": 4,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "SYNONYM",
+          "difficulty": "medium",
+          "countdown": 5,
+          "question": "WHICH WORD MEANS THE\nSAME AS RAPID?",
+          "questionFontSize": 76,
+          "options": [
+            { "letter": "A", "text": "SLOW" },
+            { "letter": "B", "text": "QUICK" },
+            { "letter": "C", "text": "HEAVY" },
+            { "letter": "D", "text": "EMPTY" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "QUICK",
+          "explanation": "Rapid and quick both mean very fast."
+        },
+        {
+          "id": 5,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "ANTONYM",
+          "difficulty": "medium",
+          "countdown": 5,
+          "question": "WHICH WORD MEANS THE\nOPPOSITE OF BRAVE?",
+          "questionFontSize": 76,
+          "options": [
+            { "letter": "A", "text": "BOLD" },
+            { "letter": "B", "text": "STRONG" },
+            { "letter": "C", "text": "CALM" },
+            { "letter": "D", "text": "FEARFUL" }
+          ],
+          "ansLetter": "D",
+          "ansLabel": "FEARFUL",
+          "explanation": "A brave person is not scared, so the opposite is fearful."
+        }
+      ]
+    },
+    {
+      "type": "quantitative-comparison",
+      "title": "Quantitative Comparison",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "COMPARE",
+      "sampleSlug": "sample-quantitative-comparison",
+      "questions": [
+        {
+          "id": 1,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "COMPARE",
+          "difficulty": "medium",
+          "countdown": 6,
+          "question": "WHICH FRACTION IS\nTHE LARGEST?",
+          "questionFontSize": 80,
+          "options": [
+            { "letter": "A", "text": "2/5" },
+            { "letter": "B", "text": "1/2" },
+            { "letter": "C", "text": "3/8" },
+            { "letter": "D", "text": "4/9" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "1/2",
+          "explanation": "One half is the biggest, because every other choice is smaller than one half."
+        },
+        {
+          "id": 2,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "COMPARE",
+          "difficulty": "hard",
+          "countdown": 6,
+          "question": "WHICH IS THE GREATEST?",
+          "questionFontSize": 84,
+          "options": [
+            { "letter": "A", "text": "2/3" },
+            { "letter": "B", "text": "5/8" },
+            { "letter": "C", "text": "3/5" },
+            { "letter": "D", "text": "7/12" }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "2/3",
+          "explanation": "Two thirds is the largest, since it is the closest one to a whole."
+        },
+        {
+          "id": 3,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "COMPARE",
+          "difficulty": "medium",
+          "countdown": 6,
+          "question": "WHICH DECIMAL IS\nTHE SMALLEST?",
+          "questionFontSize": 80,
+          "options": [
+            { "letter": "A", "text": "0.6" },
+            { "letter": "B", "text": "0.55" },
+            { "letter": "C", "text": "0.45" },
+            { "letter": "D", "text": "0.5" }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "0.45",
+          "explanation": "Forty five hundredths is the least, because all the others are one half or more."
+        },
+        {
+          "id": 4,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "COMPARE",
+          "difficulty": "medium",
+          "countdown": 6,
+          "question": "WHICH FRACTION IS\nTHE SMALLEST?",
+          "questionFontSize": 80,
+          "options": [
+            { "letter": "A", "text": "1/3" },
+            { "letter": "B", "text": "1/4" },
+            { "letter": "C", "text": "1/2" },
+            { "letter": "D", "text": "2/5" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "1/4",
+          "explanation": "One quarter is the smallest, because the more pieces you cut, the tinier each piece is."
+        },
+        {
+          "id": 5,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "COMPARE",
+          "difficulty": "medium",
+          "countdown": 6,
+          "question": "WHICH DECIMAL IS\nTHE LARGEST?",
+          "questionFontSize": 80,
+          "options": [
+            { "letter": "A", "text": "0.29" },
+            { "letter": "B", "text": "0.4" },
+            { "letter": "C", "text": "0.35" },
+            { "letter": "D", "text": "0.3" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "0.4",
+          "explanation": "Four tenths is the biggest, because it is the same as forty hundredths."
+        }
+      ]
+    },
+    {
+      "type": "deductive-logic",
+      "title": "Deductive Logic (True / False / Can't Tell)",
+      "kind": "text",
+      "category": "verbal",
+      "tier": "LOGIC",
+      "sampleSlug": "sample-deductive-logic",
+      "questions": [
+        {
+          "id": 1,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "LOGIC",
+          "difficulty": "easy",
+          "countdown": 7,
+          "question": "ALL CATS PURR.\nMILO IS A CAT.\nSO MILO PURRS.",
+          "questionFontSize": 66,
+          "options": [
+            { "letter": "A", "text": "TRUE" },
+            { "letter": "B", "text": "FALSE" },
+            { "letter": "C", "text": "CAN'T TELL" }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "TRUE",
+          "explanation": "If every cat purrs and Milo is a cat, then Milo must purr."
+        },
+        {
+          "id": 2,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "LOGIC",
+          "difficulty": "hard",
+          "countdown": 7,
+          "question": "ALL ROSES ARE FLOWERS.\nSOME FLOWERS FADE FAST.\nSO ALL ROSES FADE FAST.",
+          "questionFontSize": 58,
+          "options": [
+            { "letter": "A", "text": "TRUE" },
+            { "letter": "B", "text": "FALSE" },
+            { "letter": "C", "text": "CAN'T TELL" }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "CAN'T TELL",
+          "explanation": "Only some flowers fade fast, and we are not told the roses are those ones."
+        },
+        {
+          "id": 3,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "LOGIC",
+          "difficulty": "medium",
+          "countdown": 7,
+          "question": "NO FISH CAN FLY.\nA SHARK IS A FISH.\nSO A SHARK CAN FLY.",
+          "questionFontSize": 64,
+          "options": [
+            { "letter": "A", "text": "TRUE" },
+            { "letter": "B", "text": "FALSE" },
+            { "letter": "C", "text": "CAN'T TELL" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "FALSE",
+          "explanation": "No fish can fly and a shark is a fish, so a shark cannot fly."
+        },
+        {
+          "id": 4,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "LOGIC",
+          "difficulty": "medium",
+          "countdown": 7,
+          "question": "ALL BIRDS HAVE WINGS.\nA PENGUIN IS A BIRD.\nSO A PENGUIN HAS WINGS.",
+          "questionFontSize": 60,
+          "options": [
+            { "letter": "A", "text": "TRUE" },
+            { "letter": "B", "text": "FALSE" },
+            { "letter": "C", "text": "CAN'T TELL" }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "TRUE",
+          "explanation": "Every bird has wings and a penguin is a bird, so a penguin has wings."
+        },
+        {
+          "id": 5,
+          "kind": "text",
+          "category": "verbal",
+          "tier": "LOGIC",
+          "difficulty": "hard",
+          "countdown": 7,
+          "question": "SOME TOYS ARE RED.\nMY BALL IS A TOY.\nSO MY BALL IS RED.",
+          "questionFontSize": 64,
+          "options": [
+            { "letter": "A", "text": "TRUE" },
+            { "letter": "B", "text": "FALSE" },
+            { "letter": "C", "text": "CAN'T TELL" }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "CAN'T TELL",
+          "explanation": "Only some toys are red, so we cannot be sure this one ball is red."
+        }
+      ]
+    },
+    {
+      "type": "math-word-problems",
+      "title": "Math Word Problems",
+      "kind": "text",
+      "category": "quantitative",
+      "tier": "WORD PROBLEM",
+      "sampleSlug": "sample-math-word-problems",
+      "questions": [
+        {
+          "id": 1,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "WORD PROBLEM",
+          "difficulty": "medium",
+          "countdown": 6,
+          "question": "A PIZZA HAS 8 SLICES. 3 KIDS EAT\n2 SLICES EACH. HOW MANY ARE LEFT?",
+          "questionFontSize": 60,
+          "options": [
+            { "letter": "A", "text": "4" },
+            { "letter": "B", "text": "2" },
+            { "letter": "C", "text": "3" },
+            { "letter": "D", "text": "6" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "2",
+          "explanation": "Three kids each eat two slices, that is six eaten, and eight take away six leaves two."
+        },
+        {
+          "id": 2,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "WORD PROBLEM",
+          "difficulty": "medium",
+          "countdown": 6,
+          "question": "20% OF THE 30 KIDS IN CLASS WEAR\nGLASSES. HOW MANY IS THAT?",
+          "questionFontSize": 60,
+          "options": [
+            { "letter": "A", "text": "6" },
+            { "letter": "B", "text": "5" },
+            { "letter": "C", "text": "10" },
+            { "letter": "D", "text": "3" }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "6",
+          "explanation": "Twenty percent means one fifth, and one fifth of thirty kids is six kids."
+        },
+        {
+          "id": 3,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "WORD PROBLEM",
+          "difficulty": "medium",
+          "countdown": 6,
+          "question": "A $40 TOY IS 25% OFF TODAY.\nWHAT IS THE SALE PRICE?",
+          "questionFontSize": 64,
+          "options": [
+            { "letter": "A", "text": "$35" },
+            { "letter": "B", "text": "$32" },
+            { "letter": "C", "text": "$30" },
+            { "letter": "D", "text": "$10" }
+          ],
+          "ansLetter": "C",
+          "ansLabel": "$30",
+          "explanation": "One quarter of forty dollars is ten dollars off, so the toy costs thirty dollars."
+        },
+        {
+          "id": 4,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "WORD PROBLEM",
+          "difficulty": "easy",
+          "countdown": 6,
+          "question": "A BOOK HAS 90 PAGES. SAM READ\nHALF OF IT. HOW MANY PAGES LEFT?",
+          "questionFontSize": 60,
+          "options": [
+            { "letter": "A", "text": "40" },
+            { "letter": "B", "text": "45" },
+            { "letter": "C", "text": "50" },
+            { "letter": "D", "text": "30" }
+          ],
+          "ansLetter": "B",
+          "ansLabel": "45",
+          "explanation": "Half of ninety pages is forty five pages, so forty five pages are still left."
+        },
+        {
+          "id": 5,
+          "kind": "text",
+          "category": "quantitative",
+          "tier": "WORD PROBLEM",
+          "difficulty": "hard",
+          "countdown": 7,
+          "question": "3 PENCILS COST 60 CENTS.\nHOW MUCH DO 5 PENCILS COST?",
+          "questionFontSize": 64,
+          "options": [
+            { "letter": "A", "text": "$1.00" },
+            { "letter": "B", "text": "80 CENTS" },
+            { "letter": "C", "text": "$1.20" },
+            { "letter": "D", "text": "90 CENTS" }
+          ],
+          "ansLetter": "A",
+          "ansLabel": "$1.00",
+          "explanation": "One pencil costs twenty cents, so five pencils cost one dollar."
+        }
+      ]
+    }
+  ]
+}

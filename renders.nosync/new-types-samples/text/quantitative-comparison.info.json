@@ -1,0 +1,36 @@
+{
+  "type": "quantitative-comparison",
+  "title": "Quantitative Comparison",
+  "tier": "COMPARE",
+  "kind": "text",
+  "category": "quantitative",
+  "file": "quantitative-comparison.mp4",
+  "format": "9:16 (1080x1920)",
+  "durationSec": 105.34,
+  "music": "bonus-round-bounce.mp3",
+  "sfx": "short-3",
+  "voiceId": "lZcmpVLaoXF4v0uz4l6Q",
+  "questions": [
+    {
+      "id": 1,
+      "tier": "COMPARE",
+      "prompt": "WHICH FRACTION IS / THE LARGEST?",
+      "answer": "B · 1/2",
+      "countdown": 6
+    },
+    {
+      "id": 2,
+      "tier": "COMPARE",
+      "prompt": "WHICH IS THE GREATEST?",
+      "answer": "A · 2/3",
+      "countdown": 6
+    },
+    {
+      "id": 3,
+      "tier": "COMPARE",
+      "prompt": "WHICH DECIMAL IS / THE SMALLEST?",
+      "answer": "C · 0.45",
+      "countdown": 6
+    }
+  ]
+}
