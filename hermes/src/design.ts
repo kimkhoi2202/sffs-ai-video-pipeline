@@ -214,3 +214,39 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   info("batch planned", { runId, planned: plans.length, target, frontRunner: learnings.front_runners });
   return plans;
 }
+
+/** A read-only entry in the A/B dimension catalog (one variable axis per entry). */
+export interface DimensionInfo {
+  dimension: string;
+  arm: string;
+  rationale: string;
+  numQ: number;
+  category: string;
+  narration: NarrationMode;
+  showProgress: boolean;
+  progressStyle: string;
+  reveal: RevealMode;
+  countdownSec: number;
+}
+
+/**
+ * Read-only view of the A/B dimension catalog (dimension / arm / rationale + the
+ * key render axes, incl. the narration arm and progress-counter settings). This
+ * runs NO LLM and makes NO network call — it just surfaces the static DIMENSIONS
+ * table so the `sffs_design` tool (and the agent) can introspect the A/B space
+ * cheaply. The full, caption-generating design is planBatch() above.
+ */
+export function dimensionCatalog(): DimensionInfo[] {
+  return DIMENSIONS.map((d) => ({
+    dimension: d.dimension,
+    arm: d.arm,
+    rationale: d.rationale,
+    numQ: d.numQ,
+    category: d.category,
+    narration: d.narration ?? "none",
+    showProgress: d.showProgress,
+    progressStyle: d.progressStyle,
+    reveal: d.reveal,
+    countdownSec: d.countdownSec,
+  }));
+}

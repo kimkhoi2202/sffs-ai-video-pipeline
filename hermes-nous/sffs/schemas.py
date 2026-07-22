@@ -194,6 +194,63 @@ SFFS_PUBLER_READ_SCHEMA = {
     },
 }
 
+# ---------------------------------------------------------------------------
+# DESIGN — plan the day's A/B batch (or introspect the A/B dimension catalog).
+# DESIGN/READ-only: no create / schedule / publish / delete / update path is
+# reachable (see design.py + bridge/design.ts). No state/schedule/publish
+# vocabulary is exposed (schema-as-guardrail).
+# ---------------------------------------------------------------------------
+
+SFFS_DESIGN_SCHEMA = {
+    "name": "sffs_design",
+    "description": (
+        "Design the day's A/B quiz-video batch (DESIGN-only; it never posts). Use "
+        "what='catalog' (default) to see the A/B dimension space with NO LLM/network "
+        "call — every dimension and arm, including the narration family (full / none "
+        "/ no-question-vo / no-options-vo) and the progress-counter arms. Use "
+        "what='plan' to actually build a batch: it picks FRESH, never-repeated "
+        "questions for each dimension and writes on-brand, gated captions (this calls "
+        "the LLM for captions), returning one plan per video (its dimension, arm, "
+        "questions, caption, and render props incl. the narration arm). It can never "
+        "create, publish, schedule, or modify a post. Set dry_run=true to preview the "
+        "request with no LLM/network call."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "what": {
+                "type": "string",
+                "enum": ["catalog", "plan"],
+                "description": (
+                    "'catalog' (default): list the A/B dimensions/arms (no LLM/network). "
+                    "'plan': build the batch (selects questions + generates captions)."
+                ),
+            },
+            "run_id": {
+                "type": "string",
+                "description": (
+                    "For what='plan': the run id — a deterministic seed AND the per-video "
+                    "id prefix (e.g. a date like '2026-07-22'). Defaults to today's UTC date."
+                ),
+            },
+            "target": {
+                "type": "integer",
+                "description": (
+                    "For what='plan': how many videos to design (each a different A/B "
+                    "dimension). Defaults to 10; max 50. Fewer are returned if the bank "
+                    "lacks enough fresh questions (quality > volume)."
+                ),
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "If true, preview the request WITHOUT any LLM/network call.",
+            },
+        },
+        "required": [],
+    },
+}
+
+
 SFFS_SCORE_SCHEMA = {
     "name": "sffs_score",
     "description": (
