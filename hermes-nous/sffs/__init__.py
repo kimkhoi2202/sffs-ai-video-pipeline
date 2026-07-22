@@ -18,7 +18,7 @@ cron, the cost governor, and the software-factory subagents.
 
 from __future__ import annotations
 
-from . import design, donottouch, draft_guard, publish_guard, reads, schemas
+from . import design, donottouch, draft_guard, gates, publish_guard, reads, schemas
 
 
 def register(ctx) -> None:
@@ -79,6 +79,18 @@ def register(ctx) -> None:
         handler=design.sffs_design,
         emoji="🎬",
         description="Design the A/B batch or list the A/B dimension catalog (design-only).",
+    )
+
+    # --- HARD QUALITY GATES (fail-closed): dedup / validity / copy / render. ---
+    # Read/judge-only verdicts; nothing becomes a draft unless it passes. Cannot
+    # create/publish/schedule/mutate a post.
+    ctx.register_tool(
+        name="sffs_gates",
+        toolset="sffs",
+        schema=schemas.SFFS_GATES_SCHEMA,
+        handler=gates.sffs_gates,
+        emoji="🚦",
+        description="Run a quality gate (dedup/validity/brand-copy/render-sanity; fail-closed).",
     )
 
     # --- Defense-in-depth: refuse ANY publish/schedule/post-mutation tool call. ---
