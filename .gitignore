@@ -37,6 +37,7 @@ tools/*
 # Python
 __pycache__/
 *.py[cod]
+.pytest_cache/
 
 # Large, regenerable OUTPUT masters — keep source + audio, drop final mp4s.
 # The render tree is renders.nosync/ (the ".nosync" suffix makes iCloud skip the
