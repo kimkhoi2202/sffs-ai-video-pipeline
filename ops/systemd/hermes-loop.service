@@ -1,0 +1,17 @@
+[Unit]
+Description=Hermes SFFS DRAFT-ONLY autonomous cycle (score -> design A/B batch -> quality gates -> render -> S3 -> Publer DRAFTS)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ec2-user
+WorkingDirectory=/home/ec2-user/sffs-ai-video-pipeline
+EnvironmentFile=/etc/hermes/hermes.env
+# The cycle is idempotent/resumable (re-running the same run_id skips completed steps).
+ExecStart=/usr/bin/env node hermes/src/cycle.ts
+TimeoutStartSec=5400
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

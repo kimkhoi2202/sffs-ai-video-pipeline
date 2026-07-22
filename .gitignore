@@ -76,3 +76,4 @@ voice/_backups/
 .DS_Store
 *.log
 .vercel/
+hermes/node_modules/

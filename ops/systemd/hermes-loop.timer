@@ -1,0 +1,11 @@
+[Unit]
+Description=Trigger the Hermes DRAFT-ONLY cycle ~daily (aligned to Publer's ~24h analytics maturation lag)
+
+[Timer]
+# ~24h cadence. 14:00 UTC = mid-morning US; metrics from the prior day have matured.
+OnCalendar=*-*-* 14:00:00 UTC
+Persistent=true
+RandomizedDelaySec=600
+
+[Install]
+WantedBy=timers.target

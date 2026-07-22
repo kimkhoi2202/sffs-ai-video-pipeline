@@ -1,0 +1,17 @@
+[Unit]
+Description=Hermes SFFS dashboard (read-only supervisor for the draft-only loop)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/sffs-ai-video-pipeline
+EnvironmentFile=/etc/hermes/hermes.env
+ExecStart=/usr/bin/env node hermes/src/dashboard.ts
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

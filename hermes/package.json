@@ -1,0 +1,15 @@
+{
+  "name": "hermes-loop",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Hermes autonomous DRAFT-ONLY A/B video loop + dashboard for Smart Fella or Fart Smella (runs on the VPS). The loop only ever creates Publer drafts; going live is a human action.",
+  "scripts": {
+    "cycle": "node src/cycle.ts",
+    "cycle:dry": "HERMES_DRY_RUN=1 node src/cycle.ts",
+    "dashboard": "node src/dashboard.ts"
+  },
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}
