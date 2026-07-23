@@ -2,7 +2,7 @@
   "schema_version": 1,
   "updated_at": "2026-07-22T00:00:00.000Z",
   "campaign": "Smart Fella or Fart Smella",
-  "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the human-approved default-promotion policy. Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect + record proposals. The ONLY writer of `defaults`/`history` is the HUMAN approval CLI (sffs_promote_default --approve <id>); the autonomous loop never flips a default. This is the CONTENT analog of the code factory's two-key gate and is deliberately SEPARATE from it (that gate is scripts/gate/*; this is human-only, no auto-apply).",
+  "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the default-promotion policy (human AND autonomous). Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect proposals, auto-promote confirmed winners, and auto-revert underperformers. `defaults`/`history` are written by (a) the HUMAN approval CLI (sffs_promote_default --approve <id>) AND (b) the AUTONOMOUS gate (promote.auto_promote_cycle) — but the autonomous path is stricter and reversible: it only adopts a winner AFTER a confirmation round of fresh matured samples, logs every promotion + revert to the reversible auto_ledger (in proposals.json, surfaced on the dashboard), and AUTO-REVERTS a promoted default that later underperforms the arm it replaced. GUARDRAIL: promotion only ever writes an arm LABEL from the fixed whitelist here; it touches NO posting/scheduling/window/ceiling/gate path, so a promoted default can never change cadence or escape the hard posting guardrails (7am-1am CST, <=12/day/platform, quality/brand gates, dedup, do-not-touch). This is the CONTENT analog of the code factory's two-key gate.",
   "defaults": {
     "narration": "full",
     "ending": "cliffhanger"
@@ -19,5 +19,15 @@
     "min_rel_improvement": 0.2,
     "incumbent_label": "control",
     "notes": "A test arm is PROPOSED as the new default only when it beats the incumbent 'control' (the current defaults) with CLEAR signal: BOTH the challenger AND the incumbent have >= min_sample posts-with-metrics, AND the challenger's median_eng_rate exceeds the incumbent by >= min_abs_improvement_pp percentage points AND by >= min_rel_improvement (relative). min_sample=5 is deliberately stricter than learnings.json front-runner min_n=3 because flipping a sticky DEFAULT is a bigger decision than naming a transient front-runner. All four values are config-driven here."
+  },
+  "auto_promotion": {
+    "enabled": true,
+    "min_sample": 8,
+    "min_abs_improvement_pp": 1.0,
+    "min_rel_improvement": 0.2,
+    "confirmation_min_new_samples": 5,
+    "revert_min_sample": 8,
+    "revert_abs_drop_pp": 1.0,
+    "notes": "AUTONOMOUS default-promotion policy (promote.auto_promote_cycle). Deliberately STRICTER than the human `promotion` gate: min_sample=8 (vs 5) matured posts on BOTH sides. TWO-STAGE, reversible: STAGE 1 a winner that clears these thresholds enters a confirmation round; STAGE 2 it is only auto-adopted after >= confirmation_min_new_samples FRESH matured challenger samples accrue with the win still holding (a confirmation round of similar posts). Every promotion + revert is appended to proposals.json `auto_ledger` (surfaced on the dashboard) and is reversible. AUTO-REVERT: if a promoted default later underperforms the arm it replaced by >= revert_abs_drop_pp over >= revert_min_sample matured posts, it is automatically reverted. Set enabled=false to fall back to human-only approval. Promotion NEVER touches posting/scheduling — it only flips a whitelisted arm label — so it can never escape the hard posting guardrails."
   }
 }

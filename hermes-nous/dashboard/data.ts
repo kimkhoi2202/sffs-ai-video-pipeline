@@ -218,6 +218,11 @@ export function factoryStatus(): any {
   return readJSON<any>(CONFIG.FACTORY_STATUS, null);
 }
 
+/** The always-on continuous SUPERVISOR status (supervisor-status.json) or null. */
+export function supervisorStatus(): any {
+  return readJSON<any>(CONFIG.SUPERVISOR_STATUS, null);
+}
+
 // ── GOAL-PROGRESS (Hermes's 7-day mandate) ───────────────────────────────────
 
 export interface KickoffState {
@@ -720,6 +725,9 @@ export interface ScheduledPost {
   hook: string; // caption first line
   arm: string; // A/B arm (correlated from run/ab-database, else inferred from caption)
   arm_source: "run" | "ab-database" | "inferred";
+  video_key: string; // shared Publer media id — for the read-only inline preview proxy
+  thumbnail: string | null; // validated PUBLIC Publer CDN poster image (or null)
+  media_url: string | null; // validated PUBLIC Publer CDN mp4 (or null); streamed via /api/draft-media
 }
 export interface ScheduledView {
   ok: boolean;
@@ -743,6 +751,28 @@ function formatChicago(iso: string): string {
   }
 }
 
+/**
+ * Resolve a SCHEDULED post's validated PUBLIC-CDN asset URL by video_key + kind —
+ * the scheduled-panel analogue of resolveDraftMediaUrl. Used by the read-only media
+ * proxy so it can ONLY ever fetch a cdn.publer.com asset belonging to a live
+ * scheduled post (allowlist ⇒ no open-proxy / SSRF; no S3 presigned url).
+ */
+export function resolveScheduledMediaUrl(view: ScheduledView | null, videoKey: string, kind: "video" | "thumb"): string | null {
+  if (!view || !Array.isArray(view.posts) || !videoKey) return null;
+  const p = view.posts.find((x) => x.video_key === videoKey);
+  if (!p) return null;
+  return publicPublerCdnUrl(kind === "thumb" ? p.thumbnail : p.media_url);
+}
+
+/** Public choke point: force every scheduled media_url/thumbnail through the PUBLIC-CDN allowlist. */
+export function sanitizeScheduledForPublic(view: ScheduledView): ScheduledView {
+  for (const p of view.posts || []) {
+    p.media_url = publicPublerCdnUrl(p.media_url);
+    p.thumbnail = publicPublerCdnUrl(p.thumbnail);
+  }
+  return view;
+}
+
 let _schedCache: { at: number; view: ScheduledView } | null = null;
 let _schedInflight: Promise<ScheduledView> | null = null;
 
@@ -760,7 +790,8 @@ export async function scheduledPosts(): Promise<ScheduledView> {
     }
     if (view.ok) _schedCache = { at: Date.now(), view };
     _schedInflight = null;
-    return view;
+    // Choke point: guarantee public-CDN-only media on EVERY served scheduled view.
+    return sanitizeScheduledForPublic(view);
   })();
   return _schedInflight;
 }
@@ -781,6 +812,12 @@ async function computeScheduled(): Promise<ScheduledView> {
   for (const p of res.posts) {
     const at = p && p.scheduled_at;
     if (!at) continue; // only truly-scheduled posts carry a scheduled_at
+    // Media for the inline preview (same shape as drafts): PUBLIC Publer CDN only —
+    // publicPublerCdnUrl NULLS any S3-signed/off-host url, so no secret can leak.
+    const media = (p.media && p.media[0]) || {};
+    const thumbs: any[] = Array.isArray(media.thumbnails) ? media.thumbnails : [];
+    const ti = Number.isInteger(media.default_thumbnail) ? media.default_thumbnail : 0;
+    const thumbRaw = (thumbs[ti] && thumbs[ti].real) || (thumbs[0] && (thumbs[0].real || thumbs[0].small)) || null;
     const hit = variantMap.get(String(p.id));
     posts.push({
       post_id: String(p.id),
@@ -790,6 +827,9 @@ async function computeScheduled(): Promise<ScheduledView> {
       hook: draftHook(p.text),
       arm: hit ? hit.arm : inferArm(p.text),
       arm_source: hit ? hit.source : "inferred",
+      video_key: String((media && media.id) || p.id),
+      thumbnail: publicPublerCdnUrl(thumbRaw),
+      media_url: publicPublerCdnUrl(media.path),
     });
   }
   posts.sort((a, b) => (Date.parse(a.scheduled_at) || 0) - (Date.parse(b.scheduled_at) || 0));

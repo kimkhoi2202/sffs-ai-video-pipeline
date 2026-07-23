@@ -643,6 +643,272 @@ def reject(
 
 
 # ---------------------------------------------------------------------------
+# AUTONOMOUS default-promotion (gated) — confirmation round + reversible ledger.
+#
+# This is the AUTO analog of the human approve() path. It flips a content default
+# WITHOUT a human, but ONLY after a STRICTER, TWO-STAGE gate:
+#   STAGE 1 (detect): the challenger clears the AUTO thresholds (stricter min_sample
+#           than the human gate) — the proposal enters a "confirming" round.
+#   STAGE 2 (confirm): on a later cycle the win STILL holds AND the challenger has
+#           accumulated a FRESH batch of matured samples (>= confirmation_min_new_
+#           samples since stage 1) — i.e. a confirmation round of similar posts
+#           confirmed it. ONLY THEN is the default auto-adopted.
+# Every auto-promotion + auto-revert is appended to a reversible LEDGER (surfaced on
+# the dashboard). AUTO-REVERT: if a promoted default later UNDERPERFORMS the arm it
+# replaced (by >= revert_abs_drop_pp over >= revert_min_sample matured posts), it is
+# automatically reverted to the previous default + ledgered.
+#
+# GUARDRAILS (unchanged, un-escapable): auto-promotion ONLY writes an arm LABEL from
+# the fixed PROMOTABLE_DIMENSIONS whitelist into content-defaults.json. It touches
+# NO posting/scheduling/window/ceiling/gate path — those are separate, unchanged
+# code. A promoted arm's videos still pass ALL the same quality/brand gates, dedup,
+# 7am-1am CST window, 12/day/platform ceiling + do-not-touch. A promotion therefore
+# CANNOT change cadence or escape any posting guardrail; it only changes which arm
+# is the baseline the daily cycle builds + tests against.
+# ---------------------------------------------------------------------------
+FALLBACK_AUTO_POLICY: Dict[str, Any] = {
+    "enabled": True,
+    # stricter than the human min_sample (5): flipping a default with NO human is a
+    # bigger commitment, so require more matured evidence on BOTH sides.
+    "min_sample": 8,
+    "min_abs_improvement_pp": 1.0,
+    "min_rel_improvement": 0.20,
+    # a confirmation round = this many FRESH matured challenger samples must accrue
+    # AFTER the win is first detected, with the win still holding, before adopting.
+    "confirmation_min_new_samples": 5,
+    # auto-revert: promoted arm must have this many matured posts AND underperform the
+    # arm it replaced by >= revert_abs_drop_pp on the metric to trigger a revert.
+    "revert_min_sample": 8,
+    "revert_abs_drop_pp": 1.0,
+}
+
+
+def load_auto_policy(content_defaults_path: Path) -> Dict[str, Any]:
+    """Resolve the AUTONOMOUS-promotion policy (config-driven), over the fallbacks."""
+    raw = _read_json(content_defaults_path, {}) or {}
+    p = raw.get("auto_promotion") if isinstance(raw, dict) else None
+    p = p if isinstance(p, dict) else {}
+    pol = dict(FALLBACK_AUTO_POLICY)
+    if isinstance(p.get("enabled"), bool):
+        pol["enabled"] = p["enabled"]
+    for k in ("min_sample", "confirmation_min_new_samples", "revert_min_sample"):
+        v = p.get(k)
+        if isinstance(v, int) and not isinstance(v, bool) and v >= 1:
+            pol[k] = v
+    for k in ("min_abs_improvement_pp", "min_rel_improvement", "revert_abs_drop_pp"):
+        v = p.get(k)
+        if isinstance(v, (int, float)) and not isinstance(v, bool) and v >= 0:
+            pol[k] = float(v)
+    return pol
+
+
+def _clears_auto_gate(prop: Dict[str, Any], auto: Dict[str, Any]) -> bool:
+    """True iff a pending proposal clears the STRICTER autonomous thresholds."""
+    ch, inc = prop.get("challenger") or {}, prop.get("incumbent") or {}
+    n_ch = int(ch.get("n_with_metrics") or 0)
+    n_inc = int(inc.get("n_with_metrics") or 0)
+    if n_ch < int(auto["min_sample"]) or n_inc < int(auto["min_sample"]):
+        return False
+    abs_pp = prop.get("delta_abs_pp")
+    rel = prop.get("delta_rel")
+    if not isinstance(abs_pp, (int, float)):
+        return False
+    if abs_pp < float(auto["min_abs_improvement_pp"]):
+        return False
+    # rel None = incumbent <=0 (challenger strictly positive) => treat as clearing rel.
+    if isinstance(rel, (int, float)) and rel < float(auto["min_rel_improvement"]):
+        return False
+    return True
+
+
+def _auto_flip_default(paths: Dict[str, Path], dimension: str, new_arm: str, prev: str,
+                       now: str, evidence: Dict[str, Any]) -> None:
+    """Low-level: write the content-defaults default + history for an AUTO change."""
+    cd = _read_json(paths["content_defaults"], None)
+    if not isinstance(cd, dict):
+        cd = {"schema_version": 1, "defaults": dict(FALLBACK_DEFAULTS)}
+    cd.setdefault("defaults", {})
+    cd["defaults"][dimension] = new_arm
+    cd["updated_at"] = now
+    history = cd.get("history")
+    if not isinstance(history, list):
+        history = []
+    history.append({
+        "date": _today(), "ts": now, "dimension": dimension, "from": prev, "to": new_arm,
+        "approved_by": "auto", "mode": "autonomous", **evidence,
+    })
+    cd["history"] = history
+    _write_json_atomic(paths["content_defaults"], cd)
+
+
+def _ledger_append(queue: Dict[str, Any], entry: Dict[str, Any]) -> None:
+    led = queue.get("auto_ledger")
+    if not isinstance(led, list):
+        led = []
+    led.append(entry)
+    queue["auto_ledger"] = led
+
+
+def read_ledger(*, paths: Optional[Dict[str, Path]] = None) -> List[Dict[str, Any]]:
+    """The autonomous promotion/revert ledger (append-only), newest last."""
+    paths = paths or default_paths()
+    q = load_queue(paths["proposals"])
+    led = q.get("auto_ledger")
+    return led if isinstance(led, list) else []
+
+
+def auto_promote_cycle(*, paths: Optional[Dict[str, Path]] = None, now: Optional[str] = None) -> Dict[str, Any]:
+    """Run ONE autonomous promotion cycle: detect → confirmation round → adopt, plus
+    auto-revert of any promoted default that later underperforms. Reversible + logged.
+
+    NEVER posts/schedules. ONLY writes content-defaults.json (an arm label from the
+    fixed whitelist) + the proposals.json ledger/queue + learnings decisions log.
+    """
+    paths = paths or default_paths()
+    now = now or _now_iso()
+    auto = load_auto_policy(paths["content_defaults"])
+
+    # Always refresh detection first (keeps challenger metrics current for the gate).
+    refresh_proposals(paths=paths, now=now)
+
+    result: Dict[str, Any] = {
+        "ok": True, "enabled": bool(auto["enabled"]), "policy": auto,
+        "confirming": [], "promoted": [], "reverted": [], "cleared_confirming": [],
+    }
+    if not auto["enabled"]:
+        return result
+
+    queue = load_queue(paths["proposals"])
+    learnings = _read_json(paths["learnings"], {}) or {}
+    by_arm = (((learnings.get("rollups") or {}).get("by_variant_arm")) or {}) if isinstance(learnings, dict) else {}
+    metric = str(load_policy(paths["content_defaults"])["metric"])
+
+    # ── STAGE 1/2: confirmation round → adopt ────────────────────────────────
+    for prop in queue["proposals"]:
+        if prop.get("status") != "pending":
+            continue
+        if not _clears_auto_gate(prop, auto):
+            if prop.get("auto_stage") == "confirming":
+                prop["auto_stage"] = None
+                prop["auto_confirm_baseline_n"] = None
+                prop["updated_at"] = now
+                result["cleared_confirming"].append(prop.get("id"))
+            continue
+        n_ch = int((prop.get("challenger") or {}).get("n_with_metrics") or 0)
+        stage = prop.get("auto_stage")
+        if stage != "confirming":
+            # STAGE 1: begin the confirmation round (record the baseline sample count).
+            prop["auto_stage"] = "confirming"
+            prop["auto_confirm_baseline_n"] = n_ch
+            prop["auto_confirm_since"] = now
+            prop["updated_at"] = now
+            result["confirming"].append({"id": prop.get("id"), "baseline_n": n_ch,
+                                         "need_new": int(auto["confirmation_min_new_samples"])})
+            continue
+        baseline = int(prop.get("auto_confirm_baseline_n") or 0)
+        if n_ch - baseline < int(auto["confirmation_min_new_samples"]):
+            # still confirming: not enough fresh matured samples yet.
+            result["confirming"].append({"id": prop.get("id"), "baseline_n": baseline, "now_n": n_ch,
+                                         "need_new": int(auto["confirmation_min_new_samples"])})
+            continue
+        # STAGE 2 CONFIRMED → auto-adopt.
+        dimension = prop["dimension"]
+        new_arm = prop["recommended_default"]
+        if dimension not in PROMOTABLE_DIMENSIONS or new_arm not in PROMOTABLE_DIMENSIONS[dimension]:
+            continue  # guardrail: only whitelisted arms can ever be adopted
+        prev = load_defaults(paths["content_defaults"]).get(dimension, prop.get("current_default"))
+        evidence = {"metric": prop.get("metric"), "delta_abs_pp": prop.get("delta_abs_pp"),
+                    "delta_rel": prop.get("delta_rel"), "challenger": prop.get("challenger"),
+                    "incumbent": prop.get("incumbent"),
+                    "confirmed_new_samples": n_ch - baseline, "proposal_id": prop.get("id")}
+        _auto_flip_default(paths, dimension, new_arm, prev, now, evidence)
+        prop["status"] = "auto_promoted"
+        prop["decided_at"] = now
+        prop["decided_by"] = "auto"
+        prop["applied_change"] = {"dimension": dimension, "from": prev, "to": new_arm}
+        prop["updated_at"] = now
+        _ledger_append(queue, {
+            "ts": now, "date": _today(), "action": "auto-promote", "dimension": dimension,
+            "from": prev, "to": new_arm, "metric": prop.get("metric"),
+            "delta_abs_pp": prop.get("delta_abs_pp"), "challenger_n": n_ch,
+            "confirmed_new_samples": n_ch - baseline, "proposal_id": prop.get("id"),
+            "reversible_to": prev, "active": True,
+            "note": "autonomous promotion after a confirmation round; reversible (auto-revert on underperformance)",
+        })
+        queue["decisions_log"].append({
+            "date": _today(), "ts": now, "action": "auto-promote", "id": prop.get("id"),
+            "dimension": dimension, "from": prev, "to": new_arm,
+            "approved_by": "auto", "metric": prop.get("metric"),
+            "delta_abs_pp": prop.get("delta_abs_pp"), "delta_rel": prop.get("delta_rel"),
+        })
+        _append_learnings_decision(paths["learnings"], {
+            "date": _today(),
+            "decision": (f"DEFAULT AUTO-PROMOTED: {dimension} '{prev}' -> '{new_arm}' "
+                         f"(+{prop.get('delta_abs_pp')}pp {prop.get('metric')} vs control; "
+                         f"confirmed over {n_ch - baseline} fresh samples). Reversible."),
+            "rationale": prop.get("rationale"),
+            "status": "auto (confirmation round passed)",
+            "approved_by": "auto", "proposal_id": prop.get("id"),
+        }, now)
+        result["promoted"].append({"id": prop.get("id"), "dimension": dimension, "from": prev, "to": new_arm})
+
+    # ── AUTO-REVERT: undo an active auto-promotion that later underperforms ───
+    defaults_now = load_defaults(paths["content_defaults"])
+    for entry in queue.get("auto_ledger", []):
+        if entry.get("action") != "auto-promote" or not entry.get("active"):
+            continue
+        dimension = entry.get("dimension")
+        promoted_arm = entry.get("to")
+        prev_arm = entry.get("reversible_to")
+        if dimension not in PROMOTABLE_DIMENSIONS:
+            continue
+        # only relevant while the promoted arm is STILL the live default.
+        if defaults_now.get(dimension) != promoted_arm:
+            entry["active"] = False
+            continue
+        prom_cell, prev_cell = _cell(by_arm, promoted_arm), _cell(by_arm, prev_arm)
+        m_prom, m_prev = _metric_of(prom_cell, metric), _metric_of(prev_cell, metric)
+        n_prom, n_prev = _n_of(prom_cell), _n_of(prev_cell)
+        if m_prom is None or m_prev is None:
+            continue
+        if n_prom < int(auto["revert_min_sample"]) or n_prev < int(auto["revert_min_sample"]):
+            continue
+        if (m_prev - m_prom) < float(auto["revert_abs_drop_pp"]):
+            continue  # promoted arm is NOT clearly underperforming what it replaced
+        # UNDERPERFORMING → auto-revert to the previous default.
+        _auto_flip_default(paths, dimension, prev_arm, promoted_arm, now, {
+            "metric": metric, "revert_of": entry.get("proposal_id"),
+            "m_promoted": m_prom, "m_previous": m_prev, "n_promoted": n_prom,
+        })
+        entry["active"] = False
+        entry["reverted_at"] = now
+        _ledger_append(queue, {
+            "ts": now, "date": _today(), "action": "auto-revert", "dimension": dimension,
+            "from": promoted_arm, "to": prev_arm, "metric": metric,
+            "m_promoted": m_prom, "m_previous": m_prev, "n_promoted": n_prom,
+            "proposal_id": entry.get("proposal_id"), "active": False,
+            "note": "autonomous revert: the promoted default underperformed the arm it replaced",
+        })
+        queue["decisions_log"].append({
+            "date": _today(), "ts": now, "action": "auto-revert", "dimension": dimension,
+            "from": promoted_arm, "to": prev_arm, "metric": metric,
+            "m_promoted": m_prom, "m_previous": m_prev,
+        })
+        _append_learnings_decision(paths["learnings"], {
+            "date": _today(),
+            "decision": (f"DEFAULT AUTO-REVERTED: {dimension} '{promoted_arm}' -> '{prev_arm}' "
+                         f"(promoted arm underperformed: {m_prom}% vs {m_prev}% on {metric})."),
+            "rationale": "auto-revert-on-underperformance guardrail",
+            "status": "auto (reverted)", "approved_by": "auto",
+        }, now)
+        result["reverted"].append({"dimension": dimension, "from": promoted_arm, "to": prev_arm})
+
+    queue["updated_at"] = now
+    _write_json_atomic(paths["proposals"], queue)
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Pure arg-guard + Hermes tool handler (AGENT-facing = DETECT/LIST/SHOW ONLY).
 # The autonomous agent must NEVER approve/reject — that is a human CLI action.
 # ---------------------------------------------------------------------------
@@ -742,12 +1008,14 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument("--reject", metavar="ID", help="reject proposal ID: log it, keep the arm testing")
     p.add_argument("--list", action="store_true", help="list proposals")
     p.add_argument("--detect", "--refresh", dest="detect", action="store_true", help="re-scan + persist proposals")
+    p.add_argument("--auto", action="store_true", help="run ONE autonomous promotion cycle (confirmation round + auto-revert; reversible + logged)")
+    p.add_argument("--ledger", action="store_true", help="print the autonomous promotion/revert ledger")
     p.add_argument("--show", metavar="ID", help="show one proposal by id")
     p.add_argument("--status", metavar="STATUS", help="filter --list by status (pending|approved|rejected|expired)")
     p.add_argument("--reason", default="", help="reason for --reject")
     p.add_argument("--actor", default=os.environ.get("USER", "human"), help="who is deciding (for the log)")
     # ...and a positional subcommand form: approve <id> / reject <id> / list / detect / show <id>
-    p.add_argument("cmd", nargs="?", choices=["approve", "reject", "list", "detect", "refresh", "show"], help=argparse.SUPPRESS)
+    p.add_argument("cmd", nargs="?", choices=["approve", "reject", "list", "detect", "refresh", "show", "auto", "ledger"], help=argparse.SUPPRESS)
     p.add_argument("cmd_id", nargs="?", help=argparse.SUPPRESS)
     return p
 
@@ -768,6 +1036,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         action = "list"
     elif args.detect:
         action = "detect"
+    elif args.auto:
+        action = "auto"
+    elif args.ledger:
+        action = "ledger"
     elif args.cmd:
         action = args.cmd
         pid = args.cmd_id
@@ -775,6 +1047,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     try:
         if action in ("detect", "refresh"):
             _print(refresh_proposals())
+            return 0
+        if action == "auto":
+            _print(auto_promote_cycle())
+            return 0
+        if action == "ledger":
+            _print({"ok": True, "auto_ledger": read_ledger()})
             return 0
         if action == "list":
             _print({"ok": True, "proposals": list_proposals(status=args.status)})

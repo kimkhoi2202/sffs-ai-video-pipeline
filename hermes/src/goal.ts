@@ -1,8 +1,9 @@
 /**
  * goal.ts — HERMES'S MANDATE, encoded as the loop's optimization target.
  *
- *   GOAL: 1,000,000 views + 200,000 likes in 7 DAYS, and 1,000 followers on EACH
- *   of Instagram and TikTok.
+ *   GOAL: 500,000 views in 7 DAYS, and 500 followers on EACH of Instagram and
+ *   TikTok. (Likes were dropped from the mandate — views + per-platform
+ *   followers only; no like/engagement target anywhere in the goal.)
  *
  * This module is the single source of truth for that target + an HONEST live
  * trajectory computed from REAL metrics (ab-database.json, back-filled each cycle
@@ -17,12 +18,20 @@ import { readFileSync } from "node:fs";
 import { CONFIG } from "./config.ts";
 import { kickoffStatus } from "./kickoff.ts";
 
+// ── THE MANDATE — SINGLE SOURCE OF TRUTH (edit these to change the target) ─────
 export const GOAL = Object.freeze({
-  views: 1_000_000,
-  likes: 200_000,
-  followers_each: 1_000,
+  /** combined (IG + TikTok) 7-day view target. */
+  views: 500_000,
+  /**
+   * follower target on EACH platform (IG and TikTok independently), i.e. 500 IG
+   * AND 500 TikTok. This is "per platform", NOT a combined total — flip this one
+   * constant (and drop the *2 in the combined display) if you ever want a single
+   * combined-followers target instead.
+   */
+  followers_each: 500,
   days: 7,
   platforms: ["instagram", "tiktok"] as const,
+  // NOTE: likes are deliberately NOT part of the goal (no like target / trajectory).
 });
 
 const DAY_MS = 86_400_000;
@@ -30,7 +39,6 @@ const DAY_MS = 86_400_000;
 export interface PlatformProgress {
   platform: string;
   views: number;
-  likes: number;
   followers: number | null; // null = not yet measured (honest "pending")
   posts: number;
 }
@@ -43,17 +51,14 @@ export interface GoalProgress {
   elapsed_days: number;
   days_left: number;
   hours_left: number;
-  target: { views: number; likes: number; followers_each: number };
-  totals: { views: number; likes: number };
+  target: { views: number; followers_each: number };
+  totals: { views: number };
   per_platform: PlatformProgress[];
-  pct: { views: number; likes: number }; // 0..1 of target
+  pct: { views: number }; // 0..1 of target
   pace: {
     views_per_day: number; // observed
-    likes_per_day: number;
     views_needed_per_day: number; // to still hit target in the time left
-    likes_needed_per_day: number;
     on_track_views: boolean;
-    on_track_likes: boolean;
   };
   note: string;
 }
@@ -80,7 +85,7 @@ export function computeGoalProgress(
   const base = {
     now: nowISO,
     window_days: GOAL.days,
-    target: { views: GOAL.views, likes: GOAL.likes, followers_each: GOAL.followers_each },
+    target: { views: GOAL.views, followers_each: GOAL.followers_each },
   };
   const perPlatform: PlatformProgress[] = GOAL.platforms.map((platform) => {
     const mine = posts.filter((p) => (p.platform || "").toLowerCase() === platform);
@@ -88,13 +93,11 @@ export function computeGoalProgress(
       ? mine.filter((p) => p.posted_at && Date.parse(p.posted_at) >= Date.parse(sinceISO))
       : mine;
     const views = inWindow.reduce((s, p) => s + (Number(p.metrics?.video_views) || 0), 0);
-    const likes = inWindow.reduce((s, p) => s + (Number(p.metrics?.reactions) || 0), 0);
     const f = followers[platform];
-    return { platform, views, likes, followers: Number.isFinite(f) ? f : null, posts: inWindow.length };
+    return { platform, views, followers: Number.isFinite(f) ? f : null, posts: inWindow.length };
   });
   const totals = {
     views: perPlatform.reduce((s, p) => s + p.views, 0),
-    likes: perPlatform.reduce((s, p) => s + p.likes, 0),
   };
 
   if (!sinceISO) {
@@ -107,14 +110,11 @@ export function computeGoalProgress(
       hours_left: GOAL.days * 24,
       totals,
       per_platform: perPlatform,
-      pct: { views: totals.views / GOAL.views, likes: totals.likes / GOAL.likes },
+      pct: { views: totals.views / GOAL.views },
       pace: {
         views_per_day: 0,
-        likes_per_day: 0,
         views_needed_per_day: GOAL.views / GOAL.days,
-        likes_needed_per_day: GOAL.likes / GOAL.days,
         on_track_views: false,
-        on_track_likes: false,
       },
       note: "not started — kickoff pending. Flip the KICKOFF switch to start the 7-day clock.",
     };
@@ -128,9 +128,7 @@ export function computeGoalProgress(
   const safeElapsed = Math.max(elapsedDays, 1 / 24); // avoid /0 in the first hour
   const safeLeft = Math.max(daysLeft, 1 / 24);
   const viewsPerDay = totals.views / safeElapsed;
-  const likesPerDay = totals.likes / safeElapsed;
   const viewsNeededPerDay = Math.max(0, GOAL.views - totals.views) / safeLeft;
-  const likesNeededPerDay = Math.max(0, GOAL.likes - totals.likes) / safeLeft;
   const expectedFrac = Math.min(1, elapsedDays / GOAL.days);
   return {
     ...base,
@@ -141,21 +139,16 @@ export function computeGoalProgress(
     hours_left: Math.round(leftMs / 3_600_000),
     totals,
     per_platform: perPlatform,
-    pct: { views: totals.views / GOAL.views, likes: totals.likes / GOAL.likes },
+    pct: { views: totals.views / GOAL.views },
     pace: {
       views_per_day: Math.round(viewsPerDay),
-      likes_per_day: Math.round(likesPerDay),
       views_needed_per_day: Math.round(viewsNeededPerDay),
-      likes_needed_per_day: Math.round(likesNeededPerDay),
       on_track_views: totals.views >= GOAL.views * expectedFrac,
-      on_track_likes: totals.likes >= GOAL.likes * expectedFrac,
     },
     note:
       daysLeft <= 0
         ? "7-day window CLOSED — final tally above."
-        : `pace vs target: need ~${Math.round(viewsNeededPerDay).toLocaleString()} views/day and ~${Math.round(
-            likesNeededPerDay,
-          ).toLocaleString()} likes/day for the remaining ${round2(daysLeft)} days.`,
+        : `pace vs target: need ~${Math.round(viewsNeededPerDay).toLocaleString()} views/day for the remaining ${round2(daysLeft)} days.`,
   };
 }
 
