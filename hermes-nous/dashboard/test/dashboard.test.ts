@@ -839,3 +839,32 @@ test("A: SUPERVISOR panel shows a calm paused state + empty state", () => {
   const empty = page(emptyPageData());
   assert.match(empty, /No supervisor status yet/);
 });
+
+// ── (B) AUTONOMOUS default-promotion ledger + note (human view kept) ─────────
+test("B: default-promotion panel shows the autonomous ledger + auto-gate note", () => {
+  const proposals = {
+    proposals: [], decisions_log: [],
+    auto_ledger: [
+      { ts: "2026-07-24T01:00:00Z", action: "auto-promote", dimension: "ending", from: "cliffhanger", to: "full-reveal", delta_abs_pp: 3.1, confirmed_new_samples: 6, active: true },
+      { ts: "2026-07-25T01:00:00Z", action: "auto-revert", dimension: "ending", from: "full-reveal", to: "cliffhanger", m_promoted: 2.0, m_previous: 6.0, active: false },
+    ],
+  };
+  const defaults = { defaults: { narration: "full", ending: "cliffhanger" }, auto_promotion: { enabled: true } };
+  const html = page(emptyPageData({ proposals, defaults } as any));
+  assert.match(html, /Autonomous promotion ledger/);
+  assert.match(html, /auto-promote/);
+  assert.match(html, /auto-revert/);
+  assert.match(html, /Autonomous promotion: <b>ON<\/b>/);
+  assert.match(html, /auto-adopted ONLY after a confirmation round/i);
+  assert.match(html, /AUTONOMOUS/); // the panel pin
+  // still read-only — no approve/reject/promote/revert buttons or POST form
+  assert.doesNotMatch(html, /<button[^>]*>\s*(approve|reject|promote|revert)/i);
+  assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
+});
+
+test("B: autonomous promotion OFF renders the human-only note", () => {
+  const defaults = { defaults: { narration: "full", ending: "cliffhanger" }, auto_promotion: { enabled: false } };
+  const html = page(emptyPageData({ defaults } as any));
+  assert.match(html, /Autonomous promotion: <b>OFF<\/b>/);
+  assert.match(html, /No pending default changes/); // human view preserved
+});

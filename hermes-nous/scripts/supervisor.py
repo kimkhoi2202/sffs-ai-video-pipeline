@@ -154,7 +154,9 @@ def _run(cmd: List[str], timeout: int, cwd: Optional[Path] = None) -> Dict[str, 
 
 def exec_knowledge(env: Dict[str, str], cfg: Dict[str, int]) -> Dict[str, Any]:
     """Fold live A/B metrics into ab-database/learnings via the read/update-only
-    bridges (reconcile + score-rollup). Physically cannot post/schedule."""
+    bridges (reconcile + score-rollup), then run ONE autonomous default-promotion
+    cycle (adopt confirmed winners + auto-revert underperformers). All content-only:
+    physically cannot post/schedule (the bridges + promote engine have no post path)."""
     out: Dict[str, Any] = {"action": "knowledge", "steps": []}
     for bridge in ("reconcile.ts", "score-rollup.ts"):
         path = BRIDGE_DIR / bridge
@@ -163,6 +165,19 @@ def exec_knowledge(env: Dict[str, str], cfg: Dict[str, int]) -> Dict[str, Any]:
             continue
         r = _run(["node", str(path)], cfg["cmd_timeout"], cwd=REPO)
         out["steps"].append({bridge: r.get("ok"), "detail": r.get("error") or r.get("code")})
+    # Autonomous default-promotion (gated: confirmation round + auto-revert; reversible,
+    # logged). Content-only — flips a whitelisted arm label, never a posting path.
+    try:
+        from sffs import promote  # type: ignore
+        ap = promote.auto_promote_cycle()
+        out["auto_promotion"] = {
+            "enabled": ap.get("enabled"),
+            "promoted": ap.get("promoted"),
+            "reverted": ap.get("reverted"),
+            "confirming": len(ap.get("confirming") or []),
+        }
+    except Exception as exc:
+        out["auto_promotion"] = {"error": str(exc)}
     return out
 
 

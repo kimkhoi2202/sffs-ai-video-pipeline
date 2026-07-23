@@ -367,3 +367,96 @@ def test_promote_args_not_flagged_by_publish_guard():
 def test_guard_still_blocks_real_publish():
     assert pg.refusal_reason("publer_publish_post_now", {}) is not None
     assert pg.refusal_reason("sffs_promote", {"scheduled_at": "2026-07-22T00:00:00Z"}) is not None
+
+
+# ===========================================================================
+# AUTONOMOUS promotion — stricter auto-gate + confirmation round + auto-revert
+# ===========================================================================
+def _auto_seed(tmp: Path, *, by_arm, auto=None, defaults=None) -> dict:
+    p = _paths(tmp)
+    cd = {"schema_version": 1, "defaults": defaults or {"narration": "full", "ending": "cliffhanger"},
+          "promotion": dict(promote.FALLBACK_POLICY),
+          "auto_promotion": auto if auto is not None else dict(promote.FALLBACK_AUTO_POLICY)}
+    _write(p["content_defaults"], cd)
+    _write(p["learnings"], {"rollups": {"by_variant_arm": by_arm}, "decisions_log": []})
+    return p
+
+
+def _relearn(p, by_arm):
+    _write(p["learnings"], {"rollups": {"by_variant_arm": by_arm}, "decisions_log": []})
+
+
+def test_auto_requires_a_confirmation_round_then_promotes(tmp_path):
+    by_arm = {"control": _cell(3.0, 10), "full-reveal": _cell(6.0, 10)}
+    p = _auto_seed(tmp_path, by_arm=by_arm)
+    # CYCLE 1: clears the auto-gate but must first pass a CONFIRMATION round → not promoted.
+    r1 = promote.auto_promote_cycle(paths=p)
+    assert r1["promoted"] == []
+    assert any(c.get("id") == "promote-ending-full-reveal" for c in r1["confirming"])
+    assert promote.load_defaults(p["content_defaults"])["ending"] == "cliffhanger"  # UNCHANGED
+    # a FRESH batch of matured samples accrues (>= confirmation_min_new_samples), win holds.
+    _relearn(p, {"control": _cell(3.0, 10), "full-reveal": _cell(6.0, 16)})
+    # CYCLE 2: confirmed → AUTO-PROMOTED + ledgered + reversible.
+    r2 = promote.auto_promote_cycle(paths=p)
+    assert any(x["dimension"] == "ending" and x["to"] == "full-reveal" for x in r2["promoted"])
+    assert promote.load_defaults(p["content_defaults"])["ending"] == "full-reveal"  # FLIPPED
+    led = promote.read_ledger(paths=p)
+    assert any(e["action"] == "auto-promote" and e["to"] == "full-reveal" and e["active"] for e in led)
+
+
+def test_auto_gate_is_stricter_than_human_gate(tmp_path):
+    # n=5/6 clears the HUMAN gate (min_sample 5) but NOT the auto gate (min_sample 8).
+    by_arm = {"control": _cell(3.0, 6), "full-reveal": _cell(6.0, 5)}
+    p = _auto_seed(tmp_path, by_arm=by_arm)
+    r = promote.auto_promote_cycle(paths=p)
+    assert r["promoted"] == [] and r["confirming"] == []
+    assert promote.load_defaults(p["content_defaults"])["ending"] == "cliffhanger"
+    # but a human proposal WAS recorded (human path still works)
+    assert any(pr.get("status") == "pending" for pr in promote.list_proposals(paths=p))
+
+
+def test_auto_disabled_falls_back_to_human_only(tmp_path):
+    by_arm = {"control": _cell(3.0, 20), "full-reveal": _cell(9.0, 20)}
+    p = _auto_seed(tmp_path, by_arm=by_arm, auto={**promote.FALLBACK_AUTO_POLICY, "enabled": False})
+    r1 = promote.auto_promote_cycle(paths=p)
+    _relearn(p, {"control": _cell(3.0, 20), "full-reveal": _cell(9.0, 30)})
+    r2 = promote.auto_promote_cycle(paths=p)
+    assert r1["enabled"] is False and r2["enabled"] is False
+    assert r1["promoted"] == [] and r2["promoted"] == []
+    assert promote.load_defaults(p["content_defaults"])["ending"] == "cliffhanger"  # never auto-flipped
+
+
+def test_auto_revert_on_underperformance(tmp_path):
+    # promote full-reveal (2 cycles)
+    p = _auto_seed(tmp_path, by_arm={"control": _cell(3.0, 10), "full-reveal": _cell(6.0, 10)})
+    promote.auto_promote_cycle(paths=p)
+    _relearn(p, {"control": _cell(3.0, 10), "full-reveal": _cell(6.0, 16)})
+    promote.auto_promote_cycle(paths=p)
+    assert promote.load_defaults(p["content_defaults"])["ending"] == "full-reveal"
+    # now the promoted default underperforms the arm it replaced (cliffhanger), both n>=revert_min_sample
+    _relearn(p, {"control": _cell(2.0, 12), "full-reveal": _cell(2.0, 12), "cliffhanger": _cell(6.0, 12)})
+    r = promote.auto_promote_cycle(paths=p)
+    assert any(x["dimension"] == "ending" and x["to"] == "cliffhanger" for x in r["reverted"])
+    assert promote.load_defaults(p["content_defaults"])["ending"] == "cliffhanger"  # AUTO-REVERTED
+    led = promote.read_ledger(paths=p)
+    assert any(e["action"] == "auto-revert" and e["to"] == "cliffhanger" for e in led)
+
+
+def test_auto_promotion_only_writes_a_whitelisted_arm_no_posting_path(tmp_path):
+    p = _auto_seed(tmp_path, by_arm={"control": _cell(3.0, 10), "full-reveal": _cell(6.0, 10)})
+    promote.auto_promote_cycle(paths=p)
+    _relearn(p, {"control": _cell(3.0, 10), "full-reveal": _cell(6.0, 16)})
+    promote.auto_promote_cycle(paths=p)
+    cd = json.loads(p["content_defaults"].read_text())
+    assert cd["defaults"]["ending"] in promote.PROMOTABLE_DIMENSIONS["ending"]  # whitelist only
+    # GUARDRAIL: nothing posting/scheduling-related is ever written by promotion
+    blob = p["content_defaults"].read_text() + p["proposals"].read_text()
+    for forbidden in ("scheduled_at", "account_id", "media_ids", "publer_publish", "schedule_post", "go_live"):
+        assert forbidden not in blob
+
+
+def test_promote_module_has_no_posting_path():
+    src = Path(promote.__file__).read_text(encoding="utf-8")
+    for forbidden in ("scheduled_at", "createScheduled", "publer_publish_post_now",
+                      "publer_create_post", "schedule_post", "go_live", "post_now"):
+        assert forbidden not in src, f"promote.py must not reference a posting path: {forbidden}"

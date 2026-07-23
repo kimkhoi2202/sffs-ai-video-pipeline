@@ -297,15 +297,38 @@ function proposalCard(p: PromotionProposal): string {
   </div>`;
 }
 
+/** The reversible autonomous promotion/revert ledger (proposals.json auto_ledger). */
+function autoLedgerHtml(q: ProposalsQueue | undefined): string {
+  const led: any[] = Array.isArray((q as any)?.auto_ledger) ? (q as any).auto_ledger : [];
+  if (!led.length) {
+    return `<div class="gscope-h" style="margin-top:14px"><span class="gscope-t">Autonomous promotion ledger</span> <span class="muted">reversible · auto-revert on underperformance</span></div>
+      <p class="muted">Ledger empty — no autonomous promotion yet. When an A/B winner clears the stricter auto-gate AND survives a confirmation round of fresh matured samples, Hermes auto-adopts it here (reversible); a promoted default that later underperforms the arm it replaced is auto-reverted. Every promote + revert is logged below.</p>`;
+  }
+  const rows = led.slice().reverse().slice(0, 30).map((e) => {
+    const isRevert = e.action === "auto-revert";
+    const cls = isRevert ? "c-warn" : "c-ok";
+    const state = e.action === "auto-promote"
+      ? (e.active ? '<span class="chip c-ok">active</span>' : '<span class="chip c-idle">reverted</span>')
+      : '<span class="chip c-warn">reverted</span>';
+    const evidence = e.delta_abs_pp != null
+      ? `+${esc(String(e.delta_abs_pp))}pp${e.confirmed_new_samples != null ? ` · confirmed +${esc(String(e.confirmed_new_samples))} samples` : ""}`
+      : (e.m_promoted != null ? `${esc(String(e.m_promoted))}% vs ${esc(String(e.m_previous))}%` : "");
+    return `<tr><td>${esc(String(e.ts || e.date || "").slice(0, 19).replace("T", " "))}</td><td><span class="chip ${cls}">${esc(String(e.action))}</span></td><td>${esc(String(e.dimension))}</td><td><code>${esc(String(e.from))}</code> → <code>${esc(String(e.to))}</code></td><td class="muted">${evidence}</td><td>${state}</td></tr>`;
+  }).join("");
+  return `<div class="gscope-h" style="margin-top:14px"><span class="gscope-t">Autonomous promotion ledger</span> <span class="muted">reversible · auto-revert on underperformance</span></div>
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>when</th><th>action</th><th>dimension</th><th>change</th><th>evidence</th><th>state</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
 function defaultPromotions(q: ProposalsQueue | undefined, cd: ContentDefaultsFile | undefined): string {
   const all = Array.isArray(q?.proposals) ? (q!.proposals as PromotionProposal[]) : [];
   const pending = all.filter((p) => p.status === "pending");
   const head = defaultsPills(cd);
-  if (!pending.length) {
-    return `${head}<p class="muted">No pending default changes. When an A/B test arm clearly beats the current default (control) on the configured metric with enough samples, a proposal appears here for a human to approve/reject via the <code>sffs_promote_default</code> CLI. The loop never flips a default on its own.</p>`;
-  }
-  const cards = pending.map(proposalCard).join("");
-  return `${head}<p class="muted">${pending.length} proposal(s) awaiting a HUMAN decision. Approving flips the config default (takes effect next design pass); rejecting keeps the arm testing. Display-only — run the CLI in a shell.</p>${cards}`;
+  const autoOn = Boolean((cd as any)?.auto_promotion?.enabled);
+  const autoNote = `<p class="muted">Autonomous promotion: <b>${autoOn ? "ON" : "OFF"}</b> — a clear A/B winner is auto-adopted ONLY after a confirmation round of fresh matured samples (stricter min_sample than the human gate), every change is logged to the reversible ledger below, and a promoted default that later underperforms the arm it replaced is AUTO-REVERTED. Humans can still approve / reject / override via the <code>sffs_promote_default</code> CLI. Content-only: a promotion flips a whitelisted arm label and NEVER changes posting cadence or the hard guardrails.</p>`;
+  const pendingHtml = !pending.length
+    ? `<p class="muted">No pending default changes awaiting a human. When an A/B test arm clearly beats the current default (control) on the configured metric with enough samples, a proposal appears here to approve/reject via the <code>sffs_promote_default</code> CLI — or (if enabled) it is auto-adopted after a confirmation round.</p>`
+    : `<p class="muted">${pending.length} proposal(s) awaiting a HUMAN decision (auto-adoption still requires a confirmation round). Approving flips the config default (takes effect next design pass); rejecting keeps the arm testing. Display-only — run the CLI in a shell.</p>${pending.map(proposalCard).join("")}`;
+  return `${head}${autoNote}${pendingHtml}${autoLedgerHtml(q)}`;
 }
 
 function logStream(runId: string | null, items: any[]): string {
@@ -978,7 +1001,7 @@ ${killBanner(kill)}
   </div>
 
   <div class="card">
-    <h2><span class="pin">GATE</span> Pending default changes <span class="pin" style="background:var(--mint)">HUMAN-APPROVED</span></h2>
+    <h2><span class="pin">GATE</span> Pending default changes <span class="pin" style="background:var(--blue)">AUTONOMOUS</span> <span class="pin" style="background:var(--mint)">HUMAN-APPROVED</span></h2>
     ${defaultPromotions(opts.proposals, opts.defaults)}
   </div>
 
