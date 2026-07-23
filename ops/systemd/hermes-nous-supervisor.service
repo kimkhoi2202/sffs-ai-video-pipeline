@@ -1,0 +1,22 @@
+[Unit]
+Description=Hermes-Nous SFFS ALWAYS-ON continuous orchestrator (research / knowledge / content-prep / upkeep; NON-posting). Posting/scheduling stays with the single daily cycle (hermes-nous-loop.timer); this supervisor never schedules.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/sffs-ai-video-pipeline
+EnvironmentFile=/etc/hermes/hermes.env
+Environment=HERMES_HOME=/home/ec2-user/.hermes-nous
+Environment=PATH=/home/ec2-user/.venv-hermes/bin:/usr/local/bin:/usr/bin:/bin
+Environment=SFFS_SUPERVISOR_DIR=/home/ec2-user/hermes-data/supervisor
+# Bounded, cost-governed continuous work; shares the factory kill-switch/governor.
+ExecStart=/home/ec2-user/.venv-hermes/bin/python hermes-nous/scripts/supervisor.py --live
+Restart=always
+RestartSec=5
+Nice=15
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

@@ -461,6 +461,26 @@ function factoryPanel(fs: any): string {
   return `${head}${spendRow}${totals}${backlogPills}${goals}${lastCycle}${flag}${howto}`;
 }
 
+// ── SUPERVISOR panel (always-on continuous orchestrator; NON-posting) ─────────
+function supervisorPanel(s: any): string {
+  if (!s || typeof s !== "object") {
+    return `<p class="muted">No supervisor status yet. The always-on continuous orchestrator writes <code>supervisor-status.json</code> each cycle (research · knowledge · content-prep · upkeep). If this stays empty, the <code>hermes-nous-supervisor</code> service may be stopped.</p>`;
+  }
+  const state = esc(String(s.state || "?"));
+  const paused = s.kill_switch && s.kill_switch.engaged;
+  const chip = paused
+    ? `<span class="hpill" style="background:#dbe6ff;color:#122a5c;border-color:#122a5c"><b>state</b>paused (maintenance)</span>`
+    : `<span class="chip ${/error/i.test(state) ? "c-no" : /idle/i.test(state) ? "c-idle" : "c-ok"}">${state}</span>`;
+  const lastPills = s.last && typeof s.last === "object"
+    ? Object.entries(s.last).map(([k, v]) => `<span class="hpill"><b>${esc(k)} last</b>${esc(String(v ? new Date(Number(v) * 1000).toISOString() : "—").slice(0, 16).replace("T", " "))}</span>`).join("")
+    : "";
+  const lastCycle = s.last_cycle && Array.isArray(s.last_cycle.did) && s.last_cycle.did.length
+    ? `<div class="cap"><b>last cycle:</b> ran ${esc(s.last_cycle.did.join(", "))}${s.last_cycle.dry_run ? ' <span class="chip c-warn">dry-run</span>' : ""}</div>`
+    : `<p class="muted">No work cycle recorded yet.</p>`;
+  const bounded = `<p class="muted"><b>Continuous WORK, bounded POSTING:</b> this orchestrator runs research / knowledge-update / content-prep / upkeep on a converging, cost-governed cadence and <b>never posts or schedules</b>. The hard posting ceiling (≤12/day/platform, 7am–1am CST, jittered, quality-gated) is owned solely by the daily cycle — one scheduler, no double-firing. Coordinates with (does not duplicate) the software factory, which owns code self-improvement.</p>`;
+  return `<div class="health" style="margin-bottom:10px">${chip}<span class="hpill"><b>cycle</b>${esc(String(s.cycle ?? 0))}</span>${lastPills}</div>${lastCycle}${bounded}`;
+}
+
 // ── DRAFTS awaiting review (READ-ONLY) ───────────────────────────────────────
 // Mirrors the sffs-drafts-to-review board: one card per video (IG + TikTok pair)
 // with thumbnail, hook, A/B variant (dimension + arm), question types, and the
@@ -728,6 +748,8 @@ export interface PageData {
   snapshot?: any;
   /** always-on factory daemon status (optional; degrades to "no daemon status"). */
   factory?: any;
+  /** always-on continuous supervisor status (optional; degrades to "no supervisor status"). */
+  supervisor?: any;
   /** pending Publer drafts awaiting human review (optional; degrades to empty). */
   drafts?: DraftsView;
   /** SCHEDULED Publer posts post-kickoff, mirrored live from Publer (optional). */
@@ -912,6 +934,11 @@ ${killBanner(kill)}
   <div class="card">
     <h2><span class="pin">A/B</span> Designed batch &amp; quality gates</h2>
     ${videos}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">SUPERVISOR</span> Always-on continuous orchestrator — research · knowledge · content-prep (NON-posting)</h2>
+    ${supervisorPanel(opts.supervisor)}
   </div>
 
   <div class="card">

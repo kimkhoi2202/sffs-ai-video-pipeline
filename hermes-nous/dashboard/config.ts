@@ -76,6 +76,15 @@ export const CONFIG = Object.freeze({
       ? join((process.env.SFFS_FACTORY_DAEMON_DIR as string).trim(), "factory-status.json")
       : join(DATA_DIR, "factory-daemon", "factory-status.json")),
 
+  // Always-on continuous SUPERVISOR status (supervisor-status.json), for the live
+  // SUPERVISOR panel. Mirrors the supervisor's SFFS_SUPERVISOR_DIR (default
+  // DATA_DIR/supervisor). Read-only; degrades to "no supervisor status" if absent.
+  SUPERVISOR_STATUS:
+    process.env.HERMES_SUPERVISOR_STATUS ||
+    ((process.env.SFFS_SUPERVISOR_DIR || "").trim()
+      ? join((process.env.SFFS_SUPERVISOR_DIR as string).trim(), "supervisor-status.json")
+      : join(DATA_DIR, "supervisor", "supervisor-status.json")),
+
   // ── GOAL-PROGRESS panel (Hermes's 7-day mandate) ─────────────────────────
   // The 7-day clock is ARMED by a box-only file: it must EXIST and its CONTENT
   // must contain the exact phrase below. t0 = that file's mtime. Read-only: the

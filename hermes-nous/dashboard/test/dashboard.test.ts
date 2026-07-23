@@ -816,3 +816,26 @@ test("D5: footer reflects the LIVE autonomous state (no stale draft-only/human-a
   assert.doesNotMatch(html, /going live \+ merging code are human actions/);
   assert.doesNotMatch(html, /next run once a day/);
 });
+
+// ── (A) CONTINUOUS SUPERVISOR panel ──────────────────────────────────────────
+test("A: SUPERVISOR panel renders the continuous orchestrator + the bounded-posting invariant", () => {
+  const supervisor = {
+    state: "working", state_reason: "ran knowledge", cycle: 7,
+    last: { knowledge: 1_000_000, research: 999_000 },
+    last_cycle: { did: ["knowledge", "content_prep"], dry_run: false },
+    kill_switch: { engaged: false, reason: null },
+  };
+  const html = page(emptyPageData({ supervisor } as any));
+  assert.match(html, /Always-on continuous orchestrator/);
+  assert.match(html, /Continuous WORK, bounded POSTING/);
+  assert.match(html, /never posts or schedules/);
+  assert.match(html, /ran knowledge, content_prep/);
+});
+
+test("A: SUPERVISOR panel shows a calm paused state + empty state", () => {
+  const paused = page(emptyPageData({ supervisor: { state: "paused-kill", cycle: 3, kill_switch: { engaged: true, reason: "stop-file" } } } as any));
+  assert.match(paused, /paused \(maintenance\)/);
+  assert.doesNotMatch(paused, /class="kill kill-on"/); // no red alarm styling
+  const empty = page(emptyPageData());
+  assert.match(empty, /No supervisor status yet/);
+});

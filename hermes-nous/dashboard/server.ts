@@ -24,7 +24,7 @@ import { readFileSync } from "node:fs";
 import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
-  proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, draftsAwaitingReview,
+  proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, supervisorStatus, draftsAwaitingReview,
   resolveDraftMediaUrl, resolveScheduledMediaUrl, goalProgress, scheduledPosts,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
@@ -199,6 +199,11 @@ const server = createServer(async (req, res) => {
       return send(res, 200, JSON.stringify(factoryStatus() ?? { error: "no factory daemon status" }), "application/json");
     }
 
+    if (url.pathname === "/api/supervisor") {
+      // READ-ONLY: always-on continuous (non-posting) supervisor status. No secrets.
+      return send(res, 200, JSON.stringify(supervisorStatus() ?? { error: "no supervisor status" }), "application/json");
+    }
+
     if (url.pathname === "/api/goal") {
       // READ-ONLY: live GOAL-PROGRESS toward the 7-day mandate. Pure numbers, no secrets.
       return send(res, 200, JSON.stringify(goalProgress()), "application/json");
@@ -263,6 +268,7 @@ const server = createServer(async (req, res) => {
           coverage: bankCoverage(),
           snapshot: costSnapshot(),
           factory: factoryStatus(),
+          supervisor: supervisorStatus(),
           goal: goalProgress(),
         }),
       );

@@ -218,6 +218,11 @@ export function factoryStatus(): any {
   return readJSON<any>(CONFIG.FACTORY_STATUS, null);
 }
 
+/** The always-on continuous SUPERVISOR status (supervisor-status.json) or null. */
+export function supervisorStatus(): any {
+  return readJSON<any>(CONFIG.SUPERVISOR_STATUS, null);
+}
+
 // ── GOAL-PROGRESS (Hermes's 7-day mandate) ───────────────────────────────────
 
 export interface KickoffState {
