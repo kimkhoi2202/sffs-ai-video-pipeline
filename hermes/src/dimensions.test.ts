@@ -18,7 +18,7 @@ process.env.HERMES_ENV_FILE = join(TMP, "nonexistent.env");
 process.env.HERMES_REPO_DIR = TMP;
 process.env.HERMES_DATA_DIR = TMP;
 
-const { selectSpread, newSpreadTally } = await import("./dimensions.ts");
+const { selectSpread, newSpreadTally, buildDimensions, applyBatchOverrides } = await import("./dimensions.ts");
 
 let n = 0;
 function q(tier: string, kind: "text" | "numseries" = "text"): any {
@@ -77,4 +77,53 @@ test("mutates the batch tally so later videos balance against earlier ones", () 
   assert.equal(batch.tier["A"], 1);
   assert.equal(batch.tier["B"], 1);
   assert.equal(batch.kind["text"], 2);
+});
+
+// ── applyBatchOverrides (targeted/showcase batch hook) ───────────────────────
+// Critical invariant: with NO opts it must be byte-for-byte the default catalog,
+// so the live loop + rotation are unchanged unless an operator opts in via env.
+
+test("applyBatchOverrides: no opts -> catalog unchanged (behavior-preserving)", () => {
+  const cat = buildDimensions();
+  assert.deepEqual(applyBatchOverrides(cat).map((d) => d.arm), cat.map((d) => d.arm));
+  assert.deepEqual(applyBatchOverrides(cat, {}).map((d) => d.dimension), cat.map((d) => d.dimension));
+});
+
+test("applyBatchOverrides: only restricts + orders by dimension/arm name", () => {
+  const cat = buildDimensions();
+  const out = applyBatchOverrides(cat, { only: ["shapes", "verbal-only", "quant-only"] });
+  assert.deepEqual(out.map((d) => d.arm), ["shapes", "verbal-only", "quant-only"]);
+});
+
+test("applyBatchOverrides: unknown names are skipped (blank/whitespace too)", () => {
+  const cat = buildDimensions();
+  const out = applyBatchOverrides(cat, { only: ["nope", " control ", "also-nope"] });
+  assert.deepEqual(out.map((d) => d.arm), ["control"]);
+});
+
+test("applyBatchOverrides: shapeNumQ overrides ONLY the shape dimension's numQ", () => {
+  const cat = buildDimensions();
+  const out = applyBatchOverrides(cat, { shapeNumQ: 4 });
+  assert.equal(out.find((d) => d.dimension === "type-nonverbal-shapes")?.numQ, 4);
+  for (const d of out) {
+    if (d.dimension === "type-nonverbal-shapes") continue;
+    const orig = cat.find((c) => c.dimension === d.dimension && c.arm === d.arm);
+    assert.equal(d.numQ, orig?.numQ);
+  }
+});
+
+test("applyBatchOverrides: shapeNumQ ignores non-positive / non-integer", () => {
+  const cat = buildDimensions();
+  const origShape = cat.find((d) => d.dimension === "type-nonverbal-shapes")?.numQ;
+  for (const bad of [0, -1, 2.5, NaN]) {
+    const out = applyBatchOverrides(cat, { shapeNumQ: bad as number });
+    assert.equal(out.find((d) => d.dimension === "type-nonverbal-shapes")?.numQ, origShape);
+  }
+});
+
+test("applyBatchOverrides: only + shapeNumQ compose", () => {
+  const cat = buildDimensions();
+  const out = applyBatchOverrides(cat, { only: ["shapes", "control"], shapeNumQ: 4 });
+  assert.deepEqual(out.map((d) => d.arm), ["shapes", "control"]);
+  assert.equal(out.find((d) => d.arm === "shapes")?.numQ, 4);
 });
