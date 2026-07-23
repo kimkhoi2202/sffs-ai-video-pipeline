@@ -24,7 +24,7 @@ import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
   proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, draftsAwaitingReview,
-  resolveDraftMediaUrl, goalProgress,
+  resolveDraftMediaUrl, goalProgress, scheduledPosts,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
@@ -185,6 +185,11 @@ const server = createServer(async (req, res) => {
       return send(res, 200, JSON.stringify(await draftsAwaitingReview()), "application/json");
     }
 
+    if (url.pathname === "/api/scheduled") {
+      // READ-ONLY: post-kickoff SCHEDULED Publer posts + times (mirrored live from Publer). No secrets.
+      return send(res, 200, JSON.stringify(await scheduledPosts()), "application/json");
+    }
+
     if (url.pathname === "/api/draft-media") {
       // PUBLIC, READ-ONLY inline-preview proxy. Streams a CURRENT draft's PUBLIC
       // Publer CDN asset (mp4 or poster) from OUR origin, adding the (non-secret)
@@ -210,13 +215,14 @@ const server = createServer(async (req, res) => {
       const runs = runSummaries();
       const latest = runs[0] ?? null;
       const selected = url.searchParams.get("run");
-      const [pr, drafts] = await Promise.all([buildPRView(), draftsAwaitingReview()]);
+      const [pr, drafts, scheduled] = await Promise.all([buildPRView(), draftsAwaitingReview(), scheduledPosts()]);
       return send(
         res, 200,
         page({
           latest,
           runs,
           drafts,
+          scheduled,
           db: abDb(),
           l: learnings(),
           bank: bankStats(),

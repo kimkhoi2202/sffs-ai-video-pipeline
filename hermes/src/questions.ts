@@ -11,7 +11,8 @@
  * Length guards here PREVENT on-screen overflow BY CONSTRUCTION (reject anything
  * that would clip), which is far more reliable than pixel-diffing a render.
  */
-import { readJSON, writeJSONAtomic, isShapeKind, type HermesQ, type Figure } from "./state.ts";
+import { readJSON, writeJSONAtomic, isShapeKind, type HermesQ, type Figure, type ShapeKind } from "./state.ts";
+import { parseLegacyFigure } from "./legacyShapes.ts";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
 
@@ -180,10 +181,13 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
     return { sig: e.sig, hash: e.hash, kind: "numseries", category: e.category, tier: e.tier, prompt, seq, answer };
   }
 
-  // Nonverbal SHAPE/FIGURE kinds (fold + matrix family) — reconstruct from the
-  // bank entry's structured `figure` field, then run the shared structural guard.
+  // Nonverbal SHAPE/FIGURE kinds — reconstruct the render-ready `figure`, then run
+  // the shared structural guard. The FigState family (fold + matrix/analogy2/
+  // figure-odd) carries `figure` in the bank; the LEGACY classic kinds (dot/
+  // shaded/polygon) are compact codes with no options, so the converter synthesizes
+  // their figure + deterministic A-D distractors from payloadNorm.
   if (isShapeKind(e.kind)) {
-    const fig = e.figure;
+    const fig = e.figure ?? parseLegacyFigure(e);
     if (!fig || typeof fig !== "object") return null;
     const prompt = String(fig.prompt || e.promptNorm || "").trim();
     if (!prompt || prompt.length > LIMITS.maxPrompt) return null;
@@ -201,20 +205,9 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
     return q;
   }
 
-  // dot / shaded / polygon: EXCLUDED (still). NOT because FullVideo can't render
-  // them — it CAN (DotQuestion/ShadedQuestion/PolygonQuestion types + DotSquare/
-  // Polygon/ShapeGlyph components exist and were verified rendering authored
-  // samples). The blocker is DATA: these bank entries are compact HermesQuiz-era
-  // codes (payloadNorm like "bl~tl~tr=>br" / "6~5~4=>3" / "circle>triangle=>
-  // triangle:true") with NO structured payload and NO A-D distractor options —
-  // unlike fold/matrix/analogy2/figure-odd, which carry a render-ready `figure`.
-  // ponytail: re-enabling is a content-pipeline feature, not a flag flip — it needs
-  //   (1) a per-kind parser here (payloadNorm -> stimulus + answer),
-  //   (2) deterministic distractor generation -> a typed Dot/Shaded/Polygon Question
-  //       in render.ts mapProps, and (3) a dimension in dimensions.ts that requests
-  //   them. Auto-generated distractors are a question-QUALITY decision, so this was
-  //   left out of the draft-only safety remediation pass (see report). Until then,
-  //   these ~285 fresh entries stay out of the candidate pool.
+  // dot / shaded / polygon are UNLOCKED above: isShapeKind() now covers them and
+  // legacyShapes.parseLegacyFigure() synthesizes their figure + deterministic A-D
+  // options from the compact payloadNorm. Any other/unknown kind stays unusable.
   return null;
 }
 
@@ -250,6 +243,26 @@ export function shapeStructuralIssue(q: HermesQ): string | null {
     if (!opts.every((o) => Array.isArray(o.holes) && o.holes.every(isCell))) return "a fold option is missing hole cells";
     return null;
   }
+  // legacy classic-nonverbal kinds (dot / shaded / polygon): validate the
+  // synthesized stimulus + typed options against the mirrored render enums.
+  if (q.kind === "dot") {
+    const RING = new Set(["tl", "tm", "tr", "rm", "br", "bm", "bl", "lm"]);
+    if (!Array.isArray(f.dotSeq) || f.dotSeq.length < 2 || !f.dotSeq.every((p) => RING.has(p))) return "dot needs a valid position sequence";
+    if (!opts.every((o) => typeof o.pos === "string" && RING.has(o.pos))) return "a dot option is missing a valid position";
+    return null;
+  }
+  if (q.kind === "polygon") {
+    const side = (n: unknown): boolean => Number.isInteger(n) && (n as number) >= 3 && (n as number) <= 8;
+    if (!Array.isArray(f.polySeq) || f.polySeq.length < 2 || !f.polySeq.every(side)) return "polygon needs a valid side-count sequence";
+    if (!opts.every((o) => side(o.poly))) return "a polygon option is missing a valid side count";
+    return null;
+  }
+  if (q.kind === "shaded") {
+    const GL = new Set(["circle", "square", "triangle", "diamond", "star", "heart", "cross", "arrow", "crescent", "lightning", "teardrop"]);
+    if (!f.leftShape || !GL.has(f.leftShape) || !f.rightShape || !GL.has(f.rightShape)) return "shaded needs valid left/right shapes";
+    if (!opts.every((o) => typeof o.shape === "string" && GL.has(o.shape) && typeof o.filled === "boolean")) return "a shaded option is malformed";
+    return null;
+  }
   // matrix / analogy2 / figure-odd: every option is a figure
   if (!opts.every((o) => isFig(o.fig))) return "a figure option is missing a valid fig";
   if (q.kind === "matrix" && !(Array.isArray(f.cells) && f.cells.length === 3 && f.cells.every(isFig))) {
@@ -282,7 +295,7 @@ function hashSeed(s: string): number {
 
 export interface CandidateFilter {
   category?: string; // "verbal" | "quantitative" | "nonverbal" | "mixed"/undefined
-  kinds?: Array<"text" | "numseries" | "fold" | "matrix" | "analogy2" | "figure-odd">;
+  kinds?: Array<"text" | "numseries" | ShapeKind>;
   seed?: string; // for deterministic ordering
   exclude?: Set<string>; // additional exact sigs to skip (in-batch claims)
   excludeFuzzy?: Set<string>; // additional fuzzy sigs to skip (near-dup claims)

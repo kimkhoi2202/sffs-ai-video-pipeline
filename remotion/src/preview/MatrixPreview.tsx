@@ -1,5 +1,6 @@
 import { AbsoluteFill } from "remotion";
 import { PlatformProvider } from "../theme/layout";
+import type { Platform } from "../full/timeline";
 import { QuestionPlate } from "../scenes/QuestionPlate";
 import { QuestionReveal } from "../scenes/QuestionReveal";
 import { COLORS } from "../theme/brand";
@@ -41,8 +42,12 @@ const DEFAULT_Q: MatrixQuestion = {
   rDur: 0,
 };
 
-export const MatrixPreview: React.FC<{ q?: Question; reveal?: boolean }> = ({ q = DEFAULT_Q, reveal = false }) => (
-  <PlatformProvider platform="instagram">
+export const MatrixPreview: React.FC<{ q?: Question; reveal?: boolean; platform?: Platform }> = ({
+  q = DEFAULT_Q,
+  reveal = false,
+  platform = "instagram",
+}) => (
+  <PlatformProvider platform={platform}>
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
       {reveal ? <QuestionReveal q={q} /> : <QuestionPlate q={q} elapsed={0} pos={1} total={5} />}
     </AbsoluteFill>

@@ -704,3 +704,96 @@ async function computeDrafts(): Promise<DraftsView> {
   const count_drafts = videos.reduce((n, v) => n + v.drafts.length, 0);
   return { ok: true, videos, count_videos: videos.length, count_drafts, source: "publer (live, read-only bridge)", as_of: asOf };
 }
+
+// ── SCHEDULED posts (post-KICKOFF) — mirrored LIVE from Publer ────────────────
+// Once autonomy is ARMED, the loop AUTO-SCHEDULES each new draft on Publer at a
+// jittered time inside the 7am-1am CST window (scheduler.ts / kickoff_schedule.ts).
+// This surfaces those scheduled posts + their times on the dashboard, read LIVE
+// from Publer via the same READ-ONLY bridge as the drafts board — so the dashboard
+// and Publer show the SAME posts at the SAME times BY CONSTRUCTION. Read-only:
+// nothing here schedules/mutates; it only lists Publer's `state=scheduled` posts.
+export interface ScheduledPost {
+  post_id: string;
+  platform: string; // "instagram" | "tiktok"
+  scheduled_at: string; // ISO (UTC) — the source-of-truth Publer time
+  scheduled_cst: string; // same instant formatted in America/Chicago (what the human tracks)
+  hook: string; // caption first line
+  arm: string; // A/B arm (correlated from run/ab-database, else inferred from caption)
+  arm_source: "run" | "ab-database" | "inferred";
+}
+export interface ScheduledView {
+  ok: boolean;
+  posts: ScheduledPost[];
+  count: number;
+  by_platform: Record<string, number>;
+  source: string;
+  as_of: string;
+  error?: string;
+}
+
+/** Format a UTC instant in America/Chicago (DST-correct) — e.g. "Fri Jul 24, 9:39 AM CDT". */
+function formatChicago(iso: string): string {
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago", weekday: "short", month: "short", day: "numeric",
+      hour: "numeric", minute: "2-digit", hour12: true, timeZoneName: "short",
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
+
+let _schedCache: { at: number; view: ScheduledView } | null = null;
+let _schedInflight: Promise<ScheduledView> | null = null;
+
+/** Live SCHEDULED Publer posts (post-kickoff), cached (TTL) + single-flight. */
+export async function scheduledPosts(): Promise<ScheduledView> {
+  const now = Date.now();
+  if (_schedCache && now - _schedCache.at < CONFIG.DRAFTS_TTL_MS) return _schedCache.view;
+  if (_schedInflight) return _schedInflight;
+  _schedInflight = (async () => {
+    let view: ScheduledView;
+    try {
+      view = await computeScheduled();
+    } catch (e) {
+      view = { ok: false, posts: [], count: 0, by_platform: {}, source: "publer (read-only bridge)", as_of: new Date().toISOString(), error: e instanceof Error ? e.message : String(e) };
+    }
+    if (view.ok) _schedCache = { at: Date.now(), view };
+    _schedInflight = null;
+    return view;
+  })();
+  return _schedInflight;
+}
+
+async function computeScheduled(): Promise<ScheduledView> {
+  const asOf = new Date().toISOString();
+  const res = await runReadBridge("posts", { all: true, state: "scheduled", max_pages: CONFIG.DRAFTS_MAX_PAGES }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS);
+  if (!res || res.ok !== true || !Array.isArray(res.posts)) {
+    return {
+      ok: false, posts: [], count: 0, by_platform: {},
+      source: "publer (read-only bridge)", as_of: asOf,
+      error: res && res.error ? String(res.error).slice(0, 200) : "scheduled posts unavailable (bridge returned no posts)",
+    };
+  }
+  const accountsMap = (abDb() && abDb().accounts) || {};
+  const variantMap = buildPublerVariantMap();
+  const posts: ScheduledPost[] = [];
+  for (const p of res.posts) {
+    const at = p && p.scheduled_at;
+    if (!at) continue; // only truly-scheduled posts carry a scheduled_at
+    const hit = variantMap.get(String(p.id));
+    posts.push({
+      post_id: String(p.id),
+      platform: platformForAccount(String(p.account_id), accountsMap),
+      scheduled_at: String(at),
+      scheduled_cst: formatChicago(String(at)),
+      hook: draftHook(p.text),
+      arm: hit ? hit.arm : inferArm(p.text),
+      arm_source: hit ? hit.source : "inferred",
+    });
+  }
+  posts.sort((a, b) => (Date.parse(a.scheduled_at) || 0) - (Date.parse(b.scheduled_at) || 0));
+  const by_platform: Record<string, number> = {};
+  for (const p of posts) by_platform[p.platform] = (by_platform[p.platform] || 0) + 1;
+  return { ok: true, posts, count: posts.length, by_platform, source: "publer (live, read-only bridge)", as_of: asOf };
+}

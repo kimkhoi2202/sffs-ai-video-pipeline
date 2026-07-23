@@ -146,6 +146,24 @@ const SHAPE_DIMENSION: DimSpec = {
 };
 
 /**
+ * The CLASSIC nonverbal dimension: the legacy dot (position) / shaded (figure
+ * analogy) / polygon (figure series) kinds, UNLOCKED via legacyShapes.ts (compact
+ * bank codes -> structured figure + deterministic A-D options). Like the shape
+ * dimension its options are figures, so the render path voices only the prompt.
+ * This is the BULK of the bank (~300 fresh entries), so a distinct dimension keeps
+ * it flowing into the rotation instead of being starved by the 5-each new types.
+ */
+const CLASSIC_SHAPE_DIMENSION: DimSpec = {
+  ...BASE,
+  dimension: "type-nonverbal-classic",
+  arm: "classic-shapes",
+  rationale:
+    "classic nonverbal variety: dot position / shaded figure-analogy / polygon figure-series (options are figures; prompt-only VO)",
+  category: "nonverbal",
+  kinds: ["dot", "shaded", "polygon"],
+};
+
+/**
  * Whether the nonverbal shape dimension is ELIGIBLE this run. Default ON (the
  * FullVideo render path for shapes is proven). Set HERMES_ENABLE_SHAPE_QUESTIONS
  * to 0/false/off/no to force it OFF — a kill switch that leaves the loop's
@@ -179,9 +197,10 @@ export function buildDimensions(defaults: ContentDefaults = contentDefaults()): 
     endingArm: a,
     rationale: `TEST ARM vs the '${defaults.ending}' ending default: ${ENDING_ARM_META[a]} (keeps ${defaults.narration} narration)`,
   }));
-  // The nonverbal shape dimension is appended only when enabled (default ON;
-  // HERMES_ENABLE_SHAPE_QUESTIONS=0 removes it and restores the exact prior list).
-  const shapeDims: DimSpec[] = shapeQuestionsEnabled() ? [SHAPE_DIMENSION] : [];
+  // The nonverbal shape dimensions are appended only when enabled (default ON;
+  // HERMES_ENABLE_SHAPE_QUESTIONS=0 removes them and restores the exact prior list).
+  // Both the FigState family (shapes) and the unlocked legacy classic kinds.
+  const shapeDims: DimSpec[] = shapeQuestionsEnabled() ? [SHAPE_DIMENSION, CLASSIC_SHAPE_DIMENSION] : [];
   return [CONTROL, ...narrationArms, ...endingArms, ...OTHER_DIMENSIONS, ...shapeDims];
 }
 

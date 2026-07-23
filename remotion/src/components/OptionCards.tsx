@@ -5,6 +5,12 @@ import { DM_SANS } from "../theme/fonts";
 import { LetterBadge } from "./LetterBadge";
 import type { TextOption } from "../data/types";
 
+/** Portrait 2x2 shape-option grid: card height + row gap (design px). Exported so
+ *  a TALL type (FIGURE MATRIX) can compute its option-block height for the TikTok
+ *  scale-to-fit (QuestionFrame ttFit). Landscape keeps its own inline values. */
+export const SHAPE_CARD_H = 240;
+export const SHAPE_ROW_GAP = 30;
+
 /** Text option grid. Landscape = 2x2; portrait = a single stacked column of 4
  *  full-width rows. Cards keep their hard shadow; badges are flat. */
 export const TextOptionsGrid: React.FC<{ options: TextOption[] }> = ({ options }) => {
@@ -51,7 +57,7 @@ export const TextOptionsGrid: React.FC<{ options: TextOption[] }> = ({ options }
 export const ShapeOptionsRow: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { portrait } = useFmt();
   if (portrait) {
-    return <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 30, width: "100%" }}>{children}</div>;
+    return <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: SHAPE_ROW_GAP, width: "100%" }}>{children}</div>;
   }
   return <div style={{ display: "flex", gap: 40, width: "100%", alignItems: "stretch" }}>{children}</div>;
 };
@@ -66,7 +72,7 @@ export const ShapeOptionCard: React.FC<{ letter: string; badgeSize?: number; chi
   <div
     style={{
       flex: 1,
-      height: 240,
+      height: SHAPE_CARD_H,
       boxSizing: "border-box",
       position: "relative",
       background: COLORS.paper,

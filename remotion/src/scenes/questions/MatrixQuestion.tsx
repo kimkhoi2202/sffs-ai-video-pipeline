@@ -2,7 +2,7 @@ import { COLORS } from "../../theme/brand";
 import { useFmt } from "../../theme/layout";
 import { ANTON } from "../../theme/fonts";
 import { QuestionFrame, PromptTitle } from "../../components/QuestionFrame";
-import { ShapeOptionsRow, ShapeOptionCard } from "../../components/OptionCards";
+import { ShapeOptionsRow, ShapeOptionCard, SHAPE_CARD_H, SHAPE_ROW_GAP } from "../../components/OptionCards";
 import { FigCell, FigGlyphGroup, type FigState } from "../../components/FigureCell";
 import type { MatrixQuestion as MatrixQ } from "../../data/types";
 
@@ -64,6 +64,10 @@ export const MatrixQuestion: React.FC<{ q: MatrixQ; elapsed: number; pos?: numbe
       prompt={<PromptTitle fontSize={portrait ? 46 : 60} radius={36}>{q.prompt}</PromptTitle>}
       content={content}
       options={options}
+      // The 2x2 matrix (two 290px tile rows + two option-card rows) is the one
+      // block tall enough to overflow TikTok's chrome-safe band; report its parts
+      // so QuestionFrame scales it to fit between the header pills and the bar.
+      ttFit={{ promptText: q.prompt, contentH: 2 * TILE + GAP, optionsH: 2 * SHAPE_CARD_H + SHAPE_ROW_GAP, promptFontSize: portrait ? 46 : 60 }}
     />
   );
 };

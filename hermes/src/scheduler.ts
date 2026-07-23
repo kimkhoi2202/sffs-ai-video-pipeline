@@ -89,43 +89,75 @@ function intoWindow(date: Date, rng: () => number): Date {
   return fromChicago(p.y, p.mo, p.d, WINDOW_OPEN_HOUR, jitterMin);
 }
 
-const PLATFORM_SHIFT: Record<string, number> = { instagram: 3, tiktok: 8 };
-
 export interface SlotOpts {
   fromMs?: number; // base instant (default: now)
   seed?: string; // deterministic jitter seed (e.g. runId)
   platform?: string; // per-platform shift so IG != TikTok times
 }
 
+/** The next 1:00am America/Chicago strictly after `fromD` — the CLOSE of the
+ *  posting window containing (or following) `fromD`. */
+function nextOneAm(fromD: Date): Date {
+  const p = parts(fromD);
+  if (p.h === 0) return fromChicago(p.y, p.mo, p.d, 1, 0); // 00:xx -> 01:00 today
+  const t = parts(new Date(fromChicago(p.y, p.mo, p.d, 12, 0).getTime() + 24 * 3600_000));
+  return fromChicago(t.y, t.mo, t.d, 1, 0); // 07:00-23:59 -> 01:00 tomorrow
+}
+
+/** The 7:00am America/Chicago that OPENS the window AFTER `fromD`'s window closes. */
+function next7am(fromD: Date): Date {
+  const c = parts(nextOneAm(fromD)); // the close (01:00) of this window; +7h -> that day's 07:00
+  return fromChicago(c.y, c.mo, c.d, 7, 0);
+}
+
 /**
  * Produce `count` DISTINCT schedule timestamps (ISO, minute-resolution), all inside
- * the Chicago window, with irregular gaps + odd jittered minutes + a per-platform
- * shift. Deterministic given (count, fromMs, seed, platform).
+ * ONE Chicago posting window [max(now, 7:00am) .. 1:00am), EVENLY distributed with
+ * per-slot jitter, ODD minutes, and a per-platform shift so IG != TikTok.
+ *
+ * Even distribution (vs a random walk of gaps) GUARANTEES every post fits the SAME
+ * window — no dead-hours roll-over / cross-day accumulation — even for an aggressive
+ * count, while the jittered offset within each per-post segment keeps gaps irregular
+ * and organic-looking (anti-shadowban: consistent + varied, never rapid-fire). If
+ * the CURRENT remaining window is too tight to hold `count` posts at a sane minimum
+ * spacing (e.g. a late/backfilled fire), it rolls to the NEXT full window rather
+ * than cramming a bursty batch. Deterministic given (count, fromMs, seed, platform).
  */
 export function nextSlots(count: number, opts: SlotOpts = {}): string[] {
-  const rng = lcg(hashSeed(`${opts.seed ?? "hermes"}|${opts.platform ?? ""}`));
-  const shift = PLATFORM_SHIFT[opts.platform ?? ""] ?? 0;
+  if (count <= 0) return [];
+  const seed = opts.seed ?? "hermes";
+  // baseRng is PLATFORM-INDEPENDENT so both platforms share the SAME window + segment
+  // grid (the per-platform jitter lanes below can only separate aligned grids).
+  const baseRng = lcg(hashSeed(`${seed}|base`));
+  const rng = lcg(hashSeed(`${seed}|${opts.platform ?? ""}`)); // per-platform lane jitter
+  // a few jittered minutes into the future, then into the window (dead hours -> 7am)
+  let start = intoWindow(new Date((opts.fromMs ?? Date.now()) + (5 + Math.floor(baseRng() * 21)) * 60_000), baseRng);
+  // Don't cram: if the remaining window can't hold `count` posts >= ~18 min apart,
+  // roll to the NEXT full window instead of stacking them minutes apart.
+  const MIN_SEG_MIN = 18;
+  if ((nextOneAm(start).getTime() - start.getTime()) / 60_000 < count * MIN_SEG_MIN) {
+    start = next7am(start);
+  }
+  const startMin = Math.ceil(start.getTime() / 60_000); // epoch minutes (>= start)
+  const endMin = Math.floor(nextOneAm(start).getTime() / 60_000) - 5; // 5-min buffer; ODD (01:00 - 5)
+  const seg = Math.max(1, (endMin - startMin) / count); // per-post segment (minutes)
+  // Per-platform jitter LANE within each segment so IG (low band) and TikTok (high
+  // band) can never round to the same minute — a stronger IG!=TikTok guarantee than
+  // a fixed shift. Epoch-minute arithmetic keeps every slot on an ODD wall-clock
+  // minute (60 is even, so odd epoch-min == odd mm), strictly increasing + distinct.
+  // Bands are separated by a ~0.16*seg gutter so that, even after rounding to the
+  // nearest ODD minute, an IG slot and a TikTok slot in the same (or adjacent)
+  // segment can never collapse onto the same minute.
+  const laneLo = opts.platform === "tiktok" ? 0.58 : 0.1;
   const out: string[] = [];
-  const seen = new Set<string>();
-  // start a few (jittered) minutes in the future so we never schedule in the past
-  let cur = new Date((opts.fromMs ?? Date.now()) + (5 + Math.floor(rng() * 21)) * 60_000);
-  let guard = 0;
-  while (out.length < count && guard++ < count * 25) {
-    const gap = 55 + Math.floor(rng() * 96); // irregular 55..150 min between posts
-    cur = intoWindow(new Date(cur.getTime() + gap * 60_000), rng);
-    const p = parts(cur);
-    // odd, jittered minute (+ platform shift), kept within the same allowed hour
-    let minute = (p.mi + shift + Math.floor(rng() * 6)) % 60;
-    if (minute % 2 === 0) minute = (minute + 1) % 60;
-    let slot = fromChicago(p.y, p.mo, p.d, p.h, minute);
-    if (!isWithinWindow(slot)) slot = intoWindow(slot, rng);
-    const iso = new Date(Math.floor(slot.getTime() / 60_000) * 60_000).toISOString();
-    if (seen.has(iso) || slot.getTime() <= (out.length ? Date.parse(out[out.length - 1]) : 0)) {
-      cur = new Date(cur.getTime() + (11 + Math.floor(rng() * 19)) * 60_000);
-      continue;
-    }
-    seen.add(iso);
-    out.push(iso);
+  let prev = startMin - 2;
+  for (let i = 0; i < count; i++) {
+    let m = Math.round(startMin + i * seg + (laneLo + rng() * 0.32) * seg);
+    if (m % 2 === 0) m += 1; // ODD epoch-minute == ODD wall-clock minute
+    if (m <= prev) m = prev + 2; // strictly increasing (+2 preserves ODD)
+    if (m >= endMin) m = Math.max(prev + 2, endMin - 2 * (count - i)); // pack near close, stays ODD
+    out.push(new Date(m * 60_000).toISOString());
+    prev = m;
   }
   return out;
 }

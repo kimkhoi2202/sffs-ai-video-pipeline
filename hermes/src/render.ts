@@ -134,7 +134,7 @@ const NOMINAL = { timesup: 1.2, score: 20.8, "outro-follow": 6.0, "outro-youtube
 // Question mapping: loop HermesQuiz question -> Short/FullVideo Question.
 // ---------------------------------------------------------------------------
 interface LoopQ {
-  kind: "text" | "numseries" | "fold" | "matrix" | "analogy2" | "figure-odd";
+  kind: "text" | "numseries" | "fold" | "matrix" | "analogy2" | "figure-odd" | "dot" | "shaded" | "polygon";
   tier: string;
   prompt: string;
   options?: string[];
@@ -221,6 +221,24 @@ function mapShapeQuestion(lq: LoopQ, common: Record<string, unknown>): any {
       options: (f.options ?? []).map((o) => ({ letter: o.letter, holes: o.holes ?? [] })),
       ansHoles: unfold(folds, punches, grid),
     };
+  }
+  // legacy classic-nonverbal kinds (dot / shaded / polygon): build the typed
+  // render Question from the converter's figure (dotSeq/polySeq/left+rightShape +
+  // typed options). ansPos/ansShape come from the ansLetter option (dot/polygon)
+  // or the analogy structure (shaded: the right shape, filled).
+  if (f.kind === "dot") {
+    const options = (f.options ?? []).map((o) => ({ letter: o.letter, pos: o.pos }));
+    const ansPos = options.find((o) => o.letter === f.ansLetter)?.pos;
+    return { ...base, kind: "dot", seq: f.dotSeq ?? [], options, ansPos };
+  }
+  if (f.kind === "polygon") {
+    const options = (f.options ?? []).map((o) => ({ letter: o.letter, poly: o.poly }));
+    const ansShape = options.find((o) => o.letter === f.ansLetter)?.poly;
+    return { ...base, kind: "polygon", seq: f.polySeq ?? [], options, ansShape };
+  }
+  if (f.kind === "shaded") {
+    const options = (f.options ?? []).map((o) => ({ letter: o.letter, shape: o.shape, filled: o.filled }));
+    return { ...base, kind: "shaded", leftShape: f.leftShape, rightShape: f.rightShape, options, ansShape: f.rightShape, ansFilled: true };
   }
   // matrix-family: the correct figure is the ansLetter option's `fig`.
   const options = (f.options ?? []).map((o) => ({ letter: o.letter, fig: o.fig }));

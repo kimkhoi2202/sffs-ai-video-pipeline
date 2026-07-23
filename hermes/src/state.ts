@@ -35,8 +35,11 @@ export interface GateResult {
 // remotion Question shapes (remotion/src/data/types.ts) + FigState
 // (remotion/src/components/FigureCell.tsx) without importing them.
 
-/** The nonverbal shape/figure kinds (options are figures, not text). */
-export const SHAPE_KINDS = ["fold", "matrix", "analogy2", "figure-odd"] as const;
+/** The nonverbal shape/figure kinds (options are figures, not text). Covers the
+ *  FigState family (fold + matrix/analogy2/figure-odd) AND the legacy classic
+ *  nonverbal kinds (dot/shaded/polygon) unlocked via legacyShapes.ts: all render
+ *  from a structured `figure` payload with figure (non-text) options. */
+export const SHAPE_KINDS = ["fold", "matrix", "analogy2", "figure-odd", "dot", "shaded", "polygon"] as const;
 export type ShapeKind = (typeof SHAPE_KINDS)[number];
 const SHAPE_KIND_SET: ReadonlySet<string> = new Set(SHAPE_KINDS);
 /** True if `kind` is one of the nonverbal shape/figure kinds. */
@@ -65,8 +68,13 @@ export interface FigureState {
  *  options carry a `fig`. */
 export interface FigureOption {
   letter: string;
-  holes?: FigureCell[];
-  fig?: FigureState;
+  holes?: FigureCell[]; // fold: an unfolded hole pattern
+  fig?: FigureState; // matrix-family: a transform-vocabulary figure
+  // legacy classic-nonverbal option payloads (dot/shaded/polygon):
+  pos?: string; // dot: a DotPos code (tl/tm/tr/rm/br/bm/bl/lm)
+  poly?: number | "circle"; // polygon: side count (3-8) or circle
+  shape?: string; // shaded: a GlyphKind
+  filled?: boolean; // shaded: fill state of the glyph
 }
 
 /**
@@ -96,6 +104,11 @@ export interface Figure {
   a?: FigureState;
   b?: FigureState;
   c?: FigureState;
+  // legacy classic-nonverbal stimulus (dot/shaded/polygon):
+  dotSeq?: string[]; // dot: DotPos codes shown before the "?" tile
+  polySeq?: number[]; // polygon: side counts shown before the "?" tile
+  leftShape?: string; // shaded: the analogy's left glyph
+  rightShape?: string; // shaded: the analogy's right glyph (== the answer shape, filled)
 }
 
 export interface HermesQ {

@@ -12,7 +12,7 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo, ScheduledView } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
 
@@ -655,6 +655,28 @@ function goalPanel(gp: GoalProgress): string {
   return `${mandate}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
 }
 
+// ── SCHEDULED posts panel (post-KICKOFF) — mirrored LIVE from Publer ──────────
+// Read-only table of the posts the loop has auto-scheduled on Publer + their times
+// (CST). Pulled live from Publer via the read-only bridge, so this and the Publer
+// calendar show the SAME posts at the SAME times. No publish/schedule control here.
+function scheduledPanel(view?: ScheduledView): string {
+  if (!view) {
+    return `<p class="muted">Scheduled posts appear here once autonomy is ARMED. Until then the loop is DRAFT-ONLY (nothing is scheduled).</p>`;
+  }
+  if (!view.ok) {
+    return `<p class="muted">Couldn't load scheduled posts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls the schedule LIVE from Publer via the read-only bridge; it retries on the next refresh.</p>`;
+  }
+  if (!view.posts.length) {
+    return `<p class="muted">No scheduled posts yet. When KICKOFF is ARMED, each new draft is auto-scheduled on Publer at a jittered time inside the <b>7:00am–1:00am CST</b> window; those posts + times appear here — mirrored LIVE from Publer, so this table and the Publer calendar always match. (Draft-only until armed.)</p>`;
+  }
+  const byPlat = Object.entries(view.by_platform).map(([k, v]) => `${esc(platformLabel(k))}: ${v}`).join(" · ");
+  const rows = view.posts
+    .map((p) => `<tr><td><b>${esc(p.scheduled_cst)}</b></td><td>${esc(platformLabel(p.platform))}</td><td>${esc(p.hook)}</td><td>${esc(p.arm)}${p.arm_source === "inferred" ? ' <span class="chip c-warn" title="no run/ab-database record matched this Publer post id — arm inferred from the caption">inferred</span>' : ""}</td></tr>`)
+    .join("");
+  return `<p class="muted">${view.count} upcoming scheduled post(s) — pulled LIVE from Publer, so these are the SAME posts + times shown on the Publer calendar. ${esc(byPlat)}. All inside the 7:00am–1:00am America/Chicago window. As of ${esc(view.as_of)}.</p>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>Scheduled time (CST)</th><th>Platform</th><th>Hook</th><th>A/B arm</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
 // ── the page ──────────────────────────────────────────────────────────────────
 export interface PageData {
   latest: RunState | null;
@@ -679,6 +701,8 @@ export interface PageData {
   factory?: any;
   /** pending Publer drafts awaiting human review (optional; degrades to empty). */
   drafts?: DraftsView;
+  /** SCHEDULED Publer posts post-kickoff, mirrored live from Publer (optional). */
+  scheduled?: ScheduledView;
   /** GOAL-PROGRESS toward Hermes's 7-day mandate (optional; degrades to pending/empty). */
   goal?: GoalProgress;
 }
@@ -813,6 +837,11 @@ ${killBanner(kill)}
   <div class="card">
     <h2><span class="pin">DRAFTS</span> Drafts awaiting review <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
     ${draftsPanel(opts.drafts)}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">SCHEDULED</span> Auto-scheduled posts &amp; times (post-kickoff) <span class="pin" style="background:var(--mint)">LIVE FROM PUBLER</span></h2>
+    ${scheduledPanel(opts.scheduled)}
   </div>
 
   <div class="card">

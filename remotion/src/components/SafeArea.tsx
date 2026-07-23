@@ -52,6 +52,21 @@ const TT_TY = TT_BOX.y0 - TT_SCALE * TT_CONTENT_TOP; // translate so content-top
 export const TT_BAR_Y = 1390;
 
 /**
+ * Chrome-safe DESIGN band for a TOO-TALL TikTok question block. On TikTok the two
+ * header pills (Q# count + tier tag) are pinned STACKED at design y≈62 and reach
+ * ~y224 with their hard shadow, and the depleting progress bar is pulled up to
+ * TT_BAR_Y. QuestionFrame true-centres the question block in the full safe band,
+ * which is fine for short blocks but lets a TALL block (the 2x2 FIGURE MATRIX:
+ * prompt + two rows of 290px tiles + two rows of option cards ≈ 1332px design)
+ * rise INTO the pills at the top and push its options UNDER the bar at the bottom.
+ * When a block's natural height exceeds this band, QuestionFrame uniformly scales
+ * it to fit BETWEEN the pills (top) and the bar (bottom) so it overlaps NEITHER.
+ * Short blocks never reach this band and are rendered byte-for-byte unchanged.
+ */
+export const TT_DENSE_TOP = 246; // design y: just below the stacked header pills (+ shadow)
+export const TT_DENSE_BOTTOM = TT_BAR_Y - 22; // design y (1368): just above the pulled-up progress bar
+
+/**
  * Design-space Y band that the TikTok transform maps ONTO the on-screen content-
  * safe band [TT_DANGER.top .. 1920 - TT_DANGER.bottom] = [200 .. 1440]. Inverting
  * screenY = TT_TY + TT_SCALE*designY gives the design coordinates QuestionFrame
