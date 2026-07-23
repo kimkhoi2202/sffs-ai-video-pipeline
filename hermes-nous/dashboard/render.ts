@@ -239,7 +239,7 @@ function spendPanel(snap: any): string {
   const int = (v: any) => Number(v ?? 0).toLocaleString("en-US");
   const kill = snap.kill_switch || {};
   const killPill = kill.engaged
-    ? `<span class="hpill" style="background:var(--coral);color:#fff"><b>kill-switch</b>ENGAGED${kill.reason ? " · " + esc(String(kill.reason).slice(0, 40)) : ""}</span>`
+    ? `<span class="hpill" style="background:#dbe6ff;color:#122a5c;border-color:#122a5c"><b>status</b>paused (maintenance)${kill.reason ? " · " + esc(String(kill.reason).slice(0, 40)) : ""}</span>`
     : `<span class="hpill" style="background:var(--green)"><b>kill-switch</b>clear</span>`;
   const ceilNote = snap.ceiling_reason ? `<div class="reject">ceiling: ${esc(snap.ceiling_reason)}</div>` : "";
   return `<div class="health" style="margin-bottom:8px">
@@ -439,7 +439,7 @@ function factoryPanel(fs: any): string {
   const suite = fs.suite || {};
   const cad = fs.cadence || {};
   const killPill = kill.engaged
-    ? `<span class="hpill" style="background:var(--coral);color:#fff"><b>kill-switch</b>ENGAGED${kill.reason ? " · " + esc(String(kill.reason).slice(0, 44)) : ""}</span>`
+    ? `<span class="hpill" style="background:#dbe6ff;color:#122a5c;border-color:#122a5c"><b>status</b>paused (maintenance)${kill.reason ? " · " + esc(String(kill.reason).slice(0, 44)) : ""}</span>`
     : `<span class="hpill" style="background:var(--green)"><b>kill-switch</b>clear</span>`;
   const suitePill = `<span class="hpill" ${suite.verdict === "RED" ? 'style="background:var(--coral);color:#fff"' : suite.verdict === "GREEN" ? 'style="background:var(--green)"' : ""}><b>suite</b>${esc(suite.verdict || "?")}${suite.sha ? " · " + short(suite.sha) : ""}</span>`;
   const usdOver = sp.usd_cap && sp.usd >= sp.usd_cap;
