@@ -185,6 +185,37 @@ export function buildDimensions(defaults: ContentDefaults = contentDefaults()): 
   return [CONTROL, ...narrationArms, ...endingArms, ...OTHER_DIMENSIONS, ...shapeDims];
 }
 
+/**
+ * Targeted / showcase batch overrides for planBatch (PURE + env-free, so it stays
+ * unit-testable). BOTH options empty/undefined => the catalog is returned UNCHANGED
+ * (a copy), so the default loop and its tests are byte-for-byte unaffected. Used to
+ * drive a deliberate, reviewable DRAFT batch that features specific dimensions —
+ * e.g. the nonverbal SHAPE types — instead of the seeded rotation.
+ *
+ *   only      — restrict the catalog to these dimension OR arm names, in the given
+ *               order (unknown names are skipped; a name may repeat). Empty => no
+ *               restriction.
+ *   shapeNumQ — override the nonverbal-shape dimension's question count (e.g. 4 so a
+ *               single showcase video carries all four shape kinds). Ignored unless
+ *               a positive integer.
+ */
+export function applyBatchOverrides(
+  catalog: DimSpec[],
+  opts: { only?: string[]; shapeNumQ?: number } = {},
+): DimSpec[] {
+  const only = (opts.only ?? []).map((s) => s.trim()).filter(Boolean);
+  let out = only.length
+    ? only
+        .map((name) => catalog.find((d) => d.dimension === name || d.arm === name))
+        .filter((d): d is DimSpec => Boolean(d))
+    : catalog.slice();
+  const n = opts.shapeNumQ;
+  if (typeof n === "number" && Number.isInteger(n) && n > 0) {
+    out = out.map((d) => (d.dimension === SHAPE_DIMENSION.dimension ? { ...d, numQ: n } : d));
+  }
+  return out;
+}
+
 /** The effective render axes for a spec under the CURRENT defaults. */
 export interface ResolvedArm {
   narrationArm: NarrationArm;

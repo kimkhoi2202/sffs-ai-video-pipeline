@@ -27,7 +27,7 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode } from "./defaults.ts";
-import { buildDimensions, resolveArm, selectSpread, newSpreadTally } from "./dimensions.ts";
+import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally } from "./dimensions.ts";
 
 // Re-export the catalog surface so existing importers (bridge/design.ts) are
 // unchanged, while the actual definitions live in the dependency-free module.
@@ -96,7 +96,18 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   // video AND don't cluster the same types across the day's batch (P1). Shared
   // across every video in this batch. See dimensions.ts selectSpread.
   const batchSpread = newSpreadTally();
-  const specs = seededOrder(buildDimensions(defaults), seedOf(runId)).slice(0, target);
+  // Optional targeted / showcase overrides (env-gated; unset => identical to the
+  // default seeded rotation). Lets an operator drive a reviewable DRAFT batch that
+  // features specific dimensions — e.g. the nonverbal SHAPE types — via:
+  //   HERMES_ONLY_DIMENSIONS=shapes,verbal-only,quant-only  (dimension OR arm names)
+  //   HERMES_SHAPE_NUMQ=4                                    (all 4 shape kinds/video)
+  const onlyDims = (process.env.HERMES_ONLY_DIMENSIONS || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const shapeNumQEnv = Number(process.env.HERMES_SHAPE_NUMQ || "");
+  const catalog = applyBatchOverrides(buildDimensions(defaults), {
+    only: onlyDims,
+    shapeNumQ: Number.isInteger(shapeNumQEnv) && shapeNumQEnv > 0 ? shapeNumQEnv : undefined,
+  });
+  const specs = seededOrder(catalog, seedOf(runId)).slice(0, target);
   const plans: VideoPlan[] = [];
 
   for (let i = 0; i < specs.length; i++) {
