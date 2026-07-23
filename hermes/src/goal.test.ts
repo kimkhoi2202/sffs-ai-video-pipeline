@@ -14,12 +14,13 @@ const post = (platform: string, views: number, likes: number, posted_at: string)
   metrics: { video_views: views, reactions: likes },
 });
 
-test("the encoded target is the mandate: 1M views + 200k likes / 7 days + 1k followers each", () => {
-  assert.equal(GOAL.views, 1_000_000);
-  assert.equal(GOAL.likes, 200_000);
-  assert.equal(GOAL.followers_each, 1_000);
+test("the encoded target is the mandate: 500k views / 7 days + 500 followers each (no likes goal)", () => {
+  assert.equal(GOAL.views, 500_000);
+  assert.equal(GOAL.followers_each, 500);
   assert.equal(GOAL.days, 7);
   assert.deepEqual([...GOAL.platforms], ["instagram", "tiktok"]);
+  // likes were dropped from the mandate entirely
+  assert.equal((GOAL as Record<string, unknown>).likes, undefined);
 });
 
 test("before kickoff (since=null) => not started, full 7 days left, pending note", () => {
@@ -44,16 +45,16 @@ test("after kickoff: per-platform views/likes aggregate from real post metrics",
   const ig = g.per_platform.find((p) => p.platform === "instagram")!;
   const tt = g.per_platform.find((p) => p.platform === "tiktok")!;
   assert.equal(ig.views, 2000);
-  assert.equal(ig.likes, 150);
   assert.equal(tt.views, 3000); // pre-t0 post excluded
   assert.equal(tt.followers, 300);
   assert.equal(g.totals.views, 5000);
-  assert.equal(g.totals.likes, 400);
   assert.equal(g.days_left, 6);
   // pace: ~5000 views in 1 day; need the rest over 6 days
   assert.equal(g.pace.views_per_day, 5000);
-  assert.ok(g.pace.views_needed_per_day > 100000, "needs a huge daily pace (honest stretch)");
-  assert.equal(g.pace.on_track_views, false); // 5k << 1M*(1/7)
+  assert.ok(g.pace.views_needed_per_day > 70000, "needs a big daily pace (honest stretch toward 500k)");
+  assert.equal(g.pace.on_track_views, false); // 5k << 500k*(1/7)
+  // likes are no longer part of the goal shape
+  assert.equal((g.totals as Record<string, unknown>).likes, undefined);
 });
 
 test("followers are honest-pending (null) when unmeasured", () => {

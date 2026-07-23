@@ -16,6 +16,7 @@ import {
 import {
   evaluateKillSwitch, computeBankCoverage, redactRunForPublic,
   publicPublerCdnUrl, sanitizeDraftsForPublic, resolveDraftMediaUrl,
+  resolveScheduledMediaUrl, sanitizeScheduledForPublic,
 } from "../data.ts";
 import { computeGoalProgress, GOAL } from "../goal.ts";
 import { esc, page } from "../render.ts";
@@ -184,10 +185,15 @@ test("page: renders all required sections", () => {
   assert.match(html, /next run/);
 });
 
-test("page: kill-switch banner flips when engaged", () => {
+test("page: factory-paused chip is CALM (not a red alarm) when kill-switch engaged", () => {
   const html = page(emptyPageData({ kill: { engaged: true, sources: ["env SFFS_FACTORY_KILL"] } }));
-  assert.match(html, /KILL-SWITCH ENGAGED/);
-  assert.match(html, /env SFFS_FACTORY_KILL/);
+  assert.match(html, /Factory paused \(maintenance\)/); // calm, neutral wording
+  assert.match(html, /env SFFS_FACTORY_KILL/); // still conveys the source
+  assert.match(html, /class="kill kill-paused"/); // muted-blue chip class, not kill-on red
+  // NOT a scary red alarm anymore
+  assert.doesNotMatch(html, /KILL-SWITCH ENGAGED/);
+  assert.doesNotMatch(html, /⛔/);
+  assert.doesNotMatch(html, /class="kill kill-on"/);
 });
 
 test("GUARDRAIL: page exposes NO publish/schedule/merge action (no POST form)", () => {
@@ -612,18 +618,16 @@ test("computeGoalProgress: BEFORE kickoff ⇒ pending, full 7d clock, running to
   assert.equal(gp.windowClosed, false);
   // running totals over ALL posts (t0 null)
   assert.equal(gp.instagram.views.value, 500); // 100 + 400
-  assert.equal(gp.instagram.likes.value, 15); // 10 + 5
   assert.equal(gp.tiktok.views.value, 200);
   assert.equal(gp.combined.views.value, 700);
-  assert.equal(gp.combined.likes.value, 35);
   assert.equal(gp.combined.posts, 3);
-  // mandate targets (combined full; per-platform half; followers 1k each / 2k combined)
-  assert.equal(gp.combined.views.target, 1_000_000);
-  assert.equal(gp.combined.likes.target, 200_000);
-  assert.equal(gp.instagram.views.target, 500_000);
-  assert.equal(gp.instagram.likes.target, 100_000);
-  assert.equal(gp.instagram.followers.target, 1_000);
-  assert.equal(gp.combined.followers.target, 2_000);
+  // mandate targets (combined full; per-platform half; followers 500 each / 1k combined). Likes dropped.
+  assert.equal(gp.combined.views.target, 500_000);
+  assert.equal(gp.instagram.views.target, 250_000);
+  assert.equal(gp.instagram.followers.target, 500);
+  assert.equal(gp.combined.followers.target, 1_000);
+  // likes removed from the goal shape entirely
+  assert.equal((gp.combined as Record<string, unknown>).likes, undefined);
   // followers absent ⇒ pending (null), NOT 0/fake
   assert.equal(gp.followersPending, true);
   assert.equal(gp.instagram.followers.value, null);
@@ -631,7 +635,7 @@ test("computeGoalProgress: BEFORE kickoff ⇒ pending, full 7d clock, running to
   // no observed pace before kickoff, but the honest "needed/day" mountain is finite over 7d
   assert.equal(gp.instagram.paceViewsPerDay, null);
   assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 700) / 7);
-  assert.ok(gp.combined.neededViewsPerDay > 100_000); // cold account ⇒ huge daily pace needed
+  assert.ok(gp.combined.neededViewsPerDay > 70_000); // cold account ⇒ big daily pace toward 500k
   // "what's moving the needle": arms aggregated by views
   assert.equal(gp.topArmsByViews[0].arm, "hook-a");
   assert.equal(gp.topArmsByViews[0].views, 500);
@@ -656,11 +660,9 @@ test("computeGoalProgress: AFTER kickoff ⇒ windowed per-platform aggregation +
   assert.equal(gp.instagram.posts, 1);
   assert.equal(gp.tiktok.views.value, 200);
   assert.equal(gp.combined.views.value, 600);
-  assert.equal(gp.combined.likes.value, 25);
   assert.equal(gp.combined.posts, 2);
   // observed pace over the 2 elapsed days
   assert.equal(gp.combined.paceViewsPerDay, 300); // 600 / 2
-  assert.equal(gp.combined.paceLikesPerDay, 12.5); // 25 / 2
   // needed pace over the remaining 5 days
   assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 600) / 5);
   // followers now come from the snapshot (not pending)
@@ -690,10 +692,11 @@ test("page: GOAL panel renders FRONT-AND-CENTER with the exact mandate targets +
   const html = page(emptyPageData());
   assert.match(html, /Hermes mandate — live 7-day trajectory/);
   assert.match(html, /KICKOFF PENDING/); // no goal data ⇒ pending panel
-  // the exact mandate numbers are on the page
-  assert.match(html, /1,000,000/);
-  assert.match(html, /200,000/);
-  assert.match(html, /1,000/);
+  // the exact mandate numbers are on the page (500k views + 500 followers each; NO likes)
+  assert.match(html, /500,000<\/b> views combined/);
+  assert.match(html, /500<\/b> followers on EACH/);
+  assert.doesNotMatch(html, /likes combined/i); // likes removed from the mandate line
+  assert.doesNotMatch(html, /200,000/); // old likes target gone
   // FRONT-AND-CENTER: the GOAL card comes before DRAFTS and Cycle status
   const goalIdx = html.indexOf("Hermes mandate");
   const draftsIdx = html.indexOf("Drafts awaiting review");
@@ -732,4 +735,84 @@ test("GUARDRAIL: GOAL panel adds NO mutating control and leaks NO secrets", () =
   assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["']/i);
   // no secrets / no S3 presigned material introduced by this panel
   assert.doesNotMatch(html, /X-Amz-|amazonaws\.com|Bearer\s|api[_-]?key/i);
+});
+
+// ── (D) DASHBOARD POLISH ─────────────────────────────────────────────────────
+const schedFixture = {
+  ok: true, source: "publer (live, read-only bridge)", as_of: "2026-07-23T22:00:00Z",
+  count: 1, by_platform: { tiktok: 1 },
+  posts: [{
+    post_id: "s1", platform: "tiktok",
+    scheduled_at: "2026-07-24T02:17:00Z", scheduled_cst: "Wed Jul 23, 9:17 PM CDT",
+    hook: "smart or fart?", arm: "control", arm_source: "run" as const,
+    video_key: "sm1",
+    thumbnail: "https://cdn.publer.com/uploads/photos/s.jpg",
+    media_url: "https://cdn.publer.com/uploads/videos/sm1/v.mp4",
+  }],
+};
+
+test("D3: video previews are FULL-FRAME (object-fit:contain, never cover) in both panels", () => {
+  const html = page(emptyPageData({ drafts: draftsFixture as any }));
+  assert.match(html, /\.dvid\{[^}]*object-fit:contain/);
+  assert.match(html, /\.dthumb-img\{[^}]*object-fit:contain/);
+  assert.doesNotMatch(html, /object-fit:cover/); // no crop anywhere
+});
+
+test("D3: Plyr is vendored locally (no external CDN at runtime) and initialised on previews", () => {
+  const html = page(emptyPageData({ drafts: draftsFixture as any }));
+  assert.match(html, /<link rel="stylesheet" href="\/static\/plyr\.css"\/>/);
+  assert.match(html, /<script src="\/static\/plyr\.min\.js"><\/script>/);
+  assert.match(html, /new Plyr\(/);
+  assert.match(html, /iconUrl: '\/static\/plyr\.svg'/);
+  assert.doesNotMatch(html, /cdn\.plyr\.io|cdn\.jsdelivr\.net|unpkg\.com/); // never a runtime CDN
+});
+
+test("D3: SCHEDULED panel shows full-frame previews via the same-origin proxy (both panels fixed)", () => {
+  const html = page(emptyPageData({ scheduled: schedFixture as any }));
+  assert.match(html, /9:17 PM CDT/); // the scheduled time is still prominent
+  assert.match(html, /<video[^>]*\bcontrols\b/);
+  assert.match(html, /src="\/api\/draft-media\?v=sm1&amp;kind=video"/);
+  assert.match(html, /poster="\/api\/draft-media\?v=sm1&amp;kind=thumb"/);
+  assert.doesNotMatch(html, /cdn\.publer\.com/);   // proxied — no raw CDN url in HTML
+  assert.doesNotMatch(html, /amazonaws|X-Amz-/);   // no S3-signed leak
+});
+
+test("D3: resolveScheduledMediaUrl resolves by video_key, allowlist-guarded (no S3)", () => {
+  const view = { ...schedFixture, posts: [
+    schedFixture.posts[0],
+    { ...schedFixture.posts[0], video_key: "bad", thumbnail: null, media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z" },
+  ]} as any;
+  assert.equal(resolveScheduledMediaUrl(view, "sm1", "video"), "https://cdn.publer.com/uploads/videos/sm1/v.mp4");
+  assert.equal(resolveScheduledMediaUrl(view, "sm1", "thumb"), "https://cdn.publer.com/uploads/photos/s.jpg");
+  assert.equal(resolveScheduledMediaUrl(view, "bad", "video"), null); // S3-signed ⇒ rejected
+  assert.equal(resolveScheduledMediaUrl(view, "nope", "video"), null);
+  assert.equal(resolveScheduledMediaUrl(null, "sm1", "video"), null);
+});
+
+test("SECURITY: sanitizeScheduledForPublic nulls any non-public-CDN scheduled media", () => {
+  const view = { ok: true, source: "t", as_of: "t", count: 1, by_platform: {}, posts: [
+    { post_id: "s", platform: "tiktok", scheduled_at: "", scheduled_cst: "", hook: "", arm: "", arm_source: "run",
+      video_key: "k", thumbnail: "https://bkt.s3.amazonaws.com/t.jpg?X-Amz-Signature=z",
+      media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z&X-Amz-Credential=ASIA" },
+  ]} as any;
+  const out = sanitizeScheduledForPublic(view);
+  assert.equal(out.posts[0].media_url, null);
+  assert.equal(out.posts[0].thumbnail, null);
+  assert.doesNotMatch(JSON.stringify(out), /X-Amz-|amazonaws\.com/);
+});
+
+test("D4: the run picker is width-bounded + ellipsised so it can't overlap the panel title", () => {
+  const runs = [{ run_id: "complete-hermes-showcase-20260723T024825Z", status: "success", summary: { drafted: 3 } }] as any;
+  const html = page(emptyPageData({ runs, latest: runs[0] }));
+  assert.match(html, /\.runsel select\{[^}]*max-width/);
+  assert.match(html, /\.runsel select\{[^}]*text-overflow:ellipsis/);
+});
+
+test("D5: footer reflects the LIVE autonomous state (no stale draft-only/human-action copy)", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /live &amp; autonomous/);
+  assert.match(html, /goal: 500K views/);
+  assert.doesNotMatch(html, /the loop can ONLY create Publer drafts/);
+  assert.doesNotMatch(html, /going live \+ merging code are human actions/);
+  assert.doesNotMatch(html, /next run once a day/);
 });

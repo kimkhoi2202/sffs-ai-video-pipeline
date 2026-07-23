@@ -357,7 +357,7 @@ export async function runCycle(): Promise<RunState> {
   try {
     const goal = goalProgress();
     (state as any).goal = goal;
-    info("GOAL trajectory", { started: goal.started, views: goal.totals.views, likes: goal.totals.likes, days_left: goal.days_left, on_track_views: goal.pace.on_track_views, note: goal.note });
+    info("GOAL trajectory", { started: goal.started, views: goal.totals.views, days_left: goal.days_left, on_track_views: goal.pace.on_track_views, note: goal.note });
   } catch (e) {
     warn("goal progress failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
   }

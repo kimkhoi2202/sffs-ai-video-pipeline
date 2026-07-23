@@ -474,9 +474,28 @@ function platformLabel(p: string): string {
   return p ? esc(p) : "link";
 }
 
-/** Same-origin READ-ONLY proxy URL for a draft's PUBLIC Publer CDN asset. */
+/** Same-origin READ-ONLY proxy URL for a draft/scheduled PUBLIC Publer CDN asset. */
 function draftMediaSrc(videoKey: string, kind: "video" | "thumb"): string {
   return `/api/draft-media?v=${encodeURIComponent(videoKey)}&kind=${kind}`;
+}
+
+/**
+ * Shared inline preview used by BOTH the drafts and scheduled panels. Renders the
+ * FULL 9:16 frame (CSS object-fit: contain — letterbox, never crop) inside a fixed
+ * 9:16 box, enhanced client-side by Plyr (vendored locally). Media is streamed
+ * same-origin via the read-only /api/draft-media proxy — never a raw CDN/S3 url.
+ */
+function videoPreview(videoKey: string, thumbnail: string | null, mediaUrl: string | null): string {
+  const posterAttr = thumbnail ? ` poster="${esc(draftMediaSrc(videoKey, "thumb"))}"` : "";
+  if (mediaUrl) {
+    return `<video class="dvid" controls preload="metadata" playsinline${posterAttr}>
+        <source src="${esc(draftMediaSrc(videoKey, "video"))}" type="video/mp4"/>
+      </video>`;
+  }
+  if (thumbnail) {
+    return `<img class="dthumb-img" loading="lazy" src="${esc(draftMediaSrc(videoKey, "thumb"))}" alt="preview"/>`;
+  }
+  return `<div class="dthumb-none">no preview</div>`;
 }
 
 function draftCard(v: DraftVideo): string {
@@ -484,17 +503,11 @@ function draftCard(v: DraftVideo): string {
   const srcChip = inferred
     ? `<span class="chip c-warn" title="No run/ab-database record matched this Publer draft id — label inferred from the caption">inferred</span>`
     : `<span class="chip c-ok" title="Correlated from ${esc(v.variant_source)} by publer_post_id">from ${esc(v.variant_source)}</span>`;
-  // Inline preview. The PUBLIC Publer CDN mp4 is Referer-gated (403 cross-origin),
-  // so it is streamed same-origin via the read-only /api/draft-media proxy; the
-  // poster is the draft's thumbnail (also proxied). Never an S3 presigned url.
-  const posterAttr = v.thumbnail ? ` poster="${esc(draftMediaSrc(v.video_key, "thumb"))}"` : "";
-  const preview = v.media_url
-    ? `<video class="dvid" controls preload="metadata" playsinline${posterAttr}>
-        <source src="${esc(draftMediaSrc(v.video_key, "video"))}" type="video/mp4"/>
-      </video>`
-    : v.thumbnail
-      ? `<img class="dthumb-img" loading="lazy" src="${esc(draftMediaSrc(v.video_key, "thumb"))}" alt="draft preview"/>`
-      : `<div class="dthumb-none">no preview</div>`;
+  // Inline preview (full 9:16 frame + Plyr). The PUBLIC Publer CDN mp4 is
+  // Referer-gated (403 cross-origin), so it is streamed same-origin via the
+  // read-only /api/draft-media proxy; the poster is the draft's thumbnail (also
+  // proxied). Never an S3 presigned url.
+  const preview = videoPreview(v.video_key, v.thumbnail, v.media_url);
   const qtypes = v.question_types.length
     ? v.question_types.map((t) => `<span class="b b-na">${esc(t)}</span>`).join(" ")
     : `<span class="muted">question types: —</span>`;
@@ -539,10 +552,15 @@ function draftsPanel(view: DraftsView | undefined): string {
   return `${head}<div class="draftgrid">${view.videos.map(draftCard).join("")}</div>`;
 }
 
-// ── kill-switch banner ────────────────────────────────────────────────────────
+// ── factory status banner ─────────────────────────────────────────────────────
+// When the factory is paused (kill-switch/stop-file present — e.g. a routine
+// maintenance deploy) we show a CALM, neutral status chip, not a red alarm: the
+// pause only affects the always-on code-improvement factory; posting, drafts,
+// scheduling and the 7-day goal are unaffected.
 function killBanner(k: KillSwitchState): string {
   if (k.engaged) {
-    return `<div class="kill kill-on">⛔ FACTORY KILL-SWITCH ENGAGED — auto-merge halted. Sources: ${esc(k.sources.join(", "))}</div>`;
+    const src = k.sources && k.sources.length ? ` <span class="kill-src">(${esc(k.sources.join(", "))})</span>` : "";
+    return `<div class="kill kill-paused"><span class="kill-dot"></span><b>Factory paused (maintenance)</b> — the always-on code-improvement factory is paused; posting, drafts, scheduling &amp; the 7-day goal are unaffected.${src}</div>`;
   }
   return `<div class="kill kill-off">✅ kill-switch clear — factory auto-merge is armed (two-key gate). Display-only indicator.</div>`;
 }
@@ -600,11 +618,9 @@ function gScopeBlock(title: string, sp: ScopeProgress, armed: boolean, big = fal
   return `<div class="gscope${big ? " gscope-big" : ""}">
     <div class="gscope-h"><span class="gscope-t">${esc(title)}</span> <span class="muted">${sp.posts} post(s) ${armed ? "in window" : "all-time"}</span></div>
     ${gMetricRow("views", sp.views)}
-    ${gMetricRow("likes", sp.likes)}
     ${gFollowerRow("followers", sp.followers)}
     <div class="health gpace">
       ${gPacePills(sp.paceViewsPerDay, sp.neededViewsPerDay, "views", armed)}
-      ${gPacePills(sp.paceLikesPerDay, sp.neededLikesPerDay, "likes", armed)}
     </div>
   </div>`;
 }
@@ -615,11 +631,11 @@ function gArmsTable(caption: string, arms: ArmAgg[], sortLabel: string): string 
   const rows = arms
     .map(
       (a, i) =>
-        `<tr><td>${i + 1}</td><td>${esc(a.arm)}<br><span class="muted">${esc(a.family)}</span></td><td>${gInt(a.views)}</td><td>${gInt(a.likes)}</td><td>${gInt(a.posts)}</td></tr>`,
+        `<tr><td>${i + 1}</td><td>${esc(a.arm)}<br><span class="muted">${esc(a.family)}</span></td><td>${gInt(a.views)}</td><td>${gInt(a.posts)}</td></tr>`,
     )
     .join("");
   return `<div class="gcol"><div class="gcol-h">${esc(caption)}</div>
-    <div class="tblwrap"><table class="tbl"><thead><tr><th>#</th><th>arm / family</th><th>views</th><th>likes</th><th>posts</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="tblwrap"><table class="tbl"><thead><tr><th>#</th><th>arm / family</th><th>views</th><th>posts</th></tr></thead><tbody>${rows}</tbody></table></div>
   </div>`;
 }
 
@@ -630,7 +646,7 @@ function goalPanel(gp: GoalProgress): string {
   const timeLeft = gp.armed
     ? `${gp.daysLeft}d ${gp.hoursLeft}h left${gp.windowClosed ? " · WINDOW CLOSED" : ""}`
     : `${gp.windowDays}d 0h (not started)`;
-  const mandate = `<p class="muted" style="margin:2px 0 12px">TARGET (7 days from kickoff): <b>${gInt(GOAL.views)}</b> views + <b>${gInt(GOAL.likes)}</b> likes combined, and <b>${gInt(GOAL.followersPerPlatform)}</b> followers on EACH of Instagram &amp; TikTok. Real live trajectory below — no vanity metrics.</p>`;
+  const mandate = `<p class="muted" style="margin:2px 0 12px">TARGET (7 days from kickoff): <b>${gInt(GOAL.views)}</b> views combined, and <b>${gInt(GOAL.followersPerPlatform)}</b> followers on EACH of Instagram &amp; TikTok. Real live trajectory below — no vanity metrics.</p>`;
   const pendingNote = gp.armed
     ? ""
     : `<div class="reject">KICKOFF PENDING — the 7-day clock has not started. It arms when <code>${esc("<DATA_DIR>/KICKOFF_ARMED")}</code> exists and contains the phrase <code>ARM SFFS AUTONOMY</code>; t0 = that file's mtime. Totals shown are running (all posts, all-time); the window is not counting yet. DRAFT-ONLY until a human arms it.</div>`;
@@ -646,12 +662,9 @@ function goalPanel(gp: GoalProgress): string {
     ${gScopeBlock("Instagram", gp.instagram, gp.armed)}
     ${gScopeBlock("TikTok", gp.tiktok, gp.armed)}
   </div>`;
-  const perPlatNote = `<p class="muted" style="margin:10px 0 4px">Per-platform view/like bars measure against ½ of the combined mandate (${gInt(GOAL.views / 2)} views / ${gInt(GOAL.likes / 2)} likes each); the combined bars use the full target. Followers are ${gInt(GOAL.followersPerPlatform)} on each platform.</p>`;
-  const arms = `<div class="gscope-h" style="margin-top:14px"><span class="gscope-t">What's moving the needle</span> <span class="muted">top arms within the window (ab-database variant.arm / family)</span></div>
-    <div class="gtwo">
-      ${gArmsTable("Top arms by views", gp.topArmsByViews, "views")}
-      ${gArmsTable("Top arms by likes", gp.topArmsByLikes, "likes")}
-    </div>`;
+  const perPlatNote = `<p class="muted" style="margin:10px 0 4px">Per-platform view bars measure against ½ of the combined mandate (${gInt(GOAL.views / 2)} views each); the combined bars use the full target. Followers are ${gInt(GOAL.followersPerPlatform)} on each platform.</p>`;
+  const arms = `<div class="gscope-h" style="margin-top:14px"><span class="gscope-t">What's moving the needle</span> <span class="muted">top arms by views within the window (ab-database variant.arm / family)</span></div>
+    ${gArmsTable("Top arms by views", gp.topArmsByViews, "views")}`;
   return `${mandate}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
 }
 
@@ -659,6 +672,25 @@ function goalPanel(gp: GoalProgress): string {
 // Read-only table of the posts the loop has auto-scheduled on Publer + their times
 // (CST). Pulled live from Publer via the read-only bridge, so this and the Publer
 // calendar show the SAME posts at the SAME times. No publish/schedule control here.
+/** One scheduled-post card: FULL 9:16 preview (contain + Plyr) + its scheduled time. */
+function scheduledCard(p: ScheduledPost): string {
+  const preview = videoPreview(p.video_key, p.thumbnail, p.media_url);
+  const armChip = p.arm_source === "inferred"
+    ? ` <span class="chip c-warn" title="no run/ab-database record matched this Publer post id — arm inferred from the caption">inferred</span>`
+    : "";
+  return `<div class="draftcard">
+    <div class="dthumb">${preview}</div>
+    <div class="dbody">
+      <div class="vid-h">
+        <div><span class="dim">${esc(p.scheduled_cst)}</span></div>
+        <span class="dplat">${platformLabel(p.platform)}</span>
+      </div>
+      <div class="rationale">${esc(p.hook)}</div>
+      <div class="draftplatforms"><span class="muted">A/B arm</span> <span class="arm">${esc(p.arm)}</span>${armChip}</div>
+    </div>
+  </div>`;
+}
+
 function scheduledPanel(view?: ScheduledView): string {
   if (!view) {
     return `<p class="muted">Scheduled posts appear here once autonomy is ARMED. Until then the loop is DRAFT-ONLY (nothing is scheduled).</p>`;
@@ -667,14 +699,11 @@ function scheduledPanel(view?: ScheduledView): string {
     return `<p class="muted">Couldn't load scheduled posts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls the schedule LIVE from Publer via the read-only bridge; it retries on the next refresh.</p>`;
   }
   if (!view.posts.length) {
-    return `<p class="muted">No scheduled posts yet. When KICKOFF is ARMED, each new draft is auto-scheduled on Publer at a jittered time inside the <b>7:00am–1:00am CST</b> window; those posts + times appear here — mirrored LIVE from Publer, so this table and the Publer calendar always match. (Draft-only until armed.)</p>`;
+    return `<p class="muted">No scheduled posts yet. When KICKOFF is ARMED, each new draft is auto-scheduled on Publer at a jittered time inside the <b>7:00am–1:00am CST</b> window; those posts + times appear here — mirrored LIVE from Publer, so these cards and the Publer calendar always match. (Draft-only until armed.)</p>`;
   }
   const byPlat = Object.entries(view.by_platform).map(([k, v]) => `${esc(platformLabel(k))}: ${v}`).join(" · ");
-  const rows = view.posts
-    .map((p) => `<tr><td><b>${esc(p.scheduled_cst)}</b></td><td>${esc(platformLabel(p.platform))}</td><td>${esc(p.hook)}</td><td>${esc(p.arm)}${p.arm_source === "inferred" ? ' <span class="chip c-warn" title="no run/ab-database record matched this Publer post id — arm inferred from the caption">inferred</span>' : ""}</td></tr>`)
-    .join("");
-  return `<p class="muted">${view.count} upcoming scheduled post(s) — pulled LIVE from Publer, so these are the SAME posts + times shown on the Publer calendar. ${esc(byPlat)}. All inside the 7:00am–1:00am America/Chicago window. As of ${esc(view.as_of)}.</p>
-  <div class="tblwrap"><table class="tbl"><thead><tr><th>Scheduled time (CST)</th><th>Platform</th><th>Hook</th><th>A/B arm</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  return `<p class="muted" style="margin-bottom:12px">${view.count} upcoming scheduled post(s) — pulled LIVE from Publer, so these are the SAME posts + times shown on the Publer calendar. ${esc(byPlat)}. All inside the 7:00am–1:00am America/Chicago window. Each card shows the FULL 9:16 preview (letterboxed, never cropped) streamed read-only via this dashboard. As of ${esc(view.as_of)}.</p>
+  <div class="draftgrid">${view.posts.map(scheduledCard).join("")}</div>`;
 }
 
 // ── the page ──────────────────────────────────────────────────────────────────
@@ -724,7 +753,8 @@ export function page(opts: PageData): string {
 
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Hermes-Nous · SFFS draft-only loop (read-only)</title>
+<title>Hermes-Nous · SFFS live autonomous loop (read-only dashboard)</title>
+<link rel="stylesheet" href="/static/plyr.css"/>
 <style>
 :root{--ink:#000;--paper:#fff;--blue:#839aff;--mint:#c6fcd0;--coral:#fd7962;--yellow:#fce552;--cream:#f6f4ee;--green:#63c088}
 *{box-sizing:border-box}
@@ -736,9 +766,14 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .tag{background:var(--ink);color:var(--yellow);padding:4px 10px;border-radius:6px;font-weight:800;font-size:12px;letter-spacing:1px}
 .tag.ro{background:#0d0d0d;color:var(--mint)}
 .wrap{max-width:1120px;margin:0 auto;padding:22px}
-.kill{max-width:1120px;margin:16px auto 0;padding:12px 18px;border:4px solid var(--ink);border-radius:14px;font-weight:800;box-shadow:6px 6px 0 0 var(--ink)}
-.kill-on{background:var(--coral);color:#fff}
-.kill-off{background:var(--green)}
+.kill{max-width:1120px;margin:16px auto 0;padding:12px 18px;border:4px solid var(--ink);border-radius:14px;font-weight:600;box-shadow:6px 6px 0 0 var(--ink)}
+.kill b{font-weight:800}
+.kill-off{background:var(--green);color:#0d2a19}
+/* calm, non-alarming "factory paused" chip (muted blue, dark text) — NOT a red alarm */
+.kill-paused{background:#dbe6ff;color:#122a5c;border-color:#122a5c;box-shadow:6px 6px 0 0 #122a5c}
+.kill-dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--blue);border:2px solid #122a5c;margin-right:9px;vertical-align:middle}
+.kill-dot-ok{background:var(--green);border-color:var(--ink)}
+.kill-src{font-weight:600;opacity:.82;font-size:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:22px}
 .kpi{background:var(--paper);border:4px solid var(--ink);border-radius:16px;box-shadow:8px 8px 0 0 var(--ink);padding:16px}
 .kpi .v{font:800 34px/1 "Segoe UI",sans-serif}
@@ -749,7 +784,7 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .card h2 .pin.pr{background:var(--yellow)}
 .vid{border:3px solid var(--ink);border-radius:14px;padding:14px;margin-bottom:14px;background:var(--cream)}
 .vid-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.dim{font-weight:800;font-size:17px}.arm{color:#555}
+.dim{font-weight:800;font-size:17px}.arm{color:#444}
 .rationale{color:#333;margin:6px 0 10px;font-size:14px}
 .rationale code{background:#eee;border:1px solid #ccc;border-radius:5px;padding:1px 5px;font-size:12px}
 .gates{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
@@ -770,28 +805,36 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .star{font-size:11px;font-weight:800}
 .live{background:var(--coral);color:#fff;font-size:10px;padding:1px 5px;border-radius:4px;font-weight:800}
 .draft{background:#ddd;font-size:10px;padding:1px 5px;border-radius:4px;font-weight:800}
-.muted{color:#777}.cell-fam{min-width:120px}
+.muted{color:#3f3f3f}.cell-fam{min-width:120px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .log{list-style:none;padding:0;margin:0;font-size:13px}
 .log li{padding:6px 0;border-bottom:1px solid #e2e2e2}
 .date{font-weight:800;margin-right:6px}
 .health{display:flex;flex-wrap:wrap;gap:10px}
 .hpill{background:var(--cream);border:3px solid var(--ink);border-radius:10px;padding:8px 12px;font-size:13px;overflow-wrap:anywhere}
-.hpill b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#555}
+.hpill b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#333}
 .logbox{max-height:340px;overflow:auto;background:#0d0d0d;color:#d6d6d6;border-radius:12px;padding:12px;font:12px/1.5 ui-monospace,Menlo,monospace}
 .lg{padding:2px 0;white-space:pre-wrap}.lt{color:#7bd88f}.ll{color:#f5c451;font-weight:700}
 .lg-error .ll{color:#ff7a6b}
-form.runsel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0;max-width:100%}
+form.runsel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0;max-width:100%;margin-left:auto}
+.runsel label{font-weight:700;white-space:nowrap}
+/* bound the run picker so its long option labels can't overlap/clip the panel title */
+.runsel select{flex:0 1 auto;max-width:min(62vw,340px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 select{padding:6px 8px;border:3px solid var(--ink);border-radius:8px;font-size:13px;background:#fff;min-width:0;max-width:100%}
-.foot{color:#666;font-size:12px;text-align:center;padding:14px}
+.foot{color:#333;font-size:12px;text-align:center;padding:14px;line-height:1.6}
 details summary{cursor:pointer;font-size:13px;color:#333;margin-top:6px}
 code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .draftgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 .draftcard{display:flex;flex-direction:column;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--cream)}
-.dthumb{background:#000;border-bottom:3px solid var(--ink);aspect-ratio:9/16;max-height:320px;display:flex;align-items:center;justify-content:center}
-.dthumb-img{width:100%;height:100%;object-fit:cover;display:block}
-.dvid{width:100%;height:100%;object-fit:cover;display:block;background:#000}
-.dthumb-none{color:#888;font-size:12px;font-weight:700}
+.dthumb{background:#000;border-bottom:3px solid var(--ink);aspect-ratio:9/16;max-height:360px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+/* full 9:16 frame: contain (letterbox) rather than cover (crop) */
+.dthumb-img{width:100%;height:100%;object-fit:contain;display:block}
+.dvid{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.dthumb-none{color:#bbb;font-size:12px;font-weight:700}
+/* Plyr fills the 9:16 box and letterboxes portrait video (contain) — never crops */
+.dthumb .plyr{width:100%;height:100%;--plyr-color-main:#fd7962}
+.dthumb .plyr__video-wrapper{height:100%;background:#000}
+.dthumb .plyr video{width:100%;height:100%;object-fit:contain;background:#000}
 .dbody{padding:12px;display:flex;flex-direction:column;gap:6px}
 .draftplatforms{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px}
 .dplat{display:inline-block;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:8px;padding:3px 9px;background:var(--mint);color:#111}
@@ -803,7 +846,7 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .gscope-t{font-weight:800;font-size:16px}
 .gmetric{margin:8px 0}
 .gm-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:4px}
-.gm-l{font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:11px;color:#555}
+.gm-l{font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:11px;color:#333}
 .gm-v{font-variant-numeric:tabular-nums}
 .gbar{height:16px;border:2px solid var(--ink);border-radius:9px;background:#fff;overflow:hidden;max-width:100%}
 .gbar .gfill{display:block;height:100%;background:var(--blue);border-right:2px solid var(--ink);min-width:0;transition:none}
@@ -923,10 +966,22 @@ ${killBanner(kill)}
   </div>
 
   <div class="foot">
-    next run: ${esc(schedule.next)} · disk: ${esc(disk)} · auto-refresh 60s ·
-    read-only supervisor — the loop can ONLY create Publer drafts; going live + merging code are human actions.
+    <b>Hermes — live &amp; autonomous</b> · posting 7am–1am CST (≤12/day per platform, jittered, quality- &amp; brand-gated) · goal: 500K views &amp; 500 followers per platform in 7 days · disk: ${esc(disk)} · auto-refresh 60s<br>
+    read-only dashboard — view only; research, content generation, scheduling &amp; code self-improvement run autonomously on the box under hard guardrails.
   </div>
 </div>
+<script src="/static/plyr.min.js"></script>
+<script>
+/* Enhance every full-frame preview with Plyr (vendored locally; no external CDN).
+   object-fit:contain keeps 9:16 portrait video letterboxed — never cropped. */
+(function(){
+  if (typeof Plyr === 'undefined') return;
+  var vids = document.querySelectorAll('video.dvid');
+  for (var i = 0; i < vids.length; i++) {
+    try { new Plyr(vids[i], { iconUrl: '/static/plyr.svg', ratio: '9:16', controls: ['play-large','play','progress','current-time','mute','volume','fullscreen'] }); } catch (e) {}
+  }
+})();
+</script>
 <script>
 (async function(){
   try{
@@ -936,8 +991,8 @@ ${killBanner(kill)}
     const llm = h.llm && h.llm.ok ? '<span class="hpill" style="background:var(--green)"><b>LLM</b>ok · '+ (h.llm.model||'') +'</span>'
       : '<span class="hpill" style="background:'+(h.llm && h.llm.configured===false?'#e5e5e5':'var(--coral)')+';color:'+(h.llm && h.llm.configured===false?'#000':'#fff')+'"><b>LLM</b>'+ (h.llm && h.llm.detail ? String(h.llm.detail).slice(0,42) : 'down') +'</span>';
     const kill = h.kill && h.kill.engaged
-      ? '<span class="hpill" style="background:var(--coral);color:#fff"><b>kill-switch</b>ENGAGED</span>'
-      : '<span class="hpill" style="background:var(--green)"><b>kill-switch</b>clear</span>';
+      ? '<span class="hpill" style="background:#dbe6ff;color:#122a5c;border-color:#122a5c"><b>factory</b>paused (maintenance)</span>'
+      : '<span class="hpill" style="background:var(--green);color:#0d2a19"><b>factory</b>active</span>';
     el.innerHTML = llm + kill
       + '<span class="hpill"><b>next run</b>'+ (h.schedule?String(h.schedule.next).slice(0,32):'?') +'</span>'
       + '<span class="hpill"><b>disk</b>'+ (h.disk||'?') +'</span>'

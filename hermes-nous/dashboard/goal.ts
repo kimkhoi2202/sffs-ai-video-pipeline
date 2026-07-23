@@ -7,28 +7,35 @@
  * testable (see test/dashboard.test.ts) and can never leak anything.
  *
  * THE MANDATE (fixed constants below):
- *   1,000,000 views + 200,000 likes in 7 DAYS (combined across IG + TikTok),
- *   and 1,000 followers on EACH of Instagram and TikTok.
+ *   500,000 views in 7 DAYS (combined across IG + TikTok), and 500 followers on
+ *   EACH of Instagram and TikTok. (Likes are NOT a goal metric — no like target
+ *   or trajectory anywhere in the goal.)
  *
  * The 7-day clock starts at KICKOFF (t0 = mtime of the armed KICKOFF file). Until
  * armed, `sinceISO` is null: the window is "not started", the clock reads the full
  * 7 days, and the running totals are computed over ALL posts (informational). Once
  * armed, only posts with posted_at >= t0 count toward the window. Per platform:
- *   views = Σ metrics.video_views · likes = Σ metrics.reactions.
+ *   views = Σ metrics.video_views.
  * Followers come ONLY from the snapshot; when it is absent they are `null`
  * ("pending"), never 0/fake.
  */
 
-/** Hermes's mandate, as fixed targets. Combined = IG + TikTok. */
+/**
+ * Hermes's mandate, as fixed targets — SINGLE SOURCE OF TRUTH (edit to change).
+ * Combined = IG + TikTok.
+ */
 export const GOAL = Object.freeze({
   /** combined (IG + TikTok) 7-day view target. */
-  views: 1_000_000,
-  /** combined (IG + TikTok) 7-day like (reactions) target. */
-  likes: 200_000,
-  /** follower target on EACH platform (IG and TikTok independently). */
-  followersPerPlatform: 1_000,
+  views: 500_000,
+  /**
+   * follower target on EACH platform (IG and TikTok independently) — i.e. 500 on
+   * IG AND 500 on TikTok. This is "per platform", NOT a combined total; flip this
+   * one constant (and the ×2 in the combined row) for a combined-followers target.
+   */
+  followersPerPlatform: 500,
   /** the mandate's window length, in days. */
   windowDays: 7,
+  // NOTE: likes are deliberately NOT a goal metric (no like target / trajectory).
 });
 
 const DAY_MS = 86_400_000;
@@ -52,22 +59,18 @@ export interface FollowerMetric {
 export interface ScopeProgress {
   scope: Scope;
   views: GoalMetric;
-  likes: GoalMetric;
   followers: FollowerMetric;
   /** posts counted in this scope within the window (or all, pre-kickoff). */
   posts: number;
   /** observed rate within the window; null before kickoff (clock not started) or with no elapsed time. */
   paceViewsPerDay: number | null;
-  paceLikesPerDay: number | null;
   /** rate still required to hit target in the time left; 0 if already met; null once the window has closed unmet (impossible). */
   neededViewsPerDay: number | null;
-  neededLikesPerDay: number | null;
 }
 export interface ArmAgg {
   arm: string;
   family: string;
   views: number;
-  likes: number;
   posts: number;
 }
 export interface FollowerSnapshot {
@@ -90,9 +93,8 @@ export interface GoalProgress {
   instagram: ScopeProgress;
   tiktok: ScopeProgress;
   combined: ScopeProgress;
-  /** "what's moving the needle": top 3 arms by views / by likes within the window. */
+  /** "what's moving the needle": top 3 arms by views within the window. */
   topArmsByViews: ArmAgg[];
-  topArmsByLikes: ArmAgg[];
   /** true when no follower snapshot was supplied (followers render as "pending"). */
   followersPending: boolean;
 }
@@ -149,9 +151,9 @@ export function computeGoalProgress(
     return Number.isFinite(t) && t >= t0ms;
   };
 
-  const agg: Record<PlatformKey, { views: number; likes: number; posts: number }> = {
-    instagram: { views: 0, likes: 0, posts: 0 },
-    tiktok: { views: 0, likes: 0, posts: 0 },
+  const agg: Record<PlatformKey, { views: number; posts: number }> = {
+    instagram: { views: 0, posts: 0 },
+    tiktok: { views: 0, posts: 0 },
   };
   const arms = new Map<string, ArmAgg>();
 
@@ -160,18 +162,15 @@ export function computeGoalProgress(
     if (!inWindow(p)) continue;
     const m = p.metrics && typeof p.metrics === "object" ? p.metrics : {};
     const views = num(m.video_views);
-    const likes = num(m.reactions);
     const plat = platformOf(p);
     if (plat === "instagram" || plat === "tiktok") {
       agg[plat].views += views;
-      agg[plat].likes += likes;
       agg[plat].posts += 1;
     }
     const arm = armOf(p);
     const family = familyOf(p);
-    const cur = arms.get(arm) || { arm, family, views: 0, likes: 0, posts: 0 };
+    const cur = arms.get(arm) || { arm, family, views: 0, posts: 0 };
     cur.views += views;
-    cur.likes += likes;
     cur.posts += 1;
     if ((cur.family === "—" || !cur.family) && family !== "—") cur.family = family;
     arms.set(arm, cur);
@@ -179,7 +178,6 @@ export function computeGoalProgress(
 
   const combinedTotals = {
     views: agg.instagram.views + agg.tiktok.views,
-    likes: agg.instagram.likes + agg.tiktok.likes,
     posts: agg.instagram.posts + agg.tiktok.posts,
   };
 
@@ -214,38 +212,29 @@ export function computeGoalProgress(
 
   const scope = (
     s: Scope,
-    v: { views: number; likes: number; posts: number },
+    v: { views: number; posts: number },
     followerValue: number | null,
     followerTarget: number,
     viewsTarget: number,
-    likesTarget: number,
   ): ScopeProgress => ({
     scope: s,
     views: metric(v.views, viewsTarget),
-    likes: metric(v.likes, likesTarget),
     followers: followerMetric(followerValue, followerTarget),
     posts: v.posts,
     paceViewsPerDay: observed(v.views),
-    paceLikesPerDay: observed(v.likes),
     neededViewsPerDay: needed(viewsTarget, v.views),
-    neededLikesPerDay: needed(likesTarget, v.likes),
   });
 
   // The combined mandate is split evenly per platform for the per-platform bars;
-  // the combined bars use the full mandate. Followers are per-platform (1k each).
+  // the combined bars use the full mandate. Followers are per-platform (500 each).
   const perViews = GOAL.views / 2;
-  const perLikes = GOAL.likes / 2;
   const igF = followerVal("instagram");
   const ttF = followerVal("tiktok");
   const combinedF = !fSnap || (igF == null && ttF == null) ? null : (igF || 0) + (ttF || 0);
 
   const topArmsByViews = [...arms.values()]
     .filter((a) => a.views > 0)
-    .sort((a, b) => b.views - a.views || b.likes - a.likes)
-    .slice(0, 3);
-  const topArmsByLikes = [...arms.values()]
-    .filter((a) => a.likes > 0)
-    .sort((a, b) => b.likes - a.likes || b.views - a.views)
+    .sort((a, b) => b.views - a.views || b.posts - a.posts)
     .slice(0, 3);
 
   return {
@@ -258,11 +247,10 @@ export function computeGoalProgress(
     daysLeft,
     hoursLeft,
     windowClosed,
-    instagram: scope("instagram", agg.instagram, igF, GOAL.followersPerPlatform, perViews, perLikes),
-    tiktok: scope("tiktok", agg.tiktok, ttF, GOAL.followersPerPlatform, perViews, perLikes),
-    combined: scope("combined", combinedTotals, combinedF, GOAL.followersPerPlatform * 2, GOAL.views, GOAL.likes),
+    instagram: scope("instagram", agg.instagram, igF, GOAL.followersPerPlatform, perViews),
+    tiktok: scope("tiktok", agg.tiktok, ttF, GOAL.followersPerPlatform, perViews),
+    combined: scope("combined", combinedTotals, combinedF, GOAL.followersPerPlatform * 2, GOAL.views),
     topArmsByViews,
-    topArmsByLikes,
     followersPending,
   };
 }

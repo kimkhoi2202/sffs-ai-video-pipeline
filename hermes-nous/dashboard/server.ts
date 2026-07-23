@@ -20,16 +20,26 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { Readable } from "node:stream";
 import { timingSafeEqual } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
   proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, draftsAwaitingReview,
-  resolveDraftMediaUrl, goalProgress, scheduledPosts,
+  resolveDraftMediaUrl, resolveScheduledMediaUrl, goalProgress, scheduledPosts,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
 
 assertReadOnly();
+
+// Vendored static assets (Plyr CSS/JS/SVG) served READ-ONLY from ./static.
+// Whitelist-only lookup ⇒ no path traversal, no arbitrary file read.
+const STATIC_DIR = new URL("./static/", import.meta.url);
+const STATIC_TYPES: Record<string, string> = {
+  "plyr.css": "text/css; charset=utf-8",
+  "plyr.min.js": "text/javascript; charset=utf-8",
+  "plyr.svg": "image/svg+xml; charset=utf-8",
+};
 
 // ── auth (timing-safe; mirrors hermes/src/dashboard.ts) ──────────────────────
 export function eq(a: string, b: string): boolean {
@@ -127,6 +137,20 @@ const server = createServer(async (req, res) => {
     // liveness probe: no data (leaks nothing)
     if (url.pathname === "/healthz") return send(res, 200, "ok", "text/plain");
 
+    // Vendored static assets (Plyr) — READ-ONLY, whitelist-only (no traversal, no secrets).
+    if (url.pathname.startsWith("/static/")) {
+      const name = url.pathname.slice(8);
+      const type = STATIC_TYPES[name];
+      if (!type) return send(res, 404, "not found", "text/plain");
+      try {
+        const buf = readFileSync(new URL(name, STATIC_DIR));
+        res.writeHead(200, { "content-type": type, "cache-control": "public, max-age=86400", "x-content-type-options": "nosniff" });
+        return void res.end(buf);
+      } catch {
+        return send(res, 404, "not found", "text/plain");
+      }
+    }
+
     // PUBLIC: this dashboard is intentionally served with NO authentication.
     // It is safe to expose because it is strictly READ-ONLY (every route only
     // READS local JSON / GitHub via read-only `gh` / a read-only Publer bridge)
@@ -198,8 +222,10 @@ const server = createServer(async (req, res) => {
       // open-proxy/SSRF), exposes NO S3 presigned url, and injects NO credentials.
       const key = url.searchParams.get("v") || "";
       const kind = url.searchParams.get("kind") === "thumb" ? "thumb" : "video";
-      const view = await draftsAwaitingReview();
-      const target = resolveDraftMediaUrl(view, key, kind);
+      // Resolve from the drafts allowlist first, then the scheduled allowlist — both
+      // constrain the proxy to a cdn.publer.com asset of a LIVE post (no SSRF/S3).
+      const [dview, sview] = await Promise.all([draftsAwaitingReview(), scheduledPosts()]);
+      const target = resolveDraftMediaUrl(dview, key, kind) || resolveScheduledMediaUrl(sview, key, kind);
       if (!target) return send(res, 404, JSON.stringify({ error: "not found" }), "application/json");
       return streamPublerMedia(req, res, target);
     }
