@@ -16,6 +16,14 @@
 export const TZ = "America/Chicago";
 /** Allowed wall-clock band: [07:00, 01:00 next day). Dead hours = [01:00, 07:00). */
 export const WINDOW_OPEN_HOUR = 7;
+/**
+ * Minimum per-platform gap (minutes) a NEW slot must keep from a SAME-platform post
+ * a PREVIOUS cycle ALREADY scheduled (see `SlotOpts.avoid`). This is what stops a
+ * later batch (e.g. a front-runner replication cycle) from landing minutes away from
+ * a post an earlier armed cycle already placed — the collision that put a 10:13pm
+ * TikTok post two minutes from an existing 10:15pm one.
+ */
+export const MIN_GAP_MIN = 56;
 
 interface Parts {
   y: number;
@@ -93,6 +101,13 @@ export interface SlotOpts {
   fromMs?: number; // base instant (default: now)
   seed?: string; // deterministic jitter seed (e.g. runId)
   platform?: string; // per-platform shift so IG != TikTok times
+  /**
+   * ISO times of SAME-platform posts a PREVIOUS cycle already scheduled. When set,
+   * every returned slot is kept >= MIN_GAP_MIN minutes away from each of them (and
+   * from the other slots in this batch), so two separately-scheduled batches can
+   * never collide. Empty/omitted (the default) => the unchanged even distribution.
+   */
+  avoid?: string[];
 }
 
 /** The next 1:00am America/Chicago strictly after `fromD` — the CLOSE of the
@@ -149,13 +164,42 @@ export function nextSlots(count: number, opts: SlotOpts = {}): string[] {
   // nearest ODD minute, an IG slot and a TikTok slot in the same (or adjacent)
   // segment can never collapse onto the same minute.
   const laneLo = opts.platform === "tiktok" ? 0.58 : 0.1;
+  // Collision-awareness: SAME-platform instants a PREVIOUS cycle already scheduled
+  // (as epoch-minutes). A new slot must stay >= MIN_GAP_MIN from each of these AND,
+  // once we are avoiding, from the previous NEW slot — so a later batch never lands
+  // minutes from an earlier batch's post. Empty (the default) => the loop below is
+  // byte-for-byte the legacy even distribution (all existing tests unaffected).
+  const avoidMin = (opts.avoid ?? [])
+    .map((s) => Math.round(Date.parse(s) / 60_000))
+    .filter((m) => Number.isFinite(m));
+  const collisionAware = avoidMin.length > 0;
+  const clashesAvoid = (m: number): boolean => avoidMin.some((a) => Math.abs(m - a) < MIN_GAP_MIN);
   const out: string[] = [];
   let prev = startMin - 2;
   for (let i = 0; i < count; i++) {
     let m = Math.round(startMin + i * seg + (laneLo + rng() * 0.32) * seg);
     if (m % 2 === 0) m += 1; // ODD epoch-minute == ODD wall-clock minute
     if (m <= prev) m = prev + 2; // strictly increasing (+2 preserves ODD)
-    if (m >= endMin) m = Math.max(prev + 2, endMin - 2 * (count - i)); // pack near close, stays ODD
+    if (collisionAware) {
+      // A free ODD minute is one that is inside [floor, close), >= MIN_GAP_MIN after
+      // the previous NEW slot, and >= MIN_GAP_MIN from EVERY already-scheduled same-
+      // platform post. Search OUTWARD from the even-distribution target for the
+      // nearest such minute — bidirectional so new slots stay near their spread-out
+      // ideals (no forward drift / pile-up at the window close) instead of just
+      // stepping past a clash. 56 is even, so every candidate stays on an ODD minute.
+      const floor = i > 0 ? prev + MIN_GAP_MIN : startMin;
+      const free = (x: number): boolean => x >= floor && x < endMin && !clashesAvoid(x);
+      if (!free(m)) {
+        let found = -1;
+        for (let d = 2; d <= 4000 && found < 0; d += 2) {
+          if (free(m + d)) found = m + d;
+          else if (free(m - d)) found = m - d;
+        }
+        m = found >= 0 ? found : Math.max(floor, m); // best-effort if the window is saturated
+      }
+    } else if (m >= endMin) {
+      m = Math.max(prev + 2, endMin - 2 * (count - i)); // legacy: pack near close, stays ODD
+    }
     out.push(new Date(m * 60_000).toISOString());
     prev = m;
   }

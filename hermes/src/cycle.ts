@@ -255,6 +255,35 @@ async function findDraftPostIds(mediaId: string): Promise<string[]> {
   }
 }
 
+/**
+ * Already-scheduled per-platform Publer times (ISO), so a NEW batch can keep the
+ * per-platform gap vs posts a PREVIOUS cycle ALREADY scheduled — the cross-batch
+ * collision-awareness the scheduler needs (scheduler.ts nextSlots `avoid`). Without
+ * this, a later batch (e.g. a front-runner replication cycle) only spaces itself
+ * WITHIN its own batch and can land minutes from a post the original armed cycle
+ * already placed. Read-only (GET via listAllPosts); best-effort — a lookup failure
+ * returns empty (no worse than the previous behavior). Publer `account_id` maps to a
+ * platform via CONFIG.ACCOUNTS so ONLY same-platform times feed each platform's gap.
+ */
+async function scheduledTimesByPlatform(): Promise<Record<"instagram" | "tiktok", string[]>> {
+  const byPlat: Record<"instagram" | "tiktok", string[]> = { instagram: [], tiktok: [] };
+  try {
+    const accountToPlatform = new Map<string, "instagram" | "tiktok">(
+      (Object.entries(CONFIG.ACCOUNTS) as ["instagram" | "tiktok", string][]).map(([plat, acct]) => [String(acct), plat]),
+    );
+    for (const p of await listAllPosts("scheduled")) {
+      const at = (p as any)?.scheduled_at;
+      const plat = accountToPlatform.get(String((p as any)?.account_id));
+      if (at && plat) byPlat[plat].push(String(at));
+    }
+  } catch (e) {
+    warn("scheduled-times lookup failed — scheduling without cross-batch avoidance", {
+      err: e instanceof Error ? e.message : String(e),
+    });
+  }
+  return byPlat;
+}
+
 function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
   const db = readJSON<any>(CONFIG.AB_DB, null);
   if (!db || !Array.isArray(db.posts)) return;
@@ -409,14 +438,20 @@ export async function runCycle(): Promise<RunState> {
   let sched: SchedCtx = DRAFT_ONLY_SCHED;
   if (kickoff.armed && !DRY) {
     const n = state.videos.length;
+    // Collision-awareness: read the per-platform times a PREVIOUS cycle already
+    // scheduled so THIS batch keeps the per-platform gap vs them too (not only within
+    // its own batch). Without this, a replication batch could land minutes from a post
+    // the original armed cycle already scheduled (scheduler.ts nextSlots `avoid`).
+    const already = await scheduledTimesByPlatform();
     const slots: Record<string, string[]> = {
-      instagram: nextSlots(n, { seed: runId, platform: "instagram" }),
-      tiktok: nextSlots(n, { seed: runId, platform: "tiktok" }),
+      instagram: nextSlots(n, { seed: runId, platform: "instagram", avoid: already.instagram }),
+      tiktok: nextSlots(n, { seed: runId, platform: "tiktok", avoid: already.tiktok }),
     };
     sched = { armed: true, slot: (platform, index) => slots[platform]?.[index] ?? null };
     info("KICKOFF ARMED — autonomous scheduling ON", {
       videos: n,
       window: "7:00am-1:00am America/Chicago",
+      avoiding: { instagram: already.instagram.length, tiktok: already.tiktok.length },
       first: { instagram: slots.instagram[0], tiktok: slots.tiktok[0] },
     });
   }

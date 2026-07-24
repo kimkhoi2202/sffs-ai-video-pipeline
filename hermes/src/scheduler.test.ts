@@ -5,7 +5,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { nextSlots, isWithinWindow, chicagoHour } from "./scheduler.ts";
+import { nextSlots, isWithinWindow, chicagoHour, MIN_GAP_MIN } from "./scheduler.ts";
 
 const dayFrom = Date.UTC(2026, 6, 20, 12, 0, 0); // fixed base (July 2026 = CDT)
 
@@ -56,4 +56,62 @@ test("a base time in the dead hours is pushed into the window", () => {
   assert.equal(chicagoHour(new Date(ms)), 3, "constructed a 3am-Chicago base");
   const [first] = nextSlots(1, { seed: "dead", platform: "instagram", fromMs: ms });
   assert.ok(isWithinWindow(new Date(first)), `${first} pushed into window from dead hours`);
+});
+
+// ── collision-awareness vs ALREADY-scheduled posts (the durable fix for the
+//    two-TikTok-posts-2-min-apart bug) ────────────────────────────────────────
+const gapMs = MIN_GAP_MIN * 60_000;
+
+test("a NEW batch keeps >= MIN_GAP_MIN from ALREADY-scheduled same-platform posts", () => {
+  // Reproduce tonight's bug: an earlier ARMED cycle already scheduled TikTok posts;
+  // a later REPLICATION batch (different seed) must NOT land within 56 min of them —
+  // the collision that put a 10:13pm TikTok two minutes from an existing 10:15pm.
+  const base = Date.UTC(2026, 6, 23, 14, 0, 0); // ~9am CDT: a full window ahead
+  const existing = nextSlots(4, { seed: "armed-cycle", platform: "tiktok", fromMs: base });
+  const batch = nextSlots(4, { seed: "frx-replication", platform: "tiktok", fromMs: base, avoid: existing });
+  assert.equal(batch.length, 4);
+  for (const s of batch) {
+    for (const e of existing) {
+      assert.ok(
+        Math.abs(Date.parse(s) - Date.parse(e)) >= gapMs,
+        `new slot ${s} is < ${MIN_GAP_MIN}min from already-scheduled ${e}`,
+      );
+    }
+  }
+  // and the COMBINED same-platform schedule has NO two posts < MIN_GAP_MIN apart
+  const all = [...existing, ...batch].map((s) => Date.parse(s)).sort((a, b) => a - b);
+  for (let i = 1; i < all.length; i++) {
+    assert.ok(all[i] - all[i - 1] >= gapMs, `combined gap ${(all[i] - all[i - 1]) / 60000}min < ${MIN_GAP_MIN}`);
+  }
+});
+
+test("collision-aware slots still respect the window + ODD-minute jitter + increasing", () => {
+  const base = Date.UTC(2026, 6, 23, 14, 0, 0);
+  const existing = nextSlots(3, { seed: "a", platform: "instagram", fromMs: base });
+  const batch = nextSlots(3, { seed: "b", platform: "instagram", fromMs: base, avoid: existing });
+  for (let i = 0; i < batch.length; i++) {
+    const d = new Date(batch[i]);
+    assert.ok(isWithinWindow(d), `${batch[i]} within window`);
+    assert.equal(d.getUTCMinutes() % 2, 1, `minute of ${batch[i]} should be ODD`);
+    if (i > 0) assert.ok(Date.parse(batch[i]) > Date.parse(batch[i - 1]), "strictly increasing");
+  }
+});
+
+test("empty avoid is a no-op — identical to omitting the option", () => {
+  const base = Date.UTC(2026, 6, 23, 14, 0, 0);
+  const a = nextSlots(6, { seed: "same", platform: "tiktok", fromMs: base });
+  const b = nextSlots(6, { seed: "same", platform: "tiktok", fromMs: base, avoid: [] });
+  assert.deepEqual(a, b, "empty avoid must not change the schedule");
+});
+
+test("collision-aware scales to the daily cap (6 already-scheduled + 6 new) with no pile-up", () => {
+  const base = Date.UTC(2026, 6, 23, 12, 0, 0); // 7am CDT — the full 18h window
+  const existing = nextSlots(6, { seed: "day-1", platform: "tiktok", fromMs: base });
+  const batch = nextSlots(6, { seed: "day-2-frx", platform: "tiktok", fromMs: base, avoid: existing });
+  assert.equal(batch.length, 6);
+  const all = [...existing, ...batch].map((s) => Date.parse(s)).sort((a, b) => a - b);
+  assert.equal(new Set(all.map(String)).size, all.length, "no duplicate timestamps across both batches");
+  for (let i = 1; i < all.length; i++) {
+    assert.ok(all[i] - all[i - 1] >= gapMs, `combined gap ${(all[i] - all[i - 1]) / 60000}min < ${MIN_GAP_MIN}`);
+  }
 });

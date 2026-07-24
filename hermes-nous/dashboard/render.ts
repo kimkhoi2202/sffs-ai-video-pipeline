@@ -655,7 +655,7 @@ function gPacePills(observed: number | null, needed: number | null, unit: string
   const behind = needed != null && needed > 0 && (observed == null || observed < needed);
   const obsTxt = observed == null ? (armed ? "0" : "—") : gPace(observed);
   return `<span class="hpill"><b>${esc(unit)}/day observed</b>${esc(obsTxt)}</span>
-    <span class="hpill" ${behind ? 'style="background:var(--coral);color:#fff"' : "" }><b>${esc(unit)}/day needed</b>${esc(neededTxt)}</span>`;
+    <span class="hpill${behind ? " alert" : ""}"><b>${esc(unit)}/day needed</b>${esc(neededTxt)}</span>`;
 }
 function gScopeBlock(title: string, sp: ScopeProgress, armed: boolean, big = false): string {
   return `<div class="gscope${big ? " gscope-big" : ""}">
@@ -858,6 +858,11 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .health{display:flex;flex-wrap:wrap;gap:10px}
 .hpill{background:var(--cream);border:3px solid var(--ink);border-radius:10px;padding:8px 12px;font-size:13px;overflow-wrap:anywhere}
 .hpill b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#333}
+/* "behind pace" alert pill (GOAL panel "…/day needed"): coral needs DARK ink, not
+   white — #fff on coral(#fd7962) is ~2.6:1 (fails WCAG AA); #111 on coral is ~7.3:1.
+   Darkens BOTH the number AND its label so it reads clearly on the coral background. */
+.hpill.alert{background:var(--coral)}
+.hpill.alert,.hpill.alert b{color:#111}
 .logbox{max-height:340px;overflow:auto;background:#0d0d0d;color:#d6d6d6;border-radius:12px;padding:12px;font:12px/1.5 ui-monospace,Menlo,monospace}
 .lg{padding:2px 0;white-space:pre-wrap}.lt{color:#7bd88f}.ll{color:#f5c451;font-weight:700}
 .lg-error .ll{color:#ff7a6b}
