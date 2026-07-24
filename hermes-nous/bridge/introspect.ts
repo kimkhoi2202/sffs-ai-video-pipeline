@@ -35,10 +35,11 @@ async function readStdin(): Promise<string> {
 function coerceDefaults(raw: unknown): ContentDefaults | null {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
   const o = raw as Record<string, unknown>;
-  if (typeof o.narration !== "string" && typeof o.ending !== "string") return null;
+  if (typeof o.narration !== "string" && typeof o.ending !== "string" && typeof o.mascot !== "string") return null;
   return {
     narration: (typeof o.narration === "string" ? o.narration : FALLBACK_DEFAULTS.narration) as ContentDefaults["narration"],
     ending: (typeof o.ending === "string" ? o.ending : FALLBACK_DEFAULTS.ending) as ContentDefaults["ending"],
+    mascot: (typeof o.mascot === "string" ? o.mascot : FALLBACK_DEFAULTS.mascot) as ContentDefaults["mascot"],
   };
 }
 

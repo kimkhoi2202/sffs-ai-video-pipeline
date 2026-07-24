@@ -388,6 +388,10 @@ function shortProps(mapped: Mapped, durs: Record<string, number>, qrBase: string
     endCard: mapped.ending.endCard,
     showProgress: props.showProgress ?? true,
     progressStyle: props.progressStyle ?? "full",
+    // Brand-mascot A/B visibility ("standard" keeps today's intro/outro brain
+    // exactly; "absent" hides it; "prominent" enlarges it). Default preserves the
+    // current render byte-for-byte for every non-mascot arm.
+    mascot: props.mascot ?? "standard",
     totalFrames,
   };
 }

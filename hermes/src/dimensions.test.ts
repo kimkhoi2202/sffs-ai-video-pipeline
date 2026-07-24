@@ -18,7 +18,7 @@ process.env.HERMES_ENV_FILE = join(TMP, "nonexistent.env");
 process.env.HERMES_REPO_DIR = TMP;
 process.env.HERMES_DATA_DIR = TMP;
 
-const { selectSpread, newSpreadTally, buildDimensions, applyBatchOverrides } = await import("./dimensions.ts");
+const { selectSpread, newSpreadTally, buildDimensions, applyBatchOverrides, elevateMascot } = await import("./dimensions.ts");
 
 let n = 0;
 function q(tier: string, kind: "text" | "numseries" = "text"): any {
@@ -126,4 +126,31 @@ test("applyBatchOverrides: only + shapeNumQ compose", () => {
   const out = applyBatchOverrides(cat, { only: ["shapes", "control"], shapeNumQ: 4 });
   assert.deepEqual(out.map((d) => d.arm), ["shapes", "control"]);
   assert.equal(out.find((d) => d.arm === "shapes")?.numQ, 4);
+});
+
+// ── elevateMascot (Part B mascot allocation bias) ──────────────────────────
+// The mascot dimension must be tested EVERY cycle (elevated out of the seeded
+// random subset) and weighted toward more mascot, capped at target (12/day intact).
+
+test("elevateMascot: forces mascot every cycle, weighted, prominent-first, capped", () => {
+  const cat = buildDimensions(); // includes mascot challengers (absent + prominent)
+  const out = elevateMascot(cat.slice(), 10, 3);
+  assert.equal(out.length, 10);
+  assert.equal(out.filter((d) => d.dimension === "mascot").length, 3);
+  assert.equal(out[0].arm, "mascot-prominent");
+  assert.ok(out.some((d) => d.arm === "mascot-absent"));
+});
+
+test("elevateMascot: weight 0 disables the bias (plain seeded slice)", () => {
+  const cat = buildDimensions();
+  const out = elevateMascot(cat.slice(), 5, 0);
+  assert.deepEqual(out.map((d) => d.arm), cat.slice(0, 5).map((d) => d.arm));
+});
+
+test("elevateMascot: never exceeds target and stays deterministic", () => {
+  const cat = buildDimensions();
+  const a = elevateMascot(cat.slice(), 6, 3).map((d) => d.arm);
+  const b = elevateMascot(cat.slice(), 6, 3).map((d) => d.arm);
+  assert.equal(a.length, 6);
+  assert.deepEqual(a, b);
 });

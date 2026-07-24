@@ -21,12 +21,15 @@ import {
   contentDefaults,
   narrationModeForArm,
   revealForEnding,
+  mascotModeForArm,
   NARRATION_ARMS,
   ENDING_ARMS,
+  MASCOT_ARMS,
   type ContentDefaults,
   type RevealMode,
   type NarrationArm,
   type EndingArm,
+  type MascotArm,
 } from "./defaults.ts";
 
 export interface DimSpec {
@@ -44,6 +47,7 @@ export interface DimSpec {
   // the current defaults. Unset => inherit the current default for that axis.
   narrationArm?: NarrationArm; // set only on NARRATION test arms
   endingArm?: EndingArm; // set only on ENDING test arms
+  mascotArm?: MascotArm; // set only on MASCOT test arms
 }
 
 export const BASE = {
@@ -68,6 +72,22 @@ const ENDING_ARM_META: Record<EndingArm, string> = {
   "full-reveal": "reveal EVERY answer (full-reveal / score-screen style)",
   "no-answer": "never reveal any answer; comment-for-answer on every question",
 };
+
+/** Per-arm copy for the generated MASCOT test arms (the brand brain on the intro
+ *  cover + outro). "mascot-standard" is the always-on baseline (never re-listed). */
+const MASCOT_ARM_META: Record<MascotArm, string> = {
+  "mascot-standard": "the brand brain mascot as today (intro cover + outro sticker)",
+  "mascot-absent": "HIDE the brand brain mascot (no brain on the intro cover or outro) — the clean no-mascot control",
+  "mascot-prominent": "ENLARGE the brand brain mascot (bigger on the intro cover + outro) — the more-mascot arm",
+};
+
+/** The mascot dimension label (shared with promote.py). */
+export const MASCOT_DIMENSION = "mascot";
+/** Canonical preference order for the mascot challenger arms when weighting the
+ *  batch: prominent FIRST (the user wants MORE mascot), absent kept every cycle as
+ *  the no-mascot control. Only arms actually generated (universe minus the current
+ *  default) are used. */
+const MASCOT_ARM_PRIORITY: readonly MascotArm[] = ["mascot-prominent", "mascot-absent", "mascot-standard"];
 
 /** The control/baseline spec (= the current defaults; deviates nothing). */
 const CONTROL: DimSpec = {
@@ -197,11 +217,21 @@ export function buildDimensions(defaults: ContentDefaults = contentDefaults()): 
     endingArm: a,
     rationale: `TEST ARM vs the '${defaults.ending}' ending default: ${ENDING_ARM_META[a]} (keeps ${defaults.narration} narration)`,
   }));
+  // MASCOT challengers: the arm universe minus the current mascot default. Each
+  // deviates ONLY the mascot axis (keeps the narration + ending defaults), so a
+  // mascot video is otherwise a clean baseline. Promotable like narration/ending.
+  const mascotArms: DimSpec[] = MASCOT_ARMS.filter((a) => a !== defaults.mascot).map((a) => ({
+    ...BASE,
+    dimension: MASCOT_DIMENSION,
+    arm: a,
+    mascotArm: a,
+    rationale: `TEST ARM vs the '${defaults.mascot}' mascot default: ${MASCOT_ARM_META[a]} (keeps ${defaults.narration} narration + ${defaults.ending} ending)`,
+  }));
   // The nonverbal shape dimensions are appended only when enabled (default ON;
   // HERMES_ENABLE_SHAPE_QUESTIONS=0 removes them and restores the exact prior list).
   // Both the FigState family (shapes) and the unlocked legacy classic kinds.
   const shapeDims: DimSpec[] = shapeQuestionsEnabled() ? [SHAPE_DIMENSION, CLASSIC_SHAPE_DIMENSION] : [];
-  return [CONTROL, ...narrationArms, ...endingArms, ...OTHER_DIMENSIONS, ...shapeDims];
+  return [CONTROL, ...narrationArms, ...endingArms, ...mascotArms, ...OTHER_DIMENSIONS, ...shapeDims];
 }
 
 /**
@@ -235,12 +265,45 @@ export function applyBatchOverrides(
   return out;
 }
 
+/** Default number of MASCOT slots forced into every batch (weight). Elevated out of
+ *  the seeded random subset so the mascot dimension is measured EVERY cycle. */
+export const MASCOT_WEIGHT_DEFAULT = 3;
+
+/**
+ * Bias a seeded batch toward the mascot dimension (Part B: "test MORE mascot").
+ * Guarantees the mascot CHALLENGER arms run EVERY cycle (elevated out of the seeded
+ * `.slice(0, target)` subset) and gives them `weight` of the batch's slots, cycling
+ * the arms in MASCOT_ARM_PRIORITY order (prominent-first = more mascot, with the
+ * absent control kept every cycle). Remaining slots keep the original seeded order
+ * (mascot specs removed so they are not double-counted). Pure + deterministic.
+ * `weight <= 0` disables the bias (returns the plain seeded slice); a batch with no
+ * mascot challengers is returned unchanged. Total length is always <= target, so the
+ * 12/day/platform posting cap is untouched.
+ */
+export function elevateMascot(seeded: DimSpec[], target: number, weight: number = MASCOT_WEIGHT_DEFAULT): DimSpec[] {
+  if (target <= 0) return [];
+  const mascot = seeded.filter((d) => d.dimension === MASCOT_DIMENSION);
+  if (weight <= 0 || mascot.length === 0) return seeded.slice(0, target);
+  const ordered = mascot.slice().sort((a, b) => {
+    const ia = MASCOT_ARM_PRIORITY.indexOf(a.arm as MascotArm);
+    const ib = MASCOT_ARM_PRIORITY.indexOf(b.arm as MascotArm);
+    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+  });
+  const slots = Math.min(weight, target);
+  const front: DimSpec[] = [];
+  for (let i = 0; i < slots; i++) front.push({ ...ordered[i % ordered.length] });
+  const rest = seeded.filter((d) => d.dimension !== MASCOT_DIMENSION);
+  return [...front, ...rest].slice(0, target);
+}
+
 /** The effective render axes for a spec under the CURRENT defaults. */
 export interface ResolvedArm {
   narrationArm: NarrationArm;
   narration: NarrationMode;
   endingArm: EndingArm;
   reveal: RevealMode;
+  mascotArm: MascotArm;
+  mascot: "standard" | "absent" | "prominent";
 }
 
 /**
@@ -251,11 +314,14 @@ export interface ResolvedArm {
 export function resolveArm(spec: DimSpec, defaults: ContentDefaults): ResolvedArm {
   const narrationArm = spec.narrationArm ?? defaults.narration;
   const endingArm = spec.endingArm ?? defaults.ending;
+  const mascotArm = spec.mascotArm ?? defaults.mascot;
   return {
     narrationArm,
     narration: narrationModeForArm(narrationArm),
     endingArm,
     reveal: revealForEnding(endingArm),
+    mascotArm,
+    mascot: mascotModeForArm(mascotArm),
   };
 }
 
@@ -343,10 +409,11 @@ export function selectSpread(pool: HermesQ[], numQ: number, batch: SpreadTally =
 }
 
 /** Which single axis an arm deviates from the defaults. */
-export function deviatesAxis(spec: DimSpec): "narration" | "ending" | "other" | "none" {
+export function deviatesAxis(spec: DimSpec): "narration" | "ending" | "mascot" | "other" | "none" {
   if (spec.dimension === "control") return "none";
   if (spec.narrationArm) return "narration";
   if (spec.endingArm) return "ending";
+  if (spec.mascotArm) return "mascot";
   return "other";
 }
 
@@ -365,8 +432,10 @@ export interface DimensionInfo {
   narration_arm: NarrationArm;
   /** the effective ending ARM label (equals the default unless this arm tests it). */
   ending: EndingArm;
+  /** the effective mascot ARM label (equals the default unless this arm tests it). */
+  mascot: MascotArm;
   /** which single axis this arm deviates from the defaults. */
-  deviates: "narration" | "ending" | "other" | "none";
+  deviates: "narration" | "ending" | "mascot" | "other" | "none";
   showProgress: boolean;
   progressStyle: string;
   reveal: RevealMode;
@@ -392,6 +461,7 @@ export function dimensionCatalog(defaults: ContentDefaults = contentDefaults()):
       narration: resolved.narration,
       narration_arm: resolved.narrationArm,
       ending: resolved.endingArm,
+      mascot: resolved.mascotArm,
       deviates: deviatesAxis(d),
       showProgress: d.showProgress,
       progressStyle: d.progressStyle,

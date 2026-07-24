@@ -68,7 +68,7 @@ const TitleEl: React.FC<{
   );
 };
 
-export const Intro: React.FC = () => {
+export const Intro: React.FC<{ mascot?: "standard" | "absent" | "prominent" }> = ({ mascot = "standard" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { w, portrait } = useFmt();
@@ -79,6 +79,10 @@ export const Intro: React.FC = () => {
   const L = portrait
     ? { smart: 560, or: 760, fart: 984, orSize: 84, orPad: "15px 38px", orShadow: 9, brain: { cx: 936, cy: 918, wImg: 196, shadow: 11 } }
     : { smart: 274, or: 494, fart: 720, orSize: 102, orPad: "18px 45px", orShadow: 11, brain: { cx: 1530, cy: 597, wImg: 286, shadow: 13 } };
+  // MASCOT A/B (loop `mascot` dimension): "standard" renders the brain exactly as
+  // before; "absent" hides it; "prominent" enlarges it (a modest 1.3x that stays
+  // inside the frame/safe box). Baseline is byte-for-byte unchanged.
+  const brainW = Math.round(L.brain.wImg * (mascot === "prominent" ? 1.3 : 1));
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.yellow }}>
@@ -120,10 +124,13 @@ export const Intro: React.FC = () => {
         <div style={titleWord(cap, COLORS.coral)}>FART SMELLA?</div>
       </TitleEl>
 
-      {/* Brain mascot logo — pops in over the "?" */}
-      <TitleEl cx={L.brain.cx} cy={L.brain.cy} mode="logopop" start={1.6} dur={0.7} t={t}>
-        <Img src={staticFile("images/sffs-logo.png")} style={{ width: L.brain.wImg, height: "auto", display: "block", filter: hardDropShadow(L.brain.shadow) }} />
-      </TitleEl>
+      {/* Brain mascot logo — pops in over the "?" (A/B: hidden when mascot="absent",
+          enlarged when "prominent"; unchanged for "standard"). */}
+      {mascot !== "absent" && (
+        <TitleEl cx={L.brain.cx} cy={L.brain.cy} mode="logopop" start={1.6} dur={0.7} t={t}>
+          <Img src={staticFile("images/sffs-logo.png")} style={{ width: brainW, height: "auto", display: "block", filter: hardDropShadow(L.brain.shadow) }} />
+        </TitleEl>
+      )}
       </SafeArea>
     </AbsoluteFill>
   );

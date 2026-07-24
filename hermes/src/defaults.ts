@@ -32,18 +32,27 @@ export type RevealMode = "all" | "none" | "last";
 export type EndingArm = "cliffhanger" | "full-reveal" | "no-answer";
 /** Canonical NARRATION arm labels (map onto NarrationMode). */
 export type NarrationArm = "full" | "no-narration" | "no-question-vo" | "no-options-vo";
+/** Canonical MASCOT arm labels (map onto the brand-mascot render visibility). The
+ *  brand mascot (the brain on the intro cover + outro sticker) is ALWAYS-ON today,
+ *  so "mascot-standard" == the current baseline. "mascot-absent" hides it (the clean
+ *  no-mascot control for the views hypothesis); "mascot-prominent" enlarges it (the
+ *  more-mascot arm). Kept in sync with promote.py PROMOTABLE_DIMENSIONS["mascot"]. */
+export type MascotArm = "mascot-standard" | "mascot-absent" | "mascot-prominent";
 
 export interface ContentDefaults {
   /** current NARRATION default (arm label). */
   narration: NarrationArm;
   /** current ENDING default (arm label). */
   ending: EndingArm;
+  /** current MASCOT default (arm label). */
+  mascot: MascotArm;
 }
 
 /** The HARDCODED fallback defaults (used if content-defaults.json is missing/corrupt). */
 export const FALLBACK_DEFAULTS: ContentDefaults = Object.freeze({
   narration: "full",
   ending: "cliffhanger",
+  mascot: "mascot-standard",
 });
 
 // ── The A/B arm universe (labels are stable; they are the rollup keys the Python
@@ -75,11 +84,28 @@ export const ENDING_ARMS: readonly EndingArm[] = Object.freeze(
   Object.keys(ENDING_ARM_TO_REVEAL) as EndingArm[],
 );
 
+/** mascot arm label -> the render VISIBILITY token the composition consumes
+ *  (remotion FullVideo -> Intro/Outro). "standard" keeps today's brain exactly;
+ *  "absent" hides it; "prominent" enlarges it. Keys are the canonical rollup labels
+ *  the Python promotion engine compares, so keep them in sync with
+ *  promote.py PROMOTABLE_DIMENSIONS["mascot"]. */
+export const MASCOT_ARM_TO_MODE: Readonly<Record<MascotArm, "standard" | "absent" | "prominent">> = Object.freeze({
+  "mascot-standard": "standard",
+  "mascot-absent": "absent",
+  "mascot-prominent": "prominent",
+});
+export const MASCOT_ARMS: readonly MascotArm[] = Object.freeze(
+  Object.keys(MASCOT_ARM_TO_MODE) as MascotArm[],
+);
+
 function isNarrationArm(v: unknown): v is NarrationArm {
   return typeof v === "string" && v in NARRATION_ARM_TO_MODE;
 }
 function isEndingArm(v: unknown): v is EndingArm {
   return typeof v === "string" && v in ENDING_ARM_TO_REVEAL;
+}
+function isMascotArm(v: unknown): v is MascotArm {
+  return typeof v === "string" && v in MASCOT_ARM_TO_MODE;
 }
 
 /**
@@ -92,12 +118,22 @@ export function contentDefaults(path: string = CONFIG.CONTENT_DEFAULTS): Content
   return {
     narration: isNarrationArm(d.narration) ? d.narration : FALLBACK_DEFAULTS.narration,
     ending: isEndingArm(d.ending) ? d.ending : FALLBACK_DEFAULTS.ending,
+    mascot: isMascotArm(d.mascot) ? d.mascot : FALLBACK_DEFAULTS.mascot,
   };
 }
 
 /** NarrationMode for a narration arm label (safe fallback to the default mode). */
 export function narrationModeForArm(arm: string): NarrationMode {
   return isNarrationArm(arm) ? NARRATION_ARM_TO_MODE[arm] : NARRATION_ARM_TO_MODE[FALLBACK_DEFAULTS.narration];
+}
+
+/** Canonical mascot arm label (safe fallback to the mascot default). */
+export function mascotArmFor(arm: string): MascotArm {
+  return isMascotArm(arm) ? arm : FALLBACK_DEFAULTS.mascot;
+}
+/** Render VISIBILITY token for a mascot arm label (safe fallback to the default). */
+export function mascotModeForArm(arm: string): "standard" | "absent" | "prominent" {
+  return MASCOT_ARM_TO_MODE[mascotArmFor(arm)];
 }
 
 /** RevealMode for an ending arm label (safe fallback to the default reveal).
