@@ -32,6 +32,8 @@ tools/*
 !tools/schedule-variants.ts
 !tools/edit-captions.ts
 !tools/retime-variants.ts
+!tools/render-carousel.ts
+!tools/publish-carousel.ts
 !tools/package.json
 
 # Python

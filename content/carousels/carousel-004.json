@@ -1,0 +1,38 @@
+{
+  "carousel": 4,
+  "slug": "carousel-004",
+  "title": "Crack All 3: Tricycle, Banana Split, Backward Glance",
+  "family": "rebus",
+  "status": "pending-review",
+  "sourceIds": [],
+  "hashtagSet": "A",
+  "caption": "Three hidden phrases, one carousel. The last one is a proper head-scratcher — read it very carefully. Drop your answers below 👇 Smart fella, or fart smella? #brainteaser #quiz #iqtest #trivia #puzzletok",
+  "props": {
+    "prompt": "CAN YOU CRACK ALL 3?",
+    "topic": "BRAIN TEASER",
+    "outroCta": "FOLLOW FOR MORE",
+    "puzzles": [
+      {
+        "rows": [{ "text": "CYCLE" }, { "text": "CYCLE" }, { "text": "CYCLE" }],
+        "field": "coral",
+        "answer": "TRICYCLE",
+        "explanation": "Three (tri) times CYCLE = tricycle.",
+        "reveal": true
+      },
+      {
+        "rows": [{ "text": "BAN     ANA" }],
+        "field": "blue",
+        "answer": "BANANA SPLIT",
+        "explanation": "The word BANANA is split in two — BAN | ANA.",
+        "reveal": true
+      },
+      {
+        "rows": [{ "text": "ECNALG" }],
+        "field": "yellow",
+        "answer": "BACKWARD GLANCE",
+        "explanation": "",
+        "reveal": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "carousels": [
+    {
+      "slug": "carousel-001",
+      "dir": "carousel-001",
+      "family": "rebus",
+      "title": "Decode All 3: Understand, Reading, Bologna",
+      "slides": 7,
+      "status": "pending-review",
+      "hashtagSet": "A"
+    },
+    {
+      "slug": "carousel-002",
+      "dir": "carousel-002",
+      "family": "rebus",
+      "title": "For Once In My Life",
+      "slides": 3,
+      "status": "ready-to-post",
+      "hashtagSet": "A"
+    },
+    {
+      "slug": "carousel-003",
+      "dir": "carousel-003",
+      "family": "rebus",
+      "title": "Long Time No See (Entury)",
+      "slides": 2,
+      "status": "ready-to-post",
+      "hashtagSet": "D"
+    },
+    {
+      "slug": "carousel-004",
+      "dir": "carousel-004",
+      "family": "rebus",
+      "title": "Crack All 3: Tricycle, Banana Split, Backward Glance",
+      "slides": 6,
+      "status": "pending-review",
+      "hashtagSet": "A"
+    }
+  ]
+}

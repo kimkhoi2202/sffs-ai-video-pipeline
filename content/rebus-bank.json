@@ -1,0 +1,49 @@
+{
+  "description": "Rebus puzzle bank for the teaser carousels (remotion/hermes/RebusCarousel.tsx). Layout spec mirrors RebusItem: rows (stacked text, size, ruled) or filled (word tiled with filler). Puzzles marked used get tracked in the usual dedup ledgers once wired into the loop.",
+  "sources": [
+    {
+      "name": "Reader's Digest — Rebus Puzzles That Are Almost Impossible to Solve",
+      "url": "https://www.rd.com/list/rebus-puzzles/",
+      "note": "rd.com blocks direct fetch (403); same list retrieved via readersdigest.co.nz mirror. Some visual descriptions paraphrased from the mirror's slide text, not pixel-exact.",
+      "retrieved": "2026-07-22"
+    },
+    {
+      "name": "Smart Brain Puzzles — The Ultimate Brain Teasers",
+      "url": "https://www.smartbrainpuzzles.com/blog/the-ultimate-brain-teasers/",
+      "note": "Mixed visual teasers, not just rebuses: parking-spot flip, block counting, Stroop tests, watch-time sequences, missing-number circles. Mostly image-based puzzles; usable as inspiration for future carousel families (observation, sequence, counting). Only deterministic, code-drawable ones extracted below.",
+      "retrieved": "2026-07-22"
+    }
+  ],
+  "puzzles": [
+    { "id": "rd-01", "rows": [{ "text": "GREEN", "color": "green" }], "answer": "green with envy", "explanation": "the word GREEN, with NV (envy) sounds", "source": "rd", "needsReview": true },
+    { "id": "rd-02", "rows": [{ "text": "P EA" }], "answer": "split pea soup", "explanation": "the word PEA, split", "source": "rd", "needsReview": true },
+    { "id": "rd-04", "rows": [{ "text": "DOWN" }, { "text": "UP" }], "answer": "what goes up must come down", "explanation": "DOWN is written above UP", "source": "rd", "needsReview": true },
+    { "id": "rd-05", "rows": [{ "text": "SEAS" }, { "text": "TRAVEL" }], "answer": "overseas travel", "explanation": "SEAS is over TRAVEL", "source": "rd" },
+    { "id": "rd-06", "rows": [{ "text": "WIN EZ" }], "answer": "win with ease", "explanation": "WIN with E-Z (ease)", "source": "rd", "needsReview": true },
+    { "id": "rd-07", "rows": [{ "text": "LE", "ruled": true }, { "text": "VEL" }], "answer": "split level", "explanation": "the word LEVEL, split", "source": "rd", "needsReview": true },
+    { "id": "rd-08", "rows": [{ "text": "TRY TO" }, { "text": "STAND" }], "answer": "try to understand", "explanation": "TRY TO stands over STAND (under-stand)", "source": "rd", "needsReview": true },
+    { "id": "rd-09", "rows": [{ "text": "SUM R" }], "answer": "summer", "explanation": "SUM plus R", "source": "rd" },
+    { "id": "rd-10", "rows": [{ "text": "META 4" }], "answer": "metaphor", "explanation": "META plus 4 (phor)", "source": "rd" },
+    { "id": "rd-11", "rows": [{ "text": "1 1 1 1 1 1" }, { "text": "SAFETY", "size": "small" }], "answer": "safety in numbers", "explanation": "SAFETY sitting in a crowd of numbers", "source": "rd", "needsReview": true },
+    { "id": "rd-13", "rows": [{ "text": "GREEN", "color": "green" }, { "text": "HOUSE" }], "answer": "greenhouse", "explanation": "GREEN above HOUSE", "source": "rd" },
+    { "id": "rd-14", "rows": [{ "text": "COVER COVER" }, { "text": "HEAD" }, { "text": "COVER COVER" }], "answer": "head for cover", "explanation": "HEAD surrounded by four COVERs", "source": "rd", "needsReview": true },
+    { "id": "rd-16", "rows": [{ "text": "SITTING" }, { "text": "WORLD" }], "answer": "sitting on top of the world", "explanation": "SITTING on top of WORLD", "source": "rd" },
+    { "id": "rd-18", "rows": [{ "text": "JO IN BETWEEN BS" }], "answer": "in between jobs", "explanation": "IN BETWEEN splits the word JOBS", "source": "rd", "needsReview": true },
+    { "id": "rd-19", "rows": [{ "text": "UP" }, { "text": "GRABS GRABS GRABS GRABS", "size": "small" }], "answer": "up for grabs", "explanation": "UP above four (for) GRABS", "source": "rd", "needsReview": true }
+  ],
+  "futureFamilies": [
+    { "id": "sbp-05", "family": "parking-flip", "note": "inverted number sequence 86-91, car on 87 — same as our retired TeaserCarousel parking family", "source": "smartbrainpuzzles" },
+    { "id": "sbp-07", "family": "block-count", "note": "count stacked blocks incl. hidden ones (5+3+1=9) — drawable as isometric SVG", "source": "smartbrainpuzzles" },
+    { "id": "sbp-12", "family": "find-the-mistake", "note": "text line with a planted typo ('mitsake') while numbers distract", "source": "smartbrainpuzzles" },
+    { "id": "sbp-13", "family": "stroop", "note": "color words printed in conflicting ink colors", "source": "smartbrainpuzzles" },
+    { "id": "sbp-20", "family": "missing-number", "note": "center number = f(surrounding numbers)", "source": "smartbrainpuzzles" },
+    { "id": "sbp-24", "family": "watch-sequence", "note": "clock times with progressive subtraction pattern (-12, -24, -36, -48 min)", "source": "smartbrainpuzzles" }
+  ],
+  "housepuzzles": [
+    { "id": "sffs-01", "rows": [{ "text": "STAND" }, { "text": "I" }], "answer": "I understand", "explanation": "the I is standing UNDER the word STAND" },
+    { "id": "sffs-02", "rows": [{ "text": "READING", "ruled": true }], "answer": "reading between the lines", "explanation": "the word READING is literally between the lines" },
+    { "id": "sffs-03", "rows": [{ "text": "knee" }, { "text": "you are full of", "size": "small" }], "answer": "you are full of bologna", "explanation": "you are full of sits below knee: below-knee = bologna" },
+    { "id": "sffs-04", "filled": { "word": "YOU", "filler": "BOLOGNA" }, "answer": "you are full of bologna", "explanation": "the word YOU is filled with BOLOGNA" },
+    { "id": "sffs-05", "rows": [{ "text": "MAN" }, { "text": "BOARD" }], "answer": "man overboard", "explanation": "MAN is over BOARD" }
+  ]
+}

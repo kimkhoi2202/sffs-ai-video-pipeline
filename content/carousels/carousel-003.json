@@ -1,0 +1,24 @@
+{
+  "carousel": 3,
+  "slug": "carousel-003",
+  "title": "Long Time No See (Entury)",
+  "family": "rebus",
+  "status": "ready-to-post",
+  "sourceIds": [],
+  "hashtagSet": "D",
+  "caption": "One letter is missing and that's the whole clue. Can you decipher it? Drop your answer below 👇 Smart fella, or fart smella? #brainteaser #quiz #iqtest #trivia #smartorfart",
+  "props": {
+    "prompt": "CAN YOU DECIPHER IT?",
+    "topic": "BRAIN TEASER",
+    "field": "yellow",
+    "outroCta": "FOLLOW FOR MORE",
+    "puzzles": [
+      {
+        "rows": [{ "text": "ENTURY", "ghost": "C" }],
+        "answer": "LONG TIME NO SEE",
+        "explanation": "CENTURY with no C = \"long time no C\" (see).",
+        "reveal": false
+      }
+    ]
+  }
+}
