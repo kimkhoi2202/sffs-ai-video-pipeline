@@ -1,0 +1,38 @@
+{
+  "note": "SFFS branded 'SMART FELLA OR FART SMELLA?' cover thumbnails (Remotion ThumbV 1080x1920), one per punchy brand color, direct-uploaded to Publer (POST /media direct_upload,in_library). Used by the loop posting step (hermes/src/covers.ts) + the scheduled-cover backfill. Re-render via remotion ThumbV + re-upload if Publer purges these media ids.",
+  "rendered_at": "2026-07-24T21:27:46.158Z",
+  "colors": {
+    "yellow": "#fce552",
+    "coral": "#fd7962",
+    "blue": "#839aff",
+    "green": "#63c088",
+    "pink": "#ff5fb0"
+  },
+  "covers": {
+    "yellow": {
+      "id": "6a63d8cd2df1c2536fa27c6b",
+      "path": "https://cdn.publer.com/uploads/photos/6a63d8cd2df1c2536fa27c6b.png",
+      "thumbnail": "https://cdn.publer.com/uploads/photos/thumb_6a63d8cd2df1c2536fa27c6b.png"
+    },
+    "coral": {
+      "id": "6a63d8ced26cb2870da21a32",
+      "path": "https://cdn.publer.com/uploads/photos/6a63d8ced26cb2870da21a32.png",
+      "thumbnail": "https://cdn.publer.com/uploads/photos/thumb_6a63d8ced26cb2870da21a32.png"
+    },
+    "blue": {
+      "id": "6a63d8cf155e91eabc577251",
+      "path": "https://cdn.publer.com/uploads/photos/6a63d8cf155e91eabc577251.png",
+      "thumbnail": "https://cdn.publer.com/uploads/photos/thumb_6a63d8cf155e91eabc577251.png"
+    },
+    "green": {
+      "id": "6a63d8d0d26cb2870da21a3a",
+      "path": "https://cdn.publer.com/uploads/photos/6a63d8d0d26cb2870da21a3a.png",
+      "thumbnail": "https://cdn.publer.com/uploads/photos/thumb_6a63d8d0d26cb2870da21a3a.png"
+    },
+    "pink": {
+      "id": "6a63d8d163f918a74181c9f2",
+      "path": "https://cdn.publer.com/uploads/photos/6a63d8d163f918a74181c9f2.png",
+      "thumbnail": "https://cdn.publer.com/uploads/photos/thumb_6a63d8d163f918a74181c9f2.png"
+    }
+  }
+}

@@ -44,6 +44,7 @@ import { appendTakeaway, formatTakeaway } from "./memory.ts";
 import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
 import { importMediaFromUrl, pollJob, listAllPosts, postId } from "./publer.ts";
+import { coverMediaFor, videoMediaObjectWithCover } from "./covers.ts";
 import { ping } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
@@ -168,6 +169,14 @@ async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): 
     const key = `hermes/${todayRunId()}/${v.id}.${platform}.mp4`;
     const url = uploadToS3(r.path, key);
     const { mediaId } = await importMediaFromUrl(url, `${v.id}.${platform}.mp4`);
+    // BRANDED COVER: append the rotating "SMART FELLA OR FART SMELLA?" title card as the
+    // DEFAULT thumbnail so the post cold-opens branded (video bytes unchanged -> still Q1).
+    // Best-effort: no manifest/cover => post uncovered (a cover problem never blocks a post).
+    const cover = coverMediaFor(todayRunId(), v.index, platform);
+    const mediaArg = cover
+      ? { media_objects: [videoMediaObjectWithCover(mediaId, cover)] }
+      : { media_ids: [mediaId] };
+    if (cover) info(`${v.id} ${platform}: branded cover ${cover.color} (${cover.id})`);
     // KICKOFF gate: OFF => createDraftOnly (unchanged draft-only path). ARMED =>
     // schedule at a policy time via the gated kickoff_schedule.ts (dynamic-imported
     // ONLY here, so the OFF loop never even loads a module that can schedule).
@@ -177,9 +186,9 @@ async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): 
       scheduled_at = sched.slot(platform, v.index);
       if (!scheduled_at) throw new Error(`no schedule slot for ${platform}#${v.index}`);
       const { createScheduledPostArmed } = await import("./kickoff_schedule.ts");
-      jobId = await createScheduledPostArmed({ account_ids: [account_id], text: v.caption, media_ids: [mediaId], type: "video" }, scheduled_at);
+      jobId = await createScheduledPostArmed({ account_ids: [account_id], text: v.caption, ...mediaArg, type: "video" }, scheduled_at);
     } else {
-      jobId = await createDraftOnly({ account_ids: [account_id], text: v.caption, media_ids: [mediaId], type: "video" });
+      jobId = await createDraftOnly({ account_ids: [account_id], text: v.caption, ...mediaArg, type: "video" });
     }
     const job = await pollJob(jobId, { label: `create-${sched.armed ? "scheduled" : "draft"}-${platform}`, timeoutMs: 180_000 });
     // Publer's job_status returns only {status:"complete"} (no post ids), so resolve
