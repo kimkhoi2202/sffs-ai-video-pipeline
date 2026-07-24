@@ -52,7 +52,7 @@ export interface ContentDefaults {
 export const FALLBACK_DEFAULTS: ContentDefaults = Object.freeze({
   narration: "full",
   ending: "cliffhanger",
-  mascot: "mascot-standard",
+  mascot: "mascot-prominent",
 });
 
 // ── The A/B arm universe (labels are stable; they are the rollup keys the Python

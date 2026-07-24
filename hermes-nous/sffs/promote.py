@@ -63,7 +63,7 @@ PROMOTABLE_DIMENSIONS: Dict[str, List[str]] = {
     "mascot": ["mascot-standard", "mascot-absent", "mascot-prominent"],
 }
 
-FALLBACK_DEFAULTS: Dict[str, str] = {"narration": "full", "ending": "cliffhanger", "mascot": "mascot-standard"}
+FALLBACK_DEFAULTS: Dict[str, str] = {"narration": "full", "ending": "cliffhanger", "mascot": "mascot-prominent"}
 
 # Per-dimension PRIMARY metric override (falls back to the global policy metric for
 # any dimension not listed). The mascot dimension is judged on median VIEWS -- the

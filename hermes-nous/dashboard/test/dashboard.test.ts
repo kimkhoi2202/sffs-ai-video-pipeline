@@ -19,7 +19,7 @@ import {
   resolveScheduledMediaUrl, sanitizeScheduledForPublic,
 } from "../data.ts";
 import { computeGoalProgress, GOAL } from "../goal.ts";
-import { esc, page, armLabel } from "../render.ts";
+import { esc, page, abTestLabel } from "../render.ts";
 import { checkBasicAuth, eq } from "../server.ts";
 import type { GateAttempt } from "../types.ts";
 
@@ -787,17 +787,24 @@ test("D3: SCHEDULED panel shows full-frame previews via the same-origin proxy (b
 });
 
 // ── A/B arm label = REAL dimension:arm (not the LLM caption opener) ───────────
-test("armLabel: real dimension:arm, control collapse, neutral 'unknown' (never the caption)", () => {
-  assert.equal(armLabel("narration", "no-narration"), "narration: no-narration");
-  assert.equal(armLabel("tempo", "tempo-fast"), "tempo: tempo-fast");
-  assert.equal(armLabel("mascot", "mascot-prominent"), "mascot: mascot-prominent");
-  assert.equal(armLabel("control", "control"), "control");
-  assert.equal(armLabel("unknown", "unknown"), "unknown");
-  assert.equal(armLabel("", ""), "unknown");
-  assert.equal(armLabel(undefined, undefined), "unknown");
+test("abTestLabel: plain-language change vs default, control + neutral unknown (never the caption)", () => {
+  const d = { narration: "full", ending: "cliffhanger", mascot: "mascot-prominent" };
+  const nar = abTestLabel("narration", "no-narration", d);
+  assert.equal(nar.tag, "A/B");
+  assert.match(nar.text, /no voiceover/);
+  assert.match(nar.text, /default: full voiceover/);
+  const mas = abTestLabel("mascot", "mascot-absent", d);
+  assert.match(mas.text, /no mascot/);
+  assert.match(mas.text, /default: bigger mascot/);
+  assert.match(abTestLabel("tempo", "tempo-fast", d).text, /fast 3s countdown/);
+  assert.equal(abTestLabel("control", "control", d).kind, "control");
+  assert.equal(abTestLabel("unknown", "unknown", d).kind, "unknown");
+  assert.equal(abTestLabel("", "", d).kind, "unknown");
+  assert.equal(abTestLabel(undefined, undefined, d).kind, "unknown");
+  assert.doesNotMatch(nar.text, /think-you-got|bet-you/);
 });
 
-test("SCHEDULED cards render the REAL dimension:arm (never the caption opener); neutral when unmatched", () => {
+test("SCHEDULED cards render PLAIN-LANGUAGE change-vs-default (never the caption opener); neutral when unmatched", () => {
   const sched = {
     ok: true, source: "t", as_of: "t", count: 2, by_platform: { tiktok: 2 },
     posts: [
@@ -810,8 +817,9 @@ test("SCHEDULED cards render the REAL dimension:arm (never the caption opener); 
     ],
   };
   const html = page(emptyPageData({ scheduled: sched as any }));
-  assert.match(html, /narration: no-narration/);              // the REAL dimension:arm
-  assert.match(html, /A\/B: <b>unknown<\/b>/);               // neutral fallback for an unmatched post
+  assert.match(html, /no voiceover/);                          // plain-language change (not jargon)
+  assert.match(html, /default: full voiceover/);               // vs the current default
+  assert.match(html, /not linked to a batch variant/);         // neutral fallback for an unmatched post
   assert.doesNotMatch(html, /think-you-got-this|bet-you-cant/); // NEVER the caption-opener slug
 });
 

@@ -132,13 +132,14 @@ test("applyBatchOverrides: only + shapeNumQ compose", () => {
 // The mascot dimension must be tested EVERY cycle (elevated out of the seeded
 // random subset) and weighted toward more mascot, capped at target (12/day intact).
 
-test("elevateMascot: forces mascot every cycle, weighted, prominent-first, capped", () => {
-  const cat = buildDimensions(); // includes mascot challengers (absent + prominent)
+test("elevateMascot: forces mascot controls every cycle, weighted, absent-first, capped", () => {
+  const cat = buildDimensions(); // mascot challengers = universe minus the default (now standard + absent; prominent is the default)
   const out = elevateMascot(cat.slice(), 10, 3);
   assert.equal(out.length, 10);
   assert.equal(out.filter((d) => d.dimension === "mascot").length, 3);
-  assert.equal(out[0].arm, "mascot-prominent");
+  assert.equal(out[0].arm, "mascot-absent"); // prominent is the baked-in default; absent (the no-mascot control) leads the challengers
   assert.ok(out.some((d) => d.arm === "mascot-absent"));
+  assert.ok(!out.some((d) => d.arm === "mascot-prominent")); // the default is never re-run as a challenger arm
 });
 
 test("elevateMascot: weight 0 disables the bias (plain seeded slice)", () => {
