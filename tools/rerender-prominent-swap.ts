@@ -25,7 +25,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { createPost, deletePosts, listPosts, pollJob, importMediaFromUrl } from "./post-to-publer.ts";
-import { videoMediaObjectWithCover } from "../hermes/src/covers.ts";
+import { videoMediaObjectWithCover, loadCoverManifest, COVER_COLOR_ORDER } from "../hermes/src/covers.ts";
 import { uploadToS3 } from "../hermes/src/s3.ts";
 
 const REPO = join(import.meta.dirname, "..");
@@ -111,23 +111,29 @@ function repersist(v: any, oldId: string, newId: string, newMediaId: string): st
   } catch (e) { log(`  repersist ab-db failed: ${e instanceof Error ? e.message : String(e)}`); }
   return where;
 }
-function coverFromPost(fresh: any): { id: string; path: string; thumbnail: string } | null {
-  const md = Array.isArray(fresh?.media) ? fresh.media[0] : null;
-  const th = Array.isArray(md?.thumbnails) ? md.thumbnails : [];
-  const di = Number(md?.default_thumbnail);
-  const t = th[di];
-  if (!t) return null;
-  const real = String(t.real ?? t.small ?? "");
-  if (!real) return null;
-  return { id: String(t.id ?? ""), path: real, thumbnail: String(t.small ?? real) };
+/** The freshly-imported media's Publer-generated thumbnails (from the import job
+ *  payload). The branded cover is APPENDED to these (matching the proven cover
+ *  backfill) rather than replacing them — Publer ignores a lone external cover on a
+ *  fresh video and regenerates its own, so we must include its auto thumbs + cover. */
+function autoThumbsFromJob(job: any): Array<Record<string, unknown>> {
+  const p = job?.payload;
+  let media: any = null;
+  if (Array.isArray(p)) media = p[0];
+  else if (p && Array.isArray(p.media)) media = p.media[0];
+  else if (p && (p.id || p._id)) media = p;
+  else if (p && typeof p === "object") media = Object.values(p).find((v: any) => v && typeof v === "object" && (v.id || v._id));
+  const th = Array.isArray(media?.thumbnails) ? media.thumbnails : [];
+  return th
+    .map((t: any) => ({ ...(t.id ? { id: String(t.id) } : {}), small: String(t.small ?? t.real ?? ""), real: String(t.real ?? t.small ?? "") }))
+    .filter((t: any) => t.real);
 }
-function coverApplied(post: any, coverPath: string): boolean {
+function coverApplied(post: any, coverId: string): boolean {
   const md = Array.isArray(post?.media) ? post.media[0] : null;
   if (!md) return false;
   const th = Array.isArray(md.thumbnails) ? md.thumbnails : [];
   const di = Number(md.default_thumbnail);
   const u = String(th[di]?.real ?? th[di]?.small ?? "");
-  return !!coverPath && u === coverPath;
+  return !!coverId && u.includes(coverId);
 }
 
 async function main() {
@@ -135,15 +141,30 @@ async function main() {
   const commit = args.includes("--commit");
   const onlyId = args.includes("--only") ? String(args[args.indexOf("--only") + 1]) : undefined;
 
+  const manifest = loadCoverManifest();
+  if (!manifest) throw new Error("no covers manifest at ab-testing/covers-manifest.json — render + upload covers first");
+
   const live = await gatherScheduled();
   const runVids = loadRunVideos();
 
   const targets = live.filter((p) => Array.isArray(p.media) && p.media[0]?.id && p.text && p.media[0]?.type === "video");
+  // Deterministic rotating cover color per video (caption), twins offset — matches the
+  // cover backfill so colors stay on-brand + varied across the queue.
+  const videoKeys = [...new Set(targets.map((p: any) => normCap(p.text)))].sort((a, b) => {
+    const e = (k: string) => Math.min(...targets.filter((p: any) => normCap(p.text) === k).map((p: any) => Date.parse(p.scheduled_at)));
+    return e(a) - e(b);
+  });
+  const colorFor = (p: any) => {
+    const j = videoKeys.indexOf(normCap(p.text));
+    const off = (PLATFORM_BY_ACCT[String(p.account_id)] || "instagram") === "tiktok" ? 2 : 0;
+    const n = COVER_COLOR_ORDER.length;
+    return COVER_COLOR_ORDER[(((j + off) % n) + n) % n];
+  };
   let plans = targets.map((p) => {
     const v = matchVideo(p, runVids);
     const platform = PLATFORM_BY_ACCT[String(p.account_id)] || "?";
     const mp4 = v ? join(PROM_DIR, `${v.id}.${platform}.mp4`) : "";
-    return { oldId: String(p.id), accountId: String(p.account_id), platform, videoId: v?.id ?? "?", mp4, hasMp4: !!mp4 && existsSync(mp4), scheduledAt: stripMs(p.scheduled_at), v };
+    return { oldId: String(p.id), accountId: String(p.account_id), platform, videoId: v?.id ?? "?", color: colorFor(p), mp4, hasMp4: !!mp4 && existsSync(mp4), scheduledAt: stripMs(p.scheduled_at), v };
   }).sort((a, b) => Date.parse(a.scheduledAt) - Date.parse(b.scheduledAt));
   if (onlyId) plans = plans.filter((p) => p.oldId === onlyId);
 
@@ -153,7 +174,7 @@ async function main() {
   for (const p of plans) {
     const mins = Math.round((Date.parse(p.scheduledAt) - now) / 60000);
     const safe = Date.parse(p.scheduledAt) - now < SAFETY_MS;
-    console.log(`  ${p.scheduledAt} ${p.platform.padEnd(9)} vid=${p.videoId} old=${p.oldId} mp4=${p.hasMp4 ? "OK" : "MISSING"} (in ${mins}m)${safe ? "  [SKIP <20m]" : ""}`);
+    console.log(`  ${p.scheduledAt} ${p.platform.padEnd(9)} vid=${p.videoId} bg=${p.color.padEnd(6)} old=${p.oldId} mp4=${p.hasMp4 ? "OK" : "MISSING"} (in ${mins}m)${safe ? "  [SKIP <20m]" : ""}`);
   }
   const missing = plans.filter((p) => !p.hasMp4);
   if (missing.length) console.log(`\nMISSING mp4s: ${missing.map((m) => `${m.videoId}.${m.platform}`).join(", ")}`);
@@ -167,14 +188,15 @@ async function main() {
       if (!fresh || fresh.state !== "scheduled") { results.push({ ...plan, skipped: true, reason: `not scheduled` }); log(`SKIP ${plan.oldId}: not scheduled`); continue; }
       if (Date.parse(fresh.scheduled_at) - Date.now() < SAFETY_MS) { results.push({ ...plan, skipped: true, reason: "within 20m safety window" }); log(`SKIP ${plan.oldId}: safety window`); continue; }
       const caption = String(fresh.text ?? ""); if (!caption) throw new Error(`no caption ${plan.oldId}`);
-      const cover = coverFromPost(fresh); if (!cover) throw new Error(`no existing cover on ${plan.oldId}`);
+      const cover = manifest.covers[plan.color]; if (!cover?.id) throw new Error(`no cover media for ${plan.color}`);
 
       const key = `rerender/${plan.videoId}.${plan.platform}.${Date.now()}.mp4`;
       const url = uploadToS3(plan.mp4, key);
-      log(`=== ${plan.platform} vid=${plan.videoId} old=${plan.oldId} @ ${plan.scheduledAt} : uploaded -> importing ===`);
-      const { mediaId: newMediaId } = await importMediaFromUrl(url, `${plan.videoId}-${plan.platform}-prom.mp4`, { caption });
+      log(`=== ${plan.platform} vid=${plan.videoId} bg=${plan.color} old=${plan.oldId} @ ${plan.scheduledAt} : uploaded -> importing ===`);
+      const { mediaId: newMediaId, job: importJob } = await importMediaFromUrl(url, `${plan.videoId}-${plan.platform}-prom.mp4`, { caption });
       if (!newMediaId) throw new Error(`import returned no media id`);
-      const mediaObject = videoMediaObjectWithCover(String(newMediaId), cover, []);
+      const autoThumbs = autoThumbsFromJob(importJob);
+      const mediaObject = videoMediaObjectWithCover(String(newMediaId), cover, autoThumbs);
 
       const del = await deletePosts([plan.oldId]);
       const deleted = (del?.deleted_ids ?? []).map(String);
@@ -202,10 +224,10 @@ async function main() {
       const okTime = sameInstant(String(np.scheduled_at), plan.scheduledAt);
       const okState = np.state === "scheduled";
       const okFeed = plan.platform === "instagram" ? np?.details?.feed === true : true;
-      const okCover = coverApplied(np, cover.path);
+      const okCover = coverApplied(np, cover.id);
       const okVideo = String(np?.media?.[0]?.id) === String(newMediaId);
       const where = repersist(plan.v, plan.oldId, String(np.id), String(newMediaId));
-      log(`  new=${np.id} state=${np.state} at=${np.scheduled_at} feed=${np?.details?.feed ?? "n/a"} media=${np?.media?.[0]?.id} coverApplied=${okCover} repersist=${where}`);
+      log(`  new=${np.id} state=${np.state} at=${np.scheduled_at} feed=${np?.details?.feed ?? "n/a"} media=${np?.media?.[0]?.id} bg=${plan.color} coverApplied=${okCover} repersist=${where}`);
       if (!okState || !okTime || !okFeed || !okVideo) { results.push({ ...plan, new_id: String(np.id), applied: false, error: `identity check failed (state=${okState} time=${okTime} feed=${okFeed} media=${okVideo})` }); log(`STOP: identity check`); break; }
       if (!okCover) { results.push({ ...plan, new_id: String(np.id), applied: false, error: `cover not applied` }); log(`STOP: cover not applied`); break; }
       results.push({ ...plan, new_id: String(np.id), new_media: String(newMediaId), applied: true });
@@ -217,7 +239,7 @@ async function main() {
     }
   }
   console.log(`\n=== RESULT ===`);
-  console.log(JSON.stringify({ ok: results.every((r) => !r.error), applied: results.filter((r) => r.applied).length, results: results.map((r) => ({ old: r.oldId, new: r.new_id, media: r.new_media, platform: r.platform, vid: r.videoId, applied: !!r.applied, skipped: !!r.skipped, error: r.error, reason: r.reason })) }, null, 2));
+  console.log(JSON.stringify({ ok: results.every((r) => !r.error), applied: results.filter((r) => r.applied).length, results: results.map((r) => ({ old: r.oldId, new: r.new_id, media: r.new_media, platform: r.platform, vid: r.videoId, bg: r.color, applied: !!r.applied, skipped: !!r.skipped, error: r.error, reason: r.reason })) }, null, 2));
   if (results.some((r) => r.error)) process.exitCode = 1;
 }
 main().catch((e) => { console.error(`[rerender-swap] FATAL: ${e instanceof Error ? e.message : String(e)}`); process.exit(1); });
