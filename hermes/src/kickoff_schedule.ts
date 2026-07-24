@@ -19,6 +19,7 @@ export interface ScheduleInput {
   account_ids: string[];
   text: string;
   media_ids?: string[];
+  media_objects?: Array<Record<string, unknown>>; // full media objects (carry the branded cover thumbnail)
   type?: CreatePostArgs["type"];
 }
 
@@ -37,7 +38,8 @@ export async function createScheduledPostArmed(input: ScheduleInput, whenISO: st
   return schedulePost({
     account_ids: input.account_ids,
     text: input.text,
-    media_ids: input.media_ids,
+    // Prefer full media_objects (they carry the branded cover thumbnail); else bare media_ids.
+    ...(input.media_objects?.length ? { media_objects: input.media_objects } : { media_ids: input.media_ids }),
     type: input.type ?? "video",
     scheduled_at: whenISO, // schedulePost defaults state to "scheduled"
   });
