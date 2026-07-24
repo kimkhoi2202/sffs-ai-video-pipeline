@@ -277,6 +277,7 @@ export function mapProps(props: any): Mapped {
     let answerSpoken: string;
     const common = {
       idx,
+      tier: lq.tier,
       // bg/tierColor/accent are required by the Question TYPE but the plate uses
       // slotColors(idx) internally, so these values are never read at render.
       bg: "#000000",

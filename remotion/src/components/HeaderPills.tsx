@@ -1,5 +1,6 @@
 import { useFmt, useHeaderConfig } from "../theme/layout";
 import { Pill } from "./Pill";
+import { showTierPill } from "./headerPillVisibility";
 
 /**
  * The top header on every question plate: the "QUESTION X OF N" count pill + the
@@ -41,7 +42,7 @@ export const HeaderPills: React.FC<{
       }}
     >
       {showCount ? <Pill text={countText} fill={countFill} fontSize={fontSize} /> : null}
-      <Pill text={tier} fill={topicFill} fontSize={fontSize} />
+      {showTierPill(tier) ? <Pill text={tier} fill={topicFill} fontSize={fontSize} /> : null}
     </div>
   );
 };
