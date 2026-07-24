@@ -18,6 +18,10 @@ export interface RollupCell {
   n_with_metrics: number;
   median_eng_rate: number | null;
   avg_reach: number | null;
+  /** median VIEWS (video_views) — the mascot dimension's promotion metric. */
+  median_views: number | null;
+  /** median REACH — the secondary views/reach hypothesis metric. */
+  median_reach: number | null;
 }
 
 export function median(nums: number[]): number | null {
@@ -63,15 +67,16 @@ export function timeBucket(postedAt: unknown): string | undefined {
 
 /** Group posts by a key function and summarize each group into a RollupCell. */
 export function groupMedian(posts: any[], key: (p: any) => string | undefined): Record<string, RollupCell> {
-  const map: Record<string, { eng: number[]; reach: number[]; n: number }> = {};
+  const map: Record<string, { eng: number[]; reach: number[]; views: number[]; n: number }> = {};
   for (const p of posts) {
     const k = key(p);
     if (!k) continue;
-    map[k] = map[k] ?? { eng: [], reach: [], n: 0 };
+    map[k] = map[k] ?? { eng: [], reach: [], views: [], n: 0 };
     map[k].n++;
     if (hasMatureMetrics(p)) {
       map[k].eng.push(Number(p.metrics.eng_rate));
       if (p.metrics.reach != null) map[k].reach.push(Number(p.metrics.reach));
+      if (p.metrics.video_views != null) map[k].views.push(Number(p.metrics.video_views));
     }
   }
   const out: Record<string, RollupCell> = {};
@@ -81,6 +86,8 @@ export function groupMedian(posts: any[], key: (p: any) => string | undefined): 
       n_with_metrics: v.eng.length,
       median_eng_rate: round2(median(v.eng)),
       avg_reach: round2(median(v.reach)),
+      median_views: round2(median(v.views)),
+      median_reach: round2(median(v.reach)),
     };
   }
   return out;

@@ -59,7 +59,7 @@ const ArrowDown: React.FC<{ size: number }> = ({ size }) => (
   </svg>
 );
 
-export const Outro: React.FC<{ platform?: Platform; variant?: EndCard }> = ({ platform = "youtube", variant = "default" }) => {
+export const Outro: React.FC<{ platform?: Platform; variant?: EndCard; mascot?: "standard" | "absent" | "prominent" }> = ({ platform = "youtube", variant = "default", mascot = "standard" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { w, portrait } = useFmt();
@@ -86,6 +86,9 @@ export const Outro: React.FC<{ platform?: Platform; variant?: EndCard }> = ({ pl
   const L = portrait
     ? { l1: 636, l2: 824, comment: 998, cta: 1204, commentSize: 58, ctaSize: 74, ctaPad: "30px 62px", brain: { top: -56, right: -34, w: 140 }, scroll: 1688 }
     : { l1: 330, l2: 480, comment: 632, cta: 776, commentSize: 56, ctaSize: 66, ctaPad: "26px 60px", brain: { top: -52, right: -34, w: 132 }, scroll: 0 };
+  // MASCOT A/B: enlarge the outro brain sticker for "prominent"; hidden below for
+  // "absent"; unchanged for "standard".
+  const brainW = Math.round(L.brain.w * (mascot === "prominent" ? 1.3 : 1));
   // Whole scroll-cue bob (the circle + its border + hard shadow + arrow move as
   // ONE unit), matching the website cue (gsap y:8 duration:0.7 yoyo sine.inOut =>
   // a 1.4s sine-eased 0->peak->0 cycle). Amplitude scaled up for the larger video
@@ -139,10 +142,12 @@ export const Outro: React.FC<{ platform?: Platform; variant?: EndCard }> = ({ pl
           >
             {cta}
           </div>
-          <Img
-            src={staticFile("images/sffs-logo.png")}
-            style={{ position: "absolute", top: L.brain.top, right: L.brain.right, width: L.brain.w, height: "auto", display: "block", transform: "rotate(12deg)", filter: hardDropShadow(10), zIndex: 2 }}
-          />
+          {mascot !== "absent" && (
+            <Img
+              src={staticFile("images/sffs-logo.png")}
+              style={{ position: "absolute", top: L.brain.top, right: L.brain.right, width: brainW, height: "auto", display: "block", transform: "rotate(12deg)", filter: hardDropShadow(10), zIndex: 2 }}
+            />
+          )}
         </div>
       </Pop>
 

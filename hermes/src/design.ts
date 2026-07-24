@@ -27,7 +27,7 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode } from "./defaults.ts";
-import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally } from "./dimensions.ts";
+import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally, elevateMascot, MASCOT_WEIGHT_DEFAULT } from "./dimensions.ts";
 
 // Re-export the catalog surface so existing importers (bridge/design.ts) are
 // unchanged, while the actual definitions live in the dependency-free module.
@@ -107,7 +107,15 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     only: onlyDims,
     shapeNumQ: Number.isInteger(shapeNumQEnv) && shapeNumQEnv > 0 ? shapeNumQEnv : undefined,
   });
-  const specs = seededOrder(catalog, seedOf(runId)).slice(0, target);
+  // Bias the batch to test MORE mascot variants (Part B): elevate the mascot
+  // dimension out of the seeded random subset so it runs EVERY cycle, weighted by
+  // HERMES_MASCOT_WEIGHT (default MASCOT_WEIGHT_DEFAULT; 0 disables). An operator
+  // pinning the batch via HERMES_ONLY_DIMENSIONS is respected verbatim (no
+  // injection). Always capped at `target`, so the 12/day/platform cap is intact.
+  const seeded = seededOrder(catalog, seedOf(runId));
+  const mascotWeightEnv = Number(process.env.HERMES_MASCOT_WEIGHT);
+  const mascotWeight = Number.isFinite(mascotWeightEnv) && mascotWeightEnv >= 0 ? mascotWeightEnv : MASCOT_WEIGHT_DEFAULT;
+  const specs = onlyDims.length ? seeded.slice(0, target) : elevateMascot(seeded, target, mascotWeight);
   const plans: VideoPlan[] = [];
 
   for (let i = 0; i < specs.length; i++) {
@@ -182,6 +190,12 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
         // Symbolic ending arm (for the ab-database annotation + dashboard); the
         // composition itself is driven by `reveal` above.
         ending: resolved.endingArm,
+        // The mascot arm: the brand-brain render visibility ("standard" keeps
+        // today's cover/outro brain exactly; "absent" hides it; "prominent"
+        // enlarges it). Consumed by render.ts -> FullVideo -> Intro/Outro. The
+        // canonical arm LABEL (mascotArm) is carried for the ab-database rollup.
+        mascot: resolved.mascot,
+        mascotArm: resolved.mascotArm,
         questions: renderQuestions,
       },
     };

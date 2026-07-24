@@ -29,6 +29,11 @@ import {
 } from "./timeline";
 import { bySlug } from "../data/cuts";
 
+/** Brand-mascot A/B visibility (the loop's `mascot` dimension). "standard" keeps
+ *  the intro-cover + outro brain exactly as today; "absent" hides it; "prominent"
+ *  enlarges it. Omitted => "standard" (every non-mascot arm renders unchanged). */
+export type MascotVis = "standard" | "absent" | "prominent";
+
 /** Countdown-active plate: drives `elapsed` from the sequence-local frame. */
 const CountdownPlate: React.FC<{ q: Question; pos: number; total: number }> = ({ q, pos, total }) => {
   const frame = useCurrentFrame();
@@ -36,10 +41,16 @@ const CountdownPlate: React.FC<{ q: Question; pos: number; total: number }> = ({
   return <QuestionPlate q={q} elapsed={frame / fps} pos={pos} total={total} />;
 };
 
-const renderSegment = (seg: Segment, platform: Platform, total: number, endCard: EndCard): React.ReactNode => {
+const renderSegment = (
+  seg: Segment,
+  platform: Platform,
+  total: number,
+  endCard: EndCard,
+  mascot: MascotVis,
+): React.ReactNode => {
   switch (seg.type) {
     case "intro":
-      return <Intro />;
+      return <Intro mascot={mascot} />;
     case "read":
       return <QuestionPlate q={seg.q} elapsed={0} pos={seg.pos} total={total} />;
     case "countdown":
@@ -49,7 +60,7 @@ const renderSegment = (seg: Segment, platform: Platform, total: number, endCard:
     case "score":
       return <Score total={total} />;
     case "outro":
-      return <Outro platform={platform} variant={endCard} />;
+      return <Outro platform={platform} variant={endCard} mascot={mascot} />;
   }
 };
 
@@ -103,7 +114,10 @@ export const FullVideo: React.FC<{
   /** DEV preview only: overlay TikTok's UI danger zones (top/right/bottom) so a
    *  still can confirm the plate clears them. Off in every real render. */
   debugSafeZones?: boolean;
-}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, showProgress, progressStyle, debugSafeZones }) => {
+  /** Brand-mascot A/B visibility (loop `mascot` dimension). Omitted => "standard"
+   *  (unchanged render). "absent" hides the intro/outro brain; "prominent" enlarges it. */
+  mascot?: MascotVis;
+}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, showProgress, progressStyle, debugSafeZones, mascot }) => {
   const cut = slug ? bySlug(slug) : undefined;
   const platform: Platform = cut?.platform ?? platformProp ?? "youtube";
   const ids = cut?.ids ?? questionIds;
@@ -129,7 +143,7 @@ export const FullVideo: React.FC<{
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
       {T.segments.map((seg, i) => (
         <Sequence key={i} from={seg.start} durationInFrames={seg.dur} name={segName(seg)}>
-          {renderSegment(seg, platform, total, endCard ?? "default")}
+          {renderSegment(seg, platform, total, endCard ?? "default", mascot ?? "standard")}
         </Sequence>
       ))}
 

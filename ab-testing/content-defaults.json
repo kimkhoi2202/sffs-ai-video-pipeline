@@ -5,15 +5,20 @@
   "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the default-promotion policy (human AND autonomous). Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect proposals, auto-promote confirmed winners, and auto-revert underperformers. `defaults`/`history` are written by (a) the HUMAN approval CLI (sffs_promote_default --approve <id>) AND (b) the AUTONOMOUS gate (promote.auto_promote_cycle) — but the autonomous path is stricter and reversible: it only adopts a winner AFTER a confirmation round of fresh matured samples, logs every promotion + revert to the reversible auto_ledger (in proposals.json, surfaced on the dashboard), and AUTO-REVERTS a promoted default that later underperforms the arm it replaced. GUARDRAIL: promotion only ever writes an arm LABEL from the fixed whitelist here; it touches NO posting/scheduling/window/ceiling/gate path, so a promoted default can never change cadence or escape the hard posting guardrails (7am-1am CST, <=12/day/platform, quality/brand gates, dedup, do-not-touch). This is the CONTENT analog of the code factory's two-key gate.",
   "defaults": {
     "narration": "full",
-    "ending": "cliffhanger"
+    "ending": "cliffhanger",
+    "mascot": "mascot-standard"
   },
   "defaults_meaning": {
     "narration": "Arm label of the current NARRATION default. 'full' = the cloned-voice host reads every question + options aloud on EVERY video. Deviation test arms: no-narration | no-question-vo | no-options-vo.",
-    "ending": "Arm label of the current ENDING default. 'cliffhanger' = reveal the early questions but leave the LAST one unresolved + comment-CTA, no score screen (on a 1-question video this collapses to withholding that single verdict + comment-CTA). Deviation test arms: full-reveal | no-answer."
+    "ending": "Arm label of the current ENDING default. 'cliffhanger' = reveal the early questions but leave the LAST one unresolved + comment-CTA, no score screen (on a 1-question video this collapses to withholding that single verdict + comment-CTA). Deviation test arms: full-reveal | no-answer.",
+    "mascot": "Arm label of the current MASCOT default. 'mascot-standard' = the brand brain mascot shown as today (intro cover + outro sticker) on EVERY video. Deviation test arms: mascot-absent (hide the brain -- the clean no-mascot control) | mascot-prominent (enlarge the brain -- more mascot). Measured PRIMARILY on VIEWS (see promotion.metric_by_dimension), the user's hypothesis metric."
   },
   "promotion": {
     "metric": "median_eng_rate",
     "metric_units": "percent (median engagement rate; matches ab-testing/learnings.json conventions.primary_metric)",
+    "metric_by_dimension": {
+      "mascot": "median_views"
+    },
     "min_sample": 5,
     "min_abs_improvement_pp": 1.0,
     "min_rel_improvement": 0.2,

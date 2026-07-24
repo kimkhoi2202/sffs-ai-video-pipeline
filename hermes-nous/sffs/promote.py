@@ -56,9 +56,22 @@ class PromoteError(ValueError):
 PROMOTABLE_DIMENSIONS: Dict[str, List[str]] = {
     "narration": ["full", "no-narration", "no-question-vo", "no-options-vo"],
     "ending": ["cliffhanger", "full-reveal", "no-answer"],
+    # MASCOT: the brand brain on the intro cover + outro. "mascot-standard" is the
+    # always-on baseline (== control); "mascot-absent" / "mascot-prominent" are the
+    # challengers. Measured on VIEWS/REACH (the user's hypothesis metric), NOT
+    # eng_rate -- see DIMENSION_METRIC below. Kept in sync with hermes/src/defaults.ts.
+    "mascot": ["mascot-standard", "mascot-absent", "mascot-prominent"],
 }
 
-FALLBACK_DEFAULTS: Dict[str, str] = {"narration": "full", "ending": "cliffhanger"}
+FALLBACK_DEFAULTS: Dict[str, str] = {"narration": "full", "ending": "cliffhanger", "mascot": "mascot-standard"}
+
+# Per-dimension PRIMARY metric override (falls back to the global policy metric for
+# any dimension not listed). The mascot dimension is judged on median VIEWS -- the
+# user's hypothesis is "mascot -> more VIEWS" -- while narration/ending stay on
+# median_eng_rate. Overridable per dimension via content-defaults.json
+# promotion.metric_by_dimension. The rollup cell must carry this metric key (see
+# hermes/src/rollup.ts, which now also computes median_views + median_reach).
+DIMENSION_METRIC: Dict[str, str] = {"mascot": "median_views"}
 
 FALLBACK_POLICY: Dict[str, Any] = {
     "metric": "median_eng_rate",
@@ -145,6 +158,14 @@ def load_policy(content_defaults_path: Path) -> Dict[str, Any]:
     policy = dict(FALLBACK_POLICY)
     if isinstance(p.get("metric"), str) and p["metric"].strip():
         policy["metric"] = p["metric"].strip()
+    # Optional per-dimension metric overrides (merged over the built-in DIMENSION_METRIC).
+    mbd = dict(DIMENSION_METRIC)
+    raw_mbd = p.get("metric_by_dimension")
+    if isinstance(raw_mbd, dict):
+        for _k, _v in raw_mbd.items():
+            if isinstance(_k, str) and isinstance(_v, str) and _v.strip():
+                mbd[_k] = _v.strip()
+    policy["metric_by_dimension"] = mbd
     if isinstance(p.get("incumbent_label"), str) and p["incumbent_label"].strip():
         policy["incumbent_label"] = p["incumbent_label"].strip()
     for k in ("min_sample",):
@@ -178,6 +199,21 @@ def _n_of(cell: Optional[Dict[str, Any]]) -> int:
         return 0
     v = cell.get("n_with_metrics")
     return int(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else 0
+
+
+def _metric_for_dimension(dimension: str, policy: Dict[str, Any]) -> str:
+    """Resolve the PRIMARY metric for a dimension: content-defaults override, then
+    the built-in DIMENSION_METRIC (mascot -> median_views), then the global policy
+    metric. Lets the mascot dimension be judged on VIEWS while narration/ending
+    stay on median_eng_rate."""
+    mbd = policy.get("metric_by_dimension")
+    if isinstance(mbd, dict):
+        v = mbd.get(dimension)
+        if isinstance(v, str) and v.strip():
+            return v.strip()
+    if dimension in DIMENSION_METRIC:
+        return DIMENSION_METRIC[dimension]
+    return str(policy["metric"])
 
 
 def _confidence(n_min: int, rel: float, policy: Dict[str, Any]) -> str:
@@ -250,19 +286,24 @@ def detect_candidates(
     rollups = rollups if isinstance(rollups, dict) else {}
     by_arm = rollups.get("by_variant_arm")
     by_arm = by_arm if isinstance(by_arm, dict) else {}
-    metric = str(policy["metric"])
     incumbent_label = str(policy["incumbent_label"])
     inc_cell = _cell(by_arm, incumbent_label)
 
     out: List[Dict[str, Any]] = []
     for dimension, arms in PROMOTABLE_DIMENSIONS.items():
+        # Per-dimension metric: mascot is judged on median_views, others on the
+        # global policy metric (median_eng_rate). A dim-scoped policy carries it into
+        # _evaluate_arm + the candidate dict.
+        metric = _metric_for_dimension(dimension, policy)
+        dim_policy = dict(policy)
+        dim_policy["metric"] = metric
         current_default = defaults.get(dimension, FALLBACK_DEFAULTS[dimension])
         best: Optional[Dict[str, Any]] = None
         best_metric = -float("inf")
         for arm in arms:
             if arm == current_default:
                 continue  # this arm IS the current default (== control); nothing to test
-            cand = _evaluate_arm(dimension, arm, incumbent_label, inc_cell, _cell(by_arm, arm), policy)
+            cand = _evaluate_arm(dimension, arm, incumbent_label, inc_cell, _cell(by_arm, arm), dim_policy)
             if cand is None:
                 continue
             m = float(cand["challenger"][metric])
@@ -280,11 +321,14 @@ def _proposal_from_candidate(cand: Dict[str, Any], now: str) -> Dict[str, Any]:
     metric = cand["metric"]
     rel = cand.get("delta_rel")
     rel_txt = "∞" if rel is None else f"{rel * 100:.1f}%"
+    # eng_rate is a percentage; views/reach are raw counts -- render the units honestly.
+    pct = "%" if "eng_rate" in metric else ""
+    abs_unit = "pp" if "eng_rate" in metric else " (abs)"
     rationale = (
         f"Test arm '{cand['arm']}' beat the current default '{cand['current_default']}' "
         f"(incumbent '{cand['incumbent_label']}') on {metric}: "
-        f"{cand['challenger'][metric]}% vs {cand['incumbent'][metric]}% "
-        f"(+{cand['delta_abs_pp']}pp, +{rel_txt}), "
+        f"{cand['challenger'][metric]}{pct} vs {cand['incumbent'][metric]}{pct} "
+        f"(+{cand['delta_abs_pp']}{abs_unit}, +{rel_txt}), "
         f"n={cand['challenger']['n_with_metrics']}/{cand['incumbent']['n_with_metrics']} "
         f">= min_sample {cand['min_sample']}. Recommend flipping the {cand['dimension']} "
         f"default to '{cand['recommended_default']}'. HUMAN APPROVAL REQUIRED."
