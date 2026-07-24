@@ -163,7 +163,8 @@ function bankCoverageCard(cov: BankCoverage): string {
     <span class="hpill"><b>est. burn</b>~${n(cov.perDay)} q/day</span>
   </div>
   ${cov.byType.length ? `<div class="tblwrap"><table class="tbl"><thead><tr><th>question type</th><th>usable</th><th>fresh</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<p class="muted">No question-bank entries found.</p>`}
-  <p class="muted" style="margin-top:8px">Runway = fresh usable questions ÷ est. burn (${n(cov.perDay)}/day). The near-dup + type-spread guards keep variety; this flags a TYPE running low.</p>`;
+  <p class="muted" style="margin-top:8px">Runway = fresh usable questions ÷ est. burn (${n(cov.perDay)}/day). The near-dup + type-spread guards keep variety; this flags a TYPE running low.</p>
+  <p class="muted" style="margin-top:6px"><b>Used-set (honest):</b> reconciled from the usage ledger + the loop's dedup set + every recovered run-state video's exact question sigs (self-heals as new cycles record sigs). <b>Residual uncertainty:</b> the prior usage ledger was partly lost on the box rebuild, and Publer stores captions/metrics — never our internal question sigs — so a handful of pre-recovery posts can't be sig-matched. "Used" is therefore a floor and fresh/runway an upper bound (bounded well under ±10% of the ${n(cov.usable)}-question usable pool).</p>`;
 }
 
 // ── per-ARM A/B leaderboard (P2) ──────────────────────────────────────────────
@@ -523,6 +524,19 @@ function draftMediaSrc(videoKey: string, kind: "video" | "thumb"): string {
 }
 
 /**
+ * Prominent per-card scheduled date/time chip (shown on EVERY video card). Pass the
+ * `scheduled_cst` string for a scheduled post; pass null/empty for a draft, which
+ * renders a neutral "Not scheduled" state instead of a blank/empty chip.
+ */
+function scheduleChip(cst?: string | null): string {
+  const has = typeof cst === "string" && cst.trim().length > 0;
+  if (has) {
+    return `<div class="timechip" title="Auto-publishes on Publer at this time (America/Chicago)"><span class="tc-k">Scheduled</span><span class="tc-v">${esc(cst)}</span></div>`;
+  }
+  return `<div class="timechip timechip-none" title="This is a draft — it is not scheduled to publish"><span class="tc-k">Schedule</span><span class="tc-v">Not scheduled</span></div>`;
+}
+
+/**
  * Shared inline preview used by BOTH the drafts and scheduled panels. Renders the
  * FULL 9:16 frame (CSS object-fit: contain — letterbox, never crop) inside a fixed
  * 9:16 box, enhanced client-side by Plyr (vendored locally). Media is streamed
@@ -542,10 +556,14 @@ function videoPreview(videoKey: string, thumbnail: string | null, mediaUrl: stri
 }
 
 function draftCard(v: DraftVideo): string {
-  const inferred = v.variant_source === "inferred";
-  const srcChip = inferred
-    ? `<span class="chip c-warn" title="No run/ab-database record matched this Publer draft id — label inferred from the caption">inferred</span>`
-    : `<span class="chip c-ok" title="Correlated from ${esc(v.variant_source)} by publer_post_id">from ${esc(v.variant_source)}</span>`;
+  // Data-provenance (v.variant_source: "run" | "ab-database" | "inferred") is kept
+  // in the DATA but no longer surfaced as a noisy "inferred" badge: while the exact
+  // draft→variant mapping is rebuilt post-recovery, every draft reads "inferred"
+  // (internal noise). We show ONLY a subtle, positive "from <source>" chip when a
+  // real record actually matched — it self-heals as new posts carry exact mapping.
+  const srcChip = v.variant_source !== "inferred"
+    ? `<span class="chip c-ok" title="Correlated from ${esc(v.variant_source)} by publer_post_id">from ${esc(v.variant_source)}</span>`
+    : "";
   // Inline preview (full 9:16 frame + Plyr). The PUBLIC Publer CDN mp4 is
   // Referer-gated (403 cross-origin), so it is streamed same-origin via the
   // read-only /api/draft-media proxy; the poster is the draft's thumbnail (also
@@ -563,6 +581,7 @@ function draftCard(v: DraftVideo): string {
   return `<div class="draftcard">
     <div class="dthumb">${preview}</div>
     <div class="dbody">
+      ${scheduleChip(null)}
       <div class="vid-h">
         <div><span class="dim">${esc(v.dimension)}</span> <span class="arm">/ ${esc(v.arm)}</span></div>
         ${srcChip}
@@ -577,21 +596,21 @@ function draftCard(v: DraftVideo): string {
 
 function draftsPanel(view: DraftsView | undefined): string {
   if (!view) {
-    return `<p class="muted">Drafts are loaded live from Publer (read-only). None loaded yet.</p>`;
+    return `<p class="muted">Older Publer drafts are loaded live (read-only). None loaded yet.</p>`;
   }
   if (!view.ok && !view.videos.length) {
-    return `<p class="muted">Couldn't load pending Publer drafts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls the drafts live via the pipeline's read-only Publer bridge; it retries on the next refresh. READ-ONLY — no publish/schedule here (publish from Publer).</p>`;
+    return `<p class="muted">Couldn't load Publer drafts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls any remaining drafts live via the pipeline's read-only Publer bridge; it retries on the next refresh. READ-ONLY — no publish/schedule here.</p>`;
   }
   if (!view.videos.length) {
-    return `<p class="muted">No pending Publer drafts right now. When the daily draft loop creates the next batch (IG + TikTok per video), each will appear here for you to review and publish from Publer.</p>`;
+    return `<p class="muted"><b>No leftover drafts — clean.</b> Autonomous Hermes now schedules each new video directly on Publer (see the SCHEDULED panel above), so nothing sits here "awaiting review." This panel only lingers to surface any <em>pre-autonomy</em> drafts left on the account; there are none right now.</p>`;
   }
   const head = `<div class="health" style="margin-bottom:12px">
-    <span class="hpill"><b>videos awaiting review</b>${esc(view.count_videos)}</span>
+    <span class="hpill"><b>older draft videos</b>${esc(view.count_videos)}</span>
     <span class="hpill"><b>publer drafts</b>${esc(view.count_drafts)} (IG + TikTok)</span>
     <span class="hpill"><b>source</b>${esc(view.source)}</span>
     <span class="hpill"><b>as of</b>${esc((view.as_of || "").slice(11, 19))}Z</span>
   </div>
-  <p class="muted" style="margin-bottom:12px">Each card is one video with an inline preview (streamed read-only from Publer's CDN via this dashboard) and which platform(s) it is drafted to. A/B variant is correlated from the loop's run state / ab-database by <code>publer_post_id</code>; where no record matches, the arm is inferred from the caption and tagged <span class="chip c-warn">inferred</span>. READ-ONLY — preview only; publishing stays in Publer and nothing is published or scheduled from here.</p>`;
+  <p class="muted" style="margin-bottom:12px">Autonomous Hermes schedules new videos <b>directly</b> on Publer (SCHEDULED panel above) — nothing here "awaits review." These are older / pre-autonomy Publer drafts still on the account; each card is one video with an inline preview (streamed read-only from Publer's CDN via this dashboard) and its target platform(s). READ-ONLY — preview only; nothing is published or scheduled from here.</p>`;
   return `${head}<div class="draftgrid">${view.videos.map(draftCard).join("")}</div>`;
 }
 
@@ -718,18 +737,18 @@ function goalPanel(gp: GoalProgress): string {
 /** One scheduled-post card: FULL 9:16 preview (contain + Plyr) + its scheduled time. */
 function scheduledCard(p: ScheduledPost): string {
   const preview = videoPreview(p.video_key, p.thumbnail, p.media_url);
-  const armChip = p.arm_source === "inferred"
-    ? ` <span class="chip c-warn" title="no run/ab-database record matched this Publer post id — arm inferred from the caption">inferred</span>`
-    : "";
+  // NOTE: p.arm_source ("run" | "ab-database" | "inferred") is intentionally NOT
+  // surfaced as a badge — it's an internal data-provenance flag that self-heals as
+  // new posts carry an exact draft→variant mapping (kept in the data, not the UI).
   return `<div class="draftcard">
     <div class="dthumb">${preview}</div>
     <div class="dbody">
+      ${scheduleChip(p.scheduled_cst)}
       <div class="vid-h">
-        <div><span class="dim">${esc(p.scheduled_cst)}</span></div>
+        <div class="arm">A/B arm: <b>${esc(p.arm)}</b></div>
         <span class="dplat">${platformLabel(p.platform)}</span>
       </div>
       <div class="rationale">${esc(p.hook)}</div>
-      <div class="draftplatforms"><span class="muted">A/B arm</span> <span class="arm">${esc(p.arm)}</span>${armChip}</div>
     </div>
   </div>`;
 }
@@ -791,6 +810,8 @@ export function page(opts: PageData): string {
   const s = cur?.summary || { planned: 0, drafted: 0, rejected: 0, failed: 0 };
   const drafts = (cur?.videos || []).filter((v) => v.status === "drafted");
   const draftTotal = drafts.reduce((a, v) => a + (v.publer?.post_ids?.length || 0), 0);
+  // Live cumulative count of posts Publer currently has SCHEDULED (not this cycle).
+  const scheduledCount = opts.scheduled?.ok ? opts.scheduled.count : (opts.scheduled ? opts.scheduled.count : "—");
   const runOpts = runs
     .map((r) => `<option value="${esc(r.run_id)}" ${r.run_id === cur?.run_id ? "selected" : ""}>${esc(r.run_id)} · ${esc(r.status)} · ${r.summary?.drafted ?? 0} drafts</option>`)
     .join("");
@@ -819,10 +840,14 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .kill-dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--blue);border:2px solid #122a5c;margin-right:9px;vertical-align:middle}
 .kill-dot-ok{background:var(--green);border-color:var(--ink)}
 .kill-src{font-weight:600;opacity:.82;font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:0}
 .kpi{background:var(--paper);border:4px solid var(--ink);border-radius:16px;box-shadow:8px 8px 0 0 var(--ink);padding:16px}
 .kpi .v{font:800 34px/1 "Segoe UI",sans-serif}
 .kpi .k{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#444;margin-top:6px}
+/* group KPIs so per-cycle counters are visually separated from bank/live totals */
+.statgroup{margin-bottom:20px}
+.statlabel{font:800 12px/1 "Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:1.5px;color:#111;background:var(--yellow);border:3px solid var(--ink);border-radius:9px;display:inline-block;padding:6px 11px;margin-bottom:12px;box-shadow:3px 3px 0 0 var(--ink)}
+.statlabel .muted{font-weight:600;letter-spacing:.4px;text-transform:none;color:#333}
 .card{background:var(--paper);border:4px solid var(--ink);border-radius:18px;box-shadow:8px 8px 0 0 var(--ink);padding:20px;margin-bottom:22px}
 .card h2{margin:0 0 14px;font-size:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .card h2 .pin{background:var(--coral);border:3px solid var(--ink);border-radius:8px;padding:2px 8px;font-size:12px;font-weight:800}
@@ -888,6 +913,13 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .dbody{padding:12px;display:flex;flex-direction:column;gap:6px}
 .draftplatforms{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px}
 .dplat{display:inline-block;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:8px;padding:3px 9px;background:var(--mint);color:#111}
+/* prominent per-card scheduled date/time chip (scheduled = mint; draft = neutral grey) */
+.timechip{display:flex;align-items:center;gap:8px;margin-bottom:10px;border:3px solid var(--ink);border-radius:10px;padding:7px 10px;background:var(--mint);box-shadow:3px 3px 0 0 var(--ink)}
+.timechip .tc-k{flex:0 0 auto;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--ink);color:var(--mint);padding:3px 8px;border-radius:6px}
+.timechip .tc-v{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
+.timechip-none{background:#e6e6e6;box-shadow:3px 3px 0 0 #555}
+.timechip-none .tc-k{background:#555;color:#fff}
+.timechip-none .tc-v{color:#555;font-weight:700}
 .goalcard{background:linear-gradient(180deg,#fffdf3,var(--paper))}
 .gtwo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:4px}
 .gscope{border:3px solid var(--ink);border-radius:14px;padding:14px;background:var(--cream);margin-top:10px}
@@ -917,24 +949,34 @@ ${killBanner(kill)}
     ${goalPanel(goal)}
   </div>
 
-  <div class="grid">
-    <div class="kpi"><div class="v">${s.planned}</div><div class="k">planned</div></div>
-    <div class="kpi"><div class="v">${s.drafted}</div><div class="k">videos drafted</div></div>
-    <div class="kpi"><div class="v">${draftTotal}</div><div class="k">publer drafts</div></div>
-    <div class="kpi"><div class="v">${s.rejected}</div><div class="k">rejected (gates)</div></div>
-    <div class="kpi"><div class="v">${bank.fresh}</div><div class="k">fresh questions</div></div>
-    <div class="kpi"><div class="v">${cov.runwayDays == null ? "—" : cov.runwayDays}</div><div class="k">days runway</div></div>
-    <div class="kpi"><div class="v">${opts.drafts ? opts.drafts.count_videos : "—"}</div><div class="k">drafts awaiting review</div></div>
+  <div class="statgroup">
+    <div class="statlabel">This cycle <span class="muted">· selected run ${esc(cur?.run_id || "—")} (per-run counters, reset each cycle)</span></div>
+    <div class="grid">
+      <div class="kpi"><div class="v">${s.planned}</div><div class="k">planned (this cycle)</div></div>
+      <div class="kpi"><div class="v">${s.drafted}</div><div class="k">videos drafted (this cycle)</div></div>
+      <div class="kpi"><div class="v">${draftTotal}</div><div class="k">publer drafts (this cycle)</div></div>
+      <div class="kpi"><div class="v">${s.rejected}</div><div class="k">rejected · gates (this cycle)</div></div>
+    </div>
   </div>
 
-  <div class="card">
-    <h2><span class="pin">DRAFTS</span> Drafts awaiting review <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
-    ${draftsPanel(opts.drafts)}
+  <div class="statgroup">
+    <div class="statlabel">Bank &amp; live totals <span class="muted">· cumulative — NOT this cycle</span></div>
+    <div class="grid">
+      <div class="kpi"><div class="v">${scheduledCount}</div><div class="k">scheduled on publer (live)</div></div>
+      <div class="kpi"><div class="v">${bank.fresh}</div><div class="k">fresh questions (bank)</div></div>
+      <div class="kpi"><div class="v">${cov.runwayDays == null ? "—" : cov.runwayDays}</div><div class="k">days runway (bank est.)</div></div>
+      <div class="kpi"><div class="v">${opts.drafts ? opts.drafts.count_videos : "—"}</div><div class="k">older drafts (pre-autonomy)</div></div>
+    </div>
   </div>
 
   <div class="card">
     <h2><span class="pin">SCHEDULED</span> Auto-scheduled posts &amp; times (post-kickoff) <span class="pin" style="background:var(--mint)">LIVE FROM PUBLER</span></h2>
     ${scheduledPanel(opts.scheduled)}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">DRAFTS</span> Older drafts (pre-autonomy) <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
+    ${draftsPanel(opts.drafts)}
   </div>
 
   <div class="card">

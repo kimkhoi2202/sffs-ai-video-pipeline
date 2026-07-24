@@ -131,12 +131,44 @@ export function bankStats(): BankStats {
   }
 }
 
+/**
+ * The TRUE used-question set, reconciled across EVERY durable record of a consumed
+ * question — not just the (partly-lost) usage ledger. Unions, in order:
+ *   1. content/ab-test-usage.json      — the primary usage ledger. It UNDER-counts:
+ *      it was lost when the prior box was terminated and only partly rebuilt.
+ *   2. hermes-used-sigs.json           — the loop's own dedup set.
+ *   3. every run-state video's questions[].sig (RUNS_DIR) — the recovered
+ *      post-recovery run-state, the authoritative record of what each drafted /
+ *      rendered / posted video actually consumed. This back-fills sigs the lost
+ *      ledger dropped and SELF-HEALS as new cycles write exact per-video sigs.
+ *   4. ab-database posts carrying explicit question sigs (future-proof; today's
+ *      records store question_types/tiers, NOT sigs, so this contributes 0 now —
+ *      Publer itself never stores our internal sigs, so posted history can't be
+ *      sig-reconciled beyond what the run-state already captured).
+ * Reconciling HERE keeps "fresh"/"runway" honest without mutating any pipeline
+ * data file (the dashboard stays strictly read-only). Residual uncertainty: any
+ * pre-recovery video whose exact sigs were never recorded is unrecoverable, so
+ * "used" is a floor and "fresh"/"runway" an upper bound — see the BANK panel note.
+ */
 function loadUsedSigs(): Set<string> {
   const used = new Set<string>();
   const usage = readJSON<{ videos?: Array<{ questions?: Array<{ sig?: string }> }> }>(CONFIG.USAGE, {});
   for (const v of usage.videos ?? []) for (const q of v.questions ?? []) if (q.sig) used.add(q.sig);
   const hermes = readJSON<{ sigs?: string[] }>(CONFIG.HERMES_USED, {});
   for (const s of hermes.sigs ?? []) used.add(s);
+  // Recovered run-state: each video's questions carry the exact bank sig it used.
+  for (const r of runSummaries(500)) {
+    for (const v of r.videos ?? []) for (const q of v.questions ?? []) if (q?.sig) used.add(q.sig);
+  }
+  // ab-database posts that recorded explicit sigs (0 today; self-heals if added).
+  const posts: any[] = Array.isArray(abDb()?.posts) ? abDb().posts : [];
+  for (const p of posts) {
+    const cand: unknown[] = Array.isArray(p?.variant?.question_sigs) ? p.variant.question_sigs
+      : Array.isArray(p?.question_sigs) ? p.question_sigs
+      : Array.isArray(p?.questions) ? p.questions.map((q: any) => q?.sig)
+      : [];
+    for (const s of cand) if (s) used.add(String(s));
+  }
   return used;
 }
 

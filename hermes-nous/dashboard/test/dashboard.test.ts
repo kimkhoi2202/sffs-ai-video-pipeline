@@ -441,15 +441,15 @@ const draftsFixture = {
   ],
 };
 
-test("page: renders the Drafts awaiting review panel + empty state", () => {
+test("page: renders the Older drafts (pre-autonomy) panel + empty state", () => {
   const html = page(emptyPageData());
-  assert.match(html, /Drafts awaiting review/);
-  assert.match(html, /None loaded yet|No pending Publer drafts/);
+  assert.match(html, /Older drafts \(pre-autonomy\)/);
+  assert.match(html, /None loaded yet|No leftover drafts/);
 });
 
 test("page: drafts panel shows variant, question types, inline video preview + platform labels", () => {
   const html = page(emptyPageData({ drafts: draftsFixture as any }));
-  assert.match(html, /Drafts awaiting review/);
+  assert.match(html, /Older drafts \(pre-autonomy\)/);
   assert.match(html, /cliffhanger/);
   assert.match(html, /last-hidden/);
   assert.match(html, /VERBAL ANALOGY/);
@@ -462,7 +462,13 @@ test("page: drafts panel shows variant, question types, inline video preview + p
   // platform labels present as plain text (dead Publer deep-links removed)
   assert.match(html, /Instagram/);
   assert.match(html, /TikTok/);
-  assert.match(html, /inferred/);
+  // Item 3: the internal "inferred" provenance flag is NO LONGER surfaced as a
+  // user-facing badge; a subtle positive "from <source>" chip shows ONLY when a
+  // real record matched (video m1 = variant_source "run").
+  assert.doesNotMatch(html, /\binferred\b/i);
+  assert.match(html, /from run/);
+  // Item 1: every draft card shows a prominent neutral "Not scheduled" chip.
+  assert.match(html, /Not scheduled/);
   // the second video has no playable media_url ⇒ graceful "no preview"
   assert.match(html, /no preview/);
 });
@@ -699,7 +705,7 @@ test("page: GOAL panel renders FRONT-AND-CENTER with the exact mandate targets +
   assert.doesNotMatch(html, /200,000/); // old likes target gone
   // FRONT-AND-CENTER: the GOAL card comes before DRAFTS and Cycle status
   const goalIdx = html.indexOf("Hermes mandate");
-  const draftsIdx = html.indexOf("Drafts awaiting review");
+  const draftsIdx = html.indexOf("Older drafts (pre-autonomy)");
   const cycleIdx = html.indexOf("Cycle status");
   assert.ok(goalIdx > -1 && draftsIdx > goalIdx, "GOAL panel must render before DRAFTS");
   assert.ok(cycleIdx > goalIdx, "GOAL panel must render before Cycle status");
@@ -775,6 +781,30 @@ test("D3: SCHEDULED panel shows full-frame previews via the same-origin proxy (b
   assert.match(html, /poster="\/api\/draft-media\?v=sm1&amp;kind=thumb"/);
   assert.doesNotMatch(html, /cdn\.publer\.com/);   // proxied — no raw CDN url in HTML
   assert.doesNotMatch(html, /amazonaws|X-Amz-/);   // no S3-signed leak
+});
+
+test("Item 1: prominent per-card schedule chip — scheduled shows CST time, drafts show 'Not scheduled'", () => {
+  const sHtml = page(emptyPageData({ scheduled: schedFixture as any }));
+  assert.match(sHtml, /class="timechip"/);           // prominent chip present
+  assert.match(sHtml, /Wed Jul 23, 9:17 PM CDT/);    // uses scheduled_cst
+  const dHtml = page(emptyPageData({ drafts: draftsFixture as any }));
+  assert.match(dHtml, /timechip-none/);              // neutral state (never blank)
+  assert.match(dHtml, /Not scheduled/);
+});
+
+test("Item 5: KPIs are split into labelled 'This cycle' vs 'Bank & live totals' groups", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /class="statlabel"[^>]*>This cycle/);
+  assert.match(html, /Bank &amp; live totals/);
+  assert.match(html, /\(this cycle\)/);
+  assert.match(html, /fresh questions \(bank\)/);
+  assert.match(html, /days runway \(bank est\.\)/);
+});
+
+test("Item 2: BANK panel surfaces the honest reconciled used-set method + residual uncertainty", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /Used-set \(honest\)/);
+  assert.match(html, /Residual uncertainty/);
 });
 
 test("D3: resolveScheduledMediaUrl resolves by video_key, allowlist-guarded (no S3)", () => {
