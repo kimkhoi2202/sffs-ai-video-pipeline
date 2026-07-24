@@ -558,6 +558,25 @@ function videoPreview(videoKey: string, thumbnail: string | null, mediaUrl: stri
   return `<div class="dthumb-none">no preview</div>`;
 }
 
+/**
+ * The REAL A/B label for a draft/scheduled card: "dimension: arm" from the
+ * run-state / ab-database variant metadata (e.g. "narration: no-narration",
+ * "tempo: tempo-fast", "mascot: mascot-prominent"), collapsing the baseline to a
+ * single "control", and a neutral "unknown" when a post can't be matched to a
+ * real arm — NEVER the LLM caption opener. Display-only; never fabricates an arm.
+ */
+export function armLabel(dimension?: string, arm?: string): string {
+  const NEUTRAL = new Set(["", "—", "unknown", "variant"]);
+  const dim = String(dimension ?? "").trim();
+  const a = String(arm ?? "").trim();
+  if (dim.toLowerCase() === "control" || a.toLowerCase() === "control") return "control";
+  const dimBad = NEUTRAL.has(dim.toLowerCase());
+  const armBad = NEUTRAL.has(a.toLowerCase());
+  if (dimBad && armBad) return "unknown";
+  if (!dimBad && !armBad && dim !== a) return `${dim}: ${a}`;
+  return !armBad ? a : !dimBad ? dim : "unknown";
+}
+
 function draftCard(v: DraftVideo): string {
   // Data-provenance (v.variant_source: "run" | "ab-database" | "inferred") is kept
   // in the DATA but no longer surfaced as a noisy "inferred" badge: while the exact
@@ -586,7 +605,7 @@ function draftCard(v: DraftVideo): string {
     <div class="dbody">
       ${scheduleChip(null)}
       <div class="vid-h">
-        <div><span class="dim">${esc(v.dimension)}</span> <span class="arm">/ ${esc(v.arm)}</span></div>
+        <div class="arm">A/B: <b>${esc(armLabel(v.dimension, v.arm))}</b></div>
         ${srcChip}
       </div>
       <div class="rationale">${esc(v.hook)}</div>
@@ -735,7 +754,7 @@ function scheduledCard(p: ScheduledPost): string {
     <div class="dbody">
       ${scheduleChip(p.scheduled_cst)}
       <div class="vid-h">
-        <div class="arm">A/B arm: <b>${esc(p.arm)}</b></div>
+        <div class="arm">A/B: <b>${esc(armLabel(p.dimension, p.arm))}</b></div>
         <span class="dplat">${platformLabel(p.platform)}</span>
       </div>
       <div class="rationale">${esc(p.hook)}</div>
