@@ -767,6 +767,264 @@
           "answerNorm": "new"
         }
       ]
+    },
+    {
+      "videoSlug": "smoke-1784906419-v01",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "3c4ebf843138",
+          "sig": "text|verbal|verbal-analogy|caterpillar is to butterfly as tadpole is to || egg~fish~frog~pond|frog",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "frog"
+        }
+      ]
+    },
+    {
+      "videoSlug": "smoke-1784906419-v02",
+      "test": "category-mix",
+      "variant": "quant-only",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "22d431a4f5b5",
+          "sig": "numseries|quantitative|number-series|5~8~13~21~34|55",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "55"
+        },
+        {
+          "hash": "c1c550f9af11",
+          "sig": "numseries|quantitative|number-series|2~6~13~23~36|52",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "52"
+        },
+        {
+          "hash": "c8808c18b772",
+          "sig": "numseries|quantitative|number-series|3~4~7~11~18|29",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "29"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v01",
+      "test": "narration",
+      "variant": "no-question-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "acea2d2416b0",
+          "sig": "text|verbal|verbal-analogy|lion is to roar as wolf is to || croak~howl~neigh~quack|howl",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "howl"
+        },
+        {
+          "hash": "9816a9ff0388",
+          "sig": "text|verbal|odd-one-out|which one does not belong || broccoli~celery~pea~tractor|tractor",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "tractor"
+        },
+        {
+          "hash": "7c77c6cbe32d",
+          "sig": "text|verbal|sentence-completion|the wool rug felt very and kept us warm on the cold night || cold~cozy~rough~wet|cozy",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "cozy"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v02",
+      "test": "narration",
+      "variant": "no-narration",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "315edc440705",
+          "sig": "text|verbal|antonym|which word means the opposite of brave || bold~calm~fearful~strong|fearful",
+          "tier": "ANTONYM",
+          "answerNorm": "fearful"
+        },
+        {
+          "hash": "8c3cdb4abfd2",
+          "sig": "text|verbal|synonym|which word means the same as enormous || fast~gigantic~happy~tiny|gigantic",
+          "tier": "SYNONYM",
+          "answerNorm": "gigantic"
+        },
+        {
+          "hash": "a4bb5316a41b",
+          "sig": "text|verbal|logic|all roses are flowers some flowers fade fast so all roses fade fast || can t tell~false~true|can t tell",
+          "tier": "LOGIC",
+          "answerNorm": "can t tell"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v04",
+      "test": "type-nonverbal-classic",
+      "variant": "classic-shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "76625c5ee5ee",
+          "sig": "dot|nonverbal|position|bl~tl~tr=>br|br",
+          "tier": "POSITION",
+          "answerNorm": "br"
+        },
+        {
+          "hash": "3223f963309f",
+          "sig": "polygon|nonverbal|figure-series|7~5=>3|3",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "3"
+        },
+        {
+          "hash": "1ec164cc4829",
+          "sig": "shaded|nonverbal|figure-analogy|lightning>square=>square:true|filled-square",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "filled-square"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v05",
+      "test": "narration",
+      "variant": "no-options-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "cd3d23e34e67",
+          "sig": "text|verbal|verbal-analogy|hen is to chick as goat is to || calf~duckling~fawn~kid|kid",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "kid"
+        },
+        {
+          "hash": "32f9d411504e",
+          "sig": "text|verbal|odd-one-out|which one does not belong || elm~hexagon~pentagon~square|elm",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "elm"
+        },
+        {
+          "hash": "c022a721887c",
+          "sig": "text|verbal|sentence-completion|the stream from the mountain was so that we could see the bottom || clear~muddy~sweet~warm|clear",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "clear"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v06",
+      "test": "tempo",
+      "variant": "tempo-slow",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "9432990e6205",
+          "sig": "text|quantitative|number-puzzle|if 7 2 27 2 6 24 1 2 9 then 6 6 || 24~31~36~37|36",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "36"
+        },
+        {
+          "hash": "77b1b3e229cc",
+          "sig": "numseries|quantitative|number-series|2~5~7~12~19|31",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "31"
+        },
+        {
+          "hash": "4604c053e10f",
+          "sig": "text|quantitative|compare|which fraction is the largest || 1 2~2 5~3 8~4 9|1 2",
+          "tier": "COMPARE",
+          "answerNorm": "1 2"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v08",
+      "test": "category-mix",
+      "variant": "quant-only",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "7e3fb9694947",
+          "sig": "numseries|quantitative|number-series|3~5~8~13~21|34",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "34"
+        },
+        {
+          "hash": "79c1fbc091e9",
+          "sig": "numseries|quantitative|number-series|2~6~11~17~24|32",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "32"
+        },
+        {
+          "hash": "f99190ea5376",
+          "sig": "numseries|quantitative|number-series|1~6~7~13~20|33",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "33"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v09",
+      "test": "control",
+      "variant": "control",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "5a8678c69bc3",
+          "sig": "text|quantitative|number-puzzle|if 6 3 21 3 5 20 3 2 8 then 5 3 || 15~18~23~8|18",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "18"
+        },
+        {
+          "hash": "53a0fb0b2c20",
+          "sig": "numseries|verbal|letter-series|B~D~G~K|p",
+          "tier": "LETTER SERIES",
+          "answerNorm": "p"
+        },
+        {
+          "hash": "a678ca4a499f",
+          "sig": "text|verbal|synonym|which word means the same as rapid || empty~heavy~quick~slow|quick",
+          "tier": "SYNONYM",
+          "answerNorm": "quick"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-24-v10",
+      "test": "ending",
+      "variant": "full-reveal",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "3f510ba29d13",
+          "sig": "text|quantitative|word-problem|a book has 90 pages sam read half of it how many pages left || 30~40~45~50|45",
+          "tier": "WORD PROBLEM",
+          "answerNorm": "45"
+        },
+        {
+          "hash": "8ee9bac1c81a",
+          "sig": "numseries|verbal|letter-series|Z~X~V~T|r",
+          "tier": "LETTER SERIES",
+          "answerNorm": "r"
+        },
+        {
+          "hash": "8cfcca526f24",
+          "sig": "text|verbal|antonym|which word means the opposite of ancient || huge~modern~old~quiet|modern",
+          "tier": "ANTONYM",
+          "answerNorm": "modern"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"

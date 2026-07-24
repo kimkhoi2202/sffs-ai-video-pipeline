@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T16:28:22.832Z",
+  "updated_at": "2026-07-24T15:26:18.269Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -71,26 +71,26 @@
       "intro-promo": {
         "n_posts": 2,
         "n_with_metrics": 2,
-        "median_eng_rate": 5.23,
-        "avg_reach": 249.5
+        "median_eng_rate": 5.08,
+        "avg_reach": 259.5
       },
       "standard": {
         "n_posts": 9,
         "n_with_metrics": 9,
-        "median_eng_rate": 2.62,
-        "avg_reach": 130
+        "median_eng_rate": 2.61,
+        "avg_reach": 131
       },
       "cliffhanger": {
         "n_posts": 6,
         "n_with_metrics": 2,
-        "median_eng_rate": 4.04,
-        "avg_reach": 380
+        "median_eng_rate": 3.84,
+        "avg_reach": 424.5
       },
       "no-answer": {
         "n_posts": 3,
         "n_with_metrics": 2,
-        "median_eng_rate": 0.94,
-        "avg_reach": 113
+        "median_eng_rate": 1.56,
+        "avg_reach": 126.5
       },
       "dont-narrate": {
         "n_posts": 6,
@@ -129,7 +129,7 @@
         "avg_reach": null
       },
       "control": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
@@ -155,27 +155,27 @@
     },
     "by_platform": {
       "instagram": {
-        "n_posts": 21,
+        "n_posts": 22,
         "n_with_metrics": 6,
-        "median_eng_rate": 0.8,
-        "avg_reach": 119
+        "median_eng_rate": 1.3,
+        "avg_reach": 122.5
       },
       "tiktok": {
-        "n_posts": 23,
+        "n_posts": 24,
         "n_with_metrics": 9,
-        "median_eng_rate": 3.85,
-        "avg_reach": 291
+        "median_eng_rate": 3.67,
+        "avg_reach": 300
       }
     },
     "by_hashtag_set": {
       "B": {
         "n_posts": 9,
         "n_with_metrics": 1,
-        "median_eng_rate": 1.87,
-        "avg_reach": 107
+        "median_eng_rate": 2.31,
+        "avg_reach": 130
       },
       "A": {
-        "n_posts": 11,
+        "n_posts": 13,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
@@ -191,20 +191,26 @@
       "evening (18-24)": {
         "n_posts": 8,
         "n_with_metrics": 7,
-        "median_eng_rate": 2.89,
-        "avg_reach": 119
+        "median_eng_rate": 2.77,
+        "avg_reach": 123
       },
       "afternoon (12-18)": {
         "n_posts": 7,
         "n_with_metrics": 7,
-        "median_eng_rate": 2.62,
-        "avg_reach": 269
+        "median_eng_rate": 2.61,
+        "avg_reach": 274
       },
       "morning (6-12)": {
-        "n_posts": 1,
+        "n_posts": 5,
         "n_with_metrics": 1,
-        "median_eng_rate": 4.22,
-        "avg_reach": 474
+        "median_eng_rate": 4.01,
+        "avg_reach": 549
+      },
+      "night (0-6)": {
+        "n_posts": 4,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
       }
     },
     "by_variant_arm": {
@@ -249,11 +255,17 @@
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null
+      },
+      "control": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null
       }
     }
   },
   "front_runners": {
-    "as_of": "2026-07-22",
+    "as_of": "2026-07-24",
     "variant_family": "standard",
     "platform": "tiktok",
     "hashtag_set": null,
@@ -323,6 +335,22 @@
       "from": "2026-06-22",
       "to": "2026-07-22",
       "pulled": 21,
+      "updated": 15,
+      "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-24",
+      "from": "2026-06-24",
+      "to": "2026-07-24",
+      "pulled": 38,
+      "updated": 15,
+      "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-24",
+      "from": "2026-06-24",
+      "to": "2026-07-24",
+      "pulled": 38,
       "updated": 15,
       "n_with_metrics": 15
     }
