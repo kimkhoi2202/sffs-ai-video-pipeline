@@ -727,8 +727,8 @@ async function computeDrafts(): Promise<DraftsView> {
       caption: String(rep.text || ""),
       thumbnail,
       media_url,
-      dimension: variant ? variant.dimension : "hook",
-      arm: variant ? variant.arm : inferArm(rep.text),
+      dimension: variant ? variant.dimension : "unknown",
+      arm: variant ? variant.arm : "unknown", // neutral — NEVER the caption opener (was inferArm)
       variant_source: variant ? variant.source : "inferred",
       question_types: variant ? variant.question_types : [],
       run_id: variant?.run_id,
@@ -755,7 +755,8 @@ export interface ScheduledPost {
   scheduled_at: string; // ISO (UTC) — the source-of-truth Publer time
   scheduled_cst: string; // same instant formatted in America/Chicago (what the human tracks)
   hook: string; // caption first line
-  arm: string; // A/B arm (correlated from run/ab-database, else inferred from caption)
+  dimension: string; // A/B dimension (from run/ab-database) or "unknown" (no match)
+  arm: string; // A/B arm (from run/ab-database) or "unknown" (no match — NEVER the caption opener)
   arm_source: "run" | "ab-database" | "inferred";
   video_key: string; // shared Publer media id — for the read-only inline preview proxy
   thumbnail: string | null; // validated PUBLIC Publer CDN poster image (or null)
@@ -857,7 +858,8 @@ async function computeScheduled(): Promise<ScheduledView> {
       scheduled_at: String(at),
       scheduled_cst: formatChicago(String(at)),
       hook: draftHook(p.text),
-      arm: hit ? hit.arm : inferArm(p.text),
+      dimension: hit ? hit.dimension : "unknown",
+      arm: hit ? hit.arm : "unknown", // neutral — NEVER the caption opener (was inferArm)
       arm_source: hit ? hit.source : "inferred",
       video_key: String((media && media.id) || p.id),
       thumbnail: publicPublerCdnUrl(thumbRaw),

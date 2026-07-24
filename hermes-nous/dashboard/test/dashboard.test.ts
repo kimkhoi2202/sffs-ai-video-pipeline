@@ -19,7 +19,7 @@ import {
   resolveScheduledMediaUrl, sanitizeScheduledForPublic,
 } from "../data.ts";
 import { computeGoalProgress, GOAL } from "../goal.ts";
-import { esc, page } from "../render.ts";
+import { esc, page, armLabel } from "../render.ts";
 import { checkBasicAuth, eq } from "../server.ts";
 import type { GateAttempt } from "../types.ts";
 
@@ -784,6 +784,35 @@ test("D3: SCHEDULED panel shows full-frame previews via the same-origin proxy (b
   assert.match(html, /poster="\/api\/draft-media\?v=sm1&amp;kind=thumb"/);
   assert.doesNotMatch(html, /cdn\.publer\.com/);   // proxied — no raw CDN url in HTML
   assert.doesNotMatch(html, /amazonaws|X-Amz-/);   // no S3-signed leak
+});
+
+// ── A/B arm label = REAL dimension:arm (not the LLM caption opener) ───────────
+test("armLabel: real dimension:arm, control collapse, neutral 'unknown' (never the caption)", () => {
+  assert.equal(armLabel("narration", "no-narration"), "narration: no-narration");
+  assert.equal(armLabel("tempo", "tempo-fast"), "tempo: tempo-fast");
+  assert.equal(armLabel("mascot", "mascot-prominent"), "mascot: mascot-prominent");
+  assert.equal(armLabel("control", "control"), "control");
+  assert.equal(armLabel("unknown", "unknown"), "unknown");
+  assert.equal(armLabel("", ""), "unknown");
+  assert.equal(armLabel(undefined, undefined), "unknown");
+});
+
+test("SCHEDULED cards render the REAL dimension:arm (never the caption opener); neutral when unmatched", () => {
+  const sched = {
+    ok: true, source: "t", as_of: "t", count: 2, by_platform: { tiktok: 2 },
+    posts: [
+      { post_id: "s1", platform: "tiktok", scheduled_at: "2026-07-24T02:17:00Z", scheduled_cst: "t1",
+        hook: "think you got this", dimension: "narration", arm: "no-narration", arm_source: "run",
+        video_key: "k1", thumbnail: null, media_url: null },
+      { post_id: "s2", platform: "tiktok", scheduled_at: "2026-07-24T03:17:00Z", scheduled_cst: "t2",
+        hook: "bet you cant solve this", dimension: "unknown", arm: "unknown", arm_source: "inferred",
+        video_key: "k2", thumbnail: null, media_url: null },
+    ],
+  };
+  const html = page(emptyPageData({ scheduled: sched as any }));
+  assert.match(html, /narration: no-narration/);              // the REAL dimension:arm
+  assert.match(html, /A\/B: <b>unknown<\/b>/);               // neutral fallback for an unmatched post
+  assert.doesNotMatch(html, /think-you-got-this|bet-you-cant/); // NEVER the caption-opener slug
 });
 
 test("Item 1: per-card schedule chip shows TIME-ONLY (no redundant 'Scheduled' label); drafts show 'Not scheduled'", () => {
