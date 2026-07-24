@@ -1,8 +1,71 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T15:50:36.452014Z",
+  "updated_at": "2026-07-24T21:09:07.272201Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "Durable DEFAULT-PROMOTION proposal queue. The promotion engine (hermes-nous/sffs/promote.py) DETECTS when an A/B test arm clearly beats the current default and writes a `pending` proposal here (arm, metric deltas, sample size, confidence, recommended new default). Proposals are NEVER auto-applied: a human approves/rejects each via `sffs_promote_default --approve <id>` / `--reject <id>`. Every decision is appended to decisions_log (append-only) and, on approval, to ab-testing/content-defaults.json history + learnings.json decisions_log. The autonomous agent can only DETECT/LIST/SHOW (sffs_promote); it can NOT approve.",
-  "proposals": [],
-  "decisions_log": []
+  "proposals": [
+    {
+      "id": "manual-mascot-mascot-prominent",
+      "dimension": "mascot",
+      "current_default": "mascot-standard",
+      "recommended_default": "mascot-prominent",
+      "incumbent_label": "control",
+      "metric": "median_views",
+      "challenger": {
+        "arm": "mascot-prominent",
+        "n_with_metrics": 0,
+        "median_views": null
+      },
+      "incumbent": {
+        "arm": "control",
+        "n_with_metrics": 0,
+        "median_views": null
+      },
+      "delta_abs_pp": 0.0,
+      "delta_rel": 0.0,
+      "status": "approved",
+      "confidence": "manual",
+      "detected_at": "2026-07-24T21:09:07.272201Z",
+      "updated_at": "2026-07-24T21:09:07.272201Z",
+      "rationale": "MANUAL belief-driven promotion (owner decision): make the prominent mascot the default so every new video leans into the brand mascot. Mascot view data is still INCONCLUSIVE, so this is belief ahead of proof; the retained mascot-absent A/B control (minority allocation) keeps gathering the counterfactual and this is reversible via the ledger if prominent underperforms.",
+      "decided_at": "2026-07-24T21:09:07.272201Z",
+      "decided_by": "human",
+      "applied_change": {
+        "dimension": "mascot",
+        "from": "mascot-standard",
+        "to": "mascot-prominent"
+      }
+    }
+  ],
+  "decisions_log": [
+    {
+      "date": "2026-07-24",
+      "ts": "2026-07-24T21:09:07.272201Z",
+      "action": "approve",
+      "id": "manual-mascot-mascot-prominent",
+      "dimension": "mascot",
+      "from": "mascot-standard",
+      "to": "mascot-prominent",
+      "approved_by": "human",
+      "metric": "median_views",
+      "delta_abs_pp": 0.0,
+      "delta_rel": 0.0,
+      "rationale": "MANUAL belief-driven promotion (owner decision): make the prominent mascot the default so every new video leans into the brand mascot. Mascot view data is still INCONCLUSIVE, so this is belief ahead of proof; the retained mascot-absent A/B control (minority allocation) keeps gathering the counterfactual and this is reversible via the ledger if prominent underperforms."
+    }
+  ],
+  "auto_ledger": [
+    {
+      "ts": "2026-07-24T21:09:07.272201Z",
+      "date": "2026-07-24",
+      "action": "human-promote",
+      "dimension": "mascot",
+      "from": "mascot-standard",
+      "to": "mascot-prominent",
+      "metric": "median_views",
+      "approved_by": "human",
+      "reversible_to": "mascot-standard",
+      "active": true,
+      "note": "MANUAL belief-driven default flip (mascot data inconclusive). Retained mascot-absent + mascot-standard A/B controls (minority) gather the counterfactual; reversible via content-defaults history / sffs_promote_default."
+    }
+  ]
 }

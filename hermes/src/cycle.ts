@@ -185,7 +185,10 @@ async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): 
     // Publer's job_status returns only {status:"complete"} (no post ids), so resolve
     // the created draft post id by matching the (unique) uploaded media id.
     let postIds = extractPostIds(job.payload);
-    if (!postIds.length) postIds = await findDraftPostIds(mediaId);
+    // ARMED SCHEDULES the post (Publer state="scheduled"), so its id lives on the
+    // SCHEDULED list, not the draft list. Resolve against the matching state so the
+    // run-state records the real post id (the run->Publer learning-loop link).
+    if (!postIds.length) postIds = await findPostIdsByMedia(mediaId, sched.armed ? "scheduled" : "draft");
     results.push({ platform, account_id, media_url: url, media_id: mediaId, post_id: postIds[0] ?? null, job_id: jobId, scheduled_at });
   }
   v.media_url = results[0]?.media_url;
@@ -239,14 +242,17 @@ function extractPostIds(payload: any): string[] {
 }
 
 /**
- * Resolve the draft post ids created for an uploaded media. Publer's job_status
- * payload contains no post ids, so we match the (unique-per-video) media id against
- * the current draft list. Returns one id per account (e.g. TikTok + Instagram).
+ * Resolve the post ids created for an uploaded media in a given Publer STATE
+ * ("scheduled" for the armed loop, "draft" for the draft-only loop). Publer's
+ * job_status payload carries no post ids, so we match the (unique-per-video) media id
+ * against that state's post list. Returns one id per account (e.g. TikTok + Instagram).
+ * Best-effort: any failure yields [] — the post is already created; this only enriches
+ * the run-state -> Publer post-id link the dashboard joins on.
  */
-async function findDraftPostIds(mediaId: string): Promise<string[]> {
+async function findPostIdsByMedia(mediaId: string, state: string): Promise<string[]> {
   try {
-    const drafts = await listAllPosts("draft", 5);
-    return drafts
+    const posts = await listAllPosts(state, 5);
+    return posts
       .filter((p: any) => Array.isArray(p.media) && p.media.some((m: any) => String(m?.id) === String(mediaId)))
       .map(postId)
       .filter(Boolean);

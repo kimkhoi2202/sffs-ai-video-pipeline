@@ -61,7 +61,7 @@ def test_content_defaults_file_shape():
     cd = json.loads(CONTENT_DEFAULTS.read_text())
     assert cd["defaults"]["narration"] == "full"
     assert cd["defaults"]["ending"] == "cliffhanger"
-    assert cd["defaults"]["mascot"] == "mascot-standard"
+    assert cd["defaults"]["mascot"] == "mascot-prominent"
     pol = cd["promotion"]
     assert pol["metric_by_dimension"]["mascot"] == "median_views"
     # config-driven metric + threshold + min-sample gate all present
@@ -76,7 +76,7 @@ def test_python_engine_reads_the_config_contract():
     # the promotion engine resolves the SAME defaults + policy from the file
     defaults = promote.load_defaults(CONTENT_DEFAULTS)
     policy = promote.load_policy(CONTENT_DEFAULTS)
-    assert defaults == {"narration": "full", "ending": "cliffhanger", "mascot": "mascot-standard"}
+    assert defaults == {"narration": "full", "ending": "cliffhanger", "mascot": "mascot-prominent"}
     assert policy["min_sample"] == json.loads(CONTENT_DEFAULTS.read_text())["promotion"]["min_sample"]
 
 
@@ -199,7 +199,7 @@ def test_by_variant_arm_rollup_groups_and_excludes_pending():
 def test_mascot_in_python_promotion_universe():
     assert "mascot" in promote.PROMOTABLE_DIMENSIONS
     assert set(promote.PROMOTABLE_DIMENSIONS["mascot"]) == {"mascot-standard", "mascot-absent", "mascot-prominent"}
-    assert promote.FALLBACK_DEFAULTS["mascot"] == "mascot-standard"
+    assert promote.FALLBACK_DEFAULTS["mascot"] == "mascot-prominent"
     # measured PRIMARILY on views (the user's hypothesis metric), not eng_rate.
     assert promote.DIMENSION_METRIC["mascot"] == "median_views"
 
@@ -207,13 +207,13 @@ def test_mascot_in_python_promotion_universe():
 def test_mascot_catalog_arms_deviate_only_mascot():
     dims = _catalog()
     mascot = [d for d in dims if d["dimension"] == "mascot"]
-    assert {d["arm"] for d in mascot} == {"mascot-absent", "mascot-prominent"}
+    assert {d["arm"] for d in mascot} == {"mascot-standard", "mascot-absent"}
     for d in mascot:
         assert d["deviates"] == "mascot"
         assert d["narration"] == "full"       # keeps the narration default
         assert d["ending"] == "cliffhanger"   # keeps the ending default
     labels = {d["arm"] for d in dims}
-    assert "mascot-standard" not in labels  # the default is never re-listed as a challenger
+    assert "mascot-prominent" not in labels  # the default is never re-listed as a challenger
 
 
 def test_mascot_promotes_on_views_not_eng_rate():
@@ -221,12 +221,12 @@ def test_mascot_promotes_on_views_not_eng_rate():
     # detected -- the mascot dimension is judged on views, its hypothesis metric.
     by_arm = {
         "control": {"n_posts": 8, "n_with_metrics": 8, "median_eng_rate": 9.0, "median_views": 100, "median_reach": 90},
-        "mascot-prominent": {"n_posts": 8, "n_with_metrics": 8, "median_eng_rate": 2.0, "median_views": 200, "median_reach": 180},
+        "mascot-standard": {"n_posts": 8, "n_with_metrics": 8, "median_eng_rate": 2.0, "median_views": 200, "median_reach": 180},
     }
     cands = promote.detect_candidates({"rollups": {"by_variant_arm": by_arm}}, promote.FALLBACK_DEFAULTS, dict(promote.FALLBACK_POLICY))
     mascot = [c for c in cands if c["dimension"] == "mascot"]
     assert len(mascot) == 1
-    assert mascot[0]["recommended_default"] == "mascot-prominent"
+    assert mascot[0]["recommended_default"] == "mascot-standard"
     assert mascot[0]["metric"] == "median_views"
     # no eng_rate winners present, so mascot is the only candidate.
     assert all(c["dimension"] == "mascot" for c in cands)

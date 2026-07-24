@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-22T00:00:00.000Z",
+  "updated_at": "2026-07-24T21:09:07.272201Z",
   "campaign": "Smart Fella or Fart Smella",
-  "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the default-promotion policy (human AND autonomous). Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect proposals, auto-promote confirmed winners, and auto-revert underperformers. `defaults`/`history` are written by (a) the HUMAN approval CLI (sffs_promote_default --approve <id>) AND (b) the AUTONOMOUS gate (promote.auto_promote_cycle) — but the autonomous path is stricter and reversible: it only adopts a winner AFTER a confirmation round of fresh matured samples, logs every promotion + revert to the reversible auto_ledger (in proposals.json, surfaced on the dashboard), and AUTO-REVERTS a promoted default that later underperforms the arm it replaced. GUARDRAIL: promotion only ever writes an arm LABEL from the fixed whitelist here; it touches NO posting/scheduling/window/ceiling/gate path, so a promoted default can never change cadence or escape the hard posting guardrails (7am-1am CST, <=12/day/platform, quality/brand gates, dedup, do-not-touch). This is the CONTENT analog of the code factory's two-key gate.",
+  "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the default-promotion policy (human AND autonomous). Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect proposals, auto-promote confirmed winners, and auto-revert underperformers. `defaults`/`history` are written by (a) the HUMAN approval CLI (sffs_promote_default --approve <id>) AND (b) the AUTONOMOUS gate (promote.auto_promote_cycle) \u2014 but the autonomous path is stricter and reversible: it only adopts a winner AFTER a confirmation round of fresh matured samples, logs every promotion + revert to the reversible auto_ledger (in proposals.json, surfaced on the dashboard), and AUTO-REVERTS a promoted default that later underperforms the arm it replaced. GUARDRAIL: promotion only ever writes an arm LABEL from the fixed whitelist here; it touches NO posting/scheduling/window/ceiling/gate path, so a promoted default can never change cadence or escape the hard posting guardrails (7am-1am CST, <=12/day/platform, quality/brand gates, dedup, do-not-touch). This is the CONTENT analog of the code factory's two-key gate.",
   "defaults": {
     "narration": "full",
     "ending": "cliffhanger",
-    "mascot": "mascot-standard"
+    "mascot": "mascot-prominent"
   },
   "defaults_meaning": {
     "narration": "Arm label of the current NARRATION default. 'full' = the cloned-voice host reads every question + options aloud on EVERY video. Deviation test arms: no-narration | no-question-vo | no-options-vo.",
     "ending": "Arm label of the current ENDING default. 'cliffhanger' = reveal the early questions but leave the LAST one unresolved + comment-CTA, no score screen (on a 1-question video this collapses to withholding that single verdict + comment-CTA). Deviation test arms: full-reveal | no-answer.",
-    "mascot": "Arm label of the current MASCOT default. 'mascot-standard' = the brand brain mascot shown as today (intro cover + outro sticker) on EVERY video. Deviation test arms: mascot-absent (hide the brain -- the clean no-mascot control) | mascot-prominent (enlarge the brain -- more mascot). Measured PRIMARILY on VIEWS (see promotion.metric_by_dimension), the user's hypothesis metric."
+    "mascot": "Arm label of the current MASCOT default. 'mascot-prominent' = the brand brain mascot ENLARGED (bigger on the intro cover + outro) on EVERY new video by default -- a MANUAL, belief-driven promotion (owner decision; mascot view data still inconclusive). Deviation/control test arms kept running as a minority: mascot-absent (hide the brain -- the clean no-mascot counterfactual) | mascot-standard (today's size). Measured PRIMARILY on VIEWS (see promotion.metric_by_dimension); the retained absent control + reversible ledger are the safety net."
   },
   "promotion": {
     "metric": "median_eng_rate",
@@ -33,6 +33,30 @@
     "confirmation_min_new_samples": 5,
     "revert_min_sample": 8,
     "revert_abs_drop_pp": 1.0,
-    "notes": "AUTONOMOUS default-promotion policy (promote.auto_promote_cycle). Deliberately STRICTER than the human `promotion` gate: min_sample=8 (vs 5) matured posts on BOTH sides. TWO-STAGE, reversible: STAGE 1 a winner that clears these thresholds enters a confirmation round; STAGE 2 it is only auto-adopted after >= confirmation_min_new_samples FRESH matured challenger samples accrue with the win still holding (a confirmation round of similar posts). Every promotion + revert is appended to proposals.json `auto_ledger` (surfaced on the dashboard) and is reversible. AUTO-REVERT: if a promoted default later underperforms the arm it replaced by >= revert_abs_drop_pp over >= revert_min_sample matured posts, it is automatically reverted. Set enabled=false to fall back to human-only approval. Promotion NEVER touches posting/scheduling — it only flips a whitelisted arm label — so it can never escape the hard posting guardrails."
-  }
+    "notes": "AUTONOMOUS default-promotion policy (promote.auto_promote_cycle). Deliberately STRICTER than the human `promotion` gate: min_sample=8 (vs 5) matured posts on BOTH sides. TWO-STAGE, reversible: STAGE 1 a winner that clears these thresholds enters a confirmation round; STAGE 2 it is only auto-adopted after >= confirmation_min_new_samples FRESH matured challenger samples accrue with the win still holding (a confirmation round of similar posts). Every promotion + revert is appended to proposals.json `auto_ledger` (surfaced on the dashboard) and is reversible. AUTO-REVERT: if a promoted default later underperforms the arm it replaced by >= revert_abs_drop_pp over >= revert_min_sample matured posts, it is automatically reverted. Set enabled=false to fall back to human-only approval. Promotion NEVER touches posting/scheduling \u2014 it only flips a whitelisted arm label \u2014 so it can never escape the hard posting guardrails."
+  },
+  "history": [
+    {
+      "date": "2026-07-24",
+      "ts": "2026-07-24T21:09:07.272201Z",
+      "dimension": "mascot",
+      "from": "mascot-standard",
+      "to": "mascot-prominent",
+      "proposal_id": "manual-mascot-mascot-prominent",
+      "approved_by": "human",
+      "metric": "median_views",
+      "delta_abs_pp": 0.0,
+      "delta_rel": 0.0,
+      "challenger": {
+        "arm": "mascot-prominent",
+        "n_with_metrics": 0,
+        "median_views": null
+      },
+      "incumbent": {
+        "arm": "control",
+        "n_with_metrics": 0,
+        "median_views": null
+      }
+    }
+  ]
 }

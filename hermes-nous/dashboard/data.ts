@@ -552,39 +552,99 @@ export function inferArm(text: string): string {
   return slug || "variant";
 }
 
-/** Map every known Publer post id → its A/B variant, from RunState + ab-database. */
-export function buildPublerVariantMap(): Map<
-  string,
-  { dimension: string; arm: string; question_types: string[]; run_id?: string; source: "run" | "ab-database" }
-> {
-  const m = new Map<string, { dimension: string; arm: string; question_types: string[]; run_id?: string; source: "run" | "ab-database" }>();
-  // RunState is the richest source (dimension + arm + ordered question tiers).
+/** One resolved A/B variant for a live Publer post (from RunState or ab-database). */
+export interface VariantHit {
+  dimension: string;
+  arm: string;
+  question_types: string[];
+  run_id?: string;
+  source: "run" | "ab-database";
+}
+
+/** Multi-key index so a live post links to its arm by post id \u2192 media id \u2192 caption. */
+export interface VariantIndex {
+  byId: Map<string, VariantHit>;
+  byMedia: Map<string, VariantHit>;
+  byCaption: Map<string, VariantHit | null>; // null = AMBIGUOUS (same caption, different arms) \u2192 never used
+}
+
+/** Normalize a caption for a reliable text join (collapse whitespace, trim, lowercase). */
+export function normCaption(text: string): string {
+  return String(text || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+/** Add a caption\u2192variant entry, collapsing collisions (same caption, DIFFERENT arm) to
+ *  null so an ambiguous caption is NEVER used to fabricate an arm. */
+function addCaptionKey(byCaption: Map<string, VariantHit | null>, cap: string, hit: VariantHit): void {
+  if (!cap) return;
+  if (byCaption.has(cap)) {
+    const prev = byCaption.get(cap);
+    if (prev && (prev.dimension !== hit.dimension || prev.arm !== hit.arm)) byCaption.set(cap, null);
+  } else {
+    byCaption.set(cap, hit);
+  }
+}
+
+/**
+ * Index every known Publer post \u2192 its A/B variant, from RunState + ab-database, keyed
+ * three ways so a live post resolves by (1) exact post id [the run\u2192Publer link once the
+ * loop persists it], (2) exact uploaded media id [run-state records one per video], or
+ * (3) collision-free full caption [both platform posts share it]. RunState is richest
+ * (dimension + arm + question tiers + media id + caption).
+ */
+export function buildPublerVariantMap(): VariantIndex {
+  const byId = new Map<string, VariantHit>();
+  const byMedia = new Map<string, VariantHit>();
+  const byCaption = new Map<string, VariantHit | null>();
   for (const r of runSummaries(50)) {
     for (const v of r.videos || []) {
-      const ids = v.publer?.post_ids || [];
-      if (!ids.length) continue;
       const tiers = (v.questions || []).map((q) => q.tier).filter((t): t is string => !!t);
-      for (const id of ids) {
-        if (id === undefined || id === null) continue;
-        m.set(String(id), { dimension: v.dimension || "—", arm: v.arm || "—", question_types: tiers, run_id: r.run_id, source: "run" });
+      const hit: VariantHit = { dimension: v.dimension || "\u2014", arm: v.arm || "\u2014", question_types: tiers, run_id: r.run_id, source: "run" };
+      for (const id of v.publer?.post_ids || []) {
+        if (id !== undefined && id !== null) byId.set(String(id), hit);
       }
+      const mediaId = v.publer?.media_id;
+      if (mediaId && !byMedia.has(String(mediaId))) byMedia.set(String(mediaId), hit);
+      addCaptionKey(byCaption, normCaption(v.caption), hit);
     }
   }
-  // ab-database.json (published posts) — fills any id the runs don't have.
+  // ab-database.json (published posts) \u2014 fills any id/caption the runs don't have.
   const posts: any[] = Array.isArray(abDb()?.posts) ? abDb().posts : [];
   for (const p of posts) {
-    const id = p?.publer_post_id;
-    if (id === undefined || id === null || m.has(String(id))) continue;
     const va = p.variant || {};
     const qt = Array.isArray(va.question_types) ? va.question_types.map((x: unknown) => String(x)) : [];
-    m.set(String(id), {
-      dimension: va.family || p.experiment?.dimension || "—",
-      arm: va.arm || va.hook || p.experiment?.arm || "—",
+    const hit: VariantHit = {
+      dimension: va.family || p.experiment?.dimension || "\u2014",
+      arm: va.arm || va.hook || p.experiment?.arm || "\u2014",
       question_types: qt,
       source: "ab-database",
-    });
+    };
+    const id = p?.publer_post_id;
+    if (id !== undefined && id !== null && !byId.has(String(id))) byId.set(String(id), hit);
+    addCaptionKey(byCaption, normCaption(p.caption || p.text), hit);
   }
-  return m;
+  return { byId, byMedia, byCaption };
+}
+
+/**
+ * Resolve a live Publer post to its A/B variant, most-precise first: exact post id \u2192
+ * exact media id \u2192 collision-free full caption. Returns null when nothing matches (the
+ * card then shows a neutral "unknown" \u2014 NEVER a guess or the caption opener).
+ */
+export function resolvePostVariant(p: any, idx: VariantIndex): VariantHit | null {
+  const byId = idx.byId.get(String(p?.id));
+  if (byId) return byId;
+  const mediaId = p && p.media && p.media[0] && p.media[0].id;
+  if (mediaId) {
+    const byMedia = idx.byMedia.get(String(mediaId));
+    if (byMedia) return byMedia;
+  }
+  const cap = normCaption(p?.text);
+  if (cap) {
+    const byCap = idx.byCaption.get(cap);
+    if (byCap) return byCap; // null (ambiguous) falls through to unknown
+  }
+  return null;
 }
 
 /** Spawn the READ-ONLY publer bridge and parse its single JSON stdout line. */
@@ -682,7 +742,7 @@ async function computeDrafts(): Promise<DraftsView> {
   }
   const posts: any[] = res.posts;
   const accountsMap = (abDb() && abDb().accounts) || {};
-  const variantMap = buildPublerVariantMap();
+  const variantIdx = buildPublerVariantMap();
 
   // Group by the shared Publer media id → one "video" per IG+TikTok pair.
   const groups = new Map<string, any[]>();
@@ -705,9 +765,9 @@ async function computeDrafts(): Promise<DraftsView> {
     // same-origin via the read-only /api/draft-media proxy (CDN is Referer-gated).
     const media_url = publicPublerCdnUrl(media.path);
 
-    let variant: { dimension: string; arm: string; question_types: string[]; run_id?: string; source: "run" | "ab-database" } | null = null;
+    let variant: VariantHit | null = null;
     for (const p of ps) {
-      const hit = variantMap.get(String(p.id));
+      const hit = resolvePostVariant(p, variantIdx);
       if (hit) {
         variant = hit;
         break;
@@ -840,7 +900,7 @@ async function computeScheduled(): Promise<ScheduledView> {
     };
   }
   const accountsMap = (abDb() && abDb().accounts) || {};
-  const variantMap = buildPublerVariantMap();
+  const variantIdx = buildPublerVariantMap();
   const posts: ScheduledPost[] = [];
   for (const p of res.posts) {
     const at = p && p.scheduled_at;
@@ -851,7 +911,7 @@ async function computeScheduled(): Promise<ScheduledView> {
     const thumbs: any[] = Array.isArray(media.thumbnails) ? media.thumbnails : [];
     const ti = Number.isInteger(media.default_thumbnail) ? media.default_thumbnail : 0;
     const thumbRaw = (thumbs[ti] && thumbs[ti].real) || (thumbs[0] && (thumbs[0].real || thumbs[0].small)) || null;
-    const hit = variantMap.get(String(p.id));
+    const hit = resolvePostVariant(p, variantIdx);
     posts.push({
       post_id: String(p.id),
       platform: platformForAccount(String(p.account_id), accountsMap),

@@ -558,26 +558,82 @@ function videoPreview(videoKey: string, thumbnail: string | null, mediaUrl: stri
   return `<div class="dthumb-none">no preview</div>`;
 }
 
+/** Current promotable defaults (arm labels) the plain-language label reads so it can
+ *  say what each video CHANGES vs the baseline. All optional; falls back to shipped. */
+export interface AbDefaults { narration?: string; ending?: string; mascot?: string; }
+
+const NARRATION_HUMAN: Record<string, string> = {
+  "full": "full voiceover",
+  "no-narration": "no voiceover (music only)",
+  "no-question-vo": "only the options are read aloud",
+  "no-options-vo": "only the question is read aloud",
+};
+const ENDING_HUMAN: Record<string, string> = {
+  "cliffhanger": "cliffhanger (last answer withheld)",
+  "full-reveal": "reveals every answer",
+  "no-answer": "no answers revealed (comment for answer)",
+};
+const MASCOT_HUMAN: Record<string, string> = {
+  "mascot-standard": "standard mascot",
+  "mascot-absent": "no mascot (brain hidden)",
+  "mascot-prominent": "bigger mascot",
+};
+/** Non-promotable single-axis dimensions: {category, what THIS video does, the default}. */
+const OTHER_HUMAN: Record<string, { cat: string; change: string; def: string }> = {
+  "progress-counter:progress-hidden": { cat: "Progress counter", change: "counter hidden", def: "counter shown" },
+  "progress-counter:progress-verbose": { cat: "Progress counter", change: "verbose 'QUESTION 1 OF 3'", def: "short 'Q1'" },
+  "tempo:tempo-fast": { cat: "Tempo", change: "fast 3s countdown", def: "5s" },
+  "tempo:tempo-slow": { cat: "Tempo", change: "slow 7s countdown", def: "5s" },
+  "length:one-question": { cat: "Length", change: "single question", def: "3 questions" },
+  "category-mix:verbal-only": { cat: "Question mix", change: "verbal only (odd-one-out / analogy)", def: "mixed 3" },
+  "category-mix:quant-only": { cat: "Question mix", change: "number-series only", def: "mixed 3" },
+  "hook:hook-challenge": { cat: "Hook", change: "hard 'ONLY 1% PASS' opener", def: "neutral opener" },
+  "type-nonverbal-shapes:shapes": { cat: "Question type", change: "nonverbal shapes (folding / matrices)", def: "mixed text" },
+  "type-nonverbal-classic:classic-shapes": { cat: "Question type", change: "classic nonverbal figures", def: "mixed text" },
+};
+
+export interface AbLabel { kind: "test" | "control" | "unknown"; tag: string; text: string; }
+
 /**
- * The REAL A/B label for a draft/scheduled card: "dimension: arm" from the
- * run-state / ab-database variant metadata (e.g. "narration: no-narration",
- * "tempo: tempo-fast", "mascot: mascot-prominent"), collapsing the baseline to a
- * single "control", and a neutral "unknown" when a post can't be matched to a
- * real arm — NEVER the LLM caption opener. Display-only; never fabricates an arm.
+ * PLAIN-LANGUAGE A/B label for a draft/scheduled card: what THIS video changes + tests
+ * vs the current default (e.g. "Narration: no voiceover (default: full voiceover)"),
+ * "Control / current defaults" for the baseline, and a neutral "Unknown" when a post
+ * can't be linked to a real arm — NEVER the LLM caption. The "default:" text is derived
+ * from the LIVE promotable defaults so it stays honest after a promotion. Never fabricates.
  */
-export function armLabel(dimension?: string, arm?: string): string {
+export function abTestLabel(dimension?: string, arm?: string, defaults?: AbDefaults): AbLabel {
   const NEUTRAL = new Set(["", "—", "unknown", "variant"]);
   const dim = String(dimension ?? "").trim();
   const a = String(arm ?? "").trim();
-  if (dim.toLowerCase() === "control" || a.toLowerCase() === "control") return "control";
-  const dimBad = NEUTRAL.has(dim.toLowerCase());
-  const armBad = NEUTRAL.has(a.toLowerCase());
-  if (dimBad && armBad) return "unknown";
-  if (!dimBad && !armBad && dim !== a) return `${dim}: ${a}`;
-  return !armBad ? a : !dimBad ? dim : "unknown";
+  const dLow = dim.toLowerCase();
+  const aLow = a.toLowerCase();
+  if (dLow === "control" || aLow === "control") return { kind: "control", tag: "Control", text: "current defaults" };
+  if (NEUTRAL.has(dLow) && NEUTRAL.has(aLow)) return { kind: "unknown", tag: "Unknown", text: "not linked to a batch variant yet" };
+  const def = defaults || {};
+  if (dLow === "narration" && NARRATION_HUMAN[a]) {
+    return { kind: "test", tag: "A/B", text: `Narration: ${NARRATION_HUMAN[a]} (default: ${NARRATION_HUMAN[def.narration || "full"] || "full voiceover"})` };
+  }
+  if (dLow === "ending" && ENDING_HUMAN[a]) {
+    return { kind: "test", tag: "A/B", text: `Ending: ${ENDING_HUMAN[a]} (default: ${ENDING_HUMAN[def.ending || "cliffhanger"] || "cliffhanger"})` };
+  }
+  if (dLow === "mascot" && MASCOT_HUMAN[a]) {
+    return { kind: "test", tag: "A/B", text: `Mascot: ${MASCOT_HUMAN[a]} (default: ${MASCOT_HUMAN[def.mascot || "mascot-prominent"] || "bigger mascot"})` };
+  }
+  const other = OTHER_HUMAN[`${dLow}:${aLow}`];
+  if (other) return { kind: "test", tag: "A/B", text: `${other.cat}: ${other.change} (default: ${other.def})` };
+  if (!NEUTRAL.has(dLow) && !NEUTRAL.has(aLow) && dim !== a) return { kind: "test", tag: "A/B", text: `${dim}: ${a}` };
+  const only = !NEUTRAL.has(aLow) ? a : !NEUTRAL.has(dLow) ? dim : "";
+  return only ? { kind: "test", tag: "A/B", text: only } : { kind: "unknown", tag: "Unknown", text: "not linked to a batch variant yet" };
 }
 
-function draftCard(v: DraftVideo): string {
+/** Render the plain-language A/B label as a small tagged line for a card. */
+function abLabelHtml(dimension: string, arm: string, defaults?: AbDefaults): string {
+  const L = abTestLabel(dimension, arm, defaults);
+  const cls = L.kind === "control" ? "ab-control" : L.kind === "unknown" ? "ab-unknown" : "ab-test";
+  return `<div class="arm"><span class="abtag ${cls}">${esc(L.tag)}</span> ${esc(L.text)}</div>`;
+}
+
+function draftCard(v: DraftVideo, defaults?: AbDefaults): string {
   // Data-provenance (v.variant_source: "run" | "ab-database" | "inferred") is kept
   // in the DATA but no longer surfaced as a noisy "inferred" badge: while the exact
   // draft→variant mapping is rebuilt post-recovery, every draft reads "inferred"
@@ -605,7 +661,7 @@ function draftCard(v: DraftVideo): string {
     <div class="dbody">
       ${scheduleChip(null)}
       <div class="vid-h">
-        <div class="arm">A/B: <b>${esc(armLabel(v.dimension, v.arm))}</b></div>
+        ${abLabelHtml(v.dimension, v.arm, defaults)}
         ${srcChip}
       </div>
       <div class="rationale">${esc(v.hook)}</div>
@@ -616,7 +672,7 @@ function draftCard(v: DraftVideo): string {
   </div>`;
 }
 
-function draftsPanel(view: DraftsView | undefined): string {
+function draftsPanel(view: DraftsView | undefined, defaults?: AbDefaults): string {
   if (!view) {
     return `<p class="muted">Older Publer drafts are loaded live (read-only). None loaded yet.</p>`;
   }
@@ -633,7 +689,7 @@ function draftsPanel(view: DraftsView | undefined): string {
     <span class="hpill"><b>as of</b>${esc((view.as_of || "").slice(11, 19))}Z</span>
   </div>
   <p class="muted" style="margin-bottom:12px">Autonomous Hermes schedules new videos <b>directly</b> on Publer (SCHEDULED panel above) — nothing here "awaits review." These are older / pre-autonomy Publer drafts still on the account; each card is one video with an inline preview (streamed read-only from Publer's CDN via this dashboard) and its target platform(s). READ-ONLY — preview only; nothing is published or scheduled from here.</p>`;
-  return `${head}<div class="draftgrid">${view.videos.map(draftCard).join("")}</div>`;
+  return `${head}<div class="draftgrid">${view.videos.map((v) => draftCard(v, defaults)).join("")}</div>`;
 }
 
 // ── GOAL-PROGRESS (Hermes's 7-day mandate) — front-and-center ─────────────────
@@ -744,7 +800,7 @@ function goalPanel(gp: GoalProgress): string {
 // (CST). Pulled live from Publer via the read-only bridge, so this and the Publer
 // calendar show the SAME posts at the SAME times. No publish/schedule control here.
 /** One scheduled-post card: FULL 9:16 preview (contain + Plyr) + its scheduled time. */
-function scheduledCard(p: ScheduledPost): string {
+function scheduledCard(p: ScheduledPost, defaults?: AbDefaults): string {
   const preview = videoPreview(p.video_key, p.thumbnail, p.media_url);
   // NOTE: p.arm_source ("run" | "ab-database" | "inferred") is intentionally NOT
   // surfaced as a badge — it's an internal data-provenance flag that self-heals as
@@ -754,7 +810,7 @@ function scheduledCard(p: ScheduledPost): string {
     <div class="dbody">
       ${scheduleChip(p.scheduled_cst)}
       <div class="vid-h">
-        <div class="arm">A/B: <b>${esc(armLabel(p.dimension, p.arm))}</b></div>
+        ${abLabelHtml(p.dimension, p.arm, defaults)}
         <span class="dplat">${platformLabel(p.platform)}</span>
       </div>
       <div class="rationale">${esc(p.hook)}</div>
@@ -762,7 +818,7 @@ function scheduledCard(p: ScheduledPost): string {
   </div>`;
 }
 
-function scheduledPanel(view?: ScheduledView): string {
+function scheduledPanel(view?: ScheduledView, defaults?: AbDefaults): string {
   if (!view) {
     return `<p class="muted">Scheduled posts appear here once autonomy is ARMED. Until then the loop is DRAFT-ONLY (nothing is scheduled).</p>`;
   }
@@ -774,7 +830,7 @@ function scheduledPanel(view?: ScheduledView): string {
   }
   const byPlat = Object.entries(view.by_platform).map(([k, v]) => `${esc(platformLabel(k))}: ${v}`).join(" · ");
   return `<p class="muted" style="margin-bottom:12px">${view.count} upcoming scheduled post(s) — pulled LIVE from Publer, so these are the SAME posts + times shown on the Publer calendar. ${esc(byPlat)}. All inside the 7:00am–1:00am America/Chicago window. Each card shows the FULL 9:16 preview (letterboxed, never cropped) streamed read-only via this dashboard. As of ${esc(view.as_of)}.</p>
-  <div class="draftgrid">${view.posts.map(scheduledCard).join("")}</div>`;
+  <div class="draftgrid">${view.posts.map((p) => scheduledCard(p, defaults)).join("")}</div>`;
 }
 
 // ── the page ──────────────────────────────────────────────────────────────────
@@ -855,7 +911,7 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .card h2 .pin.pr{background:var(--yellow)}
 .vid{border:3px solid var(--ink);border-radius:14px;padding:14px;margin-bottom:14px;background:var(--cream)}
 .vid-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.dim{font-weight:800;font-size:17px}.arm{color:#444}
+.dim{font-weight:800;font-size:17px}.arm{color:#444;line-height:1.55;overflow-wrap:anywhere}.abtag{display:inline-block;font-weight:800;font-size:10px;letter-spacing:.02em;padding:1px 6px;border-radius:6px;margin-right:5px;vertical-align:baseline}.ab-test{background:#e8f0ff;color:#1b47b4}.ab-control{background:#e6f6ec;color:#1c7a3f}.ab-unknown{background:#eee;color:#777}
 .rationale{color:#333;margin:6px 0 10px;font-size:14px}
 .rationale code{background:#eee;border:1px solid #ccc;border-radius:5px;padding:1px 5px;font-size:12px}
 .gates{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
@@ -977,12 +1033,12 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 
   <div class="card">
     <h2><span class="pin">SCHEDULED</span> Auto-scheduled posts &amp; times (post-kickoff) <span class="pin" style="background:var(--mint)">LIVE FROM PUBLER</span></h2>
-    ${scheduledPanel(opts.scheduled)}
+    ${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
   </div>
 
   <div class="card">
     <h2><span class="pin">DRAFTS</span> Older drafts (pre-autonomy) <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
-    ${draftsPanel(opts.drafts)}
+    ${draftsPanel(opts.drafts, opts.defaults?.defaults)}
   </div>
 
   <div class="card">

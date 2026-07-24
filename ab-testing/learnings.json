@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-24T15:26:18.269Z",
+  "updated_at": "2026-07-24T21:09:07.272201Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -21,7 +21,7 @@
     "read": "Before generating/scheduling the next batch: read front_runners + rollups to bias toward the best-performing variant_family, hashtag_set, platform, and time_bucket; read decisions_log to avoid re-litigating settled questions (e.g. don't re-test intro). For any GENERATED copy (captions, comment replies, variants), read brand_voice.files first and match the SFFS voice + hard rules.",
     "write": "After each analytics pull (see ab-testing/README.md 'refresh metrics'): recompute every rollup from ab-database.json posts[] that have metrics.source != 'pending', update front_runners (highest median eng_rate with n_with_metrics >= min_n), append any new conclusion to decisions_log, and bump updated_at. Never delete history; supersede with a new decisions_log entry."
   },
-  "status": "metrics pending — the 14 A/B posts are scheduled 2026-07-21 18:30 CDT through 2026-07-22 08:30 CDT, spread across the posting window as a TIME A/B (see time_buckets), and have not published yet. Rollups carry design counts (n_posts) with null metrics until the first analytics pull.",
+  "status": "metrics pending \u2014 the 14 A/B posts are scheduled 2026-07-21 18:30 CDT through 2026-07-22 08:30 CDT, spread across the posting window as a TIME A/B (see time_buckets), and have not published yet. Rollups carry design counts (n_posts) with null metrics until the first analytics pull.",
   "conventions": {
     "primary_metric": "eng_rate (percent)",
     "secondary_metric": "reach",
@@ -276,7 +276,7 @@
   "decisions_log": [
     {
       "date": "2026-07-21",
-      "decision": "Dropped the `intro` A/B dimension — every short is cold-open going forward (no intro variants ever).",
+      "decision": "Dropped the `intro` A/B dimension \u2014 every short is cold-open going forward (no intro variants ever).",
       "rationale": "WITHINTRO underperformed cold-open NOINTRO: the standout was NOINTRO package 01 (991 reach / 5.55% eng on TikTok), while the WITHINTRO package 03 posts were inconclusive/near-undelivered. Removed `intro` from ab-database.json (schema conventions + every record + the by_intro_standard_only cut) and from the poster tooling.",
       "status": "applied"
     },
@@ -294,7 +294,7 @@
     },
     {
       "date": "2026-07-21",
-      "decision": "Started a TIME A/B — spread the 7 variants across the posting window (evening 18:30/20:30, late-night 23:00, overnight 01:30, overnight-trough 03:30, early-morning 06:30, morning 08:30) instead of clustering them, each variant's IG+TikTok sharing a time.",
+      "decision": "Started a TIME A/B \u2014 spread the 7 variants across the posting window (evening 18:30/20:30, late-night 23:00, overnight 01:30, overnight-trough 03:30, early-morning 06:30, morning 08:30) instead of clustering them, each variant's IG+TikTok sharing a time.",
       "rationale": "Find the best publish time with a research-backed spread that also samples low-traffic overnight slots. Re-timing required recreate+delete (Publer PUT cannot change scheduled_at). no-answer left at 18:30 (too close to go-live to churn). Recorded per post as time_bucket.",
       "status": "in-flight (metrics pending)"
     },
@@ -303,6 +303,14 @@
       "decision": "Front-runner variant_family -> standard (median eng_rate 2.69%, n=9).",
       "rationale": "Recomputed by the Hermes loop from matured Publer analytics.",
       "status": "auto"
+    },
+    {
+      "date": "2026-07-24",
+      "decision": "DEFAULT PROMOTED: mascot 'mascot-standard' -> 'mascot-prominent' (+0.0pp median_views vs control; n=0).",
+      "rationale": "MANUAL belief-driven promotion (owner decision): make the prominent mascot the default so every new video leans into the brand mascot. Mascot view data is still INCONCLUSIVE, so this is belief ahead of proof; the retained mascot-absent A/B control (minority allocation) keeps gathering the counterfactual and this is reversible via the ledger if prominent underperforms.",
+      "status": "human-approved",
+      "approved_by": "human",
+      "proposal_id": "manual-mascot-mascot-prominent"
     }
   ],
   "scoring_log": [
