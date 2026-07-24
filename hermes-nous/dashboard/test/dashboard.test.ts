@@ -180,20 +180,23 @@ test("page: renders all required sections", () => {
   assert.match(html, /Software-factory PRs/);
   assert.match(html, /A\/B results/);
   assert.match(html, /Front-runners/);
-  assert.match(html, /kill-switch clear/);
   assert.match(html, /READ-ONLY/);
   assert.match(html, /next run/);
 });
 
-test("page: factory-paused chip is CALM (not a red alarm) when kill-switch engaged", () => {
-  const html = page(emptyPageData({ kill: { engaged: true, sources: ["env SFFS_FACTORY_KILL"] } }));
-  assert.match(html, /Factory paused \(maintenance\)/); // calm, neutral wording
-  assert.match(html, /env SFFS_FACTORY_KILL/); // still conveys the source
-  assert.match(html, /class="kill kill-paused"/); // muted-blue chip class, not kill-on red
-  // NOT a scary red alarm anymore
-  assert.doesNotMatch(html, /KILL-SWITCH ENGAGED/);
-  assert.doesNotMatch(html, /⛔/);
-  assert.doesNotMatch(html, /class="kill kill-on"/);
+test("page: the display-only kill-switch STATUS BANNER is fully removed (helper + markup + CSS)", () => {
+  // The green "kill-switch clear — factory auto-merge is armed" strip (and its
+  // paused variant) were removed at the user's request; the factory kill-switch
+  // state still lives in the FACTORY panel + the top health widget.
+  const clear = page(emptyPageData({ kill: { engaged: false, sources: [] } }));
+  const engaged = page(emptyPageData({ kill: { engaged: true, sources: ["env SFFS_FACTORY_KILL"] } }));
+  for (const html of [clear, engaged]) {
+    assert.doesNotMatch(html, /kill-switch clear/);
+    assert.doesNotMatch(html, /auto-merge is armed/);
+    assert.doesNotMatch(html, /Display-only indicator/);
+    assert.doesNotMatch(html, /class="kill /);      // no .kill / .kill-off / .kill-paused banner
+    assert.doesNotMatch(html, /class="kill-dot"/);
+  }
 });
 
 test("GUARDRAIL: page exposes NO publish/schedule/merge action (no POST form)", () => {
@@ -783,13 +786,15 @@ test("D3: SCHEDULED panel shows full-frame previews via the same-origin proxy (b
   assert.doesNotMatch(html, /amazonaws|X-Amz-/);   // no S3-signed leak
 });
 
-test("Item 1: prominent per-card schedule chip — scheduled shows CST time, drafts show 'Not scheduled'", () => {
+test("Item 1: per-card schedule chip shows TIME-ONLY (no redundant 'Scheduled' label); drafts show 'Not scheduled'", () => {
   const sHtml = page(emptyPageData({ scheduled: schedFixture as any }));
-  assert.match(sHtml, /class="timechip"/);           // prominent chip present
-  assert.match(sHtml, /Wed Jul 23, 9:17 PM CDT/);    // uses scheduled_cst
+  assert.match(sHtml, /class="timechip"/);           // prominent mint pill present
+  assert.match(sHtml, /Wed Jul 23, 9:17 PM CDT/);    // uses scheduled_cst (the date/time itself)
+  assert.doesNotMatch(sHtml, /class="tc-k"/);        // redundant "Scheduled ·" label REMOVED
   const dHtml = page(emptyPageData({ drafts: draftsFixture as any }));
   assert.match(dHtml, /timechip-none/);              // neutral state (never blank)
   assert.match(dHtml, /Not scheduled/);
+  assert.doesNotMatch(dHtml, /class="tc-k"/);        // no redundant label on the draft variant either
 });
 
 test("Item 5: KPIs are split into labelled 'This cycle' vs 'Bank & live totals' groups", () => {
@@ -836,6 +841,25 @@ test("D4: the run picker is width-bounded + ellipsised so it can't overlap the p
   const html = page(emptyPageData({ runs, latest: runs[0] }));
   assert.match(html, /\.runsel select\{[^}]*max-width/);
   assert.match(html, /\.runsel select\{[^}]*text-overflow:ellipsis/);
+});
+
+test("D4b: run picker is restyled to the neo-brutalist system + stays an accessible native <select>", () => {
+  const runs = [{ run_id: "complete-hermes-showcase-20260723T024825Z", status: "success", summary: { drafted: 3 } }] as any;
+  const html = page(emptyPageData({ runs, latest: runs[0] }));
+  // ACCESSIBILITY: still a native <select> paired with its <label for="run"> (keyboard + SR)
+  assert.match(html, /<label for="run">/);
+  assert.match(html, /<select id="run" name="run"/);
+  // NEO-BRUTALIST: appearance reset + custom caret + thick ink border + hard offset shadow + brand fill
+  assert.match(html, /\.runsel select\{[^}]*appearance:none/);
+  assert.match(html, /\.runsel select\{[^}]*background-image:url\(/);
+  assert.match(html, /\.runsel select\{[^}]*border:3px solid var\(--ink\)/);
+  assert.match(html, /\.runsel select\{[^}]*box-shadow:4px 4px 0 0 var\(--ink\)/);
+  assert.match(html, /\.runsel select\{[^}]*background-color:var\(--mint\)/);
+  // interactive states, incl. a visible keyboard-focus indicator
+  assert.match(html, /\.runsel select:hover\{/);
+  assert.match(html, /\.runsel select:focus-visible\{/);
+  // still width-bounded (no horizontal-scroll regression)
+  assert.match(html, /\.runsel select\{[^}]*max-width:min\(62vw,340px\)/);
 });
 
 test("D5: footer reflects the LIVE autonomous state (no stale draft-only/human-action copy)", () => {

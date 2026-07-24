@@ -3,8 +3,8 @@
  *
  * Reuses the visual language of the current live dashboard (hermes/src/dashboard.ts):
  * the neobrutalist card style, KPI grid, gate badges, status chips, and analytics
- * tables — so this reads as the same product. Adds three things the rebuilt agent
- * needs: a kill-switch banner, an explicit last/next-run schedule, and the
+ * tables — so this reads as the same product. Adds two things the rebuilt agent
+ * needs: an explicit last/next-run schedule, and the
  * CODE-PR VIEW (software-factory PRs + review-agent verdict + test status).
  *
  * Every function is PURE and escapes all interpolated data. There is NO form,
@@ -531,9 +531,12 @@ function draftMediaSrc(videoKey: string, kind: "video" | "thumb"): string {
 function scheduleChip(cst?: string | null): string {
   const has = typeof cst === "string" && cst.trim().length > 0;
   if (has) {
-    return `<div class="timechip" title="Auto-publishes on Publer at this time (America/Chicago)"><span class="tc-k">Scheduled</span><span class="tc-v">${esc(cst)}</span></div>`;
+    // Time-only: the date/time itself makes it obvious this is the scheduled slot, so
+    // the redundant "Scheduled ·" label is dropped. Context is preserved in the tooltip
+    // (and the mint styling) for anyone hovering / using assistive tech.
+    return `<div class="timechip" title="Scheduled to auto-publish on Publer at this time (America/Chicago)"><span class="tc-v">${esc(cst)}</span></div>`;
   }
-  return `<div class="timechip timechip-none" title="This is a draft — it is not scheduled to publish"><span class="tc-k">Schedule</span><span class="tc-v">Not scheduled</span></div>`;
+  return `<div class="timechip timechip-none" title="This is a draft — it is not scheduled to publish"><span class="tc-v">Not scheduled</span></div>`;
 }
 
 /**
@@ -612,19 +615,6 @@ function draftsPanel(view: DraftsView | undefined): string {
   </div>
   <p class="muted" style="margin-bottom:12px">Autonomous Hermes schedules new videos <b>directly</b> on Publer (SCHEDULED panel above) — nothing here "awaits review." These are older / pre-autonomy Publer drafts still on the account; each card is one video with an inline preview (streamed read-only from Publer's CDN via this dashboard) and its target platform(s). READ-ONLY — preview only; nothing is published or scheduled from here.</p>`;
   return `${head}<div class="draftgrid">${view.videos.map(draftCard).join("")}</div>`;
-}
-
-// ── factory status banner ─────────────────────────────────────────────────────
-// When the factory is paused (kill-switch/stop-file present — e.g. a routine
-// maintenance deploy) we show a CALM, neutral status chip, not a red alarm: the
-// pause only affects the always-on code-improvement factory; posting, drafts,
-// scheduling and the 7-day goal are unaffected.
-function killBanner(k: KillSwitchState): string {
-  if (k.engaged) {
-    const src = k.sources && k.sources.length ? ` <span class="kill-src">(${esc(k.sources.join(", "))})</span>` : "";
-    return `<div class="kill kill-paused"><span class="kill-dot"></span><b>Factory paused (maintenance)</b> — the always-on code-improvement factory is paused; posting, drafts, scheduling &amp; the 7-day goal are unaffected.${src}</div>`;
-  }
-  return `<div class="kill kill-off">✅ kill-switch clear — factory auto-merge is armed (two-key gate). Display-only indicator.</div>`;
 }
 
 // ── GOAL-PROGRESS (Hermes's 7-day mandate) — front-and-center ─────────────────
@@ -801,7 +791,7 @@ export interface PageData {
 }
 
 export function page(opts: PageData): string {
-  const { runs, db, l, bank, schedule, kill, disk, selected, pr, logItems } = opts;
+  const { runs, db, l, bank, schedule, disk, selected, pr, logItems } = opts;
   const cov: BankCoverage =
     opts.coverage ?? { total: 0, usable: bank.usable, fresh: bank.fresh, used: bank.used, freshPct: 0, perDay: 0, runwayDays: null, byType: [] };
   // GOAL-PROGRESS is FRONT-AND-CENTER; default to a "pending" panel so it always renders.
@@ -832,14 +822,6 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .tag{background:var(--ink);color:var(--yellow);padding:4px 10px;border-radius:6px;font-weight:800;font-size:12px;letter-spacing:1px}
 .tag.ro{background:#0d0d0d;color:var(--mint)}
 .wrap{max-width:1120px;margin:0 auto;padding:22px}
-.kill{max-width:1120px;margin:16px auto 0;padding:12px 18px;border:4px solid var(--ink);border-radius:14px;font-weight:600;box-shadow:6px 6px 0 0 var(--ink)}
-.kill b{font-weight:800}
-.kill-off{background:var(--green);color:#0d2a19}
-/* calm, non-alarming "factory paused" chip (muted blue, dark text) — NOT a red alarm */
-.kill-paused{background:#dbe6ff;color:#122a5c;border-color:#122a5c;box-shadow:6px 6px 0 0 #122a5c}
-.kill-dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--blue);border:2px solid #122a5c;margin-right:9px;vertical-align:middle}
-.kill-dot-ok{background:var(--green);border-color:var(--ink)}
-.kill-src{font-weight:600;opacity:.82;font-size:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:0}
 .kpi{background:var(--paper);border:4px solid var(--ink);border-radius:16px;box-shadow:8px 8px 0 0 var(--ink);padding:16px}
 .kpi .v{font:800 34px/1 "Segoe UI",sans-serif}
@@ -892,9 +874,16 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .lg{padding:2px 0;white-space:pre-wrap}.lt{color:#7bd88f}.ll{color:#f5c451;font-weight:700}
 .lg-error .ll{color:#ff7a6b}
 form.runsel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0;max-width:100%;margin-left:auto}
-.runsel label{font-weight:700;white-space:nowrap}
-/* bound the run picker so its long option labels can't overlap/clip the panel title */
-.runsel select{flex:0 1 auto;max-width:min(62vw,340px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.runsel label{font-weight:800;white-space:nowrap;text-transform:uppercase;letter-spacing:1px;font-size:12px}
+/* run picker — SFFS neo-brutalist native <select>: thick ink border, hard offset shadow,
+   brand fill, bold type, custom caret (appearance:none). Kept width-bounded + ellipsised so
+   long run-id options never reintroduce horizontal page scroll; a native <select> stays fully
+   keyboard- and screen-reader-accessible (paired with its <label for="run">). */
+.runsel select{flex:0 1 auto;max-width:min(62vw,340px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;appearance:none;-webkit-appearance:none;-moz-appearance:none;font:800 13px/1 "Segoe UI",sans-serif;color:var(--ink);background-color:var(--mint);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:15px;border:3px solid var(--ink);border-radius:10px;box-shadow:4px 4px 0 0 var(--ink);padding:8px 34px 8px 12px;cursor:pointer;transition:transform .06s ease,box-shadow .06s ease,background-color .1s ease}
+.runsel select:hover{background-color:var(--yellow)}
+.runsel select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.runsel select:active{transform:translate(2px,2px);box-shadow:2px 2px 0 0 var(--ink)}
+.runsel select option{background:var(--paper);color:var(--ink);font-weight:600}
 select{padding:6px 8px;border:3px solid var(--ink);border-radius:8px;font-size:13px;background:#fff;min-width:0;max-width:100%}
 .foot{color:#333;font-size:12px;text-align:center;padding:14px;line-height:1.6}
 details summary{cursor:pointer;font-size:13px;color:#333;margin-top:6px}
@@ -914,11 +903,10 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .draftplatforms{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px}
 .dplat{display:inline-block;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:8px;padding:3px 9px;background:var(--mint);color:#111}
 /* prominent per-card scheduled date/time chip (scheduled = mint; draft = neutral grey) */
-.timechip{display:flex;align-items:center;gap:8px;margin-bottom:10px;border:3px solid var(--ink);border-radius:10px;padding:7px 10px;background:var(--mint);box-shadow:3px 3px 0 0 var(--ink)}
-.timechip .tc-k{flex:0 0 auto;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--ink);color:var(--mint);padding:3px 8px;border-radius:6px}
-.timechip .tc-v{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
+/* time-only mint pill: hugs its content (align-self) so it reads as a compact chip */
+.timechip{display:inline-flex;align-self:flex-start;align-items:center;margin-bottom:4px;border:3px solid var(--ink);border-radius:10px;padding:6px 12px;background:var(--mint);box-shadow:3px 3px 0 0 var(--ink)}
+.timechip .tc-v{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--ink)}
 .timechip-none{background:#e6e6e6;box-shadow:3px 3px 0 0 #555}
-.timechip-none .tc-k{background:#555;color:#fff}
 .timechip-none .tc-v{color:#555;font-weight:700}
 .goalcard{background:linear-gradient(180deg,#fffdf3,var(--paper))}
 .gtwo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:4px}
@@ -942,7 +930,6 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   <h1>HERMES-NOUS <span class="tag">DRAFT-ONLY</span> <span class="tag ro">READ-ONLY</span></h1>
   <div id="health" class="health"><span class="hpill">checking health…</span></div>
 </header>
-${killBanner(kill)}
 <div class="wrap">
   <div class="card goalcard">
     <h2><span class="pin" style="background:var(--yellow)">GOAL</span> Hermes mandate — live 7-day trajectory <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
