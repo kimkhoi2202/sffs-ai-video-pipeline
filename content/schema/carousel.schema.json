@@ -17,7 +17,7 @@
     "status": { "type": "string", "enum": ["pending-review", "ready-to-post", "posted"] },
     "sourceIds": {
       "type": "array",
-      "description": "IDs from content/rebus-bank.json this post draws from (provenance).",
+      "description": "Optional provenance IDs for the puzzles in this post.",
       "items": { "type": "string" }
     },
     "hashtagSet": {
