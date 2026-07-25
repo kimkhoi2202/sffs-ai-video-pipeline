@@ -72,16 +72,33 @@ const TOPUP_SLACK = 2;
 /** Attempts for the two steps that historically lost a whole video to a transient. */
 const RENDER_ATTEMPTS = 2;
 const MEDIA_IMPORT_ATTEMPTS = 3;
+const JOB_POLL_ATTEMPTS = 3;
 /** Pause between videos in the publish phase, to stay under Publer's API rate limit. */
 const PUBLISH_PACE_MS = Number(process.env.HERMES_PUBLISH_PACE_MS || 6_000);
+/** Per-attempt backoff once Publer says we are over its quota (see isRateLimited). */
+const RATE_LIMIT_BACKOFF_MS = Number(process.env.HERMES_RATE_LIMIT_BACKOFF_MS || 30_000);
 
 const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
 /**
- * Run `fn`, retrying a TRANSIENT failure with linear backoff. Used ONLY for the
- * render and the Publer media import — the two steps where a one-off flake used to
- * cost the day a whole video (2026-07-24 lost one to a media-import timeout). This
- * never re-runs or softens a GATE: a gate verdict is a decision, not a transient.
+ * Does this error mean "you are going too fast" rather than "something broke"?
+ * Publer answers a quota breach with 429 ("Rate limit exceeded") and, once tripped
+ * hard, a 403 whose body is an upsell ("Please upgrade to Business to access our
+ * API") — the same signal wearing a different status code. Both need tens of
+ * seconds to clear, so they get a much longer backoff than a network blip.
+ */
+export function isRateLimited(e: unknown): boolean {
+  const m = e instanceof Error ? e.message : String(e);
+  return /HTTP 429|rate limit|too many requests|upgrade to Business/i.test(m);
+}
+
+/**
+ * Run `fn`, retrying a TRANSIENT failure. Used ONLY for idempotent steps — the
+ * render, the Publer media import, and the job poll — where a one-off flake used to
+ * cost the day a whole video (2026-07-24 lost one to a media-import timeout;
+ * 2026-07-25 lost two to a Publer rate limit). This never re-runs or softens a GATE:
+ * a gate verdict is a decision, not a transient. Post CREATION is deliberately not
+ * retried here — a retried create can double-post.
  */
 async function withRetry<T>(label: string, attempts: number, fn: () => Promise<T> | T): Promise<T> {
   let last: unknown;
@@ -91,10 +108,12 @@ async function withRetry<T>(label: string, attempts: number, fn: () => Promise<T
     } catch (e) {
       last = e;
       if (attempt < attempts) {
-        warn(`${label} attempt ${attempt}/${attempts} failed — retrying`, {
+        const backoff = attempt * (isRateLimited(e) ? RATE_LIMIT_BACKOFF_MS : 5_000);
+        warn(`${label} attempt ${attempt}/${attempts} failed — retrying in ${Math.round(backoff / 1000)}s`, {
           err: e instanceof Error ? e.message : String(e),
+          rateLimited: isRateLimited(e),
         });
-        await sleep(attempt * 5_000);
+        await sleep(backoff);
       }
     }
   }
@@ -271,7 +290,11 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
     } else {
       jobId = await createDraftOnly({ account_ids: [account_id], text: v.caption, ...mediaArg, type: "video" });
     }
-    const job = await pollJob(jobId, { label: `create-${sched.armed ? "scheduled" : "draft"}-${platform}`, timeoutMs: 180_000 });
+    // The poll is a plain GET, so it is safe to retry when Publer rate-limits it —
+    // unlike the create above, which must never run twice.
+    const job = await withRetry(`${v.id} ${platform} job-poll`, JOB_POLL_ATTEMPTS, () =>
+      pollJob(jobId, { label: `create-${sched.armed ? "scheduled" : "draft"}-${platform}`, timeoutMs: 180_000 }),
+    );
     // Publer's job_status returns only {status:"complete"} (no post ids). When the
     // payload does carry one we take it; otherwise the id is resolved once per wave
     // by backfillPostIds, NOT here — a per-video lookup paged the whole post list

@@ -44,10 +44,21 @@ writeFileSync(join(REPO, "hermes", "marker.txt"), "v1");
 git("add", "-A");
 git("commit", "-qm", "seed");
 
-const { gitCommitPush } = await import("./cycle.ts");
+const { gitCommitPush, isRateLimited } = await import("./cycle.ts");
 const summary = { planned: 12, drafted: 9, rejected: 2, failed: 1 };
 const dirty = (n: number): void =>
   writeFileSync(join(REPO, "ab-testing/ab-database.json"), JSON.stringify({ seed: true, updated: n }));
+
+test("recognises Publer's rate-limit answers, including the 403 upsell disguise", () => {
+  // Both of these ended videos during the 2026-07-25 backfill. The 403 is the same
+  // "you are going too fast" signal wearing a different status code, and must get
+  // the long backoff rather than the few seconds a network blip needs.
+  assert.equal(isRateLimited(new Error('Publer API POST /media/from-url -> HTTP 429: {"error": "Rate limit exceeded. Retry later."}')), true);
+  assert.equal(isRateLimited(new Error('Publer API POST /media/from-url -> HTTP 403: {"errors":["Please upgrade to Business to access our API."]}')), true);
+  // ...but a genuine failure must NOT be mistaken for one and slow the cycle down.
+  assert.equal(isRateLimited(new Error("Publer media-import 6a63 timed out after 180000ms")), false);
+  assert.equal(isRateLimited(new Error("ENOTFOUND app.publer.com")), false);
+});
 
 test("reports a USEFUL reason when there is nothing to commit", () => {
   const r = gitCommitPush("2026-07-25", summary);
