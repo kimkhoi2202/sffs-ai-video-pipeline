@@ -1,0 +1,1504 @@
+{
+  "version": 1,
+  "batch": 1,
+  "slug": "rebus-batch-001",
+  "note": "Authored rebus puzzles (raw). `puzzle` and `answer` are verbatim as supplied; `tier` / `ruleTag` / `art` / `explanation` are the added classification. Run content/build-rebus-bank.mjs to derive content/rebus-bank.json (sig, hash, ids, dedup) the same way validate.mjs derives master-question-bank.json from a round. art: text = the current RebusCarousel renders it from stacked rows; needs-art = wants a component feature or a graphic.",
+  "puzzles": [
+    {
+      "puzzle": "M1Y L1I1F1E",
+      "answer": "For once in my life (four 1s in \"my life\")",
+      "tier": "COUNT",
+      "ruleTag": "count:four-ones",
+      "art": "text",
+      "explanation": "There are four 1s sitting in MY LIFE, and four ones sounds like for once."
+    },
+    {
+      "puzzle": "Get it\nGet it\nGet it\nGet it",
+      "answer": "Forget it (four \"get it\")",
+      "tier": "COUNT",
+      "ruleTag": "count:four-of-word",
+      "art": "text",
+      "explanation": "GET IT appears four times, so it reads four get it."
+    },
+    {
+      "puzzle": "Try  stand/2  (the word \"stand\" written above a fraction bar, with 2 below it)",
+      "answer": "Try to understand",
+      "tier": "POSITION",
+      "ruleTag": "position:number-under-word",
+      "art": "text",
+      "explanation": "The 2 sits under STAND, so it reads try to under stand."
+    },
+    {
+      "puzzle": "TRAVEL / ccccccc  (\"TRAVEL\" above a fraction bar, seven c's below it)",
+      "answer": "Travel overseas or overseas travel",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-count",
+      "art": "text",
+      "explanation": "TRAVEL sits over seven C's, so it reads travel over seas."
+    },
+    {
+      "puzzle": "FAST  (written in shattered, broken-up letters)",
+      "answer": "Breakfast",
+      "tier": "BROKEN TEXT",
+      "ruleTag": "style:shattered",
+      "art": "needs-art",
+      "explanation": "The word FAST is broken, so it reads break fast."
+    },
+    {
+      "puzzle": "T\nO\nW\nN  (written vertically, reading downwards)",
+      "answer": "Downtown",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:vertical-down",
+      "art": "text",
+      "explanation": "TOWN reads going down, so it is down town."
+    },
+    {
+      "puzzle": "EYE  (with a blurred grey copy of \"EYE\" beneath it, like a shadow)",
+      "answer": "Eyeshadow",
+      "tier": "TEXTURE",
+      "ruleTag": "style:shadow-copy",
+      "art": "needs-art",
+      "explanation": "A shadow of the word EYE falls underneath it, so it is eye shadow."
+    },
+    {
+      "puzzle": "POT   oo\n      oo\n      oo\n      oo   (the word POT beside four pairs of o's, eight o's in total)",
+      "answer": "Potatoes (pot 8 O's)",
+      "tier": "COUNT",
+      "ruleTag": "count:eight-os",
+      "art": "text",
+      "explanation": "POT next to eight O's reads pot eight O's, which sounds like potatoes."
+    },
+    {
+      "puzzle": "D movie\nD movie\nD movie",
+      "answer": "3D movie",
+      "tier": "COUNT",
+      "ruleTag": "count:three-of-word",
+      "art": "text",
+      "explanation": "D MOVIE appears three times, so it is a 3D movie."
+    },
+    {
+      "puzzle": "SECRET  <-- (arrow pointing at the top one)\nSECRET\nSECRET",
+      "answer": "Top secret",
+      "tier": "POSITION",
+      "ruleTag": "position:topmost-marked",
+      "art": "needs-art",
+      "explanation": "The arrow picks out the SECRET at the top, so it is top secret."
+    },
+    {
+      "puzzle": "LEM\nADE  (\"LEM\" above a horizontal fraction bar, \"ADE\" below it)",
+      "answer": "Lemonade",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-word",
+      "art": "text",
+      "explanation": "LEM sits on ADE, so it reads lem on ade."
+    },
+    {
+      "puzzle": "L\ne\ng\ng\ng\ng\ng\ns\n\nL\ne\ng\ng\ng\ng\ng\ns  (two identical columns side by side, each spelling \"Legggggs\" written vertically downwards in small letters)",
+      "answer": "Long legs",
+      "tier": "SIZE",
+      "ruleTag": "style:stretched-word",
+      "art": "needs-art",
+      "explanation": "Two LEGS are stretched out with extra letters, so they are long legs."
+    },
+    {
+      "puzzle": "VICE + VICE  (the two words joined by a large grey plus sign)",
+      "answer": "advice",
+      "tier": "MATH",
+      "ruleTag": "math:add-word",
+      "art": "text",
+      "explanation": "The plus sign says add, so adding VICE gives ad vice."
+    },
+    {
+      "puzzle": "BAD\nWOLF  (\"BAD\" in very large bold letters, \"WOLF\" underneath it in much smaller letters)",
+      "answer": "Big bad wolf",
+      "tier": "SIZE",
+      "ruleTag": "size:big-word",
+      "art": "text",
+      "explanation": "BAD is written big above a small WOLF, so it is the big bad wolf."
+    },
+    {
+      "puzzle": "thanks thanks\nthanks thanks\nthanks thanks\nthanks thanks\nthanks thanks  (ten instances of \"thanks\" in five rows of two)",
+      "answer": "Many thanks or thanks a lot",
+      "tier": "COUNT",
+      "ruleTag": "count:many-of-word",
+      "art": "text",
+      "explanation": "THANKS is repeated ten times, which is a lot of thanks."
+    },
+    {
+      "puzzle": "L\nO\nA\nD  (written vertically, reading downwards)",
+      "answer": "Download",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:vertical-down",
+      "art": "text",
+      "explanation": "LOAD reads going down, so it is download."
+    },
+    {
+      "puzzle": "COME   TABLE\n       TABLE\n       TABLE\n       TABLE  (the word COME on the left, with \"TABLE\" stacked four times on the right)",
+      "answer": "Comfortable",
+      "tier": "COUNT",
+      "ruleTag": "count:four-of-word-beside",
+      "art": "needs-art",
+      "explanation": "COME beside four TABLEs reads come four table, which sounds like comfortable."
+    },
+    {
+      "puzzle": "TTTT   years\n       years  (four T's on the left, \"years\" written twice on the right)",
+      "answer": "Forty years",
+      "tier": "COUNT",
+      "ruleTag": "count:four-ts",
+      "art": "needs-art",
+      "explanation": "Four T's read as forty, so it is forty years."
+    },
+    {
+      "puzzle": "XQQQQQME  (five Q's between the X and ME)",
+      "answer": "Excuse me",
+      "tier": "SOUND OUT",
+      "ruleTag": "sound:letters-aloud",
+      "art": "text",
+      "explanation": "Say the letters out loud: X plus Q's plus ME is excuse me."
+    },
+    {
+      "puzzle": "HEAD\nHEAD\nHEAD\nHEAD",
+      "answer": "Forehead",
+      "tier": "COUNT",
+      "ruleTag": "count:four-of-word",
+      "art": "text",
+      "explanation": "HEAD appears four times, so it is four head."
+    },
+    {
+      "puzzle": "water  (the letters written along a curve that arcs over and tumbles downwards, each letter progressively rotated as it falls)",
+      "answer": "Waterfall",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:falling-letters",
+      "art": "needs-art",
+      "explanation": "The word WATER falls down the card, so it is a waterfall."
+    },
+    {
+      "puzzle": "e\nk\na\nw  (\"wake\" written vertically so that it reads upwards from the bottom)",
+      "answer": "Wake up",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:vertical-up",
+      "art": "text",
+      "explanation": "WAKE reads upwards from the bottom, so it is wake up."
+    },
+    {
+      "puzzle": "nafish\nnafish  (the word \"nafish\" written twice, one above the other)",
+      "answer": "Tuna fish",
+      "tier": "COUNT",
+      "ruleTag": "count:two-of-word",
+      "art": "text",
+      "explanation": "Two NAFISH reads as two na fish, which sounds like tuna fish."
+    },
+    {
+      "puzzle": "lang4uage  (a 4 inserted inside the word \"language\")",
+      "answer": "Foreign language",
+      "tier": "INSERTION",
+      "ruleTag": "insert:number-in-word",
+      "art": "text",
+      "explanation": "A four sits in LANGUAGE, so it is four in language, or foreign language."
+    },
+    {
+      "puzzle": "aged aged aged  (the middle \"aged\" is underlined)",
+      "answer": "Middle-aged",
+      "tier": "POSITION",
+      "ruleTag": "position:middle-marked",
+      "art": "needs-art",
+      "explanation": "The AGED in the middle is picked out, so it is middle aged."
+    },
+    {
+      "puzzle": "HEART  (written in shattered, cracked, broken-up letters)",
+      "answer": "Broken heart",
+      "tier": "BROKEN TEXT",
+      "ruleTag": "style:shattered",
+      "art": "needs-art",
+      "explanation": "The word HEART is cracked apart, so it is a broken heart."
+    },
+    {
+      "puzzle": "Atlantic\nPacific    SAW\nArctic  (the three ocean names stacked on the left, the word SAW to the right of them)",
+      "answer": "Seesaw",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:category-clue",
+      "art": "needs-art",
+      "explanation": "The list is all seas, so seas plus SAW sounds like seesaw."
+    },
+    {
+      "puzzle": "abcdefghijklm\nnopqrstvwxyz  (the alphabet on two lines with the letter u left out)",
+      "answer": "Miss you or missing you",
+      "tier": "MISSING LETTERS",
+      "ruleTag": "missing:letter-u",
+      "art": "text",
+      "explanation": "The alphabet is missing the U, so it is missing you."
+    },
+    {
+      "puzzle": "wheel\nwheel   DRIVE\nwheel\nwheel  (\"wheel\" stacked four times on the left, DRIVE to the right of them)",
+      "answer": "Four-wheel drive",
+      "tier": "COUNT",
+      "ruleTag": "count:four-beside-word",
+      "art": "needs-art",
+      "explanation": "There are four WHEELs next to DRIVE, so it is four wheel drive."
+    },
+    {
+      "puzzle": "horobod  (the word \"hood\" in large bold letters with the smaller word \"rob\" placed inside it, between the ho and the od)",
+      "answer": "Robin Hood",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-word",
+      "art": "text",
+      "explanation": "ROB sits inside HOOD, so it is Rob in Hood."
+    },
+    {
+      "puzzle": "NoonT  (a capital T tacked on to the end of \"Noon\")",
+      "answer": "Afternoon tea",
+      "tier": "SOUND OUT",
+      "ruleTag": "sound:letter-aloud",
+      "art": "text",
+      "explanation": "NOON followed by a T reads as afternoon tea."
+    },
+    {
+      "puzzle": "camping\nNIGHT  (\"camping\" above a horizontal fraction bar, \"NIGHT\" below it)",
+      "answer": "Camping overnight",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-word",
+      "art": "text",
+      "explanation": "CAMPING sits over NIGHT, so it is camping overnight."
+    },
+    {
+      "puzzle": "T i m e\nABDE  (the letters of \"Time\" spread far apart on the top line, with ABDE underneath - the alphabet run A B D E with the C left out)",
+      "answer": "Long time no see",
+      "tier": "MISSING LETTERS",
+      "ruleTag": "missing:letter-c",
+      "art": "text",
+      "explanation": "TIME is stretched out long and the C is gone, so it is long time no C."
+    },
+    {
+      "puzzle": "g\nn\ni\nh\nf i s  (the word \"fishing\" written along a curve shaped like a fish hook: it starts with \"f i s\" curling along the bottom and then climbs vertically \"h i n g\", so read top to bottom it appears as g n i h s i f)",
+      "answer": "Fishing hook",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-shape",
+      "art": "needs-art",
+      "explanation": "FISHING is bent into the shape of a hook, so it is a fishing hook."
+    },
+    {
+      "puzzle": "T\nO\nU\nC\nH  (written vertically, reading downwards)",
+      "answer": "Touchdown",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:vertical-down",
+      "art": "text",
+      "explanation": "TOUCH reads going down, so it is touchdown."
+    },
+    {
+      "puzzle": "STO\n  N\n  E  (\"STONE\" bent round a right angle in the top-right corner of the box: \"STO\" runs across the top and \"NE\" continues downwards along the right-hand side)",
+      "answer": "Cornerstone",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-corner",
+      "art": "needs-art",
+      "explanation": "STONE turns the corner of the card, so it is a cornerstone."
+    },
+    {
+      "puzzle": "Love sight\n     sight\n     sight  (\"Love\" followed by \"sight\" written three times, one below the other)",
+      "answer": "Love at first sight",
+      "tier": "POSITION",
+      "ruleTag": "position:first-of-three",
+      "art": "needs-art",
+      "explanation": "LOVE lines up with the first of the three SIGHTs, so it is love at first sight."
+    },
+    {
+      "puzzle": "OVER  (written in large letters covered in ice/frost with icicles dripping off them)",
+      "answer": "Freeze over",
+      "tier": "TEXTURE",
+      "ruleTag": "style:frozen",
+      "art": "needs-art",
+      "explanation": "The word OVER is frozen solid, so it is freeze over."
+    },
+    {
+      "puzzle": "The w KING oods  (the word \"KING\" raised up high and inserted into \"The woods\", between the w and the oods)",
+      "answer": "Hiking in the woods (High king)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-raised-in-word",
+      "art": "needs-art",
+      "explanation": "A high KING sits inside THE WOODS, so it is hiking in the woods."
+    },
+    {
+      "puzzle": "SAND  (the word enclosed inside a drawn rectangular box outline)",
+      "answer": "Sandbox",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-box",
+      "art": "needs-art",
+      "explanation": "SAND sits inside a box, so it is a sandbox."
+    },
+    {
+      "puzzle": "  B\nB O W\n  W  (two \"BOW\"s crossing at right angles and sharing the same O: one written across, one written downwards)",
+      "answer": "Crossbow",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:crossing-words",
+      "art": "needs-art",
+      "explanation": "Two BOWs cross each other, so it is a crossbow."
+    },
+    {
+      "puzzle": "COFFEE  (written in cracked, broken-apart grey letters)",
+      "answer": "Coffee break",
+      "tier": "BROKEN TEXT",
+      "ruleTag": "style:shattered",
+      "art": "needs-art",
+      "explanation": "The word COFFEE is broken apart, so it is a coffee break."
+    },
+    {
+      "puzzle": "CHOICE\nCHOICE\nCHOICE\nCHOICE",
+      "answer": "Multiple choice",
+      "tier": "COUNT",
+      "ruleTag": "count:many-of-word",
+      "art": "text",
+      "explanation": "CHOICE appears several times, so it is multiple choice."
+    },
+    {
+      "puzzle": "come -->  Spring\n          Summer\n          Autumn\n          Winter  (the word \"come\" sits inside a large outlined arrow that points right at the stacked list of the four seasons)",
+      "answer": "Come into season",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:arrow-into",
+      "art": "needs-art",
+      "explanation": "COME points into a list of seasons, so it is come into season."
+    },
+    {
+      "puzzle": "I'LL GET\nIT  (\"I'LL GET\" written above \"IT\")",
+      "answer": "I’ll get over it",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-word",
+      "art": "text",
+      "explanation": "I'LL GET sits over IT, so it reads I'll get over it."
+    },
+    {
+      "puzzle": "I'M You  (\"I'M\" in very large letters, \"You\" beside it in much smaller letters)",
+      "answer": "I’m bigger than you",
+      "tier": "SIZE",
+      "ruleTag": "size:big-vs-small",
+      "art": "text",
+      "explanation": "I'M is written much bigger than YOU, so it reads I'm bigger than you."
+    },
+    {
+      "puzzle": "AGENT\nAGENT  (the word printed twice, one copy directly on top of the other so the two overlap)",
+      "answer": "Double agent",
+      "tier": "COUNT",
+      "ruleTag": "count:two-overlapping",
+      "art": "needs-art",
+      "explanation": "AGENT is printed twice over itself, so it is a double agent."
+    },
+    {
+      "puzzle": "noon good  (\"good\" written after \"noon\")",
+      "answer": "Good afternoon",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:reversed-order",
+      "art": "text",
+      "explanation": "GOOD comes after NOON, so it reads good after noon."
+    },
+    {
+      "puzzle": "EL C RIC  (the word ELECTRIC with blank gaps left where the second E and the T should be)",
+      "answer": "Electric blanket",
+      "tier": "MISSING LETTERS",
+      "ruleTag": "missing:letters-blank",
+      "art": "text",
+      "explanation": "ELECTRIC has blanks where letters should be, so it is an electric blanket."
+    },
+    {
+      "puzzle": "DOft.OR  (the abbreviation \"ft.\" written inside the word DOOR, between the DO and the OR)",
+      "answer": "One foot in the door",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:abbrev-in-word",
+      "art": "text",
+      "explanation": "One foot sits inside DOOR, so it is one foot in the door."
+    },
+    {
+      "puzzle": "5kg\nweight  (\"5kg\" above a thick horizontal fraction bar, \"weight\" below it)",
+      "answer": "Five kilograms overweight",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-word",
+      "art": "text",
+      "explanation": "Five kilograms sits over WEIGHT, so it is five kilograms overweight."
+    },
+    {
+      "puzzle": "Way go go",
+      "answer": "Way to go",
+      "tier": "COUNT",
+      "ruleTag": "count:two-of-word",
+      "art": "text",
+      "explanation": "There are two GOs, so it reads way two go."
+    },
+    {
+      "puzzle": "Q Q Me  (each of the two Q's has a large X drawn through it, crossing it out)",
+      "answer": "Excuse me",
+      "tier": "SOUND OUT",
+      "ruleTag": "sound:crossed-letters",
+      "art": "needs-art",
+      "explanation": "The Q's are crossed out, so it reads X cues me, or excuse me."
+    },
+    {
+      "puzzle": "MPARDE  (\"PARD\" written inside the word ME, between the M and the E)",
+      "answer": "Pardon me",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-word",
+      "art": "text",
+      "explanation": "PARD sits inside ME, so it reads pard on me."
+    },
+    {
+      "puzzle": "storm\nTH  (\"TH\" written underneath \"storm\")",
+      "answer": "Thunderstorm",
+      "tier": "POSITION",
+      "ruleTag": "position:letters-under-word",
+      "art": "text",
+      "explanation": "TH sits under STORM, so it reads TH under storm."
+    },
+    {
+      "puzzle": "scope  (written in tiny letters alone in the middle of an otherwise empty box)",
+      "answer": "Microscope",
+      "tier": "SIZE",
+      "ruleTag": "size:tiny-word",
+      "art": "text",
+      "explanation": "SCOPE is written micro sized, so it is a microscope."
+    },
+    {
+      "puzzle": "S      S\nO  et  O  et\nC      C\nK      K  (two large outlined capital I's side by side, each with the letters S O C K stacked vertically down its middle and a small \"et\" at its top right)",
+      "answer": "Eye sockets",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-in-letter",
+      "art": "needs-art",
+      "explanation": "Two I's hold SOCK plus ET, so they are eye sockets."
+    },
+    {
+      "puzzle": "_______ET  (a long blank underscore line running into the letters ET)",
+      "answer": "Blanket",
+      "tier": "MISSING LETTERS",
+      "ruleTag": "missing:blank-before",
+      "art": "text",
+      "explanation": "A blank runs into ET, so it is blank ET, or blanket."
+    },
+    {
+      "puzzle": "issues  issues\nissues  issues\nissues  issues\nissues  issues\nissues  issues  (ten instances of \"issues\" in five rows of two)",
+      "answer": "Tennis shoes",
+      "tier": "COUNT",
+      "ruleTag": "count:ten-of-word",
+      "art": "text",
+      "explanation": "Ten ISSUES reads as ten issues, which sounds like tennis shoes."
+    },
+    {
+      "puzzle": "  Mary\n+ Mary\n=  (an addition sum: \"Mary\" plus \"Mary\", with a horizontal line drawn under the second Mary and an equals sign below, the total left blank)",
+      "answer": "Summary",
+      "tier": "MATH",
+      "ruleTag": "math:sum-word",
+      "art": "text",
+      "explanation": "The answer to the sum is the sum of Mary, which is summary."
+    },
+    {
+      "puzzle": "teac  (the word sits right at the top edge of the otherwise empty box)",
+      "answer": "Teacup",
+      "tier": "POSITION",
+      "ruleTag": "position:top-of-box",
+      "art": "needs-art",
+      "explanation": "TEAC is pushed right up to the top, so it is teacup."
+    },
+    {
+      "puzzle": "meta\nmeta\nmeta\nmeta",
+      "answer": "Metaphor",
+      "tier": "COUNT",
+      "ruleTag": "count:four-of-word",
+      "art": "text",
+      "explanation": "META appears four times, so it reads meta four, or metaphor."
+    },
+    {
+      "puzzle": "FLUBADENCE  (in heavy block capitals)",
+      "answer": "Bad influence",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-word",
+      "art": "text",
+      "explanation": "BAD sits inside FLUENCE, so it is bad in fluence."
+    },
+    {
+      "puzzle": "ken ken ken ken ken ken ken ...  (the word \"ken\" repeated continuously around the outline of a circle, each copy rotated to follow the ring so that the ones at the bottom are upside down, with six further separate \"ken\"s spaced around the outside of that ring like the rays of a sun)",
+      "answer": "Sunken",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:ring-of-words",
+      "art": "needs-art",
+      "explanation": "KEN is drawn as a sun, so it is sun ken."
+    },
+    {
+      "puzzle": "YYY GUY",
+      "answer": "Wise guy",
+      "tier": "SOUND OUT",
+      "ruleTag": "sound:letters-aloud",
+      "art": "text",
+      "explanation": "Three Y's read as Y's, which sounds like wise, so it is a wise guy."
+    },
+    {
+      "puzzle": "B\nO W  (the letters set out in an L shape: B at the top left, O directly below it, W to the right of the O)",
+      "answer": "Elbow",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-l-shape",
+      "art": "needs-art",
+      "explanation": "BOW is bent into an L shape, so it is L bow, or elbow."
+    },
+    {
+      "puzzle": "UN  (very large solid block capitals with white crack lines running across them, as if the letters were shattered)",
+      "answer": "Unbroken",
+      "tier": "BROKEN TEXT",
+      "ruleTag": "style:shattered",
+      "art": "needs-art",
+      "explanation": "The letters UN are broken, so it reads un broken."
+    },
+    {
+      "puzzle": "gobble gobble\ncluck   cluck\nhonk   honk\nquack quack",
+      "answer": "Foul language",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:category-clue",
+      "art": "text",
+      "explanation": "Every word is bird talk, so it is fowl language, or foul language."
+    },
+    {
+      "puzzle": "R + R =",
+      "answer": "Summer",
+      "tier": "MATH",
+      "ruleTag": "math:sum-letters",
+      "art": "text",
+      "explanation": "The sum of R is sum R, which sounds like summer."
+    },
+    {
+      "puzzle": "mute  mute\nmute  mute\nmute  mute\nmute  mute",
+      "answer": "Mutate",
+      "tier": "COUNT",
+      "ruleTag": "count:eight-of-word",
+      "art": "text",
+      "explanation": "MUTE appears eight times, so it reads mute eight, or mutate."
+    },
+    {
+      "puzzle": "difoodan",
+      "answer": "Indian food",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-word",
+      "art": "text",
+      "explanation": "FOOD sits inside INDIAN, so it is Indian food."
+    },
+    {
+      "puzzle": "BIRD B\n  B      B\nB    B      BIRD\n     B          B\nB  BIRD   B      B  (the word \"BIRD\" three times and the single letter \"B\" ten times, scattered at random around the box)",
+      "answer": "The birds and the bees",
+      "tier": "COUNT",
+      "ruleTag": "count:scattered-words",
+      "art": "needs-art",
+      "explanation": "The card is full of BIRDs and B's, so it is the birds and the bees."
+    },
+    {
+      "puzzle": "Pod Pod Pod",
+      "answer": "Tripod.",
+      "tier": "COUNT",
+      "ruleTag": "count:three-of-word",
+      "art": "text",
+      "explanation": "POD appears three times, so it is a tripod."
+    },
+    {
+      "puzzle": "ccccccc\ni\nn\ng  (a row of seven lower-case c's, with \"ing\" written vertically downwards beneath them)",
+      "answer": "Seasoning",
+      "tier": "COUNT",
+      "ruleTag": "count:seven-cs",
+      "art": "text",
+      "explanation": "Seven C's read as seas, so it is seas on ing, or seasoning."
+    },
+    {
+      "puzzle": "eeeeee L  (six lower-case e's followed by a capital L)",
+      "answer": "Easel",
+      "tier": "COUNT",
+      "ruleTag": "count:six-es",
+      "art": "text",
+      "explanation": "A row of E's next to an L reads as E's L, which sounds like easel."
+    },
+    {
+      "puzzle": "DIS   123456",
+      "answer": "Discount",
+      "tier": "COUNT",
+      "ruleTag": "count:counting-numbers",
+      "art": "text",
+      "explanation": "DIS is followed by counting, so it is dis count."
+    },
+    {
+      "puzzle": "scissor\nDROP\nPENALTY\nfly  (all four words written vertically, letter under letter, running down the edges of the box: \"scissor\" then \"DROP\" down the left-hand side, \"PENALTY\" then \"fly\" down the right-hand side)",
+      "answer": "Sidekicks",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:words-down-sides",
+      "art": "needs-art",
+      "explanation": "All four words are kinds of kick and they run down the sides, so they are sidekicks."
+    },
+    {
+      "puzzle": "fingers  (written twice in a cross: one \"fingers\" horizontal, the other written vertically through it, the two words crossing at the letter \"g\")",
+      "answer": "Fingers crossed",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:crossing-words",
+      "art": "needs-art",
+      "explanation": "The two FINGERS cross each other, so it is fingers crossed."
+    },
+    {
+      "puzzle": "sense sense\nsense sense\nsense sense  (six copies in two columns; the last one, bottom right, is ringed with a hand-drawn circle)",
+      "answer": "Sixth sense",
+      "tier": "COUNT",
+      "ruleTag": "count:sixth-marked",
+      "art": "needs-art",
+      "explanation": "The sixth SENSE is circled, so it is the sixth sense."
+    },
+    {
+      "puzzle": "POINT  (large capitals with white cracks running through them, as if broken)",
+      "answer": "Breaking point",
+      "tier": "BROKEN TEXT",
+      "ruleTag": "style:shattered",
+      "art": "needs-art",
+      "explanation": "The word POINT is breaking, so it is breaking point."
+    },
+    {
+      "puzzle": "ON\nTHOUGHT THOUGHT  (\"ON\" on the line above, sitting over the second \"THOUGHT\")",
+      "answer": "On second thought",
+      "tier": "POSITION",
+      "ruleTag": "position:over-second",
+      "art": "needs-art",
+      "explanation": "ON sits over the second THOUGHT, so it is on second thought."
+    },
+    {
+      "puzzle": "events events events events events events  (the word \"events\" repeated around the outlines of three interlocking rings that form a chain)",
+      "answer": "A chain of events",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:ring-of-words",
+      "art": "needs-art",
+      "explanation": "EVENTS is drawn as a chain, so it is a chain of events."
+    },
+    {
+      "puzzle": "s l e e p\n     i t  (\"sleep\" on the upper line, \"it\" centred on the line below it)",
+      "answer": "Sleep on it",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-word",
+      "art": "text",
+      "explanation": "SLEEP sits on IT, so it is sleep on it."
+    },
+    {
+      "puzzle": "dayas wlolrk",
+      "answer": "All in a days work",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-phrase",
+      "art": "text",
+      "explanation": "ALL is threaded inside A DAYS WORK, so it is all in a days work."
+    },
+    {
+      "puzzle": "DOOR   DOOR\n           DOOR  (one \"DOOR\" on the left, with two more \"DOOR\"s stacked to its right)",
+      "answer": "Door to door",
+      "tier": "COUNT",
+      "ruleTag": "count:two-of-word",
+      "art": "needs-art",
+      "explanation": "One DOOR faces two more DOORs, so it is door to door."
+    },
+    {
+      "puzzle": "MAN  (very fat rounded capitals with round white holes punched all through them)",
+      "answer": "Holy man",
+      "tier": "TEXTURE",
+      "ruleTag": "style:holes",
+      "art": "needs-art",
+      "explanation": "MAN is full of holes, so it is a holey man, or holy man."
+    },
+    {
+      "puzzle": "llion\nllion\nllion",
+      "answer": "Trillion",
+      "tier": "COUNT",
+      "ruleTag": "count:three-of-word",
+      "art": "text",
+      "explanation": "LLION appears three times, so it is tri llion."
+    },
+    {
+      "puzzle": "LADEP  (rough stencil-style capitals; it is the word \"PEDAL\" written backwards)",
+      "answer": "Backpedal",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:reversed-word",
+      "art": "text",
+      "explanation": "PEDAL is written backwards, so it is backpedal."
+    },
+    {
+      "puzzle": "hahandnd",
+      "answer": "Hand in hand",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-word",
+      "art": "text",
+      "explanation": "One HAND sits inside the other, so it is hand in hand."
+    },
+    {
+      "puzzle": "D  (a very large capital D, with the small letters \"AH\" written inside the bowl of the D)",
+      "answer": "India (In D ah)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:letters-in-letter",
+      "art": "needs-art",
+      "explanation": "AH sits in the D, so it reads in D ah, or India."
+    },
+    {
+      "puzzle": "MAY\naaaaaaaaa  (nine lower-case a's on the second line)",
+      "answer": "Mayonnaise",
+      "tier": "COUNT",
+      "ruleTag": "count:nine-as",
+      "art": "text",
+      "explanation": "MAY sits on nine A's, so it reads May on nine A's, or mayonnaise."
+    },
+    {
+      "puzzle": "ISTRAADMTOR",
+      "answer": "Administrator",
+      "tier": "SCRAMBLE",
+      "ruleTag": "scramble:mixed-letters",
+      "art": "text",
+      "explanation": "The letters of ADMIN are mixed into the rest of the word."
+    },
+    {
+      "puzzle": "over\nover\nover  (all three lines pushed hard up against the left-hand edge of the box)",
+      "answer": "Leftovers",
+      "tier": "POSITION",
+      "ruleTag": "position:left-of-box",
+      "art": "needs-art",
+      "explanation": "The OVERs are all pushed left, so they are leftovers."
+    },
+    {
+      "puzzle": "Dom  (written in the middle of a large drawn circle, so the word sits inside an O)",
+      "answer": "Domino",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-letter",
+      "art": "needs-art",
+      "explanation": "DOM sits in an O, so it reads Dom in O."
+    },
+    {
+      "puzzle": "K K K\nK K K\nK K K",
+      "answer": "Canine",
+      "tier": "COUNT",
+      "ruleTag": "count:nine-ks",
+      "art": "text",
+      "explanation": "There are nine K's, so it reads K nine, or canine."
+    },
+    {
+      "puzzle": "te8gr",
+      "answer": "Integrate",
+      "tier": "INSERTION",
+      "ruleTag": "insert:number-in-word",
+      "art": "text",
+      "explanation": "An eight sits in the middle, so it reads in te eight gr, or integrate."
+    },
+    {
+      "puzzle": "1 -\n2 -\n3 - call\n4 - call  (a numbered list; lines 1 and 2 are left blank after the dash)",
+      "answer": "No one to call",
+      "tier": "MISSING LETTERS",
+      "ruleTag": "missing:list-items",
+      "art": "text",
+      "explanation": "Lines one and two are empty, so there is no one, no two, to call."
+    },
+    {
+      "puzzle": "CCCCCC\ning  (six capital C's with \"ing\" centred on the line below)",
+      "answer": "Seasoning",
+      "tier": "COUNT",
+      "ruleTag": "count:six-cs",
+      "art": "text",
+      "explanation": "A row of C's reads as seas, so it is seas on ing."
+    },
+    {
+      "puzzle": "a  w  a  k  e  (the letters spread far apart across the width of the box)",
+      "answer": "Wide awake",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:spread-letters",
+      "art": "text",
+      "explanation": "AWAKE is spread out wide, so it is wide awake."
+    },
+    {
+      "puzzle": "X   XXXXXXX\nX      X\nX      X\nX      X\nX      X\n(rows of X's arranged so they spell out the letters \"I\" and \"T\": a vertical bar of five X's, then a seven-X horizontal bar with a four-X stem beneath its centre)",
+      "answer": "Exit",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-form-letters",
+      "art": "needs-art",
+      "explanation": "X's are used to draw IT, so it reads X IT, or exit."
+    },
+    {
+      "puzzle": "DER   DER\nDER   DER\nDER   DER\nDER   DER\nDER   DER  (the word DER repeated ten times in two columns of five)",
+      "answer": "Tender",
+      "tier": "COUNT",
+      "ruleTag": "count:ten-of-word",
+      "art": "text",
+      "explanation": "DER appears ten times, so it reads ten DER, or tender."
+    },
+    {
+      "puzzle": "E T T\nV H H A\nE I I L\nR N N L\nY G G\n(the words EVERY, THING, THING and ALL written vertically side by side, the whole block placed on the right-hand side of the box)",
+      "answer": "Everything’s all right",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:words-right-of-box",
+      "art": "needs-art",
+      "explanation": "EVERYTHING, THING and ALL sit on the right, so everything is all right."
+    },
+    {
+      "puzzle": "WARM  (in rough textured capitals, positioned at the very top of an otherwise empty box)",
+      "answer": "Warm up",
+      "tier": "POSITION",
+      "ruleTag": "position:top-of-box",
+      "art": "needs-art",
+      "explanation": "WARM sits right up at the top, so it is warm up."
+    },
+    {
+      "puzzle": "Mess Mess Mess Mess  (the word \"Mess\" written four times around a circle, the letters curving so that the ones at the bottom are upside down)",
+      "answer": "Mess around",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:ring-of-words",
+      "art": "needs-art",
+      "explanation": "MESS runs around in a circle, so it is mess around."
+    },
+    {
+      "puzzle": "ETIB  (the word \"BITE\" written backwards)",
+      "answer": "Bite back",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:reversed-word",
+      "art": "text",
+      "explanation": "BITE is written backwards, so it is bite back."
+    },
+    {
+      "puzzle": "TWO  (in large outline capitals, with \"GET\" written vertically in small letters inside the O)",
+      "answer": "Get into",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-letter",
+      "art": "needs-art",
+      "explanation": "GET sits inside the O of TWO, so it is get in to."
+    },
+    {
+      "puzzle": "CARE\nCARE\nCARE\nCARE",
+      "answer": "Care for",
+      "tier": "COUNT",
+      "ruleTag": "count:four-of-word",
+      "art": "text",
+      "explanation": "CARE appears four times, so it is care four, or care for."
+    },
+    {
+      "puzzle": "mbstone\nmbstone",
+      "answer": "Tombstone",
+      "tier": "COUNT",
+      "ruleTag": "count:two-of-word",
+      "art": "text",
+      "explanation": "Two MBSTONEs read as two mbstone, which sounds like tombstone."
+    },
+    {
+      "puzzle": "K   K\n      K\n  K   K\nK  K K  K\n(nine letter K's scattered at random around the box)",
+      "answer": "Canine (K9)",
+      "tier": "COUNT",
+      "ruleTag": "count:nine-ks-scattered",
+      "art": "needs-art",
+      "explanation": "There are nine K's on the card, so it reads K nine, or canine."
+    },
+    {
+      "puzzle": "oa oa oa oa oa ...  (the letters \"oa\" repeated over and over, the repeats arranged so that they draw out the shapes of three letters side by side: S, I, S)",
+      "answer": "Oasis",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-form-letters",
+      "art": "needs-art",
+      "explanation": "OA is used to draw SIS, so it reads oa SIS, or oasis."
+    },
+    {
+      "puzzle": "gronailwn  (the letters of \"nail\" sitting inside the word \"grown\")",
+      "answer": "Ingrown nail",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-word",
+      "art": "text",
+      "explanation": "NAIL sits inside GROWN, so it is an ingrown nail."
+    },
+    {
+      "puzzle": "gen c\ngen c\ngen c\ngen c  (the same words four times, printed from very pale grey at the top to solid black at the bottom, so they appear to be emerging)",
+      "answer": "Emergency",
+      "tier": "TEXTURE",
+      "ruleTag": "style:fade-in",
+      "art": "needs-art",
+      "explanation": "GEN C emerges out of the page, so it is emerge gen C, or emergency."
+    },
+    {
+      "puzzle": "    medi    medi\nT  medi  E medi  R\n    medi    medi\n    medi    medi\n(the word \"medi\" printed eight times in two columns of four, with a large T to the left of the block, a large E between the two columns and a large R to the right)",
+      "answer": "Intermediate",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-around-block",
+      "art": "needs-art",
+      "explanation": "MEDI sits between the letters, so it reads inter medi ate."
+    },
+    {
+      "puzzle": "@  @    @@@@\n@  @    @\n@@@@   @@@\n@  @    @\n@  @    @@@@\n(rows of @ symbols arranged so that they draw the letters \"H\" and \"E\")",
+      "answer": "Heat",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-form-letters",
+      "art": "needs-art",
+      "explanation": "At signs are used to draw HE, so it reads HE at, or heat."
+    },
+    {
+      "puzzle": "4  (a huge outlined figure 4, with \"mall\" written vertically - m, a, l, l - inside the open triangle of the 4)",
+      "answer": "Informal",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-number",
+      "art": "needs-art",
+      "explanation": "MALL sits in the four, so it reads in four mal, or informal."
+    },
+    {
+      "puzzle": "C          C\nI    Co    I\nD          D\nE          E\n(\"CIDE\" written vertically at the left of the box and again at the right, with \"Co\" between them in the middle)",
+      "answer": "coincides",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-between-words",
+      "art": "needs-art",
+      "explanation": "CO sits in between two CIDEs, so it reads co in cides."
+    },
+    {
+      "puzzle": "PACKING  (written backwards, mirror-reversed)",
+      "answer": "Backpacking",
+      "tier": "DIRECTION",
+      "ruleTag": "direction:mirrored-word",
+      "art": "needs-art",
+      "explanation": "PACKING is flipped back to front, so it is backpacking."
+    },
+    {
+      "puzzle": "CUR    CUR    CUR\nCUR    CUR    CUR\n CUR    CUR   CUR\nCUR\n(the word CUR printed ten times, scattered at slightly different heights)",
+      "answer": "Curtain",
+      "tier": "COUNT",
+      "ruleTag": "count:ten-of-word",
+      "art": "needs-art",
+      "explanation": "CUR appears ten times, so it reads CUR ten, or curtain."
+    },
+    {
+      "puzzle": "Eeeee   E\nEeeee   E\nE       E\nE       EEEEE\n(capital E's and lowercase e's arranged so that they draw the letters \"P\" and \"L\")",
+      "answer": "Please",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-form-letters",
+      "art": "needs-art",
+      "explanation": "E's are used to draw PL, so it reads PL E's, or please."
+    },
+    {
+      "puzzle": "G\nNMENT  (the letter G centred above the word NMENT)",
+      "answer": "Government",
+      "tier": "POSITION",
+      "ruleTag": "position:letter-over-word",
+      "art": "text",
+      "explanation": "G sits over NMENT, so it reads G over nment, or government."
+    },
+    {
+      "puzzle": "G\nG\nG\nG\nG\nG G G G G G\n(letter G's arranged so that they draw the shape of the letter \"L\")",
+      "answer": "Algae",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-form-letters",
+      "art": "needs-art",
+      "explanation": "G's are used to draw an L, so it reads L G's, or algae."
+    },
+    {
+      "puzzle": "EclarT  (a large bold \"E\", then \"clar\" in small plain letters, then a large bold \"T\")",
+      "answer": "Clarinet",
+      "tier": "SIZE",
+      "ruleTag": "size:small-word-inside",
+      "art": "needs-art",
+      "explanation": "CLAR is written inside a big NET, so it reads clar in et."
+    },
+    {
+      "puzzle": "x  →  X\nx  →  X\nx  →  X\n(three rows, each an x with an arrow pointing to another x, every x in a different typeface or style)",
+      "answer": "Exchanges",
+      "tier": "TEXTURE",
+      "ruleTag": "style:font-changes",
+      "art": "needs-art",
+      "explanation": "Each X changes into a different X, so they are X changes, or exchanges."
+    },
+    {
+      "puzzle": "NNNN\nNNNN\nNNNN\nNNNN\nNNNN\nNNNN  (six rows of four N's)",
+      "answer": "Forensics",
+      "tier": "COUNT",
+      "ruleTag": "count:four-ns-six-rows",
+      "art": "text",
+      "explanation": "Four N's, six times over, reads as four N six, or forensics."
+    },
+    {
+      "puzzle": "PRICE  (only the lower halves of the letters are shown, the top halves cut off)",
+      "answer": "Half price/Cut price",
+      "tier": "TEXTURE",
+      "ruleTag": "style:cut-letters",
+      "art": "needs-art",
+      "explanation": "Only half of PRICE is left, so it is half price."
+    },
+    {
+      "puzzle": "M  (a capital M sitting inside a large outlined capital D, and the whole D-with-M is inside a grey circle with a diagonal slash through it, a \"no/prohibited\" sign)",
+      "answer": "Never mind/ Don’t mind",
+      "tier": "TEXTURE",
+      "ruleTag": "style:prohibition-sign",
+      "art": "needs-art",
+      "explanation": "The no sign cancels the M in the D, so it reads do not mind."
+    },
+    {
+      "puzzle": "1 - Plumber\n3 - Doctor\n5 - Driver\n7 - Waiter\n9 - Teacher",
+      "answer": "Odd jobs",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:odd-numbers",
+      "art": "text",
+      "explanation": "Every job is numbered with an odd number, so they are odd jobs."
+    },
+    {
+      "puzzle": "FEW\nFEW\nFEW\nFEW\nFEW   L  (five stacked FEWs on the left, beside one very large bold capital L)",
+      "answer": "Fuselage",
+      "tier": "COUNT",
+      "ruleTag": "count:five-of-word-beside",
+      "art": "needs-art",
+      "explanation": "Five FEWs next to an L reads as fews L age, which sounds like fuselage."
+    },
+    {
+      "puzzle": "M\nA  (a very large outlined capital E, with \"M\" sitting inside its upper opening and \"A\" inside its lower opening)",
+      "answer": "Maine",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:letters-in-letter",
+      "art": "needs-art",
+      "explanation": "MA sits in the E, so it reads MA in E, or Maine."
+    },
+    {
+      "puzzle": "R+E+S+S",
+      "answer": "Address",
+      "tier": "MATH",
+      "ruleTag": "math:add-letters",
+      "art": "text",
+      "explanation": "The plus signs say add, so it reads add R E S S, or address."
+    },
+    {
+      "puzzle": "URE  (in large letters that are wet and dripping, drops running off the bottoms of the letters)",
+      "answer": "Moisture",
+      "tier": "TEXTURE",
+      "ruleTag": "style:dripping",
+      "art": "needs-art",
+      "explanation": "URE is soaking wet, so it is moist URE, or moisture."
+    },
+    {
+      "puzzle": "DAY  (in large bold letters that are cracked and broken apart)",
+      "answer": "Daybreak/Midday break",
+      "tier": "BROKEN TEXT",
+      "ruleTag": "style:shattered",
+      "art": "needs-art",
+      "explanation": "The word DAY is broken, so it is daybreak."
+    },
+    {
+      "puzzle": "under  (each letter bigger than the one before, so the word grows from a small \"u\" to a large \"r\")",
+      "answer": "Undergrowth",
+      "tier": "SIZE",
+      "ruleTag": "size:growing-letters",
+      "art": "needs-art",
+      "explanation": "UNDER grows as it goes, so it is undergrowth."
+    },
+    {
+      "puzzle": "aeology  (the letters set along a curved arch, rising from the bottom left, over the top, and down to the bottom right)",
+      "answer": "Archaeology",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:arched-letters",
+      "art": "needs-art",
+      "explanation": "AEOLOGY is bent into an arch, so it is arch aeology."
+    },
+    {
+      "puzzle": "we\nwe\nwe\nwe\nwe  L  (five stacked \"we\"s with a large bold letter L to their right)",
+      "answer": "Weasel",
+      "tier": "COUNT",
+      "ruleTag": "count:five-of-word-beside",
+      "art": "needs-art",
+      "explanation": "A stack of WEs next to an L reads as we's L, which sounds like weasel."
+    },
+    {
+      "puzzle": "ocean\nsky\nsapphire   J  (three stacked words with a large bold letter J to their right)",
+      "answer": "Blue Jay",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:category-clue",
+      "art": "needs-art",
+      "explanation": "The list is all blue things, so blue plus J is blue jay."
+    },
+    {
+      "puzzle": "CCCCC\nCCCCC\nCCCCC\nCCCCC  (four rows of five bold C's)",
+      "answer": "Crows",
+      "tier": "COUNT",
+      "ruleTag": "count:rows-of-cs",
+      "art": "text",
+      "explanation": "These are rows of C's, so they are C rows, or crows."
+    },
+    {
+      "puzzle": "swal  (written by itself low down, near the bottom of an otherwise empty box)",
+      "answer": "Swallow",
+      "tier": "POSITION",
+      "ruleTag": "position:low-in-box",
+      "art": "needs-art",
+      "explanation": "SWAL sits low on the card, so it reads swal low, or swallow."
+    },
+    {
+      "puzzle": "ememememem ... emememememem  (the syllable \"em\" repeated over and over, set along a U-shaped curve: down the left side, around the bottom where the letters are upside down, and back up the right side)",
+      "answer": "Emu",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-u-shape",
+      "art": "needs-art",
+      "explanation": "EM is bent into the shape of a U, so it reads em U, or emu."
+    },
+    {
+      "puzzle": "Mon  Tue  Wed  Thu\nFri  Sat  Z  (day-of-the-week buttons, with an arrow pointing up at the \"Z\" in the place where Sunday would be)",
+      "answer": "Daisy ( Day Z)",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:day-substitution",
+      "art": "needs-art",
+      "explanation": "A Z has taken the place of a day, so it reads day Z, or daisy."
+    },
+    {
+      "puzzle": "cherry\ntomato\nlipstick\nION  (the last line in large bold letters)",
+      "answer": "Red onion",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:category-clue",
+      "art": "text",
+      "explanation": "The list is all red things, so red on ION is red onion."
+    },
+    {
+      "puzzle": "Yesterday\nis  (crossed out with a grey X)\nabi",
+      "answer": "Wasabi",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:clue-word",
+      "art": "needs-art",
+      "explanation": "Yesterday means IS becomes WAS, so it reads was abi, or wasabi."
+    },
+    {
+      "puzzle": "G  (a very large capital G with a dash \"-\" inside the opening of the letter)",
+      "answer": "Dashing (Dash in G)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:symbol-in-letter",
+      "art": "needs-art",
+      "explanation": "A dash sits in the G, so it reads dash in G, or dashing."
+    },
+    {
+      "puzzle": "n M ent  (the M printed much larger than the surrounding letters)",
+      "answer": "Enlargement",
+      "tier": "SIZE",
+      "ruleTag": "size:big-letter-inline",
+      "art": "needs-art",
+      "explanation": "The M is large, so it reads N large M ent, or enlargement."
+    },
+    {
+      "puzzle": "D O N ' T\n1 . ve\n2 . ve\n3 . ve  (a numbered list on a notepad, headed \"DON'T\", with \"ve\" as each of the three items)",
+      "answer": "Novelist",
+      "tier": "COUNT",
+      "ruleTag": "list:numbered-items",
+      "art": "text",
+      "explanation": "A do not list of VEs reads as no ve list, or novelist."
+    },
+    {
+      "puzzle": "venort  (the word \"vent\" with \"or\" written inside it, between the n and the t)",
+      "answer": "Inventor (In vent or)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-word",
+      "art": "text",
+      "explanation": "OR sits in VENT, so it reads in vent or, or inventor."
+    },
+    {
+      "puzzle": "M  (a large letter M with a \"no\" symbol over it - a circle with a diagonal slash through it)",
+      "answer": "Gnome",
+      "tier": "TEXTURE",
+      "ruleTag": "style:prohibition-sign",
+      "art": "needs-art",
+      "explanation": "The sign says no M, which sounds like gnome."
+    },
+    {
+      "puzzle": "1,2,3,4,5 R  (the R printed very large)",
+      "answer": "Counter",
+      "tier": "COUNT",
+      "ruleTag": "count:counting-then-letter",
+      "art": "text",
+      "explanation": "Counting followed by an R reads as count R, or counter."
+    },
+    {
+      "puzzle": "Es  VS  Es  (\"VS\" set inside a comic-style starburst between the two \"Es\")",
+      "answer": "Matches",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:symbol-between-letters",
+      "art": "needs-art",
+      "explanation": "VS means a match, and it sits between the E's, so it is match E's, or matches."
+    },
+    {
+      "puzzle": "ing  (the three letters written in fat black type almost buried under hairy, spiky black blots, so each letter is only partly visible)",
+      "answer": "Herring",
+      "tier": "TEXTURE",
+      "ruleTag": "style:hairy-blots",
+      "art": "needs-art",
+      "explanation": "ING is covered in hair, so it reads hair ring, or herring."
+    },
+    {
+      "puzzle": "C\nC  LIBRA\n(two serif capital C's stacked at the left, with \"LIBRA\" in serif capitals set to the right of them)",
+      "answer": "To see stars (2 C stars)",
+      "tier": "COUNT",
+      "ruleTag": "count:two-cs-beside",
+      "art": "needs-art",
+      "explanation": "Two C's next to a star sign reads as two C stars, or to see stars."
+    },
+    {
+      "puzzle": "mm  (the two letters drawn hugely distorted - the first squared off into a comb-like shape with its strokes running sideways, the second bent round into a half-circle fan of radiating strokes)",
+      "answer": "Deform",
+      "tier": "TEXTURE",
+      "ruleTag": "style:distorted",
+      "art": "needs-art",
+      "explanation": "The letters have lost their form, so it is deform."
+    },
+    {
+      "puzzle": "Bite Bite Bite  (the three words written in a row low down at the bottom of an otherwise empty box)",
+      "answer": "Trilobite",
+      "tier": "COUNT",
+      "ruleTag": "count:three-of-word-low",
+      "art": "needs-art",
+      "explanation": "Three BITEs sit low on the card, so it reads tri low bite, or trilobite."
+    },
+    {
+      "puzzle": "c C c ⊂  (four c's in a row, each in a different, progressively lighter typeface, the last one squared off into an angular bracket-like shape)",
+      "answer": "Sea change",
+      "tier": "TEXTURE",
+      "ruleTag": "style:font-changes",
+      "art": "needs-art",
+      "explanation": "The C keeps changing, so it is a C change, or sea change."
+    },
+    {
+      "puzzle": "EST   EST\nEST   EST",
+      "answer": "Forest (Four est)",
+      "tier": "COUNT",
+      "ruleTag": "count:four-of-word",
+      "art": "text",
+      "explanation": "EST appears four times, so it reads four est, or forest."
+    },
+    {
+      "puzzle": "bee\nwasp\ndoorbell\nphone\ntimer          ARD\n(the five-word list down the left, with \"ARD\" in large letters to the right of it)",
+      "answer": "Buzzard",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:category-clue",
+      "art": "needs-art",
+      "explanation": "Everything on the list buzzes, so buzz plus ARD is buzzard."
+    },
+    {
+      "puzzle": "bear bear bear bear bear bear bear bear bear bear bear bear... (the word \"bear\" repeated round and round to draw three interlocking rings)",
+      "answer": "Bearings",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:ring-of-words",
+      "art": "needs-art",
+      "explanation": "BEAR is drawn as rings, so it reads bear rings, or bearings."
+    },
+    {
+      "puzzle": "R  (a giant serif capital R with a small capital D inside the bowl of the R)",
+      "answer": "Dinner/Dinar (D in R)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:letter-in-letter",
+      "art": "needs-art",
+      "explanation": "A D sits in the R, so it reads D in R, or dinner."
+    },
+    {
+      "puzzle": "k    k    k\nk  JUST  k\nk    k    k\n(the word JUST in bold in the middle with eight lower-case k's ringed around it)",
+      "answer": "Just in case (just in kays)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-letters",
+      "art": "needs-art",
+      "explanation": "JUST sits in a ring of K's, so it reads just in kays, or just in case."
+    },
+    {
+      "puzzle": "Ch Ch Ch    Ch Ch Ch\nCh          Ch\nCh          Ch\nCh Ch Ch    Ch Ch Ch\nCh          Ch\nCh          Ch\nCh Ch Ch    Ch Ch Ch  (the word \"Ch\" repeated to draw two large capital E shapes side by side)",
+      "answer": "Cheese/Chinese (Ch ee’s/Ch in EE’s)",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-form-letters",
+      "art": "needs-art",
+      "explanation": "CH is used to draw two E's, so it reads CH E's, or cheese."
+    },
+    {
+      "puzzle": "J L  (huge letters; the L is shattered and broken into pieces)",
+      "answer": "Jailbreak/Jailbroken ( J L break)",
+      "tier": "BROKEN TEXT",
+      "ruleTag": "style:shattered",
+      "art": "needs-art",
+      "explanation": "The L is broken, so J L break reads as jailbreak."
+    },
+    {
+      "puzzle": "Month five\naaaaaaaaa  (nine lower-case a's on the second line)",
+      "answer": "Mayonnaise (May on aaa’s)",
+      "tier": "COUNT",
+      "ruleTag": "count:nine-as",
+      "art": "text",
+      "explanation": "The fifth month sits on nine A's, so it reads May on A's, or mayonnaise."
+    },
+    {
+      "puzzle": "ERUT\nRUTE\nTRUE\nTUER\nUTER  (five scrambled orderings of the same four letters, in a stencil capitals font)",
+      "answer": "Mixture (mix ture)",
+      "tier": "SCRAMBLE",
+      "ruleTag": "scramble:mixed-letters",
+      "art": "text",
+      "explanation": "TURE is mixed up over and over, so it is a mix ture, or mixture."
+    },
+    {
+      "puzzle": "XR  small\nXR  medium\nXR  large",
+      "answer": "Exercise (XR size)",
+      "tier": "SOUND OUT",
+      "ruleTag": "sound:letters-plus-list",
+      "art": "text",
+      "explanation": "XR next to a list of sizes reads as XR size, or exercise."
+    },
+    {
+      "puzzle": "mit     mit\nmit     mit\nmit     mit\nmit     mit\nmit     mit  (the word \"mit\" ten times, in two columns of five)",
+      "answer": "Mitten (mit x 10)",
+      "tier": "COUNT",
+      "ruleTag": "count:ten-of-word",
+      "art": "text",
+      "explanation": "MIT appears ten times, so it reads mit ten, or mitten."
+    },
+    {
+      "puzzle": "Fenzalu  (in large bold letters)",
+      "answer": "Influenza (in flu enza)",
+      "tier": "SCRAMBLE",
+      "ruleTag": "scramble:mixed-letters",
+      "art": "text",
+      "explanation": "FLU is mixed into ENZA, so it reads in flu enza, or influenza."
+    },
+    {
+      "puzzle": "tr tr tr tr tr tr  (\"tr\" written six times in a row, each copy rotated a little further round than the last, as though tumbling/rolling along)",
+      "answer": "Troll/Trolling (The tr is rolling)",
+      "tier": "TEXTURE",
+      "ruleTag": "style:rotating-letters",
+      "art": "needs-art",
+      "explanation": "TR is rolling along, so it is tr rolling, or trolling."
+    },
+    {
+      "puzzle": "tress     tress\n     HID\ntress     tress  (\"HID\" in large letters in the middle, with the four \"tress\" at the corners around it)",
+      "answer": "Hidden fortress",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-among-words",
+      "art": "needs-art",
+      "explanation": "HID sits in among four TRESSes, so it reads hid in four tress, or hidden fortress."
+    },
+    {
+      "puzzle": "tmOint  (in heavy bold display lettering; the O is a full-height capital sitting inside the smaller letters)",
+      "answer": "Ointment (O in tmint)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:letter-in-word",
+      "art": "needs-art",
+      "explanation": "The O sits inside TMINT, so it reads O in tment, or ointment."
+    },
+    {
+      "puzzle": "11pm 10pm 9pm 8pm 7pm 6pm  (the six times set in a large U-shaped arc, each rotated to follow the curve, running down the left side, across the bottom and up the right side)",
+      "answer": "Unite (U night)",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-u-shape",
+      "art": "needs-art",
+      "explanation": "Night times are bent into a U, so it reads U night, or unite."
+    },
+    {
+      "puzzle": "R\n^  (a large upward-pointing arrow beneath the R)     economy\nBusiness\nFirst",
+      "answer": "Upperclass (Up + R + class)",
+      "tier": "POSITION",
+      "ruleTag": "position:arrow-up-beside-list",
+      "art": "needs-art",
+      "explanation": "An up arrow, an R and a list of travel classes read as up R class, or upper class."
+    },
+    {
+      "puzzle": "fLLiLLd  (in heavy bold letters; two capital L's on either side of the \"i\", with a lower-case f at the front and d at the end)",
+      "answer": "Infidels ( In fid L’s)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:letters-in-word",
+      "art": "text",
+      "explanation": "FID sits in among the L's, so it reads in fid L's, or infidels."
+    },
+    {
+      "puzzle": "rebrebrebrebrebrebr rebrebrebrebrebrebr  (the syllable \"reb\" repeated around two joined circles that form a large figure 8, the letters rotated to follow the curves)",
+      "answer": "Rebate (reb 8)",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:letters-form-number",
+      "art": "needs-art",
+      "explanation": "REB is drawn as a figure eight, so it reads reb eight, or rebate."
+    },
+    {
+      "puzzle": "Grass      Soil\nLeaves  +  Acre\nTrees      Dirt\nJungle     Ground  (two columns of words joined by a large \"+\" between them)",
+      "answer": "Greenland",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:two-column-clues",
+      "art": "needs-art",
+      "explanation": "The first column is all green and the second is all land, so it is Greenland."
+    },
+    {
+      "puzzle": "vation  (the word \"vation\" written inside a very large capital letter O)",
+      "answer": "Innovation ( In O vation)",
+      "tier": "ENCLOSURE",
+      "ruleTag": "enclose:word-in-letter",
+      "art": "needs-art",
+      "explanation": "VATION sits in an O, so it reads in O vation, or innovation."
+    },
+    {
+      "puzzle": "Sky      Molar\nOcean    Incisor\nJeans    Canine\nWhale    Wisdom  (two columns of four words with a large plus sign between them)",
+      "answer": "Bluetooth",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:two-column-clues",
+      "art": "needs-art",
+      "explanation": "The first column is all blue and the second is all teeth, so it is Bluetooth."
+    },
+    {
+      "puzzle": "re  (large outlined letters \"re\" written on top of and covering a large capital \"Y\", only the arms of the Y showing behind them)",
+      "answer": "Recovery (RE cover Y)",
+      "tier": "POSITION",
+      "ruleTag": "position:word-covering-letter",
+      "art": "needs-art",
+      "explanation": "RE is covering the Y, so it reads RE cover Y, or recovery."
+    },
+    {
+      "puzzle": "Monday +\nWednesday +\nFriday +\nSunday\n=",
+      "answer": "Somedays (Sum days)",
+      "tier": "MATH",
+      "ruleTag": "math:sum-words",
+      "art": "text",
+      "explanation": "The card asks for the sum of some days, which sounds like somedays."
+    },
+    {
+      "puzzle": "TAKE\nR  (the letter R written underneath the word TAKE)",
+      "answer": "Undertaker (Under take R)",
+      "tier": "POSITION",
+      "ruleTag": "position:letter-under-word",
+      "art": "text",
+      "explanation": "The R sits under TAKE, so it reads under take R, or undertaker."
+    },
+    {
+      "puzzle": "In\nbetween\nblack\nand\nwhite   + pssss  (the stacked phrase on the left, a large plus sign, then \"pssss\")",
+      "answer": "Grapes",
+      "tier": "CATEGORY LIST",
+      "ruleTag": "list:clue-plus-sound",
+      "art": "text",
+      "explanation": "Between black and white is grey, and grey plus the hiss gives grapes."
+    },
+    {
+      "puzzle": "carb\nara  (\"carb\" written on the line above \"ara\")",
+      "answer": "Carbonara",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-word",
+      "art": "text",
+      "explanation": "CARB sits on ARA, so it reads carb on ara, or carbonara."
+    },
+    {
+      "puzzle": "b\nr\ne\na   plus \"brea\" written four more times curving around to the right - the vertical \"brea\" forms the upright stroke and the curved \"brea\"s form the bowl, so that the five words are arranged in the shape of a capital letter D",
+      "answer": "Bread",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:words-form-letter",
+      "art": "needs-art",
+      "explanation": "BREA is arranged into the shape of a D, so it reads brea D, or bread."
+    },
+    {
+      "puzzle": "be\nbe\nbe\nbe   beside a numeral \"2\" that has been stretched out horizontally so it is extremely long and flat",
+      "answer": "Before too long",
+      "tier": "COUNT",
+      "ruleTag": "count:four-of-word-plus-symbol",
+      "art": "needs-art",
+      "explanation": "Four BEs next to a very long two reads as be four, two long, or before too long."
+    },
+    {
+      "puzzle": "l\no\nw   (written vertically, reading downwards) beside \"shame\" written in grimy, ink-splattered, dirty-looking letters",
+      "answer": "Low down dirty shame",
+      "tier": "TEXTURE",
+      "ruleTag": "style:dirty-letters",
+      "art": "needs-art",
+      "explanation": "LOW reads downwards and SHAME is filthy, so it is a low down dirty shame."
+    },
+    {
+      "puzzle": "S\nP  (the two letters stacked and placed hard against the right-hand edge of an otherwise empty box)",
+      "answer": "Sprite (SP right)",
+      "tier": "POSITION",
+      "ruleTag": "position:right-of-box",
+      "art": "needs-art",
+      "explanation": "SP is pushed to the right, so it reads SP right, or sprite."
+    },
+    {
+      "puzzle": "gggggggg...  (the lowercase letter \"g\" repeated over and over and arranged into four separate rings/circles, two on top and two below)",
+      "answer": "Foreground (4 x G round)",
+      "tier": "ARRANGEMENT",
+      "ruleTag": "layout:rings-of-letters",
+      "art": "needs-art",
+      "explanation": "Four rings of G reads as four G round, or foreground."
+    },
+    {
+      "puzzle": "irrec\n\nable  (\"irrec\" on the top line and \"able\" on the bottom line, in large bold letters)",
+      "answer": "Irrecoverable (Irrec over able)",
+      "tier": "POSITION",
+      "ruleTag": "position:word-over-word",
+      "art": "text",
+      "explanation": "IRREC sits over ABLE, so it reads irrec over able, or irrecoverable."
+    }
+  ]
+}
