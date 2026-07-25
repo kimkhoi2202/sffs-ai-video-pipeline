@@ -1025,6 +1025,399 @@
           "answerNorm": "modern"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-25-v10",
+      "test": "type-nonverbal-shapes",
+      "variant": "shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "7c6cb895427c",
+          "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:7124bbc89b3e|circle",
+          "tier": "VISUAL ODD ONE OUT",
+          "answerNorm": "circle"
+        },
+        {
+          "hash": "f13efce51c75",
+          "sig": "analogy2|nonverbal|figure-analogy|analogy2:f5a6f755348b|turned right",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "turned right"
+        },
+        {
+          "hash": "f14251e2b7b9",
+          "sig": "fold|nonverbal|paper-folding|fold:0edf6d0feab6|2 holes",
+          "tier": "PAPER FOLDING",
+          "answerNorm": "2 holes"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "f9837ca0aa97",
+          "sig": "text|verbal|odd-one-out|which one does not belong || brown~red~tennis~white|tennis",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "tennis"
+        },
+        {
+          "hash": "fd6ef580db26",
+          "sig": "numseries|quantitative|number-series|4~7~11~18~29|47",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "47"
+        },
+        {
+          "hash": "e2d48a58db7c",
+          "sig": "text|quantitative|number-analogy|which number fits 5 17 6 20 7 23 9 || 26~29~32~39|29",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "29"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v02",
+      "test": "mascot",
+      "variant": "mascot-standard",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "bf7ee17dfd58",
+          "sig": "numseries|verbal|letter-series|A~C~E~G|i",
+          "tier": "LETTER SERIES",
+          "answerNorm": "i"
+        },
+        {
+          "hash": "e5ac8a50d69b",
+          "sig": "text|verbal|sentence-completion|the rain poured all day so the school had to the outdoor games until the next weekend || count~enjoy~paint~postpone|postpone",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "postpone"
+        },
+        {
+          "hash": "6ca47925dfda",
+          "sig": "text|verbal|verbal-analogy|chef is to kitchen as actor is to || airplane~library~ship~stage|stage",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "stage"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "33bcabe2bc10",
+          "sig": "text|quantitative|word-problem|3 pencils cost 60 cents how much do 5 pencils cost || 1 00~1 20~80 cents~90 cents|1 00",
+          "tier": "WORD PROBLEM",
+          "answerNorm": "1 00"
+        },
+        {
+          "hash": "b3b46905f082",
+          "sig": "numseries|quantitative|number-series|5~2~7~9~16|25",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "25"
+        },
+        {
+          "hash": "2c39b01735ee",
+          "sig": "text|quantitative|number-puzzle|if 1 2 9 2 3 15 4 1 15 then 3 3 || 12~18~6~9|18",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "18"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v04",
+      "test": "control",
+      "variant": "control",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6e352a1eacc1",
+          "sig": "text|quantitative|compare|which is the greatest || 2 3~3 5~5 8~7 12|2 3",
+          "tier": "COMPARE",
+          "answerNorm": "2 3"
+        },
+        {
+          "hash": "a4c55c212ef0",
+          "sig": "numseries|verbal|letter-series|A~B~D~G|k",
+          "tier": "LETTER SERIES",
+          "answerNorm": "k"
+        },
+        {
+          "hash": "1b3e5cdee4e5",
+          "sig": "text|verbal|antonym|which word means the opposite of generous || kind~loud~rich~selfish|selfish",
+          "tier": "ANTONYM",
+          "answerNorm": "selfish"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v05",
+      "test": "tempo",
+      "variant": "tempo-fast",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "f618cfda0122",
+          "sig": "text|verbal|logic|all cats purr milo is a cat so milo purrs || can t tell~false~true|true",
+          "tier": "LOGIC",
+          "answerNorm": "true"
+        },
+        {
+          "hash": "072f99025d64",
+          "sig": "numseries|quantitative|number-series|8~9~14~23~36|53",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "53"
+        },
+        {
+          "hash": "2e85a1390bab",
+          "sig": "text|quantitative|number-analogy|which number fits 1 4 2 6 3 8 4 || 10~11~12~9|10",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "10"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v06",
+      "test": "narration",
+      "variant": "no-narration",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "8c042bd1832d",
+          "sig": "text|verbal|verbal-analogy|push is to pull as happy is to || closed~low~sad~weak|sad",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "sad"
+        },
+        {
+          "hash": "6badc6c9fe7e",
+          "sig": "text|verbal|odd-one-out|which one does not belong || glove~jacket~pants~thunder|thunder",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "thunder"
+        },
+        {
+          "hash": "1a12c340b723",
+          "sig": "text|verbal|sentence-completion|the riddle was so that it took her all afternoon to solve it || difficult~easy~short~silly|difficult",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "difficult"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v07",
+      "test": "progress-counter",
+      "variant": "progress-verbose",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "c5451a4149c0",
+          "sig": "text|quantitative|number-puzzle|if 6 3 9 6 1 1 6 4 14 then 2 8 || 11~16~4~6|6",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "6"
+        },
+        {
+          "hash": "c59b63f4b644",
+          "sig": "numseries|verbal|letter-series|AZ~BY~CX|dw",
+          "tier": "LETTER SERIES",
+          "answerNorm": "dw"
+        },
+        {
+          "hash": "58864dd978da",
+          "sig": "text|quantitative|word-problem|a pizza has 8 slices 3 kids eat 2 slices each how many are left || 2~3~4~6|2",
+          "tier": "WORD PROBLEM",
+          "answerNorm": "2"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-v09",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "343d3e0f8cc8",
+          "sig": "text|quantitative|compare|which decimal is the smallest || 0 45~0 5~0 55~0 6|0 45",
+          "tier": "COMPARE",
+          "answerNorm": "0 45"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-t1-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "d142dee80f17",
+          "sig": "text|verbal|sentence-completion|because it had not rained for weeks the field in the garden was very || cold~dry~green~wet|dry",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "dry"
+        },
+        {
+          "hash": "95c33043806d",
+          "sig": "numseries|quantitative|number-series|4~7~14~25~40|59",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "59"
+        },
+        {
+          "hash": "04e540c149ea",
+          "sig": "text|verbal|verbal-analogy|king is to crown as soldier is to || army~boot~helmet~sword|helmet",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "helmet"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-t1-v02",
+      "test": "mascot",
+      "variant": "mascot-standard",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "000d5db0fa10",
+          "sig": "text|quantitative|number-analogy|which number fits 3 7 4 9 5 11 8 || 14~15~17~19|17",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "17"
+        },
+        {
+          "hash": "0f011866eb50",
+          "sig": "numseries|quantitative|number-series|5~7~12~19~31|50",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "50"
+        },
+        {
+          "hash": "8c6f4051686c",
+          "sig": "text|quantitative|number-puzzle|if 8 3 13 5 2 3 3 5 7 then 7 8 || 15~36~41~42|41",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "41"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-t1-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "bce28ce978e7",
+          "sig": "text|verbal|odd-one-out|which one does not belong || boat~fifty~sailboat~yacht|fifty",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "fifty"
+        },
+        {
+          "hash": "ac031527fd7b",
+          "sig": "numseries|quantitative|number-series|1~5~6~11~17|28",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "28"
+        },
+        {
+          "hash": "85f2a1312cee",
+          "sig": "text|quantitative|word-problem|a 40 toy is 25 off today what is the sale price || 10~30~32~35|30",
+          "tier": "WORD PROBLEM",
+          "answerNorm": "30"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-t2-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "8d399de1465e",
+          "sig": "text|verbal|verbal-analogy|float is to sink as buy is to || dark~low~night~sell|sell",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "sell"
+        },
+        {
+          "hash": "ccb6aaf02275",
+          "sig": "numseries|quantitative|number-series|1~7~8~15~23|38",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "38"
+        },
+        {
+          "hash": "d5ca31ae490a",
+          "sig": "text|quantitative|number-analogy|which number fits 2 2 5 8 6 10 9 || 14~16~17~18|16",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "16"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-t2-v02",
+      "test": "mascot",
+      "variant": "mascot-standard",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "075834d837eb",
+          "sig": "text|verbal|odd-one-out|which one does not belong || brass~bronze~copper~orange|orange",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "orange"
+        },
+        {
+          "hash": "374903ebbf61",
+          "sig": "numseries|quantitative|number-series|2~9~11~20~31|51",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "51"
+        },
+        {
+          "hash": "fbb0e273edc3",
+          "sig": "text|quantitative|number-puzzle|if 8 4 20 1 8 1 8 1 1 then 3 9 || 10~13~15~18|15",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "15"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-25-t2-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "574f15012729",
+          "sig": "text|verbal|sentence-completion|the plant on the windowsill grew tall because it got plenty of and water || darkness~noise~paper~sunlight|sunlight",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "sunlight"
+        },
+        {
+          "hash": "3da48dd1c0c0",
+          "sig": "numseries|quantitative|number-series|5~4~9~13~22|35",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "35"
+        },
+        {
+          "hash": "6e48c1315c3a",
+          "sig": "text|quantitative|compare|which decimal is the largest || 0 29~0 3~0 35~0 4|0 4",
+          "tier": "COMPARE",
+          "answerNorm": "0 4"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
