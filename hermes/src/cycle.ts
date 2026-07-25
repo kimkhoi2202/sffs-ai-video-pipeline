@@ -18,7 +18,7 @@
  *                   ab-database
  *     TOP UP if the day landed under VIDEOS_FLOOR and the ceiling still has room
  *   2. verify do-not-touch untouched (proves nothing went live)
- *   3. commit + push data files (best-effort)
+ *   3. commit data files locally (best-effort; pushing is opt-in, see gitCommitPush)
  *
  * PREPARE and PUBLISH are split so slots are allocated against the SURVIVING count,
  * in completion order. Allocating by PLANNED index is what tail-bunched 2026-07-25:
@@ -136,6 +136,16 @@ function newRun(runId: string, target: number): RunState {
 async function prepareVideo(v: VideoPlan): Promise<void> {
   // idempotent: already prepared or published
   if (v.status === "drafted" || v.status === "rendered") return;
+  // RESUME: a video that already rendered and passed its gates must NOT be re-gated.
+  // markUsed() runs BEFORE the render, so its questions are already in the used
+  // ledger and the dedup gate below would now reject the video against itself. A
+  // video that died at the PUBLISH step (e.g. a Publer rate limit) therefore has to
+  // resume at publish, not from the top.
+  if (v.renders?.length && v.gates.render?.pass) {
+    info(`${v.id} resuming at publish (already rendered + gated)`);
+    v.status = "rendered";
+    return;
+  }
 
   // 1) dedup gate
   const claimed = new Set<string>();
@@ -453,7 +463,7 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
 const BOT_NAME = "SFFS Hermes Bot";
 const BOT_EMAIL = "deploy@sffs.local";
 
-function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
+export function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
   const candidates = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
   // `git add` is ATOMIC over its pathspecs: one path that doesn't exist aborts the
   // whole add (exit 128) and stages NOTHING, after which `git commit` fails with
@@ -480,8 +490,19 @@ function gitCommitPush(runId: string, summary: RunState["summary"]): { committed
       const why = ((c.stderr || "").trim() || (c.stdout || "").trim() || `exit ${c.status}`).slice(-200);
       return { committed: false, pushed: false, note: "commit failed: " + why };
     }
-    run(["pull", "--rebase", "origin", "main"]);
-    const p = run(["push", "origin", "HEAD:main"]);
+    // REMOTE SYNC IS OPT-IN. The loop's job here is DURABILITY — get the day's A/B
+    // data into a commit. Pushing is a separate concern with a far worse failure
+    // mode on this box: the live branch is `hermes-nous`, hundreds of commits
+    // divergent from origin/main, so `pull --rebase origin main` replays main's
+    // history underneath it. On 2026-07-25 that left the repo DETACHED mid-rebase
+    // (working tree reverted to another worker's commit, the day's fix gone from
+    // disk) and the follow-on `push origin HEAD:main` pushed the rebase's detached
+    // HEAD. Had the rebase succeeded it would instead have published every
+    // unpushed local commit to main. Neither is something a content cycle should do.
+    if (process.env.HERMES_GIT_PUSH !== "1") {
+      return { committed: true, pushed: false, note: "committed locally (push is opt-in via HERMES_GIT_PUSH=1)" };
+    }
+    const p = run(["push", "origin", `HEAD:${process.env.HERMES_GIT_PUSH_REF || "main"}`]);
     const pushed = p.status === 0;
     return { committed: true, pushed, note: pushed ? "pushed" : "push failed: " + (p.stderr || "").slice(-200) };
   } catch (e) {
@@ -588,7 +609,15 @@ export async function runCycle(): Promise<RunState> {
     }
 
     // ── PUBLISH: slots sized to the SURVIVORS, handed out in order ─────────────
-    const ready = state.videos.filter((v) => v.status === "rendered");
+    // Hold back anything over the ceiling: a resumed run can arrive with more
+    // rendered videos than the day has room for (renders are cheap to keep, posts
+    // are capped), and the 12/day/platform cap is a hard promise.
+    const rendered = state.videos.filter((v) => v.status === "rendered");
+    const room = Math.max(0, ceiling - draftedCount());
+    const ready = rendered.slice(0, room);
+    if (rendered.length > ready.length) {
+      info("holding videos back at the daily ceiling", { rendered: rendered.length, publishing: ready.length, ceiling });
+    }
     if (ready.length && !DRY) {
       const sched = kickoff.armed ? await armedSchedule(runId, wave, ready.length) : DRAFT_ONLY_SCHED;
       for (let i = 0; i < ready.length; i++) {
@@ -645,11 +674,10 @@ export async function runCycle(): Promise<RunState> {
     }
   }
 
-  // 3) commit + push data files.
-  // HERMES_SKIP_GIT=1 disables the commit/push entirely. The hermes-nous build
-  // wrapper (bridge/cycle.ts / sffs_cycle) ALWAYS sets it, so a cycle run from the
-  // isolated sandbox can NEVER `git push origin HEAD:main`. The live loop leaves it
-  // unset and commits/pushes exactly as before — behavior-preserving.
+  // 3) commit the day's data files LOCALLY (push is opt-in; see gitCommitPush).
+  // HERMES_SKIP_GIT=1 disables the commit entirely. The hermes-nous build wrapper
+  // (bridge/cycle.ts / sffs_cycle) ALWAYS sets it, so a cycle run from the isolated
+  // sandbox can never touch git at all.
   const SKIP_GIT = process.env.HERMES_SKIP_GIT === "1";
   if (!DRY && !SKIP_GIT) {
     const git = gitCommitPush(runId, state.summary);
