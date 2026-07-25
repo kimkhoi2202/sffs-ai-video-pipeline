@@ -72,6 +72,8 @@ const TOPUP_SLACK = 2;
 /** Attempts for the two steps that historically lost a whole video to a transient. */
 const RENDER_ATTEMPTS = 2;
 const MEDIA_IMPORT_ATTEMPTS = 3;
+/** Pause between videos in the publish phase, to stay under Publer's API rate limit. */
+const PUBLISH_PACE_MS = Number(process.env.HERMES_PUBLISH_PACE_MS || 6_000);
 
 const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
@@ -221,8 +223,8 @@ async function prepareVideo(v: VideoPlan): Promise<void> {
  * the window instead of clustered at whichever slots its planned indexes happened to
  * own. Only ever reached by a video that passed every gate.
  */
-async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): Promise<void> {
-  if (v.status === "drafted") return; // idempotent: already published
+async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): Promise<PlatformDraft[]> {
+  if (v.status === "drafted") return []; // idempotent: already published
   const renders = v.renders ?? [];
   if (!renders.length) throw new Error(`${v.id}: no renders recorded — cannot publish`);
 
@@ -270,13 +272,11 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
       jobId = await createDraftOnly({ account_ids: [account_id], text: v.caption, ...mediaArg, type: "video" });
     }
     const job = await pollJob(jobId, { label: `create-${sched.armed ? "scheduled" : "draft"}-${platform}`, timeoutMs: 180_000 });
-    // Publer's job_status returns only {status:"complete"} (no post ids), so resolve
-    // the created draft post id by matching the (unique) uploaded media id.
-    let postIds = extractPostIds(job.payload);
-    // ARMED SCHEDULES the post (Publer state="scheduled"), so its id lives on the
-    // SCHEDULED list, not the draft list. Resolve against the matching state so the
-    // run-state records the real post id (the run->Publer learning-loop link).
-    if (!postIds.length) postIds = await findPostIdsByMedia(mediaId, sched.armed ? "scheduled" : "draft");
+    // Publer's job_status returns only {status:"complete"} (no post ids). When the
+    // payload does carry one we take it; otherwise the id is resolved once per wave
+    // by backfillPostIds, NOT here — a per-video lookup paged the whole post list
+    // twice per video and is what exhausted the API quota mid-batch on 2026-07-25.
+    const postIds = extractPostIds(job.payload);
     results.push({ platform, account_id, media_url: url, media_id: mediaId, post_id: postIds[0] ?? null, job_id: jobId, scheduled_at });
   }
   v.media_url = results[0]?.media_url;
@@ -301,6 +301,65 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
   } catch (e) {
     warn(`${v.id} db annotate failed`, { err: e instanceof Error ? e.message : String(e) });
   }
+  return results;
+}
+
+/** One wave's created posts awaiting a Publer post-id (see backfillPostIds). */
+interface PendingPostId {
+  video: VideoPlan;
+  platform: string;
+  media_id: string;
+}
+
+/**
+ * Resolve the Publer post ids for a whole wave with ONE listing.
+ *
+ * Publer's job_status payload carries no post ids, so they have to be matched back
+ * through the (unique per video per platform) media id. Doing that per video cost a
+ * paged listing per platform per video — ~140 API calls for a full batch — which is
+ * what tripped Publer's rate limit mid-batch on 2026-07-25 (429, then a hard 403)
+ * and cost the day its last videos. One listing per wave resolves every id.
+ *
+ * Strictly best-effort and read-only: the posts already exist, this only enriches
+ * the run-state -> Publer link the dashboard joins on.
+ */
+async function backfillPostIds(pending: PendingPostId[], publerState: string): Promise<void> {
+  const todo = pending.filter((p) => p.media_id);
+  if (!todo.length) return;
+  try {
+    const byMedia = new Map<string, string>();
+    for (const p of await listAllPosts(publerState)) {
+      const id = postId(p);
+      if (!id || !Array.isArray((p as any).media)) continue;
+      for (const m of (p as any).media) if (m?.id) byMedia.set(String(m.id), id);
+    }
+    let filled = 0;
+    for (const { video, platform, media_id } of todo) {
+      const id = byMedia.get(media_id);
+      if (!id) continue;
+      const ids = new Set(video.publer?.post_ids ?? []);
+      ids.add(id);
+      video.publer = { ...(video.publer ?? {}), post_ids: [...ids] };
+      setDbPostId(`hermes:${video.id}:${platform}`, id);
+      filled++;
+    }
+    info("resolved Publer post ids", { wanted: todo.length, filled, listing: publerState });
+  } catch (e) {
+    warn("post-id backfill failed (posts are created; only the dashboard link is thinner)", {
+      err: e instanceof Error ? e.message : String(e),
+    });
+  }
+}
+
+/** Point one ab-database row at its resolved Publer post id. */
+function setDbPostId(hermesKey: string, publerPostId: string): void {
+  const db = readJSON<any>(CONFIG.AB_DB, null);
+  if (!db || !Array.isArray(db.posts)) return;
+  const rec = db.posts.find((p: any) => p._hermes_key === hermesKey);
+  if (!rec || rec.publer_post_id === publerPostId) return;
+  rec.publer_post_id = publerPostId;
+  db.updated_at = new Date().toISOString();
+  writeJSONAtomic(CONFIG.AB_DB, db);
 }
 
 /** One platform's rendered+uploaded+drafted result (per-platform SAFE ZONES). */
@@ -327,26 +386,6 @@ function extractPostIds(payload: any): string[] {
   };
   walk(payload);
   return [...new Set(ids)];
-}
-
-/**
- * Resolve the post ids created for an uploaded media in a given Publer STATE
- * ("scheduled" for the armed loop, "draft" for the draft-only loop). Publer's
- * job_status payload carries no post ids, so we match the (unique-per-video) media id
- * against that state's post list. Returns one id per account (e.g. TikTok + Instagram).
- * Best-effort: any failure yields [] — the post is already created; this only enriches
- * the run-state -> Publer post-id link the dashboard joins on.
- */
-async function findPostIdsByMedia(mediaId: string, state: string): Promise<string[]> {
-  try {
-    const posts = await listAllPosts(state, 5);
-    return posts
-      .filter((p: any) => Array.isArray(p.media) && p.media.some((m: any) => String(m?.id) === String(mediaId)))
-      .map(postId)
-      .filter(Boolean);
-  } catch {
-    return [];
-  }
 }
 
 /**
@@ -620,17 +659,25 @@ export async function runCycle(): Promise<RunState> {
     }
     if (ready.length && !DRY) {
       const sched = kickoff.armed ? await armedSchedule(runId, wave, ready.length) : DRAFT_ONLY_SCHED;
+      const pending: PendingPostId[] = [];
       for (let i = 0; i < ready.length; i++) {
         const v = ready[i];
         try {
-          await publishVideo(v, sched, i);
+          for (const r of await publishVideo(v, sched, i)) {
+            if (!r.post_id) pending.push({ video: v, platform: r.platform, media_id: r.media_id });
+          }
         } catch (e) {
           v.status = "failed";
           v.errors = [...(v.errors ?? []), e instanceof Error ? e.message : String(e)];
           error(`${v.id} FAILED`, { err: v.errors.at(-1) });
         }
         saveRun(state);
+        // Pace the Publer writes. A full batch is ~4 API calls per video back to
+        // back; unpaced, that rate-limited the account mid-batch on 2026-07-25.
+        if (i + 1 < ready.length) await sleep(PUBLISH_PACE_MS);
       }
+      await backfillPostIds(pending, kickoff.armed ? "scheduled" : "draft");
+      saveRun(state);
     } else if (ready.length && DRY) {
       info(`DRY_RUN: ${ready.length} video(s) passed every gate; skipping upload + draft`);
       break;
