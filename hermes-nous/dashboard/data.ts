@@ -80,6 +80,71 @@ export function contentDefaults(): any {
   return readJSON<any>(CONFIG.CONTENT_DEFAULTS, { defaults: {}, promotion: {} });
 }
 
+// ── winner replication (REPLICATE panel) ─────────────────────────────────────
+
+/** Hard ceiling on the batch share replication may take (mirrors replicate.py). */
+export const REPLICATION_HARD_CAP = 0.5;
+
+export interface ReplicationView {
+  enabled: boolean;
+  active: boolean;
+  key: string | null;
+  fingerprint: any | null;
+  /** clamped share of each batch the winning style currently takes */
+  share: number;
+  share_cap: number;
+  round: number | null;
+  status: string | null;
+  confidence: string | null;
+  opened_at: string | null;
+  evaluate_after: string | null;
+  vary_only: string[];
+  evidence: any | null;
+  replicas: any[];
+  history: any[];
+  updated_at: string | null;
+}
+
+/**
+ * The replication ledger, resolved for display. Pure read of replication.json +
+ * the policy block in content-defaults.json — the dashboard never runs the detector
+ * (that is replicate.py's job, on the loop's schedule) and never opens or closes a
+ * round. The share is clamped here as well as in the engine so the panel can never
+ * advertise a share above the exploration cap, whatever is on disk.
+ */
+export function replication(): ReplicationView {
+  return resolveReplicationView(readJSON<any>(CONFIG.REPLICATION, null), readJSON<any>(CONFIG.CONTENT_DEFAULTS, {}));
+}
+
+/** Pure core of `replication()` — ledger + defaults in, display view out. */
+export function resolveReplicationView(led: any, cd: any): ReplicationView {
+  const pol = cd && typeof cd.replication === "object" && cd.replication ? cd.replication : {};
+  const enabled = typeof pol.enabled === "boolean" ? pol.enabled : true;
+  const cap = Math.max(0, Math.min(REPLICATION_HARD_CAP,
+    typeof pol.winner_share_cap === "number" ? pol.winner_share_cap : REPLICATION_HARD_CAP));
+  const a = led && typeof led.active === "object" ? led.active : null;
+  const open = !!a && (a.status === "active" || a.status === "escalated");
+  const share = open ? Math.max(0, Math.min(Number(a.share) || 0, Number(a.share_cap) || cap, cap)) : 0;
+  return {
+    enabled,
+    active: enabled && open && share > 0,
+    key: a?.key ?? null,
+    fingerprint: a?.fingerprint ?? null,
+    share,
+    share_cap: cap,
+    round: a?.round ?? null,
+    status: a?.status ?? null,
+    confidence: a?.confidence ?? null,
+    opened_at: a?.opened_at ?? null,
+    evaluate_after: a?.evaluate_after ?? null,
+    vary_only: Array.isArray(a?.vary_only) ? a.vary_only : [],
+    evidence: a?.evidence ?? null,
+    replicas: Array.isArray(a?.replicas) ? a.replicas : [],
+    history: Array.isArray(led?.history) ? led.history.slice(-10).reverse() : [],
+    updated_at: led?.updated_at ?? null,
+  };
+}
+
 // ── per-run structured log stream (JSONL) ─────────────────────────────────────
 
 export function runLog(runId: string, maxLines = 400): any[] {
