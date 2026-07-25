@@ -526,7 +526,7 @@ const BOT_NAME = "SFFS Hermes Bot";
 const BOT_EMAIL = "deploy@sffs.local";
 
 export function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
-  const candidates = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
+  const candidates = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "ab-testing/replication.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
   // `git add` is ATOMIC over its pathspecs: one path that doesn't exist aborts the
   // whole add (exit 128) and stages NOTHING, after which `git commit` fails with
   // "nothing to commit" on STDOUT — which surfaced as the empty `commit failed: `
