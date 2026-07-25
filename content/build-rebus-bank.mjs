@@ -9,8 +9,8 @@
  *
  *   content/rebus-source.json  ──build──►  content/rebus-bank.json
  *
- * Bank format mirrors content/master-question-bank.json exactly:
- *   { version, updated, count, entries: [ { sig, hash, kind, category, tier,
+ * Bank format mirrors content/master-question-bank.json (plus `seed`, see below):
+ *   { version, updated, seed, count, entries: [ { sig, hash, kind, category, tier,
  *     promptNorm, payloadNorm, answerNorm, ruleTag, ...provenance, addedAt } ] }
  *
  * Rebus-specific reading of the shared fields (playbook Section 4.2):
@@ -34,9 +34,16 @@
  *              Kept (the card is a genuinely different picture) but flagged so a
  *              carousel never ships two puzzles with the same answer.
  *
+ * Entry ORDER is shuffled with a seeded RNG (mulberry32, same as gen-rounds.mjs) so
+ * that walking the bank top to bottom gives a varied mix of mechanics instead of
+ * all 43 COUNT puzzles in a row. Same seed = same order, so a rebuild is still
+ * byte-identical. `id` stays tied to the item's position in the source file, so an
+ * id keeps pointing at the same puzzle no matter how the bank is ordered.
+ *
  * Usage:
- *   node build-rebus-bank.mjs           # write content/rebus-bank.json
- *   node build-rebus-bank.mjs --check   # report only, write nothing
+ *   node build-rebus-bank.mjs             # write content/rebus-bank.json
+ *   node build-rebus-bank.mjs --check     # report only, write nothing
+ *   node build-rebus-bank.mjs --seed 42   # reshuffle with a different seed
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -46,13 +53,34 @@ import { fileURLToPath } from "node:url";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SOURCE_PATH = path.join(HERE, "rebus-source.json");
 const BANK_PATH = path.join(HERE, "rebus-bank.json");
-const CHECK_ONLY = process.argv.slice(2).includes("--check");
+const argv = process.argv.slice(2);
+const CHECK_ONLY = argv.includes("--check");
+const SEED = Number(argv[argv.indexOf("--seed") + 1]) || 1729;
 
 // ---- helpers (mirrored from validate.mjs so signatures never diverge) -------
 const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
 const slugify = (s) => norm(s).replace(/ /g, "-");
 const hashOf = (s) => crypto.createHash("sha1").update(s).digest("hex").slice(0, 12);
 const today = () => new Date().toISOString().slice(0, 10);
+
+// seeded RNG (mulberry32, mirrored from gen-rounds.mjs) so the shuffle is reproducible
+function mulberry32(a) {
+  return function () {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function shuffle(arr, rng) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 // mechanic -> coarse category
 const TIER_CATEGORY = {
@@ -145,7 +173,10 @@ src.puzzles.forEach((p, i) => {
   entries.push(entry);
 });
 
-const bank = { version: 1, updated: stamp, count: entries.length, entries };
+// Dedupe ran in source order (so `variantOf` always points at the earlier twin);
+// only the emitted order is shuffled.
+const ordered = shuffle(entries, mulberry32(SEED));
+const bank = { version: 1, updated: stamp, seed: SEED, count: ordered.length, entries: ordered };
 
 // ---- report ----------------------------------------------------------------
 const tally = (key) =>
@@ -155,7 +186,7 @@ const tally = (key) =>
   }, {});
 const variants = entries.filter((e) => e.variantOf);
 
-console.log(`source: ${src.puzzles.length} puzzles -> bank: ${entries.length} entries`);
+console.log(`source: ${src.puzzles.length} puzzles -> bank: ${entries.length} entries (shuffled, seed ${SEED})`);
 console.log(`  art:       ${JSON.stringify(tally("art"))}`);
 console.log(`  category:  ${JSON.stringify(tally("category"))}`);
 console.log(
