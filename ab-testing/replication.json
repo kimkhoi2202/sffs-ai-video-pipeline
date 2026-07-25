@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-25T20:36:26.543758Z",
+  "description": "Reversible ledger for the WINNER-REPLICATION engine (hermes-nous/sffs/replicate.py). `active` is the style the designer is currently doubling down on and the share of each batch it may take (never more than replication.winner_share_cap, an exploration floor). `history` is append-only: every detection, escalation, revert and fluke is recorded so any state can be explained and undone (`sffs_replicate --revert`). Replication expresses a PREFERENCE about which styles get batch slots; it cannot touch the posting window, the per-platform daily cap, the same-platform gap, dedup, or any quality gate.",
+  "active": {
+    "key": "odd-one-out|3|standard|full|?",
+    "fingerprint": {
+      "lead_type": "odd-one-out",
+      "question_types": [
+        "odd-one-out",
+        "figure-analogy",
+        "number-series"
+      ],
+      "num_questions": 3,
+      "family": "standard",
+      "narration": "full",
+      "ending": "?",
+      "key": "odd-one-out|3|standard|full|?"
+    },
+    "status": "active",
+    "confidence": "medium",
+    "share": 0.25,
+    "share_cap": 0.5,
+    "round": 1,
+    "opened_at": "2026-07-25T20:36:26.542073Z",
+    "evaluate_after": "2026-07-26T20:36:26.542073Z",
+    "vary_only": [
+      "hashtag_set",
+      "tempo",
+      "time_of_day"
+    ],
+    "evidence": {
+      "n": 2,
+      "n_outliers": 1,
+      "median_ratio": 2.1470776424264795,
+      "outlier_median_ratio": 3.308970099667774,
+      "best_ratio": 3.308970099667774,
+      "best_value": 996.0,
+      "platforms": [
+        "instagram",
+        "tiktok"
+      ],
+      "samples": [
+        {
+          "key": "renders.nosync/videos/ready-to-post/01-NOINTRO-oddone-figure-series/video.mp4",
+          "platform": "tiktok",
+          "value": 996.0,
+          "platform_median": 301.0,
+          "ratio": 3.308970099667774
+        }
+      ],
+      "baselines": {
+        "instagram": {
+          "median": 135.0,
+          "n": 6
+        },
+        "tiktok": {
+          "median": 301.0,
+          "n": 9
+        }
+      }
+    },
+    "replicas": []
+  },
+  "history": [
+    {
+      "ts": "2026-07-25T20:36:26.542073Z",
+      "event": "detect_winner",
+      "key": "odd-one-out|3|standard|full|?",
+      "previous_key": null,
+      "confidence": "medium",
+      "share": 0.25,
+      "n_outliers": 1,
+      "outlier_median_ratio": 3.308970099667774,
+      "n": 2,
+      "reason": "odd-one-out|3|standard|full|?: 1 reach outlier(s) at a median 3.31x their platform median (best 3.31x = 996)"
+    }
+  ]
+}
