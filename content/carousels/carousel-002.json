@@ -1,0 +1,24 @@
+{
+  "carousel": 2,
+  "slug": "carousel-002",
+  "title": "For Once In My Life",
+  "family": "rebus",
+  "status": "ready-to-post",
+  "sourceIds": [],
+  "hashtagSet": "A",
+  "caption": "Four little numbers change the whole thing. What's the hidden meaning? Drop your answer below 👇 Smart fella, or fart smella? #brainteaser #quiz #iqtest #trivia #puzzletok",
+  "props": {
+    "prompt": "WHAT'S THE HIDDEN MEANING?",
+    "topic": "BRAIN TEASER",
+    "field": "coral",
+    "outroCta": "FOLLOW FOR MORE",
+    "puzzles": [
+      {
+        "rows": [{ "text": "M1Y" }, { "text": "L1I1F1E" }],
+        "answer": "FOR ONCE IN MY LIFE",
+        "explanation": "Four 1s = four ones = \"for once\"; the rest reads MY LIFE.",
+        "reveal": true
+      }
+    ]
+  }
+}

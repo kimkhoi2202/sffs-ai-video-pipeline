@@ -1,0 +1,41 @@
+{
+  "carousel": 1,
+  "slug": "carousel-001",
+  "title": "Decode All 3: Understand, Reading, Bologna",
+  "family": "rebus",
+  "status": "pending-review",
+  "sourceIds": [],
+  "hashtagSet": "A",
+  "caption": "Three hidden phrases, one carousel. The last one is cheekier than it looks. Drop your answers below 👇 Smart fella, or fart smella? #brainteaser #quiz #iqtest #trivia #puzzletok",
+  "props": {
+    "prompt": "CAN YOU DECODE ALL 3?",
+    "topic": "BRAIN TEASER",
+    "outroCta": "FOLLOW FOR MORE",
+    "puzzles": [
+      {
+        "rows": [{ "text": "STAND" }, { "text": "I" }],
+        "answer": "I UNDERSTAND",
+        "explanation": "The I is standing UNDER the word STAND.",
+        "reveal": true
+      },
+      {
+        "rows": [{ "text": "READING", "ruled": true }],
+        "answer": "READING BETWEEN THE LINES",
+        "explanation": "The word READING sits literally between the lines.",
+        "reveal": true
+      },
+      {
+        "answer": "SCRAMBLED EGGS",
+        "explanation": "The letters of EGGS are scrambled.",
+        "reveal": true,
+        "answerOnly": true
+      },
+      {
+        "rows": [{ "text": "KNEE" }, { "text": "YOU ARE FULL OF", "size": "small" }],
+        "answer": "YOU ARE FULL OF BOLOGNA",
+        "explanation": "",
+        "reveal": false
+      }
+    ]
+  }
+}

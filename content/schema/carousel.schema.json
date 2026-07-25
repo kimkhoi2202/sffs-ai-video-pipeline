@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://smartfella.local/schemas/carousel.schema.json",
+  "title": "SFFS Rebus Carousel",
+  "description": "Contract for one rebus word-picture carousel post. Mirrors the live RebusCarouselProps in remotion/hermes/RebusCarousel.tsx (props) wrapped in a post envelope (slug/title/caption/hashtagSet). Rendered by tools/render-carousel.ts to renders.nosync/carousels/<slug>/. We never say \"rebus\" on-screen. See content/carousels/ and CONTENT_PIPELINE.md.",
+  "type": "object",
+  "required": ["carousel", "slug", "title", "family", "props"],
+  "properties": {
+    "carousel": { "type": "integer", "minimum": 1 },
+    "slug": { "type": "string", "pattern": "^carousel-[0-9]{3}$" },
+    "title": {
+      "type": "string",
+      "description": "Human title. No em/en dashes.",
+      "not": { "pattern": "[–—]" }
+    },
+    "family": { "type": "string", "enum": ["rebus"] },
+    "status": { "type": "string", "enum": ["pending-review", "ready-to-post", "posted"] },
+    "sourceIds": {
+      "type": "array",
+      "description": "IDs from content/rebus-bank.json this post draws from (provenance).",
+      "items": { "type": "string" }
+    },
+    "hashtagSet": {
+      "type": "string",
+      "description": "Which set in content/carousel-posting.json to use (A|B|C|D).",
+      "enum": ["A", "B", "C", "D"]
+    },
+    "caption": { "type": "string" },
+    "props": { "$ref": "#/$defs/rebusProps" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "field": { "type": "string", "enum": ["blue", "yellow", "coral", "mint", "cream"] },
+    "rebusProps": {
+      "type": "object",
+      "required": ["prompt", "topic", "outroCta", "puzzles"],
+      "properties": {
+        "prompt": { "type": "string", "description": "Instruction on each puzzle slide (never says \"rebus\")." },
+        "topic": { "type": "string", "description": "Category pill, top-left of each puzzle slide (e.g. BRAIN TEASER)." },
+        "outroCta": { "type": "string", "description": "Outro CTA pill (e.g. FOLLOW FOR MORE)." },
+        "field": { "$ref": "#/$defs/field", "description": "Post-level puzzle-field color; omitted = rotate per slide." },
+        "puzzles": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/puzzle" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "puzzle": {
+      "type": "object",
+      "required": ["answer", "explanation", "reveal"],
+      "properties": {
+        "rows": {
+          "type": "array",
+          "description": "Stacked text rows. Omitted when answerOnly, or use `filled` instead.",
+          "items": { "$ref": "#/$defs/row" }
+        },
+        "filled": {
+          "$ref": "#/$defs/filled",
+          "description": "Big outlined word tiled with a filler word. Takes precedence over rows."
+        },
+        "answer": { "type": "string", "description": "The solved phrase (UPPERCASE on the reveal card)." },
+        "explanation": { "type": "string", "description": "How the picture encodes the answer. Empty string = no explanation card." },
+        "reveal": { "type": "boolean", "description": "true = this puzzle gets an answer slide; false = comment-bait." },
+        "answerOnly": { "type": "boolean", "description": "true = answer slide ONLY (no puzzle slide) and excluded from PUZZLE N OF M numbering." },
+        "field": { "$ref": "#/$defs/field", "description": "Per-puzzle field color override; beats the post-level field + rotation." }
+      },
+      "additionalProperties": false
+    },
+    "row": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" },
+        "size": { "type": "string", "enum": ["big", "small"], "description": "big (default) for main words, small for helpers." },
+        "ruled": { "type": "boolean", "description": "Draw horizontal rules above/below (e.g. reading BETWEEN lines)." },
+        "color": { "type": "string", "enum": ["green", "blue", "coral", "yellow"], "description": "Ink the row a brand color (e.g. green for GREEN with envy)." },
+        "ghost": { "type": "string", "description": "Transparent leading text reserving space to show a MISSING letter (e.g. ghost C for ENTURY)." }
+      },
+      "additionalProperties": false
+    },
+    "filled": {
+      "type": "object",
+      "required": ["word", "filler"],
+      "properties": {
+        "word": { "type": "string", "description": "The big outlined word (e.g. YOU)." },
+        "filler": { "type": "string", "description": "The word tiled inside its glyphs (e.g. BOLOGNA)." }
+      },
+      "additionalProperties": false
+    }
+  }
+}

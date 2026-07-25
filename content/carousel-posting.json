@@ -1,0 +1,33 @@
+{
+  "description": "Posting metadata for teaser carousels (sounds + hashtags). Hashtag sets rotate A/B/C per post like hermes HASHTAG_SETS; the winning set gets promoted via learnings. Sounds cannot be attached through the Publer API for photo posts, so the publisher adds one in-app at publish time following soundStrategy.",
+  "updated": "2026-07-22",
+  "hashtagSets": {
+    "A": ["#brainteaser", "#quiz", "#iqtest", "#trivia", "#puzzletok"],
+    "B": ["#riddles", "#iqtest", "#mindgames", "#puzzletok", "#smartorfart"],
+    "C": ["#brainteasers", "#riddleoftheday", "#braingames", "#quiz", "#smartorfart"],
+    "D": ["#brainteaser", "#quiz", "#iqtest", "#trivia", "#smartorfart"]
+  },
+  "hashtagNotes": [
+    "5 tags max per post: platform best practice for 2026 on both TikTok and IG; more dilutes relevance signals.",
+    "#smartorfart is the brand tag and appears in every set so we accrue a branded feed.",
+    "Each set mixes 2 broad reach tags with 2 niche puzzle-community tags.",
+    "Sources: top-hashtags.com/hashtag/riddles, iqhashtags.com/hashtags/hashtag/puzzle, best-hashtags.com/hashtag/brainteasers (retrieved 2026-07-22)."
+  ],
+  "soundStrategy": {
+    "howTo": "Publer photo drafts cannot carry a native sound. When publishing: TikTok -> edit draft -> add sound; IG -> convert to Reel-backed carousel or add audio in composer.",
+    "rules": [
+      "Pick from TikTok Creative Center 'Trending' (Commercial Music Library ONLY - brand account must use commercially-licensed sounds).",
+      "Kid-safe brand: no explicit lyrics, nothing CARU-risky (see compliance.md).",
+      "Prefer instrumental or low-vocal tracks so text slides stay readable; sound is for distribution, not content.",
+      "Refresh picks weekly; trending sounds decay in days. The names below are the 2026-07-22 snapshot, not evergreen."
+    ],
+    "snapshot": [
+      { "name": "Jeopardy theme (timer version, or trending piano/looped covers)", "why": "THE quiz-native sound: universally read as 'you're on the clock', trending in 2026 in remix/cover forms; the timer version turns each puzzle slide into a countdown", "vibe": "game-show thinking music", "relevance": "high", "checkLicense": true },
+      { "name": "i just get so nervy (super slowed) - HYFY", "why": "trending specifically on quiz/reveal-style carousels; beat syncs with slide swipes", "vibe": "quirky, suspense-adjacent", "relevance": "high", "checkLicense": true },
+      { "name": "Big Boom In The Room - Abraao de Santana", "why": "trending for big-reveal content; the build-then-boom fits swipe-to-answer", "vibe": "dramatic build", "relevance": "medium-high", "checkLicense": true },
+      { "name": "How You Like Me Now - The Heavy", "why": "'told you so' victory energy = smart fella flex after solving", "vibe": "upbeat triumphant", "relevance": "medium", "checkLicense": true },
+      { "name": "Moment Of Reflection - Jhonatan, Piano Sky, Dee Piano", "why": "instrumental piano thinking-music; never fights slide text; safe evergreen fallback", "vibe": "calm instrumental", "relevance": "medium", "checkLicense": true }
+    ],
+    "avoid": "Drake - Janice STFU, Don Toliver - E85, 'original sound by dusty' (explicit); breakup/divorce narrative tracks (Choosin' Texas, The Cure, Horses & Divorces) - wrong tone; generic summer/travel/fashion trending sounds (Midnight Sun, SS26, Dai Dai etc.) - trending but zero puzzle relevance"
+  }
+}
