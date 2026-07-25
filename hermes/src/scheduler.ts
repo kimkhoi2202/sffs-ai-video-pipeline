@@ -2,9 +2,9 @@
  * scheduler.ts — the POST-KICKOFF scheduling policy (pure; no network, no Publer).
  *
  * Policy (used ONLY when kickoff.ts is armed; the OFF loop never calls this):
- *   - TIME WINDOW: schedule ONLY between 7:00am and 1:00am America/Chicago
+ *   - TIME WINDOW: schedule ONLY between 7:00am and 3:00am America/Chicago
  *     (CST/CDT resolved automatically via Intl — July is CDT/UTC-5). NOTHING is
- *     ever scheduled 1:00am–7:00am (the dead hours).
+ *     ever scheduled 3:00am–7:00am (the dead hours).
  *   - NATURAL JITTER: odd, irregular minutes (e.g. 3:13, 9:47 — never :00/:15/:30),
  *     irregular gaps between posts, and a per-platform shift so IG and TikTok never
  *     land on an identical timestamp.
@@ -14,8 +14,15 @@
  */
 
 export const TZ = "America/Chicago";
-/** Allowed wall-clock band: [07:00, 01:00 next day). Dead hours = [01:00, 07:00). */
+/** Allowed wall-clock band: [07:00, 03:00 next day). Dead hours = [03:00, 07:00). */
 export const WINDOW_OPEN_HOUR = 7;
+/**
+ * Wall-clock hour the window CLOSES on the following day (exclusive). 3 => the band
+ * runs 07:00 -> 03:00 next day (a 20h window). Everything below derives the close
+ * from this constant, so widening/narrowing the window is a one-line change and the
+ * dead hours [WINDOW_CLOSE_HOUR, WINDOW_OPEN_HOUR) stay consistent everywhere.
+ */
+export const WINDOW_CLOSE_HOUR = 3;
 /**
  * Minimum per-platform gap (minutes) a NEW slot must keep from a SAME-platform post
  * a PREVIOUS cycle ALREADY scheduled (see `SlotOpts.avoid`). This is what stops a
@@ -65,7 +72,8 @@ export function chicagoHour(date: Date): number {
 /** True iff `date` (a UTC instant) is inside the allowed Chicago posting window. */
 export function isWithinWindow(date: Date): boolean {
   const h = parts(date).h;
-  return h === 0 || h >= WINDOW_OPEN_HOUR; // allow 00:xx and 07:00..23:59; forbid 01..06
+  // allow 00:xx..02:xx and 07:00..23:59; forbid the dead hours 03..06
+  return h < WINDOW_CLOSE_HOUR || h >= WINDOW_OPEN_HOUR;
 }
 
 /** Real UTC instant for a Chicago wall-clock (DST-correct enough for our slack). */
@@ -92,7 +100,7 @@ function lcg(seed: number): () => number {
 /** If `date` is in the dead hours, jump forward to ~07:xx (jittered) that day. */
 function intoWindow(date: Date, rng: () => number): Date {
   if (isWithinWindow(date)) return date;
-  const p = parts(date); // 01:00..06:59 -> same-day 07:00 + jitter
+  const p = parts(date); // 03:00..06:59 -> same-day 07:00 + jitter
   const jitterMin = 1 + Math.floor(rng() * 48); // 1..48 past 7:00 (odd-ized by caller)
   return fromChicago(p.y, p.mo, p.d, WINDOW_OPEN_HOUR, jitterMin);
 }
@@ -110,24 +118,28 @@ export interface SlotOpts {
   avoid?: string[];
 }
 
-/** The next 1:00am America/Chicago strictly after `fromD` — the CLOSE of the
- *  posting window containing (or following) `fromD`. */
-function nextOneAm(fromD: Date): Date {
+/** The next WINDOW_CLOSE_HOUR (3:00am) America/Chicago strictly after `fromD` — the
+ *  CLOSE of the posting window containing (or following) `fromD`. */
+function nextWindowClose(fromD: Date): Date {
   const p = parts(fromD);
-  if (p.h === 0) return fromChicago(p.y, p.mo, p.d, 1, 0); // 00:xx -> 01:00 today
+  // 00:xx..02:xx is the TAIL of the window that opened yesterday -> it closes today.
+  if (p.h < WINDOW_CLOSE_HOUR) return fromChicago(p.y, p.mo, p.d, WINDOW_CLOSE_HOUR, 0);
+  // 03:00-23:59 -> the close is tomorrow. Step via NOON so the +24h hop can never
+  // land on the same calendar day across a DST transition.
   const t = parts(new Date(fromChicago(p.y, p.mo, p.d, 12, 0).getTime() + 24 * 3600_000));
-  return fromChicago(t.y, t.mo, t.d, 1, 0); // 07:00-23:59 -> 01:00 tomorrow
+  return fromChicago(t.y, t.mo, t.d, WINDOW_CLOSE_HOUR, 0);
 }
 
 /** The 7:00am America/Chicago that OPENS the window AFTER `fromD`'s window closes. */
 function next7am(fromD: Date): Date {
-  const c = parts(nextOneAm(fromD)); // the close (01:00) of this window; +7h -> that day's 07:00
-  return fromChicago(c.y, c.mo, c.d, 7, 0);
+  // the close (03:00) of this window; the next window opens 07:00 that SAME day
+  const c = parts(nextWindowClose(fromD));
+  return fromChicago(c.y, c.mo, c.d, WINDOW_OPEN_HOUR, 0);
 }
 
 /**
  * Produce `count` DISTINCT schedule timestamps (ISO, minute-resolution), all inside
- * ONE Chicago posting window [max(now, 7:00am) .. 1:00am), EVENLY distributed with
+ * ONE Chicago posting window [max(now, 7:00am) .. 3:00am), EVENLY distributed with
  * per-slot jitter, ODD minutes, and a per-platform shift so IG != TikTok.
  *
  * Even distribution (vs a random walk of gaps) GUARANTEES every post fits the SAME
@@ -150,11 +162,11 @@ export function nextSlots(count: number, opts: SlotOpts = {}): string[] {
   // Don't cram: if the remaining window can't hold `count` posts >= ~18 min apart,
   // roll to the NEXT full window instead of stacking them minutes apart.
   const MIN_SEG_MIN = 18;
-  if ((nextOneAm(start).getTime() - start.getTime()) / 60_000 < count * MIN_SEG_MIN) {
+  if ((nextWindowClose(start).getTime() - start.getTime()) / 60_000 < count * MIN_SEG_MIN) {
     start = next7am(start);
   }
   const startMin = Math.ceil(start.getTime() / 60_000); // epoch minutes (>= start)
-  const endMin = Math.floor(nextOneAm(start).getTime() / 60_000) - 5; // 5-min buffer; ODD (01:00 - 5)
+  const endMin = Math.floor(nextWindowClose(start).getTime() / 60_000) - 5; // 5-min buffer before the close
   const seg = Math.max(1, (endMin - startMin) / count); // per-post segment (minutes)
   // Per-platform jitter LANE within each segment so IG (low band) and TikTok (high
   // band) can never round to the same minute — a stronger IG!=TikTok guarantee than

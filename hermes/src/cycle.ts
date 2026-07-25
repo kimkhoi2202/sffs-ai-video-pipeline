@@ -7,19 +7,28 @@
  *   0. preflight (assert draft-only, LLM ping, bank stats)
  *   1. snapshot do-not-touch (existing scheduled + published posts)
  *   (a) pull matured analytics + score + update learnings
- *   (b) plan the batch (up to N videos, each a different A/B dimension)
- *   for each video: dedup gate -> question-validity gate -> mark used ->
+ *   (b) plan the batch (up to VIDEOS_PER_DAY videos, each a different A/B dimension)
+ *   then, per WAVE:
+ *     PREPARE each video: dedup gate -> question-validity gate -> mark used ->
  *                   copy gate -> render (Short/FullVideo, ONE per platform with
- *                   its own SAFE ZONES) -> render-sanity gate -> per platform:
- *                   S3 upload -> Publer media import -> createDraftOnly ->
- *                   annotate ab-database
+ *                   its own SAFE ZONES) -> render-sanity gate
+ *     PUBLISH the survivors: allocate schedule slots sized to how many ACTUALLY
+ *                   survived, then per platform: S3 upload -> Publer media import
+ *                   -> createDraftOnly / createScheduledPostArmed -> annotate
+ *                   ab-database
+ *     TOP UP if the day landed under VIDEOS_FLOOR and the ceiling still has room
  *   2. verify do-not-touch untouched (proves nothing went live)
  *   3. commit + push data files (best-effort)
+ *
+ * PREPARE and PUBLISH are split so slots are allocated against the SURVIVING count,
+ * in completion order. Allocating by PLANNED index is what tail-bunched 2026-07-25:
+ * 9 of 10 videos died at a gate, and the lone survivor (planned index 9) inherited
+ * the LAST slot of a 10-slot grid — 11:39pm/12:19am — instead of the first.
  *
  * NOTHING here can publish or schedule. See guardrails.ts / config.ts.
  */
 import { spawnSync } from "node:child_process";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { CONFIG, assertDraftOnly } from "./config.ts";
 import { setRunLog, info, warn, error, decision, gate } from "./log.ts";
@@ -33,7 +42,7 @@ import {
 } from "./state.ts";
 import { snapshotDoNotTouch, verifyDoNotTouch, createDraftOnly } from "./guardrails.ts";
 import { kickoffStatus, type KickoffStatus } from "./kickoff.ts";
-import { nextSlots } from "./scheduler.ts";
+import { nextSlots, WINDOW_OPEN_HOUR, WINDOW_CLOSE_HOUR } from "./scheduler.ts";
 import { goalProgress } from "./goal.ts";
 import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
@@ -51,12 +60,53 @@ import { readJSON, writeJSONAtomic } from "./state.ts";
 const DRY = process.env.HERMES_DRY_RUN === "1";
 
 /**
+ * Most PREPARE+PUBLISH passes one cycle will make. Wave 1 works the oversampled
+ * batch; later waves only exist to top the day up to VIDEOS_FLOOR when rejections
+ * or transient failures ate too much of it. Bounded so a persistently unhealthy
+ * cycle can never loop.
+ */
+const MAX_WAVES = 3;
+/** Extra videos a top-up wave plans beyond the bare shortfall, to absorb its own
+ *  rejections without needing yet another wave. */
+const TOPUP_SLACK = 2;
+/** Attempts for the two steps that historically lost a whole video to a transient. */
+const RENDER_ATTEMPTS = 2;
+const MEDIA_IMPORT_ATTEMPTS = 3;
+
+const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Run `fn`, retrying a TRANSIENT failure with linear backoff. Used ONLY for the
+ * render and the Publer media import — the two steps where a one-off flake used to
+ * cost the day a whole video (2026-07-24 lost one to a media-import timeout). This
+ * never re-runs or softens a GATE: a gate verdict is a decision, not a transient.
+ */
+async function withRetry<T>(label: string, attempts: number, fn: () => Promise<T> | T): Promise<T> {
+  let last: unknown;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      return await fn();
+    } catch (e) {
+      last = e;
+      if (attempt < attempts) {
+        warn(`${label} attempt ${attempt}/${attempts} failed — retrying`, {
+          err: e instanceof Error ? e.message : String(e),
+        });
+        await sleep(attempt * 5_000);
+      }
+    }
+  }
+  throw last instanceof Error ? last : new Error(String(last));
+}
+
+/**
  * Per-cycle scheduling context. OFF (default) => draft-only: every video takes the
  * unchanged createDraftOnly path. ARMED (human kickoff) => each platform draft is
  * ALSO scheduled at a policy time (scheduler.ts) via the gated kickoff_schedule.ts.
  */
 interface SchedCtx {
   armed: boolean;
+  /** `index` is the video's position among the batch's SURVIVORS, not its planned index. */
   slot: (platform: string, index: number) => string | null;
 }
 const DRAFT_ONLY_SCHED: SchedCtx = { armed: false, slot: () => null };
@@ -77,9 +127,15 @@ function newRun(runId: string, target: number): RunState {
   };
 }
 
-async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): Promise<void> {
-  // idempotent: already drafted
-  if (v.status === "drafted") return;
+/**
+ * PREPARE phase — every gate plus the render, i.e. everything that can reject or
+ * fail a video WITHOUT touching Publer. Ends at status "rendered" (ready to publish)
+ * or "rejected". Deliberately does no scheduling: slots can only be spread correctly
+ * once the whole batch has been prepared and the surviving count is known.
+ */
+async function prepareVideo(v: VideoPlan): Promise<void> {
+  // idempotent: already prepared or published
+  if (v.status === "drafted" || v.status === "rendered") return;
 
   // 1) dedup gate
   const claimed = new Set<string>();
@@ -120,9 +176,12 @@ async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): 
 
   // 5) render — the REAL Short/FullVideo composition, ONE render per platform so
   // each draft carries that platform's SAFE ZONES (TikTok transform vs IG box).
-  // VO is synthesized once and shared across the platform renders.
-  const renders = renderForPlatforms(v.id, v.props);
+  // VO is synthesized once and shared across the platform renders. Retried once:
+  // renderForPlatforms is idempotent (it reuses a good per-platform file), so a
+  // retry only re-does what actually failed.
+  const renders = await withRetry(`${v.id} render`, RENDER_ATTEMPTS, () => renderForPlatforms(v.id, v.props));
   v.render_path = renders[0]?.path;
+  v.renders = renders.map((r) => ({ platform: r.platform, path: r.path, frames: r.frames }));
   v.status = "rendered";
 
   // 6) render-sanity gate — EVERY platform render must pass (1080x1920 + audio +
@@ -142,12 +201,20 @@ async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): 
     v.reject_reason = "render sanity: " + v.gates.render.reason;
     return;
   }
+  v.status = "rendered";
+}
 
-  if (DRY) {
-    info(`${v.id} DRY_RUN: gates passed; skipping upload + draft`);
-    v.status = "rendered";
-    return;
-  }
+/**
+ * PUBLISH phase — upload each platform's render, create its Publer post, annotate
+ * the A/B database. `slotIndex` is the video's position among the batch's ACTUAL
+ * survivors (not its planned index), which is what keeps a short batch spread across
+ * the window instead of clustered at whichever slots its planned indexes happened to
+ * own. Only ever reached by a video that passed every gate.
+ */
+async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): Promise<void> {
+  if (v.status === "drafted") return; // idempotent: already published
+  const renders = v.renders ?? [];
+  if (!renders.length) throw new Error(`${v.id}: no renders recorded — cannot publish`);
 
   // Optional run/validation TAG on the DRAFT caption (env-gated). The live VPS
   // loop leaves HERMES_CAPTION_TAG unset, so real captions are unchanged
@@ -168,7 +235,9 @@ async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): 
     const account_id = CONFIG.ACCOUNTS[platform];
     const key = `hermes/${todayRunId()}/${v.id}.${platform}.mp4`;
     const url = uploadToS3(r.path, key);
-    const { mediaId } = await importMediaFromUrl(url, `${v.id}.${platform}.mp4`);
+    const { mediaId } = await withRetry(`${v.id} ${platform} media-import`, MEDIA_IMPORT_ATTEMPTS, () =>
+      importMediaFromUrl(url, `${v.id}.${platform}.mp4`),
+    );
     // BRANDED COVER: append the rotating "SMART FELLA OR FART SMELLA?" title card as the
     // DEFAULT thumbnail so the post cold-opens branded (video bytes unchanged -> still Q1).
     // Best-effort: no manifest/cover => post uncovered (a cover problem never blocks a post).
@@ -183,8 +252,8 @@ async function draftForVideo(v: VideoPlan, sched: SchedCtx = DRAFT_ONLY_SCHED): 
     let jobId: string;
     let scheduled_at: string | null = null;
     if (sched.armed) {
-      scheduled_at = sched.slot(platform, v.index);
-      if (!scheduled_at) throw new Error(`no schedule slot for ${platform}#${v.index}`);
+      scheduled_at = sched.slot(platform, slotIndex);
+      if (!scheduled_at) throw new Error(`no schedule slot for ${platform}#${slotIndex}`);
       const { createScheduledPostArmed } = await import("./kickoff_schedule.ts");
       jobId = await createScheduledPostArmed({ account_ids: [account_id], text: v.caption, ...mediaArg, type: "video" }, scheduled_at);
     } else {
@@ -299,6 +368,34 @@ async function scheduledTimesByPlatform(): Promise<Record<"instagram" | "tiktok"
   return byPlat;
 }
 
+/**
+ * Build this wave's ARMED slot allocator for exactly `count` videos — the number
+ * that SURVIVED preparation, not the number planned. Sizing the grid to the real
+ * count is what makes a short batch spread across the whole window; handing the
+ * slots out sequentially (see publishVideo's slotIndex) is what stops survivors from
+ * inheriting the tail slots their planned indexes happened to own.
+ *
+ * `avoid` is re-read per wave so a top-up wave keeps its MIN_GAP from the posts the
+ * earlier wave just scheduled, and drops into the gaps between them.
+ */
+async function armedSchedule(runId: string, wave: number, count: number): Promise<SchedCtx> {
+  const already = await scheduledTimesByPlatform();
+  const seed = wave === 0 ? runId : `${runId}-t${wave}`; // distinct jitter lane per wave
+  const slots: Record<string, string[]> = {
+    instagram: nextSlots(count, { seed, platform: "instagram", avoid: already.instagram }),
+    tiktok: nextSlots(count, { seed, platform: "tiktok", avoid: already.tiktok }),
+  };
+  info("KICKOFF ARMED — autonomous scheduling ON", {
+    wave: wave + 1,
+    videos: count,
+    window: `${WINDOW_OPEN_HOUR}:00am-${WINDOW_CLOSE_HOUR}:00am America/Chicago`,
+    avoiding: { instagram: already.instagram.length, tiktok: already.tiktok.length },
+    first: { instagram: slots.instagram[0], tiktok: slots.tiktok[0] },
+    last: { instagram: slots.instagram.at(-1), tiktok: slots.tiktok.at(-1) },
+  });
+  return { armed: true, slot: (platform, index) => slots[platform]?.[index] ?? null };
+}
+
 function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
   const db = readJSON<any>(CONFIG.AB_DB, null);
   if (!db || !Array.isArray(db.posts)) return;
@@ -357,16 +454,32 @@ const BOT_NAME = "SFFS Hermes Bot";
 const BOT_EMAIL = "deploy@sffs.local";
 
 function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
-  const files = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
+  const candidates = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
+  // `git add` is ATOMIC over its pathspecs: one path that doesn't exist aborts the
+  // whole add (exit 128) and stages NOTHING, after which `git commit` fails with
+  // "nothing to commit" on STDOUT — which surfaced as the empty `commit failed: `
+  // note on the rebuilt box, where remotion/hermes doesn't exist. Only pass paths
+  // that are actually present so a layout difference can't silently stop the daily
+  // A/B data from being committed.
+  const files = candidates.filter((f) => existsSync(join(CONFIG.REPO_DIR, f)));
+  const missing = candidates.filter((f) => !files.includes(f));
   const run = (args: string[]) => spawnSync("git", args, { cwd: CONFIG.REPO_DIR, encoding: "utf8", env: { ...process.env } });
   try {
-    run(["add", ...files]);
+    if (!files.length) return { committed: false, pushed: false, note: "no data paths present to commit" };
+    const add = run(["add", ...files]);
+    if (add.status !== 0) return { committed: false, pushed: false, note: "add failed: " + (add.stderr || "").slice(-200) };
+    if (missing.length) info("git: skipping absent paths", { missing });
     const status = run(["status", "--porcelain"]).stdout || "";
     if (!status.trim()) return { committed: false, pushed: false, note: "nothing to commit" };
     const msg = `hermes: cycle ${runId} — ${summary.drafted} drafts, ${summary.rejected} rejected [draft-only]`;
     // -c pins author AND committer identity for THIS commit (belt: also set in box git config).
     const c = run(["-c", `user.name=${BOT_NAME}`, "-c", `user.email=${BOT_EMAIL}`, "commit", "-m", msg]);
-    if (c.status !== 0) return { committed: false, pushed: false, note: "commit failed: " + (c.stderr || "").slice(-200) };
+    // git reports "nothing to commit" on STDOUT, so fall back to it when stderr is
+    // empty — an empty `commit failed: ` note is useless for diagnosis.
+    if (c.status !== 0) {
+      const why = ((c.stderr || "").trim() || (c.stdout || "").trim() || `exit ${c.status}`).slice(-200);
+      return { committed: false, pushed: false, note: "commit failed: " + why };
+    }
     run(["pull", "--rebase", "origin", "main"]);
     const p = run(["push", "origin", "HEAD:main"]);
     const pushed = p.status === 0;
@@ -381,13 +494,14 @@ export async function runCycle(): Promise<RunState> {
   mkdirSync(CONFIG.DATA_DIR, { recursive: true });
   mkdirSync(CONFIG.RUNS_DIR, { recursive: true });
   const runId = process.env.HERMES_RUN_ID || todayRunId();
-  const target = CONFIG.VIDEOS_PER_DAY;
+  const ceiling = CONFIG.VIDEOS_PER_DAY; // most videos (== posts/platform) one day may schedule
+  const floor = Math.min(CONFIG.VIDEOS_FLOOR, ceiling); // fewest a healthy cycle must land
   setRunLog(join(CONFIG.DATA_DIR, "runs", `${runId}.log`));
 
-  let state = loadRun(runId) ?? newRun(runId, target);
+  let state = loadRun(runId) ?? newRun(runId, ceiling);
   state.status = "running";
   saveRun(state);
-  info(`=== Hermes cycle ${runId} (target ${target}, DRAFT-ONLY${DRY ? ", DRY_RUN" : ""}) ===`);
+  info(`=== Hermes cycle ${runId} (floor ${floor}, ceiling ${ceiling}, DRAFT-ONLY${DRY ? ", DRY_RUN" : ""}) ===`);
 
   // preflight
   const health = await ping();
@@ -440,47 +554,78 @@ export async function runCycle(): Promise<RunState> {
     state.errors.push("reconcile: " + (e instanceof Error ? e.message : String(e)));
   }
 
-  // (b) plan
+  // (b) plan wave 1 at the CEILING. Planning the ceiling rather than the floor is
+  // the OVERSAMPLE: gate rejections and transient failures come out of the headroom
+  // instead of out of the day's floor. It cannot breach the 12/day/platform cap —
+  // only a video that clears every gate becomes a post.
   if (!state.videos.length) {
-    state.videos = await planBatch(runId, target);
+    state.videos = await planBatch(runId, ceiling);
     state.summary.planned = state.videos.length;
     saveRun(state);
   }
 
-  // KICKOFF: OFF => draft-only (unchanged). ARMED => build per-platform jittered
-  // schedule slots (7am-1am CST window) so each draft is auto-scheduled. DRY never
-  // schedules (renders/gates only). Nothing here can publish "now".
-  let sched: SchedCtx = DRAFT_ONLY_SCHED;
-  if (kickoff.armed && !DRY) {
-    const n = state.videos.length;
-    // Collision-awareness: read the per-platform times a PREVIOUS cycle already
-    // scheduled so THIS batch keeps the per-platform gap vs them too (not only within
-    // its own batch). Without this, a replication batch could land minutes from a post
-    // the original armed cycle already scheduled (scheduler.ts nextSlots `avoid`).
-    const already = await scheduledTimesByPlatform();
-    const slots: Record<string, string[]> = {
-      instagram: nextSlots(n, { seed: runId, platform: "instagram", avoid: already.instagram }),
-      tiktok: nextSlots(n, { seed: runId, platform: "tiktok", avoid: already.tiktok }),
-    };
-    sched = { armed: true, slot: (platform, index) => slots[platform]?.[index] ?? null };
-    info("KICKOFF ARMED — autonomous scheduling ON", {
-      videos: n,
-      window: "7:00am-1:00am America/Chicago",
-      avoiding: { instagram: already.instagram.length, tiktok: already.tiktok.length },
-      first: { instagram: slots.instagram[0], tiktok: slots.tiktok[0] },
-    });
-  }
+  const draftedCount = (): number => state.videos.filter((v) => v.status === "drafted").length;
+  // Videos this PROCESS has already put through PREPARE. A failure inside one wave
+  // must not be retried by the next (its questions may already be marked used, so a
+  // retry would only dedup-reject); topping up with FRESH videos is the real remedy.
+  // A brand-new invocation starts empty, so resuming a run still retries them.
+  const attempted = new Set<string>();
 
-  // per-video pipeline (resume-safe)
-  for (const v of state.videos) {
-    if (v.status === "drafted" || v.status === "rejected") continue;
-    try {
-      await draftForVideo(v, sched);
-    } catch (e) {
-      v.status = "failed";
-      v.errors = [...(v.errors ?? []), e instanceof Error ? e.message : String(e)];
-      error(`${v.id} FAILED`, { err: v.errors.at(-1) });
+  for (let wave = 0; wave < MAX_WAVES; wave++) {
+    // ── PREPARE: gates + render for everything still pending ──────────────────
+    for (const v of state.videos) {
+      if (v.status === "drafted" || v.status === "rejected" || v.status === "rendered") continue;
+      if (attempted.has(v.id)) continue;
+      attempted.add(v.id);
+      try {
+        await prepareVideo(v);
+      } catch (e) {
+        v.status = "failed";
+        v.errors = [...(v.errors ?? []), e instanceof Error ? e.message : String(e)];
+        error(`${v.id} FAILED`, { err: v.errors.at(-1) });
+      }
+      saveRun(state);
     }
+
+    // ── PUBLISH: slots sized to the SURVIVORS, handed out in order ─────────────
+    const ready = state.videos.filter((v) => v.status === "rendered");
+    if (ready.length && !DRY) {
+      const sched = kickoff.armed ? await armedSchedule(runId, wave, ready.length) : DRAFT_ONLY_SCHED;
+      for (let i = 0; i < ready.length; i++) {
+        const v = ready[i];
+        try {
+          await publishVideo(v, sched, i);
+        } catch (e) {
+          v.status = "failed";
+          v.errors = [...(v.errors ?? []), e instanceof Error ? e.message : String(e)];
+          error(`${v.id} FAILED`, { err: v.errors.at(-1) });
+        }
+        saveRun(state);
+      }
+    } else if (ready.length && DRY) {
+      info(`DRY_RUN: ${ready.length} video(s) passed every gate; skipping upload + draft`);
+      break;
+    }
+
+    // ── TOP UP: only if the day is still under the floor and the ceiling allows ─
+    const have = draftedCount();
+    if (have >= floor || have >= ceiling || wave + 1 >= MAX_WAVES) {
+      if (have < floor) {
+        warn("cycle finished UNDER the daily floor", { drafted: have, floor, ceiling, waves: wave + 1 });
+      }
+      break;
+    }
+    const want = Math.min(floor - have + TOPUP_SLACK, ceiling - have);
+    info("below daily floor — planning a top-up wave", { drafted: have, floor, want, wave: wave + 2 });
+    const extra = await planBatch(`${runId}-t${wave + 1}`, want);
+    if (!extra.length) {
+      warn("top-up produced no videos (bank or dimension catalog exhausted)", { drafted: have, floor });
+      break;
+    }
+    const base = state.videos.length; // keep indexes unique across waves (cover rotation reads them)
+    extra.forEach((e, i) => (e.index = base + i));
+    state.videos.push(...extra);
+    state.summary.planned = state.videos.length;
     saveRun(state);
   }
 

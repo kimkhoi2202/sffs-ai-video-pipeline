@@ -7,6 +7,8 @@
  *   1. Question dedup — never repeat a question (verified against the used ledger).
  *   2. Question validity (LLM rubric, cached) — exactly one unambiguous correct
  *      answer, correct + factual, grade-appropriate difficulty, plausible distractors.
+ *      When the judge is UNREACHABLE it degrades to a deterministic structural check
+ *      rather than throwing (an outage must not cost the day its throughput).
  *   3. Copy brand-voice + kid-safe — deterministic rules + LLM judge.
  *   4. Render sanity — 1080x1920, video+audio streams present, duration as expected.
  */
@@ -15,7 +17,7 @@ import { existsSync } from "node:fs";
 import { chatJSON } from "./llm.ts";
 import { loadBrandVoice, ruleCheckCopy } from "./brand.ts";
 import { readJSON, writeJSONAtomic, isShapeKind, type HermesQ, type GateResult } from "./state.ts";
-import { loadUsedSigs, loadUsedFuzzySigs, fuzzySig, shapeStructuralIssue } from "./questions.ts";
+import { loadUsedSigs, loadUsedFuzzySigs, fuzzySig, shapeStructuralIssue, textStructuralIssue } from "./questions.ts";
 import { CONFIG } from "./config.ts";
 import { gate } from "./log.ts";
 import { join } from "node:path";
@@ -78,6 +80,9 @@ export async function validateQuestions(
 ): Promise<{ results: Record<string, QVerdict>; gate: GateResult }> {
   const cache = loadQCache();
   const results: Record<string, QVerdict> = {};
+  /** Verdicts from the deterministic fail-safe. Kept OUT of the persisted cache. */
+  const fallback: Record<string, QVerdict> = {};
+  let rubricUnavailable = false;
 
   // Nonverbal SHAPE/FIGURE questions are validated STRUCTURALLY here — their
   // options are figures (not text), so the verbal/number LLM rubric below does
@@ -114,26 +119,52 @@ export async function validateQuestions(
       "(roughly ages 8-16); (d) distractors are plausible but clearly wrong (no second correct option, none absurd). " +
       'Return JSON {"results":[{"index":number,"valid":boolean,"reason":"short","difficulty":"easy|medium|hard|off"}]}.\n\n' +
       JSON.stringify(payload);
-    const resp = await chatJSON<{ results: Array<{ index: number; valid: boolean; reason: string; difficulty?: string }> }>(
-      system,
-      user,
-      { model: CONFIG.MODEL, maxTokens: 1600 },
-    );
-    for (const r of resp.results ?? []) {
-      const q = todo[r.index];
-      if (!q) continue;
-      cache[q.hash] = { valid: !!r.valid, reason: String(r.reason ?? "").slice(0, 200), difficulty: r.difficulty };
+    try {
+      const resp = await chatJSON<{ results: Array<{ index: number; valid: boolean; reason: string; difficulty?: string }> }>(
+        system,
+        user,
+        { model: CONFIG.MODEL, maxTokens: 1600 },
+      );
+      for (const r of resp.results ?? []) {
+        const q = todo[r.index];
+        if (!q) continue;
+        cache[q.hash] = { valid: !!r.valid, reason: String(r.reason ?? "").slice(0, 200), difficulty: r.difficulty };
+      }
+      // any todo the model skipped -> treat as invalid (fail closed)
+      for (const q of todo) if (!cache[q.hash]) cache[q.hash] = { valid: false, reason: "no verdict returned (fail-closed)" };
+      saveQCache(cache);
+    } catch (e) {
+      // The rubric judge is UNREACHABLE (gateway 429/5xx/timeout) — not a verdict on
+      // the questions. Hard-failing here throws out of the whole video and silently
+      // costs the day its throughput (the 2026-07-25 incident: a budget 429 killed
+      // 9 of 10 videos; only the nonverbal-shape video, which never calls the judge,
+      // survived). Degrade the SAME way gateCopy already does: fall back to the
+      // deterministic structural check, which still enforces exactly-one-correct-
+      // answer, length budgets, and option sanity on what is an already-curated bank.
+      // Fallback verdicts are deliberately NOT written to the cache, so the real
+      // rubric still judges these questions on the next healthy cycle.
+      rubricUnavailable = true;
+      const why = e instanceof Error ? e.message : String(e);
+      for (const q of todo) {
+        const issue = textStructuralIssue(q);
+        fallback[q.hash] = issue
+          ? { valid: false, reason: `structural: ${issue}` }
+          : { valid: true, reason: "structural check passed (LLM rubric unavailable)" };
+      }
+      gate(`question-validity: LLM rubric unavailable — deterministic fallback for ${todo.length} question(s)`, {
+        err: why.slice(0, 200),
+      });
     }
-    // any todo the model skipped -> treat as invalid (fail closed)
-    for (const q of todo) if (!cache[q.hash]) cache[q.hash] = { valid: false, reason: "no verdict returned (fail-closed)" };
-    saveQCache(cache);
   }
 
-  for (const q of rubricQuestions) results[q.sig] = cache[q.hash] ?? { valid: false, reason: "uncached (fail-closed)" };
+  for (const q of rubricQuestions) {
+    results[q.sig] = cache[q.hash] ?? fallback[q.hash] ?? { valid: false, reason: "uncached (fail-closed)" };
+  }
   const invalid = questions.filter((q) => !results[q.sig].valid);
+  const suffix = rubricUnavailable ? " (deterministic fallback; LLM rubric unavailable)" : "";
   const g: GateResult = {
     pass: invalid.length === 0,
-    reason: invalid.length === 0 ? "all questions valid" : `${invalid.length} invalid question(s)`,
+    reason: (invalid.length === 0 ? "all questions valid" : `${invalid.length} invalid question(s)`) + suffix,
     detail: invalid.map((q) => ({ sig: q.sig, reason: results[q.sig].reason })),
   };
   return { results, gate: g };

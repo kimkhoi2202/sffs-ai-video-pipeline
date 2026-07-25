@@ -53,7 +53,19 @@ export const CONFIG = Object.freeze({
   S3_PRESIGN_TTL: Number(process.env.S3_PRESIGN_TTL || 21600),
 
   // ── Batch shape ────────────────────────────────────────────────────────
-  VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 10),
+  /**
+   * CEILING: the most videos one day may schedule. One video fans out to exactly one
+   * post per platform, so this is also the 12/day/platform post cap. The cycle plans
+   * up to this many so that gate rejections and transient failures are absorbed
+   * WITHOUT dropping below VIDEOS_FLOOR — oversampling, not a loosened gate.
+   */
+  VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 12),
+  /**
+   * FLOOR: the minimum videos a healthy cycle must land. If the first wave finishes
+   * short of this (and the ceiling still has room), cycle.ts plans a bounded top-up
+   * wave rather than leaving the day thin — the 2026-07-25 incident shipped 1 video.
+   */
+  VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 8),
   MUSIC_TRACKS: [
     "audio/music/gameshow-fanfare.mp3",
     "audio/music/prize-wheel-parade.mp3",

@@ -141,6 +141,13 @@ export interface VideoPlan {
   status: VideoStatus;
   reject_reason?: string;
   render_path?: string;
+  /**
+   * Per-platform renders produced by the cycle's PREPARE phase and consumed by its
+   * PUBLISH phase. Persisted so scheduling (which happens after the whole batch is
+   * rendered, once the surviving count is known) never has to re-render or re-synth
+   * the voiceover — including across a resumed run.
+   */
+  renders?: Array<{ platform: string; path: string; frames: number }>;
   media_url?: string;
   publer?: { job_id?: string; media_id?: string; post_ids?: string[]; permalinks?: string[] };
   errors?: string[];

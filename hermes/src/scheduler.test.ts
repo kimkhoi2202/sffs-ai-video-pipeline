@@ -1,22 +1,79 @@
 /**
  * scheduler.test.ts — proves the post-kickoff scheduling policy: every slot lands
- * in the 7:00am–1:00am America/Chicago window (NOTHING 1–7am), minutes are odd +
+ * in the 7:00am–3:00am America/Chicago window (NOTHING 3–7am), minutes are odd +
  * jittered, gaps are irregular, slots are distinct + increasing, and IG != TikTok.
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { nextSlots, isWithinWindow, chicagoHour, MIN_GAP_MIN } from "./scheduler.ts";
+import { nextSlots, isWithinWindow, chicagoHour, MIN_GAP_MIN, WINDOW_OPEN_HOUR, WINDOW_CLOSE_HOUR } from "./scheduler.ts";
 
 const dayFrom = Date.UTC(2026, 6, 20, 12, 0, 0); // fixed base (July 2026 = CDT)
 
-test("every slot is inside the window — NOTHING between 1:00am and 7:00am CST", () => {
+test("every slot is inside the window — NOTHING between 3:00am and 7:00am CST", () => {
   const slots = nextSlots(60, { seed: "run-x", platform: "instagram", fromMs: dayFrom });
   assert.equal(slots.length, 60);
   for (const iso of slots) {
     const d = new Date(iso);
     const h = chicagoHour(d);
-    assert.ok(h === 0 || h >= 7, `slot ${iso} -> Chicago hour ${h} must be 0 or >=7 (never 1..6)`);
+    assert.ok(h < 3 || h >= 7, `slot ${iso} -> Chicago hour ${h} must be <3 or >=7 (never 3..6)`);
     assert.ok(isWithinWindow(d), `${iso} within window`);
+  }
+});
+
+// ── the 7am–3am window (extended from 7am–1am) ───────────────────────────────
+
+test("window boundaries: 02:59 is postable, 03:00 and 06:59 are not, 07:00 is", () => {
+  const at = (h: number, mi: number): Date => {
+    // walk from a known CDT noon to the requested Chicago wall-clock hour
+    let ms = dayFrom;
+    for (let i = 0; i < 24 * 60; i++, ms += 60_000) {
+      const d = new Date(ms);
+      if (chicagoHour(d) === h && d.getUTCMinutes() === mi) return d;
+    }
+    throw new Error(`could not construct ${h}:${mi} Chicago`);
+  };
+  assert.equal(WINDOW_OPEN_HOUR, 7);
+  assert.equal(WINDOW_CLOSE_HOUR, 3);
+  assert.ok(isWithinWindow(at(2, 59)), "02:59 is the tail of the window");
+  assert.ok(!isWithinWindow(at(3, 0)), "03:00 is the close (exclusive)");
+  assert.ok(!isWithinWindow(at(6, 59)), "06:59 is still a dead hour");
+  assert.ok(isWithinWindow(at(7, 0)), "07:00 opens the window");
+});
+
+test("the extended tail is actually USED — a full batch reaches past 1:00am", () => {
+  // 12 posts spread over the 20h window must place their last slot after 01:00,
+  // which the old 7am-1am window could not produce.
+  const slots = nextSlots(12, { seed: "tail", platform: "tiktok", fromMs: dayFrom });
+  const hours = slots.map((s) => chicagoHour(new Date(s)));
+  assert.ok(
+    hours.some((h) => h === 1 || h === 2),
+    `expected a slot in the new 1am-3am tail, got hours ${hours.join(",")}`,
+  );
+});
+
+test("a full daily batch keeps >= MIN_GAP_MIN between same-platform posts", () => {
+  // The 56-min invariant must hold for the real operating range (<= the 12/day cap)
+  // on the plain even-distribution path, not only when `avoid` is supplied.
+  for (const count of [8, 10, 12]) {
+    const ms = nextSlots(count, { seed: `cap-${count}`, platform: "instagram", fromMs: dayFrom }).map((s) => Date.parse(s));
+    for (let i = 1; i < ms.length; i++) {
+      const gap = (ms[i] - ms[i - 1]) / 60_000;
+      assert.ok(gap >= MIN_GAP_MIN, `count=${count}: gap ${gap}min < ${MIN_GAP_MIN}min`);
+    }
+  }
+});
+
+test("a SMALL batch lands in the EARLY window, never at the tail", () => {
+  // The 2026-07-25 regression: 9 of 10 videos died at a gate and the lone survivor
+  // kept its PLANNED index-9 slot, landing at 11:39pm. cycle.ts now sizes the grid
+  // to the SURVIVOR count, so a 1-video day is a 1-slot grid — which must sit in the
+  // daytime part of the window, not where the 10th of ten would have gone.
+  const tenth = nextSlots(10, { seed: "small", platform: "instagram", fromMs: dayFrom }).at(-1)!;
+  for (const seed of ["small", "s2", "s3", "s4", "s5", "s6"]) {
+    const [only] = nextSlots(1, { seed, platform: "instagram", fromMs: dayFrom });
+    assert.ok(Date.parse(only) < Date.parse(tenth), `1-video slot ${only} must precede the 10-of-10 slot ${tenth}`);
+    const h = chicagoHour(new Date(only));
+    assert.ok(h >= WINDOW_OPEN_HOUR && h <= 18, `1-video slot ${only} -> hour ${h} should be daytime, not the tail`);
   }
 });
 
@@ -47,13 +104,13 @@ test("IG and TikTok never share an identical timestamp", () => {
 });
 
 test("a base time in the dead hours is pushed into the window", () => {
-  // find a UTC instant that is ~3am in Chicago
+  // find a UTC instant that is ~5am in Chicago (mid dead-hours under 7am-3am)
   let ms = dayFrom;
   for (let i = 0; i < 48; i++) {
-    if (chicagoHour(new Date(ms)) === 3) break;
+    if (chicagoHour(new Date(ms)) === 5) break;
     ms += 30 * 60000;
   }
-  assert.equal(chicagoHour(new Date(ms)), 3, "constructed a 3am-Chicago base");
+  assert.equal(chicagoHour(new Date(ms)), 5, "constructed a 5am-Chicago base");
   const [first] = nextSlots(1, { seed: "dead", platform: "instagram", fromMs: ms });
   assert.ok(isWithinWindow(new Date(first)), `${first} pushed into window from dead hours`);
 });
