@@ -181,8 +181,27 @@ test("page: renders all required sections", () => {
   assert.match(html, /Software-factory PRs/);
   assert.match(html, /A\/B results/);
   assert.match(html, /Front-runners/);
-  assert.match(html, /READ-ONLY/);
+  assert.match(html, /Double down on reach outliers/);
   assert.match(html, /next run/);
+});
+
+test("page: branded as the SFFS loop — no HERMES-NOUS / DRAFT-ONLY / READ-ONLY chrome", () => {
+  // COSMETIC ONLY. The dashboard is public and unauthenticated, so it carries the
+  // product name rather than the internal codename and the two internal-state
+  // badges. This asserts the LABELS are gone; the DRAFT_ONLY posting guard and the
+  // READ_ONLY server invariant are untouched (see the guardrail tests below, and
+  // config.assertReadOnly / hermes config.assertDraftOnly).
+  const html = page(emptyPageData());
+  assert.match(html, /<title>SFFS Self-Improving Agentic Marketing Loop<\/title>/);
+  assert.match(html, /<h1>SFFS Self-Improving Agentic Marketing Loop<\/h1>/);
+  assert.doesNotMatch(html, /HERMES-NOUS/);
+  assert.doesNotMatch(html, /Hermes-Nous/);
+  // no badge/pill chrome carrying either internal state label
+  assert.doesNotMatch(html, /<span class="tag[^"]*">\s*DRAFT-ONLY\s*<\/span>/);
+  assert.doesNotMatch(html, /<span class="tag[^"]*">\s*READ-ONLY\s*<\/span>/);
+  assert.doesNotMatch(html, /<span class="pin"[^>]*>\s*READ-ONLY\s*<\/span>/);
+  // the footer carries the product name and the CURRENT posting window
+  assert.match(html, /SFFS Self-Improving Agentic Marketing Loop<\/b> · posting 7am–3am CST/);
 });
 
 // ── REPLICATE panel + the exploration cap ────────────────────────────────────
@@ -959,7 +978,10 @@ test("D4b: run picker is restyled to the neo-brutalist system + stays an accessi
 
 test("D5: footer reflects the LIVE autonomous state (no stale draft-only/human-action copy)", () => {
   const html = page(emptyPageData());
-  assert.match(html, /live &amp; autonomous/);
+  // The footer now leads with the product name (the public rebrand) rather than the
+  // internal codename, but must still describe the LIVE autonomous state.
+  assert.match(html, /SFFS Self-Improving Agentic Marketing Loop<\/b> · posting/);
+  assert.match(html, /run autonomously on the box under hard guardrails/);
   assert.match(html, /goal: 500K views/);
   assert.doesNotMatch(html, /the loop can ONLY create Publer drafts/);
   assert.doesNotMatch(html, /going live \+ merging code are human actions/);
