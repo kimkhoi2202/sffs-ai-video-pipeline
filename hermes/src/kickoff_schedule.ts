@@ -25,14 +25,14 @@ export interface ScheduleInput {
 
 /**
  * Create ONE scheduled post at `whenISO`. Refused unless (a) kickoff is armed and
- * (b) the time is inside the 7am–1am America/Chicago window. Returns the job id.
+ * (b) the time is inside the 7am–3am America/Chicago window. Returns the job id.
  */
 export async function createScheduledPostArmed(input: ScheduleInput, whenISO: string): Promise<string> {
   assertKickoffArmed(); // fail-closed: throws when the human switch is OFF
   const when = new Date(whenISO);
   if (isNaN(when.getTime())) throw new Error(`createScheduledPostArmed: bad scheduled_at "${whenISO}"`);
   if (!isWithinWindow(when)) {
-    throw new Error(`createScheduledPostArmed: "${whenISO}" is in the dead hours (only 7:00am–1:00am America/Chicago allowed)`);
+    throw new Error(`createScheduledPostArmed: "${whenISO}" is in the dead hours (only 7:00am–3:00am America/Chicago allowed)`);
   }
   if (!input.account_ids?.length) throw new Error("createScheduledPostArmed: account_ids required");
   return schedulePost({

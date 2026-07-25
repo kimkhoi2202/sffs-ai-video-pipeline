@@ -212,6 +212,55 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
 }
 
 /**
+ * Structural validity of a TEXT / NUMSERIES question. Returns null when well-formed,
+ * else a short human reason. NEVER throws, so it is safe on raw bank data.
+ *
+ * This is the deterministic counterpart to shapeStructuralIssue: it re-asserts the
+ * same invariants toHermesQ enforces at bank-load time — non-empty prompt within the
+ * on-screen length budget, an option/term count the composition can lay out, and
+ * (for text) EXACTLY ONE option matching the stated answer, which is the structural
+ * form of the rubric's "exactly one unambiguous correct answer".
+ *
+ * It is NOT a replacement for the LLM rubric (it cannot judge factual correctness or
+ * grade-appropriateness). gates.validateQuestions uses it only as the fail-safe when
+ * the judge is unreachable, and deliberately does not cache its verdicts, so the real
+ * rubric still runs on those questions on the next healthy cycle.
+ */
+export function textStructuralIssue(q: HermesQ): string | null {
+  if (isShapeKind(q.kind)) return "not a text/numseries kind";
+  const prompt = String(q.prompt ?? "").trim();
+  if (!prompt) return "missing prompt";
+  if (prompt.length > LIMITS.maxPrompt) return `prompt ${prompt.length} chars > ${LIMITS.maxPrompt}`;
+  const answer = String(q.answer ?? "").trim();
+  if (!answer) return "missing answer";
+
+  if (q.kind === "text") {
+    const options = (q.options ?? []).map((o) => String(o ?? "").trim()).filter(Boolean);
+    if (options.length < LIMITS.minOptions || options.length > LIMITS.maxOptions) {
+      return `needs ${LIMITS.minOptions}-${LIMITS.maxOptions} options, got ${options.length}`;
+    }
+    const tooLong = options.find((o) => o.length > LIMITS.maxOption);
+    if (tooLong) return `option "${tooLong}" > ${LIMITS.maxOption} chars`;
+    if (new Set(options.map(norm)).size !== options.length) return "duplicate option(s)";
+    const matches = options.filter((o) => norm(o) === norm(answer));
+    if (matches.length !== 1) return `answer matches ${matches.length} option(s), need exactly 1`;
+    return null;
+  }
+
+  if (q.kind === "numseries") {
+    const seq = (q.seq ?? []).map((n) => String(n ?? "").trim()).filter(Boolean);
+    if (seq.length < LIMITS.minSeq || seq.length > LIMITS.maxSeq) {
+      return `needs ${LIMITS.minSeq}-${LIMITS.maxSeq} terms, got ${seq.length}`;
+    }
+    if (seq.some((n) => n.length > 8)) return "a term is > 8 chars";
+    if (answer.length > 8) return "answer is > 8 chars";
+    return null;
+  }
+
+  return `unsupported kind "${q.kind}"`;
+}
+
+/**
  * Structural validity of a nonverbal shape/figure question's `figure` payload.
  * Returns null when well-formed, else a short human reason. NEVER throws — every
  * access is guarded — so it is safe to call on raw bank data. Shared by toHermesQ
