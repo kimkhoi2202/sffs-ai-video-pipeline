@@ -27,7 +27,8 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode } from "./defaults.ts";
-import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally, elevateMascot, MASCOT_WEIGHT_DEFAULT } from "./dimensions.ts";
+import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally, elevateMascot, MASCOT_WEIGHT_DEFAULT, type DimSpec, type SpreadTally } from "./dimensions.ts";
+import { currentDirective, replicaCount, normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
 
 // Re-export the catalog surface so existing importers (bridge/design.ts) are
 // unchanged, while the actual definitions live in the dependency-free module.
@@ -82,6 +83,92 @@ async function makeCaption(reveal: RevealMode, tags: string[]): Promise<{ captio
 
 const HASHTAG_ROTATION = ["A", "B", "C"];
 
+// ---------------------------------------------------------------------------
+// WINNER REPLICATION (see hermes-nous/sffs/replicate.py + replication.ts)
+//
+// When a reach outlier is being doubled down on, the front of the batch is built
+// as REPLICAS of its style. The point is attribution: hold the winning style
+// CONSTANT and vary only secondary knobs, so if the replicas also win we know it
+// was the style and not the surroundings. The rest of the batch stays on the normal
+// seeded rotation — that remainder is the exploration floor the share cap protects.
+// ---------------------------------------------------------------------------
+
+/** Secondary knob 1: tempo. Cycled across replicas so the style is the constant. */
+const REPLICA_COUNTDOWNS = [5, 3, 7, 4, 6, 8];
+
+/** A recorded narration MODE (what the A/B db stores) -> the arm label a spec needs. */
+function narrationArmForMode(mode: string): DimSpec["narrationArm"] | undefined {
+  switch (normalizeTier(mode)) {
+    case "full":
+      return "full";
+    case "none":
+      return "no-narration";
+    case "no-question-vo":
+      return "no-question-vo";
+    case "no-options-vo":
+      return "no-options-vo";
+    default:
+      return undefined; // unknown/older post -> inherit the current default
+  }
+}
+
+function endingArmFor(ending: string): DimSpec["endingArm"] | undefined {
+  const e = normalizeTier(ending);
+  return e === "cliffhanger" || e === "full-reveal" || e === "no-answer" ? (e as DimSpec["endingArm"]) : undefined;
+}
+
+/**
+ * `n` specs that all reproduce the winning style, differing only in tempo (and, via
+ * planBatch's existing rotation, hashtag set). Each carries the same canonical arm
+ * label so the A/B rollups aggregate the replication round as one arm.
+ */
+export function replicaSpecs(n: number, fp: StyleFingerprint): DimSpec[] {
+  const arm = `replica-${normalizeTier(fp.lead_type)}`;
+  const numQ = fp.num_questions > 0 ? fp.num_questions : BASE_NUMQ;
+  const out: DimSpec[] = [];
+  for (let i = 0; i < n; i++) {
+    out.push({
+      dimension: "replication",
+      arm,
+      rationale:
+        `REPLICA of the current reach front-runner (${fp.key}): the winning style is held CONSTANT ` +
+        `(lead question type "${fp.lead_type}", ${numQ} question(s)) and only secondary knobs vary ` +
+        `(tempo ${REPLICA_COUNTDOWNS[i % REPLICA_COUNTDOWNS.length]}s, hashtag set, time of day), so a repeat win is attributable to the style.`,
+      numQ,
+      category: "mixed",
+      showProgress: true,
+      progressStyle: "short",
+      countdownSec: REPLICA_COUNTDOWNS[i % REPLICA_COUNTDOWNS.length],
+      narrationArm: narrationArmForMode(fp.narration),
+      endingArm: endingArmFor(fp.ending),
+    });
+  }
+  return out;
+}
+
+/** Fallback question count when the fingerprint predates num_questions. */
+const BASE_NUMQ = 3;
+
+/**
+ * Pick this replica's questions with the winner's LEAD TYPE forced into slot 0.
+ *
+ * The lead question is the style signal — it is what the viewer meets in the first
+ * seconds and what the current evidence has in common — so a replica that leads with
+ * something else is not a replica. Returns [] when the bank has no fresh question of
+ * that type left, which the caller treats as "cannot replicate, explore instead"
+ * rather than silently shipping an off-style video.
+ */
+function selectReplicaQuestions(pool: HermesQ[], numQ: number, leadType: string, batch: SpreadTally): HermesQ[] {
+  const wanted = normalizeTier(leadType);
+  const lead = pool.filter((q) => normalizeTier(q.tier) === wanted);
+  if (!lead.length) return [];
+  const [first] = selectSpread(lead, 1, batch);
+  if (!first) return [];
+  if (numQ <= 1) return [first];
+  const rest = selectSpread(pool.filter((q) => q.sig !== first.sig), numQ - 1, batch);
+  return rest.length === numQ - 1 ? [first, ...rest] : [];
+}
+
 export interface Learnings {
   front_runners?: Record<string, unknown>;
   rollups?: Record<string, unknown>;
@@ -115,7 +202,24 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   const seeded = seededOrder(catalog, seedOf(runId));
   const mascotWeightEnv = Number(process.env.HERMES_MASCOT_WEIGHT);
   const mascotWeight = Number.isFinite(mascotWeightEnv) && mascotWeightEnv >= 0 ? mascotWeightEnv : MASCOT_WEIGHT_DEFAULT;
-  const specs = onlyDims.length ? seeded.slice(0, target) : elevateMascot(seeded, target, mascotWeight);
+  // WINNER REPLICATION: give the front of the batch to the reach front-runner's
+  // style, capped so the remainder is always still exploring. An operator pinning
+  // the batch via HERMES_ONLY_DIMENSIONS is respected verbatim (no replication
+  // injection), exactly like the mascot elevation below it.
+  const directive: ReplicationDirective = onlyDims.length ? { active: false, share: 0, share_cap: 0 } : currentDirective();
+  const nReplicas = replicaCount(target, directive);
+  const fp = directive.fingerprint;
+  const explore = target - nReplicas;
+  const specs: DimSpec[] = [
+    ...(nReplicas > 0 && fp ? replicaSpecs(nReplicas, fp) : []),
+    ...(onlyDims.length ? seeded.slice(0, explore) : elevateMascot(seeded, explore, mascotWeight)),
+  ];
+  if (nReplicas > 0 && fp) {
+    decision(
+      `REPLICATE ${fp.key}: ${nReplicas}/${target} slots (share ${(directive.share * 100).toFixed(0)}% of a ${(directive.share_cap * 100).toFixed(0)}% cap) — ${explore} exploration slot(s) held back`,
+      { round: directive.round, confidence: directive.confidence, vary_only: directive.vary_only, evidence: directive.evidence },
+    );
+  }
   const plans: VideoPlan[] = [];
 
   for (let i = 0; i < specs.length; i++) {
@@ -132,11 +236,19 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       exclude: claimed,
     });
     // Pick with per-video type/tier spread + per-batch anti-clustering (P1),
-    // instead of just taking the first numQ of the seeded pool.
-    const chosen: HermesQ[] = selectSpread(pool, spec.numQ, batchSpread);
+    // instead of just taking the first numQ of the seeded pool. A REPLICA instead
+    // forces the winner's lead question type into slot 0 — that lead is the style
+    // being replicated, so a video that opens on anything else is not a replica.
+    const isReplica = spec.dimension === "replication" && !!fp;
+    const chosen: HermesQ[] = isReplica
+      ? selectReplicaQuestions(pool, spec.numQ, fp!.lead_type, batchSpread)
+      : selectSpread(pool, spec.numQ, batchSpread);
     if (chosen.length < spec.numQ) {
-      warn("dropping video: not enough fresh questions", { id, dimension: spec.dimension, want: spec.numQ, got: chosen.length });
-      decision(`DROP ${id} (${spec.dimension}/${spec.arm}): only ${chosen.length}/${spec.numQ} fresh questions`);
+      const why = isReplica
+        ? `no fresh "${fp!.lead_type}" question left to lead a replica`
+        : `only ${chosen.length}/${spec.numQ} fresh questions`;
+      warn("dropping video: not enough fresh questions", { id, dimension: spec.dimension, want: spec.numQ, got: chosen.length, replica: isReplica });
+      decision(`DROP ${id} (${spec.dimension}/${spec.arm}): ${why}`);
       continue;
     }
     for (const q of chosen) claimed.add(q.sig);

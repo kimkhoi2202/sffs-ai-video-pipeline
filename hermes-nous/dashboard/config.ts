@@ -55,6 +55,10 @@ export const CONFIG = Object.freeze({
   // CONTENT baseline defaults + the human-approved default-promotion queue.
   CONTENT_DEFAULTS: process.env.HERMES_CONTENT_DEFAULTS || join(REPO_DIR, "ab-testing", "content-defaults.json"),
   PROPOSALS: process.env.HERMES_PROPOSALS || join(REPO_DIR, "ab-testing", "proposals.json"),
+  // Reversible ledger for the winner-replication engine (hermes-nous/sffs/replicate.py):
+  // which reach outlier the designer is doubling down on, its share of each batch, and
+  // the append-only history of detections / escalations / reverts.
+  REPLICATION: process.env.HERMES_REPLICATION || join(REPO_DIR, "ab-testing", "replication.json"),
   BANK: process.env.HERMES_BANK || join(REPO_DIR, "content", "master-question-bank.json"),
   USAGE: process.env.HERMES_USAGE || join(REPO_DIR, "content", "ab-test-usage.json"),
   HERMES_USED: process.env.HERMES_USED || join(DATA_DIR, "hermes-used-sigs.json"),

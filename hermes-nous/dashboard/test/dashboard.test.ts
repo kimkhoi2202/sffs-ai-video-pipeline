@@ -17,6 +17,7 @@ import {
   evaluateKillSwitch, computeBankCoverage, redactRunForPublic,
   publicPublerCdnUrl, sanitizeDraftsForPublic, resolveDraftMediaUrl,
   resolveScheduledMediaUrl, sanitizeScheduledForPublic,
+  resolveReplicationView, REPLICATION_HARD_CAP,
 } from "../data.ts";
 import { computeGoalProgress, GOAL } from "../goal.ts";
 import { esc, page, abTestLabel } from "../render.ts";
@@ -182,6 +183,63 @@ test("page: renders all required sections", () => {
   assert.match(html, /Front-runners/);
   assert.match(html, /READ-ONLY/);
   assert.match(html, /next run/);
+});
+
+// ── REPLICATE panel + the exploration cap ────────────────────────────────────
+
+const activeLedger = (over: Record<string, unknown> = {}) => ({
+  updated_at: "2026-07-25T20:00:00Z",
+  active: {
+    key: "odd-one-out|3|standard|full|cliffhanger",
+    status: "active",
+    share: 0.25,
+    share_cap: 0.5,
+    round: 1,
+    confidence: "high",
+    opened_at: "2026-07-25T20:00:00Z",
+    evaluate_after: "2026-07-26T20:00:00Z",
+    vary_only: ["hashtag_set", "tempo", "time_of_day"],
+    fingerprint: { key: "odd-one-out|3|standard|full|cliffhanger", lead_type: "odd-one-out", num_questions: 3, family: "standard", narration: "full", ending: "cliffhanger" },
+    evidence: { n: 2, median_ratio: 2.57, samples: [{ key: "hermes:a:tiktok", platform: "tiktok", value: 996, ratio: 3.31 }], baselines: { tiktok: { median: 301, n: 9 } } },
+    replicas: [],
+    ...over,
+  },
+  history: [{ ts: "2026-07-25T20:00:00Z", event: "detect_winner", key: "odd-one-out|3|standard|full|cliffhanger", median_ratio: 2.57 }],
+});
+
+test("replication view: clamps the batch share to the exploration cap", () => {
+  // The cap is an EXPLORATION FLOOR, so a ledger (or a config edit) claiming a
+  // bigger share must never be honoured — half the batch always keeps exploring.
+  const greedy = resolveReplicationView(activeLedger({ share: 0.95, share_cap: 0.95 }), { replication: { winner_share_cap: 0.95 } });
+  assert.ok(greedy.share <= REPLICATION_HARD_CAP, `share ${greedy.share} must be <= ${REPLICATION_HARD_CAP}`);
+  assert.equal(greedy.share_cap, REPLICATION_HARD_CAP);
+
+  const normal = resolveReplicationView(activeLedger(), {});
+  assert.equal(normal.active, true);
+  assert.equal(normal.share, 0.25);
+  assert.equal(normal.key, "odd-one-out|3|standard|full|cliffhanger");
+});
+
+test("replication view: disabled config and closed rounds both read as inactive", () => {
+  assert.equal(resolveReplicationView(activeLedger(), { replication: { enabled: false } }).active, false);
+  assert.equal(resolveReplicationView(activeLedger({ status: "reverted" }), {}).active, false);
+  assert.equal(resolveReplicationView(null, {}).active, false);
+});
+
+test("page: REPLICATE panel shows the replicated style, its share and the cap", () => {
+  const html = page(emptyPageData({ replication: resolveReplicationView(activeLedger(), {}) }));
+  assert.match(html, /Double down on reach outliers/);
+  assert.match(html, /EXPLORATION CAP 50%/);
+  assert.match(html, /odd-one-out/);
+  assert.match(html, /25% of each batch \(cap 50%\)/);
+  assert.match(html, /Varying only:/);
+  // the detection evidence that justified the round is shown, not just the verdict
+  assert.match(html, /3\.31x/);
+});
+
+test("page: REPLICATE panel says so plainly when nothing is being replicated", () => {
+  const html = page(emptyPageData({ replication: resolveReplicationView(null, {}) }));
+  assert.match(html, /batch is 100% exploration/);
 });
 
 test("page: the display-only kill-switch STATUS BANNER is fully removed (helper + markup + CSS)", () => {

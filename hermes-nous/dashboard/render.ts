@@ -12,7 +12,7 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo, ScheduledView } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo, ScheduledView, ReplicationView } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
 
@@ -330,6 +330,69 @@ function defaultPromotions(q: ProposalsQueue | undefined, cd: ContentDefaultsFil
     ? `<p class="muted">No pending default changes awaiting a human. When an A/B test arm clearly beats the current default (control) on the configured metric with enough samples, a proposal appears here to approve/reject via the <code>sffs_promote_default</code> CLI — or (if enabled) it is auto-adopted after a confirmation round.</p>`
     : `<p class="muted">${pending.length} proposal(s) awaiting a HUMAN decision (auto-adoption still requires a confirmation round). Approving flips the config default (takes effect next design pass); rejecting keeps the arm testing. Display-only — run the CLI in a shell.</p>${pending.map(proposalCard).join("")}`;
   return `${head}${autoNote}${pendingHtml}${autoLedgerHtml(q)}`;
+}
+
+// ── REPLICATE: doubling down on a reach outlier ──────────────────────────────
+
+/**
+ * The winner-replication panel. Purely a READ of ab-testing/replication.json — the
+ * detector, escalation and revert all live in replicate.py on the box; nothing here
+ * can open or close a round. The share is always shown against the exploration cap,
+ * because "how much of the batch is NOT exploring" is the number that matters.
+ */
+function replicatePanel(r: ReplicationView | undefined): string {
+  if (!r) return `<p class="muted">No replication state yet.</p>`;
+  if (!r.enabled) {
+    return `<p class="muted">Winner replication is <b>OFF</b> (<code>replication.enabled=false</code> in content-defaults.json). The designer is exploring the full A/B rotation.</p>`;
+  }
+  const pct = (x: number) => `${Math.round(x * 100)}%`;
+  const why = `<p class="muted">Reach outliers are what a 500K-view goal actually rides on, and the eng_rate promotion gate cannot see one: a post can 3x the pack on views with an ordinary engagement rate. This engine detects that, holds the winning STYLE constant while varying only secondary knobs (so a repeat win is attributable), then escalates or reverts once the replicas mature. The share can never exceed <b>${pct(r.share_cap)}</b> — an exploration floor, so the loop never stops sampling new styles. Every change is reversible: <code>sffs_replicate --revert</code>.</p>`;
+
+  if (!r.active) {
+    const hist = replicateHistory(r);
+    return `${why}<p class="muted">No style is being replicated right now — the batch is 100% exploration. A round opens when a style beats its platform's rolling median reach by the configured ratio (<code>sffs_replicate --detect</code>, run by the loop).</p>${hist}`;
+  }
+
+  const fp = r.fingerprint || {};
+  const ev = r.evidence || {};
+  const samples = Array.isArray(ev.samples) ? ev.samples : [];
+  const sampleRows = samples
+    .map((s: any) => `<tr><td>${esc(s.platform)}</td><td class="num">${esc(Math.round(Number(s.value) || 0))}</td><td class="num">${esc((Number(s.ratio) || 0).toFixed(2))}x</td><td class="mono">${esc(String(s.key || "").slice(0, 44))}</td></tr>`)
+    .join("");
+  const replicaRows = (r.replicas || [])
+    .map((s: any) => `<tr><td>${esc(s.platform)}</td><td class="num">${esc(Math.round(Number(s.value) || 0))}</td><td class="num">${esc((Number(s.ratio) || 0).toFixed(2))}x</td><td class="mono">${esc(String(s.key || "").slice(0, 44))}</td></tr>`)
+    .join("");
+  const baselines = ev.baselines && typeof ev.baselines === "object"
+    ? Object.entries(ev.baselines).map(([k, v]: [string, any]) => `${esc(k)} median ${esc(Math.round(Number(v?.median) || 0))} (n=${esc(v?.n ?? 0)})`).join(" · ")
+    : "—";
+
+  return `${why}
+  <div class="health" style="margin-bottom:12px">
+    <span class="hpill" style="background:var(--green)"><b>replicating</b>${esc(fp.lead_type || r.key || "?")}</span>
+    <span class="hpill"><b>share</b>${pct(r.share)} of each batch (cap ${pct(r.share_cap)})</span>
+    <span class="hpill"><b>round</b>${esc(r.round ?? 1)} · ${esc(r.status || "active")}</span>
+    <span class="hpill"><b>confidence</b>${esc(r.confidence || "—")}</span>
+    <span class="hpill"><b>next check</b>${esc(String(r.evaluate_after || "—").slice(0, 16).replace("T", " "))}Z</span>
+  </div>
+  <p><b>Style held constant:</b> lead question type <code>${esc(fp.lead_type || "?")}</code> · ${esc(fp.num_questions ?? "?")} question(s) · family <code>${esc(fp.family || "?")}</code> · narration <code>${esc(fp.narration || "?")}</code> · ending <code>${esc(fp.ending || "?")}</code></p>
+  <p class="muted"><b>Varying only:</b> ${(r.vary_only || []).map((k) => `<code>${esc(k)}</code>`).join(" · ") || "—"} — everything else is pinned so a repeat win is attributable to the style.</p>
+  <p class="muted"><b>Baselines at detection:</b> ${baselines}</p>
+  ${sampleRows ? `<h3 style="margin:14px 0 6px;font-size:15px">Evidence that opened the round</h3>
+  <table class="tbl"><thead><tr><th>platform</th><th class="num">reach</th><th class="num">vs median</th><th>post</th></tr></thead><tbody>${sampleRows}</tbody></table>` : ""}
+  ${replicaRows ? `<h3 style="margin:14px 0 6px;font-size:15px">Replicas so far</h3>
+  <table class="tbl"><thead><tr><th>platform</th><th class="num">reach</th><th class="num">vs median</th><th>post</th></tr></thead><tbody>${replicaRows}</tbody></table>` : `<p class="muted">No replica has matured yet — the round is judged after the maturity window.</p>`}
+  ${replicateHistory(r)}`;
+}
+
+function replicateHistory(r: ReplicationView): string {
+  if (!r.history?.length) return "";
+  const rows = r.history
+    .map((h: any) => `<div class="lg"><span class="lt">${esc(String(h.ts || "").slice(0, 16).replace("T", " "))}</span> <span class="ll">${esc(h.event || "?")}</span> ${esc(
+      [h.key, h.reason, h.from_share != null ? `${Math.round(h.from_share * 100)}%→${Math.round((h.to_share ?? 0) * 100)}%` : "", h.replica_median_ratio != null ? `${Number(h.replica_median_ratio).toFixed(2)}x` : ""]
+        .filter(Boolean).join(" · ").slice(0, 150),
+    )}</div>`)
+    .join("");
+  return `<h3 style="margin:14px 0 6px;font-size:15px">Reversible ledger</h3><div class="logbox">${rows}</div>`;
 }
 
 function logStream(runId: string | null, items: any[]): string {
@@ -863,6 +926,8 @@ export interface PageData {
   scheduled?: ScheduledView;
   /** GOAL-PROGRESS toward Hermes's 7-day mandate (optional; degrades to pending/empty). */
   goal?: GoalProgress;
+  /** winner-replication ledger view (optional; degrades to "no replication state"). */
+  replication?: ReplicationView;
 }
 
 export function page(opts: PageData): string {
@@ -1096,6 +1161,11 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   <div class="card">
     <h2><span class="pin">MAP</span> Published posts — permalinks &amp; native ids (reconciled)</h2>
     ${publishedMap(db)}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">REPLICATE</span> Double down on reach outliers <span class="pin" style="background:var(--yellow)">EXPLORATION CAP ${Math.round((opts.replication?.share_cap ?? 0.5) * 100)}%</span></h2>
+    ${replicatePanel(opts.replication)}
   </div>
 
   <div class="card">

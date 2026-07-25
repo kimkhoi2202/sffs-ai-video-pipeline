@@ -25,7 +25,7 @@ import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
   proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, supervisorStatus, draftsAwaitingReview,
-  resolveDraftMediaUrl, resolveScheduledMediaUrl, goalProgress, scheduledPosts,
+  resolveDraftMediaUrl, resolveScheduledMediaUrl, goalProgress, scheduledPosts, replication,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
@@ -209,6 +209,14 @@ const server = createServer(async (req, res) => {
       return send(res, 200, JSON.stringify(goalProgress()), "application/json");
     }
 
+    if (url.pathname === "/api/replication") {
+      // READ-ONLY: which reach outlier the designer is doubling down on, its share of
+      // each batch vs the exploration cap, and the reversible ledger history. Pure
+      // read of replication.json — this route never opens, escalates or reverts a
+      // round (that is replicate.py's job, from the box). No secrets.
+      return send(res, 200, JSON.stringify(replication()), "application/json");
+    }
+
     if (url.pathname === "/api/drafts") {
       // READ-ONLY: pending Publer drafts (public-CDN media_url + poster + hook + variant). No secrets.
       return send(res, 200, JSON.stringify(await draftsAwaitingReview()), "application/json");
@@ -270,6 +278,7 @@ const server = createServer(async (req, res) => {
           factory: factoryStatus(),
           supervisor: supervisorStatus(),
           goal: goalProgress(),
+          replication: replication(),
         }),
       );
     }

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# sffs_replicate — winner REPLICATION engine (reach-based double-down-on-winners).
+#
+# The REACH analog of sffs_promote_default. The promotion gate judges arms on
+# median_eng_rate and structurally cannot see a REACH-only winner — a post that 3x'd
+# the pack on views with an ordinary engagement rate. This detects exactly that,
+# fingerprints its style, and spends part of the next batches replicating it: the
+# winning style HELD CONSTANT, only secondary knobs (tempo / hashtags / time of day)
+# varied, so a repeat win is attributable. After ~24h of reach maturity it ESCALATES
+# the allocation one step or REVERTS and logs a fluke. Fully reversible.
+#
+# It NEVER posts, publishes or schedules. It only writes ab-testing/replication.json;
+# the daily cycle reads that and builds the batch under the SAME hard posting
+# guardrails (7am-3am America/Chicago, <=12/day/platform, 56-min same-platform gap,
+# dedup + quality gates). Replication can never exceed winner_share_cap (0.5) of a
+# batch — an exploration floor, so the loop never stops sampling new styles.
+#
+# Usage:
+#   sffs_replicate                       # full status (what the dashboard REPLICATE panel shows)
+#   sffs_replicate --detect              # scan for a reach front-runner and open a round
+#   sffs_replicate --evaluate            # judge an open round (escalate / hold / revert-as-fluke)
+#   sffs_replicate --cycle               # ONE autonomous cycle: evaluate, then detect
+#   sffs_replicate --directive           # just the designer contract (active style + batch share)
+#   sffs_replicate --ledger              # the reversible ledger history
+#   sffs_replicate --revert --reason "…" # close the round, back to plain exploration
+#   sffs_replicate --revert "<style-key>" --reason "…"   # ...asserting WHICH round you meant
+#
+# Forwards to hermes-nous/sffs/replicate.py (stdlib-only). Uses the isolated venv if present.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPLICATE="$HERE/../sffs/replicate.py"
+VENV="${HERMES_VENV:-/home/ec2-user/.venv-hermes}"
+
+if [[ -f "$VENV/bin/activate" ]]; then
+  # shellcheck disable=SC1091
+  source "$VENV/bin/activate"
+fi
+
+PY="$(command -v python3 || command -v python)"
+exec "$PY" "$REPLICATE" "$@"
