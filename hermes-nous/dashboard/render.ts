@@ -949,7 +949,7 @@ export function page(opts: PageData): string {
 
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Hermes-Nous · SFFS live autonomous loop (read-only dashboard)</title>
+<title>SFFS Self-Improving Agentic Marketing Loop</title>
 <link rel="stylesheet" href="/static/plyr.css"/>
 <style>
 :root{--ink:#000;--paper:#fff;--blue:#839aff;--mint:#c6fcd0;--coral:#fd7962;--yellow:#fce552;--cream:#f6f4ee;--green:#63c088}
@@ -1067,12 +1067,12 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 </style></head>
 <body>
 <header>
-  <h1>HERMES-NOUS <span class="tag">DRAFT-ONLY</span> <span class="tag ro">READ-ONLY</span></h1>
+  <h1>SFFS Self-Improving Agentic Marketing Loop</h1>
   <div id="health" class="health"><span class="hpill">checking health…</span></div>
 </header>
 <div class="wrap">
   <div class="card goalcard">
-    <h2><span class="pin" style="background:var(--yellow)">GOAL</span> Hermes mandate — live 7-day trajectory <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
+    <h2><span class="pin" style="background:var(--yellow)">GOAL</span> Hermes mandate — live 7-day trajectory</h2>
     ${goalPanel(goal)}
   </div>
 
@@ -1102,7 +1102,7 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   </div>
 
   <div class="card">
-    <h2><span class="pin">DRAFTS</span> Older drafts (pre-autonomy) <span class="pin" style="background:var(--mint)">READ-ONLY</span></h2>
+    <h2><span class="pin">DRAFTS</span> Older drafts (pre-autonomy)</h2>
     ${draftsPanel(opts.drafts, opts.defaults?.defaults)}
   </div>
 
@@ -1195,8 +1195,8 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   </div>
 
   <div class="foot">
-    <b>Hermes — live &amp; autonomous</b> · posting 7am–1am CST (≤12/day per platform, jittered, quality- &amp; brand-gated) · goal: 500K views &amp; 500 followers per platform in 7 days · disk: ${esc(disk)} · auto-refresh 60s<br>
-    read-only dashboard — view only; research, content generation, scheduling &amp; code self-improvement run autonomously on the box under hard guardrails.
+    <b>SFFS Self-Improving Agentic Marketing Loop</b> · posting 7am–3am CST (≤12/day per platform, jittered, quality- &amp; brand-gated) · goal: 500K views &amp; 500 followers per platform in 7 days · disk: ${esc(disk)} · auto-refresh 60s<br>
+    view only — research, content generation, scheduling &amp; code self-improvement run autonomously on the box under hard guardrails.
   </div>
 </div>
 <script src="/static/plyr.min.js"></script>
