@@ -32,6 +32,7 @@ export const outroClipKey = (p: Platform): "outro-youtube" | "outro-follow" =>
 
 export type Segment =
   | { type: "intro"; start: number; dur: number }
+  | { type: "hook"; start: number; dur: number }
   | { type: "read"; q: Question; pos: number; start: number; dur: number }
   | { type: "countdown"; q: Question; pos: number; start: number; dur: number }
   | { type: "reveal"; q: Question; pos: number; start: number; dur: number }
@@ -81,13 +82,26 @@ export type ReadVO = "full" | "options" | "stem" | "none";
 export type EndCard = "default" | "noanswer" | "verdict";
 /** Reveal control: false=reveal all, true=reveal none, "last"=reveal all but the last. */
 export type DropReveal = boolean | "last";
+/**
+ * Opening arm (the 3-second skip-rate experiment; shorts only).
+ *   "cold-plate"  the control: frame one is the static question plate, exactly as today.
+ *   "motion-hook" prepends the wordless Hook scene so nothing has to be READ until the
+ *                 plate arrives ~2.2s in.
+ * The two arms differ in NOTHING ELSE — same questions, same countdown, same reveals,
+ * same score, same outro, same VO, same music — so a skip-rate difference is
+ * attributable to the opening alone.
+ */
+export type Opening = "cold-plate" | "motion-hook";
 export type Variant = {
   readVO?: ReadVO;
   dropReveal?: DropReveal;
   dropScore?: boolean;
   endCard?: EndCard;
   metaBase?: string;
+  opening?: Opening;
 };
+/** Hook length in seconds; mirrored by scenes/Hook.tsx HOOK_SECONDS. */
+export const HOOK_SECONDS = 2.2;
 /** Silent-read hold (frames) for readVO="none": the question flashes on screen
  *  before its 5s countdown so a viewer can register it with no VO to pace them. */
 const SILENT_READ = frames(1.5);
@@ -132,7 +146,7 @@ function build(
   qrBase = "audio/narration/",
   variant: Variant = {},
 ): TimelineData {
-  const { readVO = "full", dropReveal = false, dropScore = false, endCard = "default", metaBase = "audio/narration/" } = variant;
+  const { readVO = "full", dropReveal = false, dropScore = false, endCard = "default", metaBase = "audio/narration/", opening = "cold-plate" } = variant;
   const D = durs;
   const questions = resolve(ids, questionsSrc);
   const segments: Segment[] = [];
@@ -160,6 +174,16 @@ function build(
     narration.push({ src: `${metaBase}intro.mp3`, from: cur + leadFrames });
     voWindows.push([cur + leadFrames, cur + leadFrames + frames(D.intro)]);
     cur += introDur;
+  }
+
+  // OPENING ARM. The wordless hook, when this is the motion-hook arm. It carries no
+  // narration on purpose: adding VO would change what the two arms differ by, and the
+  // whole claim is that the opening is the only difference. Music runs unducked here,
+  // which is exactly the energy the beat wants.
+  if (isShort && opening === "motion-hook") {
+    const hookDur = frames(HOOK_SECONDS);
+    segments.push({ type: "hook", start: cur, dur: hookDur });
+    cur += hookDur;
   }
 
   // Which question VO (if any) plays over the read segment, per the A/B `readVO`
