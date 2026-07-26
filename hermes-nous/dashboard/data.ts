@@ -571,6 +571,34 @@ export function publicPublerCdnUrl(u: unknown): string | null {
 }
 
 /**
+ * PUBLIC Metricool CDN allowlist — the scheduled-panel analogue of
+ * publicPublerCdnUrl. Metricool rehosts our media at schedule time onto
+ * static.metricool.com, which is genuinely public: verified live, it serves the mp4
+ * with no Referer and even with a hostile one (HTTP 206 both ways). So unlike
+ * Publer's hotlink-protected CDN this needs NO server-side proxy, and the <video>
+ * can point straight at it.
+ *
+ * The same structural exclusion still applies: an S3 PRESIGNED url lives on
+ * *.amazonaws.com and always carries X-Amz-* query params, so requiring an exact
+ * host and no query string means a signed URL can never pass.
+ */
+export function publicMetricoolCdnUrl(u: unknown): string | null {
+  if (typeof u !== "string" || !u) return null;
+  let parsed: URL;
+  try {
+    parsed = new URL(u);
+  } catch {
+    return null;
+  }
+  if (parsed.protocol !== "https:") return null;
+  if (parsed.hostname !== "static.metricool.com") return null;
+  if (parsed.username || parsed.password) return null;
+  if (parsed.search || parsed.hash) return null;
+  if (/x-amz-|amazonaws\.com|credential=|signature=|security-token/i.test(u)) return null;
+  return parsed.href;
+}
+
+/**
  * Resolve a pending draft's validated PUBLIC-CDN asset URL by video_key + kind.
  * Used by the read-only media proxy so it can ONLY ever fetch a cdn.publer.com
  * asset that belongs to a CURRENT draft (allowlist ⇒ no open-proxy / SSRF).
@@ -713,7 +741,7 @@ export function resolvePostVariant(p: any, idx: VariantIndex): VariantHit | null
 }
 
 /** Spawn the READ-ONLY publer bridge and parse its single JSON stdout line. */
-function runReadBridge(sub: string, params: Record<string, unknown>, timeoutMs: number): Promise<any> {
+function runReadBridge(sub: string, params: Record<string, unknown>, timeoutMs: number, script: string = CONFIG.PUBLER_READ_BRIDGE): Promise<any> {
   return new Promise((resolvePromise) => {
     let done = false;
     let stdout = "";
@@ -726,7 +754,7 @@ function runReadBridge(sub: string, params: Record<string, unknown>, timeoutMs: 
     };
     let child;
     try {
-      child = spawn(process.execPath, [CONFIG.PUBLER_READ_BRIDGE, sub], {
+      child = spawn(process.execPath, [script, sub], {
         cwd: CONFIG.REPO_DIR,
         env: process.env,
         stdio: ["pipe", "pipe", "pipe"],
@@ -875,23 +903,52 @@ async function computeDrafts(): Promise<DraftsView> {
 // and Publer show the SAME posts at the SAME times BY CONSTRUCTION. Read-only:
 // nothing here schedules/mutates; it only lists Publer's `state=scheduled` posts.
 export interface ScheduledPost {
-  post_id: string;
+  post_id: string; // Metricool uuid (STABLE; the numeric id is reassigned on update)
   platform: string; // "instagram" | "tiktok"
-  scheduled_at: string; // ISO (UTC) — the source-of-truth Publer time
+  scheduled_at: string; // ISO (UTC) — the source-of-truth publication instant
   scheduled_cst: string; // same instant formatted in America/Chicago (what the human tracks)
   hook: string; // caption first line
   dimension: string; // A/B dimension (from run/ab-database) or "unknown" (no match)
   arm: string; // A/B arm (from run/ab-database) or "unknown" (no match — NEVER the caption opener)
   arm_source: "run" | "ab-database" | "inferred";
-  video_key: string; // shared Publer media id — for the read-only inline preview proxy
-  thumbnail: string | null; // validated PUBLIC Publer CDN poster image (or null)
-  media_url: string | null; // validated PUBLIC Publer CDN mp4 (or null); streamed via /api/draft-media
+  video_key: string; // stable key for the inline preview
+  thumbnail: string | null; // validated PUBLIC CDN poster image (or null)
+  media_url: string | null; // validated PUBLIC static.metricool.com mp4 (or null)
+  /** PENDING until Metricool publishes it, then PUBLISHED. */
+  status: string;
+  /** Live permalink once published (providers[].publicUrl), else null. */
+  public_url: string | null;
+  /** Opening arm under test: "cold-plate" | "motion-hook" | "" when not ours. */
+  opening: string;
+  /** Our own video id from the posting ledger, e.g. "2026-07-27-r03". */
+  video_id: string;
+  /**
+   * 3-second skip rate for a PUBLISHED reel. null means NOT YET SYNCED rather than
+   * zero — Metricool's analytics land on a nightly cycle up to ~24h behind, and
+   * rendering a fresh post as 0% would read as a perfect hook.
+   */
+  skip_rate: number | null;
+}
+
+/** Roll-up of the running opening-arm experiment, for the dashboard header. */
+export interface ExperimentView {
+  target: number;
+  hook_scheduled: number;
+  hook_posted: number;
+  control_scheduled: number;
+  control_posted: number;
+  hook_with_data: number;
+  hook_median_skip: number | null;
+  control_median_skip: number | null;
+  on_track: boolean;
 }
 export interface ScheduledView {
   ok: boolean;
   posts: ScheduledPost[];
   count: number;
   by_platform: Record<string, number>;
+  by_status: Record<string, number>;
+  experiment: ExperimentView;
   source: string;
   as_of: string;
   error?: string;
@@ -919,14 +976,19 @@ export function resolveScheduledMediaUrl(view: ScheduledView | null, videoKey: s
   if (!view || !Array.isArray(view.posts) || !videoKey) return null;
   const p = view.posts.find((x) => x.video_key === videoKey);
   if (!p) return null;
-  return publicPublerCdnUrl(kind === "thumb" ? p.thumbnail : p.media_url);
+  const raw = kind === "thumb" ? p.thumbnail : p.media_url;
+  // static.metricool.com is public, so the scheduled panel plays it directly and does
+  // not need the proxy; the route stays reachable for any Publer-era asset.
+  return publicPublerCdnUrl(raw) || publicMetricoolCdnUrl(raw);
 }
 
 /** Public choke point: force every scheduled media_url/thumbnail through the PUBLIC-CDN allowlist. */
 export function sanitizeScheduledForPublic(view: ScheduledView): ScheduledView {
   for (const p of view.posts || []) {
-    p.media_url = publicPublerCdnUrl(p.media_url);
-    p.thumbnail = publicPublerCdnUrl(p.thumbnail);
+    // Either PUBLIC CDN is acceptable; anything else (notably an S3 presigned url)
+    // is nulled. This is the single choke point every served view passes through.
+    p.media_url = publicPublerCdnUrl(p.media_url) || publicMetricoolCdnUrl(p.media_url);
+    p.thumbnail = publicPublerCdnUrl(p.thumbnail) || publicMetricoolCdnUrl(p.thumbnail);
   }
   return view;
 }
@@ -944,7 +1006,7 @@ export async function scheduledPosts(): Promise<ScheduledView> {
     try {
       view = await computeScheduled();
     } catch (e) {
-      view = { ok: false, posts: [], count: 0, by_platform: {}, source: "publer (read-only bridge)", as_of: new Date().toISOString(), error: e instanceof Error ? e.message : String(e) };
+      view = { ok: false, posts: [], count: 0, by_platform: {}, by_status: {}, experiment: summarizeExperiment([], CONFIG.HOOK_ARM_TARGET), source: "metricool (read-only bridge)", as_of: new Date().toISOString(), error: e instanceof Error ? e.message : String(e) };
     }
     if (view.ok) _schedCache = { at: Date.now(), view };
     _schedInflight = null;
@@ -954,45 +1016,159 @@ export async function scheduledPosts(): Promise<ScheduledView> {
   return _schedInflight;
 }
 
+/** Read the controlled poster's ledger: Metricool uuid -> our video id + opening arm. */
+function loadPostingLedger(): Map<string, { video_id: string; opening: string }> {
+  const out = new Map<string, { video_id: string; opening: string }>();
+  try {
+    if (!existsSync(CONFIG.SCHEDULED_LEDGER)) return out;
+    const led = JSON.parse(readFileSync(CONFIG.SCHEDULED_LEDGER, "utf8"));
+    for (const rec of led?.posts ?? []) {
+      if (rec?.uuid) out.set(String(rec.uuid), { video_id: String(rec.videoId ?? ""), opening: String(rec.opening ?? "") });
+    }
+  } catch {
+    /* a missing or malformed ledger just means no arm labels */
+  }
+  return out;
+}
+
+const median = (xs: number[]): number | null => {
+  if (!xs.length) return null;
+  const a = [...xs].sort((x, y) => x - y);
+  const m = a.length >> 1;
+  return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
+};
+
+/** Roll up the opening-arm experiment from the posts we can attribute. */
+export function summarizeExperiment(posts: ScheduledPost[], target: number): ExperimentView {
+  const hook = posts.filter((p) => p.opening === "motion-hook");
+  const control = posts.filter((p) => p.opening === "cold-plate");
+  const posted = (xs: ScheduledPost[]) => xs.filter((p) => p.status === "PUBLISHED");
+  const skips = (xs: ScheduledPost[]) => xs.map((p) => p.skip_rate).filter((v): v is number => typeof v === "number");
+  const hookPosted = posted(hook);
+  return {
+    target,
+    hook_scheduled: hook.length,
+    hook_posted: hookPosted.length,
+    control_scheduled: control.length,
+    control_posted: posted(control).length,
+    hook_with_data: skips(hookPosted).length,
+    hook_median_skip: median(skips(hookPosted)),
+    control_median_skip: median(skips(posted(control))),
+    // On track when enough hook reels are already scheduled to reach the target.
+    on_track: hook.length >= target,
+  };
+}
+
+/**
+ * The live calendar, read from Metricool.
+ *
+ * Was Publer, which now 403s on every content endpoint and left this panel empty
+ * while 41 posts sat scheduled — the dashboard was structurally unable to show the
+ * truth. Metricool is the source now; the bridge is still a subprocess so no write
+ * symbol enters this server's module graph.
+ */
 async function computeScheduled(): Promise<ScheduledView> {
   const asOf = new Date().toISOString();
-  const res = await runReadBridge("posts", { all: true, state: "scheduled", max_pages: CONFIG.DRAFTS_MAX_PAGES }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS);
+  const emptyExp = summarizeExperiment([], CONFIG.HOOK_ARM_TARGET);
+  // A week back so freshly PUBLISHED posts stay visible, and a month forward.
+  const start = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 19);
+  const end = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 19);
+
+  const res = await runReadBridge("scheduled", { start, end }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS, CONFIG.METRICOOL_READ_BRIDGE);
   if (!res || res.ok !== true || !Array.isArray(res.posts)) {
     return {
-      ok: false, posts: [], count: 0, by_platform: {},
-      source: "publer (read-only bridge)", as_of: asOf,
+      ok: false, posts: [], count: 0, by_platform: {}, by_status: {}, experiment: emptyExp,
+      source: "metricool (read-only bridge)", as_of: asOf,
       error: res && res.error ? String(res.error).slice(0, 200) : "scheduled posts unavailable (bridge returned no posts)",
     };
   }
-  const accountsMap = (abDb() && abDb().accounts) || {};
+
+  // Analytics are best-effort: a published reel with no row yet is PENDING data, not
+  // a zero, so a failure here must not blank the whole panel.
+  let bySkip = new Map<string, number>();
+  try {
+    const a = await runReadBridge("analytics", { from: start, to: end }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS, CONFIG.METRICOOL_READ_BRIDGE);
+    if (a && a.ok === true && Array.isArray(a.reels)) {
+      for (const r of a.reels) {
+        if (typeof r?.skipRate === "number") {
+          if (r.url) bySkip.set(String(r.url), r.skipRate);
+          if (r.platformPostId) bySkip.set(String(r.platformPostId), r.skipRate);
+        }
+      }
+    }
+  } catch {
+    /* leave skip rates null => rendered as "pending" */
+  }
+
+  const ledger = loadPostingLedger();
   const variantIdx = buildPublerVariantMap();
   const posts: ScheduledPost[] = [];
   for (const p of res.posts) {
-    const at = p && p.scheduled_at;
-    if (!at) continue; // only truly-scheduled posts carry a scheduled_at
-    // Media for the inline preview (same shape as drafts): PUBLIC Publer CDN only —
-    // publicPublerCdnUrl NULLS any S3-signed/off-host url, so no secret can leak.
-    const media = (p.media && p.media[0]) || {};
-    const thumbs: any[] = Array.isArray(media.thumbnails) ? media.thumbnails : [];
-    const ti = Number.isInteger(media.default_thumbnail) ? media.default_thumbnail : 0;
-    const thumbRaw = (thumbs[ti] && thumbs[ti].real) || (thumbs[0] && (thumbs[0].real || thumbs[0].small)) || null;
+    const dt = String(p?.dateTime || "");
+    if (!dt) continue;
+    const tz = String(p?.timezone || "America/Chicago");
+    const iso = chicagoNaiveToISO(dt, tz);
+    const provs: any[] = Array.isArray(p.providers) ? p.providers : [];
+    const mine = ledger.get(String(p.uuid)) || { video_id: "", opening: "" };
     const hit = resolvePostVariant(p, variantIdx);
-    posts.push({
-      post_id: String(p.id),
-      platform: platformForAccount(String(p.account_id), accountsMap),
-      scheduled_at: String(at),
-      scheduled_cst: formatChicago(String(at)),
-      hook: draftHook(p.text),
-      dimension: hit ? hit.dimension : "unknown",
-      arm: hit ? hit.arm : "unknown", // neutral — NEVER the caption opener (was inferArm)
-      arm_source: hit ? hit.source : "inferred",
-      video_key: String((media && media.id) || p.id),
-      thumbnail: publicPublerCdnUrl(thumbRaw),
-      media_url: publicPublerCdnUrl(media.path),
-    });
+    // One Metricool post can carry several networks; render one card per network so a
+    // per-platform status and permalink are both visible.
+    for (const pr of provs.length ? provs : [{ network: "unknown", status: "PENDING", publicUrl: null }]) {
+      const url = typeof pr.publicUrl === "string" ? pr.publicUrl : null;
+      const skip = url && bySkip.has(url) ? (bySkip.get(url) as number) : null;
+      posts.push({
+        post_id: String(p.uuid || p.id),
+        platform: String(pr.network || "unknown"),
+        scheduled_at: iso,
+        scheduled_cst: formatChicago(iso),
+        hook: draftHook(p.text),
+        dimension: hit ? hit.dimension : (mine.opening ? "opening" : "unknown"),
+        arm: hit ? hit.arm : (mine.opening || "unknown"),
+        arm_source: hit ? hit.source : "inferred",
+        video_key: `${p.uuid}:${pr.network}`,
+        thumbnail: publicMetricoolCdnUrl(p.thumbnail),
+        media_url: publicMetricoolCdnUrl((p.media || [])[0]),
+        status: String(pr.status || "PENDING").toUpperCase(),
+        public_url: url,
+        opening: mine.opening,
+        video_id: mine.video_id,
+        skip_rate: skip,
+      });
+    }
   }
   posts.sort((a, b) => (Date.parse(a.scheduled_at) || 0) - (Date.parse(b.scheduled_at) || 0));
   const by_platform: Record<string, number> = {};
-  for (const p of posts) by_platform[p.platform] = (by_platform[p.platform] || 0) + 1;
-  return { ok: true, posts, count: posts.length, by_platform, source: "publer (live, read-only bridge)", as_of: asOf };
+  const by_status: Record<string, number> = {};
+  for (const p of posts) {
+    by_platform[p.platform] = (by_platform[p.platform] || 0) + 1;
+    by_status[p.status] = (by_status[p.status] || 0) + 1;
+  }
+  return {
+    ok: true, posts, count: posts.length, by_platform, by_status,
+    experiment: summarizeExperiment(posts, CONFIG.HOOK_ARM_TARGET),
+    source: "metricool (live, read-only bridge)", as_of: asOf,
+  };
+}
+
+/**
+ * Metricool reports a NAIVE local datetime plus a separate IANA zone. Convert that
+ * pair to a real instant by correcting a UTC guess with the zone's offset at that
+ * moment; two passes settle DST edges.
+ */
+export function chicagoNaiveToISO(naive: string, timeZone: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})/.exec(naive.trim());
+  if (!m) return naive;
+  const [y, mo, d, h, mi, sec] = m.slice(1).map(Number);
+  let guess = Date.UTC(y, mo - 1, d, h, mi, sec);
+  for (let i = 0; i < 2; i++) {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone, hour12: false, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+    }).formatToParts(new Date(guess));
+    const g: Record<string, number> = {};
+    for (const q of parts) if (q.type !== "literal") g[q.type] = Number(q.value);
+    const asUtc = Date.UTC(g.year, g.month - 1, g.day, g.hour === 24 ? 0 : g.hour, g.minute, g.second);
+    guess += Date.UTC(y, mo - 1, d, h, mi, sec) - asUtc;
+  }
+  return new Date(guess).toISOString();
 }

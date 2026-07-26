@@ -13,6 +13,7 @@
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
 import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo, ScheduledView, ReplicationView } from "./data.ts";
+import { summarizeExperiment } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
 
@@ -597,7 +598,7 @@ function scheduleChip(cst?: string | null): string {
     // Time-only: the date/time itself makes it obvious this is the scheduled slot, so
     // the redundant "Scheduled ·" label is dropped. Context is preserved in the tooltip
     // (and the mint styling) for anyone hovering / using assistive tech.
-    return `<div class="timechip" title="Scheduled to auto-publish on Publer at this time (America/Chicago)"><span class="tc-v">${esc(cst)}</span></div>`;
+    return `<div class="timechip" title="Scheduled to auto-publish at this time (America/Chicago)"><span class="tc-v">${esc(cst)}</span></div>`;
   }
   return `<div class="timechip timechip-none" title="This is a draft — it is not scheduled to publish"><span class="tc-v">Not scheduled</span></div>`;
 }
@@ -609,10 +610,17 @@ function scheduleChip(cst?: string | null): string {
  * same-origin via the read-only /api/draft-media proxy — never a raw CDN/S3 url.
  */
 function videoPreview(videoKey: string, thumbnail: string | null, mediaUrl: string | null): string {
-  const posterAttr = thumbnail ? ` poster="${esc(draftMediaSrc(videoKey, "thumb"))}"` : "";
-  if (mediaUrl) {
+  // static.metricool.com is genuinely public — verified live, it serves the mp4 with
+  // no Referer and even with a hostile one — so Metricool media is played DIRECTLY.
+  // Publer's CDN is hotlink-protected and still needs the same-origin proxy.
+  const direct = (u: string | null): string | null =>
+    typeof u === "string" && u.startsWith("https://static.metricool.com/") ? u : null;
+  const src = direct(mediaUrl) || (mediaUrl ? draftMediaSrc(videoKey, "video") : null);
+  const posterSrc = direct(thumbnail) || (thumbnail ? draftMediaSrc(videoKey, "thumb") : null);
+  const posterAttr = posterSrc ? ` poster="${esc(posterSrc)}"` : "";
+  if (src) {
     return `<video class="dvid" controls preload="metadata" playsinline${posterAttr}>
-        <source src="${esc(draftMediaSrc(videoKey, "video"))}" type="video/mp4"/>
+        <source src="${esc(src)}" type="video/mp4"/>
       </video>`;
   }
   if (thumbnail) {
@@ -863,22 +871,92 @@ function goalPanel(gp: GoalProgress): string {
 // (CST). Pulled live from Publer via the read-only bridge, so this and the Publer
 // calendar show the SAME posts at the SAME times. No publish/schedule control here.
 /** One scheduled-post card: FULL 9:16 preview (contain + Plyr) + its scheduled time. */
+/** The opening arm under test, as a chip. This is the week's experiment, so it gets
+ *  its own visual slot rather than being folded into the generic A/B label. */
+function openingChip(opening: string): string {
+  if (opening === "motion-hook") {
+    return `<span class="abtag ab-test" title="Motion-hook arm: a 2.2s wordless opening, nothing to read in the first three seconds">HOOK</span>`;
+  }
+  if (opening === "cold-plate") {
+    return `<span class="abtag ab-control" title="Control arm: the current cold-open static question plate">CONTROL</span>`;
+  }
+  return "";
+}
+
+/** PUBLISHED vs PENDING for a calendar post, plus the live permalink once it exists.
+ *  Named apart from the pre-existing statusChip(), which renders run/gate status. */
+function postStatusChip(p: ScheduledPost): string {
+  if (p.status === "PUBLISHED") {
+    const link = p.public_url
+      ? ` <a class="pub-link" href="${esc(p.public_url)}" target="_blank" rel="noopener noreferrer">view live ↗</a>`
+      : "";
+    return `<span class="stat-pub">PUBLISHED</span>${link}`;
+  }
+  return `<span class="stat-pend">PENDING</span>`;
+}
+
+/**
+ * 3-second skip rate for a published reel. `null` means NOT YET SYNCED, never zero:
+ * Metricool's analytics land on a nightly cycle up to ~24h behind, and showing a
+ * fresh post as 0% would read as a perfect hook, which is the opposite of the truth.
+ */
+function skipChip(p: ScheduledPost): string {
+  if (p.status !== "PUBLISHED") return "";
+  if (typeof p.skip_rate !== "number") {
+    return `<span class="skip skip-pending" title="Metricool syncs analytics nightly, up to ~24h behind. No data yet — this is NOT 0%.">skip rate: pending</span>`;
+  }
+  const cls = p.skip_rate >= 78.3 ? "skip-bad" : "skip-good";
+  return `<span class="skip ${cls}" title="Share of viewers gone before ~3s. Campaign median is 78.3%; lower is better.">skip ${p.skip_rate.toFixed(1)}%</span>`;
+}
+
 function scheduledCard(p: ScheduledPost, defaults?: AbDefaults): string {
   const preview = videoPreview(p.video_key, p.thumbnail, p.media_url);
   // NOTE: p.arm_source ("run" | "ab-database" | "inferred") is intentionally NOT
   // surfaced as a badge — it's an internal data-provenance flag that self-heals as
   // new posts carry an exact draft→variant mapping (kept in the data, not the UI).
+  const vid = p.video_id ? `<span class="vidid">${esc(p.video_id)}</span>` : "";
   return `<div class="draftcard">
     <div class="dthumb">${preview}</div>
     <div class="dbody">
       ${scheduleChip(p.scheduled_cst)}
       <div class="vid-h">
-        ${abLabelHtml(p.dimension, p.arm, defaults)}
+        ${openingChip(p.opening)}
         <span class="dplat">${platformLabel(p.platform)}</span>
+        ${vid}
       </div>
+      <div class="statline">${postStatusChip(p)} ${skipChip(p)}</div>
+      ${abLabelHtml(p.dimension, p.arm, defaults)}
       <div class="rationale">${esc(p.hook)}</div>
     </div>
   </div>`;
+}
+
+/**
+ * The experiment scoreboard: can the human answer "is this on track" without asking?
+ * Scored on 3-second skip rate, not watch time — on the 28 non-breakout Instagram
+ * reels skip rate predicts reach at -0.51 while watch time manages a non-significant
+ * +0.21. Instagram only: Metricool exposes no TikTok watch-time data at all.
+ */
+function experimentPanel(view?: ScheduledView): string {
+  if (!view || !view.ok) return `<p class="muted">Experiment status is unavailable while the schedule cannot be read.</p>`;
+  // Tolerate a view without a roll-up (older callers, hand-built fixtures) by deriving
+  // it, rather than throwing and taking the whole page down with it.
+  const e = view.experiment ?? summarizeExperiment(view.posts || [], 15);
+  const pct = e.target > 0 ? Math.min(100, Math.round((e.hook_scheduled / e.target) * 100)) : 0;
+  const verdict = e.on_track
+    ? `<b class="ok-yes">On track</b> — ${e.hook_scheduled} hook reels are scheduled against the ${e.target} the test needs.`
+    : `<b class="ok-no">Short</b> — only ${e.hook_scheduled} hook reels scheduled against the ${e.target} the test needs.`;
+  const med = (v: number | null): string => (typeof v === "number" ? `${v.toFixed(1)}%` : "pending");
+  return `<p class="muted" style="margin-bottom:10px">${verdict} Scored on <b>3-second skip rate</b> (lower is better), Instagram only — Metricool reports no TikTok watch-time data at all.</p>
+  <div class="expbar"><div class="expfill" style="width:${pct}%"></div><span class="expnum">${e.hook_scheduled} / ${e.target} hook reels</span></div>
+  <div class="grid" style="margin-top:12px">
+    <div class="kpi"><div class="v">${e.hook_posted}</div><div class="k">hook reels POSTED</div></div>
+    <div class="kpi"><div class="v">${e.control_posted}</div><div class="k">control reels POSTED</div></div>
+    <div class="kpi"><div class="v">${e.hook_with_data}</div><div class="k">hook reels with skip data</div></div>
+    <div class="kpi"><div class="v">${med(e.hook_median_skip)}</div><div class="k">hook median skip</div></div>
+    <div class="kpi"><div class="v">${med(e.control_median_skip)}</div><div class="k">control median skip</div></div>
+  </div>
+  <p class="muted" style="margin-top:10px">Medians read <b>pending</b> until Metricool's nightly analytics sync lands, which runs up to ~24h behind a post. A freshly published reel showing "pending" has not failed to gather data; it has not been synced yet.</p>`;
 }
 
 function scheduledPanel(view?: ScheduledView, defaults?: AbDefaults): string {
@@ -886,13 +964,22 @@ function scheduledPanel(view?: ScheduledView, defaults?: AbDefaults): string {
     return `<p class="muted">Scheduled posts appear here once autonomy is ARMED. Until then the loop is DRAFT-ONLY (nothing is scheduled).</p>`;
   }
   if (!view.ok) {
-    return `<p class="muted">Couldn't load scheduled posts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls the schedule LIVE from Publer via the read-only bridge; it retries on the next refresh.</p>`;
+    return `<p class="muted">Couldn't load the schedule right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls LIVE from Metricool via the read-only bridge; it retries on the next refresh.</p>`;
   }
   if (!view.posts.length) {
-    return `<p class="muted">No scheduled posts yet. When KICKOFF is ARMED, each new draft is auto-scheduled on Publer at a jittered time inside the <b>7:00am–1:00am CST</b> window; those posts + times appear here — mirrored LIVE from Publer, so these cards and the Publer calendar always match. (Draft-only until armed.)</p>`;
+    return `<p class="muted">Nothing on the calendar. Posting runs through the controlled path (<code>ops/resume_posting.mjs</code>); anything it schedules appears here, mirrored LIVE from Metricool.</p>`;
   }
   const byPlat = Object.entries(view.by_platform).map(([k, v]) => `${esc(platformLabel(k))}: ${v}`).join(" · ");
-  return `<p class="muted" style="margin-bottom:12px">${view.count} upcoming scheduled post(s) — pulled LIVE from Publer, so these are the SAME posts + times shown on the Publer calendar. ${esc(byPlat)}. All inside the 7:00am–1:00am America/Chicago window. Each card shows the FULL 9:16 preview (letterboxed, never cropped) streamed read-only via this dashboard. As of ${esc(view.as_of)}.</p>
+  // Derive rather than trust: a view built by an older caller has no by_status, and
+  // taking the page down over a missing tally would be a worse bug than the one this
+  // whole change is fixing.
+  const tally = view.by_status ?? view.posts.reduce<Record<string, number>>((acc, p) => {
+    acc[p.status] = (acc[p.status] || 0) + 1;
+    return acc;
+  }, {});
+  const pub = tally.PUBLISHED || 0;
+  const pend = tally.PENDING || 0;
+  return `<p class="muted" style="margin-bottom:12px">${view.count} post(s) on the calendar — <b>${pub} published</b>, <b>${pend} pending</b>. Pulled LIVE from Metricool, so these are the SAME posts and times the Metricool planner shows. ${esc(byPlat)}. Each card shows the FULL 9:16 preview (letterboxed, never cropped), played directly from Metricool's public CDN. As of ${esc(view.as_of)}.</p>
   <div class="draftgrid">${view.posts.map((p) => scheduledCard(p, defaults)).join("")}</div>`;
 }
 
@@ -1042,6 +1129,21 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .dbody{padding:12px;display:flex;flex-direction:column;gap:6px}
 .draftplatforms{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px}
 .dplat{display:inline-block;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:8px;padding:3px 9px;background:var(--mint);color:#111}
+/* status + experiment chips */
+.statline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.stat-pub{font:700 11px/1 ui-monospace,monospace;background:var(--mint);border:2px solid #000;border-radius:6px;padding:4px 7px}
+.stat-pend{font:700 11px/1 ui-monospace,monospace;background:#eee;border:2px solid #000;border-radius:6px;padding:4px 7px}
+.pub-link{font:700 11px/1 ui-monospace,monospace;text-decoration:underline}
+.skip{font:700 11px/1 ui-monospace,monospace;border:2px solid #000;border-radius:6px;padding:4px 7px}
+.skip-good{background:var(--mint)}
+.skip-bad{background:var(--coral)}
+.skip-pending{background:#eee;color:#555}
+.vidid{font:600 10px/1 ui-monospace,monospace;color:#666}
+.expbar{position:relative;height:26px;background:#eee;border:3px solid #000;border-radius:8px;overflow:hidden}
+.expfill{height:100%;background:var(--mint)}
+.expnum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:800 12px/1 ui-monospace,monospace}
+.ok-yes{color:#1a7f42}
+.ok-no{color:#b3261e}
 /* prominent per-card scheduled date/time chip (scheduled = mint; draft = neutral grey) */
 /* time-only mint pill: hugs its content (align-self) so it reads as a compact chip */
 .timechip{display:inline-flex;align-self:flex-start;align-items:center;margin-bottom:4px;border:3px solid var(--ink);border-radius:10px;padding:6px 12px;background:var(--mint);box-shadow:3px 3px 0 0 var(--ink)}
@@ -1089,7 +1191,7 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   <div class="statgroup">
     <div class="statlabel">Bank &amp; live totals <span class="muted">· cumulative — NOT this cycle</span></div>
     <div class="grid">
-      <div class="kpi"><div class="v">${scheduledCount}</div><div class="k">scheduled on publer (live)</div></div>
+      <div class="kpi"><div class="v">${scheduledCount}</div><div class="k">on the calendar (live · metricool)</div></div>
       <div class="kpi"><div class="v">${bank.fresh}</div><div class="k">fresh questions (bank)</div></div>
       <div class="kpi"><div class="v">${cov.runwayDays == null ? "—" : cov.runwayDays}</div><div class="k">days runway (bank est.)</div></div>
       <div class="kpi"><div class="v">${opts.drafts ? opts.drafts.count_videos : "—"}</div><div class="k">older drafts (pre-autonomy)</div></div>
@@ -1097,7 +1199,12 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   </div>
 
   <div class="card">
-    <h2><span class="pin">SCHEDULED</span> Auto-scheduled posts &amp; times (post-kickoff) <span class="pin" style="background:var(--mint)">LIVE FROM PUBLER</span></h2>
+    <h2><span class="pin">EXPERIMENT</span> Opening A/B — 3-second skip rate <span class="pin" style="background:var(--yellow)">THIS WEEK</span></h2>
+    ${experimentPanel(opts.scheduled)}
+  </div>
+
+  <div class="card">
+    <h2><span class="pin">SCHEDULED</span> Posts &amp; times <span class="pin" style="background:var(--mint)">LIVE FROM METRICOOL</span></h2>
     ${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
   </div>
 
