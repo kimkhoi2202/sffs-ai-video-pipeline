@@ -7,17 +7,25 @@
  * schedules them on Instagram through Metricool. Everything it creates is recorded in
  * a ledger so `--stop` can cancel the whole batch in one command.
  *
- *   node resume_posting.mjs --count 6 --day 2026-07-27        # render + schedule
+ *   node resume_posting.mjs --count 12 --day 2026-07-27       # render + schedule
  *   node resume_posting.mjs --stop                            # cancel everything it made
  *   node resume_posting.mjs --list                            # what is on the calendar
  *
- * SHAPE QUESTIONS ONLY. The text bank still stores normalized dedup keys instead of the
- * questions, so text and numseries render mangled. Shape questions carry a raw
- * figure.prompt and were never affected — that is why yesterday's one surviving video
- * rendered "WHICH SHAPE DOES NOT BELONG?" correctly while everything else did not.
+ * ALL QUESTION KINDS. The shape-only restriction is lifted: the raw-text re-import has
+ * landed, so text and numseries carry their authored prompts, options and punctuation
+ * again instead of normalized dedup keys.
  *
- * The batch is split evenly between the two opening arms so the skip-rate experiment
- * accumulates from the first day.
+ * SELECTION IS EXPLANATION-AWARE. 143 authored explanations are shared by more than one
+ * question (10 shaded questions can share a line that varies only by shape name), and
+ * the publish gate refuses a video that repeats one inside its 30-post novelty window.
+ * Picking questions blindly meant rendering videos that were then thrown away — a 79%
+ * rejection rate on the shape-only pool. The picker below skips any question whose
+ * explanation is already claimed by this video or still inside the window, so the pool
+ * is spent on videos that can actually ship and the gate goes back to being a safety
+ * net rather than the thing shaping the batch.
+ *
+ * The batch alternates the two opening arms so the skip-rate experiment accumulates
+ * evenly from the first day.
  */
 const REPO = "/home/ec2-user/sffs-ai-video-pipeline";
 const Q = await import(`${REPO}/hermes/src/questions.ts`);
@@ -35,23 +43,67 @@ const argv = process.argv.slice(2);
 const flag = (n, d) => { const i = argv.indexOf(n); return i >= 0 ? argv[i + 1] : d; };
 const LEDGER = join(CONFIG.DATA_DIR, "metricool-scheduled.json");
 const SHAPE_KINDS = ["shaded", "polygon", "dot", "fold", "matrix", "analogy2", "figure-odd"];
+const ALL_KINDS = ["text", "numseries", ...SHAPE_KINDS];
+const PER_VIDEO = 3;
 
-/** On-brand captions. Distinct by construction: the publish gate rejects a repeat. */
+/**
+ * On-brand captions. The publish gate refuses an exact duplicate inside 30 posts, so
+ * this list has to be longer than the window — at 12/day the window is 2.5 days.
+ */
 const CAPTIONS = [
   "are you a SMART fella or a FART smella? 🧠💨 comment your score",
   "bet you get this one wrong 🧠 prove me wrong in the comments",
-  "3 shapes. 1 answer. how fast can you spot it? 👀",
+  "3 questions. how fast can you spot it? 👀",
   "SMART or FART? 🧠💨 no calculator, no cheating, comment below",
   "most people miss the last one 👀 can you get all three?",
-  "shape puzzles that look easy until they aren't 🧠 drop your score",
+  "these look easy until they aren't 🧠 drop your score",
   "if you get all 3 you're officially a SMART fella 🧠",
   "pattern check 👀 comment how many you got",
   "this one separates the SMART fellas from the FART smellas 💨",
-  "quick eye test 👀 all three in under 15 seconds?",
-  "no words needed. just shapes. 🧠 how many?",
-  "your brain vs three shapes. who wins? 👀",
+  "quick brain test 👀 all three in under 15 seconds?",
+  "your brain vs three puzzles. who wins? 👀",
+  "nobody is getting all three 🧠 prove me wrong",
+  "how many did you get? be honest 👀",
+  "3 in a row or you're a FART smella 💨",
+  "the last one gets everybody 🧠",
+  "speedrun this 👀 comment your time",
+  "harder than it looks. comment your score 🧠",
+  "SMART or FART? 🧠💨 you get one guess each",
+  "genuinely curious how many people get 3/3 👀",
+  "brain warmup 🧠 all three, go",
+  "if this is easy for you, say so in the comments 👀",
+  "one of these three trips almost everyone 🧠",
+  "no googling 👀 comment what you got",
+  "rate your brain out of 3 🧠",
+  "this is your daily SMART or FART check 💨",
+  "three puzzles, fifteen seconds, go 👀",
+  "comment 3/3 if you're built different 🧠",
+  "be honest, how many? 👀",
+  "the answer is obvious after you see it 🧠",
+  "SMART fella energy or FART smella energy? 💨 comment",
 ];
 const TAG_SETS = ["A", "B", "C"];
+
+/**
+ * Pick `n` questions whose explanations are all distinct from each other AND from
+ * everything still inside the novelty window. Returns fewer than `n` if the pool
+ * cannot satisfy that, and the caller skips the video rather than rendering one the
+ * gate will refuse.
+ */
+function pickQuestions(pool, cursor, n, claimedExplanations) {
+  const picked = [];
+  const local = new Set();
+  let i = cursor;
+  while (i < pool.length && picked.length < n) {
+    const q = pool[i++];
+    const e = String(q.explanation ?? "").trim();
+    if (!e) continue; // the gate requires one; skip rather than render a reject
+    if (local.has(e) || claimedExplanations.has(e)) continue;
+    local.add(e);
+    picked.push(q);
+  }
+  return { picked, cursor: i };
+}
 
 async function list() {
   const rows = await M.listPosts("2026-07-01T00:00:00", "2026-12-31T23:59:59");
@@ -83,8 +135,12 @@ async function stop() {
 }
 
 async function run() {
-  const count = Number(flag("--count", "6"));
+  const count = Number(flag("--count", "12"));
   const day = flag("--day", new Date(Date.now() + 864e5).toISOString().slice(0, 10));
+  // Slots to skip at the front, so a day that already has posts can be topped up to
+  // the daily target without disturbing or duplicating what is already scheduled.
+  const from = Number(flag("--from", "0"));
+  const endHour = Number(flag("--end-hour", "22"));
   const dry = argv.includes("--dry");
 
   console.log(`=== resume posting: ${count} videos for ${day} (${dry ? "DRY RUN" : "LIVE"}) ===\n`);
@@ -103,30 +159,44 @@ async function run() {
   const n = Math.min(count, ig.slots);
 
   // 3. Slot times across the posting window.
-  const times = P.slotTimes(n, { dayISO: day, startHour: 7, endHour: 22, minGapMinutes: ig.minGapMinutes });
-  console.log(`\nslots: ${times.join("  ")}\n`);
+  const allTimes = P.slotTimes(n, { dayISO: day, startHour: 7, endHour: endHour, minGapMinutes: ig.minGapMinutes });
+  const times = allTimes.slice(from);
+  console.log(`\nslot grid (${allTimes.length}): ${allTimes.join("  ")}`);
+  if (from) console.log(`skipping the first ${from} (already scheduled)`);
+  console.log(`filling: ${times.join("  ")}\n`);
 
-  // 4. Fresh shape questions, 3 per video.
-  const pool = Q.candidateQuestions({ kinds: SHAPE_KINDS, seed: `resume-${day}` });
-  console.log(`fresh shape-question pool: ${pool.length} (need ${n * 3})`);
-  if (pool.length < n * 3) { console.error("ABORT: not enough fresh shape questions"); process.exit(2); }
+  // 4. Fresh questions, every kind, 3 per video.
+  const pool = Q.candidateQuestions({ kinds: ALL_KINDS, seed: `resume-${day}` });
+  console.log(`fresh question pool: ${pool.length} (need ${n * PER_VIDEO})`);
+  if (pool.length < n * PER_VIDEO) { console.error("ABORT: not enough fresh questions"); process.exit(2); }
 
   // 5. Recent posts, for the publish gate's novelty window.
   const led = readJSON(LEDGER, { posts: [] });
   const recent = led.posts.map((p) => ({ caption: p.caption, hashtag_set: p.hashtag_set, explanations: p.explanations }));
+  // Explanations still inside the window, so selection can avoid them up front.
+  const claimed = new Set(recent.slice(-G.NOVELTY_WINDOW).flatMap((p) => p.explanations ?? []).filter(Boolean));
 
   const made = [];
-  for (let i = 0; i < n; i++) {
-    const videoId = `${day}-r${String(i + 1).padStart(2, "0")}`;
+  let cursor = 0;
+  for (let i = 0; i < times.length; i++) {
+    const videoId = `${day}-r${String(from + i + 1).padStart(2, "0")}`;
     // Alternate the arms so the experiment fills evenly from day one.
-    const opening = i % 2 === 0 ? "cold-plate" : "motion-hook";
-    const questions = pool.slice(i * 3, i * 3 + 3);
-    const hashtag_set = TAG_SETS[i % TAG_SETS.length];
-    const rawCaption = `${CAPTIONS[i % CAPTIONS.length]}\n\n${CONFIG.HASHTAG_SETS[hashtag_set].join(" ")}`;
+    const opening = (from + i) % 2 === 0 ? "cold-plate" : "motion-hook";
+    const sel = pickQuestions(pool, cursor, PER_VIDEO, claimed);
+    cursor = sel.cursor;
+    const questions = sel.picked;
+    if (questions.length < PER_VIDEO) {
+      console.log(`\n--- ${videoId} SKIPPED: pool exhausted of explanation-distinct questions ---`);
+      continue;
+    }
+    for (const q of questions) claimed.add(String(q.explanation ?? "").trim());
+    const hashtag_set = TAG_SETS[(from + i) % TAG_SETS.length];
+    const rawCaption = `${CAPTIONS[(from + i) % CAPTIONS.length]}\n\n${CONFIG.HASHTAG_SETS[hashtag_set].join(" ")}`;
     const caption = A.withAttribution(rawCaption, videoId);
 
     console.log(`\n--- ${videoId}  arm=${opening}  tags=${hashtag_set} ---`);
     console.log(`    questions: ${questions.map((q) => q.kind).join(", ")}`);
+    console.log(`    prompts  : ${questions.map((q) => JSON.stringify(String(q.prompt).slice(0, 34))).join(" ")}`);
 
     const props = {
       questions: questions.map((q) => ({
@@ -135,7 +205,7 @@ async function run() {
       })),
       reveal: "last",
       narration: { mode: "full" },
-      music: CONFIG.MUSIC_TRACKS[i % CONFIG.MUSIC_TRACKS.length],
+      music: CONFIG.MUSIC_TRACKS[(from + i) % CONFIG.MUSIC_TRACKS.length],
       showProgress: true,
       progressStyle: "full",
       mascot: "standard",
@@ -180,7 +250,7 @@ async function run() {
     writeJSONAtomic(LEDGER, led);
   }
 
-  console.log(`\n=== scheduled ${made.length} of ${n} ===`);
+  console.log(`\n=== scheduled ${made.length} of ${times.length} attempted (day target ${n}) ===`);
   for (const m of made) console.log(`  ${m.at}  ${m.videoId}  arm=${m.opening}  uuid=${m.uuid}`);
   console.log(`\nledger: ${LEDGER}`);
   console.log("stop everything with:  node ops/resume_posting.mjs --stop");
