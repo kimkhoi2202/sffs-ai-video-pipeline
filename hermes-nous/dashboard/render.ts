@@ -748,7 +748,15 @@ function draftsPanel(view: DraftsView | undefined, defaults?: AbDefaults): strin
     return `<p class="muted">Older Publer drafts are loaded live (read-only). None loaded yet.</p>`;
   }
   if (!view.ok && !view.videos.length) {
-    return `<p class="muted">Couldn't load Publer drafts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel pulls any remaining drafts live via the pipeline's read-only Publer bridge; it retries on the next refresh. READ-ONLY — no publish/schedule here.</p>`;
+    // Publer is RETIRED: it now answers HTTP 403 on every content endpoint, which is
+    // what moved posting to Metricool in the first place. Surfacing that raw error
+    // made a publicly visible panel read as "the system is broken" when the truth is
+    // "this panel's data source no longer exists". Say the true thing instead.
+    const gone = /403|upgrade to business|not authorized/i.test(String(view.error || ""));
+    if (gone) {
+      return `<p class="muted"><b>Publer is retired.</b> Its API returns 403 on every content endpoint, which is why posting moved to Metricool. This panel only ever showed leftover <em>pre-autonomy</em> Publer drafts; there is nothing left to read and nothing is wrong. The live schedule is in the SCHEDULED panel above.</p>`;
+    }
+    return `<p class="muted">Couldn't load older drafts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel retries on the next refresh.</p>`;
   }
   if (!view.videos.length) {
     return `<p class="muted"><b>No leftover drafts — clean.</b> Autonomous Hermes now schedules each new video directly on Publer (see the SCHEDULED panel above), so nothing sits here "awaiting review." This panel only lingers to surface any <em>pre-autonomy</em> drafts left on the account; there are none right now.</p>`;
