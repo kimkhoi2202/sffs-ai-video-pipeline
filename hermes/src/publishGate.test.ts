@@ -34,6 +34,7 @@ const clean = () => ({
     "The dot steps two places clockwise each time, so it lands top right (tr).",
     "The dot steps one place clockwise each time, so it lands on the right (rm).",
   ],
+  answerLabels: ["TOP-RIGHT", "RIGHT"],
 });
 
 // ── the mangling detector ────────────────────────────────────────────────────
@@ -67,6 +68,7 @@ test("a mangled fraction in the OPTIONS fails the gate", () => {
 test("the real authored fraction PASSES", () => {
   const v = clean();
   v.questions[0] = shapeQ({ kind: "text", prompt: "WHICH IS THE GREATEST?", options: ["2/3", "5/8", "3/5", "7/12"], answer: "2/3" });
+  v.answerLabels[0] = "2/3";
   v.explanations[0] = "Two thirds (2/3) is the largest, since it is closest to a whole.";
   const r = G.publishGate(v as any, []);
   assert.equal(r.pass, true, r.reason);
@@ -98,12 +100,31 @@ test("two questions sharing ONE templated explanation fail", () => {
   assert.match(r.reason, /repeats another question/);
 });
 
-test("an explanation that never names its answer fails", () => {
+test("a TEXT explanation that never names its answer fails", () => {
   const v = clean();
+  v.questions[0] = shapeQ({ kind: "text", prompt: "WHICH IS THE GREATEST?", options: ["2/3", "5/8", "3/5"], answer: "2/3" });
   v.explanations[0] = "Work out the rule and you have it.";
   const r = G.publishGate(v as any, []);
   assert.equal(r.pass, false);
   assert.match(r.reason, /never references its answer/);
+});
+
+test("a SHAPE explanation need not name its answer — the reveal plate shows it", () => {
+  // q.answer on a shape is an internal code ("tr", "filled-circle") that no sentence
+  // would contain; requiring it rejected correct copy on every shape video.
+  const v = clean();
+  v.explanations[0] = "The dot steps two places clockwise each time.";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, true, r.reason);
+});
+
+test("the displayed answer LABEL is what a text explanation is checked against", () => {
+  const v = clean();
+  v.questions[0] = shapeQ({ kind: "numseries", prompt: "WHAT COMES NEXT?", seq: ["A", "B", "D", "G"], answer: "k" });
+  v.answerLabels = ["K", ""];
+  v.explanations[0] = "The gaps grow by one, so G plus four letters is K.";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, true, r.reason);
 });
 
 test("an explanation reused in the last 30 posts fails", () => {
