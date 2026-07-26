@@ -121,6 +121,10 @@ export interface HermesQ {
   options?: string[];
   seq?: string[];
   answer: string;
+  /** The AUTHORED explanation for the reveal plate + reveal VO, carried through from
+   *  the bank. Undefined only for entries banked before the raw-text re-import, in
+   *  which case render.ts falls back to its generated template. */
+  explanation?: string;
   /** Structured render-ready payload for the nonverbal shape/figure kinds
    *  (undefined for text/numseries). Reconstructed by toHermesQ from the bank
    *  entry's `figure` field; consumed by render.ts mapProps. */
