@@ -1,0 +1,222 @@
+/**
+ * publishGate.test.ts — the deterministic last gate, plus posting policy + attribution.
+ *
+ * The cases below are the ACTUAL defects that shipped, written as tests: a mangled
+ * fraction, a normalized prompt, two questions sharing one templated explanation, and
+ * a duplicate caption. Each must fail the gate.
+ */
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const TMP = mkdtempSync(join(tmpdir(), "hermes-pg-"));
+process.env.HERMES_ENV_FILE = join(TMP, "nonexistent.env");
+process.env.HERMES_REPO_DIR = TMP;
+process.env.HERMES_DATA_DIR = TMP;
+
+const G = await import("./publishGate.ts");
+const A = await import("./attribution.ts");
+const P = await import("./postingPolicy.ts");
+
+const shapeQ = (over: Record<string, unknown> = {}) => ({
+  sig: "s1", hash: "h1", kind: "dot", category: "nonverbal", tier: "POSITION",
+  prompt: "WHERE DOES THE DOT MOVE NEXT?", answer: "tr", ...over,
+}) as any;
+
+const clean = () => ({
+  id: "2026-07-27-v01",
+  caption: "SMART or FART? drop your answer below\n\n#quiz #brainteaser",
+  hashtag_set: "A",
+  questions: [shapeQ(), shapeQ({ sig: "s2", answer: "rm" })],
+  explanations: [
+    "The dot steps two places clockwise each time, so it lands top right (tr).",
+    "The dot steps one place clockwise each time, so it lands on the right (rm).",
+  ],
+});
+
+// ── the mangling detector ────────────────────────────────────────────────────
+test("looksNormalized recognises normalizer output and spares authored text", () => {
+  assert.equal(G.looksNormalized("which one does not belong"), true);
+  assert.equal(G.looksNormalized("all cats purr milo is a cat so milo purrs"), true);
+  assert.equal(G.looksNormalized("2 3"), true);
+  assert.equal(G.looksNormalized("WHICH ONE DOES NOT BELONG?"), false, "uppercase + ? is authored");
+  assert.equal(G.looksNormalized("2/3"), false, "a slash is authored");
+  assert.equal(G.looksNormalized("CAN'T TELL"), false);
+  assert.equal(G.looksNormalized("ALL CATS PURR.\nMILO IS A CAT."), false);
+  assert.equal(G.looksNormalized(""), false);
+});
+
+test("a normalized PROMPT fails the gate", () => {
+  const v = clean();
+  v.questions[0] = shapeQ({ prompt: "which one does not belong" });
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /normalized dedup key/);
+});
+
+test("a mangled fraction in the OPTIONS fails the gate", () => {
+  const v = clean();
+  v.questions[0] = shapeQ({ kind: "text", options: ["2 3", "5 8", "3 5", "7 12"], answer: "2 3" });
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /mangled numbers/);
+});
+
+test("the real authored fraction PASSES", () => {
+  const v = clean();
+  v.questions[0] = shapeQ({ kind: "text", prompt: "WHICH IS THE GREATEST?", options: ["2/3", "5/8", "3/5", "7/12"], answer: "2/3" });
+  v.explanations[0] = "Two thirds (2/3) is the largest, since it is closest to a whole.";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, true, r.reason);
+});
+
+// ── options ──────────────────────────────────────────────────────────────────
+test("duplicate options fail", () => {
+  const v = clean();
+  v.questions[0] = shapeQ({ kind: "text", prompt: "PICK ONE?", options: ["RED", "RED", "BLUE"], answer: "BLUE" });
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /duplicate option/);
+});
+
+test("an answer matching zero or two options fails", () => {
+  const v = clean();
+  v.questions[0] = shapeQ({ kind: "text", prompt: "PICK ONE?", options: ["RED", "BLUE", "GREEN"], answer: "PURPLE" });
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /matches 0 option/);
+});
+
+// ── explanations: the 53-and-K regression ────────────────────────────────────
+test("two questions sharing ONE templated explanation fail", () => {
+  const v = clean();
+  v.explanations = ["spot the pattern to crack the sequence", "spot the pattern to crack the sequence"];
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /repeats another question/);
+});
+
+test("an explanation that never names its answer fails", () => {
+  const v = clean();
+  v.explanations[0] = "Work out the rule and you have it.";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /never references its answer/);
+});
+
+test("an explanation reused in the last 30 posts fails", () => {
+  const v = clean();
+  const recent = [{ caption: "old", explanations: [v.explanations[0]] }];
+  const r = G.publishGate(v as any, recent);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /already used in the last 30/);
+});
+
+test("a missing explanation fails", () => {
+  const v = clean();
+  v.explanations[1] = "";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /missing explanation/);
+});
+
+// ── caption + hashtags: the TikTok throttle cause ────────────────────────────
+test("an exact duplicate caption against the last 30 posts fails", () => {
+  const v = clean();
+  const recent = Array.from({ length: 29 }, (_, i) => ({ caption: `something else ${i}` }));
+  recent.push({ caption: "  SMART or FART? Drop your answer below\n\n#quiz #brainteaser  " });
+  const r = G.publishGate(v as any, recent);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /exact duplicate/);
+});
+
+test("a caption older than the window does NOT fail", () => {
+  const v = clean();
+  const recent = [{ caption: v.caption }, ...Array.from({ length: 30 }, (_, i) => ({ caption: `newer ${i}` }))];
+  const r = G.publishGate(v as any, recent);
+  assert.equal(r.pass, true, r.reason);
+});
+
+test("the same hashtag set three posts running fails", () => {
+  const v = clean();
+  const recent = [{ caption: "a", hashtag_set: "A" }, { caption: "b", hashtag_set: "A" }, { caption: "c", hashtag_set: "A" }];
+  const r = G.publishGate(v as any, recent);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /three posts running|last 3 posts/);
+});
+
+test("a rotating hashtag set passes", () => {
+  const v = clean();
+  const recent = [{ caption: "a", hashtag_set: "B" }, { caption: "b", hashtag_set: "C" }, { caption: "c", hashtag_set: "A" }];
+  const r = G.publishGate(v as any, recent);
+  assert.equal(r.pass, true, r.reason);
+});
+
+// ── attribution ──────────────────────────────────────────────────────────────
+test("the /go/ link is appended above the hashtags", () => {
+  const out = A.withAttribution("SMART or FART? guess below\n\n#quiz #iqtest", "2026-07-27-v03");
+  assert.match(out, /\/go\/2026-07-27-v03/);
+  const lines = out.split("\n").filter(Boolean);
+  assert.match(lines[lines.length - 1], /^#/, "hashtags must stay last");
+  assert.match(lines[lines.length - 2], /\/go\//);
+});
+
+test("attribution is idempotent", () => {
+  const once = A.withAttribution("caption\n\n#a #b", "v1");
+  assert.equal(A.withAttribution(once, "v1"), once);
+});
+
+test("a caption with no hashtags still gets the link", () => {
+  assert.match(A.withAttribution("just words", "v9"), /just words[\s\S]*\/go\/v9/);
+});
+
+// ── posting policy ───────────────────────────────────────────────────────────
+test("TikTok is dark before Monday evening and open after", () => {
+  const before = new Date("2026-07-27T20:00:00Z"); // 15:00 America/Chicago Mon
+  const after = new Date("2026-07-28T02:00:00Z"); // 21:00 Chicago Mon
+  assert.equal(P.isDark("tiktok", before).dark, true);
+  assert.equal(P.isDark("tiktok", after).dark, false);
+  assert.equal(P.isDark("instagram", before).dark, false);
+});
+
+test("while TikTok is dark, only Instagram gets slots", () => {
+  const d = P.decide(600, new Date("2026-07-26T20:00:00Z"));
+  const ig = d.find((x) => x.network === "instagram")!;
+  const tt = d.find((x) => x.network === "tiktok")!;
+  assert.equal(ig.slots, 12);
+  assert.equal(tt.slots, 0);
+  assert.equal(tt.allowed, false);
+  assert.match(tt.reason, /dark until/);
+});
+
+test("Instagram is served first when monthly headroom is short", () => {
+  const d = P.decide(5, new Date("2026-07-28T02:00:00Z"));
+  assert.equal(d.find((x) => x.network === "instagram")!.slots, 5);
+  assert.equal(d.find((x) => x.network === "tiktok")!.slots, 0);
+});
+
+test("TikTok resumes at 2/day with a 4h floor", () => {
+  const d = P.decide(600, new Date("2026-07-28T02:00:00Z"));
+  const tt = d.find((x) => x.network === "tiktok")!;
+  assert.equal(tt.slots, 2);
+  assert.equal(tt.minGapMinutes, 240);
+});
+
+test("slotTimes never violates the minimum gap, even if asked for more", () => {
+  const t = P.slotTimes(6, { dayISO: "2026-07-28", startHour: 7, endHour: 23, minGapMinutes: 240 });
+  assert.ok(t.length <= 5, `16h window at a 4h gap fits at most 5, got ${t.length}`);
+  for (let i = 1; i < t.length; i++) {
+    const a = new Date(t[i - 1] + "Z").getTime();
+    const b = new Date(t[i] + "Z").getTime();
+    assert.ok(b - a >= 240 * 60_000, `gap ${(b - a) / 60000}min < 240min`);
+  }
+});
+
+test("slotTimes spreads 12 Instagram posts across the window", () => {
+  const t = P.slotTimes(12, { dayISO: "2026-07-27", startHour: 7, endHour: 23, minGapMinutes: 0 });
+  assert.equal(t.length, 12);
+  assert.match(t[0], /^2026-07-27T07:00:00$/);
+  assert.match(t[11], /^2026-07-27T23:00:00$/);
+});

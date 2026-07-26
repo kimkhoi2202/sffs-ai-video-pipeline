@@ -58,6 +58,10 @@ const SILENT_READ = Math.round(1.5 * FPS); // readVO="none" hold (timeline SILEN
 /** Short pacing — MUST match remotion/src/full/timeline.ts build() isShort path. */
 const SHORT_LEAD = 0.12;
 const SHORT_TRAIL = 0.4;
+/** Opening arm for the 3-second skip-rate experiment (mirrors timeline.ts Opening). */
+export type Opening = "cold-plate" | "motion-hook";
+/** Hook length — MUST match timeline.ts / scenes/Hook.tsx HOOK_SECONDS. */
+const HOOK_SECONDS = 2.2;
 const frames = (s: number): number => Math.round(s * FPS);
 
 export type Platform = "youtube" | "instagram" | "tiktok";
@@ -140,14 +144,23 @@ interface LoopQ {
   options?: string[];
   seq?: string[];
   answer: string;
+  /** The AUTHORED explanation from the bank. Preferred over explanationFor() below. */
+  explanation?: string;
   /** Structured render-ready payload for the shape/figure kinds (undefined for
    *  text/numseries). Carried through from the bank via toHermesQ + design.ts. */
   figure?: Figure;
 }
 
-/** A short, HONEST explanation for the reveal plate + reveal VO (no LLM, never a
- *  fabricated fact): number-series get the computed step/ratio; text restates the
- *  relationship. */
+/**
+ * FALLBACK explanation for the reveal plate + reveal VO, used only when the bank
+ * entry carries no authored one (pre-re-import entries).
+ *
+ * It is honest but generic by construction: number-series get the computed step or
+ * ratio, everything else restates the relationship from the tier. That genericness is
+ * a real defect when it is the only source — every non-arithmetic series collapses to
+ * "spot the pattern to crack the sequence", so two questions answering 53 and K got
+ * byte-identical reveal copy. Prefer `q.explanation`; see explanationOf().
+ */
 function explanationFor(q: LoopQ, ansLabel: string): string {
   if (q.kind === "numseries") {
     const nums = (q.seq ?? []).map((t) => String(t).trim()).filter((t) => isNum(t)).map(Number);
@@ -173,6 +186,11 @@ function explanationFor(q: LoopQ, ansLabel: string): string {
   return `${a} is the answer`;
 }
 
+/** The authored explanation when the bank has one, else the generated fallback. */
+function explanationOf(q: LoopQ, ansLabel: string): string {
+  return String(q.explanation ?? "").trim() || explanationFor(q, ansLabel);
+}
+
 /** The spoken reveal line for r<idx> (mirrors gen-narration-scripts.mjs rBeat). */
 function revealVoText(kind: string, letter: string, answerSpoken: string, explanation: string, idx: number): string {
   const lead = idx % 2 === 0 ? "The answer is..." : "It's...";
@@ -187,6 +205,8 @@ interface Mapped {
   ending: Ending;
   mode: NarrationMode;
   readVO: "full" | "none";
+  /** Opening arm for the 3-second skip-rate experiment. */
+  opening: Opening;
 }
 
 /**
@@ -205,7 +225,11 @@ function mapShapeQuestion(lq: LoopQ, common: Record<string, unknown>): any {
     tier: lq.tier,
     ansLetter: f.ansLetter,
     ansLabel: f.ansLabel,
-    explanation: f.explanation,
+    // Authored explanation from the bank wins over the figure's own; the LEGACY
+    // classic kinds (dot/shaded/polygon) have their figure SYNTHESIZED by
+    // legacyShapes.ts, whose explanation is a per-kind template ("each shape gets
+    // filled in" on all 100 shaded questions).
+    explanation: String(lq.explanation ?? "").trim() || f.explanation,
     prompt: f.prompt,
   };
   if (f.kind === "fold") {
@@ -266,6 +290,7 @@ export function mapProps(props: any): Mapped {
     mode = "no-options-vo";
   }
   const readVO = mode === "none" ? "none" : "full";
+  const opening: Opening = props.opening === "motion-hook" ? "motion-hook" : "cold-plate";
   const revealIdxs = revealIndexes(loopQs.length, ending);
 
   const questions: any[] = [];
@@ -294,7 +319,7 @@ export function mapProps(props: any): Mapped {
       ansLetter = ai >= 0 ? LETTERS[ai] : "A";
       ansLabel = ai >= 0 ? options[ai].text : lq.answer;
       answerSpoken = isNum(ansLabel) ? n2w(ansLabel) : String(ansLabel).toLowerCase();
-      const explanation = explanationFor(lq, ansLabel);
+      const explanation = explanationOf(lq, ansLabel);
       q = { ...common, ansLetter, ansLabel, explanation, kind: "text", question: lq.prompt, questionFontSize: 62, options };
     } else if (lq.kind === "numseries") {
       // numseries: fill-in-the-blank (no A-D options). Show the series with a "?"
@@ -302,7 +327,7 @@ export function mapProps(props: any): Mapped {
       ansLetter = "?";
       ansLabel = lq.answer;
       answerSpoken = isNum(ansLabel) ? n2w(ansLabel) : String(ansLabel).toLowerCase();
-      const explanation = explanationFor(lq, ansLabel);
+      const explanation = explanationOf(lq, ansLabel);
       const seq = [...(lq.seq ?? [])];
       if (!seq.includes("?")) seq.push("?");
       q = { ...common, ansLetter, ansLabel, explanation, kind: "numseries", prompt: lq.prompt, seq, options: [] };
@@ -318,7 +343,7 @@ export function mapProps(props: any): Mapped {
     if (revealIdxs.includes(i)) reveals.push({ index: i, text: revealVoText(lq.kind, ansLetter, answerSpoken, q.explanation, i) });
   });
 
-  return { questions, reveals, ending, mode, readVO };
+  return { questions, reveals, ending, mode, readVO, opening };
 }
 
 // ---------------------------------------------------------------------------
@@ -339,6 +364,10 @@ function computeShortFrames(mapped: Mapped, durs: Record<string, number>, platfo
   const lead = SHORT_LEAD;
   const trail = SHORT_TRAIL;
   let cur = 0;
+  // Opening arm: the motion-hook prepends a fixed, VO-free scene. This mirror of
+  // timeline.ts build() must stay in step with it or gateRenderSanity fails the video
+  // on a duration mismatch, which is exactly the kind of silent break we want loud.
+  if (mapped.opening === "motion-hook") cur += frames(HOOK_SECONDS);
   mapped.questions.forEach((q, qi) => {
     const readDur = mapped.readVO === "none" ? SILENT_READ : frames(lead + (durs[`q${q.idx}`] ?? 0) + trail);
     cur += readDur;
@@ -392,6 +421,9 @@ function shortProps(mapped: Mapped, durs: Record<string, number>, qrBase: string
     // exactly; "absent" hides it; "prominent" enlarges it). Default preserves the
     // current render byte-for-byte for every non-mascot arm.
     mascot: props.mascot ?? "standard",
+    // Opening arm. "cold-plate" is today's render byte-for-byte; "motion-hook" is the
+    // only thing that differs between the two arms of the skip-rate experiment.
+    opening: mapped.opening,
     totalFrames,
   };
 }

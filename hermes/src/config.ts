@@ -8,11 +8,17 @@
 import { existsSync } from "node:fs";
 import { resolve, join } from "node:path";
 
-const ENV_FILE = process.env.HERMES_ENV_FILE || "/home/ec2-user/hermes.env";
-try {
-  if (existsSync(ENV_FILE)) process.loadEnvFile(ENV_FILE);
-} catch {
-  /* env may already be exported (e.g. systemd EnvironmentFile) */
+// The box keeps its env at /etc/hermes/hermes.env (0600); the older path is kept for
+// dev boxes. Without the /etc fallback nothing here loaded on the VPS unless systemd
+// happened to supply EnvironmentFile, which silently left secrets empty.
+const ENV_CANDIDATES = [process.env.HERMES_ENV_FILE, "/home/ec2-user/hermes.env", "/etc/hermes/hermes.env"];
+for (const f of ENV_CANDIDATES) {
+  if (!f) continue;
+  try {
+    if (existsSync(f)) { process.loadEnvFile(f); break; }
+  } catch {
+    /* env may already be exported (e.g. systemd EnvironmentFile) */
+  }
 }
 
 const REPO_DIR = process.env.HERMES_REPO_DIR || resolve(import.meta.dirname, "..", "..");
@@ -46,6 +52,31 @@ export const CONFIG = Object.freeze({
   },
   ACCOUNT_IDS: ["6a5fc9dc4ccd63dc1f041549", "6a5fc5451bee22495517bcc5"],
 
+  // ── Metricool (REPLACES Publer; see docs/hermes/metricool-migration-plan.md) ──
+  // Publer 403s on every content endpoint. userId/blogId are mandatory on every call
+  // and are declared on NONE of the spec's 497 paths, so metricool.ts injects them in
+  // the transport layer and never at a call site.
+  METRICOOL_BASE_URL: (process.env.METRICOOL_BASE_URL || "https://app.metricool.com/api").trim(),
+  METRICOOL_USER_TOKEN: (process.env.METRICOOL_USER_TOKEN || "").trim(),
+  METRICOOL_USER_ID: (process.env.METRICOOL_USER_ID || "").trim(),
+  METRICOOL_BLOG_ID: (process.env.METRICOOL_BLOG_ID || "").trim(),
+  /** Brand timezone. Metricool takes naive local datetimes plus a separate IANA zone. */
+  METRICOOL_TZ: (process.env.METRICOOL_TZ || "America/Chicago").trim(),
+  /**
+   * Fair Use publication budget, per brand per month. Metricool's documented base
+   * threshold is 600 and this account's maxPostsPerBrand is 700. Breaching does NOT
+   * return 429 — it triggers a manual human review during which the account cannot
+   * post at all, so we plan against 600 and treat 700 as the ceiling we never approach.
+   */
+  MC_MONTHLY_POST_BUDGET: Number(process.env.HERMES_MC_MONTHLY_BUDGET || 600),
+  MC_MONTHLY_HARD_CAP: Number(process.env.HERMES_MC_MONTHLY_HARD_CAP || 700),
+  MC_MONTHLY_ALERT_AT: Number(process.env.HERMES_MC_MONTHLY_ALERT_AT || 0.8),
+
+  // ── Attribution ────────────────────────────────────────────────────────
+  /** Per-video short link, so signups attribute to a single video instead of the bio. */
+  SITE_BASE_URL: (process.env.HERMES_SITE_BASE_URL || "https://smartfellaorfartsmella.com").trim(),
+  GO_LINK_PREFIX: (process.env.HERMES_GO_LINK_PREFIX || "/go/").trim(),
+
   // ── Media (S3 via tools/upload-media.ts) ───────────────────────────────
   MEDIA_HOST: (process.env.MEDIA_HOST || "s3").trim(),
   S3_BUCKET: (process.env.S3_BUCKET || "hermes-sffs-media").trim(),
@@ -66,6 +97,22 @@ export const CONFIG = Object.freeze({
    * wave rather than leaving the day thin — the 2026-07-25 incident shipped 1 video.
    */
   VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 8),
+  /**
+   * PER-PLATFORM posting policy for the shape-only restart.
+   *
+   * Instagram carries the campaign: 12/day, and it is the only network that reports
+   * a 3-second skip rate, so it is the only place the hook experiment can be measured.
+   *
+   * TikTok is under ACCOUNT-LEVEL SUPPRESSION. A previous throttle only lifted after
+   * 27.9 hours of total silence; the account has been quiet since 2026-07-25 15:45
+   * America/Chicago. It stays dark until Monday evening and then resumes at 2/day with
+   * a hard 4-hour floor between posts. `darkUntil` is a naive local datetime in
+   * METRICOOL_TZ. Do not shorten this without the account recovering first.
+   */
+  PLATFORM_POLICY: {
+    instagram: { perDay: 12, minGapMinutes: 0, darkUntil: null as string | null },
+    tiktok: { perDay: 2, minGapMinutes: 240, darkUntil: (process.env.HERMES_TIKTOK_DARK_UNTIL || "2026-07-27T18:00:00").trim() as string | null },
+  } as Record<string, { perDay: number; minGapMinutes: number; darkUntil: string | null }>,
   MUSIC_TRACKS: [
     "audio/music/gameshow-fanfare.mp3",
     "audio/music/prize-wheel-parade.mp3",

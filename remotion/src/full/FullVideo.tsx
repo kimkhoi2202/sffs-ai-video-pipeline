@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { COLORS } from "../theme/brand";
+import { COLORS, slotColors } from "../theme/brand";
 import { PlatformProvider, HeaderConfigProvider, type ProgressStyle } from "../theme/layout";
 import { DebugSafeZones } from "../components/DebugSafeZones";
 import { Intro } from "../scenes/Intro";
+import { Hook } from "../scenes/Hook";
 import { QuestionPlate } from "../scenes/QuestionPlate";
 import { QuestionReveal } from "../scenes/QuestionReveal";
 import { Score } from "../scenes/Score";
@@ -19,6 +20,7 @@ import {
   type ReadVO,
   type EndCard,
   type DropReveal,
+  type Opening,
   fanfareBed,
   paradeBed,
   musicLevel,
@@ -47,10 +49,13 @@ const renderSegment = (
   total: number,
   endCard: EndCard,
   mascot: MascotVis,
+  hookBg: string,
 ): React.ReactNode => {
   switch (seg.type) {
     case "intro":
       return <Intro mascot={mascot} />;
+    case "hook":
+      return <Hook bg={hookBg} />;
     case "read":
       return <QuestionPlate q={seg.q} elapsed={0} pos={seg.pos} total={total} />;
     case "countdown":
@@ -65,7 +70,7 @@ const renderSegment = (
 };
 
 const segName = (seg: Segment): string => {
-  if (seg.type === "intro" || seg.type === "score" || seg.type === "outro") return seg.type;
+  if (seg.type === "intro" || seg.type === "hook" || seg.type === "score" || seg.type === "outro") return seg.type;
   return `Q${seg.q.idx} ${seg.type}`;
 };
 
@@ -117,15 +122,18 @@ export const FullVideo: React.FC<{
   /** Brand-mascot A/B visibility (loop `mascot` dimension). Omitted => "standard"
    *  (unchanged render). "absent" hides the intro/outro brain; "prominent" enlarges it. */
   mascot?: MascotVis;
-}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, showProgress, progressStyle, debugSafeZones, mascot }) => {
+  /** Opening arm for the 3-second skip-rate experiment (shorts only). "cold-plate"
+   *  is today's behaviour; "motion-hook" prepends the wordless Hook scene. */
+  opening?: Opening;
+}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, showProgress, progressStyle, debugSafeZones, mascot, opening }) => {
   const cut = slug ? bySlug(slug) : undefined;
   const platform: Platform = cut?.platform ?? platformProp ?? "youtube";
   const ids = cut?.ids ?? questionIds;
   const music = cut?.music ?? musicProp;
   const sfx = cut?.sfx ?? sfxProp;
   const variant: Variant = useMemo(
-    () => ({ readVO, dropReveal, dropScore, endCard, metaBase }),
-    [readVO, dropReveal, dropScore, endCard, metaBase],
+    () => ({ readVO, dropReveal, dropScore, endCard, metaBase, opening }),
+    [readVO, dropReveal, dropScore, endCard, metaBase, opening],
   );
   const T: TimelineData = useMemo(
     () => getTimeline(platform, ids, sfx, questions, durs, qrBase, variant),
@@ -133,6 +141,9 @@ export const FullVideo: React.FC<{
   );
   const total = T.questions.length;
   const winStart = winStartFrame(T);
+  // The hook ends by flooding the frame with the FIRST plate's own background colour,
+  // so the cut into the question reads as one continuous move instead of a jump.
+  const hookBg = slotColors(T.questions[0]?.idx ?? 1).bg;
   const headerConfig = useMemo(
     () => ({ showProgress: showProgress ?? true, progressStyle: progressStyle ?? "full" }),
     [showProgress, progressStyle],
@@ -143,7 +154,7 @@ export const FullVideo: React.FC<{
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
       {T.segments.map((seg, i) => (
         <Sequence key={i} from={seg.start} durationInFrames={seg.dur} name={segName(seg)}>
-          {renderSegment(seg, platform, total, endCard ?? "default", mascot ?? "standard")}
+          {renderSegment(seg, platform, total, endCard ?? "default", mascot ?? "standard", hookBg)}
         </Sequence>
       ))}
 
