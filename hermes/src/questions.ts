@@ -22,12 +22,18 @@ interface BankEntry {
   kind: string;
   category: string;
   tier: string;
+  /** LOSSY dedup keys — `norm()` strips / . ' $ % ? _ -> and newlines. `sig`/`hash`
+   *  are derived from them, so they can never change. Never display these. */
   promptNorm?: string;
   payloadNorm?: string;
   answerNorm?: string;
-  /** AUTHORED explanation, added by content/backfill-explanations.mjs. Preferred by
-   *  render.ts over the per-kind template legacyShapes.ts synthesizes, which emits one
-   *  identical sentence for every question of a kind. */
+  /** RAW authored text (emitted by content/validate.mjs rawFieldsOf). This is what
+   *  reaches the screen. `options` is in AUTHORED order; payloadNorm's is sorted.
+   *  Absent on entries banked before the raw-text re-import, hence the fallbacks. */
+  prompt?: string;
+  options?: string[];
+  seq?: string[];
+  answer?: string;
   explanation?: string;
   round?: number;
   slug?: string;
@@ -38,7 +44,12 @@ interface BankEntry {
 }
 
 export const LIMITS = {
-  maxPrompt: 92,
+  // 110, not 92: the re-import restores authored newlines, and the three longest
+  // sentence-completion prompts are 94/100/103 chars spread over 3 authored lines.
+  // What actually overflows is line length, not total length — measured across all
+  // 1,225 text/numseries sources the longest single LINE is 42 chars and no prompt
+  // exceeds 3 lines, so a 110 budget cannot produce a wider plate than 92 did.
+  maxPrompt: 110,
   maxOption: 24,
   maxOptions: 4,
   minOptions: 3,
@@ -153,19 +164,37 @@ export function loadUsedFuzzySigs(): Set<string> {
   return out;
 }
 
-/** Turn a bank entry into a validated HermesQ, or null if unusable/would overflow. */
+/**
+ * Turn a bank entry into a validated HermesQ, or null if unusable/would overflow.
+ *
+ * RAW fields win over the `*Norm` dedup keys wherever the entry carries them, because
+ * the keys are lossy by construction (see BankEntry). Entries banked before the
+ * raw-text re-import have no raw fields, so every read falls back to the old
+ * reconstruct-from-payloadNorm behaviour and those entries render exactly as before.
+ */
 export function toHermesQ(e: BankEntry): HermesQ | null {
-  if (!e || !e.sig || !e.answerNorm) return null;
-  const answer = String(e.answerNorm).trim();
+  if (!e || !e.sig) return null;
+  const answer = (String(e.answer ?? "").trim() || String(e.answerNorm ?? "").trim());
   if (!answer) return null;
   const explanation = String(e.explanation ?? "").trim() || undefined;
 
   if (e.kind === "text") {
-    const payload = e.payloadNorm ?? "";
-    const parts = payload.split(" || ");
-    if (parts.length < 2) return null;
-    const prompt = (parts[0] || e.promptNorm || "").trim();
-    const options = parts[1].split("~").map((o) => o.trim()).filter(Boolean);
+    // Prompt + options are taken as a PAIR: mixing a raw answer against normalized
+    // options (or the reverse) would break the exactly-one-match check below.
+    const rawPrompt = String(e.prompt ?? "").trim();
+    const rawOptions = Array.isArray(e.options) ? e.options.map((o) => String(o ?? "").trim()).filter(Boolean) : [];
+    let prompt: string;
+    let options: string[];
+    if (rawPrompt && rawOptions.length >= LIMITS.minOptions) {
+      prompt = rawPrompt;
+      options = rawOptions; // AUTHORED A/B/C/D order
+    } else {
+      const payload = e.payloadNorm ?? "";
+      const parts = payload.split(" || ");
+      if (parts.length < 2) return null;
+      prompt = (parts[0] || e.promptNorm || "").trim();
+      options = parts[1].split("~").map((o) => o.trim()).filter(Boolean);
+    }
     if (!prompt || prompt.length > LIMITS.maxPrompt) return null;
     if (options.length < LIMITS.minOptions || options.length > LIMITS.maxOptions) return null;
     if (options.some((o) => o.length > LIMITS.maxOption)) return null;
@@ -176,11 +205,11 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
   }
 
   if (e.kind === "numseries") {
-    const payload = e.payloadNorm ?? "";
-    const seq = payload.split("~").map((n) => n.trim()).filter(Boolean);
+    const rawSeq = Array.isArray(e.seq) ? e.seq.map((n) => String(n ?? "").trim()).filter(Boolean) : [];
+    const seq = rawSeq.length ? rawSeq : (e.payloadNorm ?? "").split("~").map((n) => n.trim()).filter(Boolean);
     if (seq.length < LIMITS.minSeq || seq.length > LIMITS.maxSeq) return null;
     if (seq.some((n) => n.length > 8)) return null;
-    const prompt = (e.promptNorm || "what comes next?").trim();
+    const prompt = (String(e.prompt ?? "").trim() || e.promptNorm || "what comes next?").trim();
     if (prompt.length > LIMITS.maxPrompt) return null;
     if (answer.length > 8) return null;
     return { sig: e.sig, hash: e.hash, kind: "numseries", category: e.category, tier: e.tier, prompt, seq, answer, explanation };

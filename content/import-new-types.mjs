@@ -24,7 +24,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { sigOf, hashOf, payloadOf, answerNormOf } from "./validate.mjs";
+import { sigOf, hashOf, payloadOf, answerNormOf, rawFieldsOf } from "./validate.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const BANK_PATH = path.join(HERE, "master-question-bank.json");
@@ -62,6 +62,8 @@ function textEntry(q, slug, round, id) {
   return {
     sig, hash: hashOf(sig), kind: q.kind, category: q.category, tier: q.tier,
     promptNorm: norm(q.question || q.prompt || ""), payloadNorm: payloadOf(q), answerNorm: answerNormOf(q),
+    // Raw authored text alongside the lossy dedup keys — see validate.mjs rawFieldsOf.
+    ...rawFieldsOf(q),
     round, slug, id, addedAt: today(),
   };
 }
@@ -76,6 +78,7 @@ function figureEntry(kind, tier, q, slug, round, id) {
   return {
     sig, hash: hashOf(sig), kind, category: "nonverbal", tier,
     promptNorm: norm(q.prompt || ""), payloadNorm, answerNorm,
+    ...rawFieldsOf(q),
     round, slug, id, addedAt: today(), figure,
   };
 }

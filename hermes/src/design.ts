@@ -269,7 +269,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       seq: q.seq,
       answer: q.answer,
       // Authored reveal explanation; render.ts falls back to its generated template
-      // when the bank entry predates the explanation backfill.
+      // when the bank entry predates the raw-text re-import.
       explanation: q.explanation,
       // Carry the render-ready shape/figure payload through for nonverbal kinds
       // (fold + matrix family); undefined for text/numseries. render.ts mapProps

@@ -29,6 +29,8 @@
  * a video back is one slot and the cost of shipping a broken one is the account.
  */
 import type { GateResult, HermesQ } from "./state.ts";
+// The pipeline's canonical number speller, the same one the reveal VO uses.
+import { n2w } from "../../content/gen-narration-scripts.mjs";
 
 /** How far back caption/hashtag/explanation novelty is enforced. */
 export const NOVELTY_WINDOW = 30;
@@ -75,6 +77,37 @@ const norm = (s: unknown): string => String(s ?? "").trim().toLowerCase();
 
 /** Normalised comparison key for a caption (whitespace/case insensitive). */
 const captionKey = (s: unknown): string => norm(s).replace(/\s+/g, " ");
+
+/**
+ * Does `explanation` reference `answer`?
+ *
+ * Not a plain substring test, because the authored explanations SPELL numbers out —
+ * "each number is multiplied by two then add one, so six becomes thirteen" for the
+ * answer 13. That is correct authoring: the explanation is also read aloud as the
+ * reveal VO. A digits-only check called 286 of 852 text questions unexplained, 279 of
+ * them purely because the number was written as a word.
+ *
+ * So the answer is accepted in either form, and hyphenation is ignored so
+ * "twenty-three" matches "twenty three".
+ */
+export function referencesAnswer(explanation: string, answer: string): boolean {
+  const flat = (s: string) => norm(s).replace(/[-\u2011-\u2015]/g, " ").replace(/\s+/g, " ");
+  const e = flat(explanation);
+  const a = flat(answer);
+  if (!a) return true;
+  if (e.includes(a)) return true;
+
+  // Numeric answers: also accept the spelled form ("$1.00" -> "one", "2/3" -> parts).
+  const numbers = a.match(/\d+/g) ?? [];
+  if (numbers.length) {
+    const spelled = numbers.map((d) => flat(String(n2w(d) ?? "")));
+    if (spelled.every((w) => w && e.includes(w))) return true;
+  }
+  // Multi-word answers ("CAN'T TELL"): accept when every significant word appears.
+  const words = a.split(" ").filter((w) => w.length > 2);
+  if (words.length > 1 && words.every((w) => e.includes(w))) return true;
+  return false;
+}
 
 export function publishGate(v: PublishCandidate, recent: RecentPost[] = []): GateResult {
   const problems: string[] = [];
@@ -123,9 +156,9 @@ export function publishGate(v: PublishCandidate, recent: RecentPost[] = []): Gat
     const q = v.questions[i];
     const kind = String(q?.kind ?? "");
     if (kind === "text" || kind === "numseries") {
-      const label = norm(v.answerLabels?.[i]) || norm(q?.answer);
-      if (label && !key.includes(label)) {
-        problems.push(`${where}: explanation never references its answer "${v.answerLabels?.[i] ?? q?.answer}"`);
+      const label = String(v.answerLabels?.[i] ?? q?.answer ?? "");
+      if (label && !referencesAnswer(e, label)) {
+        problems.push(`${where}: explanation never references its answer "${label}"`);
       }
     }
   });

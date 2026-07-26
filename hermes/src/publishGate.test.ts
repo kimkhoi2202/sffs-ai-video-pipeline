@@ -241,3 +241,26 @@ test("slotTimes spreads 12 Instagram posts across the window", () => {
   assert.match(t[0], /^2026-07-27T07:00:00$/);
   assert.match(t[11], /^2026-07-27T23:00:00$/);
 });
+
+// ── the answer-reference check is numeral-aware ──────────────────────────────
+test("referencesAnswer accepts a spelled-out number", () => {
+  // The authored explanations write numbers as WORDS because the same sentence is
+  // read aloud as the reveal VO. A digits-only check called 279 of 852 questions
+  // unexplained purely for that.
+  assert.equal(G.referencesAnswer("Each number is multiplied by two then add one, so six becomes thirteen.", "13"), true);
+  assert.equal(G.referencesAnswer("Add the two numbers before it: nineteen plus eleven is thirty.", "30"), true);
+  assert.equal(G.referencesAnswer("Each number is multiplied by three then add two, so seven becomes twenty-three.", "23"), true);
+});
+
+test("referencesAnswer still accepts plain digits", () => {
+  assert.equal(G.referencesAnswer("Each number is doubled then take away one: 5 times 2 is 10, minus 1 is 9.", "9"), true);
+});
+
+test("referencesAnswer accepts a multi-word answer when every significant word appears", () => {
+  assert.equal(G.referencesAnswer("Only some flowers fade fast, so we cannot tell whether the roses do.", "CAN'T TELL"), true);
+});
+
+test("referencesAnswer still rejects a genuinely generic explanation", () => {
+  assert.equal(G.referencesAnswer("Work out the rule and you have it.", "13"), false);
+  assert.equal(G.referencesAnswer("spot the pattern to crack the sequence", "53"), false);
+});

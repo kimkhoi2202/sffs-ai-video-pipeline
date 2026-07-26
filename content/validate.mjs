@@ -158,6 +158,46 @@ function answerNormOf(q) {
   if (q.kind === "dot") return q.ansPos;
   return norm(q.ansLabel);
 }
+
+/**
+ * RAW authored text, emitted ALONGSIDE the `*Norm` keys above — never instead of them.
+ *
+ * The `*Norm` fields are DEDUP KEYS, not display text. `norm()` lowercases and replaces
+ * every run of non-alphanumerics with one space, so it deletes / . ' $ % ? _ -> and
+ * newlines. `sig` and `hash` are built from those keys and MUST stay byte-identical
+ * (hermes-used-sigs.json and ab-test-usage.json key the never-repeat guarantee off
+ * them), so these are strictly ADDITIVE fields.
+ *
+ * Two distinct losses are repaired:
+ *   1. CHARACTERS — "2/3" was banked as "2 3", "$1.00" as "1 00", "CAN'T TELL" as
+ *      "can t tell", and every multi-line syllogism collapsed onto one line.
+ *   2. OPTION ORDER — payloadOf() sorts options alphabetically by their mangled text,
+ *      so authored A/B/C/D order is lost for 860 of 902 text questions. `options` here
+ *      is in AUTHORED order.
+ *
+ * Only text/numseries carry raw prompt/options/seq/answer: the nonverbal kinds encode
+ * their stimulus structurally (a figure payload or a compact code), not as display
+ * text. `explanation` is carried for EVERY kind — it is authored prose, and no code
+ * path should have to invent one.
+ */
+function rawFieldsOf(q) {
+  const raw = {};
+  if (q.kind === "text" || q.kind === "numseries") {
+    const prompt = String(q.question ?? q.prompt ?? "");
+    if (prompt) raw.prompt = prompt;
+    const options = (q.options ?? []).map((o) => String(o?.text ?? ""));
+    if (options.length && options.every(Boolean)) raw.options = options;
+    if (q.kind === "numseries") {
+      const seq = (q.seq ?? []).filter((t) => t !== "?").map((t) => String(t));
+      if (seq.length) raw.seq = seq;
+    }
+    const answer = String(q.ansLabel ?? "");
+    if (answer) raw.answer = answer;
+  }
+  const explanation = String(q.explanation ?? "").trim();
+  if (explanation) raw.explanation = explanation;
+  return raw;
+}
 const sigOf = (q) => [q.kind, q.category, slugify(q.tier), payloadOf(q), answerNormOf(q)].join("|");
 const hashOf = (s) => crypto.createHash("sha1").update(s).digest("hex").slice(0, 12);
 
@@ -193,7 +233,7 @@ function nearDup(qa, qb) {
 
 // Shared with the generator (gen-rounds.mjs) so it uses the SAME solvers +
 // signatures + near-dup logic as this validator (single source of truth).
-export { solveSeries, solveMapping, solvePuzzle, solvePolygon, solveDot, payloadOf, answerNormOf, sigOf, hashOf, nearDup };
+export { solveSeries, solveMapping, solvePuzzle, solvePolygon, solveDot, payloadOf, answerNormOf, rawFieldsOf, sigOf, hashOf, nearDup };
 
 // ---- standard countdown ----------------------------------------------------
 // The render pipeline uses a uniform 5s question countdown (matches the Remotion
@@ -406,6 +446,7 @@ function entryOf(q, round) {
     promptNorm: norm(q.question || q.prompt || ""),
     payloadNorm: payloadOf(q),
     answerNorm: answerNormOf(q),
+    ...rawFieldsOf(q),
     round: round.round,
     slug: round.slug,
     id: q.id,
