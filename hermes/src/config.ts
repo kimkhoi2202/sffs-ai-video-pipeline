@@ -110,7 +110,9 @@ export const CONFIG = Object.freeze({
    * METRICOOL_TZ. Do not shorten this without the account recovering first.
    */
   PLATFORM_POLICY: {
-    instagram: { perDay: 12, minGapMinutes: 0, darkUntil: null as string | null },
+    // 56 minutes is the same-platform floor the campaign has always run under; it was
+    // 0 here only because the daily grid happened to space posts further apart anyway.
+    instagram: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null },
     tiktok: { perDay: 2, minGapMinutes: 240, darkUntil: (process.env.HERMES_TIKTOK_DARK_UNTIL || "2026-07-27T18:00:00").trim() as string | null },
   } as Record<string, { perDay: number; minGapMinutes: number; darkUntil: string | null }>,
   MUSIC_TRACKS: [
