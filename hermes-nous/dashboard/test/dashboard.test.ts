@@ -825,15 +825,18 @@ test("GUARDRAIL: GOAL panel adds NO mutating control and leaks NO secrets", () =
 
 // ── (D) DASHBOARD POLISH ─────────────────────────────────────────────────────
 const schedFixture = {
-  ok: true, source: "publer (live, read-only bridge)", as_of: "2026-07-23T22:00:00Z",
-  count: 1, by_platform: { tiktok: 1 },
+  ok: true, source: "metricool (live, read-only bridge)", as_of: "2026-07-23T22:00:00Z",
+  count: 1, by_platform: { tiktok: 1 }, by_status: { PENDING: 1 },
+  experiment: { target: 15, hook_scheduled: 0, hook_posted: 0, control_scheduled: 1, control_posted: 0,
+    hook_with_data: 0, hook_median_skip: null, control_median_skip: null, on_track: false },
   posts: [{
     post_id: "s1", platform: "tiktok",
     scheduled_at: "2026-07-24T02:17:00Z", scheduled_cst: "Wed Jul 23, 9:17 PM CDT",
     hook: "smart or fart?", arm: "control", arm_source: "run" as const,
     video_key: "sm1",
-    thumbnail: "https://cdn.publer.com/uploads/photos/s.jpg",
-    media_url: "https://cdn.publer.com/uploads/videos/sm1/v.mp4",
+    thumbnail: null,
+    media_url: "https://static.metricool.com/planner/202607/6617222-file-1738.mp4",
+    status: "PENDING", public_url: null, opening: "cold-plate", video_id: "2026-07-23-r01", skip_rate: null,
   }],
 };
 
@@ -853,14 +856,16 @@ test("D3: Plyr is vendored locally (no external CDN at runtime) and initialised 
   assert.doesNotMatch(html, /cdn\.plyr\.io|cdn\.jsdelivr\.net|unpkg\.com/); // never a runtime CDN
 });
 
-test("D3: SCHEDULED panel shows full-frame previews via the same-origin proxy (both panels fixed)", () => {
+test("D3: SCHEDULED panel plays Metricool media DIRECTLY (its CDN is public — no proxy)", () => {
   const html = page(emptyPageData({ scheduled: schedFixture as any }));
   assert.match(html, /9:17 PM CDT/); // the scheduled time is still prominent
   assert.match(html, /<video[^>]*\bcontrols\b/);
-  assert.match(html, /src="\/api\/draft-media\?v=sm1&amp;kind=video"/);
-  assert.match(html, /poster="\/api\/draft-media\?v=sm1&amp;kind=thumb"/);
-  assert.doesNotMatch(html, /cdn\.publer\.com/);   // proxied — no raw CDN url in HTML
-  assert.doesNotMatch(html, /amazonaws|X-Amz-/);   // no S3-signed leak
+  // static.metricool.com serves the mp4 with no Referer and even a hostile one
+  // (verified live, HTTP 206 both ways), so the Publer-era Referer proxy is not
+  // needed here and the <video> points straight at the asset.
+  assert.match(html, /src="https:\/\/static\.metricool\.com\/[^"]+\.mp4"/);
+  assert.doesNotMatch(html, /\/api\/draft-media\?v=sm1&amp;kind=video/);
+  assert.doesNotMatch(html, /amazonaws|X-Amz-/); // no S3-signed leak
 });
 
 // ── A/B arm label = REAL dimension:arm (not the LLM caption opener) ───────────
@@ -887,10 +892,12 @@ test("SCHEDULED cards render PLAIN-LANGUAGE change-vs-default (never the caption
     posts: [
       { post_id: "s1", platform: "tiktok", scheduled_at: "2026-07-24T02:17:00Z", scheduled_cst: "t1",
         hook: "think you got this", dimension: "narration", arm: "no-narration", arm_source: "run",
-        video_key: "k1", thumbnail: null, media_url: null },
+        video_key: "k1", thumbnail: null, media_url: null,
+        status: "PENDING", public_url: null, opening: "", video_id: "", skip_rate: null },
       { post_id: "s2", platform: "tiktok", scheduled_at: "2026-07-24T03:17:00Z", scheduled_cst: "t2",
         hook: "bet you cant solve this", dimension: "unknown", arm: "unknown", arm_source: "inferred",
-        video_key: "k2", thumbnail: null, media_url: null },
+        video_key: "k2", thumbnail: null, media_url: null,
+        status: "PENDING", public_url: null, opening: "", video_id: "", skip_rate: null },
     ],
   };
   const html = page(emptyPageData({ scheduled: sched as any }));
@@ -927,12 +934,20 @@ test("Item 2: BANK panel surfaces the honest reconciled used-set method + residu
 });
 
 test("D3: resolveScheduledMediaUrl resolves by video_key, allowlist-guarded (no S3)", () => {
+  // BOTH public CDNs resolve: Metricool for anything scheduled now, Publer for any
+  // remaining pre-migration asset. Everything else, notably an S3 presigned url,
+  // resolves to null so the proxy can never be pointed at it.
+  const MC = "https://static.metricool.com/planner/202607/6617222-file-1738.mp4";
   const view = { ...schedFixture, posts: [
     schedFixture.posts[0],
+    { ...schedFixture.posts[0], video_key: "legacy", thumbnail: "https://cdn.publer.com/uploads/photos/s.jpg",
+      media_url: "https://cdn.publer.com/uploads/videos/sm1/v.mp4" },
     { ...schedFixture.posts[0], video_key: "bad", thumbnail: null, media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z" },
   ]} as any;
-  assert.equal(resolveScheduledMediaUrl(view, "sm1", "video"), "https://cdn.publer.com/uploads/videos/sm1/v.mp4");
-  assert.equal(resolveScheduledMediaUrl(view, "sm1", "thumb"), "https://cdn.publer.com/uploads/photos/s.jpg");
+  assert.equal(resolveScheduledMediaUrl(view, "sm1", "video"), MC);
+  assert.equal(resolveScheduledMediaUrl(view, "sm1", "thumb"), null); // fixture has no poster
+  assert.equal(resolveScheduledMediaUrl(view, "legacy", "video"), "https://cdn.publer.com/uploads/videos/sm1/v.mp4");
+  assert.equal(resolveScheduledMediaUrl(view, "legacy", "thumb"), "https://cdn.publer.com/uploads/photos/s.jpg");
   assert.equal(resolveScheduledMediaUrl(view, "bad", "video"), null); // S3-signed ⇒ rejected
   assert.equal(resolveScheduledMediaUrl(view, "nope", "video"), null);
   assert.equal(resolveScheduledMediaUrl(null, "sm1", "video"), null);
@@ -1038,4 +1053,161 @@ test("B: autonomous promotion OFF renders the human-only note", () => {
   const html = page(emptyPageData({ defaults } as any));
   assert.match(html, /Autonomous promotion: <b>OFF<\/b>/);
   assert.match(html, /No pending default changes/); // human view preserved
+});
+
+
+// ── Metricool read path (replaces the dead Publer bridge) ────────────────────
+// Publer began returning HTTP 403 on every content endpoint, so /api/scheduled served
+// an empty board while 41 posts sat on the Metricool calendar. An empty dashboard and
+// a blind dashboard look identical to the reader, which is why these are pinned.
+
+test("publicMetricoolCdnUrl: accepts a clean static.metricool.com asset, rejects everything else", async () => {
+  const { publicMetricoolCdnUrl } = await import("../data.ts");
+  const good = "https://static.metricool.com/planner/202607/6617222-file-1738.mp4";
+  assert.equal(publicMetricoolCdnUrl(good), good);
+  // an S3 presigned url is structurally excluded: wrong host AND it carries a query
+  assert.equal(publicMetricoolCdnUrl("https://hermes-sffs-media.s3.us-east-1.amazonaws.com/a.mp4?X-Amz-Signature=abc"), null);
+  assert.equal(publicMetricoolCdnUrl("https://static.metricool.com/a.mp4?X-Amz-Signature=abc"), null);
+  assert.equal(publicMetricoolCdnUrl("http://static.metricool.com/a.mp4"), null);  // not https
+  assert.equal(publicMetricoolCdnUrl("https://evil.example/a.mp4"), null);
+  assert.equal(publicMetricoolCdnUrl("https://user:pw@static.metricool.com/a.mp4"), null);
+  assert.equal(publicMetricoolCdnUrl(null), null);
+});
+
+test("SECURITY: sanitizeScheduledForPublic nulls anything that is not a PUBLIC CDN asset", async () => {
+  const { sanitizeScheduledForPublic } = await import("../data.ts");
+  const view: any = { ok: true, count: 1, posts: [{
+    post_id: "u1", platform: "instagram", scheduled_at: "2026-07-27T12:00:00Z", scheduled_cst: "x",
+    hook: "h", dimension: "opening", arm: "motion-hook", arm_source: "inferred", video_key: "u1:instagram",
+    thumbnail: "https://hermes-sffs-media.s3.us-east-1.amazonaws.com/t.jpg?X-Amz-Signature=abc",
+    media_url: "https://hermes-sffs-media.s3.us-east-1.amazonaws.com/v.mp4?X-Amz-Signature=abc",
+    status: "PENDING", public_url: null, opening: "motion-hook", video_id: "v1", skip_rate: null,
+  }] };
+  sanitizeScheduledForPublic(view);
+  assert.equal(view.posts[0].media_url, null, "a presigned S3 url must never survive the choke point");
+  assert.equal(view.posts[0].thumbnail, null);
+});
+
+test("GUARDRAIL: the Metricool read bridge imports NO write symbol", async () => {
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../../bridge/metricool-read.ts", import.meta.url), "utf8");
+  // The client also exports createPost / reschedule / deletePost. The bridge is the
+  // only thing that touches it, and it may import ONLY the read functions.
+  const imports = /import\s*\{([^}]*)\}\s*from\s*"[^"]*metricool\.ts"/.exec(src);
+  assert.ok(imports, "bridge must import from the metricool client");
+  const named = imports[1].split(",").map((x) => x.trim()).filter(Boolean);
+  assert.deepEqual(named.sort(), ["instagramReels", "listPosts"]);
+  // Strip comments first: the file's own header EXPLAINS why it must not import the
+  // write functions, and naming them in prose is not the same as calling them.
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+  for (const forbidden of ["createPost", "deletePost", "reschedule", "buildCreateBody"]) {
+    assert.ok(!code.includes(forbidden), `bridge must not reference ${forbidden} in code`);
+  }
+});
+
+test("GUARDRAIL: the dashboard never imports the Metricool client directly", async () => {
+  const { readFileSync } = await import("node:fs");
+  for (const f of ["../data.ts", "../server.ts", "../render.ts", "../config.ts"]) {
+    const src = readFileSync(new URL(f, import.meta.url), "utf8");
+    assert.ok(!/from\s*"[^"]*hermes\/src\/metricool\.ts"/.test(src),
+      `${f} must reach Metricool only via the spawned read-only bridge`);
+    for (const forbidden of ["createPost(", "deletePost(", "reschedule("]) {
+      assert.ok(!src.includes(forbidden), `${f} must not call ${forbidden}`);
+    }
+  }
+});
+
+test("summarizeExperiment: counts arms, and reports medians only from posts WITH data", async () => {
+  const { summarizeExperiment } = await import("../data.ts");
+  const mk = (opening: string, status: string, skip: number | null) => ({
+    post_id: Math.random().toString(36), platform: "instagram", scheduled_at: "2026-07-27T12:00:00Z",
+    scheduled_cst: "x", hook: "h", dimension: "opening", arm: opening, arm_source: "inferred",
+    video_key: "k" + Math.random(), thumbnail: null, media_url: null,
+    status, public_url: null, opening, video_id: "", skip_rate: skip,
+  });
+  const e = summarizeExperiment([
+    mk("motion-hook", "PUBLISHED", 60),
+    mk("motion-hook", "PUBLISHED", 70),
+    mk("motion-hook", "PUBLISHED", null),   // posted but not synced yet
+    mk("motion-hook", "PENDING", null),
+    mk("cold-plate", "PUBLISHED", 80),
+    mk("cold-plate", "PENDING", null),
+  ] as any, 15);
+  assert.equal(e.hook_scheduled, 4);
+  assert.equal(e.hook_posted, 3);
+  assert.equal(e.control_posted, 1);
+  assert.equal(e.hook_with_data, 2, "the unsynced post must not count as data");
+  assert.equal(e.hook_median_skip, 65);
+  assert.equal(e.control_median_skip, 80);
+  assert.equal(e.on_track, false, "4 hook reels is short of 15");
+  assert.equal(summarizeExperiment(Array.from({ length: 15 }, () => mk("motion-hook", "PENDING", null)) as any, 15).on_track, true);
+});
+
+test("page: EXPERIMENT panel shows the hook counter, arm chips and the live permalink", () => {
+  const posts = [
+    { post_id: "u1", platform: "instagram", scheduled_at: "2026-07-26T22:00:00Z", scheduled_cst: "Sun Jul 26, 5:00 PM CDT",
+      hook: "how many did you get", dimension: "opening", arm: "cold-plate", arm_source: "inferred",
+      video_key: "u1:instagram", thumbnail: null, media_url: null, status: "PUBLISHED",
+      public_url: "https://www.instagram.com/reel/DbRalCfk3DY/", opening: "cold-plate", video_id: "2026-07-26-r01", skip_rate: null },
+    { post_id: "u2", platform: "instagram", scheduled_at: "2026-07-26T23:12:00Z", scheduled_cst: "Sun Jul 26, 6:12 PM CDT",
+      hook: "bet you get this wrong", dimension: "opening", arm: "motion-hook", arm_source: "inferred",
+      video_key: "u2:instagram", thumbnail: null, media_url: null, status: "PENDING",
+      public_url: null, opening: "motion-hook", video_id: "2026-07-26-r02", skip_rate: null },
+  ];
+  const view: any = { ok: true, posts, count: 2, by_platform: { instagram: 2 }, by_status: { PUBLISHED: 1, PENDING: 1 },
+    experiment: { target: 15, hook_scheduled: 1, hook_posted: 0, control_scheduled: 1, control_posted: 1,
+      hook_with_data: 0, hook_median_skip: null, control_median_skip: null, on_track: false },
+    source: "metricool (live, read-only bridge)", as_of: "2026-07-26T22:30:00Z" };
+  const html = page(emptyPageData({ scheduled: view }));
+  assert.match(html, /1 \/ 15 hook reels/);                 // the counter the human reads
+  assert.match(html, />HOOK</);                             // per-card arm chip
+  assert.match(html, />CONTROL</);
+  assert.match(html, /PUBLISHED/);
+  assert.match(html, /instagram\.com\/reel\/DbRalCfk3DY/); // live permalink surfaced
+  assert.match(html, /LIVE FROM METRICOOL/);
+  assert.match(html, /1 published/);
+  assert.match(html, /1 pending/);
+});
+
+test("skip rate renders as PENDING, never as a misleading 0%", () => {
+  const mkPost = (skip: number | null) => ({
+    post_id: "u1", platform: "instagram", scheduled_at: "2026-07-26T22:00:00Z", scheduled_cst: "x",
+    hook: "h", dimension: "opening", arm: "motion-hook", arm_source: "inferred", video_key: "u1:instagram",
+    thumbnail: null, media_url: null, status: "PUBLISHED", public_url: null,
+    opening: "motion-hook", video_id: "v", skip_rate: skip,
+  });
+  const view = (skip: number | null): any => ({ ok: true, posts: [mkPost(skip)], count: 1,
+    by_platform: { instagram: 1 }, by_status: { PUBLISHED: 1 },
+    experiment: { target: 15, hook_scheduled: 1, hook_posted: 1, control_scheduled: 0, control_posted: 0,
+      hook_with_data: skip === null ? 0 : 1, hook_median_skip: skip, control_median_skip: null, on_track: false },
+    source: "t", as_of: "t" });
+  const pending = page(emptyPageData({ scheduled: view(null) }));
+  assert.match(pending, /skip rate: pending/);
+  assert.doesNotMatch(pending, /skip 0\.0%/, "an unsynced post must never render as a perfect hook");
+  const synced = page(emptyPageData({ scheduled: view(64.2) }));
+  assert.match(synced, /skip 64\.2%/);
+});
+
+test("GUARDRAIL: the rewired SCHEDULED + EXPERIMENT panels add NO mutating control", () => {
+  const view: any = { ok: true, count: 1, by_platform: { instagram: 1 }, by_status: { PUBLISHED: 1 },
+    experiment: { target: 15, hook_scheduled: 1, hook_posted: 1, control_scheduled: 0, control_posted: 0,
+      hook_with_data: 0, hook_median_skip: null, control_median_skip: null, on_track: false },
+    source: "t", as_of: "t",
+    posts: [{ post_id: "u1", platform: "instagram", scheduled_at: "2026-07-26T22:00:00Z", scheduled_cst: "x",
+      hook: "h", dimension: "opening", arm: "motion-hook", arm_source: "inferred", video_key: "u1:instagram",
+      thumbnail: null, media_url: null, status: "PUBLISHED",
+      public_url: "https://www.instagram.com/reel/DbRalCfk3DY/", opening: "motion-hook", video_id: "v", skip_rate: 61.1 }] };
+  const before = page(emptyPageData());
+  const after = page(emptyPageData({ scheduled: view }));
+  const count = (h: string, re: RegExp): number => (h.match(re) || []).length;
+  // Measure what THESE panels ADD. Other panels on the page legitimately contain a
+  // form; the invariant that matters is that rewiring the read path introduced no
+  // new control of any kind.
+  assert.equal(count(after, /<form/gi), count(before, /<form/gi), "no new form");
+  assert.equal(count(after, /<button/gi), count(before, /<button/gi), "no new button");
+  assert.equal(count(after, /<input/gi), count(before, /<input/gi), "no new input");
+  assert.doesNotMatch(after, /method=["\x27]?post/i);
+  // the only outbound link the panels add is the READ-ONLY public permalink
+  assert.doesNotMatch(after, /app\.metricool\.com/, "no deep link into the writable planner");
+  assert.match(after, /instagram\.com\/reel\//);
 });

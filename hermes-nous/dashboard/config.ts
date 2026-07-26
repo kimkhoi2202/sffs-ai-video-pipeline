@@ -150,6 +150,17 @@ export const CONFIG = Object.freeze({
   // in-memory (TTL) with single-flight so public traffic can't hammer Publer.
   PUBLER_READ_BRIDGE:
     (process.env.HERMES_PUBLER_READ_BRIDGE || join(HERMES_NOUS_DIR, "bridge", "publer-read.ts")).trim(),
+  // READ-ONLY Metricool bridge. Publer 403s on every content endpoint now, so the
+  // live schedule is read from Metricool. Spawned as a subprocess on purpose: it
+  // keeps createPost/reschedule/deletePost out of this server's module graph.
+  METRICOOL_READ_BRIDGE:
+    (process.env.HERMES_METRICOOL_READ_BRIDGE || join(HERMES_NOUS_DIR, "bridge", "metricool-read.ts")).trim(),
+  // Ledger the controlled poster writes after every create: uuid -> videoId, slot and
+  // A/B opening arm. The dashboard joins on uuid to label each card with its arm.
+  SCHEDULED_LEDGER:
+    (process.env.HERMES_SCHEDULED_LEDGER || join(DATA_DIR, "metricool-scheduled.json")).trim(),
+  /** Hook-arm reels the 3-second skip-rate test needs before it can conclude. */
+  HOOK_ARM_TARGET: Number(process.env.HERMES_HOOK_ARM_TARGET || 15),
   /** in-memory cache TTL for the live drafts list (ms). */
   DRAFTS_TTL_MS: Number(process.env.HERMES_DRAFTS_TTL_MS || 120_000),
   /** hard timeout for the read-only bridge subprocess (ms). */
