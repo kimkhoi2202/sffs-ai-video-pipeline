@@ -54,6 +54,15 @@ export interface PublishCandidate {
    * contain, so the answer-reference check needs the human-readable label instead.
    */
   answerLabels?: string[];
+  /**
+   * The branded cover that will be sent as videoThumbnailUrl. REQUIRED: without it a
+   * reel falls back to its own first frame, and on the motion-hook arm frame one is
+   * four blank coloured panels by design. That is not just off-brand — it makes the
+   * two arms differ in POSTER QUALITY as well as opening, so a skip-rate difference
+   * could be caused by the thumbnail instead of the hook, which would invalidate the
+   * experiment. A missing cover has to fail loudly rather than silently degrade.
+   */
+  cover_url?: string | null;
 }
 
 /** Characters an authored prompt/option may carry that the normalizer destroys. */
@@ -164,6 +173,18 @@ export function publishGate(v: PublishCandidate, recent: RecentPost[] = []): Gat
   });
   if (explanations.length && explanations.length !== v.questions.length) {
     problems.push(`explanations (${explanations.length}) do not cover all ${v.questions.length} questions`);
+  }
+
+  // ── 5: branded cover ──────────────────────────────────────────────────────
+  const cover = String(v.cover_url ?? "").trim();
+  if (!cover) {
+    problems.push("no branded cover — the reel would fall back to its own first frame (blank panels on the motion-hook arm)");
+  } else if (!/^https:\/\/[^\s]+$/.test(cover)) {
+    problems.push(`cover url is not https: "${cover.slice(0, 60)}"`);
+  } else if (/x-amz-signature|amazonaws\.com/i.test(cover)) {
+    // Metricool stores this URL verbatim rather than rehosting it, so a presigned S3
+    // link would expire while the post is still scheduled and the cover would vanish.
+    problems.push("cover url is a presigned S3 link, which expires before the post publishes");
   }
 
   // ── 4: caption + hashtag novelty ──────────────────────────────────────────

@@ -37,6 +37,7 @@ const A = await import(`${REPO}/hermes/src/attribution.ts`);
 const { CONFIG } = await import(`${REPO}/hermes/src/config.ts`);
 const { uploadToS3 } = await import(`${REPO}/hermes/src/s3.ts`);
 const { readJSON, writeJSONAtomic } = await import(`${REPO}/hermes/src/state.ts`);
+const C = await import(`${REPO}/hermes/src/covers.ts`);
 const { join } = await import("node:path");
 
 const argv = process.argv.slice(2);
@@ -234,7 +235,11 @@ async function run() {
     const explanations = mapped.questions.map((q) => q.explanation);
     // ansLabel is the answer AS DISPLAYED; q.answer is an internal code on shapes.
     const answerLabels = mapped.questions.map((q) => q.ansLabel);
-    const gate = G.publishGate({ id: videoId, caption, hashtag_set, questions, explanations, answerLabels }, recent);
+    // Branded cover, same deterministic colour rotation the Publer era used, applied
+    // IDENTICALLY to both arms so the poster can never explain an arm difference.
+    const cover = C.hostedCoverUrlFor(day, from + i, "instagram");
+    const gate = G.publishGate({ id: videoId, caption, hashtag_set, questions, explanations, answerLabels, cover_url: cover?.url ?? null }, recent);
+    console.log(`    cover: ${cover ? cover.color : "NONE"}`);
     console.log(`    publish-gate: ${gate.pass ? "PASS" : "FAIL"} — ${gate.reason}`);
     if (!gate.pass) { console.log("    SKIPPED (not scheduled)"); continue; }
 
@@ -247,13 +252,14 @@ async function run() {
       mediaUrl,
       publicationDate: { dateTime: times[i], timezone: CONFIG.METRICOOL_TZ },
       networks: ["instagram"],
+      videoThumbnailUrl: cover.url,
       draft: false,
       autoPublish: true,
       showReelOnFeed: true,
     });
     console.log(`    SCHEDULED ${times[i]} ${CONFIG.METRICOOL_TZ}  uuid=${post.uuid}`);
 
-    const rec = { videoId, uuid: String(post.uuid), id: post.id, at: times[i], opening, caption, hashtag_set, explanations, network: "instagram" };
+    const rec = { videoId, uuid: String(post.uuid), id: post.id, at: times[i], opening, caption, hashtag_set, explanations, network: "instagram", cover: cover.color, cover_url: cover.url };
     made.push(rec);
     recent.push({ caption, hashtag_set, explanations });
     // Persist after EVERY create so a crash never loses track of a live post.

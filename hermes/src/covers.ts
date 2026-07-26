@@ -19,6 +19,17 @@ export interface CoverMedia {
 export interface CoverManifest {
   covers: Record<string, CoverMedia>;
   colors?: Record<string, string>;
+  /**
+   * Durable PUBLIC cover URLs, one per colour, on static.metricool.com.
+   *
+   * `covers` above holds the PUBLER-era media ids and cdn.publer.com paths. Those are
+   * useless to Metricool: that CDN is hotlink-protected and 403s without Publer's own
+   * Referer, so neither Metricool nor Instagram can fetch one. And unlike `media`,
+   * which Metricool copies onto its own CDN at schedule time, `videoThumbnailUrl` is
+   * stored VERBATIM — verified by read-back — so the URL has to stay valid for the
+   * whole life of the scheduled post. Written by ops/host_covers.mjs.
+   */
+  hosted?: Record<string, string>;
 }
 
 /** The 5 punchy brand-cover colors, in rotation order (matches the a502d87d covers). */
@@ -90,4 +101,30 @@ export function videoMediaObjectWithCover(
 ): Record<string, unknown> {
   const thumbnails = [...existingThumbnails, { id: cover.id, small: cover.thumbnail, real: cover.path }];
   return { id: mediaId, type: "video", thumbnails, default_thumbnail: thumbnails.length - 1 };
+}
+
+/**
+ * The durable PUBLIC cover URL for a post, or null when the manifest has none.
+ *
+ * This is the Metricool path's entry point. Colour selection is the SAME deterministic
+ * rotation the Publer era used (coverColorFor), so covers keep cycling across a batch
+ * and consecutive videos still differ.
+ *
+ * Applied identically to BOTH opening arms on purpose. The alternative,
+ * videoCoverMilliseconds, would pick a frame out of the video itself — but the two
+ * arms' timelines are offset by the 2.2s hook, so any single millisecond value lands
+ * on different content per arm (mid-wipe on one, mid-question on the other). That
+ * would reintroduce, in a subtler form, exactly the poster-quality confound this is
+ * fixing. A fixed branded still is identical treatment by construction.
+ */
+export function hostedCoverUrlFor(
+  runId: string,
+  videoIndex: number,
+  platform: "instagram" | "tiktok",
+): { url: string; color: CoverColor } | null {
+  const m = loadCoverManifest();
+  if (!m || !m.hosted) return null;
+  const color = coverColorFor(runId, videoIndex, platform);
+  const url = m.hosted[color];
+  return typeof url === "string" && url ? { url, color } : null;
 }
