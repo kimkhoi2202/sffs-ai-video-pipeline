@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { COLORS, hardDropShadow } from "../theme/brand";
+import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { COLORS } from "../theme/brand";
 import { PlatformProvider, HeaderConfigProvider, type ProgressStyle } from "../theme/layout";
 import { DebugSafeZones } from "../components/DebugSafeZones";
 import { Intro } from "../scenes/Intro";
@@ -34,28 +34,6 @@ import { bySlug } from "../data/cuts";
  *  enlarges it. Omitted => "standard" (every non-mascot arm renders unchanged). */
 export type MascotVis = "standard" | "absent" | "prominent";
 
-/**
- * Persistent brand-brain watermark for the COLD-OPEN shorts. The loop renders the
- * `Short` (cold-open, NO intro scene), so the intro-cover brain the mascot A/B enlarges
- * never appears in a short — the only brain was the tiny outro sticker. This overlays
- * the brand brain on the QUESTION/score plates (the bulk of the short) so the mascot is
- * actually visible. Driven by the loop `mascot` dimension: "absent" hides it (the
- * no-mascot control), "standard" a modest corner brain, "prominent" a clearly bigger
- * one. Bottom-right, above the progress bar, never over the question card;
- * pointerEvents:none so it can never affect layout. */
-const MascotCorner: React.FC<{ mascot: MascotVis }> = ({ mascot }) => {
-  if (mascot === "absent") return null;
-  const w = mascot === "prominent" ? 272 : 150;
-  return (
-    <AbsoluteFill style={{ pointerEvents: "none" }}>
-      <Img
-        src={staticFile("images/sffs-logo.png")}
-        style={{ position: "absolute", right: 40, bottom: 470, width: w, height: "auto", filter: hardDropShadow(12), zIndex: 60 }}
-      />
-    </AbsoluteFill>
-  );
-};
-
 /** Countdown-active plate: drives `elapsed` from the sequence-local frame. */
 const CountdownPlate: React.FC<{ q: Question; pos: number; total: number }> = ({ q, pos, total }) => {
   const frame = useCurrentFrame();
@@ -74,13 +52,13 @@ const renderSegment = (
     case "intro":
       return <Intro mascot={mascot} />;
     case "read":
-      return (<><QuestionPlate q={seg.q} elapsed={0} pos={seg.pos} total={total} /><MascotCorner mascot={mascot} /></>);
+      return <QuestionPlate q={seg.q} elapsed={0} pos={seg.pos} total={total} />;
     case "countdown":
-      return (<><CountdownPlate q={seg.q} pos={seg.pos} total={total} /><MascotCorner mascot={mascot} /></>);
+      return <CountdownPlate q={seg.q} pos={seg.pos} total={total} />;
     case "reveal":
-      return (<><QuestionReveal q={seg.q} /><MascotCorner mascot={mascot} /></>);
+      return <QuestionReveal q={seg.q} />;
     case "score":
-      return (<><Score total={total} /><MascotCorner mascot={mascot} /></>);
+      return <Score total={total} />;
     case "outro":
       return <Outro platform={platform} variant={endCard} mascot={mascot} />;
   }
