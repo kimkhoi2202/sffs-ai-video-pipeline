@@ -140,7 +140,16 @@ async function run() {
   // Slots to skip at the front, so a day that already has posts can be topped up to
   // the daily target without disturbing or duplicating what is already scheduled.
   const from = Number(flag("--from", "0"));
+  const startHour = Number(flag("--start-hour", "7"));
   const endHour = Number(flag("--end-hour", "22"));
+  // Minimum minutes between two posts on the same platform. Defaults to the policy.
+  const minGapArg = flag("--min-gap", "");
+  // Offsets the caption / hashtag / arm / music rotation INDEPENDENTLY of the slot
+  // index. A same-day top-up wants `--from`; a whole extra day inserted next to days
+  // that already consumed the front of the caption list wants this, or the duplicate-
+  // caption guard (correctly) refuses the batch. Keep it EVEN so the arm alternation
+  // still starts on the control.
+  const rotate = Number(flag("--rotate", "0"));
   const dry = argv.includes("--dry");
 
   console.log(`=== resume posting: ${count} videos for ${day} (${dry ? "DRY RUN" : "LIVE"}) ===\n`);
@@ -159,9 +168,11 @@ async function run() {
   const n = Math.min(count, ig.slots);
 
   // 3. Slot times across the posting window.
-  const allTimes = P.slotTimes(n, { dayISO: day, startHour: 7, endHour: endHour, minGapMinutes: ig.minGapMinutes });
+  const minGap = minGapArg === "" ? ig.minGapMinutes : Number(minGapArg);
+  const allTimes = P.slotTimes(n, { dayISO: day, startHour, endHour, minGapMinutes: minGap });
   const times = allTimes.slice(from);
-  console.log(`\nslot grid (${allTimes.length}): ${allTimes.join("  ")}`);
+  console.log(`\nwindow ${startHour}:00-${endHour}:00, min gap ${minGap}min`);
+  console.log(`slot grid (${allTimes.length}): ${allTimes.join("  ")}`);
   if (from) console.log(`skipping the first ${from} (already scheduled)`);
   console.log(`filling: ${times.join("  ")}\n`);
 
@@ -181,7 +192,8 @@ async function run() {
   for (let i = 0; i < times.length; i++) {
     const videoId = `${day}-r${String(from + i + 1).padStart(2, "0")}`;
     // Alternate the arms so the experiment fills evenly from day one.
-    const opening = (from + i) % 2 === 0 ? "cold-plate" : "motion-hook";
+    const rot = rotate + from + i;
+    const opening = rot % 2 === 0 ? "cold-plate" : "motion-hook";
     const sel = pickQuestions(pool, cursor, PER_VIDEO, claimed);
     cursor = sel.cursor;
     const questions = sel.picked;
@@ -190,8 +202,8 @@ async function run() {
       continue;
     }
     for (const q of questions) claimed.add(String(q.explanation ?? "").trim());
-    const hashtag_set = TAG_SETS[(from + i) % TAG_SETS.length];
-    const rawCaption = `${CAPTIONS[(from + i) % CAPTIONS.length]}\n\n${CONFIG.HASHTAG_SETS[hashtag_set].join(" ")}`;
+    const hashtag_set = TAG_SETS[rot % TAG_SETS.length];
+    const rawCaption = `${CAPTIONS[rot % CAPTIONS.length]}\n\n${CONFIG.HASHTAG_SETS[hashtag_set].join(" ")}`;
     const caption = A.withAttribution(rawCaption, videoId);
 
     console.log(`\n--- ${videoId}  arm=${opening}  tags=${hashtag_set} ---`);
@@ -205,7 +217,7 @@ async function run() {
       })),
       reveal: "last",
       narration: { mode: "full" },
-      music: CONFIG.MUSIC_TRACKS[(from + i) % CONFIG.MUSIC_TRACKS.length],
+      music: CONFIG.MUSIC_TRACKS[rot % CONFIG.MUSIC_TRACKS.length],
       showProgress: true,
       progressStyle: "full",
       mascot: "standard",
