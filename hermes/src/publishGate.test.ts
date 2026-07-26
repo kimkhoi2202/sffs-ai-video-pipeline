@@ -257,7 +257,10 @@ test("referencesAnswer still accepts plain digits", () => {
 });
 
 test("referencesAnswer accepts a multi-word answer when every significant word appears", () => {
-  assert.equal(G.referencesAnswer("Only some flowers fade fast, so we cannot tell whether the roses do.", "CAN'T TELL"), true);
+  assert.equal(G.referencesAnswer("We can't tell from what we are told, so the answer is uncertain.", "CAN'T TELL"), true);
+  // ...and it is LITERAL about it: "cannot tell" is a paraphrase, not the answer text.
+  // Being wrong in this direction is safe — it holds a video back, it never ships one.
+  assert.equal(G.referencesAnswer("Only some flowers fade fast, so we cannot tell whether the roses do.", "CAN'T TELL"), false);
 });
 
 test("referencesAnswer still rejects a genuinely generic explanation", () => {
