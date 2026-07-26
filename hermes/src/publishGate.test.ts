@@ -35,6 +35,7 @@ const clean = () => ({
     "The dot steps one place clockwise each time, so it lands on the right (rm).",
   ],
   answerLabels: ["TOP-RIGHT", "RIGHT"],
+  cover_url: "https://static.metricool.com/planner/202607/6617222-file-18252086396928182933.png",
 });
 
 // ── the mangling detector ────────────────────────────────────────────────────
@@ -266,4 +267,53 @@ test("referencesAnswer accepts a multi-word answer when every significant word a
 test("referencesAnswer still rejects a genuinely generic explanation", () => {
   assert.equal(G.referencesAnswer("Work out the rule and you have it.", "13"), false);
   assert.equal(G.referencesAnswer("spot the pattern to crack the sequence", "53"), false);
+});
+
+
+// ── branded cover (the 2026-07-26 regression) ────────────────────────────────
+// All 41 scheduled posts went out with no cover, so every reel fell back to its own
+// first frame. On the motion-hook arm frame one is four blank coloured panels BY
+// DESIGN, while the control arm falls back to a readable question plate — so the two
+// arms differed in poster quality as well as opening, and a skip-rate difference could
+// have been caused by the thumbnail rather than the hook. The gate now refuses.
+
+const COVER = "https://static.metricool.com/planner/202607/6617222-file-18252086396928182933.png";
+
+test("a post with NO cover is refused", () => {
+  const v = clean();
+  delete (v as any).cover_url;
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /no branded cover/);
+});
+
+test("an empty or null cover is refused", () => {
+  for (const bad of ["", "   ", null, undefined]) {
+    const v = clean();
+    (v as any).cover_url = bad;
+    assert.equal(G.publishGate(v as any, []).pass, false, `cover ${JSON.stringify(bad)} should be refused`);
+  }
+});
+
+test("a presigned S3 cover is refused — Metricool stores the url verbatim, so it would expire", () => {
+  const v = clean();
+  (v as any).cover_url = "https://hermes-sffs-media.s3.us-east-1.amazonaws.com/covers/y.png?X-Amz-Signature=abc";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /presigned S3/);
+});
+
+test("a non-https cover is refused", () => {
+  const v = clean();
+  (v as any).cover_url = "http://static.metricool.com/x.png";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /not https/);
+});
+
+test("a durable public cover passes", () => {
+  const v = clean();
+  (v as any).cover_url = COVER;
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, true, r.reason);
 });

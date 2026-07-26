@@ -291,6 +291,74 @@ export async function reschedule(uuid: string, when: McPublicationDate): Promise
 }
 
 /**
+ * Fields PUT will accept back. Everything else on a read post is server-owned.
+ *
+ * This whitelist is not tidiness, it is damage control. PUT is a full replace, and
+ * echoing the read object straight back returns HTTP 500 with
+ * "Type definition error: [simple type, class ...PublicationStatusCode]" — the read
+ * shape carries providers[].status ("PENDING") which the write side cannot
+ * deserialize. That 500 is NOT a clean rejection: it destroyed the post it was applied
+ * to. One scheduled post was lost that way (id 404, and NOT in the recycle bin,
+ * because it was never a user delete). So the body is built from scratch here and
+ * providers are reduced to {network} only.
+ */
+const PUT_WRITABLE = [
+  "publicationDate", "text", "media", "mediaAltText", "autoPublish", "draft",
+  "shortener", "instagramData", "tiktokData", "youtubeData", "firstCommentText",
+  "videoThumbnailUrl", "videoCoverMilliseconds", "uuid",
+] as const;
+
+/** Reduce a live post to a body PUT will accept, with `patch` applied on top. */
+export function buildUpdateBody(current: McPost, patch: Record<string, unknown>): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  for (const k of PUT_WRITABLE) {
+    if (current[k] !== undefined && current[k] !== null) body[k] = current[k];
+  }
+  // Providers come back with status/detailedStatus; the write side wants network only.
+  body.providers = (current.providers ?? []).map((p) => ({ network: p.network }));
+  return { ...body, ...patch };
+}
+
+/**
+ * Set the branded cover on an EXISTING post.
+ *
+ * PATCH cannot do this — ScheduledPostUpdateRequest models exactly one property and
+ * rejects anything else with "Valid field names are: 'publicationDate'". So this is a
+ * read-modify-write through PUT, built from the writable whitelist above so the
+ * schedule time, caption, providers and media are carried through untouched.
+ *
+ * The numeric id is re-resolved from the stable uuid first, because the id is
+ * reassigned on update and any cached one is stale by default.
+ */
+export async function setCover(uuid: string, coverUrl: string): Promise<{ updated: boolean; id: number | null; retired: number | null }> {
+  const staleId = await resolveId(uuid);
+  if (staleId === null) return { updated: false, id: null, retired: null };
+  const current = await getPost(staleId);
+  const body = buildUpdateBody(current, { videoThumbnailUrl: coverUrl });
+  const updated = await call<McPost>(`${V2}/scheduler/posts/${staleId}`, { method: "PUT", body, retryOn5xx: false });
+
+  // PUT does not replace the record in place, it mints a NEW numeric id and LEAVES the
+  // old one addressable, so the post appears twice in the calendar listing. That is not
+  // cosmetic: the account holds a hard ceiling on scheduled rows, and every stray row
+  // silently EVICTS a real pending post — two were lost that way before this was
+  // understood. Retiring the stale id keeps the row count flat.
+  const newId = Number(updated?.id);
+  let retired: number | null = null;
+  if (Number.isFinite(newId) && newId !== staleId) {
+    try {
+      await call<boolean>(`${V2}/scheduler/posts/${staleId}`, { method: "DELETE", retryOn5xx: false });
+      retired = staleId;
+    } catch (e) {
+      warn("metricool: stale post id survived the cover update — calendar has a duplicate row", {
+        uuid, staleId, newId, err: e instanceof Error ? e.message.slice(0, 120) : String(e),
+      });
+    }
+  }
+  info("metricool cover set", { uuid, id: newId || staleId, retired });
+  return { updated: true, id: Number.isFinite(newId) ? newId : staleId, retired };
+}
+
+/**
  * Delete ONE post, resolved from its uuid.
  *
  * Single id only, deliberately: Metricool has no bulk-delete route in any of its 497

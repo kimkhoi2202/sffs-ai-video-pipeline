@@ -34,5 +34,14 @@
       "path": "https://cdn.publer.com/uploads/photos/6a63d8d163f918a74181c9f2.png",
       "thumbnail": "https://cdn.publer.com/uploads/photos/thumb_6a63d8d163f918a74181c9f2.png"
     }
-  }
+  },
+  "hosted": {
+    "yellow": "https://static.metricool.com/planner/202607/6617222-file-18252086396928182933.png",
+    "coral": "https://static.metricool.com/planner/202607/6617222-file-13548184551351737773.png",
+    "blue": "https://static.metricool.com/planner/202607/6617222-file-16628550336762118507.png",
+    "green": "https://static.metricool.com/planner/202607/6617222-file-2603382616901613222.png",
+    "pink": "https://static.metricool.com/planner/202607/6617222-file-1185292546013471761.png"
+  },
+  "hosted_note": "Durable PUBLIC cover URLs on static.metricool.com. Metricool stores videoThumbnailUrl verbatim (it does NOT rehost it, unlike media), so the cover URL must stay valid for the life of the scheduled post. cdn.publer.com 403s without Publer's Referer and our S3 bucket is private with role-signed URLs that expire, so the covers are parked on Metricool's own public CDN by uploading each as throwaway media. Written by tools/host_covers.mjs.",
+  "hosted_at": "2026-07-26T23:10:30.765Z"
 }
