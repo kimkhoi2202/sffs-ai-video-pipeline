@@ -46,6 +46,12 @@ export interface PublishCandidate {
   questions: HermesQ[];
   /** Per-question explanation as it will actually render (post render.ts fallback). */
   explanations?: string[];
+  /**
+   * Per-question answer AS DISPLAYED (render.ts `ansLabel`). For shape kinds `q.answer`
+   * is an internal code — "tr", "filled-circle" — that no explanation would ever
+   * contain, so the answer-reference check needs the human-readable label instead.
+   */
+  answerLabels?: string[];
 }
 
 /** Characters an authored prompt/option may carry that the normalizer destroys. */
@@ -107,11 +113,20 @@ export function publishGate(v: PublishCandidate, recent: RecentPost[] = []): Gat
     if (seenHere.has(key)) problems.push(`${where}: explanation repeats another question in THIS video`);
     seenHere.add(key);
     if (priorExplanations.has(key)) problems.push(`${where}: explanation already used in the last ${NOVELTY_WINDOW} posts`);
-    const answer = norm(v.questions[i]?.answer);
-    // The reveal has to actually say what the answer was. The old template satisfied
-    // this by construction ("<x> is the answer"); a real explanation should too.
-    if (answer && !key.includes(answer)) {
-      problems.push(`${where}: explanation never references its answer "${v.questions[i]?.answer}"`);
+
+    // The reveal should say what the answer WAS — but only where the answer is a word
+    // or number the sentence could name. On a shape question the answer is a picture:
+    // the reveal plate shows the winning figure, and "the dot moves two spots
+    // clockwise each time" is a complete explanation that will never contain the
+    // string "TOP-RIGHT". Requiring it there would reject correct copy, so the check
+    // is scoped to the kinds where naming the answer is actually the job.
+    const q = v.questions[i];
+    const kind = String(q?.kind ?? "");
+    if (kind === "text" || kind === "numseries") {
+      const label = norm(v.answerLabels?.[i]) || norm(q?.answer);
+      if (label && !key.includes(label)) {
+        problems.push(`${where}: explanation never references its answer "${v.answerLabels?.[i] ?? q?.answer}"`);
+      }
     }
   });
   if (explanations.length && explanations.length !== v.questions.length) {

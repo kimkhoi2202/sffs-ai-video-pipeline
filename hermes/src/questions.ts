@@ -25,6 +25,10 @@ interface BankEntry {
   promptNorm?: string;
   payloadNorm?: string;
   answerNorm?: string;
+  /** AUTHORED explanation, added by content/backfill-explanations.mjs. Preferred by
+   *  render.ts over the per-kind template legacyShapes.ts synthesizes, which emits one
+   *  identical sentence for every question of a kind. */
+  explanation?: string;
   round?: number;
   slug?: string;
   id?: number;
@@ -154,6 +158,7 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
   if (!e || !e.sig || !e.answerNorm) return null;
   const answer = String(e.answerNorm).trim();
   if (!answer) return null;
+  const explanation = String(e.explanation ?? "").trim() || undefined;
 
   if (e.kind === "text") {
     const payload = e.payloadNorm ?? "";
@@ -167,7 +172,7 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
     // exactly one option must match the answer (structural single-answer check)
     const matches = options.filter((o) => norm(o) === norm(answer));
     if (matches.length !== 1) return null;
-    return { sig: e.sig, hash: e.hash, kind: "text", category: e.category, tier: e.tier, prompt, options, answer };
+    return { sig: e.sig, hash: e.hash, kind: "text", category: e.category, tier: e.tier, prompt, options, answer, explanation };
   }
 
   if (e.kind === "numseries") {
@@ -178,7 +183,7 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
     const prompt = (e.promptNorm || "what comes next?").trim();
     if (prompt.length > LIMITS.maxPrompt) return null;
     if (answer.length > 8) return null;
-    return { sig: e.sig, hash: e.hash, kind: "numseries", category: e.category, tier: e.tier, prompt, seq, answer };
+    return { sig: e.sig, hash: e.hash, kind: "numseries", category: e.category, tier: e.tier, prompt, seq, answer, explanation };
   }
 
   // Nonverbal SHAPE/FIGURE kinds — reconstruct the render-ready `figure`, then run
@@ -199,6 +204,7 @@ export function toHermesQ(e: BankEntry): HermesQ | null {
       tier: e.tier,
       prompt,
       answer, // normalized answer label (== figure.ansLabel, normalized)
+      explanation,
       figure: fig,
     };
     if (shapeStructuralIssue(q)) return null; // malformed figure -> unusable
