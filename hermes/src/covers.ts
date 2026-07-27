@@ -128,3 +128,45 @@ export function hostedCoverUrlFor(
   const url = m.hosted[color];
   return typeof url === "string" && url ? { url, color } : null;
 }
+
+/** Frames per second the pipeline renders at, and the fixed hook length. */
+const FPS = 30;
+const HOOK_FRAMES = Math.round(2.2 * FPS);
+const SHORT_LEAD = 0.12;
+const SHORT_TRAIL = 0.4;
+const SILENT_READ_S = 1.5;
+
+/**
+ * The millisecond at which a render's FIRST question plate is unambiguously on screen:
+ * one second into its countdown segment.
+ *
+ * This is the cover the campaign uses — the post's own first question, taken with
+ * Metricool's videoCoverMilliseconds. On a profile grid a visible puzzle gives a
+ * scroller a reason to stop, where an identical branded card on every post says nothing.
+ *
+ * It is computed PER RENDER from that render's own measured VO durations and its own
+ * opening arm, which is what keeps it out of the confound trap. A single fixed
+ * millisecond across both arms would land mid-wipe on the motion-hook arm and
+ * mid-question on the control, because their timelines differ by the 2.2s hook. Here
+ * both arms show the same THING at different timestamps.
+ *
+ * The moment sits inside the COUNTDOWN rather than the read segment on purpose: by then
+ * the plate has finished any entrance animation and the timer is visibly running, so it
+ * cannot resolve to a transition frame or a half-animated state.
+ */
+export function coverMomentMs(props: {
+  opening?: string;
+  readVO?: string;
+  durs?: Record<string, number>;
+  questions?: Array<{ idx?: number }>;
+}): number | null {
+  const q0 = (props.questions ?? [])[0];
+  if (!q0) return null;
+  const durs = props.durs ?? {};
+  const start = props.opening === "motion-hook" ? HOOK_FRAMES : 0;
+  const readDur =
+    props.readVO === "none"
+      ? Math.round(SILENT_READ_S * FPS)
+      : Math.round((SHORT_LEAD + (durs[`q${q0.idx}`] ?? 0) + SHORT_TRAIL) * FPS);
+  return Math.round(((start + readDur + FPS) / FPS) * 1000);
+}

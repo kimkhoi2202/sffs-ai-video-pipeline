@@ -63,6 +63,18 @@ export interface PublishCandidate {
    * experiment. A missing cover has to fail loudly rather than silently degrade.
    */
   cover_url?: string | null;
+  /**
+   * The alternative cover form: a millisecond offset into the video's OWN timeline,
+   * which Metricool extracts as the poster. This is what the campaign uses now — the
+   * cover is the post's first question plate, because on a profile grid a visible
+   * puzzle gives a scroller a reason to stop while an identical branded card on every
+   * post says nothing.
+   *
+   * It must be a POSITIVE offset: 0 would resolve to frame one, which on the
+   * motion-hook arm is a bare colour grid and on the control is the very start of the
+   * plate's entrance — the two failure modes this replaced.
+   */
+  cover_ms?: number | null;
 }
 
 /** Characters an authored prompt/option may carry that the normalizer destroys. */
@@ -175,16 +187,26 @@ export function publishGate(v: PublishCandidate, recent: RecentPost[] = []): Gat
     problems.push(`explanations (${explanations.length}) do not cover all ${v.questions.length} questions`);
   }
 
-  // ── 5: branded cover ──────────────────────────────────────────────────────
+  // ── 5: cover ──────────────────────────────────────────────────────────────
+  // A cover may be EITHER an uploaded image url or a millisecond offset into the
+  // video. Both are accepted; what is refused is a post with neither, because it would
+  // fall back to its own frame one — a bare colour grid on the motion-hook arm.
   const cover = String(v.cover_url ?? "").trim();
-  if (!cover) {
-    problems.push("no branded cover — the reel would fall back to its own first frame (blank panels on the motion-hook arm)");
-  } else if (!/^https:\/\/[^\s]+$/.test(cover)) {
-    problems.push(`cover url is not https: "${cover.slice(0, 60)}"`);
-  } else if (/x-amz-signature|amazonaws\.com/i.test(cover)) {
-    // Metricool stores this URL verbatim rather than rehosting it, so a presigned S3
-    // link would expire while the post is still scheduled and the cover would vanish.
-    problems.push("cover url is a presigned S3 link, which expires before the post publishes");
+  const coverMs = typeof v.cover_ms === "number" && Number.isFinite(v.cover_ms) ? v.cover_ms : null;
+  if (!cover && coverMs === null) {
+    problems.push("no cover — the reel would fall back to its own first frame (a bare colour grid on the motion-hook arm)");
+  }
+  if (coverMs !== null && coverMs <= 0) {
+    problems.push(`cover offset ${coverMs}ms must be positive; 0 resolves to frame one, which is what a cover exists to avoid`);
+  }
+  if (cover) {
+    if (!/^https:\/\/[^\s]+$/.test(cover)) {
+      problems.push(`cover url is not https: "${cover.slice(0, 60)}"`);
+    } else if (/x-amz-signature|amazonaws\.com/i.test(cover)) {
+      // Metricool stores this URL verbatim rather than rehosting it, so a presigned S3
+      // link would expire while the post is still scheduled and the cover would vanish.
+      problems.push("cover url is a presigned S3 link, which expires before the post publishes");
+    }
   }
 
   // ── 4: caption + hashtag novelty ──────────────────────────────────────────

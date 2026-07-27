@@ -284,7 +284,7 @@ test("a post with NO cover is refused", () => {
   delete (v as any).cover_url;
   const r = G.publishGate(v as any, []);
   assert.equal(r.pass, false);
-  assert.match(r.reason, /no branded cover/);
+  assert.match(r.reason, /no cover/);
 });
 
 test("an empty or null cover is refused", () => {
@@ -316,4 +316,58 @@ test("a durable public cover passes", () => {
   (v as any).cover_url = COVER;
   const r = G.publishGate(v as any, []);
   assert.equal(r.pass, true, r.reason);
+});
+
+
+// ── cover as a millisecond offset (the first-question-plate strategy) ────────
+// The cover is now the post's own first question plate, taken with
+// videoCoverMilliseconds, because a visible puzzle stops a scroller on a profile grid
+// where an identical branded card on every post does not.
+
+test("a cover expressed as a millisecond offset satisfies the gate", () => {
+  const v = clean();
+  delete (v as any).cover_url;
+  (v as any).cover_ms = 3900;
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, true, r.reason);
+});
+
+test("a zero or negative cover offset is refused — 0 is frame one, which is the bug", () => {
+  for (const ms of [0, -1]) {
+    const v = clean();
+    delete (v as any).cover_url;
+    (v as any).cover_ms = ms;
+    const r = G.publishGate(v as any, []);
+    assert.equal(r.pass, false, `cover_ms ${ms} should be refused`);
+    assert.match(r.reason, /must be positive|no cover/);
+  }
+});
+
+test("neither cover form present is still refused", () => {
+  const v = clean();
+  delete (v as any).cover_url;
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /no cover/);
+});
+
+test("an uploaded-url cover still satisfies the gate (both forms accepted)", () => {
+  const v = clean();
+  (v as any).cover_ms = null;
+  assert.equal(G.publishGate(v as any, []).pass, true);
+});
+
+test("coverMomentMs: semantic, per-arm, and never frame one", async () => {
+  const { coverMomentMs } = await import("./covers.ts");
+  const durs = { q0: 3.0 };
+  const questions = [{ idx: 0 }];
+  const control = coverMomentMs({ opening: "cold-plate", readVO: "full", durs, questions });
+  const hook = coverMomentMs({ opening: "motion-hook", readVO: "full", durs, questions });
+  // read = round((0.12 + 3.0 + 0.4) * 30) = 106 frames, +30 frames into the countdown
+  assert.equal(control, Math.round((136 / 30) * 1000)); // 4533ms
+  // the hook arm is the same moment, exactly 2.2s later — the SAME thing, not the same
+  // constant, which is precisely what keeps this out of the confound
+  assert.equal(hook - control, 2200);
+  assert.ok(control > 0 && hook > 0, "never frame one");
+  assert.notEqual(control, hook, "a single fixed offset across both arms is the confound");
 });

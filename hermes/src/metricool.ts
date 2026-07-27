@@ -171,10 +171,24 @@ const backoffMs = (attempt: number): number => Math.min(30_000, 1_000 * 2 ** (at
 
 // ── Reads ────────────────────────────────────────────────────────────────────
 
-/** Scheduled + draft posts in a date range. Metricool has no state filter; filter here. */
-export async function listPosts(start: string, end: string, timezone = CONFIG.METRICOOL_TZ): Promise<McPost[]> {
+/**
+ * Scheduled + draft posts in a date range. Metricool has no state filter; filter here.
+ *
+ * `extendedRange` DEFAULTS OFF, and that matters more than it looks. With it on the
+ * date range becomes advisory: a three-hour window returned 13 rows spread across a
+ * whole day, versus 1 with it off. This client used to hardcode it to true, so every
+ * narrow query silently returned neighbours — which nearly caused 13 real scheduled
+ * posts to be deleted as "duplicates in this slot". Only ever turn it on when you
+ * actually want the fuzzy edges.
+ */
+export async function listPosts(
+  start: string,
+  end: string,
+  timezone = CONFIG.METRICOOL_TZ,
+  extendedRange = false,
+): Promise<McPost[]> {
   const rows = await call<McPost[]>(`${V2}/scheduler/posts`, {
-    query: { start, end, timezone, extendedRange: true },
+    query: { start, end, timezone, extendedRange },
   });
   return Array.isArray(rows) ? rows : [];
 }
@@ -317,6 +331,29 @@ export function buildUpdateBody(current: McPost, patch: Record<string, unknown>)
   // Providers come back with status/detailedStatus; the write side wants network only.
   body.providers = (current.providers ?? []).map((p) => ({ network: p.network }));
   return { ...body, ...patch };
+}
+
+/**
+ * Raw PUT of an already-built body. Callers MUST build that body with
+ * buildUpdateBody: PUT is a full replace, and echoing a read post straight back
+ * returns HTTP 500 and DESTROYS the post rather than rejecting it cleanly.
+ */
+export async function putPost(id: number, body: Record<string, unknown>): Promise<McPost> {
+  return call<McPost>(`${V2}/scheduler/posts/${id}`, { method: "PUT", body, retryOn5xx: false });
+}
+
+/**
+ * Retire a numeric id left behind by a PUT. Best-effort: a 404 means it was already
+ * replaced in place, which is the normal case. A surviving stale id is not cosmetic —
+ * the account has a hard ceiling on scheduled rows and a stray row evicts a real post.
+ */
+export async function retireStaleId(staleId: number): Promise<boolean> {
+  try {
+    await call<boolean>(`${V2}/scheduler/posts/${staleId}`, { method: "DELETE", retryOn5xx: false });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
