@@ -166,3 +166,15 @@ test("buildUpdateBody: omits absent optionals rather than sending nulls", async 
   assert.ok(!("tiktokData" in body));
   assert.ok(!("youtubeData" in body));
 });
+
+
+// ── the date range must actually narrow ──────────────────────────────────────
+test("listPosts sends extendedRange=false unless explicitly asked", async () => {
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("./metricool.ts", import.meta.url), "utf8");
+  // With extendedRange on, the range is advisory: a 3-hour window came back with 13
+  // rows from across the whole day. Hardcoding it to true nearly cost 13 real posts,
+  // deleted as "duplicates in this slot" when they were simply neighbours.
+  assert.match(src, /extendedRange = false/, "the default must be off");
+  assert.doesNotMatch(src, /extendedRange:\s*true/, "it must never be hardcoded on");
+});

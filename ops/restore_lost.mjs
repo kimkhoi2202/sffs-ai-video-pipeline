@@ -25,7 +25,12 @@ const led = readJSON(LEDGER, { posts: [] });
 
 const live = await M.listPosts("2026-07-01T00:00:00", "2026-12-31T23:59:59");
 const liveUuids = new Set(live.map((p) => String(p.uuid)));
-const missing = (led.posts ?? []).filter((r) => !liveUuids.has(String(r.uuid)));
+// future-scheduled only: a post that has already published legitimately drops out of
+// the scheduler listing, and recreating it would put the same reel out twice.
+const nowMs = Date.now();
+const missing = (led.posts ?? [])
+  .filter((r) => new Date(`${r.at}-05:00`).getTime() > nowMs)
+  .filter((r) => !liveUuids.has(String(r.uuid)));
 
 console.log(`ledger ${led.posts.length} | live distinct ${new Set(live.map((p) => String(p.uuid))).size} | missing ${missing.length}\n`);
 for (const m of missing) console.log(`  ${m.at}  ${m.videoId}  arm=${m.opening}`);
