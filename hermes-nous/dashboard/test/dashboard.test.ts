@@ -1159,7 +1159,7 @@ test("page: EXPERIMENT panel shows the hook counter, arm chips and the live perm
       hook_with_data: 0, hook_median_skip: null, control_median_skip: null, on_track: false },
     source: "metricool (live, read-only bridge)", as_of: "2026-07-26T22:30:00Z" };
   const html = page(emptyPageData({ scheduled: view }));
-  assert.match(html, /1 \/ 15 hook reels/);                 // the counter the human reads
+  assert.match(html, /1 \/ 15 usable hook reels/);                 // the counter the human reads
   assert.match(html, />HOOK</);                             // per-card arm chip
   assert.match(html, />CONTROL</);
   assert.match(html, /PUBLISHED/);
@@ -1210,4 +1210,26 @@ test("GUARDRAIL: the rewired SCHEDULED + EXPERIMENT panels add NO mutating contr
   // the only outbound link the panels add is the READ-ONLY public permalink
   assert.doesNotMatch(after, /app\.metricool\.com/, "no deep link into the writable planner");
   assert.match(after, /instagram\.com\/reel\//);
+});
+
+
+test("summarizeExperiment: excluded reels are not counted toward the target", async () => {
+  const { summarizeExperiment } = await import("../data.ts");
+  const mk = (opening: string, status: string, excluded: boolean) => ({
+    post_id: Math.random().toString(36), platform: "instagram", scheduled_at: "2026-07-27T12:00:00Z",
+    scheduled_cst: "x", hook: "h", dimension: "opening", arm: opening, arm_source: "inferred",
+    video_key: "k" + Math.random(), thumbnail: null, media_url: null,
+    status, public_url: null, opening, video_id: "", excluded, skip_rate: null,
+  });
+  const e = summarizeExperiment([
+    mk("motion-hook", "PUBLISHED", true),   // old tilted opening — a different treatment
+    mk("motion-hook", "PUBLISHED", true),
+    mk("motion-hook", "PENDING", false),
+    mk("motion-hook", "PENDING", false),
+    mk("cold-plate", "PENDING", false),
+  ] as any, 15);
+  assert.equal(e.hook_scheduled, 2, "only usable hook reels count");
+  assert.equal(e.hook_excluded, 2, "the superseded ones are reported, not hidden");
+  assert.equal(e.hook_posted, 0, "an excluded reel is not a posted data point either");
+  assert.equal(e.control_scheduled, 1);
 });

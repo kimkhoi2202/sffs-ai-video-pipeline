@@ -956,7 +956,8 @@ function experimentPanel(view?: ScheduledView): string {
     : `<b class="ok-no">Short</b> — only ${e.hook_scheduled} hook reels scheduled against the ${e.target} the test needs.`;
   const med = (v: number | null): string => (typeof v === "number" ? `${v.toFixed(1)}%` : "pending");
   return `<p class="muted" style="margin-bottom:10px">${verdict} Scored on <b>3-second skip rate</b> (lower is better), Instagram only — Metricool reports no TikTok watch-time data at all.</p>
-  <div class="expbar"><div class="expfill" style="width:${pct}%"></div><span class="expnum">${e.hook_scheduled} / ${e.target} hook reels</span></div>
+  <div class="expbar"><div class="expfill" style="width:${pct}%"></div><span class="expnum">${e.hook_scheduled} / ${e.target} usable hook reels</span></div>
+  ${e.hook_excluded ? `<p class="muted" style="margin-top:8px">${e.hook_excluded} further hook reel(s) published on the superseded tilted opening and are <b>excluded</b> — a different treatment, so they are not averaged in.</p>` : ""}
   <div class="grid" style="margin-top:12px">
     <div class="kpi"><div class="v">${e.hook_posted}</div><div class="k">hook reels POSTED</div></div>
     <div class="kpi"><div class="v">${e.control_posted}</div><div class="k">control reels POSTED</div></div>

@@ -411,6 +411,21 @@ export async function deletePost(uuid: string): Promise<{ deleted: boolean; id: 
   return { deleted: true, id };
 }
 
+/**
+ * Put a SOFT-deleted post back. Metricool's delete is reversible and the media survives
+ * it, so a delete-then-create sequence can always roll its own delete back if the
+ * create fails. Note this is only possible for a real user delete — a post destroyed by
+ * a 500 mid-write never reaches the recycle bin.
+ */
+export async function restoreDeleted(id: number): Promise<boolean> {
+  try {
+    await call<boolean>(`${V2}/scheduler/posts/deleted/${id}`, { method: "PUT", retryOn5xx: false });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // ── Analytics ────────────────────────────────────────────────────────────────
 
 /** One post's metrics, normalised across networks. */
