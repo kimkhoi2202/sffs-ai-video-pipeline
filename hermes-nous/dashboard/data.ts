@@ -923,6 +923,12 @@ export interface ScheduledPost {
   /** Our own video id from the posting ledger, e.g. "2026-07-27-r03". */
   video_id: string;
   /**
+   * Published on a treatment we have since replaced, so it is NOT a data point for the
+   * running experiment. Four hook reels went out on the old tilted opening before the
+   * square one replaced it; averaging them in would compare two different designs.
+   */
+  excluded: boolean;
+  /**
    * 3-second skip rate for a PUBLISHED reel. null means NOT YET SYNCED rather than
    * zero — Metricool's analytics land on a nightly cycle up to ~24h behind, and
    * rendering a fresh post as 0% would read as a perfect hook.
@@ -933,7 +939,10 @@ export interface ScheduledPost {
 /** Roll-up of the running opening-arm experiment, for the dashboard header. */
 export interface ExperimentView {
   target: number;
+  /** USABLE hook reels — excludes any that ran a superseded treatment. */
   hook_scheduled: number;
+  /** Hook reels published on the old opening and deliberately not counted. */
+  hook_excluded: number;
   hook_posted: number;
   control_scheduled: number;
   control_posted: number;
@@ -1017,13 +1026,21 @@ export async function scheduledPosts(): Promise<ScheduledView> {
 }
 
 /** Read the controlled poster's ledger: Metricool uuid -> our video id + opening arm. */
-function loadPostingLedger(): Map<string, { video_id: string; opening: string }> {
-  const out = new Map<string, { video_id: string; opening: string }>();
+function loadPostingLedger(): Map<string, { video_id: string; opening: string; excluded: boolean }> {
+  const out = new Map<string, { video_id: string; opening: string; excluded: boolean }>();
   try {
     if (!existsSync(CONFIG.SCHEDULED_LEDGER)) return out;
     const led = JSON.parse(readFileSync(CONFIG.SCHEDULED_LEDGER, "utf8"));
     for (const rec of led?.posts ?? []) {
-      if (rec?.uuid) out.set(String(rec.uuid), { video_id: String(rec.videoId ?? ""), opening: String(rec.opening ?? "") });
+      if (rec?.uuid) {
+        out.set(String(rec.uuid), {
+          video_id: String(rec.videoId ?? ""),
+          opening: String(rec.opening ?? ""),
+          // Reels published on a superseded treatment. They still show on the board,
+          // but they must not be counted toward the experiment.
+          excluded: rec.excluded === true,
+        });
+      }
     }
   } catch {
     /* a missing or malformed ledger just means no arm labels */
@@ -1040,14 +1057,18 @@ const median = (xs: number[]): number | null => {
 
 /** Roll up the opening-arm experiment from the posts we can attribute. */
 export function summarizeExperiment(posts: ScheduledPost[], target: number): ExperimentView {
-  const hook = posts.filter((p) => p.opening === "motion-hook");
-  const control = posts.filter((p) => p.opening === "cold-plate");
+  // USABLE only. An excluded reel ran a superseded treatment, so counting it toward the
+  // target would report the experiment as further along than it is.
+  const usable = posts.filter((p) => !p.excluded);
+  const hook = usable.filter((p) => p.opening === "motion-hook");
+  const control = usable.filter((p) => p.opening === "cold-plate");
   const posted = (xs: ScheduledPost[]) => xs.filter((p) => p.status === "PUBLISHED");
   const skips = (xs: ScheduledPost[]) => xs.map((p) => p.skip_rate).filter((v): v is number => typeof v === "number");
   const hookPosted = posted(hook);
   return {
     target,
     hook_scheduled: hook.length,
+    hook_excluded: posts.filter((p) => p.excluded && p.opening === "motion-hook").length,
     hook_posted: hookPosted.length,
     control_scheduled: control.length,
     control_posted: posted(control).length,
@@ -1109,7 +1130,7 @@ async function computeScheduled(): Promise<ScheduledView> {
     const tz = String(p?.timezone || "America/Chicago");
     const iso = chicagoNaiveToISO(dt, tz);
     const provs: any[] = Array.isArray(p.providers) ? p.providers : [];
-    const mine = ledger.get(String(p.uuid)) || { video_id: "", opening: "" };
+    const mine = ledger.get(String(p.uuid)) || { video_id: "", opening: "", excluded: false };
     const hit = resolvePostVariant(p, variantIdx);
     // One Metricool post can carry several networks; render one card per network so a
     // per-platform status and permalink are both visible.
@@ -1132,6 +1153,7 @@ async function computeScheduled(): Promise<ScheduledView> {
         public_url: url,
         opening: mine.opening,
         video_id: mine.video_id,
+        excluded: mine.excluded,
         skip_rate: skip,
       });
     }
