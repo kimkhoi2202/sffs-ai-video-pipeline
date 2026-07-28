@@ -56,22 +56,35 @@ class PromoteError(ValueError):
 PROMOTABLE_DIMENSIONS: Dict[str, List[str]] = {
     "narration": ["full", "no-narration", "no-question-vo", "no-options-vo"],
     "ending": ["cliffhanger", "full-reveal", "no-answer"],
-    # MASCOT: the brand brain on the intro cover + outro. "mascot-standard" is the
-    # always-on baseline (== control); "mascot-absent" / "mascot-prominent" are the
-    # challengers. Measured on VIEWS/REACH (the user's hypothesis metric), NOT
-    # eng_rate -- see DIMENSION_METRIC below. Kept in sync with hermes/src/defaults.ts.
+    # MASCOT: the brand brain on the intro cover + outro. The live default is
+    # "mascot-prominent" (a manual, belief-driven promotion); "mascot-absent" and
+    # "mascot-standard" are the retained counterfactuals. Judged on the SAME metric as
+    # every other dimension now -- see DIMENSION_METRIC above for why the old
+    # views-only override was removed. Kept in sync with hermes/src/defaults.ts.
     "mascot": ["mascot-standard", "mascot-absent", "mascot-prominent"],
 }
 
 FALLBACK_DEFAULTS: Dict[str, str] = {"narration": "full", "ending": "cliffhanger", "mascot": "mascot-prominent"}
 
 # Per-dimension PRIMARY metric override (falls back to the global policy metric for
-# any dimension not listed). The mascot dimension is judged on median VIEWS -- the
-# user's hypothesis is "mascot -> more VIEWS" -- while narration/ending stay on
-# median_eng_rate. Overridable per dimension via content-defaults.json
-# promotion.metric_by_dimension. The rollup cell must carry this metric key (see
-# hermes/src/rollup.ts, which now also computes median_views + median_reach).
-DIMENSION_METRIC: Dict[str, str] = {"mascot": "median_views"}
+# any dimension not listed). Still overridable via content-defaults.json
+# promotion.metric_by_dimension, but there is no longer a BUILT-IN override.
+#
+# The mascot dimension used to be hard-coded to median_views here. content-defaults
+# has since dropped metric_by_dimension entirely and its own notes call that override
+# wrong for this account ("reach here is bimodal and views are unreliable at this
+# sample size ... judging on views at n=8 could adopt a new default off pure noise").
+# Leaving the built-in in place would have quietly kept mascot -- one of the three
+# dimensions this work exists to unblock -- judged on views while narration and ending
+# moved to skip rate.
+DIMENSION_METRIC: Dict[str, str] = {}
+
+# Metrics where a LOWER number is better. Skip rate is the live example: it is the
+# share of viewers gone before ~3s, so the arm with the SMALLER value has the better
+# hook. This is a property of the METRIC, so it is declared here rather than inferred,
+# and content-defaults.json promotion.lower_is_better can override it for the
+# configured metric.
+LOWER_IS_BETTER_METRICS = frozenset({"median_skip_rate"})
 
 FALLBACK_POLICY: Dict[str, Any] = {
     "metric": "median_eng_rate",
@@ -176,6 +189,11 @@ def load_policy(content_defaults_path: Path) -> Dict[str, Any]:
         v = p.get(k)
         if isinstance(v, (int, float)) and not isinstance(v, bool) and v >= 0:
             policy[k] = float(v)
+    # DIRECTION. This key has been sitting in content-defaults.json unread: the engine
+    # compared challenger-minus-incumbent and required a HIGHER number, which on a
+    # lower-is-better metric promotes the WORSE arm while looking like it works.
+    if isinstance(p.get("lower_is_better"), bool):
+        policy["lower_is_better"] = p["lower_is_better"]
     return policy
 
 
@@ -192,6 +210,36 @@ def _metric_of(cell: Optional[Dict[str, Any]], metric: str) -> Optional[float]:
         return None
     v = cell.get(metric)
     return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+
+
+def _lower_is_better(metric: str, policy: Dict[str, Any]) -> bool:
+    """Does a SMALLER value of `metric` mean a better arm?
+
+    The explicit config flag wins, but only for the metric it was written about (the
+    configured policy metric); any per-dimension override metric falls back to the
+    metric's own declared direction. Defaults to higher-is-better, which is what every
+    pre-skip-rate metric here was.
+    """
+    if isinstance(policy.get("lower_is_better"), bool) and metric == str(policy.get("metric") or ""):
+        return bool(policy["lower_is_better"])
+    return metric in LOWER_IS_BETTER_METRICS
+
+
+def _n_for_metric(cell: Optional[Dict[str, Any]], metric: str) -> int:
+    """Matured-sample count for THE METRIC BEING JUDGED.
+
+    Falls back to the cell-wide n_with_metrics for rollups written before
+    hermes/src/rollup.ts started emitting n_by_metric, so an older learnings.json
+    still evaluates rather than silently scoring zero everywhere.
+    """
+    if not cell:
+        return 0
+    by = cell.get("n_by_metric")
+    if isinstance(by, dict):
+        v = by.get(metric)
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            return int(v)
+    return _n_of(cell)
 
 
 def _n_of(cell: Optional[Dict[str, Any]]) -> int:
@@ -230,26 +278,38 @@ def _evaluate_arm(
     chal_cell: Optional[Dict[str, Any]],
     policy: Dict[str, Any],
 ) -> Optional[Dict[str, Any]]:
-    """Return a candidate dict if `arm` clearly beats the incumbent, else None."""
+    """Return a candidate dict if `arm` clearly beats the incumbent, else None.
+
+    DIRECTION MATTERS, and getting it wrong is worse than not running at all. On a
+    lower-is-better metric like median_skip_rate, a plain challenger-minus-incumbent
+    delta promotes the arm with the WORSE hook and reports it as a win. So the number
+    computed here is an IMPROVEMENT: positive always means the challenger is better,
+    whichever way the metric runs. Every downstream consumer (_clears_auto_gate, the
+    confirmation round, the dashboard's proposal card) already assumes positive-is-good
+    and therefore keeps working unchanged.
+    """
     metric = str(policy["metric"])
+    lower_better = _lower_is_better(metric, policy)
     min_sample = int(policy["min_sample"])
     min_abs = float(policy["min_abs_improvement_pp"])
     min_rel = float(policy["min_rel_improvement"])
 
-    n_chal, n_inc = _n_of(chal_cell), _n_of(inc_cell)
+    n_chal, n_inc = _n_for_metric(chal_cell, metric), _n_for_metric(inc_cell, metric)
     m_chal, m_inc = _metric_of(chal_cell, metric), _metric_of(inc_cell, metric)
 
-    # MIN-SAMPLE GATE: never promote on noise — need enough matured metrics on BOTH.
+    # MIN-SAMPLE GATE: never promote on noise — need enough matured metrics on BOTH,
+    # counted on the metric being judged rather than on "carries any metric at all".
     if n_chal < min_sample or n_inc < min_sample:
         return None
     if m_chal is None or m_inc is None:
         return None
 
-    abs_delta = round(m_chal - m_inc, 4)
-    if m_inc > 0:
-        rel_delta = round(abs_delta / m_inc, 4)
+    abs_delta = round((m_inc - m_chal) if lower_better else (m_chal - m_inc), 4)
+    denom = abs(m_inc)
+    if denom > 0:
+        rel_delta = round(abs_delta / denom, 4)
     else:
-        # incumbent at/below zero: only a positive absolute move can "beat" it.
+        # incumbent at zero: only a real absolute improvement can "beat" it.
         rel_delta = float("inf") if abs_delta > 0 else 0.0
 
     if abs_delta < min_abs or rel_delta < min_rel:
@@ -261,8 +321,10 @@ def _evaluate_arm(
         "arm": arm,
         "incumbent_label": incumbent_label,
         "metric": metric,
+        "lower_is_better": lower_better,
         "challenger": {"arm": arm, metric: m_chal, "n_with_metrics": n_chal},
         "incumbent": {"arm": incumbent_label, metric: m_inc, "n_with_metrics": n_inc},
+        # IMPROVEMENT, signed so positive == better regardless of metric direction.
         "delta_abs_pp": abs_delta,
         "delta_rel": (rel_delta if rel_delta != float("inf") else None),
         "min_sample": min_sample,
@@ -299,16 +361,18 @@ def detect_candidates(
         dim_policy["metric"] = metric
         current_default = defaults.get(dimension, FALLBACK_DEFAULTS[dimension])
         best: Optional[Dict[str, Any]] = None
-        best_metric = -float("inf")
+        best_delta = -float("inf")
         for arm in arms:
             if arm == current_default:
                 continue  # this arm IS the current default (== control); nothing to test
             cand = _evaluate_arm(dimension, arm, incumbent_label, inc_cell, _cell(by_arm, arm), dim_policy)
             if cand is None:
                 continue
-            m = float(cand["challenger"][metric])
-            if m > best_metric:
-                best, best_metric = cand, m
+            # Rank on IMPROVEMENT, not on the raw metric value. "Highest metric wins"
+            # picks the WORST qualifying arm the moment the metric is lower-is-better.
+            d = float(cand["delta_abs_pp"])
+            if d > best_delta:
+                best, best_delta = cand, d
         if best is not None:
             best["current_default"] = current_default
             best["recommended_default"] = best["arm"]
@@ -825,7 +889,8 @@ def auto_promote_cycle(*, paths: Optional[Dict[str, Path]] = None, now: Optional
     queue = load_queue(paths["proposals"])
     learnings = _read_json(paths["learnings"], {}) or {}
     by_arm = (((learnings.get("rollups") or {}).get("by_variant_arm")) or {}) if isinstance(learnings, dict) else {}
-    metric = str(load_policy(paths["content_defaults"])["metric"])
+    policy = load_policy(paths["content_defaults"])
+    metric = str(policy["metric"])
 
     # ── STAGE 1/2: confirmation round → adopt ────────────────────────────────
     for prop in queue["proposals"]:
@@ -910,25 +975,32 @@ def auto_promote_cycle(*, paths: Optional[Dict[str, Path]] = None, now: Optional
         if defaults_now.get(dimension) != promoted_arm:
             entry["active"] = False
             continue
+        # Resolve the metric PER DIMENSION here too — the loop above does, and using
+        # the bare global metric would judge a dimension by something it is not scored
+        # on. Direction is applied for the same reason it is applied in _evaluate_arm:
+        # on a lower-is-better metric, "underperforming" means a HIGHER number.
+        dim_metric = _metric_for_dimension(dimension, policy)
+        lower_better = _lower_is_better(dim_metric, policy)
         prom_cell, prev_cell = _cell(by_arm, promoted_arm), _cell(by_arm, prev_arm)
-        m_prom, m_prev = _metric_of(prom_cell, metric), _metric_of(prev_cell, metric)
-        n_prom, n_prev = _n_of(prom_cell), _n_of(prev_cell)
+        m_prom, m_prev = _metric_of(prom_cell, dim_metric), _metric_of(prev_cell, dim_metric)
+        n_prom, n_prev = _n_for_metric(prom_cell, dim_metric), _n_for_metric(prev_cell, dim_metric)
         if m_prom is None or m_prev is None:
             continue
         if n_prom < int(auto["revert_min_sample"]) or n_prev < int(auto["revert_min_sample"]):
             continue
-        if (m_prev - m_prom) < float(auto["revert_abs_drop_pp"]):
+        drop = (m_prom - m_prev) if lower_better else (m_prev - m_prom)
+        if drop < float(auto["revert_abs_drop_pp"]):
             continue  # promoted arm is NOT clearly underperforming what it replaced
         # UNDERPERFORMING → auto-revert to the previous default.
         _auto_flip_default(paths, dimension, prev_arm, promoted_arm, now, {
-            "metric": metric, "revert_of": entry.get("proposal_id"),
+            "metric": dim_metric, "revert_of": entry.get("proposal_id"),
             "m_promoted": m_prom, "m_previous": m_prev, "n_promoted": n_prom,
         })
         entry["active"] = False
         entry["reverted_at"] = now
         _ledger_append(queue, {
             "ts": now, "date": _today(), "action": "auto-revert", "dimension": dimension,
-            "from": promoted_arm, "to": prev_arm, "metric": metric,
+            "from": promoted_arm, "to": prev_arm, "metric": dim_metric,
             "m_promoted": m_prom, "m_previous": m_prev, "n_promoted": n_prom,
             "proposal_id": entry.get("proposal_id"), "active": False,
             "note": "autonomous revert: the promoted default underperformed the arm it replaced",

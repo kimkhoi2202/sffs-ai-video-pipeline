@@ -63,9 +63,14 @@ def test_content_defaults_file_shape():
     assert cd["defaults"]["ending"] == "cliffhanger"
     assert cd["defaults"]["mascot"] == "mascot-prominent"
     pol = cd["promotion"]
-    assert pol["metric_by_dimension"]["mascot"] == "median_views"
-    # config-driven metric + threshold + min-sample gate all present
-    assert pol["metric"] == "median_eng_rate"
+    # THE METRIC MOVED. Promotion judges on the 3-second skip rate, which is
+    # LOWER-IS-BETTER, and the per-dimension median_views override for mascot was
+    # dropped -- this file's own notes call views "unreliable at this sample size".
+    # These two assertions are the contract the engine is built against; if either
+    # flips back, promote.py's direction handling is judging the wrong thing.
+    assert pol["metric"] == "median_skip_rate"
+    assert pol["lower_is_better"] is True
+    assert "metric_by_dimension" not in pol, "no per-dimension metric override is configured"
     assert isinstance(pol["min_sample"], int) and pol["min_sample"] >= 1
     assert isinstance(pol["min_abs_improvement_pp"], (int, float))
     assert isinstance(pol["min_rel_improvement"], (int, float))
@@ -200,8 +205,11 @@ def test_mascot_in_python_promotion_universe():
     assert "mascot" in promote.PROMOTABLE_DIMENSIONS
     assert set(promote.PROMOTABLE_DIMENSIONS["mascot"]) == {"mascot-standard", "mascot-absent", "mascot-prominent"}
     assert promote.FALLBACK_DEFAULTS["mascot"] == "mascot-prominent"
-    # measured PRIMARILY on views (the user's hypothesis metric), not eng_rate.
-    assert promote.DIMENSION_METRIC["mascot"] == "median_views"
+    # NO built-in per-dimension metric override any more: mascot is judged on the same
+    # configured metric as narration and ending. A built-in here would silently keep
+    # mascot on views while the other two moved to skip rate.
+    assert promote.DIMENSION_METRIC == {}
+    assert promote._metric_for_dimension("mascot", dict(promote.FALLBACK_POLICY)) == promote.FALLBACK_POLICY["metric"]
 
 
 def test_mascot_catalog_arms_deviate_only_mascot():
@@ -216,17 +224,26 @@ def test_mascot_catalog_arms_deviate_only_mascot():
     assert "mascot-prominent" not in labels  # the default is never re-listed as a challenger
 
 
-def test_mascot_promotes_on_views_not_eng_rate():
-    # A mascot challenger with MORE median_views (but WORSE eng_rate) must still be
-    # detected -- the mascot dimension is judged on views, its hypothesis metric.
-    by_arm = {
+def test_mascot_is_judged_on_the_configured_metric_like_every_other_dimension():
+    # Mascot used to carry a hard-coded median_views override. It no longer does, so a
+    # views-only advantage must NOT promote, and a win on the configured metric must.
+    views_only = {
         "control": {"n_posts": 8, "n_with_metrics": 8, "median_eng_rate": 9.0, "median_views": 100, "median_reach": 90},
         "mascot-standard": {"n_posts": 8, "n_with_metrics": 8, "median_eng_rate": 2.0, "median_views": 200, "median_reach": 180},
     }
-    cands = promote.detect_candidates({"rollups": {"by_variant_arm": by_arm}}, promote.FALLBACK_DEFAULTS, dict(promote.FALLBACK_POLICY))
+    cands = promote.detect_candidates(
+        {"rollups": {"by_variant_arm": views_only}}, promote.FALLBACK_DEFAULTS, dict(promote.FALLBACK_POLICY)
+    )
+    assert [c for c in cands if c["dimension"] == "mascot"] == [], "a views-only lead must no longer promote mascot"
+
+    on_metric = {
+        "control": {"n_posts": 8, "n_with_metrics": 8, "median_eng_rate": 3.0},
+        "mascot-standard": {"n_posts": 8, "n_with_metrics": 8, "median_eng_rate": 6.0},
+    }
+    cands = promote.detect_candidates(
+        {"rollups": {"by_variant_arm": on_metric}}, promote.FALLBACK_DEFAULTS, dict(promote.FALLBACK_POLICY)
+    )
     mascot = [c for c in cands if c["dimension"] == "mascot"]
     assert len(mascot) == 1
     assert mascot[0]["recommended_default"] == "mascot-standard"
-    assert mascot[0]["metric"] == "median_views"
-    # no eng_rate winners present, so mascot is the only candidate.
-    assert all(c["dimension"] == "mascot" for c in cands)
+    assert mascot[0]["metric"] == promote.FALLBACK_POLICY["metric"]

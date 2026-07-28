@@ -10,7 +10,7 @@ import { pullInsights, type FlatInsight as FlatPostInsight } from "./insights.ts
 import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
-import { groupMedian, timeBucket } from "./rollup.ts";
+import { groupMedian, hasMatureMetrics, timeBucket } from "./rollup.ts";
 import { indexInsights, matchInsight } from "./reconcile.ts";
 
 export interface ScoreResult {
@@ -32,6 +32,35 @@ function ymd(d: Date): string {
 async function pullAccount(accountId: string, from: string, to: string): Promise<FlatPostInsight[]> {
   const all = await pullInsights(from, to);
   return all.filter((r) => !accountId || r.account_id === accountId);
+}
+
+/**
+ * Build the persisted metrics object for one matured post.
+ *
+ * Extracted so the suite can drive the REAL mapping end-to-end into the REAL rollup
+ * and the REAL promotion detector. Asserting on a hand-built metrics object would have
+ * proved nothing here: the whole failure was that this mapping silently dropped
+ * skip_rate while every test around it stayed green.
+ */
+export function metricsFromInsight(f: FlatPostInsight, prev: any, asOf: string): Record<string, unknown> {
+  return {
+    ...(prev ?? {}),
+    reach: f.reach ?? prev?.reach ?? null,
+    video_views: f.views ?? null,
+    reactions: f.likes ?? null,
+    comments: f.comments ?? null,
+    shares: f.shares ?? null,
+    saves: f.saves ?? null,
+    eng_rate: f.engagement_rate ?? prev?.eng_rate ?? null,
+    // 3-SECOND SKIP RATE — the metric promotion actually judges on, and the reason
+    // the gate could not fire at any sample size: insights.ts read it correctly and
+    // this mapping then dropped it, so no row in ab-database.json ever carried one.
+    // LOWER IS BETTER. Instagram-only, so a TikTok row keeps a null rather than a
+    // fabricated zero.
+    skip_rate: f.skip_rate ?? prev?.skip_rate ?? null,
+    as_of: asOf,
+    source: "api",
+  };
 }
 
 export async function pullAndScore(): Promise<ScoreResult> {
@@ -58,25 +87,16 @@ export async function pullAndScore(): Promise<ScoreResult> {
   for (const p of db.posts) {
     const f = matchInsight(p, idx);
     if (!f) continue;
-    p.metrics = {
-      ...(p.metrics ?? {}),
-      reach: f.reach ?? p.metrics?.reach ?? null,
-      video_views: f.views ?? null,
-      reactions: f.likes ?? null,
-      comments: f.comments ?? null,
-      shares: f.shares ?? null,
-      saves: f.saves ?? null,
-      eng_rate: f.engagement_rate ?? p.metrics?.eng_rate ?? null,
-      as_of: to,
-      source: "api",
-    };
+    p.metrics = metricsFromInsight(f, p.metrics, to);
     updated++;
   }
 
   // recompute variant_families + by_platform rollups from posts that have metrics.
   // Rollup math is the pure, dependency-free rollup.ts (also used by the offline
   // introspection probe + shared shape with the Python promotion engine).
-  const withMetrics = db.posts.filter((p: any) => p.metrics && p.metrics.source !== "pending" && p.metrics.eng_rate != null);
+  // Same definition of "matured" the rollup uses, rather than a second inline copy
+  // that had drifted onto eng_rate only.
+  const withMetrics = db.posts.filter((p: any) => hasMatureMetrics(p));
 
   const famRollup = groupMedian(db.posts, (p) => p.variant?.family);
   // ARM-level rollup (variant.label, falling back to variant.arm): the granularity

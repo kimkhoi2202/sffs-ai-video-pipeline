@@ -15,13 +15,28 @@
 
 export interface RollupCell {
   n_posts: number;
+  /** posts with ANY matured metric. NOT a per-metric count — see n_by_metric. */
   n_with_metrics: number;
   median_eng_rate: number | null;
   avg_reach: number | null;
-  /** median VIEWS (video_views) — the mascot dimension's promotion metric. */
+  /** median VIEWS (video_views). */
   median_views: number | null;
   /** median REACH — the secondary views/reach hypothesis metric. */
   median_reach: number | null;
+  /**
+   * Median 3-SECOND SKIP RATE, percent. LOWER IS BETTER, and it is the metric the
+   * promotion gate judges on (ab-testing/content-defaults.json promotion.metric).
+   * INSTAGRAM ONLY: Metricool returns null watch-time on every TikTok row, so a
+   * TikTok-only cell has a null here rather than a fabricated zero.
+   */
+  median_skip_rate: number | null;
+  /**
+   * How many posts backed EACH median. The promotion engine's min-sample gate must
+   * count the posts that carry THE METRIC BEING JUDGED — a cell with 12 matured posts
+   * but 3 skip rates must not be allowed to promote on 3 samples, which is exactly
+   * what a single shared n_with_metrics would have permitted.
+   */
+  n_by_metric: Record<string, number>;
 }
 
 export function median(nums: number[]): number | null {
@@ -35,9 +50,20 @@ export function round2(n: number | null): number | null {
   return n == null ? null : Math.round(n * 100) / 100;
 }
 
-/** A post counts toward metrics once it has a non-pending, non-null eng_rate. */
+/**
+ * A post counts as MATURED once its metrics are non-pending and it carries at least
+ * one real number.
+ *
+ * This used to require a non-null `eng_rate`, which quietly defined maturity against
+ * the one metric the promotion policy has since abandoned: a post with a real skip
+ * rate but no engagement rate was treated as having no data at all, so it could never
+ * reach the gate. Each median below filters independently, so widening this does not
+ * let a null into any average.
+ */
 export function hasMatureMetrics(p: any): boolean {
-  return !!p && p.metrics && p.metrics.source !== "pending" && p.metrics.eng_rate != null;
+  if (!p || !p.metrics || p.metrics.source === "pending") return false;
+  const m = p.metrics;
+  return m.eng_rate != null || m.skip_rate != null || m.video_views != null || m.reach != null;
 }
 
 /**
@@ -67,27 +93,38 @@ export function timeBucket(postedAt: unknown): string | undefined {
 
 /** Group posts by a key function and summarize each group into a RollupCell. */
 export function groupMedian(posts: any[], key: (p: any) => string | undefined): Record<string, RollupCell> {
-  const map: Record<string, { eng: number[]; reach: number[]; views: number[]; n: number }> = {};
+  const map: Record<string, { eng: number[]; reach: number[]; views: number[]; skip: number[]; n: number; mature: number }> = {};
   for (const p of posts) {
     const k = key(p);
     if (!k) continue;
-    map[k] = map[k] ?? { eng: [], reach: [], views: [], n: 0 };
+    map[k] = map[k] ?? { eng: [], reach: [], views: [], skip: [], n: 0, mature: 0 };
     map[k].n++;
     if (hasMatureMetrics(p)) {
-      map[k].eng.push(Number(p.metrics.eng_rate));
+      map[k].mature++;
+      // Each metric is collected independently: a post contributes to the medians it
+      // actually has data for, and to no others.
+      if (p.metrics.eng_rate != null) map[k].eng.push(Number(p.metrics.eng_rate));
       if (p.metrics.reach != null) map[k].reach.push(Number(p.metrics.reach));
       if (p.metrics.video_views != null) map[k].views.push(Number(p.metrics.video_views));
+      if (p.metrics.skip_rate != null) map[k].skip.push(Number(p.metrics.skip_rate));
     }
   }
   const out: Record<string, RollupCell> = {};
   for (const [k, v] of Object.entries(map)) {
     out[k] = {
       n_posts: v.n,
-      n_with_metrics: v.eng.length,
+      n_with_metrics: v.mature,
       median_eng_rate: round2(median(v.eng)),
       avg_reach: round2(median(v.reach)),
       median_views: round2(median(v.views)),
       median_reach: round2(median(v.reach)),
+      median_skip_rate: round2(median(v.skip)),
+      n_by_metric: {
+        median_eng_rate: v.eng.length,
+        median_skip_rate: v.skip.length,
+        median_views: v.views.length,
+        median_reach: v.reach.length,
+      },
     };
   }
   return out;
