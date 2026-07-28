@@ -43,6 +43,7 @@ import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
+import { aptSegmentFor } from "./music.ts";
 import { generateVO, type RevealBeatInput, type NarrationMode, resolveFfprobe, isNum, spellNums } from "./narration.ts";
 import { isShapeKind, type Figure } from "./state.ts";
 // Reuse the pipeline's canonical number-speller so "25" reads "twenty-five".
@@ -399,8 +400,20 @@ function buildDurs(id: string, mapped: Mapped, opts: { force?: boolean }): { dur
 // ---------------------------------------------------------------------------
 // Render
 // ---------------------------------------------------------------------------
+/** The bed for one render. Default is the planned CONFIG.MUSIC_TRACKS pick. With
+ *  CONFIG.MUSIC_APT on, the INSTAGRAM render instead gets a per-video entry point
+ *  from the alternate track (see music.ts, including the rights warning); TikTok
+ *  is untouched. Keyed on `id`, so a re-render yields the same segment. */
+function musicFor(props: any, id: string, platform: Platform): string {
+  const planned = String(props.music ?? "audio/music/gameshow-fanfare.mp3").replace(/^audio\/music\//, "");
+  if (!CONFIG.MUSIC_APT || platform !== "instagram") return planned;
+  const seg = aptSegmentFor(id);
+  info("music: alternate bed selected", { id, platform, segment: seg, replaced: planned });
+  return seg;
+}
+
 function shortProps(mapped: Mapped, durs: Record<string, number>, qrBase: string, props: any, id: string, platform: Platform, totalFrames: number): any {
-  const music = String(props.music ?? "audio/music/gameshow-fanfare.mp3").replace(/^audio\/music\//, "");
+  const music = musicFor(props, id, platform);
   return {
     slug: "", // falsy -> FullVideo uses these explicit props (not a cuts.ts cut)
     platform, // per-platform SAFE ZONES

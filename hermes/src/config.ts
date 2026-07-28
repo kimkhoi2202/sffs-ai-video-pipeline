@@ -142,6 +142,10 @@ export const CONFIG = Object.freeze({
     "audio/music/parade.mp3",
     "audio/music/winner.mp3",
   ],
+  // Alternate music bed (see hermes/src/music.ts). OFF unless HERMES_MUSIC_APT=1.
+  // When on it applies to the INSTAGRAM render only; TikTok keeps MUSIC_TRACKS.
+  // Off => MUSIC_TRACKS above stays the shipped default on every platform.
+  MUSIC_APT: process.env.HERMES_MUSIC_APT === "1",
   HASHTAG_SETS: {
     A: ["#fyp", "#foryou", "#quiz", "#trivia", "#brainteaser"],
     B: ["#smartorfart", "#iqtest", "#puzzletok", "#riddles", "#mindgames"],

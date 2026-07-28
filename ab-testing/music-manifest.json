@@ -1,0 +1,57 @@
+{
+  "note": "Alternate music bed: 12 distinct entry points cut from one licensed-music track, one per video so the day's batch does not all open on the same bar. PREPARED BUT NOT SHIPPED. Selection is OFF by default and Instagram-only; see hermes/src/music.ts and the HERMES_MUSIC_APT switch. Assets live under remotion/public/audio/music/apt/.",
+  "status": "prepared-off",
+  "rights": {
+    "cleared": false,
+    "warning": "ROSE & Bruno Mars 'APT.' is a commercial major-label recording. Muxing it into an MP4 and uploading via API is an unlicensed sync use. Do not enable without a human rights decision. See the risk note in hermes/src/music.ts."
+  },
+  "track": {
+    "title": "ROSE & Bruno Mars - APT. [Chorus Loop] | TikTok",
+    "source_file": "/Users/khoilam/Documents/ENGLISH 106A/Final Project/ROSE & Bruno Mars - APT. [Chorus Loop]   TikTok.mp3",
+    "duration_s": 489.8017,
+    "sample_rate": 44100,
+    "channels": 2,
+    "bitrate_kbps": 128,
+    "integrated_lufs": -7.7,
+    "true_peak_dbfs": 2.6
+  },
+  "analysis": {
+    "loop_period_s": 64.36431,
+    "loop_correlation": 0.979,
+    "bpm": 149.151,
+    "bar_s": 1.6091078,
+    "bars_per_loop": 40,
+    "downbeat_phase_s": 0.056,
+    "repeats_in_file": 7.61,
+    "unique_music_s": 64.36431,
+    "sections": [
+      { "bars": "0-7", "t": "0.056-12.93", "character": "loud bass-forward chant hook, 65-75 percent bass energy" },
+      { "bars": "8-15", "t": "12.93-25.80", "character": "stripped breakdown, bass drops to 11 percent and level falls about 8 dB; unusable as a video opening" },
+      { "bars": "16-39", "t": "25.80-64.36", "character": "full-band chorus, level flat at 21-23 dB, vocal share 20-32 percent" }
+    ]
+  },
+  "cut": {
+    "preroll_s": 0.015,
+    "gain_db": -7.0,
+    "target_lufs": -14.7,
+    "measured_lufs": -15.1,
+    "segment_duration_s": 128.72862,
+    "segment_loops": 2,
+    "encoding": "libmp3lame 128k 44100 stereo, cover art and metadata stripped",
+    "why_two_loops": "Real videos run 69-79 s and can reach 110 s, past the 64.36 s loop, so each segment carries two loop periods and no real video ever reaches the wrap."
+  },
+  "segments": [
+    { "index": 0, "file": "apt/apt-01.mp3", "bar": 16, "start_s": 25.78672, "downbeat_s": 25.80172, "duration_s": 128.72862, "why": "silence then the full band slams back in, the strongest boundary in the track" },
+    { "index": 1, "file": "apt/apt-02.mp3", "bar": 0, "start_s": 0.041, "downbeat_s": 0.056, "duration_s": 128.72862, "why": "top of the loop, bass-forward chant hook" },
+    { "index": 2, "file": "apt/apt-03.mp3", "bar": 24, "start_s": 38.65959, "downbeat_s": 38.67459, "duration_s": 128.72862, "why": "four-bar phrase start in the driving bass-heavy stretch" },
+    { "index": 3, "file": "apt/apt-04.mp3", "bar": 36, "start_s": 57.96888, "downbeat_s": 57.98388, "duration_s": 128.72862, "why": "most vocal-forward four-bar start in the loop" },
+    { "index": 4, "file": "apt/apt-05.mp3", "bar": 4, "start_s": 6.47743, "downbeat_s": 6.49243, "duration_s": 128.72862, "why": "second phrase of the chant hook, same energy as the top" },
+    { "index": 5, "file": "apt/apt-06.mp3", "bar": 28, "start_s": 45.09602, "downbeat_s": 45.11102, "duration_s": 128.72862, "why": "vocal-forward four-bar start with a hard kick on one" },
+    { "index": 6, "file": "apt/apt-07.mp3", "bar": 32, "start_s": 51.53245, "downbeat_s": 51.54745, "duration_s": 128.72862, "why": "loudest bar in the loop, opens at full level" },
+    { "index": 7, "file": "apt/apt-08.mp3", "bar": 22, "start_s": 35.44137, "downbeat_s": 35.45637, "duration_s": 128.72862, "why": "strongest transient in the chorus body" },
+    { "index": 8, "file": "apt/apt-09.mp3", "bar": 30, "start_s": 48.31423, "downbeat_s": 48.32923, "duration_s": 128.72862, "why": "two-bar cell with a clean isolated kick" },
+    { "index": 9, "file": "apt/apt-10.mp3", "bar": 6, "start_s": 9.69565, "downbeat_s": 9.71065, "duration_s": 128.72862, "why": "most bass-dominant entry, least vocal content" },
+    { "index": 10, "file": "apt/apt-11.mp3", "bar": 26, "start_s": 41.8778, "downbeat_s": 41.8928, "duration_s": 128.72862, "why": "balanced bass and vocal, clean four-on-the-floor entry" },
+    { "index": 11, "file": "apt/apt-12.mp3", "bar": 34, "start_s": 54.75066, "downbeat_s": 54.76566, "duration_s": 128.72862, "why": "late-chorus cell, vocal leaning" }
+  ]
+}
