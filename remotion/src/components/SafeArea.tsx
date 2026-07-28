@@ -14,17 +14,26 @@ import { useFmt } from "../theme/layout";
  * HeroShapes) must render OUTSIDE this wrapper so the plate is one seamless
  * full-frame colour and shapes may still roam the whole frame.
  *
- * TikTok (portrait) uses its OWN transform (TT_* below): the IG box wastes the
- * top of the frame AND lets TikTok's chrome (right action rail + bottom caption)
- * crowd the plate, so on TikTok we scale the content UP and push it toward the
- * top-left, landing the readable columns inside a TikTok-safe box that clears the
- * rail and caption band. Instagram/YouTube are completely unchanged.
+ * TikTok AND YouTube SHORTS (portrait) use the TT_* transform below: the IG box
+ * wastes the top of the frame AND lets their chrome (right action rail + bottom
+ * caption/title band) crowd the plate, so we scale the content UP and push it toward
+ * the top-left, landing the readable columns inside a box that clears both. Instagram
+ * keeps the IG box, which does NOT clear the Shorts player.
+ *
+ * WHY YOUTUBE SHARES TIKTOK'S BOX RATHER THAN GETTING A THIRD TRANSFORM. The Shorts
+ * player's own content-safe box works out to x140-940, y214-1460 — the TikTok box to
+ * within 20px, and TikTok's bottom edge (1440) is the HIGHER of the two, so the TikTok
+ * cut is a strict subset of the Shorts-safe area and already clears it. A third
+ * transform would be 20px of difference and a second thing to keep in step with
+ * QuestionFrame and Countdown, both of which read the same predicate.
  */
 export const SAFE = { top: 220, bottom: 350, left: 120, right: 120 } as const;
 const SAFE_SCALE = (1920 - SAFE.top - SAFE.bottom) / 1920; // 1350/1920 = 0.703125
 const SAFE_DY = (SAFE.top + (1920 - SAFE.bottom)) / 2 - 1920 / 2; // 895 - 960 = -65
 
-// --- TikTok-only content-safe box + transform (verified vs 2026 TikTok UI) ----
+// --- Chrome-safe box + transform, used by TikTok AND YouTube Shorts --------------
+// (verified vs 2026 TikTok UI; the Shorts player's box is the same to within 20px and
+// is the LOOSER of the two, so this cut clears both.)
 // TikTok organic chrome on a 1080x1920 frame: top tabs/status ~200px, the right
 // action rail (like/comment/share/bookmark) ~180px (x >= ~900), and the bottom
 // caption/username/CTA band ~480px (y >= ~1440). We map the plate's readable
@@ -76,10 +85,21 @@ export const TT_DENSE_BOTTOM = TT_BAR_Y - 22; // design y (1368): just above the
 export const TT_BAND_TOP = (TT_DANGER.top - TT_TY) / TT_SCALE; // ~31 (design)
 export const TT_BAND_BOTTOM = (1920 - TT_DANGER.bottom - TT_TY) / TT_SCALE; // ~1507 (design)
 
+/**
+ * Does this platform use the tighter, up-scaled TT_* safe box (rather than the IG box)?
+ *
+ * ONE predicate, exported, because the transform is only a third of the story: the
+ * QuestionFrame band and the Countdown bar position have to agree with it or the
+ * content is laid out for one box and then transformed into another. Three separate
+ * `platform === "tiktok"` checks is how those drift apart.
+ */
+export const usesChromeSafeBox = (platform: string): boolean =>
+  platform === "tiktok" || platform === "youtube";
+
 export const SafeArea: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { portrait, platform } = useFmt();
   if (!portrait) return <>{children}</>;
-  if (platform === "tiktok") {
+  if (usesChromeSafeBox(platform)) {
     return (
       <AbsoluteFill style={{ transform: `translate(${TT_TX}px, ${TT_TY}px) scale(${TT_SCALE})`, transformOrigin: "0 0" }}>
         {children}

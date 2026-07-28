@@ -47,8 +47,14 @@ export const CONFIG = Object.freeze({
   ACCOUNTS: {
     instagram: "6a5fc9dc4ccd63dc1f041549",
     tiktok: "6a5fc5451bee22495517bcc5",
+    // The YouTube CHANNEL id, read from Metricool's own brand record
+    // (settings/brands -> networksData.youtubeData). The two ids above are
+    // Publer-era account ids kept for the historical rows that carry them; there
+    // was never a Publer YouTube account, so this is the channel id instead. It is
+    // used only to label A/B rows, never to address the Metricool API.
+    youtube: "UCaP4hiMhNnFyUAJhLWvxLMQ",
   },
-  ACCOUNT_IDS: ["6a5fc9dc4ccd63dc1f041549", "6a5fc5451bee22495517bcc5"],
+  ACCOUNT_IDS: ["6a5fc9dc4ccd63dc1f041549", "6a5fc5451bee22495517bcc5", "UCaP4hiMhNnFyUAJhLWvxLMQ"],
 
   // ── Metricool ──────────────────────────────────────────────────────────
   // userId/blogId are mandatory on every call
@@ -65,6 +71,11 @@ export const CONFIG = Object.freeze({
    * threshold is 600 and this account's maxPostsPerBrand is 700. Breaching does NOT
    * return 429 — it triggers a manual human review during which the account cannot
    * post at all, so we plan against 600 and treat 700 as the ceiling we never approach.
+   *
+   * THIS IS NOT A BILLING LEVER. maxPostsPerBrand is 700 on every API-enabled plan, so
+   * there is no upgrade that buys headroom — the only way to afford more networks is
+   * fewer posts each. And a fan-out costs one record PER NETWORK, not one per video:
+   * N networks at P/day is N*P records/day. See postingPolicy.ts monthlyRecords().
    */
   MC_MONTHLY_POST_BUDGET: Number(process.env.HERMES_MC_MONTHLY_BUDGET || 600),
   MC_MONTHLY_HARD_CAP: Number(process.env.HERMES_MC_MONTHLY_HARD_CAP || 700),
@@ -83,10 +94,17 @@ export const CONFIG = Object.freeze({
 
   // ── Batch shape ────────────────────────────────────────────────────────
   /**
-   * CEILING: the most videos one day may schedule. One video fans out to exactly one
-   * post per platform, so this is also the 12/day/platform post cap. The cycle plans
-   * up to this many so that gate rejections and transient failures are absorbed
-   * WITHOUT dropping below VIDEOS_FLOOR — oversampling, not a loosened gate.
+   * CEILING: the most videos one day may schedule. One video fans out to at most one
+   * post per ACTIVE platform, so this tracks the LARGEST per-platform/day cap in
+   * PLATFORM_POLICY below (Instagram's 12). The cycle plans up to this many so that
+   * gate rejections and transient failures are absorbed WITHOUT dropping below
+   * VIDEOS_FLOOR — oversampling, not a loosened gate.
+   *
+   * Networks with a SMALLER cap than this simply take fewer of the batch: at
+   * YouTube's 7/day, a full 12-video day places 7 YouTube posts today and lets
+   * planSlots spill the remaining 5 onto the next day with room (loopPublish.ts
+   * planSlots, HORIZON_DAYS). That spill is the existing designed behaviour for a
+   * batch bigger than one day's cap, not something YouTube introduced.
    */
   VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 12),
   /**
@@ -98,8 +116,18 @@ export const CONFIG = Object.freeze({
   /**
    * PER-PLATFORM posting policy for the shape-only restart.
    *
-   * Instagram carries the campaign: 12/day, and it is the only network that reports
-   * a 3-second skip rate, so it is the only place the hook experiment can be measured.
+   * Instagram carries the EXPERIMENT and keeps its full 12/day. It is the only network
+   * that reports a 3-second skip rate, so it is the only place the hook experiment can
+   * be measured, and it is the only channel currently producing anything — its volume
+   * is protected rather than traded away.
+   *
+   * YouTube Shorts is the second live network and takes WHAT IS LEFT of the monthly
+   * record budget: 7/day. That number is derived, not chosen — see the arithmetic in
+   * postingPolicy.ts, and budgetForecast() there, which is the executable version of it.
+   * It shares Instagram's 56-minute same-platform floor and has its own jitter lane
+   * (scheduler.ts LANES) so the two networks never stack. Metricool separately caps
+   * YouTube at 20 publishes per rolling 24h (the counters endpoint exposes
+   * last24HoursPublishedYoutubePostsByBrand); 7 sits well under it.
    *
    * TikTok is PAUSED. It is under account-level suppression — a previous throttle only
    * lifted after 27.9 hours of total silence — and it never actually resumed when its
@@ -124,6 +152,7 @@ export const CONFIG = Object.freeze({
     // 56 minutes is the same-platform floor the campaign has always run under; it was
     // 0 here only because the daily grid happened to space posts further apart anyway.
     instagram: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
+    youtube: { perDay: 7, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
     tiktok: {
       perDay: 2,
       minGapMinutes: 240,
@@ -132,6 +161,45 @@ export const CONFIG = Object.freeze({
       paused: String(process.env.HERMES_TIKTOK_PAUSED ?? "true").trim().toLowerCase() !== "false",
     },
   } as Record<string, { perDay: number; minGapMinutes: number; darkUntil: string | null; paused: boolean }>,
+  /**
+   * YouTube Shorts publishing defaults (metricool.ts buildCreateBody -> youtubeData).
+   *
+   * Every one of these is sent EXPLICITLY. Metricool's swagger declares
+   * ScheduledPostYoutubeData with seven plain properties and NOT ONE default — verified
+   * against the live spec, not the docs — so anything omitted is whatever the server
+   * happens to do, which is exactly the class of silent difference this codebase has
+   * been bitten by before (see the instagramData showReelOnFeed note).
+   *
+   * madeForKids is the one that matters most: YouTube requires a COPPA self-declaration
+   * on every upload and there is no visible default to inherit. False is correct here —
+   * this is general-audience comedy quiz content, not children's content — but the
+   * point is that it is stated rather than assumed.
+   *
+   * CATEGORY comes from the live catalog (/v2/scheduler/catalogs/youtube/categories):
+   * one of FILM_ANIMATION, AUTOS_VEHICLES, MUSIC, PETS_ANIMALS, SPORTS, TRAVEL_EVENTS,
+   * GAMING, PEOPLE_BLOGS, COMEDY, ENTERTAINMENT, NEWS_POLITICS, HOWTO_STYLE, EDUCATION,
+   * SCIENCE_TECHNOLOGY, NONPROFITS_ACTIVISM.
+   *
+   * PRIVACY is the one value the swagger does not pin down: it declares a bare string
+   * with no enum and no default anywhere in the spec. "public" follows YouTube's own
+   * API vocabulary (status.privacyStatus is lowercase public/unlisted/private) and
+   * matches the lowercase vocabulary Metricool uses for `type`. It is env-overridable
+   * so a human can correct it without a code change if the first real post disagrees.
+   */
+  YOUTUBE: {
+    /** "short" — matches Metricool's own lowercase videoType enum (video|short|unknown). */
+    type: (process.env.HERMES_YT_TYPE || "short").trim(),
+    privacy: (process.env.HERMES_YT_PRIVACY || "public").trim(),
+    category: (process.env.HERMES_YT_CATEGORY || "ENTERTAINMENT").trim(),
+    /** COPPA self-declaration. Explicit on every post; never left to a default. */
+    madeForKids: String(process.env.HERMES_YT_MADE_FOR_KIDS ?? "false").trim().toLowerCase() === "true",
+    /** YouTube hard-caps the title at 100 characters. Separate from the post text,
+     *  which becomes the (5,000-char) description. */
+    titleMaxChars: 100,
+    /** Shorts must stay under 3:00. We assert well under it — YouTube can lengthen a
+     *  video slightly in processing and reclassify a borderline one as long-form. */
+    maxDurationSeconds: Number(process.env.HERMES_YT_MAX_SECONDS || 170),
+  },
   MUSIC_TRACKS: [
     "audio/music/gameshow-fanfare.mp3",
     "audio/music/prize-wheel-parade.mp3",

@@ -29,8 +29,8 @@
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
 import { nextSlots, WINDOW_OPEN_HOUR } from "./scheduler.ts";
-import { decide, type Network } from "./postingPolicy.ts";
-import { createPost, listPosts, type McPost } from "./metricool.ts";
+import { decide, NETWORKS, type Network } from "./postingPolicy.ts";
+import { createPost, listPosts, youtubeTitleFrom, type McPost } from "./metricool.ts";
 import { hostedCoverUrlFor, coverMomentMs } from "./covers.ts";
 import { withAttribution } from "./attribution.ts";
 import { publishGate } from "./publishGate.ts";
@@ -52,7 +52,9 @@ export interface LoopDraft {
 
 /** Existing scheduled times per network, as ISO instants, for gap avoidance. */
 export function timesByNetwork(rows: McPost[]): Record<string, string[]> {
-  const out: Record<string, string[]> = { instagram: [], tiktok: [] };
+  // Seeded from NETWORKS rather than a literal: a network missing from this map gets
+  // an EMPTY avoid list, which silently drops its 56-minute cross-batch floor.
+  const out: Record<string, string[]> = Object.fromEntries(NETWORKS.map((n) => [n, [] as string[]]));
   for (const p of rows) {
     const dt = p.publicationDate?.dateTime;
     const tz = p.publicationDate?.timezone || CONFIG.METRICOOL_TZ;
@@ -175,13 +177,17 @@ export interface LoopPublishInput {
  * other door into the calendar and a gate only one door has is not a gate.
  */
 export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft> {
-  const cover = hostedCoverUrlFor(input.runId, input.index, input.network as "instagram" | "tiktok");
+  const cover = hostedCoverUrlFor(input.runId, input.index, input.network);
   const coverMs = coverMomentMs(input.renderProps as any);
   const caption = withAttribution(input.caption, input.videoId);
 
   const gate = publishGate(
     {
       id: input.videoId,
+      // The gate's thumbnail rule is Instagram's, not everyone's — YouTube cannot use a
+      // custom Shorts thumbnail on a non-YPP channel, so it must not be held back for
+      // lacking one. Passing the network is what lets the gate tell those apart.
+      network: input.network,
       caption,
       hashtag_set: input.hashtagSet,
       questions: input.questions,
@@ -200,10 +206,15 @@ export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft
     text: caption,
     mediaUrl,
     publicationDate: { dateTime: input.whenLocal, timezone: CONFIG.METRICOOL_TZ },
-    networks: [input.network as "instagram" | "tiktok"],
+    networks: [input.network],
+    // On YouTube `text` above is the DESCRIPTION and the title is its own 100-char
+    // field. Derived from the caption's first line so the two stay in step.
+    youtubeTitle: input.network === "youtube" ? youtubeTitleFrom(caption) : undefined,
     videoCoverMilliseconds: coverMs ?? undefined,
     // Instagram ignores the offset and serves frame zero, so the EXPLICIT thumbnail is
-    // the one that actually decides what a scroller sees on the grid.
+    // the one that actually decides what a scroller sees on the grid. Sent on YouTube
+    // too, where it is inert today (no YPP) but costs nothing and would start working
+    // on its own if the channel is ever admitted.
     videoThumbnailUrl: cover?.url ?? undefined,
     // THE APPROVAL GATE. Not a flag in our own store — the platform itself will not
     // publish a draft, so an unapproved video cannot go out even if everything on our

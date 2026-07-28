@@ -8,6 +8,8 @@
  *
  * Platform-aware: the OUTRO clip (VO + captions + duration) depends on the
  * target platform - YouTube uses the "subscribe" variant, IG/TikTok the "follow"
+ * (note "youtube" names the NETWORK here; whether a cut is a Short or the 16:9
+ * master is Variant.isShort, not the platform - see Variant"
  * variant - so the whole timeline (and total length) is computed per platform.
  */
 import { QUESTIONS } from "../data/questions";
@@ -99,6 +101,23 @@ export type Variant = {
   endCard?: EndCard;
   metaBase?: string;
   opening?: Opening;
+  /**
+   * Is this a SHORT (tight pacing, cold open) rather than the long-form master?
+   *
+   * This used to be inferred as `platform !== "youtube"`, which was true only while
+   * "youtube" meant exactly one thing: the 16:9 long-form master. It now also means
+   * YouTube SHORTS, and those two want opposite pacing — the master opens on a branded
+   * intro and runs on the slower LEAD/TRAIL, a Short cold-opens and runs tight. Left to
+   * the platform name, a YouTube Short would have been built as a master: it would look
+   * for D.intro, which a short's duration map does not contain, and every downstream
+   * `from` would go NaN.
+   *
+   * So the caller states it. FullVideo derives it from the COMPOSITION ASPECT, which is
+   * the honest signal — the Short composition is 1080x1920 and the master is 1920x1080.
+   * Omitted => the original platform-based inference, so every script that calls
+   * getTimeline directly (build-cuts, gen-subs) is unchanged.
+   */
+  isShort?: boolean;
 };
 /** Hook length in seconds; mirrored by scenes/Hook.tsx HOOK_SECONDS. */
 export const HOOK_SECONDS = 2.2;
@@ -156,10 +175,14 @@ function build(
   const swellWindows: [number, number][] = []; // countdown (timer ticking, no VO) -> music swells
   let cur = 0;
 
-  // Shorts (IG/TikTok) run tighter + FASTER than the YouTube master: smaller
-  // LEAD/TRAIL gaps and NO long intro, so the first question (the hook) lands in
-  // the first ~1s (people scroll ~4s). The 16:9 YouTube cut is unchanged.
-  const isShort = platform !== "youtube";
+  // Shorts run tighter + FASTER than the 16:9 master: smaller LEAD/TRAIL gaps and NO
+  // long intro, so the first question (the hook) lands in the first ~1s (people scroll
+  // ~4s). The 16:9 master cut is unchanged.
+  //
+  // `variant.isShort` wins when supplied because the PLATFORM no longer determines this:
+  // "youtube" now covers both the long-form master AND Shorts. The fallback is the
+  // original inference, so callers that predate this behave exactly as before.
+  const isShort = variant.isShort ?? platform !== "youtube";
   const lead = isShort ? 0.12 : LEAD;
   const trail = isShort ? 0.4 : TRAIL;
   const leadFrames = frames(lead);
@@ -291,7 +314,9 @@ export const getTimeline = (
   variant: Variant = {},
 ): TimelineData => {
   const drKey = variant.dropReveal === "last" ? "drL" : variant.dropReveal ? "dr" : "";
-  const vKey = `${variant.readVO ?? "full"}|${drKey}|${variant.dropScore ? "ds" : ""}|${variant.endCard ?? "default"}|${variant.metaBase ?? "def"}`;
+  // isShort is IN the key: without it the Short and the 16:9 master would collide on
+  // one cache entry and the second render would silently reuse the first one's pacing.
+  const vKey = `${variant.readVO ?? "full"}|${drKey}|${variant.dropScore ? "ds" : ""}|${variant.endCard ?? "default"}|${variant.metaBase ?? "def"}|${variant.isShort === undefined ? "auto" : variant.isShort ? "short" : "long"}`;
   const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}:${qrBase ?? "def"}:${vKey}`;
   let t = CACHE.get(key);
   if (!t) {

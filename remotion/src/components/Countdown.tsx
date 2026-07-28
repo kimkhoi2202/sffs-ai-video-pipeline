@@ -2,7 +2,7 @@ import { BAR, CD, COLORS } from "../theme/brand";
 import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { Card } from "./Card";
-import { TT_BAR_Y } from "./SafeArea";
+import { TT_BAR_Y, usesChromeSafeBox } from "./SafeArea";
 
 /**
  * The top-right countdown box + the bottom depleting bar. Ports the per-frame
@@ -17,10 +17,11 @@ export const Countdown: React.FC<{
   accent: string;
 }> = ({ elapsed, total, accent }) => {
   const { w, h, portrait, M, platform } = useFmt();
-  // Chip (top-right) + depleting bar (bottom), format-aware. TikTok pulls the bar
-  // UP (TT_BAR_Y) so it clears the bottom caption band after the bigger transform.
+  // Chip (top-right) + depleting bar (bottom), format-aware. TikTok and YouTube Shorts
+  // pull the bar UP (TT_BAR_Y) so it clears the bottom caption band after the bigger
+  // transform — it has to follow the same predicate as the transform itself.
   const chip = portrait ? { w: 118, h: 104, x0: w - M - 118, y0: 48 } : { w: CD.w, h: CD.h, x0: CD.x0, y0: CD.y0 };
-  const barY = platform === "tiktok" ? TT_BAR_Y : h - 118;
+  const barY = usesChromeSafeBox(platform) ? TT_BAR_Y : h - 118;
   const bar = portrait ? { x: M, y: barY, w: w - 2 * M, h: 42, pad: 8 } : { x: BAR.x, y: BAR.y, w: BAR.w, h: BAR.h, pad: BAR.pad };
 
   const num = Math.max(0, Math.ceil(total - elapsed));

@@ -62,15 +62,22 @@ function hashStr(s: string): number {
   return Math.abs(h);
 }
 
+/** The platforms a cover can be picked for. Matches postingPolicy.Network. */
+export type CoverPlatform = "instagram" | "youtube" | "tiktok";
+
 /**
- * Deterministic rotating cover color: cycles all 5 colors across a batch, the two
- * platform twins of a video differ (TikTok offset +2), consecutive videos differ, and
- * the starting color rotates per run so consecutive days don't repeat.
+ * Deterministic rotating cover color: cycles all 5 colors across a batch, the platform
+ * twins of a video differ (TikTok +2, YouTube +1), consecutive videos differ, and the
+ * starting color rotates per run so consecutive days don't repeat.
+ *
+ * YouTube gets its own offset for consistency with the other two, but note the colour
+ * is academic there: YouTube will not honour a custom Shorts thumbnail on a channel
+ * outside the Partner Programme, so this only decides what we send, not what shows.
  */
-export function coverColorFor(runId: string, videoIndex: number, platform: "instagram" | "tiktok"): CoverColor {
+export function coverColorFor(runId: string, videoIndex: number, platform: CoverPlatform): CoverColor {
   const n = COVER_COLOR_ORDER.length;
   const base = hashStr(String(runId || "")) % n;
-  const off = platform === "tiktok" ? 2 : 0;
+  const off = platform === "tiktok" ? 2 : platform === "youtube" ? 1 : 0;
   return COVER_COLOR_ORDER[(((base + videoIndex + off) % n) + n) % n];
 }
 
@@ -78,7 +85,7 @@ export function coverColorFor(runId: string, videoIndex: number, platform: "inst
 export function coverMediaFor(
   runId: string,
   videoIndex: number,
-  platform: "instagram" | "tiktok",
+  platform: CoverPlatform,
 ): (CoverMedia & { color: CoverColor }) | null {
   const m = loadCoverManifest();
   if (!m) return null;
@@ -120,7 +127,7 @@ export function videoMediaObjectWithCover(
 export function hostedCoverUrlFor(
   runId: string,
   videoIndex: number,
-  platform: "instagram" | "tiktok",
+  platform: CoverPlatform,
 ): { url: string; color: CoverColor } | null {
   const m = loadCoverManifest();
   if (!m || !m.hosted) return null;

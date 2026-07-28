@@ -27,6 +27,14 @@
  *
  * It fails CLOSED: anything it cannot verify is a failure, because the cost of holding
  * a video back is one slot and the cost of shipping a broken one is the account.
+ *
+ * ONE RULE IS NETWORK-AWARE, and deliberately only one: the explicit-thumbnail
+ * requirement is an INSTAGRAM rule (it protects the skip-rate experiment from a
+ * poster-quality confound), so it is enforced on Instagram and not on YouTube, where
+ * custom Shorts thumbnails need YouTube Partner Programme membership this channel does
+ * not have. Every other check is network-blind and stays that way — text integrity,
+ * explanation quality, option distinctness and caption novelty are properties of the
+ * VIDEO, not of where it is going.
  */
 import type { GateResult, HermesQ } from "./state.ts";
 // The pipeline's canonical number speller, the same one the reveal VO uses.
@@ -43,6 +51,13 @@ export interface RecentPost {
 
 export interface PublishCandidate {
   id: string;
+  /**
+   * The network this candidate is bound for. Only the COVER rule reads it, and only to
+   * decide whether a missing explicit thumbnail is fatal — see the cover section below.
+   * Omitted => treated as Instagram, i.e. the strictest reading, so an un-updated
+   * caller keeps the old behaviour instead of quietly losing a check.
+   */
+  network?: string;
   caption: string;
   hashtag_set?: string;
   questions: HermesQ[];
@@ -55,12 +70,13 @@ export interface PublishCandidate {
    */
   answerLabels?: string[];
   /**
-   * The branded cover that will be sent as videoThumbnailUrl. REQUIRED: without it a
-   * reel falls back to its own first frame, and on the motion-hook arm frame one is
-   * four blank coloured panels by design. That is not just off-brand — it makes the
-   * two arms differ in POSTER QUALITY as well as opening, so a skip-rate difference
-   * could be caused by the thumbnail instead of the hook, which would invalidate the
-   * experiment. A missing cover has to fail loudly rather than silently degrade.
+   * The branded cover that will be sent as videoThumbnailUrl. REQUIRED ON INSTAGRAM:
+   * without it a reel falls back to its own first frame, and on the motion-hook arm
+   * frame one is four blank coloured panels by design. That is not just off-brand — it
+   * makes the two arms differ in POSTER QUALITY as well as opening, so a skip-rate
+   * difference could be caused by the thumbnail instead of the hook, which would
+   * invalidate the experiment. A missing cover has to fail loudly rather than silently
+   * degrade. See the cover section of publishGate() for why YouTube is exempt.
    */
   cover_url?: string | null;
   /**
@@ -198,21 +214,43 @@ export function publishGate(v: PublishCandidate, recent: RecentPost[] = []): Gat
   // fall back to its own frame one — a bare colour grid on the motion-hook arm.
   const cover = String(v.cover_url ?? "").trim();
   const coverMs = typeof v.cover_ms === "number" && Number.isFinite(v.cover_ms) ? v.cover_ms : null;
-  // A cover OFFSET is not a cover. Metricool persists videoCoverMilliseconds faithfully
-  // and Instagram then discards it, serving frame zero — pixel comparison put frame zero
-  // ahead on 9 of 9 published reels, and on the hook arm frame zero is a bare
-  // four-colour grid with no text. Only an explicit videoThumbnailUrl is honoured, so
-  // only that counts as covered. Verified by read-back is NOT enough here: read-back is
-  // exactly what passed while the offset was being ignored.
   const thumb = String(v.thumbnail_url ?? "").trim();
+
+  // WHETHER A MISSING THUMBNAIL IS FATAL DEPENDS ON THE NETWORK, AND ONLY HERE.
+  //
+  // On Instagram it is. A cover OFFSET is not a cover: Metricool persists
+  // videoCoverMilliseconds faithfully and Instagram then discards it, serving frame
+  // zero — pixel comparison put frame zero ahead on 9 of 9 published reels, and on the
+  // hook arm frame zero is a bare four-colour grid with no text. Only an explicit
+  // videoThumbnailUrl is honoured. Read-back is NOT enough: read-back is exactly what
+  // passed while the offset was being ignored.
+  //
+  // On YouTube it is not, and requiring it would be a false negative that silently
+  // halves the campaign. A custom Shorts thumbnail is a YouTube Partner Programme
+  // feature; this channel has zero videos (confirmed via Metricool's own media-feed:
+  // videos: []) so it is not in the programme, and videoThumbnailUrl cannot apply no
+  // matter what we send. YouTube generates its own poster from the video. Blocking a
+  // YouTube post over a field YouTube will not read would hold back a whole network
+  // for an Instagram-shaped reason.
+  //
+  // We still SEND a thumbnail on YouTube when we have one (see loopPublish) — it costs
+  // nothing and it starts working by itself if the channel is ever admitted to YPP.
+  // What changes here is only that its ABSENCE is not fatal there. And the format
+  // checks below still run on whatever IS supplied, on every network: a malformed or
+  // expiring url is a bug everywhere, not just where the url is honoured.
+  const network = String(v.network ?? "instagram").trim().toLowerCase();
+  const thumbnailHonoured = network !== "youtube";
+
   if (!thumb) {
-    problems.push("no explicit videoThumbnailUrl — a cover offset alone is ignored by Instagram");
+    if (thumbnailHonoured) {
+      problems.push("no explicit videoThumbnailUrl — a cover offset alone is ignored by Instagram");
+    }
   } else if (!thumb.startsWith("https://")) {
     problems.push(`thumbnail must be https, got "${thumb.slice(0, 40)}"`);
   } else if (thumb.includes("X-Amz-Signature")) {
     problems.push("thumbnail is a presigned S3 url — it expires before the post runs");
   }
-  if (!cover && coverMs === null) {
+  if (!cover && coverMs === null && thumbnailHonoured) {
     problems.push("no cover — the reel would fall back to its own first frame (a bare colour grid on the motion-hook arm)");
   }
   if (coverMs !== null && coverMs <= 0) {

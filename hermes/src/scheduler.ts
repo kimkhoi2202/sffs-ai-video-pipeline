@@ -6,8 +6,13 @@
  *     (CST/CDT resolved automatically via Intl — July is CDT/UTC-5). NOTHING is
  *     ever scheduled 3:00am–7:00am (the dead hours).
  *   - NATURAL JITTER: odd, irregular minutes (e.g. 3:13, 9:47 — never :00/:15/:30),
- *     irregular gaps between posts, and a per-platform shift so IG and TikTok never
- *     land on an identical timestamp.
+ *     irregular gaps between posts, and a per-platform JITTER LANE so no two networks
+ *     land on an identical timestamp — or even a near-identical one.
+ *
+ * THE LANE TABLE IS THE WHOLE CROSS-NETWORK GUARANTEE. A platform that is not in
+ * LANES has no lane of its own, and the failure mode is silent: it would share
+ * another network's band and publish alongside it all day while everything still
+ * "works". So an unrecognised platform is a hard error, not a default.
  *
  * Everything here is deterministic given (count, from, seed, platform) so it is
  * unit-testable, while still LOOKING organic (seeded jitter, not a fixed cadence).
@@ -105,10 +110,55 @@ function intoWindow(date: Date, rng: () => number): Date {
   return fromChicago(p.y, p.mo, p.d, WINDOW_OPEN_HOUR, jitterMin);
 }
 
+/**
+ * JITTER LANES — the per-platform band, as a fraction of one post's segment, that a
+ * slot's jitter is drawn from. Disjoint bands + a gutter between them are what keep
+ * two networks from landing on the same minute.
+ *
+ * Instagram keeps the 0.10 band start and TikTok the 0.90 band end that the original
+ * two-lane layout used, so the envelope is unchanged and TikTok's cadence on resume is
+ * the same shape it always was; YouTube takes the middle band that the old 0.16 gutter
+ * left empty. Widths shrank 0.32 -> 0.20 to make room, which narrows the within-lane
+ * jitter slightly and leaves gaps just as irregular (see scheduler.test.ts).
+ */
+export const LANE_WIDTH = 0.2;
+/** Gap between adjacent lanes. Must stay > 2/seg so ODD-minute rounding cannot
+ *  collapse two lanes onto one minute; at 9/day (seg ~133min) this is ~13 minutes. */
+export const LANE_GUTTER = 0.1;
+export const LANES: Record<string, number> = {
+  instagram: 0.1, // [0.10, 0.30]
+  youtube: 0.4, //   [0.40, 0.60]
+  tiktok: 0.7, //    [0.70, 0.90]
+};
+/** The default lane for a caller that names no platform (the documented `nextSlots(n)`
+ *  shape). A NAMED platform with no lane is a bug we refuse to paper over. */
+const DEFAULT_LANE = LANES.instagram;
+
+/**
+ * The jitter lane for `platform`.
+ *
+ * Throws on an unknown platform ON PURPOSE. The alternative — falling back to a
+ * default — is how a newly added network silently inherits another one's band and
+ * publishes seconds away from it all day, with nothing in the logs and every test
+ * still green. Adding a network should have to add a lane.
+ */
+export function laneFor(platform?: string): number {
+  const p = (platform ?? "").trim();
+  if (!p) return DEFAULT_LANE;
+  const lane = LANES[p];
+  if (lane === undefined) {
+    throw new Error(
+      `scheduler: no jitter lane for platform "${p}". Add one to LANES in scheduler.ts — ` +
+        `without its own band it would share another network's slots. Known: ${Object.keys(LANES).join(", ")}.`,
+    );
+  }
+  return lane;
+}
+
 export interface SlotOpts {
   fromMs?: number; // base instant (default: now)
   seed?: string; // deterministic jitter seed (e.g. runId)
-  platform?: string; // per-platform shift so IG != TikTok times
+  platform?: string; // per-platform jitter lane (see LANES) so networks never collide
   /**
    * ISO times of SAME-platform posts a PREVIOUS cycle already scheduled. When set,
    * every returned slot is kept >= MIN_GAP_MIN minutes away from each of them (and
@@ -140,7 +190,8 @@ function next7am(fromD: Date): Date {
 /**
  * Produce `count` DISTINCT schedule timestamps (ISO, minute-resolution), all inside
  * ONE Chicago posting window [max(now, 7:00am) .. 3:00am), EVENLY distributed with
- * per-slot jitter, ODD minutes, and a per-platform shift so IG != TikTok.
+ * per-slot jitter, ODD minutes, and a per-platform jitter LANE so no two networks
+ * share (or crowd) a minute.
  *
  * Even distribution (vs a random walk of gaps) GUARANTEES every post fits the SAME
  * window — no dead-hours roll-over / cross-day accumulation — even for an aggressive
@@ -168,14 +219,18 @@ export function nextSlots(count: number, opts: SlotOpts = {}): string[] {
   const startMin = Math.ceil(start.getTime() / 60_000); // epoch minutes (>= start)
   const endMin = Math.floor(nextWindowClose(start).getTime() / 60_000) - 5; // 5-min buffer before the close
   const seg = Math.max(1, (endMin - startMin) / count); // per-post segment (minutes)
-  // Per-platform jitter LANE within each segment so IG (low band) and TikTok (high
-  // band) can never round to the same minute — a stronger IG!=TikTok guarantee than
-  // a fixed shift. Epoch-minute arithmetic keeps every slot on an ODD wall-clock
-  // minute (60 is even, so odd epoch-min == odd mm), strictly increasing + distinct.
-  // Bands are separated by a ~0.16*seg gutter so that, even after rounding to the
-  // nearest ODD minute, an IG slot and a TikTok slot in the same (or adjacent)
-  // segment can never collapse onto the same minute.
-  const laneLo = opts.platform === "tiktok" ? 0.58 : 0.1;
+  // Per-platform jitter LANE within each segment, so two networks can never round to
+  // the same minute — a stronger guarantee than a fixed shift. Epoch-minute arithmetic
+  // keeps every slot on an ODD wall-clock minute (60 is even, so odd epoch-min == odd
+  // mm), strictly increasing + distinct.
+  //
+  // Three disjoint bands of width LANE_WIDTH separated by a LANE_GUTTER gutter, inside
+  // the same [0.10, 0.90] envelope the two-lane version used — so Instagram still starts
+  // its band at 0.10 and TikTok still ends its band at 0.90. At the operating count
+  // (9/day over a ~20h window, seg ~133min) the gutter is ~13 real minutes, so an
+  // Instagram slot and a YouTube slot in the same segment are always minutes apart
+  // rather than seconds.
+  const laneLo = laneFor(opts.platform);
   // Collision-awareness: SAME-platform instants a PREVIOUS cycle already scheduled
   // (as epoch-minutes). A new slot must stay >= MIN_GAP_MIN from each of these AND,
   // once we are avoiding, from the previous NEW slot — so a later batch never lands
@@ -189,7 +244,7 @@ export function nextSlots(count: number, opts: SlotOpts = {}): string[] {
   const out: string[] = [];
   let prev = startMin - 2;
   for (let i = 0; i < count; i++) {
-    let m = Math.round(startMin + i * seg + (laneLo + rng() * 0.32) * seg);
+    let m = Math.round(startMin + i * seg + (laneLo + rng() * LANE_WIDTH) * seg);
     if (m % 2 === 0) m += 1; // ODD epoch-minute == ODD wall-clock minute
     if (m <= prev) m = prev + 2; // strictly increasing (+2 preserves ODD)
     if (collisionAware) {

@@ -131,9 +131,15 @@ export const FullVideo: React.FC<{
   const ids = cut?.ids ?? questionIds;
   const music = cut?.music ?? musicProp;
   const sfx = cut?.sfx ?? sfxProp;
+  // A SHORT is decided by the composition's shape, not by which network it is going to.
+  // The Short composition is 1080x1920 and the 16:9 master is 1920x1080, so the aspect
+  // is the one signal that is always right — including for a YouTube Short, where the
+  // platform name alone would have selected the master's pacing and its branded intro.
+  const { width: compW, height: compH } = useVideoConfig();
+  const isShort = compH > compW;
   const variant: Variant = useMemo(
-    () => ({ readVO, dropReveal, dropScore, endCard, metaBase, opening }),
-    [readVO, dropReveal, dropScore, endCard, metaBase, opening],
+    () => ({ readVO, dropReveal, dropScore, endCard, metaBase, opening, isShort }),
+    [readVO, dropReveal, dropScore, endCard, metaBase, opening, isShort],
   );
   const T: TimelineData = useMemo(
     () => getTimeline(platform, ids, sfx, questions, durs, qrBase, variant),

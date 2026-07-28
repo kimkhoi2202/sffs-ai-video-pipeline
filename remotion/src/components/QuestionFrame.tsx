@@ -5,7 +5,7 @@ import { useFmt } from "../theme/layout";
 import { ANTON } from "../theme/fonts";
 import { HeaderPills } from "./HeaderPills";
 import { Countdown } from "./Countdown";
-import { SafeArea, TT_BAND_TOP, TT_BAND_BOTTOM, TT_DENSE_TOP, TT_DENSE_BOTTOM } from "./SafeArea";
+import { SafeArea, TT_BAND_TOP, TT_BAND_BOTTOM, TT_DENSE_TOP, TT_DENSE_BOTTOM, usesChromeSafeBox } from "./SafeArea";
 import type { Question } from "../data/types";
 
 /**
@@ -102,9 +102,12 @@ export const QuestionFrame: React.FC<{
 }> = ({ q, elapsed, prompt, content, options, pos, total, ttFit }) => {
   const { portrait, M, platform } = useFmt();
   const c = slotColors(q.idx);
-  const tiktok = portrait && platform === "tiktok";
-  // TikTok: flex band == the design-space safe band + 1:1 spacers -> the block is
-  // TRUE-centred in the on-screen safe band. IG/YT keep 250/150 zones + 2:3 bias.
+  // Same predicate as the SafeArea transform: the band this centres content in
+  // MUST match the box the content is then transformed into.
+  const tiktok = portrait && usesChromeSafeBox(platform);
+  // Chrome-safe platforms (TikTok, YouTube Shorts): flex band == the design-space safe
+  // band + 1:1 spacers -> the block is TRUE-centred in the on-screen safe band.
+  // Instagram keeps the 250/150 zones + 2:3 bias.
   const headerZone = tiktok ? TT_BAND_TOP : portrait ? 250 : HEADER_ZONE;
   const barZone = tiktok ? 1920 - TT_BAND_BOTTOM : portrait ? 150 : BAR_ZONE;
   const spacerTop = tiktok ? 1 : SPACER_TOP;

@@ -13,8 +13,12 @@
  *
  *   Per platform it renders `Short` with:
  *     - platform            -> per-platform SAFE ZONES (SafeArea/PlatformProvider):
- *                              TikTok gets its up-scaled UI-safe transform, IG/YT
- *                              the IG safe box. We render ONCE PER PLATFORM so each
+ *                              TikTok AND YouTube share the up-scaled UI-safe
+ *                              transform (the Shorts player's chrome box is the
+ *                              TikTok box to within 20px, and TikTok's is the
+ *                              tighter, so the TikTok cut clears both); Instagram
+ *                              keeps the IG safe box, which does NOT clear the
+ *                              Shorts player. We render ONCE PER PLATFORM so each
  *                              draft is safe for the account it goes to.
  *     - readVO (narration)  -> full narration ("full") reads the q<idx>.mp3 clip
  *                              (whose audio is the arm-appropriate stem/options/
@@ -66,11 +70,22 @@ const HOOK_SECONDS = 2.2;
 const frames = (s: number): number => Math.round(s * FPS);
 
 export type Platform = "youtube" | "instagram" | "tiktok";
-/** The platforms the loop renders + drafts (each gets its OWN safe-zone render).
- *  Order matches CONFIG.ACCOUNT_IDS / cycle.ts annotateDb (instagram, tiktok). */
-export const RENDER_PLATFORMS: Platform[] = ["instagram", "tiktok"];
+/**
+ * The platforms the loop renders + drafts (each gets its OWN safe-zone render).
+ * Order matches CONFIG.ACCOUNT_IDS / cycle.ts annotateDb.
+ *
+ * YouTube was a first-class Platform everywhere in the Remotion tree — its own outro
+ * VO (outro-youtube.mp3) and its own "SUBSCRIBE FOR MORE" CTA — but this array was the
+ * one thing gating it, so that code had literally never executed. Adding it here lights
+ * up the existing path; it does NOT need new scenes.
+ *
+ * TikTok stays in the list while PAUSED, exactly as before: it renders and simply takes
+ * no slots (postingPolicy), so resuming it is a config flip and not a render change.
+ */
+export const RENDER_PLATFORMS: Platform[] = ["instagram", "youtube", "tiktok"];
 /** Default single-platform for the standalone sffs_render bridge. TikTok's safe
- *  box is the tightest (⊆ the IG box), so a single tiktok render is safe on both. */
+ *  box is the tightest (⊆ the IG box AND ⊆ the YouTube box), so a single tiktok
+ *  render is safe on all three. */
 const DEFAULT_PLATFORM: Platform = "tiktok";
 
 type Ending = { dropReveal: boolean | "last"; dropScore: boolean; endCard: "default" | "noanswer" | "verdict" };
@@ -392,8 +407,16 @@ function buildDurs(id: string, mapped: Mapped, opts: { force?: boolean }): { dur
   const durs: Record<string, number> = { ...vo.durs };
   durs.timesup = metaDur("timesup");
   if (!mapped.ending.dropScore) durs.score = metaDur("score");
-  const endKey = endKeyFor(mapped.ending, RENDER_PLATFORMS[0]); // platform-agnostic for shorts (follow/noanswer/verdict)
-  durs[endKey] = metaDur(endKey);
+  // The end beat is NOT platform-agnostic any more. It was, while the only platforms
+  // were Instagram and TikTok and both ended on "outro-follow"; YouTube ends on
+  // "outro-youtube", which is a DIFFERENT and LONGER clip (4.75s vs 4.05s). Measuring
+  // only the first platform's key would leave durs["outro-youtube"] undefined, the
+  // timeline would size that segment to zero, and the subscribe VO would be cut off —
+  // by 0.7s, comfortably inside gateRenderSanity's 1.5s tolerance, so nothing would
+  // have complained. Measure every key any RENDER_PLATFORM will ask for.
+  for (const key of new Set(RENDER_PLATFORMS.map((pl) => endKeyFor(mapped.ending, pl)))) {
+    durs[key] = metaDur(key);
+  }
   return { durs, qrBase: vo.qrBase };
 }
 
@@ -492,15 +515,26 @@ export function renderForPlatforms(id: string, props: any, opts: { force?: boole
   mkdirSync(CONFIG.RENDERS_DIR, { recursive: true });
   const mapped = mapProps(props);
   const { durs, qrBase } = buildDurs(id, mapped, opts);
-  // Shorts: the total is identical across tiktok/instagram (both cold-open, same
-  // follow/noanswer outro), so compute once.
-  const totalFrames = computeShortFrames(mapped, durs, RENDER_PLATFORMS[0]);
-  // stash for computeFrames(props) (exact after a render) + the dashboard.
-  props.__short = { totalFrames, durs, qrBase };
+
+  // ONE TOTAL PER PLATFORM. This used to be a single number, on the (then true) grounds
+  // that Instagram and TikTok share an outro. YouTube does not: on the full-reveal
+  // ending it plays "outro-youtube" (4.75s) where the others play "outro-follow"
+  // (4.05s), a 21-frame difference at 30fps. totalFrames sets the COMPOSITION LENGTH,
+  // so a shared number would have truncated the YouTube render mid-CTA — and by less
+  // than gateRenderSanity's 1.5s tolerance, so it would have shipped silently. On the
+  // cliffhanger / no-answer endings all three still agree, and this returns the same
+  // number for each, so nothing changes for those.
+  const framesByPlatform = new Map<Platform, number>(
+    RENDER_PLATFORMS.map((pl) => [pl, computeShortFrames(mapped, durs, pl)]),
+  );
+  // The stash feeds computeFrames(props) and the dashboard preview, which are
+  // single-number contracts: use the FIRST platform (Instagram, the measurable arm).
+  const totalFrames = framesByPlatform.get(RENDER_PLATFORMS[0]) as number;
+  props.__short = { totalFrames, durs, qrBase, framesByPlatform: Object.fromEntries(framesByPlatform) };
   props.totalFrames = totalFrames;
 
   return RENDER_PLATFORMS.map((platform) =>
-    renderOne(id, mapped, durs, qrBase, props, platform, totalFrames, opts),
+    renderOne(id, mapped, durs, qrBase, props, platform, framesByPlatform.get(platform) as number, opts),
   );
 }
 

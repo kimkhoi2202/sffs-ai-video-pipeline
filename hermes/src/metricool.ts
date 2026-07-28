@@ -39,6 +39,12 @@
  * all. That is campaign-ending, so budget() guards against the documented 600 base
  * threshold rather than the 700 ceiling, and warns at 80% of it.
  *
+ * A FAN-OUT COSTS ONE RECORD PER NETWORK. Metricool splits a multi-network post into
+ * one row per provider, so posting the same video to Instagram and YouTube spends TWO
+ * of the 600, not one. `monthPublishedPostsByBrand` counts those rows, which is why
+ * the guard here and the per-day caps in postingPolicy.ts have to be read together —
+ * see postingPolicy.budgetForecast().
+ *
  * This module NEVER logs the token and never puts it in a query string.
  */
 import { CONFIG } from "./config.ts";
@@ -214,18 +220,60 @@ export async function resolveId(uuid: string, start?: string, end?: string): Pro
 
 // ── Writes ───────────────────────────────────────────────────────────────────
 
+/** The networks this client can address. Matches postingPolicy.Network. */
+export type McNetwork = "instagram" | "youtube" | "tiktok";
+
+/** YouTube's hard title ceiling. Over this and the upload is rejected. */
+export const YT_TITLE_MAX = 100;
+
+/**
+ * A YouTube title from the post text.
+ *
+ * The caption is written for a feed — it opens with a hook, carries emoji, and ends in
+ * hashtags and an attribution link, all of which read badly as a title and waste the
+ * 100 characters. So the title is the FIRST LINE only, stripped of trailing hashtags,
+ * collapsed to one line, and cut on a word boundary. Falls back to the brand line
+ * rather than ever producing an empty title, which YouTube also rejects.
+ */
+export function youtubeTitleFrom(text: string, max = YT_TITLE_MAX): string {
+  const firstLine = String(text ?? "").split(/\r?\n/).find((l) => l.trim()) ?? "";
+  let t = firstLine
+    .replace(/\s*#[\p{L}\p{N}_]+/gu, " ") // drop hashtags anywhere on the line
+    .replace(/https?:\/\/\S+/g, " ") // and any bare url
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!t) t = "Smart Fella or Fart Smella?";
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const sp = cut.lastIndexOf(" ");
+  return (sp > max * 0.6 ? cut.slice(0, sp) : cut).trim();
+}
+
 export interface CreatePostInput {
   text: string;
   /** Public/presigned URL. Metricool fetches and rehosts at schedule time. */
   mediaUrl: string;
   publicationDate: McPublicationDate;
-  networks: Array<"instagram" | "tiktok">;
-  /** Branded cover. Confirmed to persist through REST (and to be dropped by the MCP). */
+  networks: McNetwork[];
+  /**
+   * Branded cover. Confirmed to persist through REST (and to be dropped by the MCP).
+   *
+   * Instagram honours it; YouTube does NOT — a custom Shorts thumbnail is a YouTube
+   * Partner Programme feature and this channel has no videos, so it is not in the
+   * programme. We still send it: it is already computed, it is inert where it is not
+   * honoured, and it starts working by itself if the channel is ever admitted.
+   */
   videoThumbnailUrl?: string;
   videoCoverMilliseconds?: number;
   /** TikTok requires a title; also used as the TikTok caption headline. */
   tiktokTitle?: string;
   tiktokPrivacy?: string;
+  /**
+   * YouTube title — a SEPARATE field from `text`. On a YouTube post `text` becomes the
+   * DESCRIPTION (5,000 chars) and this is the title (100). Truncated, never trusted to
+   * be short: YouTube rejects an over-length title outright.
+   */
+  youtubeTitle?: string;
   draft?: boolean;
   autoPublish?: boolean;
   showReelOnFeed?: boolean;
@@ -258,6 +306,26 @@ export function buildCreateBody(input: CreatePostInput): Record<string, unknown>
       showReelOnFeed: input.showReelOnFeed ?? true,
       collaborators: [],
       autoPublish: input.autoPublish ?? true,
+    };
+  }
+  if (input.networks.includes("youtube")) {
+    // EVERY field explicit. Metricool's ScheduledPostYoutubeData declares seven plain
+    // properties and not one default (checked against the live swagger, not the docs),
+    // so an omitted field is whatever the server decides — the same shape of silent
+    // difference that made showReelOnFeed worth pinning down on Instagram.
+    body.youtubeData = {
+      // The post text is the DESCRIPTION on YouTube; the title is its own field.
+      title: (input.youtubeTitle ?? youtubeTitleFrom(input.text)).slice(0, YT_TITLE_MAX),
+      // "short" is what puts it in the Shorts shelf. Metricool's own videoType enum
+      // (video|short|unknown) is lowercase, so this is too.
+      type: CONFIG.YOUTUBE.type,
+      privacy: CONFIG.YOUTUBE.privacy,
+      category: CONFIG.YOUTUBE.category,
+      // COPPA. YouTube requires a self-declaration on every upload and the swagger
+      // shows NO default to inherit, so this is stated on every post rather than
+      // left to whatever Metricool happens to send. General-audience => false.
+      madeForKids: CONFIG.YOUTUBE.madeForKids,
+      tags: [],
     };
   }
   if (input.networks.includes("tiktok")) {
@@ -439,6 +507,9 @@ export async function restoreDeleted(id: number): Promise<boolean> {
 
 /** One post's metrics, normalised across networks. */
 export interface McMetrics {
+  // NOTE: there is no YouTube reader yet — instagramReels() and the TikTok reader are
+  // the only producers. YouTube analytics (and the dashboard goal rollup that consumes
+  // them) still have to be built before YouTube posts can be scored.
   network: "instagram" | "tiktok";
   /** Native platform post id — the join key we already store as platform_post_id. */
   platformPostId: string;

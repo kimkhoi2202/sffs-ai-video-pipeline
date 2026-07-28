@@ -54,6 +54,7 @@ import { uploadToS3 } from "./s3.ts";
 // Publishing goes through Metricool, reusing the modules the controlled path already
 // proved against the live account.
 import { publishAsDraft, planSlots, calendarRows, allocatable, type LoopDraft } from "./loopPublish.ts";
+import { NETWORKS, type Network } from "./postingPolicy.ts";
 import { toNaive } from "./approval.ts";
 import { ping } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
@@ -255,7 +256,7 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
   // (TikTok, right now) takes no slots, so the loop cannot quietly undo a human hold.
   const results: PlatformDraft[] = [];
   for (const r of renders) {
-    const platform = r.platform as "instagram" | "tiktok";
+    const platform = r.platform as Network;
     const whenLocal = sched.slot(platform, slotIndex);
     if (!whenLocal) {
       info(`${v.id} ${platform}: no slot allocated (network paused or out of room) — skipping this platform`);
@@ -328,7 +329,7 @@ function setDbPostId(hermesKey: string, metricoolUuid: string): void {
 
 /** One platform's rendered+uploaded+drafted result (per-platform SAFE ZONES). */
 interface PlatformDraft {
-  platform: "instagram" | "tiktok";
+  platform: Network;
   account_id: string;
   media_url: string;
   media_id: string;
@@ -376,7 +377,9 @@ async function armedSchedule(runId: string, wave: number, count: number): Promis
   const rows = await calendarRows();
   const seed = wave === 0 ? runId : `${runId}-t${wave}`;
   const allowed = await allocatable(Number.MAX_SAFE_INTEGER);
-  const slots: Record<string, string[]> = { instagram: [], tiktok: [] };
+  // Keyed off NETWORKS: a network absent from this map silently gets no slots at
+  // all, which in the logs is indistinguishable from a deliberate pause.
+  const slots: Record<string, string[]> = Object.fromEntries(NETWORKS.map((n) => [n, [] as string[]]));
   for (const a of allowed) {
     if (a.slots <= 0) continue;
     // a.slots is the per-day cap; the batch itself may legitimately span days, so the
@@ -569,7 +572,7 @@ export async function runCycle(): Promise<RunState> {
 
   // (b) plan wave 1 at the CEILING. Planning the ceiling rather than the floor is
   // the OVERSAMPLE: gate rejections and transient failures come out of the headroom
-  // instead of out of the day's floor. It cannot breach the 12/day/platform cap —
+  // instead of out of the day's floor. It cannot breach the per-day/platform cap —
   // only a video that clears every gate becomes a post.
   if (!state.videos.length) {
     state.videos = await planBatch(runId, ceiling);
@@ -603,7 +606,7 @@ export async function runCycle(): Promise<RunState> {
     // ── PUBLISH: slots sized to the SURVIVORS, handed out in order ─────────────
     // Hold back anything over the ceiling: a resumed run can arrive with more
     // rendered videos than the day has room for (renders are cheap to keep, posts
-    // are capped), and the 12/day/platform cap is a hard promise.
+    // are capped), and the per-day/platform cap is a hard promise.
     const rendered = state.videos.filter((v) => v.status === "rendered");
     const room = Math.max(0, ceiling - draftedCount());
     const ready = rendered.slice(0, room);

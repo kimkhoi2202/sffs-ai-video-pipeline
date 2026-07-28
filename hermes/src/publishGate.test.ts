@@ -205,11 +205,15 @@ test("the cooldown logic is KEPT, not deleted — it still evaluates as it alway
   assert.equal(P.isDark("instagram", before).dark, false);
 });
 
-test("while TikTok is PAUSED, only Instagram gets slots", () => {
+test("while TikTok is PAUSED, Instagram and YouTube still get their slots", () => {
   const d = P.decide(600, new Date("2026-07-26T20:00:00Z"));
   const ig = d.find((x) => x.network === "instagram")!;
+  const yt = d.find((x) => x.network === "youtube")!;
   const tt = d.find((x) => x.network === "tiktok")!;
   assert.equal(ig.slots, 12, "Instagram is untouched by the TikTok pause");
+  assert.equal(yt.slots, 7, "YouTube takes the budget residual");
+  assert.equal(yt.allowed, true);
+  assert.ok(!yt.paused, "YouTube is live, not paused — the pause is TikTok's alone");
   assert.equal(tt.slots, 0);
   assert.equal(tt.allowed, false);
   assert.equal(tt.paused, true);
