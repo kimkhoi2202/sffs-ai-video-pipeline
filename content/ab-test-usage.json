@@ -1403,6 +1403,33 @@
           "answerNorm": "EXCITED"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-28-v08",
+      "test": "type-nonverbal-shapes",
+      "variant": "shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "9e6daba8ee65",
+          "sig": "matrix|nonverbal|figure-matrix|matrix:cac8e2c52522|filled cross",
+          "tier": "FIGURE MATRIX",
+          "answerNorm": "filled cross"
+        },
+        {
+          "hash": "d23cd9c2ebfc",
+          "sig": "fold|nonverbal|paper-folding|fold:8bf366f27e5d|4 in center",
+          "tier": "PAPER FOLDING",
+          "answerNorm": "4 in center"
+        },
+        {
+          "hash": "ee7eecfba08e",
+          "sig": "analogy2|nonverbal|figure-analogy|analogy2:77bc6e6ac856|flipped arrow",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "flipped arrow"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
