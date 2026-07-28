@@ -68,6 +68,23 @@ export function normalizePermalink(u: unknown): string {
 }
 
 /**
+ * Coerce a Metricool timestamp to a plain string.
+ *
+ * Defence in depth: insights.ts normalises this at the source, but `posted_at` is
+ * persisted into ab-database and then parsed by rollup.ts's timeBucket(), which would
+ * stringify a leaked `{dateTime, timezone}` object to "[object Object]" and silently
+ * drop the post from the time-of-day rollup. A wrong shape must not survive to disk.
+ */
+export function timeStr(v: unknown): string {
+  if (typeof v === "string") return v.trim();
+  if (v && typeof v === "object") {
+    const dt = (v as { dateTime?: unknown }).dateTime;
+    if (typeof dt === "string") return dt.trim();
+  }
+  return "";
+}
+
+/**
  * A normalized "what Metricool knows about this post" reference, keyed by the stable
  * planner uuid (== ab-database `metricool_uuid`).
  */
@@ -104,7 +121,7 @@ export function nativeRefsFromBoard(boardPosts: McPost[], insights: FlatInsight[
         metricool_uuid: uuid,
         platform_post_id: (hit && idStr(hit.post_id)) || null,
         permalink,
-        posted_at: idStr((p as any)?.publicationDate?.dateTime) || hit?.scheduled_at || null,
+        posted_at: timeStr((p as any)?.publicationDate?.dateTime) || timeStr(hit?.scheduled_at) || null,
         network: idStr(pr?.network) || hit?.network || null,
         account_id: CONFIG.ACCOUNTS[idStr(pr?.network)] ?? null,
       });
@@ -283,11 +300,18 @@ export async function reconcile(): Promise<ReconcileResult> {
     wrote = true;
   }
 
+  // "already reconciled" and "nothing could be reconciled" are opposite facts and were
+  // being reported with the same sentence. A run where NOTHING MATCHED means no
+  // ab-database row shares a uuid with any published post — the learning loop is still
+  // open — and reading that as a healthy idempotent no-op is exactly how a dead
+  // pipeline goes unnoticed.
   const note =
     refIndex.size === 0
       ? "no published posts on the Metricool board yet — nothing to back-fill"
+      : res.matched === 0
+      ? `no ab-database row matched any of the ${refIndex.size} published post(s) — nothing could be back-filled (the loop is still open)`
       : res.records_changed === 0
-      ? "already reconciled — nothing to back-fill (idempotent no-op)"
+      ? "already reconciled — every matched record was already complete (idempotent no-op)"
       : `back-filled ${res.records_changed} record(s)`;
 
   info("reconcile done", {

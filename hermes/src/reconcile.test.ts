@@ -26,6 +26,7 @@ const {
   idStr,
   isEmptyField,
   normalizePermalink,
+  timeStr,
   nativeRefsFromBoard,
   indexRefs,
   backfillAbPosts,
@@ -165,4 +166,60 @@ test("matchInsight joins on platform_post_id and nothing else", () => {
   // a record still awaiting reconcile has no native id, so it simply does not join
   assert.equal(matchInsight({ platform_post_id: null, metricool_uuid: "U9" }, idx), undefined);
   assert.equal(matchInsight({}, idx), undefined);
+});
+
+// ── join-shape regressions found auditing the live board (2026-07-28) ────────
+test("reconcile: posted_at is ALWAYS a string, never Metricool's {dateTime,timezone}", () => {
+  // Instagram analytics rows carry an object where the FlatInsight contract says
+  // string. If one reaches posted_at, rollup.ts's timeBucket() stringifies it to
+  // "[object Object]", fails to parse, and drops the post from the time rollup.
+  assert.equal(timeStr("2026-07-20T02:35:31+0200"), "2026-07-20T02:35:31+0200");
+  assert.equal(timeStr({ dateTime: "2026-07-20T01:12:18", timezone: "Europe/Madrid" }), "2026-07-20T01:12:18");
+  assert.equal(timeStr(null), "");
+  assert.equal(timeStr(undefined), "");
+  assert.equal(timeStr({}), "");
+
+  // and through the real ref builder, with the planner missing its own timestamp so
+  // the analytics fallback is the one that lands
+  const board = [{ uuid: "-8392679256942752031", publicationDate: {},
+    providers: [{ network: "instagram", status: "PUBLISHED", publicUrl: "https://www.instagram.com/reel/ABC/" }] }] as any;
+  const insights = [{ post_id: "17881110531476716", post_link: "https://www.instagram.com/reel/ABC/",
+    scheduled_at: { dateTime: "2026-07-20T20:05:49", timezone: "Europe/Madrid" } }] as any;
+  const [ref] = nativeRefsFromBoard(board, insights);
+  assert.equal(typeof ref.posted_at, "string");
+  assert.equal(ref.posted_at, "2026-07-20T20:05:49");
+  assert.equal(ref.platform_post_id, "17881110531476716");
+});
+
+test("reconcile: the permalink join tolerates the shapes the two live APIs actually emit", () => {
+  // Verified against the real board: the planner returns a trailing slash and
+  // analytics appends utm query params on TikTok. Both must land on the same key.
+  const planner = "https://www.tiktok.com/@smartfellafartsmellatest/video/7664402257546415373";
+  const analytics = planner + "?utm_campaign=tt4d_open_api&utm_source=awwuexz91plpu87c";
+  assert.equal(normalizePermalink(planner), normalizePermalink(analytics));
+  assert.equal(normalizePermalink("https://www.instagram.com/reel/ABC/"), normalizePermalink("https://www.instagram.com/reel/ABC"));
+  assert.equal(normalizePermalink("https://www.instagram.com/reel/ABC/#x"), normalizePermalink("https://www.instagram.com/reel/ABC"));
+  // and two DIFFERENT reels must never collapse onto one key
+  assert.notEqual(normalizePermalink("https://www.instagram.com/reel/ABC/"), normalizePermalink("https://www.instagram.com/reel/ABD/"));
+});
+
+test("reconcile: a row is only ever back-filled from the ref carrying ITS OWN uuid", () => {
+  // The mis-attribution guard: uuids are text (and can be negative), and a row must
+  // never inherit another post's native id.
+  const refs = indexRefs([[
+    { metricool_uuid: "8357829085189587553", platform_post_id: "111", permalink: "https://x/1", posted_at: "t1" },
+    { metricool_uuid: "-8392679256942752031", platform_post_id: "222", permalink: "https://x/2", posted_at: "t2" },
+  ]]);
+  const posts = [
+    { metricool_uuid: "-8392679256942752031" },
+    { metricool_uuid: "8357829085189587553" },
+    { metricool_uuid: "999" },
+    { metricool_uuid: null },
+  ] as any[];
+  const res = backfillAbPosts(posts, refs);
+  assert.equal(posts[0].platform_post_id, "222", "negative uuid must claim its OWN post");
+  assert.equal(posts[1].platform_post_id, "111");
+  assert.equal(posts[2].platform_post_id, undefined, "an unknown uuid must claim nothing");
+  assert.equal(posts[3].platform_post_id, undefined, "a row with no uuid must claim nothing");
+  assert.equal(res.matched, 2);
 });

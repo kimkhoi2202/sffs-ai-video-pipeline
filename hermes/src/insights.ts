@@ -33,6 +33,23 @@ export interface FlatInsight {
   average_watch_time: number | null;
 }
 
+/**
+ * Metricool is not consistent about the published timestamp across networks: TikTok
+ * rows carry a plain ISO string, Instagram rows carry `{dateTime, timezone}`. The
+ * FlatInsight contract says `string`, and a leaked object is not harmless — reconcile
+ * can fall back to this value for `posted_at`, and rollup.ts's timeBucket() would then
+ * stringify it to "[object Object]", fail to parse, and silently drop the post from the
+ * time-of-day rollup. Normalised here, at the one place both shapes arrive.
+ */
+function publishedAtString(v: unknown): string | undefined {
+  if (typeof v === "string") return v;
+  if (v && typeof v === "object") {
+    const dt = (v as { dateTime?: unknown }).dateTime;
+    if (typeof dt === "string") return dt;
+  }
+  return undefined;
+}
+
 function toFlat(m: McMetrics): FlatInsight {
   const denom = m.reach ?? m.views ?? 0;
   const eng = (m.likes ?? 0) + (m.comments ?? 0) + (m.shares ?? 0);
@@ -40,7 +57,7 @@ function toFlat(m: McMetrics): FlatInsight {
     post_id: m.platformPostId,
     account_id: CONFIG.ACCOUNTS[m.network] ?? "",
     network: m.network,
-    scheduled_at: m.publishedAt,
+    scheduled_at: publishedAtString(m.publishedAt),
     post_link: m.url,
     views: m.views,
     reach: m.reach,

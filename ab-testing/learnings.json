@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T17:56:58.048Z",
+  "updated_at": "2026-07-28T18:06:26.132Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -896,6 +896,14 @@
       "to": "2026-07-28",
       "pulled": 0,
       "updated": 0,
+      "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-28",
+      "from": "2026-06-28",
+      "to": "2026-07-28",
+      "pulled": 89,
+      "updated": 15,
       "n_with_metrics": 15
     },
     {

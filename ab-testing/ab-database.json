@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T17:56:58.046Z",
+  "updated_at": "2026-07-28T18:06:26.130Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
