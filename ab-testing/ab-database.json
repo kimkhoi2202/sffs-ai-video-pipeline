@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-25T15:47:21.841Z",
+  "updated_at": "2026-07-28T15:38:28.576Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -4018,7 +4018,7 @@
       "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet).",
       "scheduled": 2,
       "scheduled_note": "2 post(s) scheduled via schedule-variants.ts (video-1, both platforms) as of 2026-07-21; auto-publish at the set time (no metrics yet).",
-      "n_posts": 2,
+      "n_posts": 8,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "median_views": null,
@@ -4041,7 +4041,7 @@
       "median_reach": null
     },
     "control": {
-      "n_posts": 6,
+      "n_posts": 8,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4057,7 +4057,7 @@
       "median_reach": null
     },
     "tempo": {
-      "n_posts": 2,
+      "n_posts": 4,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4065,7 +4065,7 @@
       "median_reach": null
     },
     "narration": {
-      "n_posts": 8,
+      "n_posts": 10,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4100,7 +4100,7 @@
   "aggregate_cuts": {
     "by_platform": {
       "instagram": {
-        "n_posts": 30,
+        "n_posts": 36,
         "n_with_metrics": 6,
         "median_eng_rate": 2.17,
         "avg_reach": 123.5,
@@ -4108,7 +4108,7 @@
         "median_reach": 123.5
       },
       "tiktok": {
-        "n_posts": 32,
+        "n_posts": 38,
         "n_with_metrics": 9,
         "median_eng_rate": 3.99,
         "avg_reach": 301,
@@ -4174,7 +4174,7 @@
         "median_reach": null
       },
       "control": {
-        "n_posts": 4,
+        "n_posts": 6,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4190,7 +4190,7 @@
         "median_reach": null
       },
       "no-narration": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4222,6 +4222,30 @@
         "median_reach": null
       },
       "shapes": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "mascot-absent": {
+        "n_posts": 4,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "mascot-standard": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "tempo-fast": {
         "n_posts": 2,
         "n_with_metrics": 0,
         "median_eng_rate": null,

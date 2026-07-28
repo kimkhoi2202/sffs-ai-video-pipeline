@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-25T15:20:50.047Z",
+  "updated_at": "2026-07-28T15:38:28.577Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -125,7 +125,7 @@
         "median_reach": null
       },
       "mascot": {
-        "n_posts": 2,
+        "n_posts": 8,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -149,7 +149,7 @@
         "median_reach": null
       },
       "control": {
-        "n_posts": 6,
+        "n_posts": 8,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -165,7 +165,7 @@
         "median_reach": null
       },
       "tempo": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -173,7 +173,7 @@
         "median_reach": null
       },
       "narration": {
-        "n_posts": 8,
+        "n_posts": 10,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -207,7 +207,7 @@
     },
     "by_platform": {
       "instagram": {
-        "n_posts": 30,
+        "n_posts": 36,
         "n_with_metrics": 6,
         "median_eng_rate": 2.17,
         "avg_reach": 123.5,
@@ -215,7 +215,7 @@
         "median_reach": 123.5
       },
       "tiktok": {
-        "n_posts": 32,
+        "n_posts": 38,
         "n_with_metrics": 9,
         "median_eng_rate": 3.99,
         "avg_reach": 301,
@@ -225,7 +225,7 @@
     },
     "by_hashtag_set": {
       "B": {
-        "n_posts": 15,
+        "n_posts": 19,
         "n_with_metrics": 1,
         "median_eng_rate": 3.05,
         "avg_reach": 131,
@@ -233,7 +233,7 @@
         "median_reach": 131
       },
       "A": {
-        "n_posts": 21,
+        "n_posts": 25,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -241,7 +241,7 @@
         "median_reach": null
       },
       "C": {
-        "n_posts": 12,
+        "n_posts": 16,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -341,7 +341,7 @@
         "median_reach": null
       },
       "control": {
-        "n_posts": 4,
+        "n_posts": 6,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -357,7 +357,7 @@
         "median_reach": null
       },
       "no-narration": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -395,11 +395,35 @@
         "avg_reach": null,
         "median_views": null,
         "median_reach": null
+      },
+      "mascot-absent": {
+        "n_posts": 4,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "mascot-standard": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "tempo-fast": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
       }
     }
   },
   "front_runners": {
-    "as_of": "2026-07-25",
+    "as_of": "2026-07-28",
     "variant_family": "standard",
     "platform": "tiktok",
     "hashtag_set": null,
@@ -510,6 +534,14 @@
       "to": "2026-07-25",
       "pulled": 54,
       "updated": 15,
+      "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-28",
+      "from": "2026-06-28",
+      "to": "2026-07-28",
+      "pulled": 0,
+      "updated": 0,
       "n_with_metrics": 15
     }
   ]

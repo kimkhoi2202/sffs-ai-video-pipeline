@@ -1214,6 +1214,60 @@
           "answerNorm": "difficult"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-28-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b818215c206c",
+          "sig": "text|verbal|verbal-analogy|goat is to kid as hen is to || chick~duckling~foal~tadpole|chick",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "CHICK"
+        },
+        {
+          "hash": "c14a6167df0e",
+          "sig": "numseries|quantitative|number-series|4~9~13~22~35|57",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "57"
+        },
+        {
+          "hash": "14806c0b6646",
+          "sig": "text|quantitative|number-puzzle|if 4 5 27 7 3 30 2 6 24 then 8 5 || 36~39~40~41|39",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "39"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v02",
+      "test": "mascot",
+      "variant": "mascot-standard",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "c59b63f4b644",
+          "sig": "numseries|verbal|letter-series|AZ~BY~CX|dw",
+          "tier": "LETTER SERIES",
+          "answerNorm": "DW"
+        },
+        {
+          "hash": "063068795fb0",
+          "sig": "text|verbal|odd-one-out|which one does not belong || drizzle~foot~hail~wind|foot",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "FOOT"
+        },
+        {
+          "hash": "863c71796d27",
+          "sig": "text|quantitative|number-analogy|which number fits 5 16 6 19 7 22 9 || 27~28~33~38|28",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "28"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
