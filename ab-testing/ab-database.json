@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T18:06:26.130Z",
+  "updated_at": "2026-07-28T20:36:02.236Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -4074,7 +4074,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "8357829085189587553"
+      "metricool_uuid": "-8653649687801737780"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v02:instagram",
@@ -4120,7 +4120,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-8392679256942752031"
+      "metricool_uuid": "-1955623668485568405"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v03:instagram",
@@ -4166,7 +4166,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "2016202365023570821"
+      "metricool_uuid": "-4961288132120264694"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v04:instagram",
@@ -4212,7 +4212,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "967581038278165859"
+      "metricool_uuid": "4475907405431917056"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v05:instagram",
@@ -4258,7 +4258,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "1641657021386605238"
+      "metricool_uuid": "835881856047008449"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v06:instagram",
@@ -4304,7 +4304,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "8259645875429329828"
+      "metricool_uuid": "3023359844234840000"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v07:instagram",
@@ -4350,7 +4350,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "7157047660485296936"
+      "metricool_uuid": "-4581787596087736043"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v10:instagram",
@@ -4396,7 +4396,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "8743550476888720500"
+      "metricool_uuid": "3654407114425713515"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v11:instagram",
@@ -4442,7 +4442,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "2972467709713270339"
+      "metricool_uuid": "-9163607534410775428"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v12:instagram",
@@ -4488,7 +4488,7 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-6297496666514044627"
+      "metricool_uuid": "-4948186210865626552"
     }
   ],
   "variant_families": {
