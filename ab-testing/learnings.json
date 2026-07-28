@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T15:38:28.577Z",
+  "updated_at": "2026-07-28T16:18:02.683Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -71,10 +71,10 @@
       "intro-promo": {
         "n_posts": 2,
         "n_with_metrics": 2,
-        "median_eng_rate": 5.57,
-        "avg_reach": 261.5,
-        "median_views": 283.5,
-        "median_reach": 261.5
+        "median_eng_rate": 6.74,
+        "avg_reach": 262,
+        "median_views": 288.5,
+        "median_reach": 262
       },
       "standard": {
         "n_posts": 9,
@@ -87,7 +87,7 @@
       "cliffhanger": {
         "n_posts": 6,
         "n_with_metrics": 2,
-        "median_eng_rate": 4.18,
+        "median_eng_rate": 4.17,
         "avg_reach": 426,
         "median_views": 426,
         "median_reach": 426
@@ -210,9 +210,9 @@
         "n_posts": 36,
         "n_with_metrics": 6,
         "median_eng_rate": 2.17,
-        "avg_reach": 123.5,
+        "avg_reach": 124,
         "median_views": 135,
-        "median_reach": 123.5
+        "median_reach": 124
       },
       "tiktok": {
         "n_posts": 38,
@@ -542,6 +542,22 @@
       "to": "2026-07-28",
       "pulled": 0,
       "updated": 0,
+      "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-28",
+      "from": "2026-06-28",
+      "to": "2026-07-28",
+      "pulled": 0,
+      "updated": 0,
+      "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-28",
+      "from": "2026-06-28",
+      "to": "2026-07-28",
+      "pulled": 89,
+      "updated": 15,
       "n_with_metrics": 15
     }
   ]

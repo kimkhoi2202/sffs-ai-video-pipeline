@@ -23,12 +23,14 @@
  * (reconcile.test.ts); `reconcile()` is the thin live orchestrator around them,
  * exercised via the tool/bridge dry-run + tests.
  */
-import {
-  getPostInsights,
-  flattenPostInsights,
-  listAllPosts,
-  type FlatPostInsight,
-} from "./publer.ts";
+// Publer is dead (403 on all content endpoints). Reconcile's own pulls are best-effort
+// and already warn-and-continue, so they are stubbed rather than ported: the data they
+// used to backfill now arrives through insights.ts, and leaving live calls here just
+// produced three 403 warnings per cycle that trained the reader to ignore warnings.
+const getPostInsights = async (): Promise<never> => { throw new Error("publer retired — see insights.ts"); };
+const flattenPostInsights = (x: unknown[]): unknown[] => x;
+const listAllPosts = async (): Promise<unknown[]> => [];
+const postId = (p: any): string => String(p?.id ?? "");
 import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";

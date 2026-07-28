@@ -903,6 +903,10 @@ async function computeDrafts(): Promise<DraftsView> {
 // and Publer show the SAME posts at the SAME times BY CONSTRUCTION. Read-only:
 // nothing here schedules/mutates; it only lists Publer's `state=scheduled` posts.
 export interface ScheduledPost {
+  /** True while the post is a loop draft (// Unapproved == a loop draft that has not been cleared to publish.
+  /** True while the post is a loop draft (awaiting_approval: r.draft === true && r.auto_publish === false,
+  /** True while the post is a loop draft (draft:true, autoPublish:false). */
+  awaiting_approval?: boolean;
   post_id: string; // Metricool uuid (STABLE; the numeric id is reassigned on update)
   platform: string; // "instagram" | "tiktok"
   scheduled_at: string; // ISO (UTC) — the source-of-truth publication instant
@@ -952,6 +956,8 @@ export interface ExperimentView {
   on_track: boolean;
 }
 export interface ScheduledView {
+  /** Loop-generated drafts a human has not yet approved. Nothing ships until this is 0. */
+  awaiting_approval?: number;
   ok: boolean;
   posts: ScheduledPost[];
   count: number;
@@ -1165,8 +1171,10 @@ async function computeScheduled(): Promise<ScheduledView> {
     by_platform[p.platform] = (by_platform[p.platform] || 0) + 1;
     by_status[p.status] = (by_status[p.status] || 0) + 1;
   }
+  const awaiting = posts.filter((p) => p.awaiting_approval).length;
   return {
-    ok: true, posts, count: posts.length, by_platform, by_status,
+    ok: true,
+    awaiting_approval: awaiting, posts, count: posts.length, by_platform, by_status,
     experiment: summarizeExperiment(posts, CONFIG.HOOK_ARM_TARGET),
     source: "metricool (live, read-only bridge)", as_of: asOf,
   };

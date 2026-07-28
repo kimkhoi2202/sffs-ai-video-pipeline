@@ -6,8 +6,12 @@
  * (review-agent verdict + test status), and loop health + a kill-switch indicator.
  *
  * SECURITY / GUARDRAILS:
- *   - Read-only: there is NO route that posts, schedules, publishes, merges, or
- *     mutates anything. Every route only READS local files / GitHub (via `gh` read
+ *   - Read-only WITH ONE EXCEPTION: /api/approve and /api/reject, which flip a
+ *     loop-generated Metricool draft to publishable or soft-delete it. No other route
+ *     posts, schedules, publishes, merges or mutates anything. The exception is
+ *     password-gated, takes no caller content beyond a post uuid, and refuses any post
+ *     that is not already an unapproved draft — so the 21 human-reviewed reels on the
+ *     calendar are structurally out of its reach. Every route only READS local files / GitHub (via `gh` read
  *     subcommands) / Publer (via the read-only publer-read bridge). The read-only
  *     invariant is asserted at boot (assertReadOnly).
  *   - PUBLIC: served with NO authentication (no login). This is safe because the
@@ -29,6 +33,7 @@ import {
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
+import { routeApproval } from "./approve.ts";
 
 assertReadOnly();
 
@@ -135,6 +140,11 @@ const server = createServer(async (req, res) => {
     const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
 
     // liveness probe: no data (leaks nothing)
+    // THE ONLY MUTATION on this dashboard. Everything else below is a GET that reads.
+    // Scoped to approve/reject on one already-unapproved draft; see approve.ts for why
+    // that bound is the whole security argument on a public HTTP surface.
+    if (await routeApproval(url.pathname, req, res)) return;
+
     if (url.pathname === "/healthz") return send(res, 200, "ok", "text/plain");
 
     // Vendored static assets (Plyr) — READ-ONLY, whitelist-only (no traversal, no secrets).

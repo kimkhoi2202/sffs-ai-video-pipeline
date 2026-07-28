@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T15:38:28.576Z",
+  "updated_at": "2026-07-28T16:18:02.681Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -65,18 +65,18 @@
         "num_questions": 0
       },
       "metrics": {
-        "reach": 123,
+        "reach": 124,
         "reach_rate": null,
-        "video_views": 167,
-        "reactions": 4,
-        "comments": 0,
+        "video_views": 177,
+        "reactions": 5,
+        "comments": 2,
         "shares": 6,
-        "eng_rate": 8.13,
+        "eng_rate": 10.483870967741936,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
-        "saves": 0
+        "saves": null
       },
       "match_confidence": "high",
       "notes": "Brand-intro promo (not a quiz short); caption matches the 'Follow so you don't miss one' brand copy. Source = the single brand-intro asset (sffs-brand-intro-v1). Metrics pending: on analytics page 2 (not in screenshot)."
@@ -109,7 +109,7 @@
         "eng_rate": 3,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -145,10 +145,10 @@
         "reactions": 8,
         "comments": 0,
         "shares": 1,
-        "eng_rate": 3.27,
+        "eng_rate": 3.272727272727273,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -184,12 +184,12 @@
         "reactions": 2,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 1.52,
+        "eng_rate": 1.5151515151515151,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
-        "saves": 0
+        "saves": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, WITH INTRO (package 03). IG cross-post of the same source video as publer 195306518/195306511."
@@ -223,10 +223,10 @@
         "reactions": 56,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 5.62,
+        "eng_rate": 5.622489959839357,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -262,12 +262,12 @@
         "reactions": 2,
         "comments": 2,
         "shares": 0,
-        "eng_rate": 3.39,
+        "eng_rate": 3.389830508474576,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
-        "saves": 0
+        "saves": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 01). IG twin of the 991-reach TikTok post (publer 195306517) but only 113 reach / 0.88% eng -> platform is the dominant confound. Only post with a comment (1)."
@@ -301,10 +301,10 @@
         "reactions": 8,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 2.61,
+        "eng_rate": 2.6058631921824107,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -340,10 +340,10 @@
         "reactions": 13,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 4.44,
+        "eng_rate": 4.436860068259386,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -379,12 +379,12 @@
         "reactions": 3,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 2.42,
+        "eng_rate": 2.4193548387096775,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
-        "saves": 0
+        "saves": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 05). IG twin of publer 195306513."
@@ -418,12 +418,12 @@
         "reactions": 2,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 1.92,
+        "eng_rate": 1.9230769230769231,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
-        "saves": 0
+        "saves": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 02). IG twin of publer 195306515."
@@ -457,10 +457,10 @@
         "reactions": 3,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 42.86,
+        "eng_rate": 42.857142857142854,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -499,10 +499,10 @@
         "reactions": 12,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 3.99,
+        "eng_rate": 3.9867109634551494,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -543,12 +543,12 @@
         "reactions": 2,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 1.61,
+        "eng_rate": 1.6129032258064515,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
-        "saves": 0
+        "saves": null
       },
       "match_confidence": "low",
       "notes": "NEEDS HUMAN CONFIRM. Classified no-answer per guidance ('Comment your answer below', no score ask, no 'last question' signal). BUT 'This one's tricky!' could also be a cliffhanger. If no-answer, question_types = odd-one-out/figure-series/number-series (assumed here); if cliffhanger, they would be odd-one-out/position/number-series. Exact render (video-1 vs video-2) also unknown."
@@ -585,10 +585,10 @@
         "reactions": 14,
         "comments": 9,
         "shares": 1,
-        "eng_rate": 4.36,
+        "eng_rate": 4.3557168784029034,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -625,10 +625,10 @@
         "reactions": 4,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 3.05,
+        "eng_rate": 3.0534351145038165,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-28",
         "source": "api",
         "saves": null
       },
@@ -3942,7 +3942,7 @@
       "scheduled": 0,
       "n_posts": 6,
       "n_with_metrics": 2,
-      "median_eng_rate": 4.18,
+      "median_eng_rate": 4.17,
       "median_views": 426,
       "median_reach": 426
     },
@@ -3950,15 +3950,15 @@
       "count": 2,
       "metrics_n": 0,
       "avg_eng_rate": null,
-      "avg_reach": 261.5,
+      "avg_reach": 262,
       "notes": "Brand-intro promo (publer 195306520 TikTok + 195306521 IG). Both metrics pending (analytics page 2).",
       "drafts": 0,
       "scheduled": 0,
       "n_posts": 2,
       "n_with_metrics": 2,
-      "median_eng_rate": 5.57,
-      "median_views": 283.5,
-      "median_reach": 261.5
+      "median_eng_rate": 6.74,
+      "median_views": 288.5,
+      "median_reach": 262
     },
     "dont-narrate": {
       "count": 0,
@@ -4103,9 +4103,9 @@
         "n_posts": 36,
         "n_with_metrics": 6,
         "median_eng_rate": 2.17,
-        "avg_reach": 123.5,
+        "avg_reach": 124,
         "median_views": 135,
-        "median_reach": 123.5
+        "median_reach": 124
       },
       "tiktok": {
         "n_posts": 38,

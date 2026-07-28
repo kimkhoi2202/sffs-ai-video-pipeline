@@ -1,12 +1,12 @@
 /**
- * score.ts — cadence step (a): pull matured analytics (Publer, ~24h lag), join to
+ * score.ts — cadence step (a): pull matured analytics (Metricool, ~24h lag), join to
  * ab-database.json by platform_post_id, refresh metrics, and recompute the
  * decision rollups in learnings.json (medians + front-runners). Append-only logs.
  *
  * Robust to the common case where posts haven't matured yet: it simply updates
  * whatever has metrics and recomputes from those.
  */
-import { getPostInsights, flattenPostInsights, type FlatPostInsight } from "./publer.ts";
+import { pullInsights, type FlatInsight as FlatPostInsight } from "./insights.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
@@ -25,14 +25,13 @@ function ymd(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
+/**
+ * One "account" is now just a network filter: Metricool returns the whole brand's rows in
+ * one call, so there is no paging and no per-account fan-out to do.
+ */
 async function pullAccount(accountId: string, from: string, to: string): Promise<FlatPostInsight[]> {
-  const all: FlatPostInsight[] = [];
-  for (let page = 0; page < 20; page++) {
-    const { posts, total } = await getPostInsights(accountId, { from, to, sort_by: "reach", sort_type: "DESC", page });
-    all.push(...flattenPostInsights(posts));
-    if (all.length >= total || posts.length === 0) break;
-  }
-  return all;
+  const all = await pullInsights(from, to);
+  return all.filter((r) => !accountId || r.account_id === accountId);
 }
 
 export async function pullAndScore(): Promise<ScoreResult> {

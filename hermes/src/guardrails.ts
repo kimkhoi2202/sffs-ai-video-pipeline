@@ -1,5 +1,5 @@
 /**
- * guardrails.ts — the DRAFT-ONLY safety core. This is the ONLY write path to Publer
+ * guardrails.ts — the DRAFT-ONLY safety core. Snapshot/verify run against Metricool
  * the loop uses, and it can ONLY create drafts.
  *
  * Invariants enforced here (belt AND suspenders):
@@ -12,7 +12,38 @@
  */
 import { CONFIG, assertDraftOnly } from "./config.ts";
 import { createPost, type CreatePostArgs } from "./publer.ts";
-import { listAllPosts, postId } from "./publer.ts";
+import { listPosts as mcListPosts } from "./metricool.ts";
+
+/**
+ * The do-not-touch snapshot, on Metricool.
+ *
+ * It used to page Publer for scheduled + published ids. Publer 403s on every content
+ * endpoint, so the snapshot always threw and the cycle took its fail-closed branch —
+ * "continuing without draft creation would be unsafe" — and aborted before creating
+ * anything. A loop armed in that state renders a full batch and schedules none of it.
+ *
+ * The invariant is unchanged and, after today, better motivated than ever: capture every
+ * post that already exists, and refuse to finish if any of them vanished while the loop
+ * ran. A cover-only PUT silently evicted ten published rows this morning, and a check of
+ * exactly this shape is what caught it each time.
+ */
+const BOARD_FROM = "2026-01-01T00:00:00";
+const BOARD_TO = "2030-12-31T23:59:59";
+
+async function boardIds(): Promise<{ scheduled: string[]; published: string[] }> {
+  const rows = await mcListPosts(BOARD_FROM, BOARD_TO);
+  const scheduled: string[] = [];
+  const published: string[] = [];
+  for (const p of rows) {
+    // uuid is the stable key; the numeric id is reassigned on every update.
+    const uuid = String((p as any)?.uuid ?? "");
+    if (!uuid) continue;
+    const live = (p as any)?.providers ?? [];
+    if (live.some((x: any) => x?.status === "PUBLISHED")) published.push(uuid);
+    else scheduled.push(uuid);
+  }
+  return { scheduled, published };
+}
 import { info, warn } from "./log.ts";
 
 export interface DoNotTouchSnapshot {
@@ -22,10 +53,10 @@ export interface DoNotTouchSnapshot {
 }
 
 export async function snapshotDoNotTouch(): Promise<DoNotTouchSnapshot> {
-  const [scheduled, published] = await Promise.all([listAllPosts("scheduled"), listAllPosts("published")]);
+  const { scheduled, published } = await boardIds();
   const snap: DoNotTouchSnapshot = {
-    scheduled_ids: scheduled.map(postId).filter(Boolean),
-    published_ids: published.map(postId).filter(Boolean),
+    scheduled_ids: scheduled,
+    published_ids: published,
     captured_at: new Date().toISOString(),
   };
   info("guardrail: captured do-not-touch snapshot", {
@@ -40,10 +71,10 @@ export async function snapshotDoNotTouch(): Promise<DoNotTouchSnapshot> {
  * Throws if a previously-live post vanished or moved out of its bucket.
  */
 export async function verifyDoNotTouch(before: DoNotTouchSnapshot): Promise<void> {
-  const [scheduled, published] = await Promise.all([listAllPosts("scheduled"), listAllPosts("published")]);
-  const nowSched = new Set(scheduled.map(postId));
-  const nowPub = new Set(published.map(postId));
-  const missingSched = before.scheduled_ids.filter((id) => !nowSched.has(id));
+  const { scheduled, published } = await boardIds();
+  const nowSched = new Set(scheduled);
+  const nowPub = new Set(published);
+  const missingSched = before.scheduled_ids.filter((id) => !nowSched.has(id) && !nowPub.has(id));
   const missingPub = before.published_ids.filter((id) => !nowPub.has(id));
   if (missingSched.length || missingPub.length) {
     throw new Error(
@@ -53,7 +84,7 @@ export async function verifyDoNotTouch(before: DoNotTouchSnapshot): Promise<void
   }
   // Extra sanity: we should have ADDED drafts, and the scheduled/published counts
   // must be >= what we started with (we never remove).
-  if (nowSched.size < before.scheduled_ids.length || nowPub.size < before.published_ids.length) {
+  if (nowSched.size + nowPub.size < before.scheduled_ids.length + before.published_ids.length) {
     warn("guardrail: live/scheduled counts decreased unexpectedly", {
       before: { scheduled: before.scheduled_ids.length, published: before.published_ids.length },
       now: { scheduled: nowSched.size, published: nowPub.size },

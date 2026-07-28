@@ -406,10 +406,13 @@ async function armedSchedule(runId: string, wave: number, count: number): Promis
   const slots: Record<string, string[]> = { instagram: [], tiktok: [] };
   for (const a of allowed) {
     if (a.slots <= 0) continue;
-    const plan = planSlots(Math.min(count, a.slots), a.network, rows, seed);
+    // a.slots is the per-day cap; the batch itself may legitimately span days, so the
+    // request is for the whole batch and planSlots decides how it spreads.
+    const plan = planSlots(count, a.network, rows, seed);
     slots[a.network] = plan.times.map(toNaive);
     info(`loop scheduling ${a.network}`, {
-      day: plan.day, room: plan.room, placed: plan.times.length,
+      placed: plan.times.length,
+      across: plan.spread.map((x) => `${x.day}:${x.placed}`).join(" "),
       first: slots[a.network][0], last: slots[a.network].at(-1),
     });
   }

@@ -74,6 +74,8 @@ async function main(): Promise<void> {
         dateTime: p.publicationDate?.dateTime ?? "",
         timezone: p.publicationDate?.timezone ?? "",
         draft: !!p.draft,
+        // draft && !autoPublish is the loop's approval gate; the dashboard needs both.
+        auto_publish: p.autoPublish !== false,
         media: Array.isArray(p.media) ? p.media.map(String) : [],
         thumbnail: typeof p.videoThumbnailUrl === "string" ? p.videoThumbnailUrl : null,
         providers: (p.providers ?? []).map((x) => ({

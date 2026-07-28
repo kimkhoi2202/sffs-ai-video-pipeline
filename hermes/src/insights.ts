@@ -1,0 +1,98 @@
+/**
+ * insights.ts — matured post analytics, from Metricool.
+ *
+ * score.ts used to pull these from Publer, which 403s on every content endpoint, so the
+ * loop scored nothing and every rollup it recomputed was built on stale data. That is not
+ * cosmetic now: promotion judges on 3-SECOND SKIP RATE, and skip rate only exists here.
+ * Publer never exposed it at all.
+ *
+ * The row shape deliberately matches the old FlatPostInsight so score.ts's join and
+ * rollup logic are untouched, with `skip_rate` added as the field promotion reads.
+ *
+ * INSTAGRAM ONLY, and that is a real limit rather than an oversight: Metricool declares
+ * four TikTok watch-time fields and returns null on every row, so TikTok contributes
+ * reach and views but can never contribute a skip rate. With TikTok paused this costs
+ * nothing today, and when it resumes its arms simply will not be scoreable on hook
+ * quality — which is worth knowing before anyone reads a TikTok skip number as real.
+ */
+import { instagramReels, tiktokPosts, type McMetrics } from "./metricool.ts";
+import { CONFIG } from "./config.ts";
+import { info, warn } from "./log.ts";
+
+export interface FlatInsight {
+  post_id: string;
+  publer_id: string;
+  account_id: string;
+  network?: string;
+  scheduled_at?: string;
+  post_link?: string;
+  views: number | null;
+  reach: number | null;
+  likes: number | null;
+  comments: number | null;
+  shares: number | null;
+  saves: number | null;
+  engagement: number | null;
+  engagement_rate: number | null;
+  /** Percentage gone before ~3s. LOWER IS BETTER. The metric promotion judges on. */
+  skip_rate: number | null;
+  average_watch_time: number | null;
+}
+
+function toFlat(m: McMetrics): FlatInsight {
+  const denom = m.reach ?? m.views ?? 0;
+  const eng = (m.likes ?? 0) + (m.comments ?? 0) + (m.shares ?? 0);
+  return {
+    post_id: m.platformPostId,
+    publer_id: m.platformPostId, // kept so the existing join key keeps working
+    account_id: CONFIG.ACCOUNTS[m.network] ?? "",
+    network: m.network,
+    scheduled_at: m.publishedAt,
+    post_link: m.url,
+    views: m.views,
+    reach: m.reach,
+    likes: m.likes,
+    comments: m.comments,
+    shares: m.shares,
+    saves: null,
+    engagement: eng || null,
+    engagement_rate: denom > 0 ? (eng / denom) * 100 : null,
+    skip_rate: m.skipRate,
+    average_watch_time: m.averageWatchTime,
+  };
+}
+
+/**
+ * The analytics endpoints reject a bare date with an unhelpful HTTP 400 and want a NAIVE
+ * local datetime — not a date, and not an ISO offset either, both of which 400. Callers
+ * pass whatever they have and this normalises it, so the format cannot be got wrong twice.
+ */
+function stamp(d: string, endOfDay: boolean): string {
+  const t = String(d).trim();
+  if (/T\d{2}:\d{2}:\d{2}$/.test(t)) return t;
+  const day = t.slice(0, 10);
+  return `${day}T${endOfDay ? "23:59:59" : "00:00:00"}`;
+}
+
+/** Everything matured in the window, across both networks. */
+export async function pullInsights(fromRaw: string, toRaw: string): Promise<FlatInsight[]> {
+  const from = stamp(fromRaw, false);
+  const to = stamp(toRaw, true);
+  const out: FlatInsight[] = [];
+  try {
+    const reels = await instagramReels(from, to);
+    out.push(...reels.map(toFlat));
+    const withSkip = reels.filter((r) => r.skipRate !== null).length;
+    info("metricool insights: instagram", { rows: reels.length, with_skip_rate: withSkip });
+  } catch (e) {
+    warn("metricool insights: instagram pull failed", { err: e instanceof Error ? e.message.slice(0, 140) : String(e) });
+  }
+  try {
+    const tt = await tiktokPosts(from, to);
+    out.push(...tt.map(toFlat));
+    if (tt.length) info("metricool insights: tiktok", { rows: tt.length, note: "no skip rate exists for TikTok" });
+  } catch (e) {
+    warn("metricool insights: tiktok pull failed", { err: e instanceof Error ? e.message.slice(0, 140) : String(e) });
+  }
+  return out;
+}

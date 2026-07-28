@@ -98,28 +98,58 @@ export function localDay(plus = 0, now: Date = new Date()): string {
  * one empty. `avoid` carries every existing same-platform instant so the 56-minute
  * floor holds against posts a previous batch placed, not merely within this one.
  */
+export interface SlotPlan {
+  /** Every slot, in order, possibly spanning several days. */
+  times: string[];
+  /** The local days actually used, with how many landed on each. */
+  spread: Array<{ day: string; placed: number; room: number }>;
+}
+
+/**
+ * Slot times for `count` posts on `network`, SPILLING ACROSS DAYS as capacity allows.
+ *
+ * The first version stopped at the first day with any room at all, which quietly
+ * truncated a batch: asked for 12 on a day with 2 slots left, it returned 2 and the other
+ * 10 were simply never placed. That is the same class of bug as the one that left Thursday
+ * empty — a scheduler that looks at one day cannot fill a week.
+ *
+ * So it walks the horizon: take whatever today can still hold, then the next day, until
+ * the batch is placed or the horizon runs out. `avoid` accumulates as it goes, so the
+ * 56-minute same-platform floor holds across the batch AND against posts already on the
+ * calendar, and each day gets its own jitter lane so two days never share a grid.
+ */
 export function planSlots(
   count: number,
   network: Network,
   rows: McPost[],
   seed: string,
   now: Date = new Date(),
-): { day: string; times: string[]; room: number } {
+): SlotPlan {
   const perDay = CONFIG.PLATFORM_POLICY[network]?.perDay ?? 0;
-  const avoid = timesByNetwork(rows)[network] ?? [];
-  for (let d = 0; d < HORIZON_DAYS; d++) {
+  const avoid = [...(timesByNetwork(rows)[network] ?? [])];
+  const times: string[] = [];
+  const spread: Array<{ day: string; placed: number; room: number }> = [];
+  for (let d = 0; d < HORIZON_DAYS && times.length < count; d++) {
     const day = localDay(d, now);
     const room = perDay - countOnDay(rows, network, day);
     if (room <= 0) continue;
-    const take = Math.min(count, room);
-    // Start from the later of "now" and this day's window opening, so today's run
-    // never tries to schedule into a slot that has already passed.
+    const take = Math.min(count - times.length, room);
     const windowOpen = new Date(`${day}T${String(WINDOW_OPEN_HOUR).padStart(2, "0")}:00:00${offsetFor(CONFIG.METRICOOL_TZ)}`);
     const fromMs = Math.max(now.getTime(), windowOpen.getTime());
-    const times = nextSlots(take, { seed: `${seed}|${day}`, platform: network, avoid, fromMs });
-    if (times.length) return { day, times, room };
+    const got = nextSlots(take, { seed: `${seed}|${day}`, platform: network, avoid, fromMs });
+    if (!got.length) continue;
+    times.push(...got);
+    avoid.push(...got); // later days keep their distance from what we just placed
+    spread.push({ day, placed: got.length, room });
   }
-  return { day: "", times: [], room: 0 };
+  return { times, spread };
+}
+
+/** Backwards-compatible single-day view, for callers that only want the first day. */
+export function planDay(count: number, network: Network, rows: McPost[], seed: string, now = new Date()) {
+  const p = planSlots(count, network, rows, seed, now);
+  const first = p.spread[0];
+  return { day: first?.day ?? "", times: p.times, room: first?.room ?? 0 };
 }
 
 export interface LoopPublishInput {

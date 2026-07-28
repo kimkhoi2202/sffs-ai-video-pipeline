@@ -1430,6 +1430,114 @@
           "answerNorm": "flipped arrow"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-28-v09",
+      "test": "type-nonverbal-classic",
+      "variant": "classic-shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "34d932488410",
+          "sig": "polygon|nonverbal|figure-series|7~6~5=>4|4",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "4"
+        },
+        {
+          "hash": "7b7bfb5de037",
+          "sig": "dot|nonverbal|position|lm~tr~bm=>tl|tl",
+          "tier": "POSITION",
+          "answerNorm": "tl"
+        },
+        {
+          "hash": "cd753bc35094",
+          "sig": "shaded|nonverbal|figure-analogy|square>heart=>heart:true|filled-heart",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "filled-heart"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v10",
+      "test": "narration",
+      "variant": "no-question-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b4dcb85b119f",
+          "sig": "text|verbal|verbal-analogy|wolf is to howl as cat is to || bark~meow~quack~roar|meow",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "MEOW"
+        },
+        {
+          "hash": "c2e6495ca2d2",
+          "sig": "text|verbal|sentence-completion|the story was so that everyone in the room burst out laughing || boring~funny~sad~scary|funny",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "FUNNY"
+        },
+        {
+          "hash": "de3bd71b2c36",
+          "sig": "text|verbal|odd-one-out|which one does not belong || canoe~kayak~raft~red|red",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "RED"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v11",
+      "test": "tempo",
+      "variant": "tempo-slow",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "85f2a1312cee",
+          "sig": "text|quantitative|word-problem|a 40 toy is 25 off today what is the sale price || 10~30~32~35|30",
+          "tier": "WORD PROBLEM",
+          "answerNorm": "$30"
+        },
+        {
+          "hash": "79c95e5a2b2d",
+          "sig": "numseries|quantitative|number-series|80~40~20~10|5",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "5"
+        },
+        {
+          "hash": "88a085dc5846",
+          "sig": "text|quantitative|compare|which fraction is the smallest || 1 2~1 3~1 4~2 5|1 4",
+          "tier": "COMPARE",
+          "answerNorm": "1/4"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v12",
+      "test": "category-mix",
+      "variant": "quant-only",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "028bdbd222f6",
+          "sig": "numseries|quantitative|number-series|2~2~4~6~10|16",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "16"
+        },
+        {
+          "hash": "245023eb0e0b",
+          "sig": "numseries|quantitative|number-series|1~3~9~27|81",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "81"
+        },
+        {
+          "hash": "374903ebbf61",
+          "sig": "numseries|quantitative|number-series|2~9~11~20~31|51",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "51"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"

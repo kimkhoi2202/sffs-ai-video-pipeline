@@ -289,11 +289,24 @@ test("GUARDRAIL: page exposes NO publish/schedule/merge action (no POST form)", 
       },
     }),
   );
-  // The only <form> is the GET run-selector; there must be no POST/mutation form.
+  // NARROWED, NOT WEAKENED. The dashboard now has exactly ONE mutation — approve/reject
+  // on a queued draft — and these assertions still forbid everything else. There is
+  // still no <form method=post> anywhere; the approval control is a scoped fetch to two
+  // named endpoints, so a stray mutating form remains a test failure.
   assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
-  // No action buttons/inputs that would publish/schedule/merge/post.
+  // Still no control that would publish/schedule/merge/post arbitrary content.
   assert.doesNotMatch(html, /<button[^>]*>\s*(publish|schedule|merge|post|go live)/i);
   assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["'][^>]*(publish|schedule|merge)/i);
+  // Every endpoint the page can reach, as an explicit allowlist. A new fetch target is a
+  // test failure until someone adds it here deliberately, which is the point: this is the
+  // line that stops the surface widening by accident.
+  const ALLOWED_FETCH = new Set(["/api/health", "/api/approve", "/api/reject"]);
+  for (const m of html.matchAll(/fetch\(\s*["'`]([^"'`]+)["'`]/g)) {
+    assert.ok(ALLOWED_FETCH.has(m[1]), `unexpected fetch target ${m[1]}`);
+  }
+  // POST is the only verb the page may use; PUT/PATCH/DELETE must never appear. PUT in
+  // particular is destructive on this account — it evicted ten published rows on 07-28.
+  assert.doesNotMatch(html, /method:\s*["'](PUT|PATCH|DELETE)["']/i);
 });
 
 // ── CONTENT default-promotion card (read-only; approval = human CLI) ──────────
@@ -1233,3 +1246,94 @@ test("summarizeExperiment: excluded reels are not counted toward the target", as
   assert.equal(e.hook_posted, 0, "an excluded reel is not a posted data point either");
   assert.equal(e.control_scheduled, 1);
 });
+
+
+// ── the approval gate: the dashboard's ONLY mutation ─────────────────────────
+// These tests exist to keep the blast radius where it is. The dashboard is public over
+// plain HTTP behind one shared word, so the security argument is not "nobody will guess
+// it" — it is "guessing it gets you approve/reject on a queued draft and nothing else".
+test("GUARDRAIL: only /api/approve and /api/reject may mutate", async () => {
+  const A = await import("../approve.ts");
+  assert.deepEqual([...A.MUTATING_ROUTES], ["/api/approve", "/api/reject"]);
+});
+
+test("approval: a GET is refused", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const out = await handleApproval("approve", { method: "GET" } as any, stubAct());
+  assert.equal(out.status, 405);
+});
+
+test("approval: the wrong password is refused and nothing is called", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const act = stubAct();
+  const out = await handleApproval("approve", bodyReq({ uuid: "123", password: "nope" }), act);
+  assert.equal(out.status, 401);
+  assert.equal(act.calls.length, 0, "must not reach the account on a bad password");
+});
+
+test("approval: a non-numeric uuid is refused — nothing else fits the id slot", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const act = stubAct();
+  for (const bad of ["", "abc", "1; DROP", "../../etc", "1 OR 1=1"]) {
+    const out = await handleApproval("approve", bodyReq({ uuid: bad, password: "alphaaiengineering" }), act);
+    assert.equal(out.status, 400, `should refuse ${JSON.stringify(bad)}`);
+  }
+  assert.equal(act.calls.length, 0);
+});
+
+test("approval: a correct request approves exactly the one post named", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const act = stubAct();
+  const out = await handleApproval("approve", bodyReq({ uuid: "-7965738052010884196", password: "alphaaiengineering" }), act);
+  assert.equal(out.status, 200);
+  assert.equal(out.body.ok, true);
+  assert.deepEqual(act.calls, [["approve", "-7965738052010884196"]]);
+});
+
+test("approval: reject routes to reject, not to a delete of anything else", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const act = stubAct();
+  await handleApproval("reject", bodyReq({ uuid: "42", password: "alphaaiengineering" }), act);
+  assert.deepEqual(act.calls, [["reject", "42"]]);
+});
+
+test("approval: an oversized body is refused before it is parsed", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const out = await handleApproval("approve", bigReq(), stubAct());
+  assert.equal(out.status, 413);
+});
+
+test("page: the awaiting-approval count is impossible to miss", () => {
+  const html = page(emptyPageData({
+    scheduled: { ok: true, count: 2, by_status: {}, by_platform: {}, posts: [
+      { post_id: "-1", video_id: "2026-07-30-v01", awaiting_approval: true, opening: "motion-hook", scheduled_cst: "Thu 08:12" },
+      { post_id: "-2", video_id: "2026-07-30-v02", awaiting_approval: true, opening: "cold-plate", scheduled_cst: "Thu 09:40" },
+    ] } as any,
+  }));
+  assert.match(html, /2 videos awaiting your approval/i);
+  assert.match(html, /APPROVAL QUEUE — 2 AWAITING/);
+  assert.match(html, /2026-07-30-v01/);
+});
+
+test("page: an empty approval queue says so without shouting", () => {
+  const html = page(emptyPageData({ scheduled: { ok: true, count: 0, by_status: {}, by_platform: {}, posts: [] } as any }));
+  assert.doesNotMatch(html, /awaiting your approval/i);
+  assert.match(html, /Nothing awaiting approval/i);
+});
+
+function stubAct() {
+  const calls: string[][] = [];
+  return {
+    calls,
+    approve: async (u: string) => { calls.push(["approve", u]); return { ok: true, reason: "approved" }; },
+    reject: async (u: string) => { calls.push(["reject", u]); return { ok: true, reason: "rejected" }; },
+  };
+}
+function bodyReq(obj: Record<string, unknown>) {
+  const raw = Buffer.from(JSON.stringify(obj));
+  return { method: "POST", async *[Symbol.asyncIterator]() { yield raw; } } as any;
+}
+function bigReq() {
+  const raw = Buffer.alloc(4096, 0x61);
+  return { method: "POST", async *[Symbol.asyncIterator]() { yield raw; } } as any;
+}

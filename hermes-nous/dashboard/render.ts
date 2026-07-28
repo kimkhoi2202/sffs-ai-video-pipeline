@@ -968,6 +968,67 @@ function experimentPanel(view?: ScheduledView): string {
   <p class="muted" style="margin-top:10px">Medians read <b>pending</b> until Metricool's nightly analytics sync lands, which runs up to ~24h behind a post. A freshly published reel showing "pending" has not failed to gather data; it has not been synced yet.</p>`;
 }
 
+
+/**
+ * The approval queue. Deliberately loud: if the user does not notice a queue, nothing
+ * ships, so an empty queue is a quiet line and a non-empty one is a banner.
+ */
+function approvalPanel(view?: ScheduledView): string {
+  const waiting = (view?.posts ?? []).filter((p) => p.awaiting_approval);
+  if (!waiting.length) {
+    return `<section class="card"><h2>APPROVAL QUEUE</h2>
+      <p class="muted"><b>Nothing awaiting approval.</b> Videos the autonomous loop generates land here as
+      drafts and cannot publish until approved. The reels already on the calendar were reviewed before
+      scheduling and are exempt.</p></section>`;
+  }
+  const rows = waiting.map((p) => `
+    <div class="apr-row" data-uuid="${esc(String(p.post_id))}">
+      <div class="apr-meta">
+        <b>${esc(String(p.video_id ?? p.post_id))}</b>
+        <span class="muted">${esc(String(p.scheduled_cst ?? p.scheduled_at ?? ""))}</span>
+        ${p.opening ? `<span class="chip">${esc(String(p.opening))}</span>` : ""}
+      </div>
+      <div class="apr-act">
+        <button class="apr-yes" data-act="approve">Approve</button>
+        <button class="apr-no" data-act="reject">Reject</button>
+        <span class="apr-msg"></span>
+      </div>
+    </div>`).join("");
+  return `<section class="card apr-card"><h2>APPROVAL QUEUE — ${waiting.length} AWAITING</h2>
+    <p class="muted">These are loop-generated drafts. They <b>cannot publish</b> until approved:
+    they are held as Metricool drafts, so nothing goes out even if this box dies. Rejecting soft-deletes
+    (restorable). Anything still unapproved when its slot arrives slides forward automatically.</p>
+    <p><label>Password <input type="password" id="apr-pass" autocomplete="current-password"></label></p>
+    ${rows}
+    <script>
+    (function () {
+      document.querySelectorAll(".apr-row button").forEach(function (b) {
+        b.addEventListener("click", async function () {
+          var row = b.closest(".apr-row");
+          var msg = row.querySelector(".apr-msg");
+          var pass = (document.getElementById("apr-pass") || {}).value || "";
+          if (!pass) { msg.textContent = "enter the password first"; return; }
+          b.disabled = true; msg.textContent = "working...";
+          try {
+            var opts = {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ uuid: row.dataset.uuid, password: pass }),
+            };
+            var r = b.dataset.act === "approve"
+              ? await fetch("/api/approve", opts)
+              : await fetch("/api/reject", opts);
+            var j = await r.json();
+            msg.textContent = j.reason || (j.ok ? "done" : "failed");
+            if (j.ok) { row.style.opacity = 0.45; row.querySelectorAll("button").forEach(function (x) { x.disabled = true; }); }
+            else { b.disabled = false; }
+          } catch (e) { msg.textContent = "request failed"; b.disabled = false; }
+        });
+      });
+    })();
+    </script></section>`;
+}
+
 function scheduledPanel(view?: ScheduledView, defaults?: AbDefaults): string {
   if (!view) {
     return `<p class="muted">Scheduled posts appear here once autonomy is ARMED. Until then the loop is DRAFT-ONLY (nothing is scheduled).</p>`;
@@ -1027,6 +1088,13 @@ export interface PageData {
 }
 
 export function page(opts: PageData): string {
+  // Surfaced first, before any other panel, because an unnoticed queue ships nothing.
+  const awaitingCount = (opts.scheduled?.posts ?? []).filter((p: any) => p.awaiting_approval).length;
+  const awaitingBanner = awaitingCount
+    ? `<div class="apr-banner"><b>${awaitingCount} video${awaitingCount === 1 ? "" : "s"} awaiting your approval</b>
+       — nothing publishes until you decide. <a href="#approval">Review now</a></div>`
+    : "";
+
   const { runs, db, l, bank, schedule, disk, selected, pr, logItems } = opts;
   const cov: BankCoverage =
     opts.coverage ?? { total: 0, usable: bank.usable, fresh: bank.fresh, used: bank.used, freshPct: 0, perDay: 0, runwayDays: null, byType: [] };
@@ -1175,6 +1243,17 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .gbar-pending{background:repeating-linear-gradient(45deg,#eee,#eee 6px,#f6f4ee 6px,#f6f4ee 12px)}
 .gpace{margin-top:10px}
 .gcol-h{font-weight:800;font-size:14px;margin-bottom:6px}
+
+.apr-banner{background:#ffd166;color:#111;padding:14px 18px;border:3px solid #111;font-weight:800;margin:0 0 18px;border-radius:8px}
+.apr-banner a{color:#111}
+.apr-card{border-color:#ffd166}
+.apr-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid #2a2a2a;flex-wrap:wrap}
+.apr-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.apr-act{display:flex;gap:8px;align-items:center}
+.apr-yes,.apr-no{cursor:pointer;border:2px solid #111;border-radius:6px;padding:6px 14px;font-weight:700}
+.apr-yes{background:#8ce99a}.apr-no{background:#ffa8a8}
+.apr-yes:disabled,.apr-no:disabled{opacity:.5;cursor:default}
+.apr-msg{font-size:12px;opacity:.85}
 </style></head>
 <body>
 <header>
@@ -1214,7 +1293,7 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 
   <div class="card">
     <h2><span class="pin">SCHEDULED</span> Posts &amp; times <span class="pin" style="background:var(--mint)">LIVE FROM METRICOOL</span></h2>
-    ${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
+    ${awaitingBanner}<span id="approval"></span>${approvalPanel(opts.scheduled)}${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
   </div>
 
   <div class="card">
