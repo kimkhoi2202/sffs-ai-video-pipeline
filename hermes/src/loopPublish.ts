@@ -159,6 +159,7 @@ export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft
       answerLabels: input.answerLabels,
       cover_ms: coverMs,
       cover_url: cover?.url ?? null,
+      thumbnail_url: cover?.url ?? null,
     },
     [],
   );
@@ -171,6 +172,9 @@ export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft
     publicationDate: { dateTime: input.whenLocal, timezone: CONFIG.METRICOOL_TZ },
     networks: [input.network as "instagram" | "tiktok"],
     videoCoverMilliseconds: coverMs ?? undefined,
+    // Instagram ignores the offset and serves frame zero, so the EXPLICIT thumbnail is
+    // the one that actually decides what a scroller sees on the grid.
+    videoThumbnailUrl: cover?.url ?? undefined,
     // THE APPROVAL GATE. Not a flag in our own store — the platform itself will not
     // publish a draft, so an unapproved video cannot go out even if everything on our
     // side fails. approval.ts flips exactly these two fields and nothing else.

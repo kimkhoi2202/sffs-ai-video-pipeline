@@ -347,8 +347,17 @@ export async function putPost(id: number, body: Record<string, unknown>): Promis
  * replaced in place, which is the normal case. A surviving stale id is not cosmetic —
  * the account has a hard ceiling on scheduled rows and a stray row evicts a real post.
  */
-export async function retireStaleId(staleId: number): Promise<boolean> {
+export async function retireStaleId(staleId: number, expectUuid?: string): Promise<boolean> {
+  // NEVER delete a numeric id without first confirming it still belongs to the post we
+  // think it does. Metricool REASSIGNS numeric ids, so a "stale" id is frequently
+  // already owned by a DIFFERENT post — retiring one unverified deleted five innocent
+  // published rows on 2026-07-28. When the caller knows the uuid, the id is re-read and
+  // the delete is refused unless the uuid matches; without a uuid we refuse outright,
+  // because an unverified delete here is exactly the destructive case.
+  if (!expectUuid) return false;
   try {
+    const leftover = await getPost(staleId);
+    if (String(leftover?.uuid ?? "") !== String(expectUuid)) return false; // someone else's row
     await call<boolean>(`${V2}/scheduler/posts/${staleId}`, { method: "DELETE", retryOn5xx: false });
     return true;
   } catch {
