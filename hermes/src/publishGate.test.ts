@@ -27,6 +27,8 @@ const shapeQ = (over: Record<string, unknown> = {}) => ({
 
 const clean = () => ({
   id: "2026-07-27-v01",
+  // Every candidate now needs an explicit thumbnail; the gate refuses without one.
+  thumbnail_url: "https://static.metricool.com/planner/202607/6617222-file-fixture.jpeg",
   caption: "SMART or FART? drop your answer below\n\n#quiz #brainteaser",
   hashtag_set: "A",
   questions: [shapeQ(), shapeQ({ sig: "s2", answer: "rm" })],
@@ -402,12 +404,16 @@ test("a durable public cover passes", () => {
 // videoCoverMilliseconds, because a visible puzzle stops a scroller on a profile grid
 // where an identical branded card on every post does not.
 
-test("a cover expressed as a millisecond offset satisfies the gate", () => {
+// SUPERSEDED BY MEASUREMENT. This asserted that an offset alone was enough. It is not:
+// Metricool stores videoCoverMilliseconds faithfully and Instagram discards it, so the
+// offset satisfies a read-back and nothing else. The offset is still carried — harmless,
+// and correct wherever it IS honoured — but it can no longer stand in for a cover.
+test("an offset with no explicit thumbnail is refused, however well-formed", () => {
   const v = clean();
   delete (v as any).cover_url;
   (v as any).cover_ms = 3900;
-  const r = G.publishGate(v as any, []);
-  assert.equal(r.pass, true, r.reason);
+  (v as any).thumbnail_url = null;
+  assert.equal(G.publishGate(v as any, []).pass, false);
 });
 
 test("a zero or negative cover offset is refused — 0 is frame one, which is the bug", () => {
@@ -448,4 +454,31 @@ test("coverMomentMs: semantic, per-arm, and never frame one", async () => {
   assert.equal(hook - control, 2200);
   assert.ok(control > 0 && hook > 0, "never frame one");
   assert.notEqual(control, hook, "a single fixed offset across both arms is the confound");
+});
+
+// ── the explicit thumbnail requirement ───────────────────────────────────────
+// Instagram ignores videoCoverMilliseconds on this path and serves frame zero instead:
+// frame zero won the pixel comparison on 9 of 9 published reels, and on the hook arm
+// frame zero is a bare four-colour grid with no text. Only videoThumbnailUrl is honoured.
+test("an offset alone no longer satisfies the gate — Instagram ignores it", () => {
+  const v = clean();
+  (v as any).cover_ms = 6400;
+  (v as any).thumbnail_url = null;
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /explicit videoThumbnailUrl/);
+});
+
+test("an explicit https thumbnail satisfies the gate", () => {
+  const v = clean();
+  (v as any).cover_ms = 6400;
+  assert.equal(G.publishGate(v as any, []).pass, true);
+});
+
+test("a presigned S3 thumbnail is refused — it expires before the post runs", () => {
+  const v = clean();
+  (v as any).thumbnail_url = "https://b.s3.amazonaws.com/x.jpg?X-Amz-Signature=ab";
+  const r = G.publishGate(v as any, []);
+  assert.equal(r.pass, false);
+  assert.match(r.reason, /presigned/);
 });

@@ -75,6 +75,11 @@ export interface PublishCandidate {
    * plate's entrance — the two failure modes this replaced.
    */
   cover_ms?: number | null;
+  /**
+   * The EXPLICIT thumbnail Instagram will actually honour. Distinct from cover_ms:
+   * Metricool stores the offset faithfully and Instagram ignores it.
+   */
+  thumbnail_url?: string | null;
 }
 
 /** Characters an authored prompt/option may carry that the normalizer destroys. */
@@ -193,6 +198,20 @@ export function publishGate(v: PublishCandidate, recent: RecentPost[] = []): Gat
   // fall back to its own frame one — a bare colour grid on the motion-hook arm.
   const cover = String(v.cover_url ?? "").trim();
   const coverMs = typeof v.cover_ms === "number" && Number.isFinite(v.cover_ms) ? v.cover_ms : null;
+  // A cover OFFSET is not a cover. Metricool persists videoCoverMilliseconds faithfully
+  // and Instagram then discards it, serving frame zero — pixel comparison put frame zero
+  // ahead on 9 of 9 published reels, and on the hook arm frame zero is a bare
+  // four-colour grid with no text. Only an explicit videoThumbnailUrl is honoured, so
+  // only that counts as covered. Verified by read-back is NOT enough here: read-back is
+  // exactly what passed while the offset was being ignored.
+  const thumb = String(v.thumbnail_url ?? "").trim();
+  if (!thumb) {
+    problems.push("no explicit videoThumbnailUrl — a cover offset alone is ignored by Instagram");
+  } else if (!thumb.startsWith("https://")) {
+    problems.push(`thumbnail must be https, got "${thumb.slice(0, 40)}"`);
+  } else if (thumb.includes("X-Amz-Signature")) {
+    problems.push("thumbnail is a presigned S3 url — it expires before the post runs");
+  }
   if (!cover && coverMs === null) {
     problems.push("no cover — the reel would fall back to its own first frame (a bare colour grid on the motion-hook arm)");
   }

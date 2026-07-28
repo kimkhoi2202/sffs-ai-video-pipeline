@@ -1214,6 +1214,195 @@
           "answerNorm": "difficult"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-28-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b818215c206c",
+          "sig": "text|verbal|verbal-analogy|goat is to kid as hen is to || chick~duckling~foal~tadpole|chick",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "CHICK"
+        },
+        {
+          "hash": "c14a6167df0e",
+          "sig": "numseries|quantitative|number-series|4~9~13~22~35|57",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "57"
+        },
+        {
+          "hash": "14806c0b6646",
+          "sig": "text|quantitative|number-puzzle|if 4 5 27 7 3 30 2 6 24 then 8 5 || 36~39~40~41|39",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "39"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v02",
+      "test": "mascot",
+      "variant": "mascot-standard",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "c59b63f4b644",
+          "sig": "numseries|verbal|letter-series|AZ~BY~CX|dw",
+          "tier": "LETTER SERIES",
+          "answerNorm": "DW"
+        },
+        {
+          "hash": "063068795fb0",
+          "sig": "text|verbal|odd-one-out|which one does not belong || drizzle~foot~hail~wind|foot",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "FOOT"
+        },
+        {
+          "hash": "863c71796d27",
+          "sig": "text|quantitative|number-analogy|which number fits 5 16 6 19 7 22 9 || 27~28~33~38|28",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "28"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "79e3368e186d",
+          "sig": "text|verbal|sentence-completion|the yard was full of flowers in red yellow and purple || colorful~empty~plain~tiny|colorful",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "COLORFUL"
+        },
+        {
+          "hash": "ccb6aaf02275",
+          "sig": "numseries|quantitative|number-series|1~7~8~15~23|38",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "38"
+        },
+        {
+          "hash": "58864dd978da",
+          "sig": "text|quantitative|word-problem|a pizza has 8 slices 3 kids eat 2 slices each how many are left || 2~3~4~6|2",
+          "tier": "WORD PROBLEM",
+          "answerNorm": "2"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v04",
+      "test": "hook",
+      "variant": "hook-challenge",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6e48c1315c3a",
+          "sig": "text|quantitative|compare|which decimal is the largest || 0 29~0 3~0 35~0 4|0 4",
+          "tier": "COMPARE",
+          "answerNorm": "0.4"
+        },
+        {
+          "hash": "e0a48497d069",
+          "sig": "numseries|quantitative|number-series|5~9~14~23~37|60",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "60"
+        },
+        {
+          "hash": "d66b96742672",
+          "sig": "text|verbal|logic|no fish can fly a shark is a fish so a shark can fly || can t tell~false~true|false",
+          "tier": "LOGIC",
+          "answerNorm": "FALSE"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v05",
+      "test": "narration",
+      "variant": "no-narration",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "8d399de1465e",
+          "sig": "text|verbal|verbal-analogy|float is to sink as buy is to || dark~low~night~sell|sell",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SELL"
+        },
+        {
+          "hash": "9d8981d7334a",
+          "sig": "text|verbal|odd-one-out|which one does not belong || arm~black~chin~wrist|black",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "BLACK"
+        },
+        {
+          "hash": "7a0eeebd3be4",
+          "sig": "text|verbal|sentence-completion|he could not find his keys because his whole room was so and cluttered || bright~clean~empty~messy|messy",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "MESSY"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v06",
+      "test": "ending",
+      "variant": "no-answer",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "85924f07893c",
+          "sig": "text|quantitative|number-puzzle|if 5 1 10 7 6 84 4 6 48 then 6 4 || 47~48~51~58|48",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "48"
+        },
+        {
+          "hash": "95c33043806d",
+          "sig": "numseries|quantitative|number-series|4~7~14~25~40|59",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "59"
+        },
+        {
+          "hash": "4b0a6cad80a2",
+          "sig": "text|quantitative|number-analogy|which number fits 2 9 3 12 4 15 6 || 16~21~24~31|21",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "21"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-28-v07",
+      "test": "narration",
+      "variant": "no-options-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "432aeab8f0de",
+          "sig": "text|verbal|verbal-analogy|hot is to cold as begin is to || dark~end~low~take|end",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "END"
+        },
+        {
+          "hash": "7a613bccc541",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cocoa~hawk~soda~tea|hawk",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "HAWK"
+        },
+        {
+          "hash": "be8f9714f237",
+          "sig": "text|verbal|sentence-completion|my brother was when he opened his gift and saw the shiny new bike || bored~excited~hungry~sleepy|excited",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "EXCITED"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"

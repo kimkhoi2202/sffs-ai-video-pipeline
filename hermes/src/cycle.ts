@@ -13,7 +13,7 @@
  *                   copy gate -> render (Short/FullVideo, ONE per platform with
  *                   its own SAFE ZONES) -> render-sanity gate
  *     PUBLISH the survivors: allocate schedule slots sized to how many ACTUALLY
- *                   survived, then per platform: S3 upload -> Publer media import
+ *                   survived, then per platform: S3 upload -> Metricool draft
  *                   -> createDraftOnly / createScheduledPostArmed -> annotate
  *                   ab-database
  *     TOP UP if the day landed under VIDEOS_FLOOR and the ceiling still has room
@@ -40,7 +40,7 @@ import {
   type RunState,
   type VideoPlan,
 } from "./state.ts";
-import { snapshotDoNotTouch, verifyDoNotTouch, createDraftOnly } from "./guardrails.ts";
+import { snapshotDoNotTouch, verifyDoNotTouch } from "./guardrails.ts";
 import { kickoffStatus, type KickoffStatus } from "./kickoff.ts";
 import { nextSlots, WINDOW_OPEN_HOUR, WINDOW_CLOSE_HOUR } from "./scheduler.ts";
 import { goalProgress } from "./goal.ts";
@@ -52,8 +52,12 @@ import { markUsed, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
 import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
-import { importMediaFromUrl, pollJob, listAllPosts, postId } from "./publer.ts";
-import { coverMediaFor, videoMediaObjectWithCover } from "./covers.ts";
+// PUBLER IS GONE. It 403s on every content endpoint, so the old media-import + job-poll
+// publish path would render a whole batch and then fail at the first upload — the exact
+// shape of the 2026-07-25 failure. Publishing now goes through Metricool, reusing the
+// modules the controlled path already proved against the live account.
+import { publishAsDraft, planSlots, calendarRows, allocatable, type LoopDraft } from "./loopPublish.ts";
+import { toNaive } from "./approval.ts";
 import { ping } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
@@ -247,61 +251,48 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
   const renders = v.renders ?? [];
   if (!renders.length) throw new Error(`${v.id}: no renders recorded — cannot publish`);
 
-  // Optional run/validation TAG on the DRAFT caption (env-gated). The live VPS
-  // loop leaves HERMES_CAPTION_TAG unset, so real captions are unchanged
-  // (behavior-preserving). A supervised hermes-nous validation run sets it (e.g.
-  // "[hermes-nous validation]") so the created DRAFTS are clearly labeled and
-  // trivial for a human to find + delete. Applied AFTER the copy gate so it can
-  // never affect a gate decision, and reflected in the ab-database annotation.
   const captionTag = (process.env.HERMES_CAPTION_TAG || "").trim();
   if (captionTag) v.caption = `${captionTag}\n${v.caption}`;
 
-  // 7-8) per platform: upload its OWN safe-zone render to S3, import the media,
-  // and create a DRAFT on that platform's account only (createDraftOnly forces
-  // state="draft"; the loop can never publish/schedule). Each platform draft thus
-  // carries the render made for that platform's UI-safe zones.
+  // The loop only ever publishes to networks the POLICY allows. A paused network
+  // (TikTok, right now) takes no slots, so the loop cannot quietly undo a human hold.
   const results: PlatformDraft[] = [];
   for (const r of renders) {
     const platform = r.platform as "instagram" | "tiktok";
-    const account_id = CONFIG.ACCOUNTS[platform];
-    const key = `hermes/${todayRunId()}/${v.id}.${platform}.mp4`;
-    const url = uploadToS3(r.path, key);
-    const { mediaId } = await withRetry(`${v.id} ${platform} media-import`, MEDIA_IMPORT_ATTEMPTS, () =>
-      importMediaFromUrl(url, `${v.id}.${platform}.mp4`),
-    );
-    // BRANDED COVER: append the rotating "SMART FELLA OR FART SMELLA?" title card as the
-    // DEFAULT thumbnail so the post cold-opens branded (video bytes unchanged -> still Q1).
-    // Best-effort: no manifest/cover => post uncovered (a cover problem never blocks a post).
-    const cover = coverMediaFor(todayRunId(), v.index, platform);
-    const mediaArg = cover
-      ? { media_objects: [videoMediaObjectWithCover(mediaId, cover)] }
-      : { media_ids: [mediaId] };
-    if (cover) info(`${v.id} ${platform}: branded cover ${cover.color} (${cover.id})`);
-    // KICKOFF gate: OFF => createDraftOnly (unchanged draft-only path). ARMED =>
-    // schedule at a policy time via the gated kickoff_schedule.ts (dynamic-imported
-    // ONLY here, so the OFF loop never even loads a module that can schedule).
-    let jobId: string;
-    let scheduled_at: string | null = null;
-    if (sched.armed) {
-      scheduled_at = sched.slot(platform, slotIndex);
-      if (!scheduled_at) throw new Error(`no schedule slot for ${platform}#${slotIndex}`);
-      const { createScheduledPostArmed } = await import("./kickoff_schedule.ts");
-      jobId = await createScheduledPostArmed({ account_ids: [account_id], text: v.caption, ...mediaArg, type: "video" }, scheduled_at);
-    } else {
-      jobId = await createDraftOnly({ account_ids: [account_id], text: v.caption, ...mediaArg, type: "video" });
+    const whenLocal = sched.slot(platform, slotIndex);
+    if (!whenLocal) {
+      info(`${v.id} ${platform}: no slot allocated (network paused or out of room) — skipping this platform`);
+      continue;
     }
-    // The poll is a plain GET, so it is safe to retry when Publer rate-limits it —
-    // unlike the create above, which must never run twice.
-    const job = await withRetry(`${v.id} ${platform} job-poll`, JOB_POLL_ATTEMPTS, () =>
-      pollJob(jobId, { label: `create-${sched.armed ? "scheduled" : "draft"}-${platform}`, timeoutMs: 180_000 }),
-    );
-    // Publer's job_status returns only {status:"complete"} (no post ids). When the
-    // payload does carry one we take it; otherwise the id is resolved once per wave
-    // by backfillPostIds, NOT here — a per-video lookup paged the whole post list
-    // twice per video and is what exhausted the API quota mid-batch on 2026-07-25.
-    const postIds = extractPostIds(job.payload);
-    results.push({ platform, account_id, media_url: url, media_id: mediaId, post_id: postIds[0] ?? null, job_id: jobId, scheduled_at });
+    const propsFile = join(CONFIG.RENDERS_DIR, `${v.id}.${platform}.props.json`);
+    const renderProps = readJSON<Record<string, unknown>>(propsFile, {});
+    const mapped = (v.props as any)?.__mapped ?? {};
+    const draft: LoopDraft = await publishAsDraft({
+      runId: todayRunId(),
+      videoId: v.id,
+      index: v.index,
+      caption: v.caption,
+      hashtagSet: v.hashtag_set,
+      questions: v.questions,
+      explanations: mapped.explanations ?? [],
+      answerLabels: mapped.answerLabels ?? [],
+      renderPath: r.path,
+      renderProps,
+      whenLocal,
+      network: platform,
+    });
+    results.push({
+      platform,
+      account_id: CONFIG.ACCOUNTS[platform],
+      media_url: "",
+      media_id: String(draft.id),
+      post_id: draft.uuid,
+      job_id: String(draft.id),
+      scheduled_at: whenLocal,
+    });
   }
+  if (!results.length) throw new Error(`${v.id}: no network accepted this video (all paused or full)`);
+
   v.media_url = results[0]?.media_url;
   v.status = "uploaded";
   v.publer = {
@@ -311,14 +302,12 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
     permalinks: [],
   };
   v.status = "drafted";
-  const anyScheduled = results.some((r) => r.scheduled_at);
-  decision(`${anyScheduled ? "SCHEDULED (kickoff armed)" : "DRAFT"} created ${v.id}`, {
+  decision(`AWAITING APPROVAL — draft created ${v.id}`, {
     dimension: v.dimension,
     arm: v.arm,
     posts: results.map((r) => ({ platform: r.platform, post_id: r.post_id, scheduled_at: r.scheduled_at })),
   });
 
-  // 9) annotate ab-database.json per platform (best-effort; draft success is what matters)
   try {
     annotateDb(v, results);
   } catch (e) {
@@ -346,32 +335,11 @@ interface PendingPostId {
  * Strictly best-effort and read-only: the posts already exist, this only enriches
  * the run-state -> Publer link the dashboard joins on.
  */
-async function backfillPostIds(pending: PendingPostId[], publerState: string): Promise<void> {
-  const todo = pending.filter((p) => p.media_id);
-  if (!todo.length) return;
-  try {
-    const byMedia = new Map<string, string>();
-    for (const p of await listAllPosts(publerState)) {
-      const id = postId(p);
-      if (!id || !Array.isArray((p as any).media)) continue;
-      for (const m of (p as any).media) if (m?.id) byMedia.set(String(m.id), id);
-    }
-    let filled = 0;
-    for (const { video, platform, media_id } of todo) {
-      const id = byMedia.get(media_id);
-      if (!id) continue;
-      const ids = new Set(video.publer?.post_ids ?? []);
-      ids.add(id);
-      video.publer = { ...(video.publer ?? {}), post_ids: [...ids] };
-      setDbPostId(`hermes:${video.id}:${platform}`, id);
-      filled++;
-    }
-    info("resolved Publer post ids", { wanted: todo.length, filled, listing: publerState });
-  } catch (e) {
-    warn("post-id backfill failed (posts are created; only the dashboard link is thinner)", {
-      err: e instanceof Error ? e.message : String(e),
-    });
-  }
+async function backfillPostIds(_pending: PendingPostId[], _state: string): Promise<void> {
+  // No-op on Metricool. Publer's job payload carried no post ids, so they had to be
+  // matched back by paging the whole post list — which is what exhausted its quota
+  // mid-batch on 2026-07-25. Metricool returns id AND uuid synchronously from the
+  // create, so there is nothing left to resolve.
 }
 
 /** Point one ab-database row at its resolved Publer post id. */
@@ -421,50 +389,30 @@ function extractPostIds(payload: any): string[] {
  * returns empty (no worse than the previous behavior). Publer `account_id` maps to a
  * platform via CONFIG.ACCOUNTS so ONLY same-platform times feed each platform's gap.
  */
-async function scheduledTimesByPlatform(): Promise<Record<"instagram" | "tiktok", string[]>> {
-  const byPlat: Record<"instagram" | "tiktok", string[]> = { instagram: [], tiktok: [] };
-  try {
-    const accountToPlatform = new Map<string, "instagram" | "tiktok">(
-      (Object.entries(CONFIG.ACCOUNTS) as ["instagram" | "tiktok", string][]).map(([plat, acct]) => [String(acct), plat]),
-    );
-    for (const p of await listAllPosts("scheduled")) {
-      const at = (p as any)?.scheduled_at;
-      const plat = accountToPlatform.get(String((p as any)?.account_id));
-      if (at && plat) byPlat[plat].push(String(at));
-    }
-  } catch (e) {
-    warn("scheduled-times lookup failed — scheduling without cross-batch avoidance", {
-      err: e instanceof Error ? e.message : String(e),
-    });
-  }
-  return byPlat;
-}
-
 /**
- * Build this wave's ARMED slot allocator for exactly `count` videos — the number
- * that SURVIVED preparation, not the number planned. Sizing the grid to the real
- * count is what makes a short batch spread across the whole window; handing the
- * slots out sequentially (see publishVideo's slotIndex) is what stops survivors from
- * inheriting the tail slots their planned indexes happened to own.
+ * Build this wave's slot allocator from the LIVE Metricool calendar.
  *
- * `avoid` is re-read per wave so a top-up wave keeps its MIN_GAP from the posts the
- * earlier wave just scheduled, and drops into the gaps between them.
+ * Two things this fixes over the Publer version. It asks the posting policy how many
+ * slots each network may take, so a paused network (TikTok) simply gets none. And it
+ * places the batch on the FIRST DAY WITH ROOM rather than allocating forward from
+ * "now" — a run fired on a day whose quota is already spent used to stack its whole
+ * batch on top of that day and leave the next one empty, which is exactly how Thursday
+ * came to be empty while Wednesday was full.
  */
 async function armedSchedule(runId: string, wave: number, count: number): Promise<SchedCtx> {
-  const already = await scheduledTimesByPlatform();
-  const seed = wave === 0 ? runId : `${runId}-t${wave}`; // distinct jitter lane per wave
-  const slots: Record<string, string[]> = {
-    instagram: nextSlots(count, { seed, platform: "instagram", avoid: already.instagram }),
-    tiktok: nextSlots(count, { seed, platform: "tiktok", avoid: already.tiktok }),
-  };
-  info("KICKOFF ARMED — autonomous scheduling ON", {
-    wave: wave + 1,
-    videos: count,
-    window: `${WINDOW_OPEN_HOUR}:00am-${WINDOW_CLOSE_HOUR}:00am America/Chicago`,
-    avoiding: { instagram: already.instagram.length, tiktok: already.tiktok.length },
-    first: { instagram: slots.instagram[0], tiktok: slots.tiktok[0] },
-    last: { instagram: slots.instagram.at(-1), tiktok: slots.tiktok.at(-1) },
-  });
+  const rows = await calendarRows();
+  const seed = wave === 0 ? runId : `${runId}-t${wave}`;
+  const allowed = await allocatable(Number.MAX_SAFE_INTEGER);
+  const slots: Record<string, string[]> = { instagram: [], tiktok: [] };
+  for (const a of allowed) {
+    if (a.slots <= 0) continue;
+    const plan = planSlots(Math.min(count, a.slots), a.network, rows, seed);
+    slots[a.network] = plan.times.map(toNaive);
+    info(`loop scheduling ${a.network}`, {
+      day: plan.day, room: plan.room, placed: plan.times.length,
+      first: slots[a.network][0], last: slots[a.network].at(-1),
+    });
+  }
   return { armed: true, slot: (platform, index) => slots[platform]?.[index] ?? null };
 }
 
