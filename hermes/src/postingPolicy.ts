@@ -8,11 +8,10 @@
  *   network that reports a 3-second skip rate, so it is the only place the opening
  *   experiment can be measured at all.
  *
- *   TIKTOK is under ACCOUNT-LEVEL SUPPRESSION. The last throttle only lifted after
- *   27.9 hours of unbroken silence; the account has been quiet since 2026-07-25 15:45
- *   America/Chicago. It stays dark until Monday evening and then comes back at 2/day
- *   with a hard 4-hour floor between posts. Resuming early risks a fresh throttle and
- *   there is no way to buy back the silence.
+ *   TIKTOK is PAUSED (CONFIG.PLATFORM_POLICY.tiktok.paused). It is under account-level
+ *   suppression and never resumed when its cooldown expired, so the pause makes that a
+ *   decision instead of an accident. Its cadence — 2/day behind a hard 4-hour floor — is
+ *   kept exactly as it should be on resume. Clear HERMES_TIKTOK_PAUSED to bring it back.
  *
  * On top of both sits Metricool's Fair Use ceiling: 700 published posts per brand per
  * month, and breaching it triggers a MANUAL HUMAN REVIEW during which the account
@@ -27,6 +26,8 @@ export type Network = "instagram" | "tiktok";
 export interface PolicyDecision {
   network: Network;
   allowed: boolean;
+  /** True when a human paused this network, as distinct from a cooldown or a budget cap. */
+  paused?: boolean;
   /** How many posts this network may take in this batch. */
   slots: number;
   minGapMinutes: number;
@@ -55,6 +56,20 @@ function naiveLocalToMs(naive: string, timeZone: string): number {
   return guess;
 }
 
+/**
+ * Is posting to this network PAUSED?
+ *
+ * A pause is a human decision and it outranks every date-based rule, which is the point:
+ * TikTok's cooldown has already expired, so without this the platform would quietly come
+ * back on a timer that nobody re-approved. Checked before isDark() for that reason.
+ *
+ * Reversible by design — clear HERMES_TIKTOK_PAUSED and the network resumes on its
+ * existing cadence. See CONFIG.PLATFORM_POLICY for the one-step instruction.
+ */
+export function isPaused(network: Network): boolean {
+  return CONFIG.PLATFORM_POLICY[network]?.paused === true;
+}
+
 /** Is a network still inside its blackout window? */
 export function isDark(network: Network, now: Date = new Date()): { dark: boolean; until?: string } {
   const p = CONFIG.PLATFORM_POLICY[network];
@@ -77,6 +92,15 @@ export function decide(budgetRemaining: number, now: Date = new Date()): PolicyD
 
   for (const network of ["instagram", "tiktok"] as Network[]) {
     const p = CONFIG.PLATFORM_POLICY[network];
+    // PAUSE FIRST. It is a deliberate hold and it overrides the date-based cooldown,
+    // which has expired and would otherwise re-admit the network on its own.
+    if (isPaused(network)) {
+      out.push({
+        network, allowed: false, slots: 0, minGapMinutes: p.minGapMinutes, paused: true,
+        reason: `PAUSED by config — set HERMES_TIKTOK_PAUSED=false to resume at ${p.perDay}/day with a ${p.minGapMinutes}-minute floor`,
+      });
+      continue;
+    }
     const dark = isDark(network, now);
     if (dark.dark) {
       out.push({
