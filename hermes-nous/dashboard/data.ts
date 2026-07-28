@@ -903,9 +903,12 @@ async function computeDrafts(): Promise<DraftsView> {
 // and Publer show the SAME posts at the SAME times BY CONSTRUCTION. Read-only:
 // nothing here schedules/mutates; it only lists Publer's `state=scheduled` posts.
 export interface ScheduledPost {
-  /** True while the post is a loop draft (// Unapproved == a loop draft that has not been cleared to publish.
-  /** True while the post is a loop draft (awaiting_approval: r.draft === true && r.auto_publish === false,
-  /** True while the post is a loop draft (draft:true, autoPublish:false). */
+  /**
+   * True while the post is still a loop draft that the human has not cleared to
+   * publish (Metricool `draft: true, autoPublish: false`). The projection below
+   * always assigns it, so an absent value means the projection was skipped rather
+   * than that the post is approved.
+   */
   awaiting_approval?: boolean;
   post_id: string; // Metricool uuid (STABLE; the numeric id is reassigned on update)
   platform: string; // "instagram" | "tiktok"
@@ -1145,6 +1148,7 @@ async function computeScheduled(): Promise<ScheduledView> {
       const skip = url && bySkip.has(url) ? (bySkip.get(url) as number) : null;
       posts.push({
         post_id: String(p.uuid || p.id),
+        awaiting_approval: p.draft === true && p.auto_publish === false,
         platform: String(pr.network || "unknown"),
         scheduled_at: iso,
         scheduled_cst: formatChicago(iso),
