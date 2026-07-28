@@ -17,7 +17,7 @@
  *                          cheap way to preview the composition's duration.
  *
  * render.ts imports ONLY config / log / narration (which shells to python3
- * voice/tts_batch.py for VO). It has NO Publer/create/schedule/publish/delete/
+ * voice/tts_batch.py for VO). It has NO create/schedule/publish/delete/
  * update import anywhere in its dependency tree, so this bridge is physically
  * unable to create, publish, schedule, or mutate any post — it only produces a
  * local mp4 file (DRAFT media). Uploading + drafting are separate, later steps.

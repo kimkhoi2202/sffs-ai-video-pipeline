@@ -7,16 +7,16 @@
  *   - `upload`           -> uploadFile(localPath, destKey?) : push the local file to
  *                          the configured MEDIA_HOST (DEFAULT s3 — a PRIVATE bucket
  *                          with a presigned GET URL) and return { url, key, provider,
- *                          bytes }. The URL is what Publer can fetch during a later
+ *                          bytes }. The URL is what the scheduler fetches during a later
  *                          DRAFT import.
  *   - `upload --dry-run` -> validate the file + preview the destination key WITHOUT
  *                          uploading (no network, no credentials needed).
  *
  * tools/upload-media.ts imports ONLY node builtins (fs / path / crypto) + global
- * fetch. It has NO Publer/create/schedule/publish/delete/update import anywhere, so
+ * fetch. It has NO create/schedule/publish/delete/update import anywhere, so
  * this bridge is physically unable to create, publish, schedule, or mutate any post
  * — it only HOSTS media (uploads a file, returns a URL). Attaching that URL to a
- * Publer DRAFT is a separate, later step (sffs_publer_draft).
+ * draft is a separate, later step in the loop's publish phase.
  *
  * MEDIA HOST = S3 (operator directive: everything in AWS). The Supabase/R2 providers
  * in upload-media.ts are not targeted here; MEDIA_HOST defaults to s3.

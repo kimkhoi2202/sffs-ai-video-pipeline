@@ -3,14 +3,14 @@
 The schema is itself a guardrail: it deliberately exposes NO ``state``, NO
 ``scheduled_at``, and no publish/schedule parameter. The model has no vocabulary
 to even request a non-draft or scheduled post through this tool — reinforcing
-that ``sffs_publer_draft`` is physically DRAFT-ONLY.
+that the loop's publish path is physically DRAFT-ONLY.
 """
 
 SFFS_DONOTTOUCH_SNAPSHOT_SCHEMA = {
     "name": "sffs_donottouch_snapshot",
     "description": (
         "READ-ONLY safety tool. Capture a snapshot of the ids of every EXISTING "
-        "scheduled and published Publer post, to be verified unchanged after a "
+        "scheduled and published post, to be verified unchanged after a "
         "drafting cycle. Call this BEFORE the agent creates any drafts, then pass "
         "the returned 'snapshot' to sffs_donottouch_verify afterward. This never "
         "writes, schedules, publishes, deletes, or modifies any post. Set "
@@ -32,7 +32,7 @@ SFFS_DONOTTOUCH_VERIFY_SCHEMA = {
     "name": "sffs_donottouch_verify",
     "description": (
         "READ-ONLY safety tool. Verify that no PRE-EXISTING scheduled or published "
-        "Publer post was touched during a cycle. Pass the 'snapshot' returned by "
+        "post was touched during a cycle. Pass the 'snapshot' returned by "
         "sffs_donottouch_snapshot (taken before the cycle); this re-lists the live "
         "posts and reports a violation if any of them vanished or changed state. It "
         "never writes/schedules/publishes/deletes/modifies anything. Set "
@@ -66,7 +66,7 @@ SFFS_DONOTTOUCH_VERIFY_SCHEMA = {
 # ---------------------------------------------------------------------------
 # READ-ONLY data tools (list accounts/posts + read per-post analytics). These
 # only ever issue GET requests; they can never write/schedule/publish/delete/
-# update anything (see reads.py + bridge/publer-read.ts).
+# update anything (see reads.py + bridge/metricool-read.ts).
 #
 # NOTE: the post-state filter is deliberately named ``state_filter`` (not
 # ``state``) so the framework publish guard never mistakes a READ filter value
@@ -128,9 +128,9 @@ SFFS_SCORE_SCHEMA = {
     "description": (
         "READ-ONLY analytics reader — the A/B scoring input. Pull per-post metrics "
         "(reach, views, likes, comments, shares, saves, engagement, engagement_rate) "
-        "from Publer post_insights for the SFFS accounts over a date window "
+        "from Metricool analytics for the SFFS accounts over a date window "
         "(defaults to the last 30 days). Returns flattened per-post insights plus a "
-        "per-account count. Publer analytics lag ~24h, so recent posts may have no "
+        "per-account count. Analytics lag ~24h, so recent posts may have no "
         "metrics yet. This only reads (GET); it never writes, schedules, publishes, "
         "or modifies anything, and it does not itself mutate local A/B files. Set "
         "dry_run=true to preview the request with no network call."
@@ -149,7 +149,7 @@ SFFS_SCORE_SCHEMA = {
             "account_ids": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "Publer account ids to pull (defaults to the SFFS IG + TikTok accounts).",
+                "description": "Account ids to pull (defaults to the SFFS IG + TikTok accounts).",
             },
             "sort_by": {
                 "type": "string",
@@ -333,7 +333,7 @@ SFFS_RENDER_SCHEMA = {
         "Idempotent: an existing non-trivial render is reused unless force=true. "
         "Returns {path, frames, reused, bytes}. This produces a LOCAL mp4 (DRAFT "
         "media) only — it never uploads, posts, publishes, or schedules anything "
-        "(use sffs_upload_s3 then sffs_publer_draft next). Set dry_run=true to "
+        "(use sffs_upload_s3, then the loop's draft path). Set dry_run=true to "
         "validate the request without rendering (no network/Chromium/ffmpeg)."
     ),
     "parameters": {
@@ -426,11 +426,11 @@ SFFS_UPLOAD_S3_SCHEMA = {
     "name": "sffs_upload_s3",
     "description": (
         "Upload a rendered mp4 (from sffs_render) to object storage (MEDIA_HOST=s3: "
-        "a PRIVATE bucket) and return a PRESIGNED GET URL that Publer can fetch "
+        "a PRIVATE bucket) and return a PRESIGNED GET URL that the scheduler can fetch "
         "during a later DRAFT import. Credentials come from AWS env vars or the EC2 "
         "instance role (IMDSv2); S3_BUCKET defaults to hermes-sffs-media. This only "
         "HOSTS media — it never creates, publishes, schedules, or mutates any post "
-        "(attach the returned URL to a draft with sffs_publer_draft next). Set "
+        "(attach the returned URL to a draft in the loop's publish phase). Set "
         "dry_run=true to validate + preview the destination key with no upload and "
         "no credentials."
     ),
@@ -469,12 +469,12 @@ SFFS_UPLOAD_S3_SCHEMA = {
 SFFS_SCORE_ROLLUP_SCHEMA = {
     "name": "sffs_score_rollup",
     "description": (
-        "Refresh the A/B decision memory: pull matured Publer analytics (~24h lag) "
+        "Refresh the A/B decision memory: pull matured Metricool analytics (~24h lag) "
         "over the last 30 days, join them onto ab-database.json to refresh per-post "
         "metrics, and recompute the rollups + front-runners in learnings.json (the "
         "loop's durable, cross-run A/B memory the designer biases toward). This is "
         "the WRITE-side of scoring — deliberately separate from the read-only "
-        "sffs_score (which never writes those files). It only reads Publer analytics "
+        "sffs_score (which never writes those files). It only reads Metricool analytics "
         "(GET) and writes two LOCAL JSON files; it never creates, publishes, "
         "schedules, or mutates any post. Run this at the START of a cycle (or nightly "
         "on its own). Set dry_run=true (the default) to preview the window WITHOUT "
@@ -505,7 +505,7 @@ SFFS_SCORE_ROLLUP_SCHEMA = {
 # RECONCILE — close the A/B LEARNING LOOP for the agent's OWN posts by matching
 # each ab-database record's metricool_uuid to the native published post and
 # back-filling platform_post_id / permalink / posted_at (the join keys scoring
-# needs). Read Publer (GET only) + write ONE local JSON file; idempotent;
+# needs). Read Metricool (GET only) + write ONE local JSON file; idempotent;
 # no state/schedule/publish vocabulary is exposed (schema-as-guardrail).
 # ---------------------------------------------------------------------------
 
@@ -519,7 +519,7 @@ SFFS_RECONCILE_SCHEMA = {
         "media id), permalink, and posted_at. Those native ids are the join keys "
         "sffs_score / sffs_score_rollup attach matured analytics on, so without this "
         "back-fill the agent can never learn from a post a human published from one of "
-        "its drafts. It only reads Publer (analytics + published-post GETs) and writes "
+        "its drafts. It only reads Metricool (analytics + planner GETs) and writes "
         "ONE local JSON file (ab-database.json), only when a field actually changed; it "
         "never creates, publishes, schedules, or mutates any post. IDEMPOTENT (a field "
         "is filled only when currently empty). Run it after scoring in a cycle (or on "
@@ -533,7 +533,7 @@ SFFS_RECONCILE_SCHEMA = {
                 "type": "boolean",
                 "description": (
                     "If true (default), preview WITHOUT any network call and WITHOUT "
-                    "writing ab-database.json. Set false to actually read Publer and "
+                    "writing ab-database.json. Set false to actually read Metricool and "
                     "back-fill the native post ids/permalinks/posted_at."
                 ),
             },
@@ -562,13 +562,13 @@ SFFS_CYCLE_SCHEMA = {
         "learnings.json) -> design the A/B batch (rotating dimensions incl. the "
         "narration family and progress-counter arms) -> per video [dedup -> validity "
         "-> mark-used -> brand copy -> render -> render-sanity -> S3 upload -> create "
-        "a Publer DRAFT] -> verify do-not-touch (read-only). It can ONLY create "
+        "a Metricool DRAFT] -> verify do-not-touch (read-only). It can ONLY create "
         "DRAFTS (never publishes or schedules a live post) and it can NEVER push to "
         "main. Set preview=true to see the resolved run config WITHOUT running "
         "anything (no network/render). Set dry_run=true (default) to run the pipeline "
-        "in DRY mode (design + gates + render, but NO S3 upload / NO Publer draft / "
+        "in DRY mode (design + gates + render, but NO S3 upload / NO draft / "
         "NO git push); dry_run=false runs a REAL draft-only cycle (also uploads to S3 "
-        "and creates Publer DRAFTS). Use 'target' to bound how many videos to make."
+        "and creates Metricool DRAFTS). Use 'target' to bound how many videos to make."
     ),
     "parameters": {
         "type": "object",
@@ -579,7 +579,7 @@ SFFS_CYCLE_SCHEMA = {
                     "If true (default), the cycle runs in DRY mode: it designs, gates, "
                     "and renders, but creates NO drafts, uploads nothing, and pushes "
                     "nothing. If false, a REAL draft-only cycle (renders + S3 uploads + "
-                    "creates Publer DRAFTS). Never publishes/schedules; never pushes to main."
+                    "creates Metricool DRAFTS). Never publishes/schedules; never pushes to main."
                 ),
             },
             "preview": {

@@ -16,7 +16,7 @@ ONLY ``candidateQuestions`` + ``bankStats``. It does NOT import ``markUsed`` —
 ledger WRITE that marks questions consumed — so this tool is physically unable to
 mutate the never-repeat ledger. Marking-used belongs with the drafting step (a
 later ``sffs_*`` tool / cron), exactly as the read-only ``sffs_score`` defers its
-write-side rollup. questions.ts has NO Publer/LLM import at all (state/config/log
+write-side rollup. questions.ts has NO network/LLM import at all (state/config/log
 only), so this is a pure, local, network-free selector.
 
 GUARD-SAFE ARG NAMING: the args are ``what`` / ``category`` / ``kinds`` / ``seed``

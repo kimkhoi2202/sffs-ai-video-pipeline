@@ -148,7 +148,7 @@ def test_handler_never_raises_on_garbage(monkeypatch, garbage):
 
 
 def test_bridge_env_sets_env_file_from_home(monkeypatch, tmp_path):
-    (tmp_path / ".env").write_text("PUBLER_API_KEY=x\n")
+    (tmp_path / ".env").write_text("METRICOOL_USER_TOKEN=x\n")
     monkeypatch.delenv("HERMES_ENV_FILE", raising=False)
     monkeypatch.setenv("HERMES_HOME", str(tmp_path))
     env = rc._bridge_env(None)

@@ -16,7 +16,7 @@
  *                  streams present, duration ~ expected. Never throws (bad path/ffprobe
  *                  come back as pass:false).
  *
- * gates.ts has NO Publer/create/schedule/publish/delete import anywhere (it wraps
+ * gates.ts has NO create/schedule/publish/delete import anywhere (it wraps
  * llm / brand / questions / state / config / log + node ffprobe only), so this
  * bridge is physically unable to create, publish, schedule, or mutate any post.
  * It is fail-closed by construction: every gate is a pass/fail verdict, and the
@@ -30,7 +30,7 @@
  *   add --dry-run to any for a NETWORK-FREE run that echoes the request.
  *
  * LIVE `validity` / `copy` need the TrueFoundry key (OPENAI_API_KEY / TFY_API_KEY);
- * `dedup` / `render` need no key. No Publer keys are ever needed.
+ * `dedup` / `render` need no key. No scheduler keys are ever needed.
  *
  * EXIT CODES: 0 ok · 1 runtime error · 2 bad stdin JSON · 3 bad usage.
  * Diagnostics -> stderr; the machine-readable result -> one JSON line on stdout.

@@ -13,10 +13,10 @@
  *                  gated captions (this path DOES call the LLM for captions).
  *
  * It imports ONLY `planBatch` + `dimensionCatalog` from design.ts. design.ts has
- * NO Publer/create/schedule/publish/delete import anywhere in its dependency tree
+ * NO create/schedule/publish/delete import anywhere in its dependency tree
  * (it wraps questions/gates/llm/brand/state/config/log only), so this bridge is
  * physically unable to create, publish, schedule, or mutate any post. It is the
- * design-side complement to bridge/publer-read.ts (reads) and bridge/donottouch.ts.
+ * design-side complement to bridge/metricool-read.ts (reads) and bridge/donottouch.ts.
  *
  * USAGE:
  *   node design.ts catalog                       # -> { ok, count, dimensions }
@@ -28,7 +28,7 @@
  *
  * LIVE `plan` needs the TrueFoundry key (OPENAI_API_KEY / TFY_API_KEY) for caption
  * generation; if the LLM is unreachable, planBatch falls back to safe on-brand
- * captions (it never throws for that). No Publer keys are needed to design.
+ * captions (it never throws for that). No scheduler keys are needed to design.
  *
  * EXIT CODES: 0 ok · 1 runtime error · 2 bad stdin JSON · 3 bad usage.
  * Diagnostics -> stderr; the machine-readable result -> one JSON line on stdout.

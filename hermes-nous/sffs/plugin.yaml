@@ -4,7 +4,7 @@ description: >-
   SFFS DRAFT-ONLY A/B quiz-video agent — safety core + read-only cycle data
   tools + the batch designer + the quality gates + never-repeat question
   selection + the render and S3-upload tools + the score-rollup (durable A/B
-  memory) and the full end-to-end cycle orchestrator. Registers the Publer
+  memory) and the full end-to-end cycle orchestrator. Registers the
   draft-only write tool, read-only do-not-touch snapshot/verify tools, read-only
   account/post listing + per-post analytics (scoring) tools, the A/B batch design
   tool (design-only), the hard quality-gate tool (dedup/validity/brand/render;
@@ -13,8 +13,8 @@ description: >-
   upload tool (private bucket + presigned GET URL),   the score-rollup write tool
   (refresh ab-database.json + learnings.json — the cross-run A/B memory), the
   reconcile tool (back-fill native post ids/permalinks onto ab-database.json by
-  matching publer_post_id -> the published post, so scoring can learn from the
-  agent's OWN posts; read-only on Publer, idempotent), and the
+  matching metricool_uuid -> the published post, so scoring can learn from the
+  agent's OWN posts; read-only on Metricool, idempotent), and the
   cycle orchestrator (one full DRAFT-ONLY cycle end to end; ties every tool
   together), plus a pre_tool_call hook that hard-refuses any publish/schedule/
   post-mutation call across ALL tools, plus a COST GOVERNOR + kill-switch
@@ -49,6 +49,6 @@ provides_hooks:
   - post_llm_call     # cost_governor estimated $/token accounting
   - subagent_start    # cost_governor concurrency + spawn tally
   - subagent_stop     # cost_governor concurrency release
-# NOTE: intentionally NO `requires_env` for Publer keys — the tools must still be
+# NOTE: intentionally NO `requires_env` for the scheduler keys — the tools must still be
 # discoverable (and refuse/dry-run safely) without keys. The real network call
-# gates on PUBLER_API_KEY / PUBLER_WORKSPACE_ID at runtime in the Node bridge.
+# gates on the METRICOOL_* credentials at runtime in the Node bridge.

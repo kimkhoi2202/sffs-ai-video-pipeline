@@ -2,7 +2,7 @@
 the read-only ``sffs_score``).
 
 One tool, ``sffs_score_rollup``, wrapping hermes/src/score.ts ``pullAndScore``: it
-pulls matured Publer analytics (~24h lag) over the last 30 days, joins them onto
+pulls matured Metricool analytics (~24h lag) over the last 30 days, joins them onto
 ``ab-testing/ab-database.json`` by ``platform_post_id`` to refresh per-post
 metrics, and recomputes the decision rollups (medians + front-runners) in
 ``ab-testing/learnings.json``. Those two JSON files are the loop's durable,
@@ -19,10 +19,10 @@ Why this is a SEPARATE tool from ``sffs_score`` (reads.py):
 
 score.ts has NO create / schedule / publish / delete / update path in its
 dependency tree, so the Node bridge (hermes-nous/bridge/score-rollup.ts) is
-physically unable to post, publish, schedule, or mutate any Publer post. It only
+physically unable to post, publish, schedule, or mutate any live post. It only
 issues analytics GETs and writes two LOCAL JSON files.
 
-Running LIVE needs PUBLER_API_KEY + PUBLER_WORKSPACE_ID (in $HERMES_HOME/.env).
+Running LIVE needs the METRICOOL_* credentials (in $HERMES_HOME/.env).
 ``dry_run=True`` makes NO network call and writes NO files, so the tool is testable
 without keys, network, node, or the Hermes framework (the handler short-circuits
 before the bridge — see tests/test_score_rollup.py).
@@ -112,7 +112,7 @@ def _parse_last_json(stdout: str) -> Optional[Dict[str, Any]]:
 def _bridge_env(data_dir: Optional[str]) -> Dict[str, str]:
     """Env for the Node bridge.
 
-    * HERMES_ENV_FILE -> $HERMES_HOME/.env so config.ts loads PUBLER_* (gitignored).
+    * HERMES_ENV_FILE -> $HERMES_HOME/.env so config.ts loads METRICOOL_* (gitignored).
     * HERMES_DATA_DIR -> the ``data_dir`` arg wins, else keep an existing env value.
       (ab-database.json / learnings.json live under CONFIG.REPO_DIR, not DATA_DIR,
       so this mainly affects where auxiliary data would land.)
@@ -173,7 +173,7 @@ def run_node_bridge(*, dry_run: bool, data_dir: Optional[str] = None, timeout: i
 def sffs_score_rollup(args: Dict[str, Any], **kwargs: Any) -> str:
     """Hermes tool handler: refresh A/B metrics + recompute learnings rollups.
 
-    Pulls matured Publer analytics over the last 30 days, joins onto
+    Pulls matured Metricool analytics over the last 30 days, joins onto
     ab-database.json, and recomputes learnings.json (the durable cross-run A/B
     memory). ``dry_run=True`` (the default) makes NO network call and writes NO
     files — it just previews the window. Always returns a JSON string; never

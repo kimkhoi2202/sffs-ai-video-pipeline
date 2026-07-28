@@ -8,11 +8,11 @@ orchestrator). runCycle runs, in order:
   pullAndScore (refresh ab-database.json + learnings.json) -> planBatch (design
   the A/B batch: rotating dimensions incl. the narration family + progress-counter
   arms) -> per video [dedup -> validity -> markUsed(after validity) -> copy ->
-  render -> render-sanity -> (live) S3 upload -> Publer media import ->
+  render -> render-sanity -> (live) S3 upload -> Metricool draft ->
   createDraftOnly] -> verifyDoNotTouch (read-only) .
 
 SAFETY — this cannot publish, schedule, or push to main (belt AND suspenders):
-  * createDraftOnly is the ONLY Publer write runCycle performs and it forces
+  * the Metricool draft create is the ONLY write runCycle performs and it forces
     state="draft"; no schedule/publish/delete/update path is imported in cycle.ts.
   * ``_bridge_env`` ALWAYS sets ``HERMES_SKIP_GIT=1`` and the bridge (bridge/
     cycle.ts) also forces it — so a cycle from the sandbox can NEVER
@@ -27,12 +27,12 @@ MODES:
     ``skip_git=True``) WITHOUT running node.
   * ``dry_run=True`` (default when actually running): the cycle runs in the
     pipeline's DRY mode — planBatch + gates + render execute, but there is NO S3
-    upload, NO Publer draft, and NO git push. A safe end-to-end dry-run.
+    upload, NO draft created, and NO git push. A safe end-to-end dry-run.
   * ``dry_run=False``: a REAL draft-only cycle — additionally uploads to S3 and
-    creates Publer DRAFTS (via createDraftOnly). Still never publishes/schedules a
+    creates Metricool DRAFTS. Still never publishes/schedules a
     live post, and still never pushes to main.
 
-Running LIVE needs the TrueFoundry key (design/gates LLM), PUBLER_* (reads +
+Running LIVE needs the TrueFoundry key (design/gates LLM), METRICOOL_* (reads +
 draft), ELEVENLABS_API_KEY (voiced narration arms only), and — for a non-dry
 cycle — AWS creds/instance role (S3). All are read from $HERMES_HOME/.env via
 config.ts. ``preview`` needs none of them, so the tool is testable without keys,
@@ -160,7 +160,7 @@ def _bridge_env(req: Dict[str, Any]) -> Dict[str, str]:
     # --- SAFETY: never push to main from the sandbox (belt; the bridge also sets it).
     env["HERMES_SKIP_GIT"] = "1"
 
-    # --- keys for the LLM / Publer / narration / S3 calls the cycle makes.
+    # --- keys for the LLM / Metricool / narration / S3 calls the cycle makes.
     if not env.get("HERMES_ENV_FILE"):
         home = env.get("HERMES_HOME")
         if home:
@@ -257,7 +257,7 @@ def _summarize(state: Dict[str, Any], req: Dict[str, Any]) -> Dict[str, Any]:
                 "reject_reason": v.get("reject_reason"),
                 "render_path": v.get("render_path"),
                 "media_url": v.get("media_url"),
-                "post_ids": (v.get("publer") or {}).get("post_ids"),
+                "uuids": (v.get("metricool") or {}).get("uuids"),
             }
             for v in videos
         ],
@@ -273,7 +273,7 @@ def sffs_cycle(args: Dict[str, Any], **kwargs: Any) -> str:
     ``preview=True`` returns the resolved run config WITHOUT running (no
     subprocess). Otherwise it runs the cycle via the Node bridge: ``dry_run=True``
     (default) renders + gates but creates no drafts and pushes nothing;
-    ``dry_run=False`` additionally uploads to S3 and creates Publer DRAFTS (never
+    ``dry_run=False`` additionally uploads to S3 and creates Metricool DRAFTS (never
     publishes/schedules, never pushes to main). Always returns a JSON string;
     never raises.
     """
@@ -295,7 +295,7 @@ def sffs_cycle(args: Dict[str, Any], **kwargs: Any) -> str:
                 "run_id": req["run_id"],
                 "skip_git": True,  # a cycle from the sandbox never pushes to main
                 "note": (
-                    "preview only — no cycle was run (no LLM/Publer/render/S3/network). "
+                    "preview only — no cycle was run (no LLM/network/render/S3). "
                     "Run with preview=false to execute; dry_run controls whether drafts are created."
                 ),
             }

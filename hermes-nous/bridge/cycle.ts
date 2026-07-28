@@ -15,7 +15,7 @@
  *     -> verifyDoNotTouch    (read-only, after — proves nothing live was touched)
  *
  * SAFETY (belt AND suspenders):
- *   * createDraftOnly is the ONLY Publer write runCycle performs, and it forces
+ *   * the Metricool draft create is the ONLY write runCycle performs, and it forces
  *     state="draft" (guardrails.ts). No schedule / publish / delete / update path
  *     is imported anywhere in cycle.ts's dependency tree.
  *   * This bridge FORCES `HERMES_SKIP_GIT=1` (below) so a cycle run from the
@@ -26,10 +26,10 @@
  * MODES (driven by env the Python handler sets BEFORE node starts, because
  * HERMES_DRY_RUN + HERMES_VIDEOS_PER_DAY are read at cycle.ts / config.ts module
  * load):
- *   HERMES_DRY_RUN=1         -> render + gates run, but NO S3 upload / NO Publer
+ *   HERMES_DRY_RUN=1         -> render + gates run, but NO S3 upload / NO
  *                               draft / NO git push (a safe end-to-end dry-run).
  *   (unset)                  -> a REAL draft-only cycle: render + S3 + create
- *                               Publer DRAFTS (still never publishes/schedules,
+ *                               Metricool DRAFTS (still never publishes/schedules,
  *                               still never pushes to main).
  *   HERMES_VIDEOS_PER_DAY=N  -> bound the batch size (validation uses 1).
  *   HERMES_RUN_ID=<id>       -> resumable run id (defaults to today's UTC date).

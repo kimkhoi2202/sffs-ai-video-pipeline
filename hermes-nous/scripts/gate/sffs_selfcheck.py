@@ -81,11 +81,11 @@ FORBIDDEN_TOOLNAME_SUBSTRINGS = (
 # matrix" the harness runs the publish-guard against.
 # ---------------------------------------------------------------------------
 BLOCK_MATRIX: Tuple[Tuple[str, str, Dict[str, Any]], ...] = (
-    # --- publish / schedule / mutate by TOOL NAME (incl. the Publer MCP surface)
-    ("publer MCP publish now", "publer_publish_post_now", {"post_id": "p1"}),
-    ("publer MCP update post", "publer_update_post", {"post_id": "p1", "text": "x"}),
-    ("publer MCP delete post", "publer_delete_post", {"post_id": "p1"}),
-    ("publer MCP bulk delete", "publer_delete_posts", {"ids": ["p1", "p2"]}),
+    # --- publish / schedule / mutate by TOOL NAME (any scheduler's MCP surface)
+    ("MCP publish now", "metricool_publish_post_now", {"post_id": "p1"}),
+    ("MCP update post", "metricool_update_post", {"post_id": "p1", "text": "x"}),
+    ("MCP delete post", "metricool_delete_post", {"post_id": "p1"}),
+    ("MCP bulk delete", "metricool_delete_posts", {"ids": ["p1", "p2"]}),
     ("generic schedule_post", "schedule_post", {"account_ids": ["a"], "text": "x"}),
     ("generic post_now", "post_now", {"account_ids": ["a"]}),
     ("generic go_live", "go_live", {}),
@@ -96,16 +96,16 @@ BLOCK_MATRIX: Tuple[Tuple[str, str, Dict[str, Any]], ...] = (
     # --- live/non-draft post state VALUES
     ("live state=published", "some_tool", {"state": "published"}),
     ("live state=scheduled", "some_tool", {"post_state": "scheduled"}),
-    ("publer draft-variant", "some_tool", {"state": "draft_public"}),
+    ("draft-variant state", "some_tool", {"state": "draft_public"}),
     (
         "posting tool non-draft state",
-        "publer_create_post",
+        "metricool_create_post",
         {"account_ids": ["a"], "text": "x", "state": "scheduled"},
     ),
     # --- nested live state deep in a media/post object
     (
         "nested published state",
-        "publer_create_post",
+        "metricool_create_post",
         {"account_ids": ["a"], "text": "hi", "media_objects": [{"id": "m1", "state": "published"}]},
     ),
 )

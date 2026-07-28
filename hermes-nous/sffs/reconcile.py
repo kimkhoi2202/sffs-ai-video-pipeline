@@ -14,9 +14,9 @@ write is the local ab-database.json. reconcile.ts imports ONLY read primitives
 from the Metricool facade (listPosts / pullInsights) — it
 has NO create / schedule / publish / delete / update path in its dependency tree,
 so the Node bridge (hermes-nous/bridge/reconcile.ts) is physically unable to post,
-publish, schedule, or mutate any Publer post.
+publish, schedule, or mutate any live post.
 
-Running LIVE needs PUBLER_API_KEY + PUBLER_WORKSPACE_ID (in $HERMES_HOME/.env).
+Running LIVE needs the METRICOOL_* credentials (in $HERMES_HOME/.env).
 ``dry_run=True`` (the default) makes NO network call and writes NO files, so the
 tool is testable without keys, network, node, or the Hermes framework (the handler
 short-circuits before the bridge — see tests/test_reconcile.py).
@@ -98,7 +98,7 @@ def _parse_last_json(stdout: str) -> Optional[Dict[str, Any]]:
 def _bridge_env(data_dir: Optional[str]) -> Dict[str, str]:
     """Env for the Node bridge.
 
-    * HERMES_ENV_FILE -> $HERMES_HOME/.env so config.ts loads PUBLER_* (gitignored).
+    * HERMES_ENV_FILE -> $HERMES_HOME/.env so config.ts loads METRICOOL_* (gitignored).
     * HERMES_DATA_DIR -> the ``data_dir`` arg wins, else keep an existing env value.
       (ab-database.json lives under CONFIG.REPO_DIR, not DATA_DIR.)
     """
@@ -159,7 +159,7 @@ def sffs_reconcile(args: Dict[str, Any], **kwargs: Any) -> str:
     """Hermes tool handler: back-fill native post ids/permalinks onto ab-database.
 
     Matches each ab-database record's ``metricool_uuid`` to the native published
-    post (via Publer analytics + published-post GETs) and back-fills
+    post (via Metricool analytics + planner GETs) and back-fills
     ``platform_post_id`` / ``permalink`` / ``posted_at`` — the join keys scoring
     needs to learn from the agent's OWN posts. IDEMPOTENT + DRAFT-SAFE (read +
     local write only). ``dry_run=True`` (the default) makes NO network call and

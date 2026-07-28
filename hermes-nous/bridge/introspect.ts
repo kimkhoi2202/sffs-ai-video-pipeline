@@ -8,7 +8,7 @@
  *   - hermes/src/rollup.ts      -> computeRollups(posts)
  *   - hermes/src/defaults.ts    -> contentDefaults() / FALLBACK_DEFAULTS
  *
- * None of those pull in Publer/LLM, so this runs on a box with no deps installed
+ * None of those pull in the network/LLM, so this runs on a box with no deps installed
  * (which is exactly the hermes-nous build). It is READ-ONLY: it computes + prints
  * JSON, and has NO create/schedule/publish/mutate path anywhere in its imports.
  *

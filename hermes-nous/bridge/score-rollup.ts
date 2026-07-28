@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 /**
  * score-rollup.ts (bridge) — the Node entry the `sffs` plugin shells into to run
- * the WRITE-side of scoring: pull matured Publer analytics, join them onto
+ * the WRITE-side of scoring: pull matured Metricool analytics, join them onto
  * ab-database.json by platform_post_id, refresh per-post metrics, and recompute
  * the decision rollups (medians + front-runners) in learnings.json.
  *
  * It wraps ONLY hermes/src/score.ts `pullAndScore`. score.ts's dependency tree is
- * publer.ts READ fns (getPostInsights / flattenPostInsights) + state.ts local-file
+ * metricool.ts READ fns (listPosts / pullInsights) + state.ts local-file
  * JSON helpers + config + log — it has NO create / schedule / publish / delete /
  * update path anywhere, so this bridge is physically unable to post, publish,
- * schedule, or mutate any Publer post. It only issues analytics GETs and writes
+ * schedule, or mutate any live post. It only issues analytics GETs and writes
  * two LOCAL JSON files (ab-database.json + learnings.json). This is the deliberate
- * WRITE-side complement to the read-only sffs_score tool (bridge/publer-read.ts),
+ * WRITE-side complement to the read-only sffs_score tool (bridge/metricool-read.ts),
  * which never writes those files.
  *
  * USAGE:
@@ -19,7 +19,7 @@
  *   node score-rollup.ts run --dry-run      # network-free: echo the 30d window, no
  *                                             pull, NO file write
  *
- * LIVE needs PUBLER_API_KEY + PUBLER_WORKSPACE_ID (config.ts loads HERMES_ENV_FILE).
+ * LIVE needs the METRICOOL_* credentials (config.ts loads HERMES_ENV_FILE).
  * The window is fixed to the last 30 days (matches score.ts). Robust to unmatured
  * posts: it refreshes whatever has metrics and recomputes from those.
  *

@@ -125,7 +125,7 @@ Keep the existing file; the new agent reads the SAME keys. Add/confirm:
 | Var | Purpose | Notes |
 |---|---|---|
 | `OPENAI_API_KEY` | TrueFoundry key for the Nous `custom` provider **and** the pipeline `llm.ts` | Same TFY key. `config.yaml` feeds it via `api_key: "${OPENAI_API_KEY}"`. `TFY_API_KEY` also works (config.ts falls back to `OPENAI_API_KEY`). |
-| `PUBLER_API_KEY`, `PUBLER_WORKSPACE_ID` | Publer DRAFT creation + read analytics | Existing. |
+| ~~`PUBLER_API_KEY`, `PUBLER_WORKSPACE_ID`~~ | REMOVED 2026-07-28 with Publer. | Replaced by `METRICOOL_USER_TOKEN` / `METRICOOL_USER_ID` / `METRICOOL_BLOG_ID`. |
 | `ELEVENLABS_API_KEY` | Cloned-voice narration (voiced A/B arms) | Existing. |
 | `S3_BUCKET`, `AWS_REGION` | S3 media host | Default `hermes-sffs-media` / `us-east-1`; creds via the **instance role** (no keys). |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_BUCKET` | FALLBACK media host only | Do **not** migrate media to Supabase; S3 is primary. |

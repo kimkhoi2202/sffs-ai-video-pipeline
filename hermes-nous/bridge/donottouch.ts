@@ -7,7 +7,7 @@
  * safety core (hermes/src/guardrails.ts) — both of which only ever `listPosts`
  * (GET). It does NOT import or expose createPost / schedulePost / deletePost /
  * updatePost, so it is physically unable to create, publish, schedule, or mutate
- * ANY post. This is the read-only complement to bridge/publer-draft.ts.
+ * ANY post. This is the read-only complement to the loop's publish path.
  *
  * USAGE:
  *   node donottouch.ts snapshot            # -> { ok, snapshot: {scheduled_ids,...} }
@@ -16,7 +16,7 @@
  *     snapshot --dry-run -> { ok, dry_run:true }        (no Publer read)
  *     verify   --dry-run -> { ok, dry_run:true }        (validates stdin shape only)
  *
- * LIVE MODE needs PUBLER_API_KEY + PUBLER_WORKSPACE_ID in the environment
+ * LIVE MODE needs the METRICOOL_* credentials in the environment
  * (config.ts loads them from HERMES_ENV_FILE; the Python bridge points that at
  * $HERMES_HOME/.env).
  *
