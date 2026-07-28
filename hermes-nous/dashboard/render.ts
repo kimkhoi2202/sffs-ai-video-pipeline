@@ -680,6 +680,13 @@ export function abTestLabel(dimension?: string, arm?: string, defaults?: AbDefau
   if (dLow === "control" || aLow === "control") return { kind: "control", tag: "Control", text: "current defaults" };
   if (NEUTRAL.has(dLow) && NEUTRAL.has(aLow)) return { kind: "unknown", tag: "Unknown", text: "not linked to a batch variant yet" };
   const def = defaults || {};
+  // The week's opening experiment. cold-plate IS the baseline (see openingChip: "the
+  // current cold-open static question plate"), so it must read as Control, not as a
+  // third mystery arm — and motion-hook must say what it actually changes.
+  if (dLow === "opening") {
+    if (aLow === "cold-plate") return { kind: "control", tag: "Control", text: "current defaults \u2014 static question plate" };
+    if (aLow === "motion-hook") return { kind: "test", tag: "A/B", text: "Opening: 2.2s wordless motion hook, nothing to read for 3s (default: static question plate)" };
+  }
   if (dLow === "narration" && NARRATION_HUMAN[a]) {
     return { kind: "test", tag: "A/B", text: `Narration: ${NARRATION_HUMAN[a]} (default: ${NARRATION_HUMAN[def.narration || "full"] || "full voiceover"})` };
   }

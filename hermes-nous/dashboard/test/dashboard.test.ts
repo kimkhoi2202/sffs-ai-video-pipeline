@@ -1547,3 +1547,17 @@ test("QUEUE: layout guards that keep ten rows from scrolling sideways at 500px",
   assert.match(html, /\.apr-poster\{[^}]*object-fit:contain/);
   assert.match(html, /\.apr-media \.plyr video\{[^}]*object-fit:contain/);
 });
+
+
+test("LABELS: the opening experiment reads as English, and cold-plate is the CONTROL", () => {
+  const hook = abTestLabel("opening", "motion-hook");
+  assert.equal(hook.kind, "test");
+  assert.match(hook.text, /2\.2s wordless motion hook/);
+  assert.match(hook.text, /\(default: static question plate\)/);
+  const plate = abTestLabel("opening", "cold-plate");
+  assert.equal(plate.kind, "control", "cold-plate is the baseline, not another arm");
+  assert.equal(plate.tag, "Control");
+  assert.match(plate.text, /current defaults/);
+  // and the raw arm slug must not survive to the page
+  assert.doesNotMatch(hook.text, /^opening: motion-hook$/);
+});
