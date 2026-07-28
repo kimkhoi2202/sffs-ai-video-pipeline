@@ -200,6 +200,39 @@ export const CONFIG = Object.freeze({
      *  video slightly in processing and reclassify a borderline one as long-form. */
     maxDurationSeconds: Number(process.env.HERMES_YT_MAX_SECONDS || 170),
   },
+  /**
+   * YOUTUBE RAMP — the per-day YouTube cap while the channel is being seeded.
+   *
+   * The channel starts with zero history, so it does not open at the full 7/day. The
+   * ramp is a CEILING per calendar day, expressed as (days after RAMP_START -> perDay):
+   * 3/day from the start, 5/day from +2 days, 7/day from +4 days, where 7 is
+   * PLATFORM_POLICY.youtube.perDay and therefore the terminal value.
+   *
+   * THIS IS A CAP, NOT AN ADDITIONAL BUDGET. It is consulted by
+   * postingPolicy.perDayFor(), which loopPublish.planSlots() uses to size each day's
+   * remaining room. A catalogue backfill post and a fresh loop post are both just
+   * YouTube posts on that day, so the backfill CONSUMES the day's allowance and the
+   * loop sees whatever is left — rather than the two stacking and blowing past both
+   * the ramp and the 7/day cap. That is the whole mechanism; there is no separate
+   * backfill counter to keep in sync.
+   *
+   * RAMP_START is a naive local (METRICOOL_TZ) calendar date. EMPTY DISABLES THE RAMP
+   * entirely and every day falls back to PLATFORM_POLICY.youtube.perDay, so this
+   * cannot strand the network at 3/day if it is ever forgotten: past the last step the
+   * ramp already returns 7, and clearing the date returns 7 as well.
+   *
+   * The monthly guard is unaffected — budgetForecast() deliberately keeps costing
+   * YouTube at its terminal 7/day, because that is the steady state the 600-record
+   * budget has to survive. The ramp only ever spends LESS than that.
+   */
+  YT_RAMP_START: (process.env.HERMES_YT_RAMP_START ?? "2026-07-28").trim(),
+  /** (days after YT_RAMP_START, cap) — ascending, terminal value must be the
+   *  PLATFORM_POLICY youtube perDay so the ramp converges on the real cap. */
+  YT_RAMP_STEPS: [
+    { afterDays: 0, perDay: 3 },
+    { afterDays: 2, perDay: 5 },
+    { afterDays: 4, perDay: 7 },
+  ] as ReadonlyArray<{ afterDays: number; perDay: number }>,
   MUSIC_TRACKS: [
     "audio/music/gameshow-fanfare.mp3",
     "audio/music/prize-wheel-parade.mp3",

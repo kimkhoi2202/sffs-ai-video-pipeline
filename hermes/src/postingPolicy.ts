@@ -147,6 +147,56 @@ export function budgetForecast(days = 31): {
   };
 }
 
+/** Days between two naive local calendar dates (YYYY-MM-DD). NaN if either is unparseable. */
+function daysBetween(fromISO: string, toISO: string): number {
+  const p = (d: string): number => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d).trim());
+    return m ? Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : Number.NaN;
+  };
+  const a = p(fromISO);
+  const b = p(toISO);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return Number.NaN;
+  return Math.round((b - a) / 86_400_000);
+}
+
+/**
+ * The per-day cap for `network` on the LOCAL CALENDAR DAY `dayISO` (YYYY-MM-DD).
+ *
+ * For every network except YouTube this is just PLATFORM_POLICY[network].perDay — the
+ * behaviour every caller had before. YouTube additionally honours the seeding RAMP
+ * (CONFIG.YT_RAMP_START / YT_RAMP_STEPS): a channel with no history opens at 3/day and
+ * climbs to the real 7/day cap over four days.
+ *
+ * WHY THIS IS A CAP AND NOT A BACKFILL COUNTER. planSlots() sizes a day's room as
+ * `perDayFor(network, day) - countOnDay(rows, network, day)`, and countOnDay counts
+ * EVERY YouTube post already on that day whatever created it. So catalogue-backfill
+ * posts and the loop's own fresh output draw down the SAME allowance: fill a ramp day
+ * with backfill and the loop finds zero room there and moves on, instead of adding its
+ * 7 on top. There is no second number to keep in sync, which is the point — a separate
+ * backfill budget is exactly how the two would have drifted apart.
+ *
+ * FAILS OPEN TO THE REAL CAP, deliberately. An empty/malformed RAMP_START, a day before
+ * the ramp starts, or a day past the last step all return PLATFORM_POLICY.youtube.perDay.
+ * The dangerous direction here is a forgotten ramp silently pinning the network at 3/day
+ * forever; the ramp can only ever LOWER the cap while it is running, and it stops
+ * running by itself.
+ */
+export function perDayFor(network: Network, dayISO: string): number {
+  const base = CONFIG.PLATFORM_POLICY[network]?.perDay ?? 0;
+  if (network !== "youtube") return base;
+  const start = String(CONFIG.YT_RAMP_START ?? "").trim();
+  if (!start) return base;
+  const d = daysBetween(start, dayISO);
+  if (!Number.isFinite(d) || d < 0) return base;
+  let cap = base;
+  for (const step of CONFIG.YT_RAMP_STEPS) {
+    if (d >= step.afterDays) cap = step.perDay;
+  }
+  // Never let the ramp table RAISE the cap above the policy — the monthly budget is
+  // derived from PLATFORM_POLICY, so a typo here must not be able to overspend it.
+  return Math.min(cap, base);
+}
+
 /**
  * Is posting to this network PAUSED?
  *

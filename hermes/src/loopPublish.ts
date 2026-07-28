@@ -29,7 +29,7 @@
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
 import { nextSlots, WINDOW_OPEN_HOUR } from "./scheduler.ts";
-import { decide, NETWORKS, type Network } from "./postingPolicy.ts";
+import { decide, NETWORKS, perDayFor, type Network } from "./postingPolicy.ts";
 import { createPost, listPosts, youtubeTitleFrom, type McPost } from "./metricool.ts";
 import { hostedCoverUrlFor, coverMomentMs } from "./covers.ts";
 import { withAttribution } from "./attribution.ts";
@@ -92,6 +92,14 @@ export function localDay(plus = 0, now: Date = new Date()): string {
   return f.format(new Date(now.getTime() + plus * 86_400_000));
 }
 
+/** The brand-timezone calendar date (YYYY-MM-DD) an ISO instant falls on. This is the
+ *  key countOnDay() matches against, so slot accounting must use the same one. */
+export function localDayOf(iso: string): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: CONFIG.METRICOOL_TZ, year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date(iso));
+}
+
 /**
  * Slot times for `count` posts on `network`, placed in the FIRST day that has room.
  *
@@ -127,22 +135,61 @@ export function planSlots(
   seed: string,
   now: Date = new Date(),
 ): SlotPlan {
-  const perDay = CONFIG.PLATFORM_POLICY[network]?.perDay ?? 0;
   const avoid = [...(timesByNetwork(rows)[network] ?? [])];
   const times: string[] = [];
   const spread: Array<{ day: string; placed: number; room: number }> = [];
+  // Slots THIS call has already placed, counted by the CALENDAR DATE they actually
+  // land on. See the roomOn() note below for why that is not the same as the day the
+  // loop is currently filling.
+  const placedOn = new Map<string, number>();
+
+  /**
+   * Remaining room on a CALENDAR DATE.
+   *
+   * Two things have to agree here or the cap leaks. countOnDay() reads the calendar
+   * date off the stored `dateTime` string, and a posting window runs 07:00 -> 03:00 the
+   * NEXT DAY — so a slot the loop generates while filling Tuesday can carry a Wednesday
+   * date. The original version sized each day only from `rows` and never counted what
+   * this same call had already placed, so those after-midnight slots were invisible to
+   * the next iteration: Tuesday would place its full allowance, spill two slots into
+   * Wednesday, and then Wednesday would place its full allowance AGAIN on top. At
+   * Instagram's flat 12/day that overshoot was hidden by there being room anyway; at
+   * YouTube's ramp of 3 it puts 4 posts on a 3-post day.
+   */
+  const roomOn = (dateISO: string): number =>
+    perDayFor(network, dateISO) - countOnDay(rows, network, dateISO) - (placedOn.get(dateISO) ?? 0);
+
   for (let d = 0; d < HORIZON_DAYS && times.length < count; d++) {
     const day = localDay(d, now);
-    const room = perDay - countOnDay(rows, network, day);
+    // PER-DAY cap, not one fixed number for the whole horizon. YouTube ramps while the
+    // channel is being seeded (postingPolicy.perDayFor), so day d and day d+2 can have
+    // different ceilings; reading the cap inside the loop is what lets a single batch
+    // span days with different allowances. Every other network returns its constant.
+    //
+    // The cap subtracts what is ALREADY on that date for this network, whoever put it
+    // there — so catalogue-backfill posts and the loop's own output draw down the same
+    // allowance instead of stacking.
+    const room = roomOn(day);
     if (room <= 0) continue;
     const take = Math.min(count - times.length, room);
     const windowOpen = new Date(`${day}T${String(WINDOW_OPEN_HOUR).padStart(2, "0")}:00:00${offsetFor(CONFIG.METRICOOL_TZ)}`);
     const fromMs = Math.max(now.getTime(), windowOpen.getTime());
     const got = nextSlots(take, { seed: `${seed}|${day}`, platform: network, avoid, fromMs });
     if (!got.length) continue;
-    times.push(...got);
-    avoid.push(...got); // later days keep their distance from what we just placed
-    spread.push({ day, placed: got.length, room });
+    // Charge every slot to the date it ACTUALLY falls on, and drop any that would push
+    // a date past its cap. A dropped slot is not lost — the horizon walks on and the
+    // next day with room places it on its own grid.
+    const kept: string[] = [];
+    for (const iso of got) {
+      const dateISO = localDayOf(iso);
+      if (roomOn(dateISO) <= 0) continue;
+      placedOn.set(dateISO, (placedOn.get(dateISO) ?? 0) + 1);
+      kept.push(iso);
+    }
+    if (!kept.length) continue;
+    times.push(...kept);
+    avoid.push(...kept); // later days keep their distance from what we just placed
+    spread.push({ day, placed: kept.length, room });
   }
   return { times, spread };
 }

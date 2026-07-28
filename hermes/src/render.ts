@@ -43,7 +43,7 @@
  * Publer/create/schedule/publish path anywhere in its dependency tree.
  */
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
@@ -552,6 +552,136 @@ export function renderVideo(id: string, props: any, opts: { force?: boolean } = 
 
   const { path, frames, reused } = renderOne(id, mapped, durs, qrBase, props, DEFAULT_PLATFORM, totalFrames, opts);
   return { path, frames, reused };
+}
+
+/**
+ * The end-beat key a STORED sidecar's endCard resolves to on `platform`.
+ * Mirrors remotion/src/full/timeline.ts endCardKey(); the two must agree or the
+ * composition length and the audio it has to cover come from different beats.
+ */
+export function endKeyForCard(endCard: string | undefined, platform: Platform): string {
+  if (endCard === "noanswer") return "outro-noanswer";
+  if (endCard === "verdict") return "verdict";
+  return platform === "youtube" ? "outro-youtube" : "outro-follow";
+}
+
+/**
+ * Retarget an ALREADY-RENDERED video's stored props sidecar
+ * (`<id>.<platform>.props.json`, written by runRemotion) at YouTube.
+ *
+ * WHY THIS EXISTS. The catalogue backfill re-publishes videos that have already run on
+ * Instagram or TikTok, and those masters are wrong for YouTube twice over: they carry
+ * the FOLLOW CTA rather than SUBSCRIBE, and the Instagram cut is laid out for the IG
+ * safe box, which does NOT clear the Shorts caption band. Re-uploading the master would
+ * ship both faults. The sidecar is the exact Remotion input the original render used —
+ * same questions, same measured `durs`, same VO clips, same music and sfx, same opening
+ * arm — so flipping `platform` reproduces the SAME VIDEO through the corrected path
+ * rather than reconstructing a lookalike. Everything that changes is something we WANT
+ * to change for YouTube.
+ *
+ * THE ONE THING THAT IS NOT A FIELD SWAP is the length. totalFrames sets the composition
+ * length, and on the full-reveal ending YouTube plays `outro-youtube` (4.75s) where the
+ * others play `outro-follow` (4.05s). Carrying the old number over would truncate the
+ * render ~21 frames early, mid subscribe-CTA — and by less than gateRenderSanity's 1.5s
+ * tolerance, so it would ship silently. So the end beat is re-measured off the file that
+ * will actually play and the delta is applied. On the cliffhanger / no-answer endings
+ * both platforms resolve to `outro-noanswer`, the delta is zero, and the length is
+ * carried through untouched.
+ *
+ * Pure apart from the ffprobe measurement, and it never mutates the input.
+ */
+export function retargetPropsToYouTube(sp: any): { props: any; endKey: string; frameDelta: number } {
+  if (!sp || typeof sp !== "object") throw new Error("retargetPropsToYouTube: no props");
+  const from = String(sp.platform ?? "") as Platform;
+  const durs: Record<string, number> = { ...(sp.durs ?? {}) };
+  const oldKey = endKeyForCard(sp.endCard, from);
+  const newKey = endKeyForCard(sp.endCard, "youtube");
+
+  let delta = 0;
+  if (newKey !== oldKey) {
+    // Measure the beat that will actually play, off the committed copy — the same
+    // source buildDurs() uses, so a re-render and an original render agree.
+    if (!(durs[newKey] > 0)) durs[newKey] = metaDur(newKey);
+    const oldDur = durs[oldKey];
+    if (!(oldDur > 0)) {
+      throw new Error(`retargetPropsToYouTube: sidecar has no duration for its own end beat "${oldKey}" — refusing to guess the length`);
+    }
+    delta = frames(SHORT_LEAD + durs[newKey] + SHORT_TRAIL) - frames(SHORT_LEAD + oldDur + SHORT_TRAIL);
+  }
+  const totalFrames = Number(sp.totalFrames) + delta;
+  if (!Number.isFinite(totalFrames) || totalFrames <= 0) {
+    throw new Error(`retargetPropsToYouTube: bad totalFrames ${sp.totalFrames} -> ${totalFrames}`);
+  }
+  return { props: { ...sp, platform: "youtube" as Platform, durs, totalFrames }, endKey: newKey, frameDelta: delta };
+}
+
+/**
+ * Render `id` for YouTube from its STORED sidecar. Idempotent like renderOne: an
+ * existing non-trivial `<id>.youtube.mp4` is reused unless force.
+ */
+export function renderYouTubeFromSidecar(id: string, sidecarPath: string, opts: { force?: boolean } = {}): PlatformRender {
+  mkdirSync(CONFIG.RENDERS_DIR, { recursive: true });
+  const stored = JSON.parse(readFileSync(sidecarPath, "utf8"));
+  const { props: sp } = retargetPropsToYouTube(stored);
+  const outMp4 = join(CONFIG.RENDERS_DIR, `${id}.youtube.mp4`);
+  if (!opts.force && existsSync(outMp4) && statSync(outMp4).size > 100_000) {
+    info("youtube render reused", { id, out: outMp4 });
+    return { platform: "youtube", path: outMp4, frames: sp.totalFrames, reused: true };
+  }
+  runRemotion(id, "youtube", sp, outMp4);
+  info("rendered for youtube from sidecar", { id, out: outMp4, bytes: statSync(outMp4).size, frames: sp.totalFrames });
+  return { platform: "youtube", path: outMp4, frames: sp.totalFrames, reused: false };
+}
+
+export interface ShortCheck {
+  ok: boolean;
+  width: number;
+  height: number;
+  seconds: number;
+  hasAudio: boolean;
+  problems: string[];
+}
+
+/**
+ * Assert a rendered file is actually publishable AS A YOUTUBE SHORT.
+ *
+ * This is NOT publishGate. That gate judges freshly GENERATED content — prompt
+ * integrity, explanation novelty against a rolling window, caption quality — and a
+ * catalogue re-publish would fail it for the wrong reason: these videos have already
+ * run, so their own explanations are already inside the novelty window. Running it
+ * here would either block the whole backfill or have to be softened, and softening a
+ * content gate to let old content through is how a content gate stops meaning anything.
+ *
+ * What actually matters for a re-publish is that the FILE is a legal Short, because
+ * YouTube classifies on the file rather than on any flag we can send:
+ *
+ *   - PORTRAIT, square or taller. A landscape upload is a normal video, silently.
+ *   - UNDER THE DURATION LINE, with margin. YouTube can lengthen a video slightly in
+ *     processing and reclassify a borderline one as long-form, so the ceiling is
+ *     CONFIG.YOUTUBE.maxDurationSeconds (170s) rather than the nominal 180.
+ *   - AUDIO PRESENT. A silent render is the failure mode a props/VO-path mistake
+ *     produces, and it is invisible in every other check we run.
+ */
+export function verifyShortForYouTube(path: string): ShortCheck {
+  const probe = execFileSync(resolveFfprobe().replace(/ffprobe$/, "ffprobe"), [
+    "-v", "error", "-show_entries", "stream=codec_type,width,height:format=duration",
+    "-of", "json", path,
+  ], { encoding: "utf8" });
+  const j = JSON.parse(probe);
+  const v = (j.streams ?? []).find((x: any) => x.codec_type === "video") ?? {};
+  const width = Number(v.width ?? 0);
+  const height = Number(v.height ?? 0);
+  const seconds = Number(j.format?.duration ?? 0);
+  const hasAudio = (j.streams ?? []).some((x: any) => x.codec_type === "audio");
+  const problems: string[] = [];
+  if (!(width > 0 && height > 0)) problems.push("no video stream");
+  else if (height < width) problems.push(`landscape ${width}x${height} — YouTube would file this as a normal video, not a Short`);
+  if (!(seconds > 0)) problems.push("no duration");
+  else if (seconds > CONFIG.YOUTUBE.maxDurationSeconds) {
+    problems.push(`${seconds.toFixed(1)}s exceeds the ${CONFIG.YOUTUBE.maxDurationSeconds}s Shorts ceiling`);
+  }
+  if (!hasAudio) problems.push("no audio stream — a silent render is what a broken VO path produces");
+  return { ok: problems.length === 0, width, height, seconds, hasAudio, problems };
 }
 
 /**

@@ -24,7 +24,7 @@
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
 import { buildUpdateBody, getPost, listPosts, putPost, resolveId, retireStaleId, deletePost, type McPost } from "./metricool.ts";
-import { slotTimes } from "./postingPolicy.ts";
+import { slotTimes, NETWORKS } from "./postingPolicy.ts";
 
 export interface PendingPost {
   uuid: string;
@@ -128,7 +128,14 @@ export async function rescheduleOverdue(now: Date = new Date()): Promise<Array<{
   // the second post accounts for where the first one just landed.
   let live = rows;
   for (const p of pending) {
-    const net = (p.network === "tiktok" ? "tiktok" : "instagram") as "instagram" | "tiktok";
+    // Re-place on the post's OWN network. This was a two-way ternary that mapped
+    // everything except TikTok to Instagram, which is the same silent-default shape as
+    // the jitter-lane bug: once YouTube went live, an overdue YouTube draft would have
+    // been re-slotted against INSTAGRAM's cap, Instagram's lane and Instagram's existing
+    // times — landing it on the wrong grid while every log line still said "moved".
+    // An unrecognised network is left alone rather than guessed at.
+    const net = NETWORKS.find((n) => n === p.network);
+    if (!net) { warn("auto-reschedule: unknown network — leaving it alone", { uuid: p.uuid, network: p.network }); continue; }
     const plan = planSlots(1, net, live, `reslot|${p.uuid}`, now);
     if (!plan.times.length) { warn("auto-reschedule: no room in the horizon", { uuid: p.uuid }); continue; }
     const to = plan.times[0];
