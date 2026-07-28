@@ -195,35 +195,113 @@ test("a caption with no hashtags still gets the link", () => {
 });
 
 // ── posting policy ───────────────────────────────────────────────────────────
-test("TikTok is dark before Monday evening and open after", () => {
+test("the cooldown logic is KEPT, not deleted — it still evaluates as it always did", () => {
   const before = new Date("2026-07-27T20:00:00Z"); // 15:00 America/Chicago Mon
   const after = new Date("2026-07-28T02:00:00Z"); // 21:00 Chicago Mon
   assert.equal(P.isDark("tiktok", before).dark, true);
-  assert.equal(P.isDark("tiktok", after).dark, false);
+  assert.equal(P.isDark("tiktok", after).dark, false, "the cooldown has expired on its own");
   assert.equal(P.isDark("instagram", before).dark, false);
 });
 
-test("while TikTok is dark, only Instagram gets slots", () => {
+test("while TikTok is PAUSED, only Instagram gets slots", () => {
   const d = P.decide(600, new Date("2026-07-26T20:00:00Z"));
   const ig = d.find((x) => x.network === "instagram")!;
   const tt = d.find((x) => x.network === "tiktok")!;
-  assert.equal(ig.slots, 12);
+  assert.equal(ig.slots, 12, "Instagram is untouched by the TikTok pause");
   assert.equal(tt.slots, 0);
   assert.equal(tt.allowed, false);
-  assert.match(tt.reason, /dark until/);
+  assert.equal(tt.paused, true);
+  assert.match(tt.reason, /PAUSED by config/);
 });
 
-test("Instagram is served first when monthly headroom is short", () => {
-  const d = P.decide(5, new Date("2026-07-28T02:00:00Z"));
-  assert.equal(d.find((x) => x.network === "instagram")!.slots, 5);
-  assert.equal(d.find((x) => x.network === "tiktok")!.slots, 0);
+test("the pause OVERRIDES the expired cooldown — no date can re-admit TikTok", () => {
+  // The whole hazard: darkUntil has already passed, so without the pause the platform
+  // would come back on a timer nobody re-approved. Check well past it, and far future.
+  for (const when of ["2026-07-28T02:00:00Z", "2026-08-15T12:00:00Z", "2027-01-01T00:00:00Z"]) {
+    const tt = P.decide(600, new Date(when)).find((x) => x.network === "tiktok")!;
+    assert.equal(tt.slots, 0, `TikTok must get zero slots at ${when}`);
+    assert.equal(tt.paused, true);
+  }
 });
 
-test("TikTok resumes at 2/day with a 4h floor", () => {
-  const d = P.decide(600, new Date("2026-07-28T02:00:00Z"));
-  const tt = d.find((x) => x.network === "tiktok")!;
-  assert.equal(tt.slots, 2);
-  assert.equal(tt.minGapMinutes, 240);
+test("a planned batch produces ZERO TikTok slots while paused", () => {
+  // The end-to-end assertion: whatever budget is available, no slot times are handed out.
+  for (const budget of [0, 12, 600]) {
+    const tt = P.decide(budget).find((x) => x.network === "tiktok")!;
+    assert.equal(tt.slots, 0);
+    assert.deepEqual(
+      P.slotTimes(tt.slots, { dayISO: "2026-08-01", startHour: 7, endHour: 22, minGapMinutes: tt.minGapMinutes }),
+      [],
+      "zero slots must yield zero scheduled times",
+    );
+  }
+});
+
+test("the cadence TikTok resumes on is PRESERVED while paused, not zeroed", () => {
+  // A pause must not quietly destroy the settings we want back. Re-deriving 2/day and a
+  // 4-hour floor from a transcript later is how they get lost.
+  const tt = P.decide(600).find((x) => x.network === "tiktok")!;
+  assert.equal(tt.minGapMinutes, 240, "the 4-hour floor is still configured");
+  assert.match(tt.reason, /2\/day/, "the reason states the cadence it will resume on");
+  assert.match(tt.reason, /HERMES_TIKTOK_PAUSED=false/, "and how to resume");
+});
+
+/**
+ * The resume path, exercised in a CHILD PROCESS.
+ *
+ * Re-importing postingPolicy.ts with a cache-busting query is not enough: it still
+ * resolves the already-cached config.ts, so the pause flag never changes. A child
+ * process with the env set is the only way to genuinely prove that clearing the flag
+ * brings TikTok back — and proving it matters, because this is the path that has to
+ * still work whenever someone resumes the platform.
+ */
+async function decideWith(env: Record<string, string>): Promise<any[]> {
+  const { spawnSync } = await import("node:child_process");
+  const code = `
+    const P = await import("${new URL("./postingPolicy.ts", import.meta.url).pathname}");
+    process.stdout.write(JSON.stringify(P.decide(600, new Date("2026-07-28T02:00:00Z"))));
+  `;
+  const res = spawnSync(process.execPath, ["--input-type=module", "-e", code], {
+    encoding: "utf8",
+    env: { ...process.env, ...env },
+  });
+  assert.equal(res.status, 0, `child failed: ${res.stderr}`);
+  return JSON.parse(res.stdout.trim().split("\n").pop()!);
+}
+
+test("CLEARING the pause restores TikTok's normal allocation", async () => {
+  const d = await decideWith({ HERMES_TIKTOK_PAUSED: "false" });
+  const tt = d.find((x) => x.network === "tiktok");
+  assert.ok(!tt.paused, "no longer reported as paused");
+  assert.equal(tt.allowed, true);
+  assert.equal(tt.slots, 2, "back to 2/day");
+  assert.equal(tt.minGapMinutes, 240, "back behind the 4-hour floor");
+});
+
+test("unpausing TikTok still leaves Instagram exactly as it was", async () => {
+  const d = await decideWith({ HERMES_TIKTOK_PAUSED: "false" });
+  const ig = d.find((x) => x.network === "instagram");
+  assert.equal(ig.slots, 12);
+  assert.equal(ig.minGapMinutes, 56);
+  assert.equal(ig.allowed, true);
+});
+
+test("the pause holds for any truthy spelling, and only 'false' clears it", async () => {
+  for (const v of ["true", "1", "yes", "TRUE", ""]) {
+    const tt = (await decideWith({ HERMES_TIKTOK_PAUSED: v })).find((x) => x.network === "tiktok");
+    assert.equal(tt.slots, 0, `HERMES_TIKTOK_PAUSED="${v}" must keep TikTok paused`);
+  }
+  for (const v of ["false", "False", "FALSE"]) {
+    const tt = (await decideWith({ HERMES_TIKTOK_PAUSED: v })).find((x) => x.network === "tiktok");
+    assert.equal(tt.slots, 2, `HERMES_TIKTOK_PAUSED="${v}" must resume TikTok`);
+  }
+});
+
+test("Instagram is unaffected by the TikTok pause at any budget", () => {
+  for (const [budget, want] of [[600, 12], [12, 12], [5, 5]] as const) {
+    const ig = P.decide(budget).find((x) => x.network === "instagram")!;
+    assert.equal(ig.slots, want, `budget ${budget} should give Instagram ${want}`);
+  }
 });
 
 test("slotTimes never violates the minimum gap, even if asked for more", () => {

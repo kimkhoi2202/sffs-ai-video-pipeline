@@ -103,18 +103,37 @@ export const CONFIG = Object.freeze({
    * Instagram carries the campaign: 12/day, and it is the only network that reports
    * a 3-second skip rate, so it is the only place the hook experiment can be measured.
    *
-   * TikTok is under ACCOUNT-LEVEL SUPPRESSION. A previous throttle only lifted after
-   * 27.9 hours of total silence; the account has been quiet since 2026-07-25 15:45
-   * America/Chicago. It stays dark until Monday evening and then resumes at 2/day with
-   * a hard 4-hour floor between posts. `darkUntil` is a naive local datetime in
-   * METRICOOL_TZ. Do not shorten this without the account recovering first.
+   * TikTok is PAUSED. It is under account-level suppression — a previous throttle only
+   * lifted after 27.9 hours of total silence — and it never actually resumed when its
+   * cooldown expired, so the pause makes that state a DECISION rather than an accident
+   * of nothing having scheduled it.
+   *
+   * The pause is a pause, not a removal. The cadence below (2/day, 4-hour floor) is
+   * deliberately left exactly as it should be when TikTok comes back, so nobody has to
+   * reconstruct it later. The TikTok client and its analytics reading are untouched —
+   * we still want to watch whether the account recovers.
+   *
+   *   TO RESUME TIKTOK: set HERMES_TIKTOK_PAUSED=false in /etc/hermes/hermes.env and
+   *   restart. That is the whole step. Nothing else needs editing, and the 2/day cap
+   *   and 4-hour gap come back with it.
+   *
+   * `darkUntil` is a naive local datetime in METRICOOL_TZ and is KEPT. It has already
+   * expired, so on its own it would let TikTok back in; the pause is checked first and
+   * overrides it, which neutralises the date trigger without throwing the cooldown
+   * logic away.
    */
   PLATFORM_POLICY: {
     // 56 minutes is the same-platform floor the campaign has always run under; it was
     // 0 here only because the daily grid happened to space posts further apart anyway.
-    instagram: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null },
-    tiktok: { perDay: 2, minGapMinutes: 240, darkUntil: (process.env.HERMES_TIKTOK_DARK_UNTIL || "2026-07-27T18:00:00").trim() as string | null },
-  } as Record<string, { perDay: number; minGapMinutes: number; darkUntil: string | null }>,
+    instagram: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
+    tiktok: {
+      perDay: 2,
+      minGapMinutes: 240,
+      darkUntil: (process.env.HERMES_TIKTOK_DARK_UNTIL || "2026-07-27T18:00:00").trim() as string | null,
+      // Defaults to PAUSED, so the pause survives a fresh box or a lost env file.
+      paused: String(process.env.HERMES_TIKTOK_PAUSED ?? "true").trim().toLowerCase() !== "false",
+    },
+  } as Record<string, { perDay: number; minGapMinutes: number; darkUntil: string | null; paused: boolean }>,
   MUSIC_TRACKS: [
     "audio/music/gameshow-fanfare.mp3",
     "audio/music/prize-wheel-parade.mp3",
