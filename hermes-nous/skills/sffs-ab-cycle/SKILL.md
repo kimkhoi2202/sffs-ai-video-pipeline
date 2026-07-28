@@ -1,3 +1,7 @@
+> **Publer is retired (2026-07-28).** Every mention of Publer below is historical.
+> Posting, the live calendar and analytics all run on Metricool now — see
+> [`docs/hermes/metricool-migration.md`](../../../docs/hermes/metricool-migration.md).
+
 ---
 name: sffs-ab-cycle
 description: "Run ONE full DRAFT-ONLY SFFS A/B quiz-video cycle end to end (score -> design -> gates -> render -> S3 -> Publer DRAFTS), and fold results back into the durable A/B memory. Use for the nightly sffs-nightly cron job or an on-demand cycle."

@@ -153,7 +153,12 @@ export interface VideoPlan {
    */
   renders?: Array<{ platform: string; path: string; frames: number }>;
   media_url?: string;
-  publer?: { job_id?: string; media_id?: string; post_ids?: string[]; permalinks?: string[] };
+  metricool?: { media_id?: string; uuids?: string[]; permalinks?: string[] };
+  /**
+   * Publer-era run state, preserved verbatim for provenance. Never written again:
+   * Publer is retired and its ids no longer resolve against anything.
+   */
+  legacy_publer?: { job_id?: string; media_id?: string; post_ids?: string[]; permalinks?: string[] };
   errors?: string[];
 }
 

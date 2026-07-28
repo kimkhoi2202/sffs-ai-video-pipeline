@@ -1,5 +1,9 @@
 # CUTOVER PLAN — swap the live SFFS loop for the Nous-based `hermes-nous` agent
 
+> **Publer is retired (2026-07-28).** Every mention of Publer below is historical.
+> Posting, the live calendar and analytics all run on Metricool now — see
+> [`docs/hermes/metricool-migration.md`](../docs/hermes/metricool-migration.md).
+
 > **STATUS: NOT EXECUTED. This is a DOCUMENT, not a script.**
 > Nothing here has been run. Cutover is **human-gated**: a human runs these steps,
 > in order, on the VPS, after explicitly approving. The overnight build never

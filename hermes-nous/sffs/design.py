@@ -17,7 +17,7 @@ design.ts has NO create / schedule / publish / delete / update path anywhere in
 its dependency tree (it composes questions / gates / llm / brand / state / config
 / log only), so the Node bridge (hermes-nous/bridge/design.ts) is physically
 unable to create, publish, schedule, or mutate any post. This is a DESIGN/READ
-tool; the only sanctioned Publer write is ``sffs_publer_draft``.
+tool; the only sanctioned write is the loop's own Metricool draft path.
 
 GUARD-SAFE ARG NAMING: the args are ``what`` / ``run_id`` / ``target`` / ``dry_run``
 — none normalize to a state / schedule / publish key, and ``sffs_design`` is not a

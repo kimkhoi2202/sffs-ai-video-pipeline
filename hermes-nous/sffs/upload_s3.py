@@ -17,7 +17,7 @@ fetch; it has NO create / schedule / publish / delete / update path anywhere, so
 the Node bridge (hermes-nous/bridge/upload-s3.ts) is physically unable to create,
 publish, schedule, or mutate any post. It only HOSTS media (uploads a file, returns
 a URL). Attaching that URL to a Publer DRAFT is a separate, later step
-(sffs_publer_draft). This tool never deletes or overwrites anything except the exact
+(the loop's draft path). This tool never deletes or overwrites anything except the exact
 destination key it is given.
 
 GUARD-SAFE ARG NAMING: the args are ``local_path`` / ``dest_key`` / ``dry_run`` —

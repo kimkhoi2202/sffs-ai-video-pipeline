@@ -1,7 +1,7 @@
 /**
  * config.ts — central config + the HARD, NON-NEGOTIABLE safety constants.
  *
- * DRAFT_ONLY is frozen true here on purpose: the loop may ONLY ever create Publer
+ * DRAFT_ONLY is frozen true here on purpose: the loop may ONLY ever create Metricool
  * posts with state="draft". Nothing in this codebase reads a "publish" flag from
  * config — going live is a HUMAN action, never the loop's. See guardrails.ts.
  */
@@ -29,7 +29,7 @@ export const CONFIG = Object.freeze({
   // ── HARD SAFETY CONSTANTS ──────────────────────────────────────────────
   /** The loop can ONLY create drafts. Frozen. Never make this configurable. */
   DRAFT_ONLY: true as const,
-  /** The single Publer post state the loop is allowed to emit. */
+  /** The single post state the loop is allowed to emit. */
   ALLOWED_POST_STATE: "draft" as const,
 
   // ── LLM (TrueFoundry gateway) ──────────────────────────────────────────
@@ -43,17 +43,15 @@ export const CONFIG = Object.freeze({
   MODEL: (process.env.HERMES_MODEL || "claude-opus-4-8").trim(),
   CAPTION_MODEL: (process.env.HERMES_CAPTION_MODEL || "claude-haiku-4-5").trim(),
 
-  // ── Publer ─────────────────────────────────────────────────────────────
-  PUBLER_API_KEY: (process.env.PUBLER_API_KEY || "").trim(),
-  PUBLER_WORKSPACE_ID: (process.env.PUBLER_WORKSPACE_ID || "").trim(),
+  // ── Social accounts ────────────────────────────────────────────────────
   ACCOUNTS: {
     instagram: "6a5fc9dc4ccd63dc1f041549",
     tiktok: "6a5fc5451bee22495517bcc5",
   },
   ACCOUNT_IDS: ["6a5fc9dc4ccd63dc1f041549", "6a5fc5451bee22495517bcc5"],
 
-  // ── Metricool (REPLACES Publer; see docs/hermes/metricool-migration-plan.md) ──
-  // Publer 403s on every content endpoint. userId/blogId are mandatory on every call
+  // ── Metricool ──────────────────────────────────────────────────────────
+  // userId/blogId are mandatory on every call
   // and are declared on NONE of the spec's 497 paths, so metricool.ts injects them in
   // the transport layer and never at a call site.
   METRICOOL_BASE_URL: (process.env.METRICOOL_BASE_URL || "https://app.metricool.com/api").trim(),

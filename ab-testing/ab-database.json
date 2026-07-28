@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T16:47:57.252Z",
+  "updated_at": "2026-07-28T17:11:55.368Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -19,7 +19,7 @@
     }
   },
   "inputs": {
-    "publer_posts": ".ab-tmp/publer-posts-raw.json (14 posts synced from Publer; NO API key stored here)",
+    "legacy_publer_posts": "HISTORICAL. .ab-tmp/publer-posts-raw.json (14 posts synced from Publer before it was retired on 2026-07-28; NO API key stored here). Live metrics now come from Metricool via insights.ts.",
     "metrics_screenshot": "Publer post-analytics table, page 1 of 2, captured ~2026-07-21 15:11 -05:00 (10 of 13 analytics rows). Page 2 (3 rows) + the newest 2026-07-21 post were not in the screenshot -> metrics 'pending'.",
     "variant_metadata": [
       "renders.nosync/videos/ab-tests/manifest.json (A/B families: no-answer, dont-narrate, speed, one-question, cliffhanger, mascot)",
@@ -30,7 +30,7 @@
   },
   "conventions": {
     "eng_rate_unit": "percent (e.g. 4.03 == 4.03%)",
-    "reach_rate": "stored as the raw string shown by Publer (e.g. '3.1K%', '12.8%', null). TikTok reach-rate values are unreliable here because the follower base is ~0 (near-zero denominator).",
+    "reach_rate": "stored as the raw string shown by Metricool (e.g. '3.1K%', '12.8%', null). TikTok reach-rate values are unreliable here because the follower base is ~0 (near-zero denominator).",
     "metrics_source": "'screenshot' = read from the 2026-07-21 analytics screenshot; 'pending' = not yet captured (fill on next analytics pull).",
     "match_confidence": {
       "high": "exact source render pinned: caption body matches a ready-to-post caption.txt verbatim (unique question-type fingerprint), or it is the one brand-intro asset.",
@@ -47,7 +47,6 @@
   },
   "posts": [
     {
-      "publer_post_id": 195306521,
       "platform_post_id": "17875414719527136",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -79,10 +78,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Brand-intro promo (not a quiz short); caption matches the 'Follow so you don't miss one' brand copy. Source = the single brand-intro asset (sffs-brand-intro-v1). Metrics pending: on analytics page 2 (not in screenshot)."
+      "notes": "Brand-intro promo (not a quiz short); caption matches the 'Follow so you don't miss one' brand copy. Source = the single brand-intro asset (sffs-brand-intro-v1). Metrics pending: on analytics page 2 (not in screenshot).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306521
     },
     {
-      "publer_post_id": 195306520,
       "platform_post_id": "7664402257546415373",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -114,10 +114,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Brand-intro promo cross-post of the IG brand reel. Source = brand-intro asset. Metrics pending: on analytics page 2 (not in screenshot)."
+      "notes": "Brand-intro promo cross-post of the IG brand reel. Source = brand-intro asset. Metrics pending: on analytics page 2 (not in screenshot).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306520
     },
     {
-      "publer_post_id": 195306518,
       "platform_post_id": "7664661129481833741",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -153,10 +154,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, WITH INTRO (package 03). Caption body matches ready-to-post/03 caption.txt verbatim. Metrics pending: on analytics page 2 (not in screenshot)."
+      "notes": "Standard 3Q, WITH INTRO (package 03). Caption body matches ready-to-post/03 caption.txt verbatim. Metrics pending: on analytics page 2 (not in screenshot).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306518
     },
     {
-      "publer_post_id": 195306519,
       "platform_post_id": "17881110531476716",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -192,10 +194,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, WITH INTRO (package 03). IG cross-post of the same source video as publer 195306518/195306511."
+      "notes": "Standard 3Q, WITH INTRO (package 03). IG cross-post of the same source video as publer 195306518/195306511.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306519
     },
     {
-      "publer_post_id": 195306517,
       "platform_post_id": "7664675246712163614",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -231,10 +234,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, NO INTRO (package 01). Highest-reach post in the dataset (991 reach, 55 reactions, 5.55% eng). TikTok."
+      "notes": "Standard 3Q, NO INTRO (package 01). Highest-reach post in the dataset (991 reach, 55 reactions, 5.55% eng). TikTok.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306517
     },
     {
-      "publer_post_id": 195306516,
       "platform_post_id": "18632670970032565",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -270,10 +274,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, NO INTRO (package 01). IG twin of the 991-reach TikTok post (publer 195306517) but only 113 reach / 0.88% eng -> platform is the dominant confound. Only post with a comment (1)."
+      "notes": "Standard 3Q, NO INTRO (package 01). IG twin of the 991-reach TikTok post (publer 195306517) but only 113 reach / 0.88% eng -> platform is the dominant confound. Only post with a comment (1).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306516
     },
     {
-      "publer_post_id": 195306515,
       "platform_post_id": "7664718972360723743",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -309,10 +314,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, NO INTRO (package 02). TikTok."
+      "notes": "Standard 3Q, NO INTRO (package 02). TikTok.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306515
     },
     {
-      "publer_post_id": 195306513,
       "platform_post_id": "7664737430003666207",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -348,10 +354,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, NO INTRO (package 05). TikTok. reach_rate '3.5K%' is a Publer artifact (near-zero follower denominator)."
+      "notes": "Standard 3Q, NO INTRO (package 05). TikTok. reach_rate '3.5K%' is a Publer artifact (near-zero follower denominator).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306513
     },
     {
-      "publer_post_id": 195306514,
       "platform_post_id": "18087380909540755",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -387,10 +394,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, NO INTRO (package 05). IG twin of publer 195306513."
+      "notes": "Standard 3Q, NO INTRO (package 05). IG twin of publer 195306513.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306514
     },
     {
-      "publer_post_id": 195306512,
       "platform_post_id": "18612135376008328",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -426,10 +434,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, NO INTRO (package 02). IG twin of publer 195306515."
+      "notes": "Standard 3Q, NO INTRO (package 02). IG twin of publer 195306515.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306512
     },
     {
-      "publer_post_id": 195306511,
       "platform_post_id": "7664770507060874526",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -465,10 +474,11 @@
         "saves": null
       },
       "match_confidence": "high",
-      "notes": "Standard 3Q, WITH INTRO (package 03). reach=4 -> essentially undelivered (cold start / throttle), so eng_rate 25% (1 reaction / 4 reach) is NOISE, not a real win. Different hashtag set than the IG twins but identical caption body + question mix."
+      "notes": "Standard 3Q, WITH INTRO (package 03). reach=4 -> essentially undelivered (cold start / throttle), so eng_rate 25% (1 reaction / 4 reach) is NOISE, not a real win. Different hashtag set than the IG twins but identical caption body + question mix.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306511
     },
     {
-      "publer_post_id": 195306510,
       "platform_post_id": "7664804452393618719",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -507,10 +517,11 @@
         "saves": null
       },
       "match_confidence": "medium",
-      "notes": "Family = cliffhanger (HIGH confidence: 'The last one is tricky! Comment your answer' = last-question-withheld). EXACT render is video-1 or video-2 (identical tiers, caption cannot disambiguate) -> source_video null, see source_candidates. Despite the comment-for-answer mechanic, 0 comments."
+      "notes": "Family = cliffhanger (HIGH confidence: 'The last one is tricky! Comment your answer' = last-question-withheld). EXACT render is video-1 or video-2 (identical tiers, caption cannot disambiguate) -> source_video null, see source_candidates. Despite the comment-for-answer mechanic, 0 comments.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306510
     },
     {
-      "publer_post_id": 195306509,
       "platform_post_id": "18137400259598790",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -551,10 +562,11 @@
         "saves": null
       },
       "match_confidence": "low",
-      "notes": "NEEDS HUMAN CONFIRM. Classified no-answer per guidance ('Comment your answer below', no score ask, no 'last question' signal). BUT 'This one's tricky!' could also be a cliffhanger. If no-answer, question_types = odd-one-out/figure-series/number-series (assumed here); if cliffhanger, they would be odd-one-out/position/number-series. Exact render (video-1 vs video-2) also unknown."
+      "notes": "NEEDS HUMAN CONFIRM. Classified no-answer per guidance ('Comment your answer below', no score ask, no 'last question' signal). BUT 'This one's tricky!' could also be a cliffhanger. If no-answer, question_types = odd-one-out/figure-series/number-series (assumed here); if cliffhanger, they would be odd-one-out/position/number-series. Exact render (video-1 vs video-2) also unknown.",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306509
     },
     {
-      "publer_post_id": 195306508,
       "platform_post_id": "7664995258723224863",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -593,10 +605,11 @@
         "saves": null
       },
       "match_confidence": "medium",
-      "notes": "Newest post (2026-07-21). Family = cliffhanger (HIGH: 'Did you get the last question? Comment your answer'). Exact render video-1 vs video-2 unknown -> source_video null. Metrics pending: not in the 2026-07-21 screenshot (posted after / not yet in analytics)."
+      "notes": "Newest post (2026-07-21). Family = cliffhanger (HIGH: 'Did you get the last question? Comment your answer'). Exact render video-1 vs video-2 unknown -> source_video null. Metrics pending: not in the 2026-07-21 screenshot (posted after / not yet in analytics).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": 195306508
     },
     {
-      "publer_post_id": "6a5ff4e8324fde90b165a22e",
       "platform_post_id": "7665127645243329806",
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -634,15 +647,16 @@
       },
       "match_confidence": "high",
       "post_state": "published",
-      "publer_media_id": "6a5fed2f59cd255bf51920bb",
       "notes": "Auto-published at its 18:30 CT slot BEFORE the 2026-07-21 reschedule job (inside its publish window) -> left as-is per the double-post guard; NOT re-rendered. This is the ORIGINAL shared instagram-layout no-answer render (so TikTok shows the IG layout; the TikTok centering fix was intentionally NOT applied to this already-live post). Scheduled via tools/schedule-variants.ts to 2026-07-21T18:30:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed32b6f3b513df2c19a4 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed2f59cd255bf51920bb.",
       "prior_draft_post_id": "6a5fed32b6f3b513df2c19a4",
       "scheduled_at": "2026-07-21T18:30:00-05:00",
       "hashtag_set": "B",
-      "time_bucket": "evening"
+      "time_bucket": "evening",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a5ff4e8324fde90b165a22e",
+      "legacy_publer_media_id": "6a5fed2f59cd255bf51920bb"
     },
     {
-      "publer_post_id": "6a5ff4e8324fde90b165a21c",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -679,15 +693,17 @@
       },
       "match_confidence": "high",
       "post_state": "published",
-      "publer_media_id": "6a5fed2f59cd255bf51920bb",
       "notes": "Auto-published at its 18:30 CT slot BEFORE the 2026-07-21 reschedule job (inside its publish window) -> left as-is per the double-post guard; NOT re-rendered. This is the ORIGINAL shared instagram-layout no-answer render (so TikTok shows the IG layout; the TikTok centering fix was intentionally NOT applied to this already-live post). Scheduled via tools/schedule-variants.ts to 2026-07-21T18:30:00-05:00 (auto-publish at that time). Recreated as state=scheduled from draft 6a5fed31b6f3b513df2c19a2 + original draft deleted (Publer has no in-place draft->scheduled). Not yet published; platform_post_id/posted_at fill on publish. Publer media_id 6a5fed2f59cd255bf51920bb.",
       "prior_draft_post_id": "6a5fed31b6f3b513df2c19a2",
       "scheduled_at": "2026-07-21T18:30:00-05:00",
       "hashtag_set": "A",
-      "time_bucket": "evening"
+      "time_bucket": "evening",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a5ff4e8324fde90b165a21c",
+      "legacy_publer_media_id": "6a5fed2f59cd255bf51920bb",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a600517e6d05c066be402be",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -724,7 +740,6 @@
       },
       "match_confidence": "high",
       "post_state": "published",
-      "publer_media_id": "6a600514a6b5db1e658a2b11",
       "notes": "[covers 2026-07-21] Auto-published at its ~2026-07-21T20:34:27-05:00 slot BEFORE the cover job ran (no longer in Publer's scheduled list) -> reconciled to published; cover NOT changed (covers cannot be set post-publish). Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in tiktok format, and given a FRESH previously-unused question set (round-026, ids 4,3,7; VERBAL ANALOGY / FIGURE ANALOGY / NUMBER SERIES) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a600514a6b5db1e658a2b11, recreated at JITTERED 2026-07-21T20:34:27-05:00 (base 2026-07-21T20:30:00-05:00, +4m27s, bucket evening) + old 6a5ff8bcb23bd7bf82e5b64d deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved.",
       "prior_draft_post_id": "6a5fed48ca20cb23e05ab1d4",
       "scheduled_at": "2026-07-21T20:34:27-05:00",
@@ -767,10 +782,13 @@
           "tier": "NUMBER SERIES",
           "answer": "25"
         }
-      ]
+      ],
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a600517e6d05c066be402be",
+      "legacy_publer_media_id": "6a600514a6b5db1e658a2b11",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a600523e6d05c066be402d9",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -807,7 +825,6 @@
       },
       "match_confidence": "high",
       "post_state": "published",
-      "publer_media_id": "6a60051fe6d05c066be402d0",
       "notes": "[covers 2026-07-21] Auto-published at its ~2026-07-21T20:39:05-05:00 slot BEFORE the cover job ran (no longer in Publer's scheduled list) -> reconciled to published; cover NOT changed (covers cannot be set post-publish). Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in instagram format, and given a FRESH previously-unused question set (round-026, ids 4,3,7; VERBAL ANALOGY / FIGURE ANALOGY / NUMBER SERIES) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a60051fe6d05c066be402d0, recreated at JITTERED 2026-07-21T20:39:05-05:00 (base 2026-07-21T20:30:00-05:00, +9m5s, bucket evening) + old 6a5ff8bd324fde90b165a671 deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved. IG share-to-Feed on (details.feed=true).",
       "prior_draft_post_id": "6a5fed48ca20cb23e05ab1d2",
       "scheduled_at": "2026-07-21T20:39:05-05:00",
@@ -850,10 +867,13 @@
           "tier": "NUMBER SERIES",
           "answer": "25"
         }
-      ]
+      ],
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a600523e6d05c066be402d9",
+      "legacy_publer_media_id": "6a60051fe6d05c066be402d0",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c3be6d05c066be4199d",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -890,7 +910,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a60052ba6b5db1e658a2b28",
       "notes": "[covers 2026-07-21] Branded blue cover applied via delete+recreate (reused existing video media 6a60052ba6b5db1e658a2b28, custom cover thumbnail 6a602c3521e2c8ab4ad55af9 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-21T23:07:54-05:00; old 6a600530e6d05c066be402e4 deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in tiktok format, and given a FRESH previously-unused question set (round-027, ids 1,11,14; ODD ONE OUT / POSITION / NUMBER ANALOGY) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a60052ba6b5db1e658a2b28, recreated at JITTERED 2026-07-21T23:07:54-05:00 (base 2026-07-21T23:00:00-05:00, +7m54s, bucket late-night) + old 6a5ff8c8324fde90b165a678 deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved.",
       "prior_draft_post_id": "6a5fed5d59cd255bf51920ee",
       "scheduled_at": "2026-07-21T23:07:54-05:00",
@@ -952,10 +971,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:36-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c3be6d05c066be4199d",
+      "legacy_publer_media_id": "6a60052ba6b5db1e658a2b28",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c12a6b5db1e658a40c5",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -992,7 +1014,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a6005375c5153cca06e6fde",
       "notes": "[covers 2026-07-21] Branded yellow cover applied via delete+recreate (reused existing video media 6a6005375c5153cca06e6fde, custom cover thumbnail 6a602aba672d29647107e0e3 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-21T23:05:40-05:00; old 6a60053b5c5153cca06e6fdf deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in instagram format, and given a FRESH previously-unused question set (round-027, ids 1,11,14; ODD ONE OUT / POSITION / NUMBER ANALOGY) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a6005375c5153cca06e6fde, recreated at JITTERED 2026-07-21T23:05:40-05:00 (base 2026-07-21T23:00:00-05:00, +5m40s, bucket late-night) + old 6a5ff8c9324fde90b165a679 deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved. IG share-to-Feed on (details.feed=true).",
       "prior_draft_post_id": "6a5fed5d59cd255bf51920ec",
       "scheduled_at": "2026-07-21T23:05:40-05:00",
@@ -1054,10 +1075,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:33:54-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c12a6b5db1e658a40c5",
+      "legacy_publer_media_id": "6a6005375c5153cca06e6fde",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c40e6d05c066be4199e",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -1094,7 +1118,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a6005435c5153cca06e6ff8",
       "notes": "[covers 2026-07-21] Branded green cover applied via delete+recreate (reused existing video media 6a6005435c5153cca06e6ff8, custom cover thumbnail 6a602c38672d29647107e2e5 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T01:37:37-05:00; old 6a6005465c5153cca06e6ff9 deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in tiktok format, and given a FRESH previously-unused question set (round-028, ids 3,12,15; FIGURE ANALOGY / SENTENCE COMPLETION / NUMBER PUZZLE) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a6005435c5153cca06e6ff8, recreated at JITTERED 2026-07-22T01:37:37-05:00 (base 2026-07-22T01:30:00-05:00, +7m37s, bucket overnight) + old 6a5ff8ca324fde90b165a67c deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved.",
       "prior_draft_post_id": "6a5fed6759cd255bf5192100",
       "scheduled_at": "2026-07-22T01:37:37-05:00",
@@ -1156,10 +1179,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:40-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c40e6d05c066be4199e",
+      "legacy_publer_media_id": "6a6005435c5153cca06e6ff8",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c3e5c5153cca06e894a",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1196,7 +1222,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a60054de6d05c066be4030b",
       "notes": "[covers 2026-07-21] Branded coral cover applied via delete+recreate (reused existing video media 6a60054de6d05c066be4030b, custom cover thumbnail 6a602c3743ac440742d4ed48 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T01:32:25-05:00; old 6a600551a6b5db1e658a2b32 deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in instagram format, and given a FRESH previously-unused question set (round-028, ids 3,12,15; FIGURE ANALOGY / SENTENCE COMPLETION / NUMBER PUZZLE) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a60054de6d05c066be4030b, recreated at JITTERED 2026-07-22T01:32:25-05:00 (base 2026-07-22T01:30:00-05:00, +2m25s, bucket overnight) + old 6a5ff8cbb23bd7bf82e5b65e deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved. IG share-to-Feed on (details.feed=true).",
       "prior_draft_post_id": "6a5fed6759cd255bf51920fe",
       "scheduled_at": "2026-07-22T01:32:25-05:00",
@@ -1258,10 +1283,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:38-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c3e5c5153cca06e894a",
+      "legacy_publer_media_id": "6a60054de6d05c066be4030b",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c425c5153cca06e894c",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -1298,7 +1326,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a6005595c5153cca06e7002",
       "notes": "[covers 2026-07-21] Branded pink cover applied via delete+recreate (reused existing video media 6a6005595c5153cca06e7002, custom cover thumbnail 6a602c39637f38df9cee11c5 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T03:32:50-05:00; old 6a60055da6b5db1e658a2b3c deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in tiktok format, and given a FRESH previously-unused question set (round-029, ids 10,13,7; ODD ONE OUT / POSITION / NUMBER SERIES) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a6005595c5153cca06e7002, recreated at JITTERED 2026-07-22T03:32:50-05:00 (base 2026-07-22T03:30:00-05:00, +2m50s, bucket overnight-trough) + old 6a5ff8cc324fde90b165a681 deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved.",
       "prior_draft_post_id": "6a5fed7459cd255bf519210b",
       "scheduled_at": "2026-07-22T03:32:50-05:00",
@@ -1360,10 +1387,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:42-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c425c5153cca06e894c",
+      "legacy_publer_media_id": "6a6005595c5153cca06e7002",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c44a6b5db1e658a40e3",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1400,7 +1430,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a600564a6b5db1e658a2b43",
       "notes": "[covers 2026-07-21] Branded blue cover applied via delete+recreate (reused existing video media 6a600564a6b5db1e658a2b43, custom cover thumbnail 6a602c3521e2c8ab4ad55af9 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T03:35:22-05:00; old 6a600568e6d05c066be40320 deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in instagram format, and given a FRESH previously-unused question set (round-029, ids 10,13,7; ODD ONE OUT / POSITION / NUMBER SERIES) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a600564a6b5db1e658a2b43, recreated at JITTERED 2026-07-22T03:35:22-05:00 (base 2026-07-22T03:30:00-05:00, +5m22s, bucket overnight-trough) + old 6a5ff8cdfaa7c830db5458f8 deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved. IG share-to-Feed on (details.feed=true).",
       "prior_draft_post_id": "6a5fed7459cd255bf5192109",
       "scheduled_at": "2026-07-22T03:35:22-05:00",
@@ -1462,10 +1491,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:44-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c44a6b5db1e658a40e3",
+      "legacy_publer_media_id": "6a600564a6b5db1e658a2b43",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c46a6b5db1e658a40e5",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -1500,7 +1532,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a60056ea6b5db1e658a2b49",
       "notes": "[covers 2026-07-21] Branded yellow cover applied via delete+recreate (reused existing video media 6a60056ea6b5db1e658a2b49, custom cover thumbnail 6a602aba672d29647107e0e3 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T06:34:49-05:00; old 6a600572e6d05c066be40324 deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in tiktok format, and given a FRESH previously-unused question set (round-030, ids 3; FIGURE ANALOGY) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a60056ea6b5db1e658a2b49, recreated at JITTERED 2026-07-22T06:34:49-05:00 (base 2026-07-22T06:30:00-05:00, +4m49s, bucket early-morning) + old 6a5ff8cffaa7c830db5458fa deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved.",
       "prior_draft_post_id": "6a5fed7eb6f3b513df2c19c3",
       "scheduled_at": "2026-07-22T06:34:49-05:00",
@@ -1546,10 +1577,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:47-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c46a6b5db1e658a40e5",
+      "legacy_publer_media_id": "6a60056ea6b5db1e658a2b49",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c485c5153cca06e8955",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1584,7 +1618,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a600579e6d05c066be40333",
       "notes": "[covers 2026-07-21] Branded green cover applied via delete+recreate (reused existing video media 6a600579e6d05c066be40333, custom cover thumbnail 6a602c38672d29647107e2e5 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T06:36:44-05:00; old 6a60057de6d05c066be40337 deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in instagram format, and given a FRESH previously-unused question set (round-030, ids 3; FIGURE ANALOGY) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a600579e6d05c066be40333, recreated at JITTERED 2026-07-22T06:36:44-05:00 (base 2026-07-22T06:30:00-05:00, +6m44s, bucket early-morning) + old 6a5ff8d0324fde90b165a684 deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved. IG share-to-Feed on (details.feed=true).",
       "prior_draft_post_id": "6a5fed7eb6f3b513df2c19c1",
       "scheduled_at": "2026-07-22T06:36:44-05:00",
@@ -1630,10 +1663,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:49-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c485c5153cca06e8955",
+      "legacy_publer_media_id": "6a600579e6d05c066be40333",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c4ca6b5db1e658a40e7",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -1670,7 +1706,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a600586e6d05c066be4033e",
       "notes": "[covers 2026-07-21] Branded coral cover applied via delete+recreate (reused existing video media 6a600586e6d05c066be4033e, custom cover thumbnail 6a602c3743ac440742d4ed48 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T08:37:51-05:00; old 6a60058aa6b5db1e658a2b5c deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in tiktok format, and given a FRESH previously-unused question set (round-031, ids 8,11,14; VERBAL ANALOGY / POSITION / NUMBER ANALOGY) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a600586e6d05c066be4033e, recreated at JITTERED 2026-07-22T08:37:51-05:00 (base 2026-07-22T08:30:00-05:00, +7m51s, bucket morning) + old 6a5ff8d1324fde90b165a68a deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved.",
       "prior_draft_post_id": "6a5fed8e59cd255bf5192147",
       "scheduled_at": "2026-07-22T08:37:51-05:00",
@@ -1732,10 +1767,13 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:53-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c4ca6b5db1e658a40e7",
+      "legacy_publer_media_id": "6a600586e6d05c066be4033e",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
-      "publer_post_id": "6a602c4a5c5153cca06e8959",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1772,7 +1810,6 @@
       },
       "match_confidence": "high",
       "post_state": "scheduled",
-      "publer_media_id": "6a6005925c5153cca06e702d",
       "notes": "[covers 2026-07-21] Branded pink cover applied via delete+recreate (reused existing video media 6a6005925c5153cca06e702d, custom cover thumbnail 6a602c39637f38df9cee11c5 appended at index 5); video unchanged so it still cold-opens on Q1. Recreated at the SAME scheduled_at 2026-07-22T08:35:36-05:00; old 6a600595a6b5db1e658a2b6d deleted first (Publer 1-min-gap rule). A/B identity preserved. Re-rendered 2026-07-21 with the layout fixes (commit 35d8233: TikTok bigger+centered / one-question no counter / mascot placement) in instagram format, and given a FRESH previously-unused question set (round-031, ids 8,11,14; VERBAL ANALOGY / POSITION / NUMBER ANALOGY) — VO regenerated/matched to the new questions. Swapped via tools/reslot-swap.ts: new media 6a6005925c5153cca06e702d, recreated at JITTERED 2026-07-22T08:35:36-05:00 (base 2026-07-22T08:30:00-05:00, +5m36s, bucket morning) + old 6a5ff8d2324fde90b165a68e deleted. A/B identity (family/narration/hook/hashtag_set/platform/time_bucket) preserved. IG share-to-Feed on (details.feed=true).",
       "prior_draft_post_id": "6a5fed8e59cd255bf5192145",
       "scheduled_at": "2026-07-22T08:35:36-05:00",
@@ -1834,11 +1871,14 @@
           "cover": true
         },
         "applied_at": "2026-07-21T21:34:51-05:00"
-      }
+      },
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a602c4a5c5153cca06e8959",
+      "legacy_publer_media_id": "6a6005925c5153cca06e702d",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:validate-20260722-042057-v01:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1877,11 +1917,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:validate-20260722-042057-v01:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -1920,11 +1961,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v01:instagram",
-      "publer_post_id": "6a6046d6a6b5db1e658a52f5",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -1963,11 +2005,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a6046d6a6b5db1e658a52f5",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v01:tiktok",
-      "publer_post_id": "6a6046d6a6b5db1e658a52f3",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2006,11 +2050,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a6046d6a6b5db1e658a52f3",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v03:instagram",
-      "publer_post_id": "6a60472ca6b5db1e658a531a",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2049,11 +2095,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60472ca6b5db1e658a531a",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v03:tiktok",
-      "publer_post_id": "6a60472ca6b5db1e658a5318",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2092,11 +2140,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60472ca6b5db1e658a5318",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v05:instagram",
-      "publer_post_id": "6a60475de6d05c066be426ee",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2133,11 +2183,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60475de6d05c066be426ee",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v05:tiktok",
-      "publer_post_id": "6a60475de6d05c066be426ec",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2174,11 +2226,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60475de6d05c066be426ec",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v06:instagram",
-      "publer_post_id": "6a6047aee6d05c066be4271d",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2217,11 +2271,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a6047aee6d05c066be4271d",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v06:tiktok",
-      "publer_post_id": "6a6047aee6d05c066be4271b",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2260,11 +2316,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a6047aee6d05c066be4271b",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v09:instagram",
-      "publer_post_id": "6a6048035c5153cca06e9920",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2303,11 +2361,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a6048035c5153cca06e9920",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v09:tiktok",
-      "publer_post_id": "6a6048035c5153cca06e991e",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2346,11 +2406,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a6048035c5153cca06e991e",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v10:instagram",
-      "publer_post_id": "6a604864a6b5db1e658a53d5",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2389,11 +2451,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a604864a6b5db1e658a53d5",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-22-v10:tiktok",
-      "publer_post_id": "6a604864a6b5db1e658a53d3",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2432,11 +2496,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a604864a6b5db1e658a53d3",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:hermes-nous-cutover-validation-20260722-154854-v02:instagram",
-      "publer_post_id": "6a60e74cac667dce0c7dd839",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2475,11 +2541,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60e74cac667dce0c7dd839",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:hermes-nous-cutover-validation-20260722-154854-v02:tiktok",
-      "publer_post_id": "6a60e74cac667dce0c7dd837",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2518,11 +2586,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60e74cac667dce0c7dd837",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:hermes-nous-showcase-1-v01:instagram",
-      "publer_post_id": "6a60f0b6c6b23639e9f46b60",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2563,11 +2633,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60f0b6c6b23639e9f46b60",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:hermes-nous-showcase-1-v01:tiktok",
-      "publer_post_id": "6a60f0b6c6b23639e9f46b5e",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2608,11 +2680,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a60f0b6c6b23639e9f46b5e",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v01:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2654,11 +2728,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v01:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2700,11 +2775,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v02:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2746,11 +2822,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v02:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2792,11 +2869,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v04:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2838,11 +2916,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v04:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2884,11 +2963,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v05:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -2930,11 +3010,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v05:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -2976,11 +3057,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v08:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3022,11 +3104,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v08:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3068,11 +3151,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v09:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3114,11 +3198,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v09:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3160,11 +3245,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v10:instagram",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3206,11 +3292,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-24-v10:tiktok",
-      "publer_post_id": null,
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3252,11 +3339,12 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v10:instagram",
-      "publer_post_id": "6a64c54eaedaa9f1124bbac2",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3298,11 +3386,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64c54eaedaa9f1124bbac2",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v10:tiktok",
-      "publer_post_id": "6a64c59ea1285d0b0663fa19",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3344,11 +3434,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64c59ea1285d0b0663fa19",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v01:instagram",
-      "publer_post_id": "6a64da0fa1285d0b06640a16",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3390,11 +3482,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da0fa1285d0b06640a16",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v01:tiktok",
-      "publer_post_id": "6a64da1ba1285d0b06640a21",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3436,11 +3530,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da1ba1285d0b06640a21",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v02:instagram",
-      "publer_post_id": "6a64da27a1285d0b06640a2f",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3482,11 +3578,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da27a1285d0b06640a2f",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v02:tiktok",
-      "publer_post_id": "6a64da30aedaa9f1124bd15a",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3528,11 +3626,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da30aedaa9f1124bd15a",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v03:instagram",
-      "publer_post_id": "6a64da3ba1285d0b06640a3d",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3574,11 +3674,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da3ba1285d0b06640a3d",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v03:tiktok",
-      "publer_post_id": "6a64da46a1285d0b06640a48",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3620,11 +3722,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da46a1285d0b06640a48",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v04:instagram",
-      "publer_post_id": "6a64da52cc98bcb68c2820a2",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3666,11 +3770,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da52cc98bcb68c2820a2",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v04:tiktok",
-      "publer_post_id": "6a64da5daedaa9f1124bd1a0",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3712,11 +3818,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da5daedaa9f1124bd1a0",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v05:instagram",
-      "publer_post_id": "6a64da69aedaa9f1124bd1ab",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3758,11 +3866,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da69aedaa9f1124bd1ab",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v05:tiktok",
-      "publer_post_id": "6a64da74a1285d0b06640a73",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3804,11 +3914,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da74a1285d0b06640a73",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v06:instagram",
-      "publer_post_id": "6a64da80a1285d0b06640a7c",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3850,11 +3962,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da80a1285d0b06640a7c",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-25-v06:tiktok",
-      "publer_post_id": "6a64da89aedaa9f1124bd1e1",
       "platform_post_id": null,
       "platform": "tiktok",
       "account_id": "6a5fc5451bee22495517bcc5",
@@ -3896,11 +4010,13 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": null,
+      "legacy_publer_post_id": "6a64da89aedaa9f1124bd1e1",
+      "migration_note": "Publer-era record: its Publer post id no longer resolves (Publer retired) and it never reached the Metricool board. Kept for its A/B variant history; it carries no metrics and cannot be re-joined. See legacy_publer_post_id."
     },
     {
       "_hermes_key": "hermes:2026-07-28-v01:instagram",
-      "publer_post_id": "8357829085189587553",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3942,11 +4058,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "8357829085189587553"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v02:instagram",
-      "publer_post_id": "-8392679256942752031",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -3988,11 +4104,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "-8392679256942752031"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v03:instagram",
-      "publer_post_id": "2016202365023570821",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4034,11 +4150,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "2016202365023570821"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v04:instagram",
-      "publer_post_id": "967581038278165859",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4080,11 +4196,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "967581038278165859"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v05:instagram",
-      "publer_post_id": "1641657021386605238",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4126,11 +4242,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "1641657021386605238"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v06:instagram",
-      "publer_post_id": "8259645875429329828",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4172,11 +4288,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "8259645875429329828"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v07:instagram",
-      "publer_post_id": "7157047660485296936",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4218,11 +4334,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "7157047660485296936"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v10:instagram",
-      "publer_post_id": "8743550476888720500",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4264,11 +4380,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "8743550476888720500"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v11:instagram",
-      "publer_post_id": "2972467709713270339",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4310,11 +4426,11 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "2972467709713270339"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v12:instagram",
-      "publer_post_id": "-6297496666514044627",
       "platform_post_id": null,
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
@@ -4356,7 +4472,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      "metricool_uuid": "-6297496666514044627"
     }
   ],
   "variant_families": {
@@ -4478,14 +4595,14 @@
       "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet).",
       "scheduled": 2,
       "scheduled_note": "2 post(s) scheduled via schedule-variants.ts (video-1, both platforms) as of 2026-07-21; auto-publish at the set time (no metrics yet).",
-      "n_posts": 8,
+      "n_posts": 11,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "median_views": null,
       "median_reach": null
     },
     "hook": {
-      "n_posts": 2,
+      "n_posts": 3,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4509,7 +4626,7 @@
       "median_reach": null
     },
     "category-mix": {
-      "n_posts": 4,
+      "n_posts": 5,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4517,7 +4634,7 @@
       "median_reach": null
     },
     "tempo": {
-      "n_posts": 4,
+      "n_posts": 5,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4525,7 +4642,7 @@
       "median_reach": null
     },
     "narration": {
-      "n_posts": 10,
+      "n_posts": 13,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4541,7 +4658,7 @@
       "median_reach": null
     },
     "ending": {
-      "n_posts": 2,
+      "n_posts": 3,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -4560,7 +4677,7 @@
   "aggregate_cuts": {
     "by_platform": {
       "instagram": {
-        "n_posts": 36,
+        "n_posts": 46,
         "n_with_metrics": 6,
         "median_eng_rate": 2.17,
         "avg_reach": 124,
@@ -4610,7 +4727,7 @@
         "median_reach": null
       },
       "quant-only": {
-        "n_posts": 4,
+        "n_posts": 5,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4642,7 +4759,7 @@
         "median_reach": null
       },
       "no-question-vo": {
-        "n_posts": 2,
+        "n_posts": 3,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4650,7 +4767,7 @@
         "median_reach": null
       },
       "no-narration": {
-        "n_posts": 4,
+        "n_posts": 5,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4666,7 +4783,7 @@
         "median_reach": null
       },
       "no-options-vo": {
-        "n_posts": 2,
+        "n_posts": 3,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4690,7 +4807,7 @@
         "median_reach": null
       },
       "mascot-absent": {
-        "n_posts": 4,
+        "n_posts": 6,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4698,7 +4815,7 @@
         "median_reach": null
       },
       "mascot-standard": {
-        "n_posts": 2,
+        "n_posts": 3,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -4707,6 +4824,30 @@
       },
       "tempo-fast": {
         "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "hook-challenge": {
+        "n_posts": 1,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "no-answer": {
+        "n_posts": 1,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null
+      },
+      "tempo-slow": {
+        "n_posts": 1,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,

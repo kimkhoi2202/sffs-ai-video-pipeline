@@ -12,7 +12,7 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats, BankCoverage, DraftsView, DraftVideo, ScheduledView, ReplicationView } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView } from "./data.ts";
 import { summarizeExperiment } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
@@ -45,9 +45,9 @@ function videoCard(v: VideoPlan): string {
     badge(g.copy?.pass, "copy"),
     badge(g.render?.pass, "render"),
   ].join(" ");
-  // Publer exposes no stable/public per-post URL, so show ids as PLAIN TEXT — not
-  // a dead #/scheduler/posts deep-link (consistent with the drafts panel).
-  const posts = (v.publer?.post_ids || []).map((id) => esc(id)).join(", ");
+  // Metricool exposes no stable per-post URL for an unpublished post, so show the
+  // planner uuids as PLAIN TEXT rather than a dead deep-link.
+  const posts = (v.metricool?.uuids || []).map((id) => esc(id)).join(", ");
   const media = v.media_url
     ? `<a class="media" href="${esc(v.media_url)}" target="_blank" rel="noopener">▶ preview rendered mp4 (presigned)</a>`
     : "";
@@ -68,7 +68,7 @@ function videoCard(v: VideoPlan): string {
       <div class="cap"><b>caption:</b> ${esc(v.caption)}</div>
       <div class="cap"><b>hashtags:</b> set ${esc(v.hashtag_set)}</div>
     </details>
-    <div class="vid-f">${media} ${posts ? `<span class="pub">publer: ${posts}</span>` : ""}</div>
+    <div class="vid-f">${media} ${posts ? `<span class="pub">metricool: ${posts}</span>` : ""}</div>
   </div>`;
 }
 
@@ -165,7 +165,7 @@ function bankCoverageCard(cov: BankCoverage): string {
   </div>
   ${cov.byType.length ? `<div class="tblwrap"><table class="tbl"><thead><tr><th>question type</th><th>usable</th><th>fresh</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<p class="muted">No question-bank entries found.</p>`}
   <p class="muted" style="margin-top:8px">Runway = fresh usable questions ÷ est. burn (${n(cov.perDay)}/day). The near-dup + type-spread guards keep variety; this flags a TYPE running low.</p>
-  <p class="muted" style="margin-top:6px"><b>Used-set (honest):</b> reconciled from the usage ledger + the loop's dedup set + every recovered run-state video's exact question sigs (self-heals as new cycles record sigs). <b>Residual uncertainty:</b> the prior usage ledger was partly lost on the box rebuild, and Publer stores captions/metrics — never our internal question sigs — so a handful of pre-recovery posts can't be sig-matched. "Used" is therefore a floor and fresh/runway an upper bound (bounded well under ±10% of the ${n(cov.usable)}-question usable pool).</p>`;
+  <p class="muted" style="margin-top:6px"><b>Used-set (honest):</b> reconciled from the usage ledger + the loop's dedup set + every recovered run-state video's exact question sigs (self-heals as new cycles record sigs). <b>Residual uncertainty:</b> the prior usage ledger was partly lost on the box rebuild, and the scheduler stores captions/metrics — never our internal question sigs — so a handful of pre-recovery posts can't be sig-matched. "Used" is therefore a floor and fresh/runway an upper bound (bounded well under ±10% of the ${n(cov.usable)}-question usable pool).</p>`;
 }
 
 // ── per-ARM A/B leaderboard (P2) ──────────────────────────────────────────────
@@ -221,7 +221,7 @@ function publishedMap(db: any): string {
       </tr>`;
     })
     .join("");
-  return `<p class="muted">${pub.length} published/reconciled post(s). Native id + permalink + posted_at are back-filled by <code>sffs_reconcile</code> (matching publer_post_id → the published post).</p>
+  return `<p class="muted">${pub.length} published/reconciled post(s). Native id + permalink + posted_at are back-filled by <code>reconcile</code> (matching metricool_uuid → the published post).</p>
     <div class="tblwrap"><table class="tbl"><thead><tr><th>platform</th><th>posted at</th><th>permalink</th><th>arm</th><th>native id</th><th>eng</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
@@ -569,22 +569,12 @@ function supervisorPanel(s: any): string {
   return `<div class="health" style="margin-bottom:10px">${chip}<span class="hpill"><b>cycle</b>${esc(String(s.cycle ?? 0))}</span>${lastPills}</div>${lastCycle}${bounded}`;
 }
 
-// ── DRAFTS awaiting review (READ-ONLY) ───────────────────────────────────────
-// Mirrors the sffs-drafts-to-review board: one card per video (IG + TikTok pair)
-// with thumbnail, hook, A/B variant (dimension + arm), question types, and the
-// Publer draft deep-link for each platform. Look-only: the ONLY interactive
-// elements are <a> links that open Publer in a new tab — no publish/schedule
-// buttons (the human publishes from Publer).
+// ── Shared card helpers for the SCHEDULED / approval panels (READ-ONLY) ──────
 function platformLabel(p: string): string {
   const s = String(p || "").toLowerCase();
   if (s === "instagram" || s === "ig" || s === "ig_business") return "Instagram";
   if (s === "tiktok") return "TikTok";
   return p ? esc(p) : "link";
-}
-
-/** Same-origin READ-ONLY proxy URL for a draft/scheduled PUBLIC Publer CDN asset. */
-function draftMediaSrc(videoKey: string, kind: "video" | "thumb"): string {
-  return `/api/draft-media?v=${encodeURIComponent(videoKey)}&kind=${kind}`;
 }
 
 /**
@@ -604,27 +594,32 @@ function scheduleChip(cst?: string | null): string {
 }
 
 /**
- * Shared inline preview used by BOTH the drafts and scheduled panels. Renders the
- * FULL 9:16 frame (CSS object-fit: contain — letterbox, never crop) inside a fixed
- * 9:16 box, enhanced client-side by Plyr (vendored locally). Media is streamed
- * same-origin via the read-only /api/draft-media proxy — never a raw CDN/S3 url.
+ * Inline preview for the scheduled/approval cards. Renders the FULL 9:16 frame (CSS
+ * object-fit: contain — letterbox, never crop) inside a fixed 9:16 box, enhanced
+ * client-side by Plyr (vendored locally).
+ *
+ * The media points DIRECTLY at static.metricool.com. There used to be a same-origin
+ * /api/draft-media proxy here purely because Publer's CDN was Referer-gated and 403'd
+ * off-origin; Metricool's is not (verified: HTTP 200 with no Referer, a hostile
+ * Referer, and a foreign Origin), so the proxy was removed rather than left as a
+ * standing open-proxy surface. `data.ts` still allowlists every url to that exact
+ * host with no query string, so an S3 presigned url can never reach this page.
  */
-function videoPreview(videoKey: string, thumbnail: string | null, mediaUrl: string | null): string {
-  // static.metricool.com is genuinely public — verified live, it serves the mp4 with
-  // no Referer and even with a hostile one — so Metricool media is played DIRECTLY.
-  // Publer's CDN is hotlink-protected and still needs the same-origin proxy.
-  const direct = (u: string | null): string | null =>
-    typeof u === "string" && u.startsWith("https://static.metricool.com/") ? u : null;
-  const src = direct(mediaUrl) || (mediaUrl ? draftMediaSrc(videoKey, "video") : null);
-  const posterSrc = direct(thumbnail) || (thumbnail ? draftMediaSrc(videoKey, "thumb") : null);
+export function cdnDirect(u: unknown): string | null {
+  return typeof u === "string" && u.startsWith("https://static.metricool.com/") ? u : null;
+}
+
+function videoPreview(_videoKey: string, thumbnail: string | null, mediaUrl: string | null): string {
+  const src = cdnDirect(mediaUrl);
+  const posterSrc = cdnDirect(thumbnail);
   const posterAttr = posterSrc ? ` poster="${esc(posterSrc)}"` : "";
   if (src) {
     return `<video class="dvid" controls preload="metadata" playsinline${posterAttr}>
         <source src="${esc(src)}" type="video/mp4"/>
       </video>`;
   }
-  if (thumbnail) {
-    return `<img class="dthumb-img" loading="lazy" src="${esc(draftMediaSrc(videoKey, "thumb"))}" alt="preview"/>`;
+  if (posterSrc) {
+    return `<img class="dthumb-img" loading="lazy" src="${esc(posterSrc)}" alt="preview"/>`;
   }
   return `<div class="dthumb-none">no preview</div>`;
 }
@@ -644,10 +639,14 @@ const ENDING_HUMAN: Record<string, string> = {
   "full-reveal": "reveals every answer",
   "no-answer": "no answers revealed (comment for answer)",
 };
+// mascot-prominent is the CURRENT DEFAULT (defaults.ts: mascot: "mascot-prominent"), so
+// both other arms have to read as departures FROM it. "standard" is the trap: it is the
+// historical look, not today's baseline, and labelling it "standard mascot" next to a
+// "(default: ...)" clause would tell the user the opposite of the truth while they approve.
 const MASCOT_HUMAN: Record<string, string> = {
-  "mascot-standard": "standard mascot",
-  "mascot-absent": "no mascot (brain hidden)",
-  "mascot-prominent": "bigger mascot",
+  "mascot-standard": "smaller mascot, its original size",
+  "mascot-absent": "no mascot on screen at all",
+  "mascot-prominent": "enlarged mascot",
 };
 /** Non-promotable single-axis dimensions: {category, what THIS video does, the default}. */
 const OTHER_HUMAN: Record<string, { cat: string; change: string; def: string }> = {
@@ -702,73 +701,6 @@ function abLabelHtml(dimension: string, arm: string, defaults?: AbDefaults): str
   const L = abTestLabel(dimension, arm, defaults);
   const cls = L.kind === "control" ? "ab-control" : L.kind === "unknown" ? "ab-unknown" : "ab-test";
   return `<div class="arm"><span class="abtag ${cls}">${esc(L.tag)}</span> ${esc(L.text)}</div>`;
-}
-
-function draftCard(v: DraftVideo, defaults?: AbDefaults): string {
-  // Data-provenance (v.variant_source: "run" | "ab-database" | "inferred") is kept
-  // in the DATA but no longer surfaced as a noisy "inferred" badge: while the exact
-  // draft→variant mapping is rebuilt post-recovery, every draft reads "inferred"
-  // (internal noise). We show ONLY a subtle, positive "from <source>" chip when a
-  // real record actually matched — it self-heals as new posts carry exact mapping.
-  const srcChip = v.variant_source !== "inferred"
-    ? `<span class="chip c-ok" title="Correlated from ${esc(v.variant_source)} by publer_post_id">from ${esc(v.variant_source)}</span>`
-    : "";
-  // Inline preview (full 9:16 frame + Plyr). The PUBLIC Publer CDN mp4 is
-  // Referer-gated (403 cross-origin), so it is streamed same-origin via the
-  // read-only /api/draft-media proxy; the poster is the draft's thumbnail (also
-  // proxied). Never an S3 presigned url.
-  const preview = videoPreview(v.video_key, v.thumbnail, v.media_url);
-  const qtypes = v.question_types.length
-    ? v.question_types.map((t) => `<span class="b b-na">${esc(t)}</span>`).join(" ")
-    : `<span class="muted">question types: —</span>`;
-  // Publer exposes no public/stable per-draft URL, so we label the target
-  // platform(s) as plain text (no dead deep-links). The preview above is the
-  // review surface; publishing stays inside Publer.
-  const platforms = v.drafts.length
-    ? `<span class="muted">drafted to</span> ${v.drafts.map((d) => `<span class="dplat">${platformLabel(d.platform)}</span>`).join(" ")}`
-    : `<span class="muted">no platform drafts</span>`;
-  return `<div class="draftcard">
-    <div class="dthumb">${preview}</div>
-    <div class="dbody">
-      ${scheduleChip(null)}
-      <div class="vid-h">
-        ${abLabelHtml(v.dimension, v.arm, defaults)}
-        ${srcChip}
-      </div>
-      <div class="rationale">${esc(v.hook)}</div>
-      <div class="gates">${qtypes}</div>
-      <div class="draftplatforms">${platforms}</div>
-      ${v.run_id ? `<div class="cap muted">run ${esc(v.run_id)}</div>` : ""}
-    </div>
-  </div>`;
-}
-
-function draftsPanel(view: DraftsView | undefined, defaults?: AbDefaults): string {
-  if (!view) {
-    return `<p class="muted">Older Publer drafts are loaded live (read-only). None loaded yet.</p>`;
-  }
-  if (!view.ok && !view.videos.length) {
-    // Publer is RETIRED: it now answers HTTP 403 on every content endpoint, which is
-    // what moved posting to Metricool in the first place. Surfacing that raw error
-    // made a publicly visible panel read as "the system is broken" when the truth is
-    // "this panel's data source no longer exists". Say the true thing instead.
-    const gone = /403|upgrade to business|not authorized/i.test(String(view.error || ""));
-    if (gone) {
-      return `<p class="muted"><b>Publer is retired.</b> Its API returns 403 on every content endpoint, which is why posting moved to Metricool. This panel only ever showed leftover <em>pre-autonomy</em> Publer drafts; there is nothing left to read and nothing is wrong. The live schedule is in the SCHEDULED panel above.</p>`;
-    }
-    return `<p class="muted">Couldn't load older drafts right now${view.error ? `: ${esc(view.error)}` : ""}. This panel retries on the next refresh.</p>`;
-  }
-  if (!view.videos.length) {
-    return `<p class="muted"><b>No leftover drafts — clean.</b> Autonomous Hermes now schedules each new video directly on Publer (see the SCHEDULED panel above), so nothing sits here "awaiting review." This panel only lingers to surface any <em>pre-autonomy</em> drafts left on the account; there are none right now.</p>`;
-  }
-  const head = `<div class="health" style="margin-bottom:12px">
-    <span class="hpill"><b>older draft videos</b>${esc(view.count_videos)}</span>
-    <span class="hpill"><b>publer drafts</b>${esc(view.count_drafts)} (IG + TikTok)</span>
-    <span class="hpill"><b>source</b>${esc(view.source)}</span>
-    <span class="hpill"><b>as of</b>${esc((view.as_of || "").slice(11, 19))}Z</span>
-  </div>
-  <p class="muted" style="margin-bottom:12px">Autonomous Hermes schedules new videos <b>directly</b> on Publer (SCHEDULED panel above) — nothing here "awaits review." These are older / pre-autonomy Publer drafts still on the account; each card is one video with an inline preview (streamed read-only from Publer's CDN via this dashboard) and its target platform(s). READ-ONLY — preview only; nothing is published or scheduled from here.</p>`;
-  return `${head}<div class="draftgrid">${view.videos.map((v) => draftCard(v, defaults)).join("")}</div>`;
 }
 
 // ── GOAL-PROGRESS (Hermes's 7-day mandate) — front-and-center ─────────────────
@@ -874,9 +806,9 @@ function goalPanel(gp: GoalProgress): string {
   return `${mandate}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
 }
 
-// ── SCHEDULED posts panel (post-KICKOFF) — mirrored LIVE from Publer ──────────
-// Read-only table of the posts the loop has auto-scheduled on Publer + their times
-// (CST). Pulled live from Publer via the read-only bridge, so this and the Publer
+// ── SCHEDULED posts panel (post-KICKOFF) — mirrored LIVE from Metricool ───────
+// Read-only table of the posts the loop has auto-scheduled + their times (CST).
+// Pulled live from Metricool via the read-only bridge, so this and the Metricool
 // calendar show the SAME posts at the SAME times. No publish/schedule control here.
 /** One scheduled-post card: FULL 9:16 preview (contain + Plyr) + its scheduled time. */
 /** The opening arm under test, as a chip. This is the week's experiment, so it gets
@@ -973,7 +905,7 @@ function experimentPanel(view?: ScheduledView): string {
  * The approval queue. Deliberately loud: if the user does not notice a queue, nothing
  * ships, so an empty queue is a quiet line and a non-empty one is a banner.
  */
-function approvalPanel(view?: ScheduledView): string {
+function approvalPanel(view?: ScheduledView, defaults?: AbDefaults): string {
   const waiting = (view?.posts ?? []).filter((p) => p.awaiting_approval);
   if (!waiting.length) {
     return `<section class="card"><h2>APPROVAL QUEUE</h2>
@@ -981,46 +913,97 @@ function approvalPanel(view?: ScheduledView): string {
       drafts and cannot publish until approved. The reels already on the calendar were reviewed before
       scheduling and are exempt.</p></section>`;
   }
-  const rows = waiting.map((p) => `
-    <div class="apr-row" data-uuid="${esc(String(p.post_id))}">
-      <div class="apr-meta">
-        <b>${esc(String(p.video_id ?? p.post_id))}</b>
-        <span class="muted">${esc(String(p.scheduled_cst ?? p.scheduled_at ?? ""))}</span>
-        ${p.opening ? `<span class="chip">${esc(String(p.opening))}</span>` : ""}
+  const rows = waiting.map((p) => {
+    // Both urls go through the render-side CDN choke point, so an S3 presigned url can
+    // never reach the DOM even if the data layer's allowlist ever regressed.
+    const src = cdnDirect(p.media_url);
+    const poster = cdnDirect(p.thumbnail);
+    const name = String(p.video_id || p.post_id || "");
+    const when = String(p.scheduled_cst || p.scheduled_at || "");
+    const posterImg = poster
+      ? `<img class="apr-poster" loading="lazy" src="${esc(poster)}" alt="cover frame"/>`
+      : `<span class="apr-noposter">no cover</span>`;
+    // Resting state is the poster, not ten autoplaying players. Click loads the real
+    // 9:16 Plyr instance in place — same vendored player the scheduled cards use.
+    const media = src
+      ? `<button type="button" class="apr-play" aria-label="Play this video">${posterImg}<span class="apr-playicon" aria-hidden="true">&#9654;</span></button>`
+      : posterImg;
+    return `
+    <div class="apr-row" data-uuid="${esc(String(p.post_id))}" data-src="${esc(src || "")}" data-poster="${esc(poster || "")}">
+      <div class="apr-media">${media}</div>
+      <div class="apr-info">
+        <div class="apr-top"><b class="apr-vid">${esc(name)}</b><span class="apr-when">${esc(when)}</span><span class="apr-plat">${platformLabel(p.platform)}</span></div>
+        ${abLabelHtml(p.dimension, p.arm, defaults)}
+        <div class="apr-hook">${esc(String(p.hook || ""))}</div>
       </div>
       <div class="apr-act">
         <button class="apr-yes" data-act="approve">Approve</button>
         <button class="apr-no" data-act="reject">Reject</button>
         <span class="apr-msg"></span>
       </div>
-    </div>`).join("");
+    </div>`;
+  }).join("");
   return `<section class="card apr-card"><h2>APPROVAL QUEUE — ${waiting.length} AWAITING</h2>
     <p class="muted">These are loop-generated drafts. They <b>cannot publish</b> until approved:
     they are held as Metricool drafts, so nothing goes out even if this box dies. Rejecting soft-deletes
-    (restorable). Anything still unapproved when its slot arrives slides forward automatically.</p>
-    <p><label>Password <input type="password" id="apr-pass" autocomplete="current-password"></label></p>
+    (restorable). Anything still unapproved when its slot arrives slides forward automatically.
+    <b>Tap a cover to play it</b> full-frame (9:16, uncropped) before you decide.</p>
     ${rows}
     <script>
     (function () {
-      document.querySelectorAll(".apr-row button").forEach(function (b) {
+      var CDN = "https://static.metricool.com/";
+      /* Load the real player on demand. Ten autoplaying videos on one page would be
+         unusable, so the poster is the resting state and the click pays for the player. */
+      function openPlayer(row) {
+        if (!row) return;
+        var box = row.querySelector(".apr-media");
+        if (!box || box.getAttribute("data-loaded") === "1") return;
+        var src = row.getAttribute("data-src") || "";
+        if (src.indexOf(CDN) !== 0) return;
+        box.setAttribute("data-loaded", "1");
+        box.classList.add("is-open");
+        var v = document.createElement("video");
+        v.className = "dvid";
+        v.controls = true; v.playsInline = true; v.preload = "metadata";
+        var poster = row.getAttribute("data-poster") || "";
+        if (poster.indexOf(CDN) === 0) v.poster = poster;
+        var s = document.createElement("source");
+        s.src = src; s.type = "video/mp4";
+        v.appendChild(s);
+        box.textContent = "";
+        box.appendChild(v);
+        try {
+          if (typeof Plyr !== "undefined") {
+            new Plyr(v, { iconUrl: "/static/plyr.svg", ratio: "9:16", controls: ["play-large","play","progress","current-time","mute","volume","fullscreen"] });
+          }
+        } catch (e) {}
+        var go = v.play();
+        if (go && go.catch) go.catch(function () {});
+      }
+      document.querySelectorAll(".apr-row .apr-play").forEach(function (b) {
+        b.addEventListener("click", function () { openPlayer(b.closest(".apr-row")); });
+      });
+      /* No credential is sent: approve/reject are open by the user's explicit decision.
+         The bound that matters is server-side — two verbs, a numeric uuid and nothing
+         else, each re-reading the post and refusing anything that is not already an
+         unapproved loop draft. */
+      document.querySelectorAll(".apr-row button[data-act]").forEach(function (b) {
         b.addEventListener("click", async function () {
           var row = b.closest(".apr-row");
           var msg = row.querySelector(".apr-msg");
-          var pass = (document.getElementById("apr-pass") || {}).value || "";
-          if (!pass) { msg.textContent = "enter the password first"; return; }
           b.disabled = true; msg.textContent = "working...";
           try {
             var opts = {
               method: "POST",
               headers: { "content-type": "application/json" },
-              body: JSON.stringify({ uuid: row.dataset.uuid, password: pass }),
+              body: JSON.stringify({ uuid: row.dataset.uuid }),
             };
             var r = b.dataset.act === "approve"
               ? await fetch("/api/approve", opts)
               : await fetch("/api/reject", opts);
             var j = await r.json();
             msg.textContent = j.reason || (j.ok ? "done" : "failed");
-            if (j.ok) { row.style.opacity = 0.45; row.querySelectorAll("button").forEach(function (x) { x.disabled = true; }); }
+            if (j.ok) { row.style.opacity = 0.45; row.querySelectorAll("button[data-act]").forEach(function (x) { x.disabled = true; }); }
             else { b.disabled = false; }
           } catch (e) { msg.textContent = "request failed"; b.disabled = false; }
         });
@@ -1077,9 +1060,7 @@ export interface PageData {
   factory?: any;
   /** always-on continuous supervisor status (optional; degrades to "no supervisor status"). */
   supervisor?: any;
-  /** pending Publer drafts awaiting human review (optional; degrades to empty). */
-  drafts?: DraftsView;
-  /** SCHEDULED Publer posts post-kickoff, mirrored live from Publer (optional). */
+  /** SCHEDULED posts post-kickoff, mirrored live from Metricool (optional). */
   scheduled?: ScheduledView;
   /** GOAL-PROGRESS toward Hermes's 7-day mandate (optional; degrades to pending/empty). */
   goal?: GoalProgress;
@@ -1103,8 +1084,8 @@ export function page(opts: PageData): string {
   const cur = selected ? runs.find((r) => r.run_id === selected) || opts.latest : opts.latest;
   const s = cur?.summary || { planned: 0, drafted: 0, rejected: 0, failed: 0 };
   const drafts = (cur?.videos || []).filter((v) => v.status === "drafted");
-  const draftTotal = drafts.reduce((a, v) => a + (v.publer?.post_ids?.length || 0), 0);
-  // Live cumulative count of posts Publer currently has SCHEDULED (not this cycle).
+  const draftTotal = drafts.reduce((a, v) => a + (v.metricool?.uuids?.length || 0), 0);
+  // Live cumulative count of posts Metricool currently has SCHEDULED (not this cycle).
   const scheduledCount = opts.scheduled?.ok ? opts.scheduled.count : (opts.scheduled ? opts.scheduled.count : "—");
   const runOpts = runs
     .map((r) => `<option value="${esc(r.run_id)}" ${r.run_id === cur?.run_id ? "selected" : ""}>${esc(r.run_id)} · ${esc(r.status)} · ${r.summary?.drafted ?? 0} drafts</option>`)
@@ -1254,6 +1235,23 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .apr-yes{background:#8ce99a}.apr-no{background:#ffa8a8}
 .apr-yes:disabled,.apr-no:disabled{opacity:.5;cursor:default}
 .apr-msg{font-size:12px;opacity:.85}
+.apr-row{align-items:flex-start}
+.apr-media{flex:0 0 auto;width:92px;background:#000;border:2px solid var(--ink);border-radius:10px;overflow:hidden;aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;position:relative}
+.apr-media.is-open{width:190px}
+.apr-play{all:unset;cursor:pointer;display:block;width:100%;height:100%;position:relative;box-sizing:border-box}
+.apr-poster{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.apr-noposter{color:#bbb;font-size:10px;font-weight:700;text-align:center;padding:4px}
+.apr-playicon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:rgba(17,17,17,.72);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.apr-info{flex:1 1 240px;min-width:0}
+.apr-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:3px}
+.apr-vid{font-size:14px}
+.apr-when{font-variant-numeric:tabular-nums;font-weight:700}
+.apr-plat{font-size:11px;font-weight:800;background:#eee;border-radius:6px;padding:1px 6px}
+.apr-hook{color:#333;font-size:13px;margin-top:3px;overflow-wrap:anywhere}
+.apr-media .plyr{width:100%;height:100%;--plyr-color-main:#fd7962}
+.apr-media .plyr__video-wrapper{height:100%;background:#000}
+.apr-media .plyr video{width:100%;height:100%;object-fit:contain;background:#000}
+@media(max-width:560px){.apr-media{width:74px}.apr-media.is-open{width:150px}}
 </style></head>
 <body>
 <header>
@@ -1271,7 +1269,7 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
     <div class="grid">
       <div class="kpi"><div class="v">${s.planned}</div><div class="k">planned (this cycle)</div></div>
       <div class="kpi"><div class="v">${s.drafted}</div><div class="k">videos drafted (this cycle)</div></div>
-      <div class="kpi"><div class="v">${draftTotal}</div><div class="k">publer drafts (this cycle)</div></div>
+      <div class="kpi"><div class="v">${draftTotal}</div><div class="k">metricool drafts (this cycle)</div></div>
       <div class="kpi"><div class="v">${s.rejected}</div><div class="k">rejected · gates (this cycle)</div></div>
     </div>
   </div>
@@ -1282,7 +1280,6 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
       <div class="kpi"><div class="v">${scheduledCount}</div><div class="k">on the calendar (live · metricool)</div></div>
       <div class="kpi"><div class="v">${bank.fresh}</div><div class="k">fresh questions (bank)</div></div>
       <div class="kpi"><div class="v">${cov.runwayDays == null ? "—" : cov.runwayDays}</div><div class="k">days runway (bank est.)</div></div>
-      <div class="kpi"><div class="v">${opts.drafts ? opts.drafts.count_videos : "—"}</div><div class="k">older drafts (pre-autonomy)</div></div>
     </div>
   </div>
 
@@ -1293,12 +1290,7 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 
   <div class="card">
     <h2><span class="pin">SCHEDULED</span> Posts &amp; times <span class="pin" style="background:var(--mint)">LIVE FROM METRICOOL</span></h2>
-    ${awaitingBanner}<span id="approval"></span>${approvalPanel(opts.scheduled)}${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
-  </div>
-
-  <div class="card">
-    <h2><span class="pin">DRAFTS</span> Older drafts (pre-autonomy)</h2>
-    ${draftsPanel(opts.drafts, opts.defaults?.defaults)}
+    ${awaitingBanner}<span id="approval"></span>${approvalPanel(opts.scheduled, opts.defaults?.defaults)}${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
   </div>
 
   <div class="card">

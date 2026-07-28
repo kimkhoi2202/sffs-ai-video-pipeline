@@ -56,7 +56,9 @@ export interface VideoPlan {
   reject_reason?: string;
   render_path?: string;
   media_url?: string;
-  publer?: { job_id?: string; media_id?: string; post_ids?: string[]; permalinks?: string[] };
+  metricool?: { media_id?: string; uuids?: string[]; permalinks?: string[] };
+  /** Publer-era run state, preserved verbatim for provenance. Never written again. */
+  legacy_publer?: { job_id?: string; media_id?: string; post_ids?: string[]; permalinks?: string[] };
   errors?: string[];
 }
 

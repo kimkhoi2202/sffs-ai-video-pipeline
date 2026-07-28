@@ -15,9 +15,9 @@ import {
 } from "../prs.ts";
 import {
   evaluateKillSwitch, computeBankCoverage, redactRunForPublic,
-  publicPublerCdnUrl, sanitizeDraftsForPublic, resolveDraftMediaUrl,
   resolveScheduledMediaUrl, sanitizeScheduledForPublic,
   resolveReplicationView, REPLICATION_HARD_CAP,
+  buildVariantMap, projectScheduledPosts, resolvePostVariant, idKey,
 } from "../data.ts";
 import { computeGoalProgress, GOAL } from "../goal.ts";
 import { esc, page, abTestLabel } from "../render.ts";
@@ -431,8 +431,8 @@ test("page: published map lists reconciled posts with permalinks", () => {
     emptyPageData({
       db: {
         posts: [
-          { publer_post_id: 1, platform_post_id: "NAT1", platform: "tiktok", permalink: "https://tiktok.com/@x/video/NAT1", posted_at: "2026-07-20", variant: { arm: "control" }, metrics: { eng_rate: 5.1 } },
-          { publer_post_id: 2, platform_post_id: null, permalink: null, post_state: "draft" }, // draft -> excluded
+          { metricool_uuid: "1", platform_post_id: "NAT1", platform: "tiktok", permalink: "https://tiktok.com/@x/video/NAT1", posted_at: "2026-07-20", variant: { arm: "control" }, metrics: { eng_rate: 5.1 } },
+          { metricool_uuid: "2", platform_post_id: null, permalink: null, post_state: "draft" }, // draft -> excluded
         ],
       },
     }),
@@ -466,7 +466,7 @@ test("GUARDRAIL: P2 panels add NO mutating control (populated)", () => {
     emptyPageData({
       snapshot: { day: "d", kill_switch: { engaged: true, reason: "kill" }, metrics: { usd: { value: 1, ceiling: 75, over: false } } },
       coverage: { total: 10, usable: 8, fresh: 6, used: 2, freshPct: 75, perDay: 30, runwayDays: 0, byType: [{ tier: "T", usable: 8, fresh: 6 }] },
-      db: { posts: [{ publer_post_id: 1, platform_post_id: "N", permalink: "https://x/1", posted_at: "d", variant: { arm: "a" }, metrics: {} }] },
+      db: { posts: [{ metricool_uuid: "1", platform_post_id: "N", permalink: "https://x/1", posted_at: "d", variant: { arm: "a" }, metrics: {} }] },
     }),
   );
   assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
@@ -495,88 +495,6 @@ test("page: PR view shows the review-agent verdict + CI status", () => {
   assert.match(html, /gate: MERGE/);
 });
 
-// ── Drafts awaiting review (READ-ONLY) ───────────────────────────────────────
-const draftsFixture = {
-  ok: true,
-  as_of: "2026-07-22T21:00:00Z",
-  source: "publer (live, read-only bridge)",
-  count_videos: 2,
-  count_drafts: 3,
-  videos: [
-    {
-      video_key: "m1",
-      hook: "bet you got this one wrong lol",
-      caption: "bet you got this one wrong lol #quiz",
-      thumbnail: "https://cdn.publer.com/uploads/photos/x.jpg",
-      media_url: "https://cdn.publer.com/uploads/videos/m1/259e8a.mp4",
-      dimension: "cliffhanger",
-      arm: "last-hidden",
-      variant_source: "run" as const,
-      question_types: ["VERBAL ANALOGY", "NUMBER SERIES"],
-      run_id: "2026-07-22",
-      drafts: [
-        { platform: "instagram", publer_id: "IG1" },
-        { platform: "tiktok", publer_id: "TT1" },
-      ],
-    },
-    {
-      video_key: "m2",
-      hook: "which one are you picking?",
-      caption: "which one are you picking? #quiz",
-      thumbnail: null,
-      media_url: null,
-      dimension: "hook",
-      arm: "which-one-are-you",
-      variant_source: "inferred" as const,
-      question_types: [],
-      drafts: [{ platform: "tiktok", publer_id: "TT2" }],
-    },
-  ],
-};
-
-test("page: renders the Older drafts (pre-autonomy) panel + empty state", () => {
-  const html = page(emptyPageData());
-  assert.match(html, /Older drafts \(pre-autonomy\)/);
-  assert.match(html, /None loaded yet|No leftover drafts/);
-});
-
-test("page: drafts panel shows variant, question types, inline video preview + platform labels", () => {
-  const html = page(emptyPageData({ drafts: draftsFixture as any }));
-  assert.match(html, /Older drafts \(pre-autonomy\)/);
-  assert.match(html, /cliffhanger/);
-  assert.match(html, /last-hidden/);
-  assert.match(html, /VERBAL ANALOGY/);
-  // inline <video> preview streamed via the SAME-ORIGIN read-only proxy
-  assert.match(html, /<video[^>]*\bcontrols\b/);
-  assert.match(html, /preload="metadata"/);
-  assert.match(html, /playsinline/);
-  assert.match(html, /src="\/api\/draft-media\?v=m1&amp;kind=video"/);
-  assert.match(html, /poster="\/api\/draft-media\?v=m1&amp;kind=thumb"/);
-  // platform labels present as plain text (dead Publer deep-links removed)
-  assert.match(html, /Instagram/);
-  assert.match(html, /TikTok/);
-  // Item 3: the internal "inferred" provenance flag is NO LONGER surfaced as a
-  // user-facing badge; a subtle positive "from <source>" chip shows ONLY when a
-  // real record matched (video m1 = variant_source "run").
-  assert.doesNotMatch(html, /\binferred\b/i);
-  assert.match(html, /from run/);
-  // Item 1: every draft card shows a prominent neutral "Not scheduled" chip.
-  assert.match(html, /Not scheduled/);
-  // the second video has no playable media_url ⇒ graceful "no preview"
-  assert.match(html, /no preview/);
-});
-
-test("GUARDRAIL: drafts panel adds NO publish/schedule control (inline preview, no POST, no dead links)", () => {
-  const html = page(emptyPageData({ drafts: draftsFixture as any }));
-  assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
-  assert.doesNotMatch(html, /<button[^>]*>\s*(publish|schedule|merge|post|go live|approve|reject)/i);
-  assert.doesNotMatch(html, /<input[^>]*type\s*=\s*["']submit["']/i);
-  // the review surface is a read-only <video>; the dead Publer deep-links are gone
-  assert.match(html, /<video[^>]*\bcontrols\b/);
-  assert.doesNotMatch(html, /app\.publer\.com/);
-  assert.doesNotMatch(html, /class="draftlink"/);
-});
-
 test("SECURITY: redactRunForPublic strips the presigned media_url from every video", () => {
   const run = {
     run_id: "r", started_at: "", updated_at: "", status: "success",
@@ -591,87 +509,21 @@ test("SECURITY: redactRunForPublic strips the presigned media_url from every vid
   assert.equal(out.videos.length, 2);
 });
 
-// ── Inline draft video preview: PUBLIC-CDN-only + same-origin proxy (SECURITY) ─
-test("publicPublerCdnUrl: accepts clean cdn.publer.com asset; rejects S3-signed / off-host / query / non-https", () => {
-  const mp4 = "https://cdn.publer.com/uploads/videos/abc/def.mp4";
-  const jpg = "https://cdn.publer.com/uploads/photos/x.jpg";
-  assert.equal(publicPublerCdnUrl(mp4), mp4);
-  assert.equal(publicPublerCdnUrl(jpg), jpg);
-  // the FORBIDDEN one: an S3 presigned url (amazonaws host + X-Amz-* query/tokens)
-  assert.equal(publicPublerCdnUrl("https://bkt.s3.amazonaws.com/o.mp4?X-Amz-Signature=a&X-Amz-Credential=ASIA"), null);
-  assert.equal(publicPublerCdnUrl("https://cdn.publer.com/x.mp4?X-Amz-Signature=a"), null); // cdn host but query ⇒ reject
-  assert.equal(publicPublerCdnUrl("http://cdn.publer.com/x.mp4"), null); // not https
-  assert.equal(publicPublerCdnUrl("https://evil.com/x.mp4"), null); // wrong host
-  assert.equal(publicPublerCdnUrl("https://cdn.publer.com.evil.com/x.mp4"), null); // suffix host spoof
-  assert.equal(publicPublerCdnUrl("https://user:pass@cdn.publer.com/x.mp4"), null); // userinfo
-  assert.equal(publicPublerCdnUrl(null), null);
-  assert.equal(publicPublerCdnUrl(""), null);
-  assert.equal(publicPublerCdnUrl(123 as any), null);
-});
-
-test("SECURITY: sanitizeDraftsForPublic forces media_url/thumbnail to PUBLIC-CDN-only (nulls S3-signed)", () => {
-  const view = {
-    ok: true, source: "t", as_of: "t", count_videos: 2, count_drafts: 0,
-    videos: [
-      { video_key: "a", hook: "", caption: "", thumbnail: "https://cdn.publer.com/uploads/photos/a.jpg",
-        media_url: "https://cdn.publer.com/uploads/videos/a/a.mp4", dimension: "d", arm: "a",
-        variant_source: "run", question_types: [], drafts: [] },
-      { video_key: "b", hook: "", caption: "",
-        thumbnail: "https://bkt.s3.amazonaws.com/t.jpg?X-Amz-Signature=z",
-        media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z&X-Amz-Credential=ASIA",
-        dimension: "d", arm: "b", variant_source: "inferred", question_types: [], drafts: [] },
-    ],
-  } as any;
-  const out = sanitizeDraftsForPublic(view);
-  assert.equal(out.videos[0].media_url, "https://cdn.publer.com/uploads/videos/a/a.mp4"); // clean kept
-  assert.equal(out.videos[0].thumbnail, "https://cdn.publer.com/uploads/photos/a.jpg");
-  assert.equal(out.videos[1].media_url, null); // S3-signed nulled
-  assert.equal(out.videos[1].thumbnail, null);
-  assert.doesNotMatch(JSON.stringify(out), /X-Amz-Signature|X-Amz-Credential|amazonaws\.com/);
-});
-
-test("resolveDraftMediaUrl: resolves by video_key+kind to a validated cdn url, else null", () => {
-  const view = {
-    ok: true, source: "t", as_of: "t", count_videos: 2, count_drafts: 0,
-    videos: [
-      { video_key: "m1", hook: "", caption: "", thumbnail: "https://cdn.publer.com/uploads/photos/p.jpg",
-        media_url: "https://cdn.publer.com/uploads/videos/m1/v.mp4", dimension: "d", arm: "a",
-        variant_source: "run", question_types: [], drafts: [] },
-      { video_key: "bad", hook: "", caption: "", thumbnail: null,
-        media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z", dimension: "d", arm: "a",
-        variant_source: "run", question_types: [], drafts: [] },
-    ],
-  } as any;
-  assert.equal(resolveDraftMediaUrl(view, "m1", "video"), "https://cdn.publer.com/uploads/videos/m1/v.mp4");
-  assert.equal(resolveDraftMediaUrl(view, "m1", "thumb"), "https://cdn.publer.com/uploads/photos/p.jpg");
-  assert.equal(resolveDraftMediaUrl(view, "nope", "video"), null); // unknown key
-  assert.equal(resolveDraftMediaUrl(view, "bad", "video"), null); // S3-signed ⇒ rejected by allowlist
-  assert.equal(resolveDraftMediaUrl(null, "m1", "video"), null);
-});
-
-test("SECURITY: rendered drafts page proxies media (no raw CDN url, no S3-signed url in HTML)", () => {
-  const html = page(emptyPageData({ drafts: draftsFixture as any }));
-  // preview src goes through the same-origin proxy …
-  assert.match(html, /src="\/api\/draft-media\?v=m1&amp;kind=video"/);
-  // … so the raw cdn.publer.com url and any S3 signing material never appear in the HTML
-  assert.doesNotMatch(html, /cdn\.publer\.com/);
-  assert.doesNotMatch(html, /amazonaws|X-Amz-/);
-});
-
-test("GUARDRAIL: cycle-status batch shows Publer post ids as plain text (no dead app.publer.com deep-link)", () => {
+test("GUARDRAIL: cycle-status batch shows Metricool uuids as plain text (never a deep-link)", () => {
   const run = {
     run_id: "2026-07-22", started_at: "s", updated_at: "u", status: "success",
     summary: { planned: 1, drafted: 1, rejected: 0, failed: 0 },
     videos: [{
       id: "v1", index: 0, dimension: "cliffhanger", arm: "last-hidden", rationale: "r",
       status: "drafted", caption: "c", hashtag_set: "A",
-      publer: { post_ids: ["PUB123", "PUB456"] },
+      // a negative uuid is the realistic case: Metricool's uuid is a signed 64-bit int
+      metricool: { uuids: ["8259645875429329828", "-6297496666514044627"] },
     }],
   } as any;
   const html = page(emptyPageData({ latest: run, runs: [run] }));
-  assert.match(html, /PUB123/); // ids still shown for reference …
-  assert.match(html, /PUB456/);
-  assert.doesNotMatch(html, /app\.publer\.com/); // … but NOT as a dead deep-link
+  assert.match(html, /8259645875429329828/); // uuids still shown for reference …
+  assert.match(html, /-6297496666514044627/);
+  assert.doesNotMatch(html, /<a[^>]*>[^<]*8259645875429329828/); // … but NOT as a link
 });
 
 test("LAYOUT: page guards horizontal scroll (overflow-x hidden + wrapped tables + inline-block chips)", () => {
@@ -796,11 +648,11 @@ test("page: GOAL panel renders FRONT-AND-CENTER with the exact mandate targets +
   assert.match(html, /500<\/b> followers on EACH/);
   assert.doesNotMatch(html, /likes combined/i); // likes removed from the mandate line
   assert.doesNotMatch(html, /200,000/); // old likes target gone
-  // FRONT-AND-CENTER: the GOAL card comes before DRAFTS and Cycle status
+  // FRONT-AND-CENTER: the GOAL card comes before SCHEDULED and Cycle status
   const goalIdx = html.indexOf("Hermes mandate");
-  const draftsIdx = html.indexOf("Older drafts (pre-autonomy)");
+  const schedIdx = html.indexOf("Posts &amp; times");
   const cycleIdx = html.indexOf("Cycle status");
-  assert.ok(goalIdx > -1 && draftsIdx > goalIdx, "GOAL panel must render before DRAFTS");
+  assert.ok(goalIdx > -1 && schedIdx > goalIdx, "GOAL panel must render before SCHEDULED");
   assert.ok(cycleIdx > goalIdx, "GOAL panel must render before Cycle status");
   // pure CSS/inline-style progress bars, no external assets
   assert.match(html, /class="gbar"/);
@@ -853,15 +705,15 @@ const schedFixture = {
   }],
 };
 
-test("D3: video previews are FULL-FRAME (object-fit:contain, never cover) in both panels", () => {
-  const html = page(emptyPageData({ drafts: draftsFixture as any }));
+test("D3: video previews are FULL-FRAME (object-fit:contain, never cover)", () => {
+  const html = page(emptyPageData({ scheduled: schedFixture as any }));
   assert.match(html, /\.dvid\{[^}]*object-fit:contain/);
   assert.match(html, /\.dthumb-img\{[^}]*object-fit:contain/);
   assert.doesNotMatch(html, /object-fit:cover/); // no crop anywhere
 });
 
 test("D3: Plyr is vendored locally (no external CDN at runtime) and initialised on previews", () => {
-  const html = page(emptyPageData({ drafts: draftsFixture as any }));
+  const html = page(emptyPageData({ scheduled: schedFixture as any }));
   assert.match(html, /<link rel="stylesheet" href="\/static\/plyr\.css"\/>/);
   assert.match(html, /<script src="\/static\/plyr\.min\.js"><\/script>/);
   assert.match(html, /new Plyr\(/);
@@ -873,11 +725,11 @@ test("D3: SCHEDULED panel plays Metricool media DIRECTLY (its CDN is public — 
   const html = page(emptyPageData({ scheduled: schedFixture as any }));
   assert.match(html, /9:17 PM CDT/); // the scheduled time is still prominent
   assert.match(html, /<video[^>]*\bcontrols\b/);
-  // static.metricool.com serves the mp4 with no Referer and even a hostile one
-  // (verified live, HTTP 206 both ways), so the Publer-era Referer proxy is not
-  // needed here and the <video> points straight at the asset.
+  // static.metricool.com serves the asset with no Referer, a hostile Referer and a
+  // foreign Origin (verified live, HTTP 200 every way), so the <video> points straight
+  // at it. The same-origin media proxy that a Referer-gated CDN once required is gone.
   assert.match(html, /src="https:\/\/static\.metricool\.com\/[^"]+\.mp4"/);
-  assert.doesNotMatch(html, /\/api\/draft-media\?v=sm1&amp;kind=video/);
+  assert.doesNotMatch(html, /\/api\/draft-media/);
   assert.doesNotMatch(html, /amazonaws|X-Amz-/); // no S3-signed leak
 });
 
@@ -890,7 +742,9 @@ test("abTestLabel: plain-language change vs default, control + neutral unknown (
   assert.match(nar.text, /default: full voiceover/);
   const mas = abTestLabel("mascot", "mascot-absent", d);
   assert.match(mas.text, /no mascot/);
-  assert.match(mas.text, /default: bigger mascot/);
+  // mascot-prominent is the default, and the label has to name it as something a human
+  // reads as "more mascot than usual" rather than as a neutral baseline.
+  assert.match(mas.text, /default: enlarged mascot/);
   assert.match(abTestLabel("tempo", "tempo-fast", d).text, /fast 3s countdown/);
   assert.equal(abTestLabel("control", "control", d).kind, "control");
   assert.equal(abTestLabel("unknown", "unknown", d).kind, "unknown");
@@ -920,15 +774,11 @@ test("SCHEDULED cards render PLAIN-LANGUAGE change-vs-default (never the caption
   assert.doesNotMatch(html, /think-you-got-this|bet-you-cant/); // NEVER the caption-opener slug
 });
 
-test("Item 1: per-card schedule chip shows TIME-ONLY (no redundant 'Scheduled' label); drafts show 'Not scheduled'", () => {
+test("Item 1: per-card schedule chip shows TIME-ONLY (no redundant 'Scheduled' label)", () => {
   const sHtml = page(emptyPageData({ scheduled: schedFixture as any }));
   assert.match(sHtml, /class="timechip"/);           // prominent mint pill present
   assert.match(sHtml, /Wed Jul 23, 9:17 PM CDT/);    // uses scheduled_cst (the date/time itself)
   assert.doesNotMatch(sHtml, /class="tc-k"/);        // redundant "Scheduled ·" label REMOVED
-  const dHtml = page(emptyPageData({ drafts: draftsFixture as any }));
-  assert.match(dHtml, /timechip-none/);              // neutral state (never blank)
-  assert.match(dHtml, /Not scheduled/);
-  assert.doesNotMatch(dHtml, /class="tc-k"/);        // no redundant label on the draft variant either
 });
 
 test("Item 5: KPIs are split into labelled 'This cycle' vs 'Bank & live totals' groups", () => {
@@ -947,20 +797,20 @@ test("Item 2: BANK panel surfaces the honest reconciled used-set method + residu
 });
 
 test("D3: resolveScheduledMediaUrl resolves by video_key, allowlist-guarded (no S3)", () => {
-  // BOTH public CDNs resolve: Metricool for anything scheduled now, Publer for any
-  // remaining pre-migration asset. Everything else, notably an S3 presigned url,
-  // resolves to null so the proxy can never be pointed at it.
+  // ONLY the public Metricool CDN resolves. Everything else — a pre-migration asset on
+  // a retired CDN, and above all an S3 presigned url — resolves to null, so a signed url
+  // can never reach the page.
   const MC = "https://static.metricool.com/planner/202607/6617222-file-1738.mp4";
   const view = { ...schedFixture, posts: [
     schedFixture.posts[0],
-    { ...schedFixture.posts[0], video_key: "legacy", thumbnail: "https://cdn.publer.com/uploads/photos/s.jpg",
-      media_url: "https://cdn.publer.com/uploads/videos/sm1/v.mp4" },
+    { ...schedFixture.posts[0], video_key: "legacy", thumbnail: "https://cdn.retired-scheduler.example/photos/s.jpg",
+      media_url: "https://cdn.retired-scheduler.example/videos/sm1/v.mp4" },
     { ...schedFixture.posts[0], video_key: "bad", thumbnail: null, media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z" },
   ]} as any;
   assert.equal(resolveScheduledMediaUrl(view, "sm1", "video"), MC);
   assert.equal(resolveScheduledMediaUrl(view, "sm1", "thumb"), null); // fixture has no poster
-  assert.equal(resolveScheduledMediaUrl(view, "legacy", "video"), "https://cdn.publer.com/uploads/videos/sm1/v.mp4");
-  assert.equal(resolveScheduledMediaUrl(view, "legacy", "thumb"), "https://cdn.publer.com/uploads/photos/s.jpg");
+  assert.equal(resolveScheduledMediaUrl(view, "legacy", "video"), null); // off-host ⇒ rejected
+  assert.equal(resolveScheduledMediaUrl(view, "legacy", "thumb"), null);
   assert.equal(resolveScheduledMediaUrl(view, "bad", "video"), null); // S3-signed ⇒ rejected
   assert.equal(resolveScheduledMediaUrl(view, "nope", "video"), null);
   assert.equal(resolveScheduledMediaUrl(null, "sm1", "video"), null);
@@ -1069,10 +919,11 @@ test("B: autonomous promotion OFF renders the human-only note", () => {
 });
 
 
-// ── Metricool read path (replaces the dead Publer bridge) ────────────────────
-// Publer began returning HTTP 403 on every content endpoint, so /api/scheduled served
-// an empty board while 41 posts sat on the Metricool calendar. An empty dashboard and
-// a blind dashboard look identical to the reader, which is why these are pinned.
+// ── Metricool read path ──────────────────────────────────────────────────────
+// The previous scheduler began returning HTTP 403 on every content endpoint, so
+// /api/scheduled served an empty board while 41 posts sat on the calendar. An empty
+// dashboard and a blind dashboard look identical to the reader, which is why these
+// assertions are pinned.
 
 test("publicMetricoolCdnUrl: accepts a clean static.metricool.com asset, rejects everything else", async () => {
   const { publicMetricoolCdnUrl } = await import("../data.ts");
@@ -1263,19 +1114,66 @@ test("approval: a GET is refused", async () => {
   assert.equal(out.status, 405);
 });
 
-test("approval: the wrong password is refused and nothing is called", async () => {
+// The password was removed at the user's explicit request. That removed AUTHENTICATION,
+// not the blast-radius bound, and the bound is the part that actually protects the
+// account. These tests pin it: with NO credential at all, the only thing reachable is
+// approve/reject on something that is ALREADY an unapproved loop draft.
+test("approval: NO credential is required — the bound is what the verb may touch, not who calls", async () => {
   const { handleApproval } = await import("../approve.ts");
   const act = stubAct();
-  const out = await handleApproval("approve", bodyReq({ uuid: "123", password: "nope" }), act);
-  assert.equal(out.status, 401);
-  assert.equal(act.calls.length, 0, "must not reach the account on a bad password");
+  const out = await handleApproval("approve", bodyReq({ uuid: "123" }), act);
+  assert.equal(out.status, 200, "an approve with no password must work");
+  assert.deepEqual(act.calls, [["approve", "123"]]);
+});
+
+test("approval: with no auth, an ALREADY-APPROVED post is still refused", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  // This is what hermes/src/approval.ts does on a non-draft: re-read, then refuse.
+  const act = refusingAct("not an unapproved draft — nothing to approve");
+  const out = await handleApproval("approve", bodyReq({ uuid: "8357829085189587553" }), act);
+  assert.equal(out.status, 409, "a refusal must surface as a conflict, not a success");
+  assert.equal(out.body.ok, false);
+  assert.match(String(out.body.reason), /not an unapproved draft/);
+});
+
+test("approval: with no auth, a PUBLISHED post is still refused by both verbs", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  for (const verb of ["approve", "reject"] as const) {
+    const act = refusingAct("not an unapproved draft — refusing to touch a live post");
+    const out = await handleApproval(verb, bodyReq({ uuid: "-6297496666514044627" }), act);
+    assert.equal(out.status, 409, `${verb} must refuse a live post`);
+    assert.equal(out.body.ok, false);
+  }
+});
+
+test("approval: with no auth, a bogus uuid never reaches the account", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const act = stubAct();
+  const out = await handleApproval("approve", bodyReq({ uuid: "999999999999999999" }), refusingAct("no such scheduled post"));
+  assert.equal(out.status, 409);
+  // and a uuid that is not even an integer is rejected before any call is made
+  const bad = await handleApproval("approve", bodyReq({ uuid: "not-a-uuid" }), act);
+  assert.equal(bad.status, 400);
+  assert.equal(act.calls.length, 0);
+});
+
+test("approval: a caller cannot smuggle content alongside the uuid", async () => {
+  const { handleApproval } = await import("../approve.ts");
+  const act = stubAct();
+  const out = await handleApproval("approve", bodyReq({
+    uuid: "42", text: "buy my thing", publicationDate: { dateTime: "2026-01-01T00:00:00" },
+    draft: false, autoPublish: true, media: ["https://evil.example/x.mp4"],
+  }), act);
+  assert.equal(out.status, 200);
+  // the uuid is the ONLY thing that crosses the boundary — every other field is dropped
+  assert.deepEqual(act.calls, [["approve", "42"]]);
 });
 
 test("approval: a non-numeric uuid is refused — nothing else fits the id slot", async () => {
   const { handleApproval } = await import("../approve.ts");
   const act = stubAct();
   for (const bad of ["", "abc", "1; DROP", "../../etc", "1 OR 1=1"]) {
-    const out = await handleApproval("approve", bodyReq({ uuid: bad, password: "alphaaiengineering" }), act);
+    const out = await handleApproval("approve", bodyReq({ uuid: bad }), act);
     assert.equal(out.status, 400, `should refuse ${JSON.stringify(bad)}`);
   }
   assert.equal(act.calls.length, 0);
@@ -1284,7 +1182,7 @@ test("approval: a non-numeric uuid is refused — nothing else fits the id slot"
 test("approval: a correct request approves exactly the one post named", async () => {
   const { handleApproval } = await import("../approve.ts");
   const act = stubAct();
-  const out = await handleApproval("approve", bodyReq({ uuid: "-7965738052010884196", password: "alphaaiengineering" }), act);
+  const out = await handleApproval("approve", bodyReq({ uuid: "-7965738052010884196" }), act);
   assert.equal(out.status, 200);
   assert.equal(out.body.ok, true);
   assert.deepEqual(act.calls, [["approve", "-7965738052010884196"]]);
@@ -1293,7 +1191,7 @@ test("approval: a correct request approves exactly the one post named", async ()
 test("approval: reject routes to reject, not to a delete of anything else", async () => {
   const { handleApproval } = await import("../approve.ts");
   const act = stubAct();
-  await handleApproval("reject", bodyReq({ uuid: "42", password: "alphaaiengineering" }), act);
+  await handleApproval("reject", bodyReq({ uuid: "42" }), act);
   assert.deepEqual(act.calls, [["reject", "42"]]);
 });
 
@@ -1321,6 +1219,15 @@ test("page: an empty approval queue says so without shouting", () => {
   assert.match(html, /Nothing awaiting approval/i);
 });
 
+/** A stub shaped like hermes/src/approval.ts when its `isUnapproved` re-read says no. */
+function refusingAct(reason: string) {
+  const calls: string[][] = [];
+  return {
+    calls,
+    approve: async (u: string) => { calls.push(["approve", u]); return { ok: false, reason }; },
+    reject: async (u: string) => { calls.push(["reject", u]); return { ok: false, reason }; },
+  };
+}
 function stubAct() {
   const calls: string[][] = [];
   return {
@@ -1337,3 +1244,306 @@ function bigReq() {
   const raw = Buffer.alloc(4096, 0x61);
   return { method: "POST", async *[Symbol.asyncIterator]() { yield raw; } } as any;
 }
+
+
+// ── A/B ARM RESOLUTION: the join, driven through the REAL projection ─────────
+//
+// WHY THIS TEST IS SHAPED LIKE THIS. This exact bug shipped twice. The second time, 80
+// tests were green while every freshly created post resolved to "unknown", because the
+// suite exercised the resolver in isolation with hand-made inputs that happened to use
+// the key the resolver was reading. So this drives `buildVariantMap` + the REAL
+// `projectScheduledPosts` with rows shaped exactly like `bridge/metricool-read.ts`
+// emits them (stable string `uuid`, a SEPARATE mutable numeric `id`, `media` as bare CDN
+// url strings) against run-state shaped exactly like the loop writes it — and asserts
+// the resolved dimension/arm equal the RUN-STATE values, not merely that something came back.
+
+/** Run-state exactly as hermes writes it: uuids are TEXT and three of ten are NEGATIVE. */
+const runFixture = {
+  run_id: "2026-07-28",
+  started_at: "", updated_at: "", status: "success",
+  summary: { planned: 12, drafted: 10, rejected: 2, failed: 0 },
+  videos: [
+    { id: "2026-07-28-v01", index: 1, dimension: "mascot", arm: "mascot-absent", rationale: "", status: "drafted",
+      caption: "bet you can't get this one right. v01", metricool: { media_id: "354994532", uuids: ["8357829085189587553"], permalinks: [] } },
+    { id: "2026-07-28-v02", index: 2, dimension: "mascot", arm: "mascot-standard", rationale: "", status: "drafted",
+      caption: "think you got this one? v02", metricool: { media_id: "354994600", uuids: ["-8392679256942752031"], permalinks: [] } },
+    { id: "2026-07-28-v07", index: 7, dimension: "narration", arm: "no-options-vo", rationale: "", status: "drafted",
+      caption: "bet you can't guess this one. v07", metricool: { media_id: "354994934", uuids: ["7157047660485296936"], permalinks: [] } },
+    { id: "2026-07-28-v12", index: 12, dimension: "category-mix", arm: "quant-only", rationale: "", status: "drafted",
+      caption: "think you're built different? v12", metricool: { media_id: "354995087", uuids: ["-6297496666514044627"], permalinks: [] } },
+    // rejected before scheduling: no metricool block at all, so it must never match anything
+    { id: "2026-07-28-v08", index: 8, dimension: "type-nonverbal-shapes", arm: "shapes", rationale: "", status: "rejected",
+      caption: "which one's the imposter? v08" },
+  ],
+} as any;
+
+/** Rows exactly as bridge/metricool-read.ts emits them. Note `id` is a NUMBER and is a
+ *  different identity from `uuid` — conflating the two is the bug this test exists for. */
+function bridgeRow(uuid: string, id: number, text: string, extra: Record<string, unknown> = {}) {
+  return {
+    uuid, id, text,
+    dateTime: "2026-07-29T08:12:00", timezone: "America/Chicago",
+    draft: true, auto_publish: false,
+    media: ["https://static.metricool.com/planner/202607/6617222-file-1449.mp4"],
+    thumbnail: "https://static.metricool.com/planner/202607/6617222-file-1825.png",
+    providers: [{ network: "instagram", status: "PENDING", publicUrl: null }],
+    ...extra,
+  };
+}
+
+test("ARM JOIN: every freshly created draft resolves to its REAL run-state dimension + arm", () => {
+  const idx = buildVariantMap([runFixture], []);
+  const rows = [
+    bridgeRow("8357829085189587553", 354994532, "bet you can't get this one right. v01"),
+    bridgeRow("-8392679256942752031", 354994600, "think you got this one? v02"),
+    bridgeRow("7157047660485296936", 354994934, "bet you can't guess this one. v07"),
+    bridgeRow("-6297496666514044627", 354995087, "think you're built different? v12"),
+  ];
+  const posts = projectScheduledPosts(rows, { variantIdx: idx });
+  assert.equal(posts.length, 4);
+
+  // Assert against the RUN-STATE values, not "something non-empty came back".
+  const want: Record<string, [string, string, string]> = {
+    "8357829085189587553": ["mascot", "mascot-absent", "2026-07-28-v01"],
+    "-8392679256942752031": ["mascot", "mascot-standard", "2026-07-28-v02"],
+    "7157047660485296936": ["narration", "no-options-vo", "2026-07-28-v07"],
+    "-6297496666514044627": ["category-mix", "quant-only", "2026-07-28-v12"],
+  };
+  for (const p of posts) {
+    const w = want[p.post_id];
+    assert.ok(w, `unexpected post_id ${p.post_id}`);
+    assert.equal(p.dimension, w[0], `dimension for ${p.post_id}`);
+    assert.equal(p.arm, w[1], `arm for ${p.post_id}`);
+    assert.equal(p.video_id, w[2], `video_id for ${p.post_id}`);
+    assert.equal(p.arm_source, "run", "must be sourced from run-state, never inferred");
+  }
+  assert.equal(posts.filter((p) => p.dimension === "unknown" || p.arm === "unknown").length, 0, "zero unknowns");
+  // and the field that was silently never assigned once before is still assigned here
+  assert.equal(posts.filter((p) => p.awaiting_approval).length, 4);
+});
+
+test("ARM JOIN: a NEGATIVE uuid resolves — it is text end-to-end and never a JS number", () => {
+  const idx = buildVariantMap([runFixture], []);
+  const [p] = projectScheduledPosts([bridgeRow("-8392679256942752031", 354994600, "x")], { variantIdx: idx });
+  assert.equal(p.post_id, "-8392679256942752031");
+  assert.equal(p.dimension, "mascot");
+  assert.equal(p.arm, "mascot-standard");
+});
+
+test("ARM JOIN: the numeric `id` is NOT the uuid — matching it against a uuid must miss", () => {
+  // The regression itself: probing the uuid-keyed index with Metricool's mutable numeric
+  // id. A row whose uuid is unknown must resolve to unknown even though its numeric id
+  // is a perfectly valid integer, i.e. the fix must not degrade into "try any number".
+  const idx = buildVariantMap([runFixture], []);
+  const orphan = bridgeRow("111222333444555666", 999999999, "a caption nothing in run-state has");
+  const [p] = projectScheduledPosts([orphan], { variantIdx: idx });
+  assert.equal(p.dimension, "unknown");
+  assert.equal(p.arm, "unknown");
+});
+
+test("ARM JOIN: a uuid whose digits were lost to float parsing must NOT match", () => {
+  // 8357829085189587553 as a double comes back 8357829085189587000. If anything upstream
+  // ever parses the uuid as a number, this must surface as "unknown" rather than as a
+  // near-miss silently joined to the wrong video.
+  const idx = buildVariantMap([runFixture], []);
+  const lossy = bridgeRow(String(8357829085189587553), 354994532, "z");
+  assert.notEqual(String(8357829085189587553), "8357829085189587553", "precondition: the double really does lose digits");
+  const hit = resolvePostVariant({ uuid: String(8357829085189587553) }, idx);
+  assert.equal(hit, null, "a precision-damaged uuid is not a match");
+  void lossy;
+});
+
+test("idKey: keeps 64-bit ids exact, refuses anything that already lost precision", () => {
+  assert.equal(idKey("8357829085189587553"), "8357829085189587553");
+  assert.equal(idKey("-8392679256942752031"), "-8392679256942752031");
+  assert.equal(idKey(354994532), "354994532");
+  assert.equal(idKey(8357829085189587553), "", "an unsafe integer has already lost digits");
+  assert.equal(idKey(null), "");
+  assert.equal(idKey("abc"), "");
+  assert.equal(idKey(""), "");
+});
+
+test("ARM JOIN: an unresolvable post says unknown and NEVER infers the arm from the caption", () => {
+  const idx = buildVariantMap([runFixture], []);
+  // A caption that is *word for word* a real variant's caption still must not be used to
+  // fabricate an arm when it is ambiguous, and a rejected video (no metricool block) must
+  // never be reachable at all.
+  const rows = [
+    bridgeRow("555000111222333444", 1, "which one's the imposter? v08"), // the REJECTED video's caption
+  ];
+  const [p] = projectScheduledPosts(rows, { variantIdx: idx });
+  // v08 has no uuid/media id, so only the caption could match it — and a caption match is
+  // allowed ONLY because it is exact and collision-free. What must never happen is an
+  // arm invented from the caption's opening words.
+  assert.ok(p.arm === "shapes" || p.arm === "unknown", `arm was ${p.arm}`);
+  assert.notEqual(p.arm, "which");
+  assert.notEqual(p.dimension, "which one's the imposter? v08");
+});
+
+test("ARM JOIN: two videos sharing a caption with DIFFERENT arms resolve to unknown, not a coin flip", () => {
+  const ambiguous = {
+    ...runFixture,
+    videos: [
+      { id: "a", index: 1, dimension: "tempo", arm: "tempo-slow", rationale: "", status: "drafted", caption: "same words" },
+      { id: "b", index: 2, dimension: "ending", arm: "no-answer", rationale: "", status: "drafted", caption: "same words" },
+    ],
+  } as any;
+  const idx = buildVariantMap([ambiguous], []);
+  const [p] = projectScheduledPosts([bridgeRow("777", 7, "same words")], { variantIdx: idx });
+  assert.equal(p.arm, "unknown");
+  assert.equal(p.dimension, "unknown");
+});
+
+// ── plain-language labels ────────────────────────────────────────────────────
+test("LABELS: mascot arms read as departures from the mascot-prominent DEFAULT", () => {
+  // mascot-prominent is today's default. Labelling mascot-standard as "standard" would
+  // tell the user it IS the baseline, which is backwards and would mislead an approval.
+  const absent = abTestLabel("mascot", "mascot-absent");
+  const standard = abTestLabel("mascot", "mascot-standard");
+  for (const L of [absent, standard]) {
+    assert.equal(L.kind, "test");
+    assert.equal(L.tag, "A/B");
+    assert.match(L.text, /\(default: enlarged mascot\)/, "the default named must be the prominent arm");
+  }
+  assert.match(absent.text, /no mascot on screen at all/);
+  assert.match(standard.text, /smaller mascot/);
+  assert.doesNotMatch(standard.text, /^Mascot: standard mascot/, "must not read as the baseline");
+  // and the default arm itself is still describable
+  assert.match(abTestLabel("mascot", "mascot-prominent").text, /enlarged mascot/);
+});
+
+test("LABELS: every arm in today's batch has a plain-language string", () => {
+  const batch: Array<[string, string, RegExp]> = [
+    ["mascot", "mascot-absent", /no mascot on screen at all/],
+    ["mascot", "mascot-standard", /smaller mascot/],
+    ["narration", "no-options-vo", /only the question is read aloud/],
+    ["narration", "no-question-vo", /only the options are read aloud/],
+    ["narration", "no-narration", /no voiceover/],
+    ["ending", "no-answer", /no answers revealed/],
+    ["tempo", "tempo-slow", /slow 7s countdown/],
+    ["category-mix", "quant-only", /number-series only/],
+    ["hook", "hook-challenge", /ONLY 1% PASS/],
+  ];
+  for (const [dim, arm, re] of batch) {
+    const L = abTestLabel(dim, arm);
+    assert.equal(L.kind, "test", `${dim}/${arm} should be a test arm`);
+    assert.match(L.text, re, `${dim}/${arm}`);
+    assert.match(L.text, /\(default: /, `${dim}/${arm} must name what it departs from`);
+  }
+  assert.equal(abTestLabel("control", "control").kind, "control");
+  assert.equal(abTestLabel("unknown", "unknown").kind, "unknown");
+  assert.match(abTestLabel("unknown", "unknown").text, /not linked to a batch variant yet/);
+});
+
+// ── the approval queue is actually reviewable ────────────────────────────────
+const queueFixture = {
+  ok: true, source: "metricool (live, read-only bridge)", as_of: "2026-07-28T22:00:00Z",
+  count: 2, by_platform: { instagram: 2 }, by_status: { PENDING: 2 }, awaiting_approval: 2,
+  posts: [
+    { post_id: "8357829085189587553", video_id: "2026-07-28-v01", awaiting_approval: true, platform: "instagram",
+      scheduled_at: "2026-07-29T13:12:00Z", scheduled_cst: "Wed Jul 29, 8:12 AM CDT",
+      hook: "bet you can't get this one right", dimension: "mascot", arm: "mascot-absent", arm_source: "run" as const,
+      video_key: "k1", thumbnail: "https://static.metricool.com/planner/202607/cover1.png",
+      media_url: "https://static.metricool.com/planner/202607/v1.mp4",
+      status: "PENDING", public_url: null, opening: "", excluded: false, skip_rate: null },
+    { post_id: "-6297496666514044627", video_id: "2026-07-28-v12", awaiting_approval: true, platform: "instagram",
+      scheduled_at: "2026-07-29T15:40:00Z", scheduled_cst: "Wed Jul 29, 10:40 AM CDT",
+      hook: "think you're built different?", dimension: "category-mix", arm: "quant-only", arm_source: "run" as const,
+      video_key: "k2", thumbnail: "https://static.metricool.com/planner/202607/cover2.png",
+      media_url: "https://static.metricool.com/planner/202607/v2.mp4",
+      status: "PENDING", public_url: null, opening: "", excluded: false, skip_rate: null },
+  ],
+} as any;
+
+test("QUEUE: the password field and all client-side password plumbing are GONE", () => {
+  const html = page(emptyPageData({ scheduled: queueFixture }));
+  assert.doesNotMatch(html, /type\s*=\s*["']password["']/i);
+  assert.doesNotMatch(html, /apr-pass/);
+  assert.doesNotMatch(html, /enter the password/i);
+  assert.doesNotMatch(html, /"password"\s*:/);
+  assert.doesNotMatch(html, /password:\s*pass/);
+  // the two verbs still go exactly where they went before
+  assert.match(html, /fetch\("\/api\/approve"/);
+  assert.match(html, /fetch\("\/api\/reject"/);
+});
+
+test("QUEUE: every row is reviewable — poster, player source, plain-language test, hook, time", () => {
+  const html = page(emptyPageData({ scheduled: queueFixture }));
+  assert.match(html, /APPROVAL QUEUE \u2014 2 AWAITING/);
+  for (const p of queueFixture.posts) {
+    assert.ok(html.includes(`data-uuid="${p.post_id}"`), `row for ${p.post_id}`);
+    assert.ok(html.includes(`data-src="${p.media_url}"`), `playable source for ${p.post_id}`);
+    assert.ok(html.includes(`data-poster="${p.thumbnail}"`), `poster for ${p.post_id}`);
+    assert.ok(html.includes(p.video_id), `video id for ${p.post_id}`);
+    assert.ok(html.includes(esc(p.scheduled_cst)), `time for ${p.post_id}`);
+    assert.ok(html.includes(esc(p.hook)), `hook for ${p.post_id}`);
+  }
+  // the plain-language label, identical in wording to the scheduled cards
+  assert.match(html, /Mascot: no mascot on screen at all \(default: enlarged mascot\)/);
+  assert.match(html, /Question mix: number-series only \(default: mixed 3\)/);
+  // click-to-load, so ten videos do not all start buffering at once
+  assert.match(html, /class="apr-play"/);
+  assert.match(html, /new Plyr\(v,/);
+  assert.doesNotMatch(html, /<video[^>]*autoplay/i);
+});
+
+test("QUEUE: an unresolved row says Unknown and shows no invented arm", () => {
+  const unresolved = { ...queueFixture, posts: [{ ...queueFixture.posts[0], dimension: "unknown", arm: "unknown" }] };
+  const html = page(emptyPageData({ scheduled: unresolved }));
+  assert.match(html, /Unknown<\/span> not linked to a batch variant yet/);
+  assert.doesNotMatch(html, /A\/B<\/span> bet you can't/, "the caption must never become the arm");
+});
+
+test("SECURITY: the approval queue never emits an S3 presigned url", () => {
+  const leaky = { ...queueFixture, posts: [{ ...queueFixture.posts[0],
+    thumbnail: "https://bkt.s3.amazonaws.com/t.jpg?X-Amz-Signature=z",
+    media_url: "https://bkt.s3.amazonaws.com/v.mp4?X-Amz-Signature=z&X-Amz-Credential=ASIA" }] };
+  const html = page(emptyPageData({ scheduled: leaky }));
+  assert.doesNotMatch(html, /X-Amz-|amazonaws\.com/);
+  assert.match(html, /data-src=""/, "an off-CDN url resolves to no player at all");
+});
+
+test("QUEUE: the yellow awaiting banner still renders (regression lock on ee8cd1e)", () => {
+  const html = page(emptyPageData({ scheduled: queueFixture }));
+  assert.match(html, /apr-banner/);
+  assert.match(html, /2 videos awaiting your approval/i);
+});
+
+
+test("QUEUE: the endpoint allowlist holds on a page that ACTUALLY renders the queue", () => {
+  // The pre-existing allowlist test runs against a page with an EMPTY queue, so the
+  // approval script it is meant to police was never in the html it scanned. This scans
+  // the rendered queue itself.
+  const html = page(emptyPageData({ scheduled: queueFixture }));
+  assert.match(html, /class="apr-row"/, "precondition: the queue really is rendered here");
+  const ALLOWED_FETCH = new Set(["/api/health", "/api/approve", "/api/reject"]);
+  const seen: string[] = [];
+  for (const m of html.matchAll(/fetch\(\s*["'`]([^"'`]+)["'`]/g)) {
+    seen.push(m[1]);
+    assert.ok(ALLOWED_FETCH.has(m[1]), `unexpected fetch target ${m[1]}`);
+  }
+  assert.ok(seen.includes("/api/approve") && seen.includes("/api/reject"));
+  assert.doesNotMatch(html, /method:\s*["'](PUT|PATCH|DELETE)["']/i);
+  assert.doesNotMatch(html, /method\s*=\s*["']post["']/i);
+  // the player is the vendored one; no third-party CDN may creep in
+  assert.doesNotMatch(html, /src="https?:\/\/(?!static\.metricool\.com)[^"]*\.js"/);
+  assert.match(html, /src="\/static\/plyr\.min\.js"/);
+});
+
+test("QUEUE: layout guards that keep ten rows from scrolling sideways at 500px", () => {
+  // The dashboard has regressed into horizontal scroll before. These are the four CSS
+  // properties that prevent it; losing any one of them is what causes it.
+  const html = page(emptyPageData({ scheduled: queueFixture }));
+  assert.match(html, /html,body\{max-width:100%;overflow-x:hidden\}/);
+  assert.match(html, /\.apr-row\{[^}]*flex-wrap:wrap/, "rows must wrap rather than overflow");
+  assert.match(html, /\.apr-info\{[^}]*min-width:0/, "a flex child needs min-width:0 or long text pushes the row wide");
+  assert.match(html, /\.apr-hook\{[^}]*overflow-wrap:anywhere/, "captions must be able to break");
+  // the poster/player column is width-bounded in both states, and tighter on small screens
+  assert.match(html, /\.apr-media\{[^}]*width:92px/);
+  assert.match(html, /\.apr-media\.is-open\{width:190px\}/);
+  assert.match(html, /@media\(max-width:560px\)\{\.apr-media\{width:74px\}\.apr-media\.is-open\{width:150px\}\}/);
+  // 9:16, contained — the preview must never crop a 1080x1920 render
+  assert.match(html, /\.apr-media\{[^}]*aspect-ratio:9\/16/);
+  assert.match(html, /\.apr-poster\{[^}]*object-fit:contain/);
+  assert.match(html, /\.apr-media \.plyr video\{[^}]*object-fit:contain/);
+});

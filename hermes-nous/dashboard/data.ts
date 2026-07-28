@@ -40,7 +40,7 @@ export function listRuns(): string[] {
  * `media_url` is a PRESIGNED S3 URL (carries X-Amz-Signature / X-Amz-Credential /
  * X-Amz-Security-Token — temporary credentials). The dashboard is now public, so
  * we strip it here at the single load point (covers /, /api/state, /api/run,
- * /api/health). The video itself is reviewable via the Publer draft/permalink.
+ * /api/health). The video itself is reviewable via its Metricool permalink.
  */
 export function redactRunForPublic(run: RunState | null): RunState | null {
   if (!run || !Array.isArray(run.videos)) return run;
@@ -208,7 +208,7 @@ export function bankStats(): BankStats {
  *      ledger dropped and SELF-HEALS as new cycles write exact per-video sigs.
  *   4. ab-database posts carrying explicit question sigs (future-proof; today's
  *      records store question_types/tiers, NOT sigs, so this contributes 0 now —
- *      Publer itself never stores our internal sigs, so posted history can't be
+ *      The scheduler never stores our internal sigs, so posted history can't be
  *      sig-reconciled beyond what the run-state already captured).
  * Reconciling HERE keeps "fresh"/"runway" honest without mutating any pipeline
  * data file (the dashboard stays strictly read-only). Residual uncertainty: any
@@ -498,85 +498,12 @@ function execFileSyncSafe(cmd: string, args: string[]): string {
   }
 }
 
-// ── "Drafts awaiting review" (READ-ONLY) ─────────────────────────────────────
-// Lists the pending Publer drafts by spawning the pipeline's VETTED read-only
-// Publer bridge (bridge/publer-read.ts) — it only issues GET requests and cannot
-// create/publish/schedule/mutate a post. The Publer key stays server-side (in the
-// bridge's env); it is NEVER rendered. Each video is enriched (best-effort) with
-// its A/B variant + question types by correlating the Publer draft id against the
-// loop's RunState (publer.post_ids) and ab-database.json; where no record exists
-// the label is INFERRED from the caption and clearly tagged.
-
-export interface DraftPlatformLink {
-  platform: string; // instagram | tiktok | unknown
-  publer_id: string; // Publer post id (opaque; NOT a secret). No public per-draft URL exists.
-}
-
-export interface DraftVideo {
-  video_key: string; // shared Publer media id (groups the IG + TikTok pair)
-  hook: string; // the caption hook (first meaningful line, hashtags stripped)
-  caption: string; // full draft caption/text
-  thumbnail: string | null; // validated PUBLIC Publer CDN poster image (or null)
-  /**
-   * The PUBLIC Publer CDN mp4 (media[].path) — NOT the S3 presigned url (which
-   * carries AWS tokens and must never reach this public page). It is Referer-gated
-   * to Publer's ecosystem, so the browser cannot load it cross-origin; the page
-   * renders it same-origin via the read-only /api/draft-media proxy. null if the
-   * draft has no clean public CDN video.
-   */
-  media_url: string | null;
-  dimension: string; // A/B dimension (from run) or "hook" (inferred)
-  arm: string; // A/B arm (from run) or an inferred slug of the hook
-  variant_source: "run" | "ab-database" | "inferred";
-  question_types: string[]; // ordered question TYPES/tiers (empty if unknown)
-  run_id?: string;
-  drafts: DraftPlatformLink[]; // 1–2 platform drafts (IG + TikTok)
-  updated_at?: string;
-}
-
-export interface DraftsView {
-  ok: boolean;
-  videos: DraftVideo[];
-  count_videos: number;
-  count_drafts: number;
-  source: string;
-  as_of: string;
-  error?: string;
-}
-
 /**
- * PUBLIC Publer CDN allowlist — the single validator that decides whether a URL
- * may appear in a public drafts response or be proxied. Returns the URL iff it is
- * a clean, PUBLIC Publer CDN asset: https + host EXACTLY `cdn.publer.com` + no
- * userinfo + NO query string / fragment. Publer's CDN mp4/jpg paths are all
- * query-less; an S3 PRESIGNED url (the thing we must never expose) lives on
- * *.amazonaws.com and ALWAYS carries X-Amz-* query params — so it can never pass
- * this check. Returns null for anything else. This is the drafts-surface analogue
- * of redactRunForPublic: a signed/secret-bearing url is structurally excluded.
- */
-export function publicPublerCdnUrl(u: unknown): string | null {
-  if (typeof u !== "string" || !u) return null;
-  let parsed: URL;
-  try {
-    parsed = new URL(u);
-  } catch {
-    return null;
-  }
-  if (parsed.protocol !== "https:") return null;
-  if (parsed.hostname !== "cdn.publer.com") return null;
-  if (parsed.username || parsed.password) return null;
-  if (parsed.search || parsed.hash) return null; // presigned/signed URLs always carry a query
-  if (/x-amz-|amazonaws\.com|credential=|signature=|security-token/i.test(u)) return null; // defense-in-depth
-  return parsed.href;
-}
-
-/**
- * PUBLIC Metricool CDN allowlist — the scheduled-panel analogue of
- * publicPublerCdnUrl. Metricool rehosts our media at schedule time onto
- * static.metricool.com, which is genuinely public: verified live, it serves the mp4
- * with no Referer and even with a hostile one (HTTP 206 both ways). So unlike
- * Publer's hotlink-protected CDN this needs NO server-side proxy, and the <video>
- * can point straight at it.
+ * PUBLIC Metricool CDN allowlist — the single validator that decides whether a URL
+ * may appear in a public response. Metricool rehosts our media at schedule time onto
+ * static.metricool.com, which is genuinely public: verified live, it serves the asset
+ * with no Referer, with a hostile Referer, and with a foreign Origin (HTTP 200 every
+ * way). It therefore needs NO server-side proxy and the <video> points straight at it.
  *
  * The same structural exclusion still applies: an S3 PRESIGNED url lives on
  * *.amazonaws.com and always carries X-Amz-* query params, so requiring an exact
@@ -598,38 +525,6 @@ export function publicMetricoolCdnUrl(u: unknown): string | null {
   return parsed.href;
 }
 
-/**
- * Resolve a pending draft's validated PUBLIC-CDN asset URL by video_key + kind.
- * Used by the read-only media proxy so it can ONLY ever fetch a cdn.publer.com
- * asset that belongs to a CURRENT draft (allowlist ⇒ no open-proxy / SSRF).
- */
-export function resolveDraftMediaUrl(view: DraftsView | null, videoKey: string, kind: "video" | "thumb"): string | null {
-  if (!view || !Array.isArray(view.videos) || !videoKey) return null;
-  const v = view.videos.find((x) => x.video_key === videoKey);
-  if (!v) return null;
-  return publicPublerCdnUrl(kind === "thumb" ? v.thumbnail : v.media_url);
-}
-
-/**
- * Public choke point: force every media_url + thumbnail through the PUBLIC-CDN
- * allowlist (nulls anything that is not a clean cdn.publer.com asset — e.g. a
- * stray S3 presigned URL). Mirrors redactRunForPublic for the drafts surface, so
- * the public-CDN-only invariant holds no matter how a DraftVideo was built.
- */
-export function sanitizeDraftsForPublic(view: DraftsView): DraftsView {
-  for (const v of view.videos || []) {
-    v.media_url = publicPublerCdnUrl(v.media_url);
-    v.thumbnail = publicPublerCdnUrl(v.thumbnail);
-  }
-  return view;
-}
-
-function platformForAccount(accountId: string, accountsMap: Record<string, any>): string {
-  const live = accountsMap?.[accountId]?.platform;
-  if (typeof live === "string" && live) return live;
-  return CONFIG.ACCOUNT_PLATFORMS[accountId] || "unknown";
-}
-
 /** First meaningful caption line (drops the showcase tag + trailing hashtags). */
 export function draftHook(text: string): string {
   const t = String(text || "").replace(/\[hermes-nous showcase\]/i, "").trim();
@@ -638,27 +533,22 @@ export function draftHook(text: string): string {
   return cleaned.slice(0, 160) || "(no caption)";
 }
 
-/** Inferred arm slug from the caption hook (used only when no run record matches). */
-export function inferArm(text: string): string {
-  const h = draftHook(text).toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
-  const slug = h.split(/\s+/).filter(Boolean).slice(0, 4).join("-");
-  return slug || "variant";
-}
-
-/** One resolved A/B variant for a live Publer post (from RunState or ab-database). */
+/** One resolved A/B variant for a live post (from RunState or ab-database). */
 export interface VariantHit {
   dimension: string;
   arm: string;
   question_types: string[];
   run_id?: string;
+  /** the loop's own video id (e.g. "2026-07-28-v01"), so a card can name the draft. */
+  video_id?: string;
   source: "run" | "ab-database";
 }
 
-/** Multi-key index so a live post links to its arm by post id \u2192 media id \u2192 caption. */
+/** Multi-key index so a live post links to its arm by planner uuid → numeric id → caption. */
 export interface VariantIndex {
   byId: Map<string, VariantHit>;
   byMedia: Map<string, VariantHit>;
-  byCaption: Map<string, VariantHit | null>; // null = AMBIGUOUS (same caption, different arms) \u2192 never used
+  byCaption: Map<string, VariantHit | null>; // null = AMBIGUOUS (same caption, different arms) → never used
 }
 
 /** Normalize a caption for a reliable text join (collapse whitespace, trim, lowercase). */
@@ -666,7 +556,27 @@ export function normCaption(text: string): string {
   return String(text || "").replace(/\s+/g, " ").trim().toLowerCase();
 }
 
-/** Add a caption\u2192variant entry, collapsing collisions (same caption, DIFFERENT arm) to
+/**
+ * Canonical string key for a Metricool id.
+ *
+ * A planner uuid is a SIGNED 64-BIT INTEGER carried as TEXT, and it can be NEGATIVE, so
+ * it must never pass through a JS number: 8357829085189587553 round-tripped as a double
+ * comes back 8357829085189587000, and the join would silently miss on every post. This
+ * keeps ids as text, and REFUSES a value that arrives as a number outside the safe-integer
+ * range — such a value has already lost digits, so matching on it would be a coincidence
+ * rather than a join, and this file must never guess.
+ */
+export function idKey(v: unknown): string {
+  if (v === undefined || v === null) return "";
+  if (typeof v === "number") {
+    if (!Number.isSafeInteger(v)) return ""; // precision already gone — refuse to key on it
+    return String(v);
+  }
+  const s = String(v).trim();
+  return /^-?\d{1,25}$/.test(s) ? s : "";
+}
+
+/** Add a caption→variant entry, collapsing collisions (same caption, DIFFERENT arm) to
  *  null so an ambiguous caption is NEVER used to fabricate an arm. */
 function addCaptionKey(byCaption: Map<string, VariantHit | null>, cap: string, hit: VariantHit): void {
   if (!cap) return;
@@ -679,30 +589,34 @@ function addCaptionKey(byCaption: Map<string, VariantHit | null>, cap: string, h
 }
 
 /**
- * Index every known Publer post \u2192 its A/B variant, from RunState + ab-database, keyed
- * three ways so a live post resolves by (1) exact post id [the run\u2192Publer link once the
- * loop persists it], (2) exact uploaded media id [run-state records one per video], or
- * (3) collision-free full caption [both platform posts share it]. RunState is richest
- * (dimension + arm + question tiers + media id + caption).
+ * Index every known post → its A/B variant, from RunState + ab-database.
+ *
+ * `runs` / `dbPosts` are injectable so the regression suite can drive the REAL index and
+ * the REAL projection off realistic rows instead of asserting on a helper in isolation —
+ * which is how this join stayed broken through a green suite once already.
  */
-export function buildPublerVariantMap(): VariantIndex {
+export function buildVariantMap(runs?: RunState[], dbPosts?: any[]): VariantIndex {
   const byId = new Map<string, VariantHit>();
   const byMedia = new Map<string, VariantHit>();
   const byCaption = new Map<string, VariantHit | null>();
-  for (const r of runSummaries(50)) {
+  for (const r of runs ?? runSummaries(50)) {
     for (const v of r.videos || []) {
       const tiers = (v.questions || []).map((q) => q.tier).filter((t): t is string => !!t);
-      const hit: VariantHit = { dimension: v.dimension || "\u2014", arm: v.arm || "\u2014", question_types: tiers, run_id: r.run_id, source: "run" };
-      for (const id of v.publer?.post_ids || []) {
-        if (id !== undefined && id !== null) byId.set(String(id), hit);
+      const hit: VariantHit = {
+        dimension: v.dimension || "\u2014", arm: v.arm || "\u2014", question_types: tiers,
+        run_id: r.run_id, video_id: v.id, source: "run",
+      };
+      for (const id of v.metricool?.uuids || []) {
+        const k = idKey(id);
+        if (k) byId.set(k, hit);
       }
-      const mediaId = v.publer?.media_id;
-      if (mediaId && !byMedia.has(String(mediaId))) byMedia.set(String(mediaId), hit);
+      const mediaId = idKey(v.metricool?.media_id);
+      if (mediaId && !byMedia.has(mediaId)) byMedia.set(mediaId, hit);
       addCaptionKey(byCaption, normCaption(v.caption), hit);
     }
   }
-  // ab-database.json (published posts) \u2014 fills any id/caption the runs don't have.
-  const posts: any[] = Array.isArray(abDb()?.posts) ? abDb().posts : [];
+  // ab-database.json (published posts) — fills any id/caption the runs don't have.
+  const posts: any[] = dbPosts ?? (Array.isArray(abDb()?.posts) ? abDb().posts : []);
   for (const p of posts) {
     const va = p.variant || {};
     const qt = Array.isArray(va.question_types) ? va.question_types.map((x: unknown) => String(x)) : [];
@@ -710,38 +624,61 @@ export function buildPublerVariantMap(): VariantIndex {
       dimension: va.family || p.experiment?.dimension || "\u2014",
       arm: va.arm || va.hook || p.experiment?.arm || "\u2014",
       question_types: qt,
+      video_id: typeof p.video_id === "string" ? p.video_id : undefined,
       source: "ab-database",
     };
-    const id = p?.publer_post_id;
-    if (id !== undefined && id !== null && !byId.has(String(id))) byId.set(String(id), hit);
+    const id = idKey(p?.metricool_uuid);
+    if (id && !byId.has(id)) byId.set(id, hit);
     addCaptionKey(byCaption, normCaption(p.caption || p.text), hit);
   }
   return { byId, byMedia, byCaption };
 }
 
 /**
- * Resolve a live Publer post to its A/B variant, most-precise first: exact post id \u2192
- * exact media id \u2192 collision-free full caption. Returns null when nothing matches (the
- * card then shows a neutral "unknown" \u2014 NEVER a guess or the caption opener).
+ * Resolve a live post to its A/B variant, most-precise first. Returns null when nothing
+ * matches, and the card then shows a neutral "unknown" — NEVER a guess, and never the
+ * caption opener (caption-inference was removed on purpose and must not come back).
+ *
+ * WHY THE UUID IS PROBED FIRST, and why this regressed.
+ * Metricool splits post identity in two: `uuid` is stable, while the numeric `id` is
+ * REASSIGNED on every update. The loop persists the uuid into run-state at schedule time,
+ * so the uuid is the key the index is actually built on. Publer had a single `id`, so the
+ * pre-migration resolver probed `p.id` — and after the cutover that probe started asking
+ * the uuid-keyed map for a numeric id, missed every time, and every fresh post fell
+ * through to "unknown".
  */
 export function resolvePostVariant(p: any, idx: VariantIndex): VariantHit | null {
-  const byId = idx.byId.get(String(p?.id));
-  if (byId) return byId;
-  const mediaId = p && p.media && p.media[0] && p.media[0].id;
-  if (mediaId) {
-    const byMedia = idx.byMedia.get(String(mediaId));
-    if (byMedia) return byMedia;
+  const uuidKey = idKey(p?.uuid);
+  if (uuidKey) {
+    const hit = idx.byId.get(uuidKey);
+    if (hit) return hit;
   }
+  // The current numeric id, against the id run-state recorded when the post was created.
+  // Weaker (it moves on edit) but still an EXACT match, so it is a join and not a guess.
+  const numKey = idKey(p?.id);
+  if (numKey) {
+    const hit = idx.byId.get(numKey) || idx.byMedia.get(numKey);
+    if (hit) return hit;
+  }
+  // An explicit media id, for rows that carry media objects rather than bare CDN urls.
+  const m0 = p && Array.isArray(p.media) ? p.media[0] : null;
+  const mediaKey = idKey(m0 && typeof m0 === "object" ? (m0 as { id?: unknown }).id : null);
+  if (mediaKey) {
+    const hit = idx.byMedia.get(mediaKey);
+    if (hit) return hit;
+  }
+  // Full caption, ONLY when collision-free: an ambiguous caption is stored as null above
+  // and deliberately falls through to unknown rather than picking one of two arms.
   const cap = normCaption(p?.text);
   if (cap) {
     const byCap = idx.byCaption.get(cap);
-    if (byCap) return byCap; // null (ambiguous) falls through to unknown
+    if (byCap) return byCap;
   }
   return null;
 }
 
-/** Spawn the READ-ONLY publer bridge and parse its single JSON stdout line. */
-function runReadBridge(sub: string, params: Record<string, unknown>, timeoutMs: number, script: string = CONFIG.PUBLER_READ_BRIDGE): Promise<any> {
+/** Spawn a READ-ONLY bridge subprocess and parse its single JSON stdout line. */
+function runReadBridge(sub: string, params: Record<string, unknown>, timeoutMs: number, script: string = CONFIG.METRICOOL_READ_BRIDGE): Promise<any> {
   return new Promise((resolvePromise) => {
     let done = false;
     let stdout = "";
@@ -794,114 +731,13 @@ function runReadBridge(sub: string, params: Record<string, unknown>, timeoutMs: 
   });
 }
 
-let _draftsCache: { at: number; view: DraftsView } | null = null;
-let _draftsInflight: Promise<DraftsView> | null = null;
-
-/** Live pending Publer drafts, grouped into videos, cached (TTL) + single-flight. */
-export async function draftsAwaitingReview(): Promise<DraftsView> {
-  const now = Date.now();
-  if (_draftsCache && now - _draftsCache.at < CONFIG.DRAFTS_TTL_MS) return _draftsCache.view;
-  if (_draftsInflight) return _draftsInflight;
-  _draftsInflight = (async () => {
-    let view: DraftsView;
-    try {
-      view = await computeDrafts();
-    } catch (e) {
-      view = { ok: false, videos: [], count_videos: 0, count_drafts: 0, source: "publer (read-only bridge)", as_of: new Date().toISOString(), error: e instanceof Error ? e.message : String(e) };
-    }
-    // Only cache good results; keep serving the last good view on transient errors.
-    if (view.ok) _draftsCache = { at: Date.now(), view };
-    else if (_draftsCache) view = _draftsCache.view;
-    _draftsInflight = null;
-    // Choke point: guarantee public-CDN-only media_url/thumbnail on EVERY served view.
-    return sanitizeDraftsForPublic(view);
-  })();
-  return _draftsInflight;
-}
-
-async function computeDrafts(): Promise<DraftsView> {
-  const asOf = new Date().toISOString();
-  const res = await runReadBridge("posts", { all: true, state: "draft", max_pages: CONFIG.DRAFTS_MAX_PAGES }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS);
-  if (!res || res.ok !== true || !Array.isArray(res.posts)) {
-    return {
-      ok: false,
-      videos: [],
-      count_videos: 0,
-      count_drafts: 0,
-      source: "publer (read-only bridge)",
-      as_of: asOf,
-      error: res && res.error ? String(res.error).slice(0, 200) : "drafts unavailable (bridge returned no posts)",
-    };
-  }
-  const posts: any[] = res.posts;
-  const accountsMap = (abDb() && abDb().accounts) || {};
-  const variantIdx = buildPublerVariantMap();
-
-  // Group by the shared Publer media id → one "video" per IG+TikTok pair.
-  const groups = new Map<string, any[]>();
-  for (const p of posts) {
-    const mediaId = (p.media && p.media[0] && p.media[0].id) || p.id;
-    const key = String(mediaId);
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key)!.push(p);
-  }
-
-  const videos: DraftVideo[] = [];
-  for (const [key, ps] of groups) {
-    const rep = ps[0];
-    const media = (rep.media && rep.media[0]) || {};
-    const thumbs: any[] = Array.isArray(media.thumbnails) ? media.thumbnails : [];
-    const ti = Number.isInteger(media.default_thumbnail) ? media.default_thumbnail : 0;
-    const thumbRaw = (thumbs[ti] && thumbs[ti].real) || (thumbs[0] && (thumbs[0].real || thumbs[0].small)) || null;
-    const thumbnail = publicPublerCdnUrl(thumbRaw); // validated PUBLIC CDN poster (never S3-signed)
-    // The PUBLIC Publer CDN mp4 (media[].path) — NOT the S3 presigned url. Rendered
-    // same-origin via the read-only /api/draft-media proxy (CDN is Referer-gated).
-    const media_url = publicPublerCdnUrl(media.path);
-
-    let variant: VariantHit | null = null;
-    for (const p of ps) {
-      const hit = resolvePostVariant(p, variantIdx);
-      if (hit) {
-        variant = hit;
-        break;
-      }
-    }
-
-    // Publer exposes NO stable/public per-draft URL (a draft's `url`/`post_link`/
-    // `linkie` are all null; there is no permalink/edit-link field), so we keep the
-    // platform + opaque id for labelling but DO NOT emit a (dead) deep-link.
-    const drafts: DraftPlatformLink[] = ps
-      .map((p) => ({ platform: platformForAccount(String(p.account_id), accountsMap), publer_id: String(p.id) }))
-      .sort((a, b) => a.platform.localeCompare(b.platform));
-
-    videos.push({
-      video_key: key,
-      hook: draftHook(rep.text),
-      caption: String(rep.text || ""),
-      thumbnail,
-      media_url,
-      dimension: variant ? variant.dimension : "unknown",
-      arm: variant ? variant.arm : "unknown", // neutral — NEVER the caption opener (was inferArm)
-      variant_source: variant ? variant.source : "inferred",
-      question_types: variant ? variant.question_types : [],
-      run_id: variant?.run_id,
-      drafts,
-      updated_at: rep.updated_at,
-    });
-  }
-
-  videos.sort((a, b) => (Date.parse(b.updated_at || "") || 0) - (Date.parse(a.updated_at || "") || 0) || a.video_key.localeCompare(b.video_key));
-  const count_drafts = videos.reduce((n, v) => n + v.drafts.length, 0);
-  return { ok: true, videos, count_videos: videos.length, count_drafts, source: "publer (live, read-only bridge)", as_of: asOf };
-}
-
-// ── SCHEDULED posts (post-KICKOFF) — mirrored LIVE from Publer ────────────────
-// Once autonomy is ARMED, the loop AUTO-SCHEDULES each new draft on Publer at a
-// jittered time inside the 7am-1am CST window (scheduler.ts / kickoff_schedule.ts).
+// ── SCHEDULED posts (post-KICKOFF) — mirrored LIVE from Metricool ─────────────
+// Once autonomy is ARMED, the loop AUTO-SCHEDULES each new draft on Metricool at a
+// jittered time inside the 7am-1am CST window (scheduler.ts / loopPublish.ts).
 // This surfaces those scheduled posts + their times on the dashboard, read LIVE
-// from Publer via the same READ-ONLY bridge as the drafts board — so the dashboard
-// and Publer show the SAME posts at the SAME times BY CONSTRUCTION. Read-only:
-// nothing here schedules/mutates; it only lists Publer's `state=scheduled` posts.
+// from Metricool via a READ-ONLY bridge — so the dashboard and the Metricool planner
+// show the SAME posts at the SAME times BY CONSTRUCTION. Read-only: nothing here
+// schedules or mutates; it only lists what is already on the board.
 export interface ScheduledPost {
   /**
    * True while the post is still a loop draft that the human has not cleared to
@@ -985,28 +821,24 @@ function formatChicago(iso: string): string {
 }
 
 /**
- * Resolve a SCHEDULED post's validated PUBLIC-CDN asset URL by video_key + kind —
- * the scheduled-panel analogue of resolveDraftMediaUrl. Used by the read-only media
- * proxy so it can ONLY ever fetch a cdn.publer.com asset belonging to a live
- * scheduled post (allowlist ⇒ no open-proxy / SSRF; no S3 presigned url).
+ * Resolve a SCHEDULED post's validated PUBLIC-CDN asset URL by video_key + kind.
+ * static.metricool.com is genuinely public, so the panel plays it directly — there is
+ * no server-side media proxy any more, and this stays the single allowlist choke point.
  */
 export function resolveScheduledMediaUrl(view: ScheduledView | null, videoKey: string, kind: "video" | "thumb"): string | null {
   if (!view || !Array.isArray(view.posts) || !videoKey) return null;
   const p = view.posts.find((x) => x.video_key === videoKey);
   if (!p) return null;
-  const raw = kind === "thumb" ? p.thumbnail : p.media_url;
-  // static.metricool.com is public, so the scheduled panel plays it directly and does
-  // not need the proxy; the route stays reachable for any Publer-era asset.
-  return publicPublerCdnUrl(raw) || publicMetricoolCdnUrl(raw);
+  return publicMetricoolCdnUrl(kind === "thumb" ? p.thumbnail : p.media_url);
 }
 
 /** Public choke point: force every scheduled media_url/thumbnail through the PUBLIC-CDN allowlist. */
 export function sanitizeScheduledForPublic(view: ScheduledView): ScheduledView {
   for (const p of view.posts || []) {
-    // Either PUBLIC CDN is acceptable; anything else (notably an S3 presigned url)
-    // is nulled. This is the single choke point every served view passes through.
-    p.media_url = publicPublerCdnUrl(p.media_url) || publicMetricoolCdnUrl(p.media_url);
-    p.thumbnail = publicPublerCdnUrl(p.thumbnail) || publicMetricoolCdnUrl(p.thumbnail);
+    // Anything that is not a clean public Metricool CDN asset (notably an S3 presigned
+    // url) is nulled. This is the single choke point every served view passes through.
+    p.media_url = publicMetricoolCdnUrl(p.media_url);
+    p.thumbnail = publicMetricoolCdnUrl(p.thumbnail);
   }
   return view;
 }
@@ -1014,7 +846,7 @@ export function sanitizeScheduledForPublic(view: ScheduledView): ScheduledView {
 let _schedCache: { at: number; view: ScheduledView } | null = null;
 let _schedInflight: Promise<ScheduledView> | null = null;
 
-/** Live SCHEDULED Publer posts (post-kickoff), cached (TTL) + single-flight. */
+/** Live SCHEDULED Metricool posts (post-kickoff), cached (TTL) + single-flight. */
 export async function scheduledPosts(): Promise<ScheduledView> {
   const now = Date.now();
   if (_schedCache && now - _schedCache.at < CONFIG.DRAFTS_TTL_MS) return _schedCache.view;
@@ -1089,13 +921,70 @@ export function summarizeExperiment(posts: ScheduledPost[], target: number): Exp
   };
 }
 
+/** Everything the scheduled projection joins against. Injected so the regression suite
+ *  can drive the REAL projection with realistic bridge rows, rather than exercising
+ *  helpers in isolation — which is how a silently-unassigned field passed 80 tests. */
+export interface ScheduledJoins {
+  variantIdx: VariantIndex;
+  ledger?: Map<string, { video_id: string; opening: string; excluded: boolean }>;
+  bySkip?: Map<string, number>;
+}
+
 /**
- * The live calendar, read from Metricool.
- *
- * Was Publer, which now 403s on every content endpoint and left this panel empty
- * while 41 posts sat scheduled — the dashboard was structurally unable to show the
- * truth. Metricool is the source now; the bridge is still a subprocess so no write
- * symbol enters this server's module graph.
+ * THE projection: raw metricool-read bridge rows → the ScheduledPost cards everything
+ * downstream renders. /api/scheduled, the scheduled panel and the approval queue all
+ * come out of this one function, so a field that is wrong here is wrong everywhere —
+ * which is exactly why the suite drives this rather than its parts.
+ */
+export function projectScheduledPosts(rows: any[], joins: ScheduledJoins): ScheduledPost[] {
+  const ledger = joins.ledger ?? new Map<string, { video_id: string; opening: string; excluded: boolean }>();
+  const bySkip = joins.bySkip ?? new Map<string, number>();
+  const posts: ScheduledPost[] = [];
+  for (const p of rows || []) {
+    const dt = String(p?.dateTime || "");
+    if (!dt) continue;
+    const tz = String(p?.timezone || "America/Chicago");
+    const iso = chicagoNaiveToISO(dt, tz);
+    const provs: any[] = Array.isArray(p.providers) ? p.providers : [];
+    const mine = ledger.get(String(p.uuid)) || { video_id: "", opening: "", excluded: false };
+    const hit = resolvePostVariant(p, joins.variantIdx);
+    // One Metricool post can carry several networks; render one card per network so a
+    // per-platform status and permalink are both visible.
+    for (const pr of provs.length ? provs : [{ network: "unknown", status: "PENDING", publicUrl: null }]) {
+      const url = typeof pr.publicUrl === "string" ? pr.publicUrl : null;
+      const skip = url && bySkip.has(url) ? (bySkip.get(url) as number) : null;
+      posts.push({
+        post_id: String(p.uuid || p.id),
+        awaiting_approval: p.draft === true && p.auto_publish === false,
+        platform: String(pr.network || "unknown"),
+        scheduled_at: iso,
+        scheduled_cst: formatChicago(iso),
+        hook: draftHook(p.text),
+        dimension: hit ? hit.dimension : (mine.opening ? "opening" : "unknown"),
+        arm: hit ? hit.arm : (mine.opening || "unknown"),
+        arm_source: hit ? hit.source : "inferred",
+        video_key: `${p.uuid}:${pr.network}`,
+        thumbnail: publicMetricoolCdnUrl(p.thumbnail),
+        media_url: publicMetricoolCdnUrl((p.media || [])[0]),
+        status: String(pr.status || "PENDING").toUpperCase(),
+        public_url: url,
+        opening: mine.opening,
+        // The loop's own video id, from the ledger when it knows the post and otherwise
+        // from the resolved run-state variant. Both are exact joins; neither is a guess.
+        video_id: mine.video_id || hit?.video_id || "",
+        excluded: mine.excluded,
+        skip_rate: skip,
+      });
+    }
+  }
+  posts.sort((a, b) => (Date.parse(a.scheduled_at) || 0) - (Date.parse(b.scheduled_at) || 0));
+  return posts;
+}
+
+/**
+ * The live calendar, read from Metricool. The bridge is a subprocess on purpose, so
+ * no write symbol (createPost / reschedule / deletePost) enters this server's module
+ * graph — a read-only dashboard should be read-only by construction, not by care.
  */
 async function computeScheduled(): Promise<ScheduledView> {
   const asOf = new Date().toISOString();
@@ -1130,45 +1019,11 @@ async function computeScheduled(): Promise<ScheduledView> {
     /* leave skip rates null => rendered as "pending" */
   }
 
-  const ledger = loadPostingLedger();
-  const variantIdx = buildPublerVariantMap();
-  const posts: ScheduledPost[] = [];
-  for (const p of res.posts) {
-    const dt = String(p?.dateTime || "");
-    if (!dt) continue;
-    const tz = String(p?.timezone || "America/Chicago");
-    const iso = chicagoNaiveToISO(dt, tz);
-    const provs: any[] = Array.isArray(p.providers) ? p.providers : [];
-    const mine = ledger.get(String(p.uuid)) || { video_id: "", opening: "", excluded: false };
-    const hit = resolvePostVariant(p, variantIdx);
-    // One Metricool post can carry several networks; render one card per network so a
-    // per-platform status and permalink are both visible.
-    for (const pr of provs.length ? provs : [{ network: "unknown", status: "PENDING", publicUrl: null }]) {
-      const url = typeof pr.publicUrl === "string" ? pr.publicUrl : null;
-      const skip = url && bySkip.has(url) ? (bySkip.get(url) as number) : null;
-      posts.push({
-        post_id: String(p.uuid || p.id),
-        awaiting_approval: p.draft === true && p.auto_publish === false,
-        platform: String(pr.network || "unknown"),
-        scheduled_at: iso,
-        scheduled_cst: formatChicago(iso),
-        hook: draftHook(p.text),
-        dimension: hit ? hit.dimension : (mine.opening ? "opening" : "unknown"),
-        arm: hit ? hit.arm : (mine.opening || "unknown"),
-        arm_source: hit ? hit.source : "inferred",
-        video_key: `${p.uuid}:${pr.network}`,
-        thumbnail: publicMetricoolCdnUrl(p.thumbnail),
-        media_url: publicMetricoolCdnUrl((p.media || [])[0]),
-        status: String(pr.status || "PENDING").toUpperCase(),
-        public_url: url,
-        opening: mine.opening,
-        video_id: mine.video_id,
-        excluded: mine.excluded,
-        skip_rate: skip,
-      });
-    }
-  }
-  posts.sort((a, b) => (Date.parse(a.scheduled_at) || 0) - (Date.parse(b.scheduled_at) || 0));
+  const posts = projectScheduledPosts(res.posts, {
+    variantIdx: buildVariantMap(),
+    ledger: loadPostingLedger(),
+    bySkip,
+  });
   const by_platform: Record<string, number> = {};
   const by_status: Record<string, number> = {};
   for (const p of posts) {

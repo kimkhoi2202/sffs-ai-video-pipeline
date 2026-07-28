@@ -1,5 +1,9 @@
 # hermes-nous — SFFS agent rebuilt on the Nous Hermes framework
 
+> **Publer is retired (2026-07-28).** Every mention of Publer below is historical.
+> Posting, the live calendar and analytics all run on Metricool now — see
+> [`docs/hermes/metricool-migration.md`](../docs/hermes/metricool-migration.md).
+
 This directory holds the **in-progress** re-base of the SFFS autonomous DRAFT-ONLY A/B video agent
 (currently `hermes/`) onto the open-source [`NousResearch/hermes-agent`](https://github.com/NousResearch/hermes-agent)
 framework, using that framework's cron learning loop, memory, skills, subagents, and dashboard.

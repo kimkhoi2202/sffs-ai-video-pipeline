@@ -15,19 +15,21 @@ import review_agent as ra
 REPO = Path(__file__).resolve().parents[2].parent  # sffs-ai-video-pipeline
 CORE_FILES = [
     "hermes-nous/sffs/publish_guard.py",
-    "hermes-nous/sffs/draft_guard.py",
     "hermes-nous/sffs/donottouch.py",
     "hermes-nous/sffs/reads.py",
     "hermes-nous/sffs/schemas.py",
     "hermes-nous/sffs/__init__.py",
     "hermes-nous/sffs/plugin.yaml",
-    "hermes-nous/bridge/publer-draft.ts",
     "hermes-nous/bridge/donottouch.ts",
-    "hermes-nous/bridge/publer-read.ts",
+    # metricool-read.ts is safety-core (review_agent.SAFETY_CORE_FILES lists it and
+    # raises scrutiny on any change) but is deliberately NOT in this no-false-positive
+    # sweep: it PROJECTS the board's `auto_publish` flag into its read response, and the
+    # static scan cannot tell that read-mapping apart from an assignment that SETS a
+    # scheduling field. Reporting that flag is what makes the approval gate visible on
+    # the dashboard, so the scan stays strict and this file is reviewed by a human.
 ]
 TEST_FILES = [
     "hermes-nous/tests/test_publish_guard.py",
-    "hermes-nous/tests/test_draft_only.py",
     "hermes-nous/tests/test_donottouch.py",
     "hermes-nous/tests/test_reads.py",
 ]
@@ -58,14 +60,14 @@ def test_static_scan_no_false_positive_on_real_tests():
 
 # --- static scan: every malicious / tamper class is caught -------------------
 _MALICIOUS = {
-    "schedulePost import in bridge": "+++ b/hermes-nous/bridge/publer-draft.ts\n+import { schedulePost } from \"../../hermes/src/guardrails.ts\";",
+    "schedulePost import in bridge": "+++ b/hermes-nous/bridge/metricool-read.ts\n+import { schedulePost } from \"../../hermes/src/guardrails.ts\";",
     "schedulePost call in bridge": "+++ b/hermes-nous/bridge/x.ts\n+  await schedulePost({});",
     "register publish tool": "+++ b/hermes-nous/sffs/__init__.py\n+    ctx.register_tool(name=\"sffs_publish_now\", handler=h)",
-    "quoted publer publish tool": "+++ b/hermes-nous/sffs/reads.py\n+    T = \"publer_publish_post_now\"",
-    "live state subscript": "+++ b/hermes-nous/sffs/draft_guard.py\n+    payload[\"state\"] = \"published\"",
+    "quoted publish tool name": "+++ b/hermes-nous/sffs/reads.py\n+    T = \"metricool_publish_post_now\"",
+    "live state subscript": "+++ b/hermes-nous/sffs/publish_guard.py\n+    payload[\"state\"] = \"published\"",
     "live state dict": "+++ b/hermes-nous/sffs/x.py\n+    body = {\"state\": \"scheduled\"}",
     "scheduling key subscript": "+++ b/hermes-nous/sffs/x.py\n+    req[\"scheduled_at\"] = when",
-    "frozen constant tamper": "+++ b/hermes-nous/sffs/draft_guard.py\n-ALLOWED_POST_STATE = \"draft\"\n+ALLOWED_POST_STATE = \"published\"",
+    "frozen constant tamper": "+++ b/hermes-nous/sffs/publish_guard.py\n-ALLOWED_POST_STATE = \"draft\"\n+ALLOWED_POST_STATE = \"published\"",
     "remove guard hook": "+++ b/hermes-nous/sffs/__init__.py\n-    ctx.register_hook(\"pre_tool_call\", publish_guard.pre_tool_call)",
 }
 
@@ -95,8 +97,8 @@ BENIGN = (
     "+# a clarifying comment only\n"
 )
 MALICIOUS = (
-    "diff --git a/hermes-nous/bridge/publer-draft.ts b/hermes-nous/bridge/publer-draft.ts\n"
-    "--- a/hermes-nous/bridge/publer-draft.ts\n+++ b/hermes-nous/bridge/publer-draft.ts\n"
+    "diff --git a/hermes-nous/bridge/metricool-read.ts b/hermes-nous/bridge/metricool-read.ts\n"
+    "--- a/hermes-nous/bridge/metricool-read.ts\n+++ b/hermes-nous/bridge/metricool-read.ts\n"
     "+  await schedulePost({ scheduled_at: \"2026-08-01\" });\n"
 )
 

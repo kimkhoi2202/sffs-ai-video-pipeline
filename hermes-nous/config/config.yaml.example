@@ -57,7 +57,7 @@ skills:
 # Cron jobs live in $HERMES_HOME/cron/jobs.json (not here). Register the nightly
 # DRAFT-ONLY cycle with:
 #     bash hermes-nous/scripts/cron-setup.sh
-# It creates `sffs-nightly` — schedule "every 24h" (recurring; aligned to Publer's
+# It creates `sffs-nightly` — schedule "every 24h" (recurring; aligned to the
 # ~24h analytics lag — bare "24h" would be a ONE-SHOT), skills: [sffs-ab-cycle],
 # enabled_toolsets: [sffs] — and leaves it PAUSED. A human RESUMES it at the
 # human-gated cutover (`hermes cron resume sffs-nightly`); nothing fires before that.

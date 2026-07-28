@@ -1,5 +1,9 @@
 # READINESS — `hermes-nous` SFFS agent: what's built, what's proven, how to go live
 
+> **Publer is retired (2026-07-28).** Every mention of Publer below is historical.
+> Posting, the live calendar and analytics all run on Metricool now — see
+> [`docs/hermes/metricool-migration.md`](../docs/hermes/metricool-migration.md).
+
 > **STATUS: FEATURE-COMPLETE + END-TO-END VALIDATED. NOT DEPLOYED.**
 > The rebuilt DRAFT-ONLY A/B quiz-video agent (NousResearch `hermes-agent`
 > framework + the `sffs` plugin) is done and proven on branch `hermes-nous`.

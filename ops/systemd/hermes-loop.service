@@ -1,5 +1,5 @@
 [Unit]
-Description=Hermes SFFS DRAFT-ONLY autonomous cycle (score -> design A/B batch -> quality gates -> render -> S3 -> Publer DRAFTS)
+Description=Hermes SFFS DRAFT-ONLY autonomous cycle (score -> design A/B batch -> quality gates -> render -> S3 -> Metricool DRAFTS)
 After=network-online.target
 Wants=network-online.target
 

@@ -24,7 +24,6 @@ from . import (
     cycle,
     design,
     donottouch,
-    draft_guard,
     factory,
     gates,
     promote,
@@ -41,16 +40,6 @@ from . import (
 
 def register(ctx) -> None:
     """Called once by the Nous plugin loader. Registers the DRAFT-ONLY safety core."""
-    # --- The ONLY sanctioned write path: create a Publer DRAFT (never live). ---
-    ctx.register_tool(
-        name="sffs_publer_draft",
-        toolset="sffs",
-        schema=schemas.SFFS_PUBLER_DRAFT_SCHEMA,
-        handler=draft_guard.sffs_publer_draft,
-        emoji="📝",
-        description="Create a Publer DRAFT (draft-only; can never publish or schedule).",
-    )
-
     # --- READ-ONLY do-not-touch guards for pre-existing scheduled/published posts. ---
     ctx.register_tool(
         name="sffs_donottouch_snapshot",
@@ -70,14 +59,6 @@ def register(ctx) -> None:
     )
 
     # --- READ-ONLY data tools the cycle reasons about A/B performance with. ---
-    ctx.register_tool(
-        name="sffs_publer_read",
-        toolset="sffs",
-        schema=schemas.SFFS_PUBLER_READ_SCHEMA,
-        handler=reads.sffs_publer_read,
-        emoji="📖",
-        description="List Publer accounts or posts (read-only; can never write/schedule/publish).",
-    )
     ctx.register_tool(
         name="sffs_score",
         toolset="sffs",
@@ -134,8 +115,8 @@ def register(ctx) -> None:
     )
 
     # --- UPLOAD a rendered mp4 to S3 (private bucket + presigned GET URL). ---
-    # Wraps tools/upload-media.ts uploadFile (media hosting only); no Publer/post
-    # path is imported or reachable. Returns a fetchable URL for a later DRAFT.
+    # Wraps tools/upload-media.ts uploadFile (media hosting only); no posting path
+    # is imported or reachable. Returns a fetchable URL for a later DRAFT.
     ctx.register_tool(
         name="sffs_upload_s3",
         toolset="sffs",
@@ -147,7 +128,7 @@ def register(ctx) -> None:
 
     # --- SCORE ROLLUP: refresh the durable A/B memory (write-side of scoring). ---
     # Wraps score.ts pullAndScore (pull analytics -> refresh ab-database.json +
-    # recompute learnings.json). Read-only on Publer (GET); writes only local JSON.
+    # recompute learnings.json). Read-only on Metricool (GET); writes only local JSON.
     # Deliberately separate from the read-only sffs_score. Cannot post/publish/schedule.
     ctx.register_tool(
         name="sffs_score_rollup",
@@ -159,9 +140,9 @@ def register(ctx) -> None:
     )
 
     # --- RECONCILE: close the A/B learning loop for the agent's OWN posts. ---
-    # Wraps reconcile.ts reconcile: match each ab-database record's publer_post_id
+    # Wraps reconcile.ts reconcile: match each ab-database record's metricool_uuid
     # to the native published post and back-fill platform_post_id/permalink/posted_at
-    # (the join keys scoring needs). Read-only on Publer (GET); writes only the local
+    # (the join keys scoring needs). Read-only on Metricool (GET); writes only the local
     # ab-database.json, and only when a field changed (idempotent). Cannot post/
     # publish/schedule/delete/mutate — reconcile.ts imports no such path.
     ctx.register_tool(
@@ -170,12 +151,12 @@ def register(ctx) -> None:
         schema=schemas.SFFS_RECONCILE_SCHEMA,
         handler=reconcile.sffs_reconcile,
         emoji="🔗",
-        description="Back-fill native post ids/permalinks onto ab-database.json (match publer_post_id -> published post) so scoring can learn from the agent's OWN posts; read-only on Publer, idempotent, never posts.",
+        description="Back-fill native post ids/permalinks onto ab-database.json (match metricool_uuid -> published post) so scoring can learn from the agent's OWN posts; read-only on Metricool, idempotent, never posts.",
     )
 
     # --- CYCLE: run ONE full DRAFT-ONLY A/B cycle end to end (ties the tools). ---
     # Wraps cycle.ts runCycle: snapshot -> score -> design -> per-video gates ->
-    # render -> (live) upload -> createDraftOnly -> verify. It can ONLY create
+    # render -> (live) upload -> Metricool draft -> verify. It can ONLY create
     # DRAFTS and can NEVER push to main (HERMES_SKIP_GIT is forced by the bridge
     # AND the handler env). No publish/schedule path is reachable.
     ctx.register_tool(
@@ -184,7 +165,7 @@ def register(ctx) -> None:
         schema=schemas.SFFS_CYCLE_SCHEMA,
         handler=cycle.sffs_cycle,
         emoji="🔁",
-        description="Run one full DRAFT-ONLY A/B cycle end to end (design->gates->render->upload->Publer DRAFTS; never publishes/schedules; never pushes to main).",
+        description="Run one full DRAFT-ONLY A/B cycle end to end (design->gates->render->upload->Metricool DRAFTS; never publishes/schedules; never pushes to main).",
     )
 
     # --- DEFAULT-PROMOTION (read-side): detect/list proposals to flip a CONTENT default. ---

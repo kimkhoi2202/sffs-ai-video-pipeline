@@ -1,31 +1,30 @@
 /**
- * guardrails.ts — the DRAFT-ONLY safety core. Snapshot/verify run against Metricool
- * the loop uses, and it can ONLY create drafts.
+ * guardrails.ts — the DRAFT-ONLY safety core. Snapshot/verify run against Metricool,
+ * the board the loop actually writes to.
  *
  * Invariants enforced here (belt AND suspenders):
- *   1. createDraftOnly() forces state="draft", refuses any non-draft state or any
- *      scheduled_at, and re-asserts CONFIG.DRAFT_ONLY before every call.
+ *   1. The loop's only write path (loopPublish.ts) creates posts with
+ *      `draft: true, autoPublish: false`, so an unapproved post is physically
+ *      incapable of publishing. That is the approval gate expressed at the platform
+ *      level rather than in our own bookkeeping; see approval.ts and publishGate.ts.
  *   2. We snapshot every existing scheduled + published post BEFORE the cycle and
  *      verify AFTER that none disappeared or changed state — proving the loop never
  *      touched a live/scheduled post (it only ever ADDS new drafts).
- *   3. schedulePost / deletePost / updatePost are never imported (see publer.ts).
+ *   3. No delete/publish path is imported here, so this module cannot mutate the
+ *      board even by accident.
  */
-import { CONFIG, assertDraftOnly } from "./config.ts";
-import { createPost, type CreatePostArgs } from "./publer.ts";
+import { CONFIG } from "./config.ts";
 import { listPosts as mcListPosts } from "./metricool.ts";
+import { info, warn } from "./log.ts";
 
 /**
  * The do-not-touch snapshot, on Metricool.
  *
- * It used to page Publer for scheduled + published ids. Publer 403s on every content
- * endpoint, so the snapshot always threw and the cycle took its fail-closed branch —
- * "continuing without draft creation would be unsafe" — and aborted before creating
- * anything. A loop armed in that state renders a full batch and schedules none of it.
- *
- * The invariant is unchanged and, after today, better motivated than ever: capture every
- * post that already exists, and refuse to finish if any of them vanished while the loop
- * ran. A cover-only PUT silently evicted ten published rows this morning, and a check of
- * exactly this shape is what caught it each time.
+ * The invariant: capture every post that already exists, and refuse to finish if any
+ * of them vanished while the loop ran. A cover-only PUT silently evicted ten
+ * published rows on 2026-07-25, and a check of exactly this shape is what caught it
+ * each time. It is also why bulk-delete endpoints are never called anywhere in this
+ * codebase — a Publer bulk delete once wiped every draft on the account.
  */
 const BOARD_FROM = "2026-01-01T00:00:00";
 const BOARD_TO = "2030-12-31T23:59:59";
@@ -44,7 +43,6 @@ async function boardIds(): Promise<{ scheduled: string[]; published: string[] }>
   }
   return { scheduled, published };
 }
-import { info, warn } from "./log.ts";
 
 export interface DoNotTouchSnapshot {
   scheduled_ids: string[];
@@ -96,55 +94,5 @@ export async function verifyDoNotTouch(before: DoNotTouchSnapshot): Promise<void
   });
 }
 
-export interface DraftInput {
-  account_ids: string[];
-  text: string;
-  media_ids?: string[];
-  media_objects?: Array<Record<string, unknown>>;
-  type?: CreatePostArgs["type"];
-}
-
-/** A validated, normalized draft payload — state is frozen to "draft". */
-export interface DraftPayload {
-  account_ids: string[];
-  text: string;
-  media_ids?: string[];
-  media_objects?: Array<Record<string, unknown>>;
-  type: CreatePostArgs["type"];
-  state: typeof CONFIG.ALLOWED_POST_STATE; // "draft"
-}
-
-/**
- * The single source of truth for the DRAFT-ONLY guard, with NO network call.
- * Re-asserts CONFIG.DRAFT_ONLY, refuses any non-draft state or any scheduled_at,
- * requires account_ids, and forces state="draft". createDraftOnly() calls this
- * before it ever talks to Publer; the Nous plugin bridge (hermes-nous/bridge/
- * publer-draft.ts) also calls it for a network-free dry-run validation. This
- * lets the DRAFT-ONLY invariant be tested without keys or network. Throws on any
- * violation.
- */
-export function validateDraftOnly(input: DraftInput & Record<string, unknown>): DraftPayload {
-  assertDraftOnly();
-  if ("state" in input && (input as any).state !== undefined && (input as any).state !== "draft") {
-    throw new Error(`createDraftOnly: refusing non-draft state "${(input as any).state}"`);
-  }
-  if ("scheduled_at" in input && (input as any).scheduled_at) {
-    throw new Error("createDraftOnly: refusing scheduled_at — the loop is draft-only");
-  }
-  if (!input.account_ids?.length) throw new Error("createDraftOnly: account_ids required");
-  return {
-    account_ids: input.account_ids,
-    text: input.text,
-    media_ids: input.media_ids,
-    media_objects: input.media_objects,
-    type: input.type ?? "video",
-    state: CONFIG.ALLOWED_POST_STATE, // "draft", frozen
-  };
-}
-
-/** The ONLY sanctioned Publer write. Creates a DRAFT and nothing else. */
-export async function createDraftOnly(input: DraftInput & Record<string, unknown>): Promise<string> {
-  // Validate first (belt): refuses non-draft state / scheduled_at, forces draft.
-  // Then create — createPost re-applies state="draft" from the validated payload.
-  return createPost(validateDraftOnly(input));
-}
+/** The post state the loop is allowed to emit, re-exported for callers that assert on it. */
+export const ALLOWED_POST_STATE = CONFIG.ALLOWED_POST_STATE;

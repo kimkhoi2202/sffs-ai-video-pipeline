@@ -1,7 +1,7 @@
 """SFFS publish/schedule defense-in-depth guard — the framework-layer belt.
 
 This is the THIRD layer of the DRAFT-ONLY guarantee, sitting *above* the two
-layers in ``draft_guard.py`` (the Python tool belt) and ``bridge/publer-draft.ts``
+layer the loop itself applies (Metricool ``draft:true`` / ``autoPublish:false``)
 (the Node suspenders):
 
   * belt        — draft_guard.build_draft_payload() guards the sanctioned
@@ -49,7 +49,7 @@ import re
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 # The one post state the whole system is allowed to emit (mirrors
-# hermes/src/config.ts CONFIG.ALLOWED_POST_STATE and draft_guard.ALLOWED_POST_STATE).
+# hermes/src/config.ts CONFIG.ALLOWED_POST_STATE).
 ALLOWED_STATE_VALUE = "draft"
 
 
@@ -101,8 +101,8 @@ _PUBLISH_FLAG_KEYS = frozenset(
 _STATE_KEYS = frozenset(_norm(k) for k in ("state", "post_state", "post_status"))
 
 # State VALUES that mean a live / scheduled / non-draft social post => refuse.
-# Includes the Publer draft-VARIANTS (draft_public / draft_private) which are NOT
-# the frozen "draft" (see hermes/src/... PostState = draft|draft_private|draft_public|scheduled).
+# Includes the draft-VARIANTS (draft_public / draft_private) which are NOT the frozen
+# "draft": a "public draft" is visible, so it is a live state as far as this guard cares.
 _LIVE_STATE_VALUES = frozenset(
     _norm(v)
     for v in (
@@ -125,21 +125,17 @@ _LIVE_STATE_VALUES = frozenset(
 # --- Tool NAME signals (matched as normalized substrings) -------------------
 
 # Normalized-name substrings that mark a tool as a live-publish / schedule / or
-# EXISTING-POST-MUTATION action. Any match => refuse outright. These catch the
-# Publer MCP surface (publer_publish_post_now / publer_update_post /
-# publer_delete_post[s]) and any similarly-named future tool. Creating a *draft*
-# is NOT here (create_post is judged by its args instead — a plain draft is fine).
+# EXISTING-POST-MUTATION action. Any match => refuse outright. These are deliberately
+# scheduler-agnostic: they catch any MCP surface named publish_post_now /
+# update_post / delete_post, whoever ships it. Creating a *draft* is NOT here
+# (create_post is judged by its args instead — a plain draft is fine).
 _DENY_NAME_SUBSTRINGS: Tuple[str, ...] = (
-    "publishpost",     # publish_post / publishPost / publer_publish_post[_now]
+    "publishpost",     # publish_post / publishPost / *_publish_post[_now]
     "postnow",         # *_post_now
     "schedulepost",    # schedule_post
     "golive",          # go_live / goLive
-    "publerpublish",
-    "publerschedule",
-    "updatepost",      # publer_update_post — mutating an existing post (do-not-touch)
-    "deletepost",      # publer_delete_post[s] — deleting an existing post (do-not-touch)
-    "publerupdate",
-    "publerdelete",
+    "updatepost",      # update_post — mutating an existing post (do-not-touch)
+    "deletepost",      # delete_post[s] — deleting an existing post (do-not-touch)
 )
 
 # Normalized-name substrings that mark a tool as POSTING-related, so the strict
@@ -147,8 +143,7 @@ _DENY_NAME_SUBSTRINGS: Tuple[str, ...] = (
 # guard, scoped to where a post state is meaningful so it never trips a kanban /
 # git / job ``state`` on an unrelated tool).
 _POSTING_TOOL_MARKERS: Tuple[str, ...] = (
-    "publer",
-    "posttopubler",
+    "metricool",
     "createpost",
     "schedulepost",
     "publishpost",
@@ -156,8 +151,7 @@ _POSTING_TOOL_MARKERS: Tuple[str, ...] = (
 )
 
 # Bounds for the (shallow) argument walk — defends against pathological inputs
-# while still reaching the nested media_objects/post objects a Publer-style call
-# might carry.
+# while still reaching the nested media_objects/post objects a posting call might carry.
 _MAX_DEPTH = 3
 _MAX_NODES = 5000
 
@@ -165,7 +159,7 @@ _MAX_NODES = 5000
 def _is_present(value: Any) -> bool:
     """Truthiness that treats empty/false/zero as "not present".
 
-    Mirrors draft_guard._is_truthy so ``scheduled_at=""`` / ``publish=False`` /
+    ``scheduled_at=""`` / ``publish=False`` /
     ``publish=0`` are no-ops, exactly like the TS guard.
     """
     if value is None or value is False:
@@ -265,7 +259,7 @@ def build_block(tool_name: str, reason: str) -> Dict[str, str]:
             f"REFUSED by the SFFS draft-only guard: {reason}. "
             f"The SFFS agent is DRAFT-ONLY — publishing or scheduling a live post is a "
             f"HUMAN action, never the agent's. To draft a post, use the sanctioned "
-            f"'sffs_publer_draft' tool (it can only ever create drafts)."
+            f"draft-only path (it can only ever create drafts)."
         ),
     }
 

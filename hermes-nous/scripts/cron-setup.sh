@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # cron-setup.sh — register (or refresh) the `sffs-nightly` cron job in the ISOLATED
 # HERMES_HOME. The job runs ONE full DRAFT-ONLY A/B cycle on a ~24h cadence (aligned
-# to Publer's ~24h analytics lag) by following the `sffs-ab-cycle` skill.
+# to the ~24h analytics lag) by following the `sffs-ab-cycle` skill.
 #
 # SAFETY: the job is created PAUSED (disabled). Nothing fires tonight. A human
 # RESUMES it at the human-gated cutover:
 #     hermes cron resume sffs-nightly     (or: hermes cron list / run <id>)
-# Even when it does run, it is DRAFT-ONLY (creates Publer drafts, never publishes/
+# Even when it does run, it is DRAFT-ONLY (creates Metricool drafts, never publishes/
 # schedules) and can never push to main (the cycle forces HERMES_SKIP_GIT=1).
 #
 # Idempotent: re-running removes any prior `sffs-nightly` job(s) first.
@@ -37,7 +37,7 @@ PROMPT = (
     "sffs-ab-cycle skill. In order: refresh scoring (sffs_score_rollup) so the A/B "
     "memory reflects matured analytics, snapshot do-not-touch, design the batch "
     "(rotating dimensions incl. the narration family + progress-counter arms), run "
-    "the fail-closed quality gates, render, upload to S3, and create Publer DRAFTS "
+    "the fail-closed quality gates, render, upload to S3, and create Metricool DRAFTS "
     "(target 10; sffs_cycle with dry_run=false). Then verify do-not-touch and record "
     "a one-line takeaway (drafts made, any new front-runner) in memory. You are "
     "DRAFT-ONLY: never publish or schedule a live post, never touch existing posts, "
@@ -46,7 +46,7 @@ PROMPT = (
 
 job = J.create_job(
     prompt=PROMPT,
-    schedule="every 24h",          # recurring ~24h (Publer metrics lag). NOTE: bare "24h" = one-shot.
+    schedule="every 24h",          # recurring ~24h (metrics lag). NOTE: bare "24h" = one-shot.
     name="sffs-nightly",
     skills=["sffs-ab-cycle"],      # load the cycle playbook
     enabled_toolsets=["sffs"],     # restrict to the sffs toolset (lean, safe)

@@ -14,8 +14,7 @@
  *                   its own SAFE ZONES) -> render-sanity gate
  *     PUBLISH the survivors: allocate schedule slots sized to how many ACTUALLY
  *                   survived, then per platform: S3 upload -> Metricool draft
- *                   -> createDraftOnly / createScheduledPostArmed -> annotate
- *                   ab-database
+ *                   (draft:true, autoPublish:false) -> annotate ab-database
  *     TOP UP if the day landed under VIDEOS_FLOOR and the ceiling still has room
  *   2. verify do-not-touch untouched (proves nothing went live)
  *   3. commit data files locally (best-effort; pushing is opt-in, see gitCommitPush)
@@ -52,10 +51,8 @@ import { markUsed, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
 import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
-// PUBLER IS GONE. It 403s on every content endpoint, so the old media-import + job-poll
-// publish path would render a whole batch and then fail at the first upload — the exact
-// shape of the 2026-07-25 failure. Publishing now goes through Metricool, reusing the
-// modules the controlled path already proved against the live account.
+// Publishing goes through Metricool, reusing the modules the controlled path already
+// proved against the live account.
 import { publishAsDraft, planSlots, calendarRows, allocatable, type LoopDraft } from "./loopPublish.ts";
 import { toNaive } from "./approval.ts";
 import { ping } from "./llm.ts";
@@ -77,16 +74,16 @@ const TOPUP_SLACK = 2;
 const RENDER_ATTEMPTS = 2;
 const MEDIA_IMPORT_ATTEMPTS = 3;
 const JOB_POLL_ATTEMPTS = 3;
-/** Pause between videos in the publish phase, to stay under Publer's API rate limit. */
+/** Pause between videos in the publish phase, to stay under the API rate limit. */
 const PUBLISH_PACE_MS = Number(process.env.HERMES_PUBLISH_PACE_MS || 6_000);
-/** Per-attempt backoff once Publer says we are over its quota (see isRateLimited). */
+/** Per-attempt backoff once the API says we are over quota (see isRateLimited). */
 const RATE_LIMIT_BACKOFF_MS = Number(process.env.HERMES_RATE_LIMIT_BACKOFF_MS || 30_000);
 
 const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
 /**
  * Does this error mean "you are going too fast" rather than "something broke"?
- * Publer answers a quota breach with 429 ("Rate limit exceeded") and, once tripped
+ * The API answers a quota breach with 429 ("Rate limit exceeded") and, once tripped
  * hard, a 403 whose body is an upsell ("Please upgrade to Business to access our
  * API") — the same signal wearing a different status code. Both need tens of
  * seconds to clear, so they get a much longer backoff than a network blip.
@@ -98,9 +95,9 @@ export function isRateLimited(e: unknown): boolean {
 
 /**
  * Run `fn`, retrying a TRANSIENT failure. Used ONLY for idempotent steps — the
- * render, the Publer media import, and the job poll — where a one-off flake used to
+ * render, and the upload — where a one-off flake used to
  * cost the day a whole video (2026-07-24 lost one to a media-import timeout;
- * 2026-07-25 lost two to a Publer rate limit). This never re-runs or softens a GATE:
+ * 2026-07-25 lost two to a rate limit). This never re-runs or softens a GATE:
  * a gate verdict is a decision, not a transient. Post CREATION is deliberately not
  * retried here — a retried create can double-post.
  */
@@ -126,8 +123,8 @@ async function withRetry<T>(label: string, attempts: number, fn: () => Promise<T
 
 /**
  * Per-cycle scheduling context. OFF (default) => draft-only: every video takes the
- * unchanged createDraftOnly path. ARMED (human kickoff) => each platform draft is
- * ALSO scheduled at a policy time (scheduler.ts) via the gated kickoff_schedule.ts.
+ * unchanged draft-only path. ARMED (human kickoff) => each platform draft is
+ * ALSO scheduled at a policy time (scheduler.ts) by the gated loop publish path.
  */
 interface SchedCtx {
   armed: boolean;
@@ -154,7 +151,7 @@ function newRun(runId: string, target: number): RunState {
 
 /**
  * PREPARE phase — every gate plus the render, i.e. everything that can reject or
- * fail a video WITHOUT touching Publer. Ends at status "rendered" (ready to publish)
+ * fail a video WITHOUT touching the board. Ends at status "rendered" (ready to publish)
  * or "rejected". Deliberately does no scheduling: slots can only be spread correctly
  * once the whole batch has been prepared and the surviving count is known.
  */
@@ -164,7 +161,7 @@ async function prepareVideo(v: VideoPlan): Promise<void> {
   // RESUME: a video that already rendered and passed its gates must NOT be re-gated.
   // markUsed() runs BEFORE the render, so its questions are already in the used
   // ledger and the dedup gate below would now reject the video against itself. A
-  // video that died at the PUBLISH step (e.g. a Publer rate limit) therefore has to
+  // video that died at the PUBLISH step (e.g. a rate limit) therefore has to
   // resume at publish, not from the top.
   if (v.renders?.length && v.gates.render?.pass) {
     info(`${v.id} resuming at publish (already rendered + gated)`);
@@ -240,7 +237,7 @@ async function prepareVideo(v: VideoPlan): Promise<void> {
 }
 
 /**
- * PUBLISH phase — upload each platform's render, create its Publer post, annotate
+ * PUBLISH phase — upload each platform's render, create its Metricool draft, annotate
  * the A/B database. `slotIndex` is the video's position among the batch's ACTUAL
  * survivors (not its planned index), which is what keeps a short batch spread across
  * the window instead of clustered at whichever slots its planned indexes happened to
@@ -295,10 +292,12 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
 
   v.media_url = results[0]?.media_url;
   v.status = "uploaded";
-  v.publer = {
-    job_id: results[0]?.job_id,
+  v.metricool = {
     media_id: results[0]?.media_id,
-    post_ids: results.map((r) => r.post_id).filter((x): x is string => Boolean(x)),
+    // Metricool's STABLE planner uuids. The numeric id is reassigned on every update,
+    // so it is deliberately never persisted as a key. uuid is a signed 64-bit int
+    // rendered as a string and can be negative — it stays TEXT everywhere.
+    uuids: results.map((r) => r.post_id).filter((x): x is string => Boolean(x)),
     permalinks: [],
   };
   v.status = "drafted";
@@ -316,39 +315,13 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
   return results;
 }
 
-/** One wave's created posts awaiting a Publer post-id (see backfillPostIds). */
-interface PendingPostId {
-  video: VideoPlan;
-  platform: string;
-  media_id: string;
-}
-
-/**
- * Resolve the Publer post ids for a whole wave with ONE listing.
- *
- * Publer's job_status payload carries no post ids, so they have to be matched back
- * through the (unique per video per platform) media id. Doing that per video cost a
- * paged listing per platform per video — ~140 API calls for a full batch — which is
- * what tripped Publer's rate limit mid-batch on 2026-07-25 (429, then a hard 403)
- * and cost the day its last videos. One listing per wave resolves every id.
- *
- * Strictly best-effort and read-only: the posts already exist, this only enriches
- * the run-state -> Publer link the dashboard joins on.
- */
-async function backfillPostIds(_pending: PendingPostId[], _state: string): Promise<void> {
-  // No-op on Metricool. Publer's job payload carried no post ids, so they had to be
-  // matched back by paging the whole post list — which is what exhausted its quota
-  // mid-batch on 2026-07-25. Metricool returns id AND uuid synchronously from the
-  // create, so there is nothing left to resolve.
-}
-
-/** Point one ab-database row at its resolved Publer post id. */
-function setDbPostId(hermesKey: string, publerPostId: string): void {
+/** Point one ab-database row at its Metricool planner uuid. */
+function setDbPostId(hermesKey: string, metricoolUuid: string): void {
   const db = readJSON<any>(CONFIG.AB_DB, null);
   if (!db || !Array.isArray(db.posts)) return;
   const rec = db.posts.find((p: any) => p._hermes_key === hermesKey);
-  if (!rec || rec.publer_post_id === publerPostId) return;
-  rec.publer_post_id = publerPostId;
+  if (!rec || rec.metricool_uuid === metricoolUuid) return;
+  rec.metricool_uuid = metricoolUuid;
   db.updated_at = new Date().toISOString();
   writeJSONAtomic(CONFIG.AB_DB, db);
 }
@@ -380,19 +353,19 @@ function extractPostIds(payload: any): string[] {
 }
 
 /**
- * Already-scheduled per-platform Publer times (ISO), so a NEW batch can keep the
+ * Already-scheduled per-platform times (ISO), so a NEW batch can keep the
  * per-platform gap vs posts a PREVIOUS cycle ALREADY scheduled — the cross-batch
  * collision-awareness the scheduler needs (scheduler.ts nextSlots `avoid`). Without
  * this, a later batch (e.g. a front-runner replication cycle) only spaces itself
  * WITHIN its own batch and can land minutes from a post the original armed cycle
  * already placed. Read-only (GET via listAllPosts); best-effort — a lookup failure
- * returns empty (no worse than the previous behavior). Publer `account_id` maps to a
+ * returns empty (no worse than the previous behavior). `account_id` maps to a
  * platform via CONFIG.ACCOUNTS so ONLY same-platform times feed each platform's gap.
  */
 /**
  * Build this wave's slot allocator from the LIVE Metricool calendar.
  *
- * Two things this fixes over the Publer version. It asks the posting policy how many
+ * Two things this fixes over the original version. It asks the posting policy how many
  * slots each network may take, so a paused network (TikTok) simply gets none. And it
  * places the batch on the FIRST DAY WITH ROOM rather than allocating forward from
  * "now" — a run fired on a day whose quota is already spent used to stack its whole
@@ -425,13 +398,13 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
   for (const pr of results) {
     const platform = pr.platform;
     const account_id = pr.account_id;
-    const publer_post_id = pr.post_id;
+    const metricool_uuid = pr.post_id;
     const key = `hermes:${v.id}:${platform}`;
     const existing = db.posts.find((p: any) => p._hermes_key === key);
     const rec = existing ?? {};
     Object.assign(rec, {
       _hermes_key: key,
-      publer_post_id,
+      metricool_uuid,
       platform_post_id: null, // drafts have no native id until published
       platform,
       account_id,
@@ -566,26 +539,32 @@ export async function runCycle(): Promise<RunState> {
     state.errors.push("snapshot failed: " + (e instanceof Error ? e.message : String(e)));
   }
 
-  // (a) score
-  try {
-    state.scoring = await pullAndScore();
-    saveRun(state);
-  } catch (e) {
-    warn("scoring step failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
-    state.errors.push("score: " + (e instanceof Error ? e.message : String(e)));
-  }
-
-  // (a2) reconcile — close the A/B learning loop for the agent's OWN posts:
-  // back-fill platform_post_id / permalink / posted_at onto ab-database.json by
-  // matching publer_post_id -> the native post (Publer GET only; local write only;
-  // idempotent). Runs after scoring so each cycle folds in whatever a human has
-  // since published. DRAFT-SAFE: reconcile.ts imports zero publish/schedule paths.
+  // (a1) reconcile — close the A/B learning loop for the agent's OWN posts: back-fill
+  // platform_post_id / permalink / posted_at onto ab-database.json by matching
+  // metricool_uuid -> the published post (Metricool GET only; local write only;
+  // idempotent). DRAFT-SAFE: reconcile.ts imports zero publish/schedule paths.
+  //
+  // This runs BEFORE scoring, which is a deliberate change from the Publer era. Publer's
+  // analytics reported its own post id, so scoring could fall back to it and attach
+  // metrics to a just-published post in the same cycle. Metricool's analytics expose no
+  // planner uuid, so the only join is the native platform_post_id — which is precisely
+  // what reconcile fills in. Scoring first would cost a day of learning on every post a
+  // human published since the last run.
   try {
     (state as any).reconcile = await reconcile();
     saveRun(state);
   } catch (e) {
     warn("reconcile step failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
     state.errors.push("reconcile: " + (e instanceof Error ? e.message : String(e)));
+  }
+
+  // (a2) score
+  try {
+    state.scoring = await pullAndScore();
+    saveRun(state);
+  } catch (e) {
+    warn("scoring step failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+    state.errors.push("score: " + (e instanceof Error ? e.message : String(e)));
   }
 
   // (b) plan wave 1 at the CEILING. Planning the ceiling rather than the floor is
@@ -633,24 +612,23 @@ export async function runCycle(): Promise<RunState> {
     }
     if (ready.length && !DRY) {
       const sched = kickoff.armed ? await armedSchedule(runId, wave, ready.length) : DRAFT_ONLY_SCHED;
-      const pending: PendingPostId[] = [];
       for (let i = 0; i < ready.length; i++) {
         const v = ready[i];
         try {
-          for (const r of await publishVideo(v, sched, i)) {
-            if (!r.post_id) pending.push({ video: v, platform: r.platform, media_id: r.media_id });
-          }
+          // Metricool returns the planner uuid synchronously from the create, so there is
+          // nothing left to resolve afterwards. Publer's job payload carried no post ids,
+          // which is why this used to collect a pending list and page for them.
+          await publishVideo(v, sched, i);
         } catch (e) {
           v.status = "failed";
           v.errors = [...(v.errors ?? []), e instanceof Error ? e.message : String(e)];
           error(`${v.id} FAILED`, { err: v.errors.at(-1) });
         }
         saveRun(state);
-        // Pace the Publer writes. A full batch is ~4 API calls per video back to
+        // Pace the writes. A full batch is ~4 API calls per video back to
         // back; unpaced, that rate-limited the account mid-batch on 2026-07-25.
         if (i + 1 < ready.length) await sleep(PUBLISH_PACE_MS);
       }
-      await backfillPostIds(pending, kickoff.armed ? "scheduled" : "draft");
       saveRun(state);
     } else if (ready.length && DRY) {
       info(`DRY_RUN: ${ready.length} video(s) passed every gate; skipping upload + draft`);

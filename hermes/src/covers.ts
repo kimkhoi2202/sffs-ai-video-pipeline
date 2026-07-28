@@ -88,7 +88,7 @@ export function coverMediaFor(
 }
 
 /**
- * Build the Publer media_object for the video with the branded cover appended as the
+ * Build the media_object for the video with the branded cover appended as the
  * DEFAULT thumbnail (so the post's poster is the branded title card). The video media
  * id is reused unchanged, so the short still cold-opens on Q1. `existingThumbnails` is
  * [] for a freshly-imported media (cover becomes index 0 = default); for a backfill it

@@ -44,9 +44,9 @@ export async function pullAndScore(): Promise<ScoreResult> {
   } catch (e) {
     warn("analytics pull failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
   }
-  // Index by BOTH native post_id and Publer id so the join can fall back to
-  // publer_post_id when platform_post_id is null (the agent's own posts whose
-  // native id has not been reconciled yet). See reconcile.ts.
+  // Index by the network-native post_id. reconcile() runs BEFORE this in cycle.ts, so a
+  // post a human has since published already has its platform_post_id filled in and
+  // joins on the first pass. See reconcile.ts.
   const idx = indexInsights(flat);
 
   const db = readJSON<any>(CONFIG.AB_DB, null);
@@ -141,14 +141,14 @@ export async function pullAndScore(): Promise<ScoreResult> {
     learnings.decisions_log.push({
       date: to,
       decision: `Front-runner variant_family -> ${newFrontFam} (median eng_rate ${famRollup[newFrontFam].median_eng_rate}%, n=${famRollup[newFrontFam].n_with_metrics}).`,
-      rationale: "Recomputed by the Hermes loop from matured Publer analytics.",
+      rationale: "Recomputed by the Hermes loop from matured Metricool analytics.",
       status: "auto",
     });
   }
   learnings.updated_at = new Date().toISOString();
   writeJSONAtomic(CONFIG.LEARNINGS, learnings);
 
-  const note = updated === 0 ? "no matured metrics yet (Publer ~24h lag) — rollups recomputed from existing" : "metrics refreshed";
+  const note = updated === 0 ? "no matured metrics yet (analytics lag ~24h) — rollups recomputed from existing" : "metrics refreshed";
   info("scoring done", { from, to, pulled: flat.length, updated, note });
   return { from, to, pulled: flat.length, updated, note };
 }

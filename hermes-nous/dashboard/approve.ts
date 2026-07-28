@@ -1,10 +1,17 @@
 /**
  * approve.ts — the dashboard's ONLY mutation, deliberately kept as small as it can be.
  *
- * THE THREAT MODEL, stated plainly
- * The dashboard is on a public IP over plain HTTP behind one shared word. So the design
- * assumption is that the password WILL eventually be guessed or sniffed, and the job is
- * to make that outcome boring. Everything below exists to bound the blast radius:
+ * THERE IS NO AUTHENTICATION HERE, BY AN EXPLICIT USER DECISION.
+ * The shared password was removed at the user's request: this is an internal tool on an
+ * obscure URL and they accepted the exposure. What was removed is AUTHENTICATION — "who
+ * are you". What is deliberately NOT removed, and what was always the protection that
+ * actually mattered, is the BLAST RADIUS: what the caller can do once they are in.
+ *
+ * That distinction is the whole security argument, so it is worth stating exactly. A
+ * stranger who finds this URL can approve or reject videos the user was already going to
+ * decide on, and nothing else. They cannot touch the reviewed/published reels on the
+ * calendar, cannot edit a caption or a time, cannot schedule, cannot post content of
+ * their own, and cannot delete anything that is not a soft-deletable unapproved draft:
  *
  *   - Exactly two verbs: approve, reject. There is no delete, no caption edit, no time
  *     edit, no config write, no "post this content" — nothing that accepts caller-supplied
@@ -15,22 +22,12 @@
  *     already on the calendar — those are not drafts, so they are structurally out of reach.
  *   - Reject is a SOFT delete, which Metricool keeps restorable.
  *
- * The worst a stranger can do is approve or reject videos the user was already going to
- * decide on, and every decision is recoverable.
+ * Every decision is recoverable, which is why removing the password is survivable and
+ * why widening any of the bounds above would not be.
  */
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { timingSafeEqual } from "node:crypto";
 
-/** Chosen by the user with the HTTP/guessability tradeoff already explained and accepted. */
-const PASSWORD = process.env.HERMES_APPROVAL_PASSWORD || "alphaaiengineering";
-const MAX_BODY = 2048; // a uuid and a password; anything larger is not a real request.
-
-function constantTimeEq(a: string, b: string): boolean {
-  const ab = Buffer.from(String(a));
-  const bb = Buffer.from(String(b));
-  if (ab.length !== bb.length) return false;
-  return timingSafeEqual(ab, bb);
-}
+const MAX_BODY = 2048; // a single uuid; anything larger is not a real request.
 
 async function readBody(req: IncomingMessage): Promise<Record<string, unknown>> {
   const chunks: Buffer[] = [];
@@ -57,7 +54,8 @@ export interface ApprovalOutcome {
 
 /**
  * Handle one approve/reject request. Pure enough to test directly: `act` is injected so
- * the guardrail suite can exercise the auth and scoping rules without a live account.
+ * the guardrail suite can exercise the scoping rules — the only rules left — against a
+ * stub rather than a live account.
  */
 export async function handleApproval(
   action: "approve" | "reject",
@@ -72,9 +70,6 @@ export async function handleApproval(
     body = await readBody(req);
   } catch {
     return { status: 413, body: { ok: false, reason: "request too large" } };
-  }
-  if (!constantTimeEq(String(body.password ?? ""), PASSWORD)) {
-    return { status: 401, body: { ok: false, reason: "wrong password" } };
   }
   const uuid = String(body.uuid ?? "").trim();
   // A Metricool uuid is a (possibly negative) integer string. Constraining the shape here

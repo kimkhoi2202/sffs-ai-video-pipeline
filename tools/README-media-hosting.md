@@ -1,5 +1,9 @@
 # Media hosting for the SFFS video pipeline (host-swappable)
 
+> **Publer is retired (2026-07-28).** Every mention of Publer below is historical.
+> Posting, the live calendar and analytics all run on Metricool now — see
+> [`docs/hermes/metricool-migration.md`](../docs/hermes/metricool-migration.md).
+
 Rendered shorts are posted via **Publer**, which imports media **by URL only** — it
 cannot take a local file. So every rendered short must live at a **public URL**.
 This directory contains a small, dependency-free uploader that pushes a local file

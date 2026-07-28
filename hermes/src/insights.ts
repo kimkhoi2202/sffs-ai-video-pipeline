@@ -1,13 +1,8 @@
 /**
  * insights.ts — matured post analytics, from Metricool.
  *
- * score.ts used to pull these from Publer, which 403s on every content endpoint, so the
- * loop scored nothing and every rollup it recomputed was built on stale data. That is not
- * cosmetic now: promotion judges on 3-SECOND SKIP RATE, and skip rate only exists here.
- * Publer never exposed it at all.
- *
- * The row shape deliberately matches the old FlatPostInsight so score.ts's join and
- * rollup logic are untouched, with `skip_rate` added as the field promotion reads.
+ * Promotion judges on 3-SECOND SKIP RATE, which is the hook-quality signal the whole
+ * hook experiment is measured on, and it only exists here.
  *
  * INSTAGRAM ONLY, and that is a real limit rather than an oversight: Metricool declares
  * four TikTok watch-time fields and returns null on every row, so TikTok contributes
@@ -21,7 +16,6 @@ import { info, warn } from "./log.ts";
 
 export interface FlatInsight {
   post_id: string;
-  publer_id: string;
   account_id: string;
   network?: string;
   scheduled_at?: string;
@@ -44,7 +38,6 @@ function toFlat(m: McMetrics): FlatInsight {
   const eng = (m.likes ?? 0) + (m.comments ?? 0) + (m.shares ?? 0);
   return {
     post_id: m.platformPostId,
-    publer_id: m.platformPostId, // kept so the existing join key keeps working
     account_id: CONFIG.ACCOUNTS[m.network] ?? "",
     network: m.network,
     scheduled_at: m.publishedAt,

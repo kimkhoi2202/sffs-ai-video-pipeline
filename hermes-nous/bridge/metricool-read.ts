@@ -17,8 +17,8 @@
  * functions, and it never imports a mutating one.
  *
  * Protocol: argv[2] is the subcommand, params arrive as JSON on stdin, and exactly one
- * JSON line goes to stdout. Same contract as publer-read.ts, so data.ts's runReadBridge
- * needs no change beyond which script it spawns.
+ * JSON line goes to stdout. Exit 0 on success, 3 on bad usage. `--dry-run` validates and
+ * echoes the request without touching the network.
  *
  *   scheduled  -> { ok, posts[], as_of }   every post on the calendar in a window
  *   analytics  -> { ok, reels[], as_of }   published IG reel metrics incl. skip rate
@@ -59,11 +59,20 @@ async function main(): Promise<void> {
     /* no params is fine */
   }
   const as_of = new Date().toISOString();
+  // --dry-run proves the read path is wired and its args validate WITHOUT a network
+  // call. Its predecessor (publer-read.ts) had the same flag, so keeping the contract
+  // identical meant the gate harness's bridge matrix did not have to be weakened when
+  // the scheduler changed underneath it.
+  const DRY = process.argv.includes("--dry-run");
 
   try {
     if (sub === "scheduled") {
       const start = naive(params.start, "2026-01-01T00:00:00");
       const end = naive(params.end, "2030-12-31T23:59:59");
+      if (DRY) {
+        process.stdout.write(JSON.stringify({ ok: true, dry_run: true, sub, request: { start, end }, as_of }) + "\n");
+        return;
+      }
       const rows = await listPosts(start, end);
       // Pass through only the fields the dashboard renders. Deliberately narrow: it
       // keeps creator emails and other account metadata out of a public response.
@@ -91,6 +100,10 @@ async function main(): Promise<void> {
     if (sub === "analytics") {
       const from = naive(params.from, "2026-07-01T00:00:00");
       const to = naive(params.to, "2030-12-31T23:59:59");
+      if (DRY) {
+        process.stdout.write(JSON.stringify({ ok: true, dry_run: true, sub, request: { from, to }, as_of }) + "\n");
+        return;
+      }
       const rows = await instagramReels(from, to);
       const reels = rows.map((r) => ({
         platformPostId: r.platformPostId,
@@ -105,7 +118,11 @@ async function main(): Promise<void> {
       return;
     }
 
+    // There is deliberately no write subcommand here. Anything unrecognised is bad
+    // usage and exits 3, which is the code the gate harness asserts on — so a future
+    // `publish` subcommand could not be added without the matrix noticing.
     process.stdout.write(JSON.stringify({ ok: false, error: `unknown subcommand "${sub}"`, as_of }) + "\n");
+    process.exit(3);
   } catch (e) {
     // Never let a token or a full URL escape in an error string.
     const msg = (e instanceof Error ? e.message : String(e)).replace(/[?&](userId|blogId)=[^&\s]*/g, "$1=…").slice(0, 200);

@@ -19,7 +19,7 @@ publish / delete / update path anywhere in its dependency tree, so the Node brid
 (hermes-nous/bridge/render.ts) is physically unable to create, publish, schedule,
 or mutate any post. It produces a LOCAL mp4 only (DRAFT media); uploading it and
 attaching it to a Publer DRAFT are separate, later steps (sffs_upload_s3 /
-sffs_publer_draft). The render sanity check (1080x1920 + audio + duration) is the
+the loop's draft path). The render sanity check (1080x1920 + audio + duration) is the
 job of ``sffs_gates`` mode="render".
 
 GUARD-SAFE ARG NAMING: the args are ``id`` / ``props`` / ``force`` / ``data_dir`` /

@@ -1,37 +1,31 @@
-"""SFFS READ-ONLY data tools — the cycle's analytics/listing inputs.
+"""SFFS READ-ONLY data tool — the cycle's analytics input.
 
-Two tools the A/B loop uses to *reason* about performance, both strictly
-READ-ONLY (they only ever issue GET requests through the Node bridge):
+``sffs_score`` is the analytics reader: it pulls per-post metrics (reach, views,
+likes, comments, shares, engagement, engagement_rate and — Instagram only — the
+3-second skip rate) over a date window, via the Node bridge
+``hermes-nous/bridge/metricool-read.ts``. This is the scoring input the A/B loop
+reasons about performance with.
 
-  * ``sffs_publer_read`` — list connected accounts, or list posts (by state /
-    account / query / page). Wraps hermes/src/publer.ts ``listAccounts`` /
-    ``listPosts`` / ``listAllPosts``.
-  * ``sffs_score`` — the analytics reader: pull per-post metrics (reach, views,
-    likes, comments, shares, saves, engagement, engagement_rate) from Publer
-    ``post_insights`` over a date window. Wraps ``getPostInsights`` +
-    ``flattenPostInsights``. This is the scoring input the loop uses.
+It is strictly READ-ONLY: the bridge imports ONLY GET primitives, so no
+create / schedule / publish / delete / update path is reachable from here. It
+complements the do-not-touch reads (donottouch.py) and the framework-layer
+publish guard (publish_guard.py).
 
-Neither imports or can reach any create / schedule / publish / delete / update
-path — the Node bridge (hermes-nous/bridge/publer-read.ts) imports ONLY read
-functions. They complement the write-side belt (draft_guard.py), the do-not-touch
-reads (donottouch.py), and the framework-layer publish guard (publish_guard.py).
+WHAT USED TO BE HERE. A second tool, ``sffs_publer_read``, listed connected
+accounts and posts straight off Publer. Publer answers HTTP 403 on every content
+endpoint now ("Please upgrade to Business to access our API"), so that tool could
+only ever fail; it and its bridge were removed with the rest of the Publer path.
+The live calendar is read through the Metricool bridge's ``scheduled``
+subcommand, which the dashboard already owns — there is no reason for a second
+listing tool here.
 
-DELIBERATE ARG-NAMING SAFETY: the post-state filter is exposed as ``state_filter``
-(not ``state``). The ``pre_tool_call`` publish guard refuses a live/scheduled/
-published VALUE under a state-like KEY (``state`` / ``post_state`` / ``post_status``)
-on a posting-named tool — and ``sffs_publer_read`` is posting-named ("publer").
-Naming the read filter ``state_filter`` (which normalizes to ``statefilter``, not a
-state key) lets the agent legitimately LIST published/scheduled posts WITHOUT
-tripping the write guard and WITHOUT weakening it. See tests/test_reads.py, which
-locks this in so a rename back to ``state`` would go red.
-
-Running LIVE needs PUBLER_API_KEY + PUBLER_WORKSPACE_ID (in $HERMES_HOME/.env).
-``dry_run=True`` makes NO network call, so both tools are testable without keys or
-network (the handler short-circuits before the bridge — see the tests).
+Running LIVE needs METRICOOL_USER_TOKEN + METRICOOL_USER_ID + METRICOOL_BLOG_ID
+(in $HERMES_HOME/.env or /etc/hermes/hermes.env). ``dry_run=True`` makes NO
+network call, so the tool is testable without keys or network (the handler
+short-circuits before the bridge — see the tests).
 
 Kept stdlib-only and free of intra-package imports so the pure arg-guards can be
-imported directly by the hermetic test suite (mirrors draft_guard.py /
-donottouch.py).
+imported directly by the hermetic test suite (mirrors donottouch.py).
 """
 
 from __future__ import annotations
@@ -47,31 +41,8 @@ from typing import Any, Dict, Optional, Tuple
 
 
 class ReadGuardError(ValueError):
-    """Raised for a malformed read/score argument (converted to an error result)."""
+    """Raised for a malformed score argument (converted to an error result)."""
 
-
-# Post states the read tool will filter by (Publer list states). Kept tight; the
-# value is a GET filter only (never a state to *set* on a post).
-_READ_STATES = frozenset({"draft", "scheduled", "published"})
-
-# Allowed post_insights sort keys (Publer analytics API); a wrong value would only
-# yield a Publer 4xx, so we constrain it for a clear up-front error message.
-_SORT_BY = frozenset(
-    {
-        "reach",
-        "engagement",
-        "engagement_rate",
-        "likes",
-        "video_views",
-        "comments",
-        "shares",
-        "saves",
-        "link_clicks",
-        "post_clicks",
-        "scheduled_at",
-        "postType",
-    }
-)
 
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -79,83 +50,23 @@ _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 # ---------------------------------------------------------------------------
 # Pure arg-guards (no network, no subprocess) — the hermetically testable core
 # ---------------------------------------------------------------------------
-def _pos_int(value: Any, label: str, *, allow_zero: bool) -> int:
-    """Validate a (non-negative | positive) integer, rejecting bools."""
-    if isinstance(value, bool) or not isinstance(value, int):
-        raise ReadGuardError(f"{label} must be an integer")
-    if value < 0 or (not allow_zero and value == 0):
-        raise ReadGuardError(f"{label} must be a {'non-negative' if allow_zero else 'positive'} integer")
-    return value
-
-
 def _string_list(value: Any, label: str) -> list:
     if not isinstance(value, list) or not all(isinstance(a, str) and a.strip() for a in value):
         raise ReadGuardError(f"{label} must be a list of non-empty strings")
     return list(value)
 
 
-def build_read_request(args: Dict[str, Any]) -> Dict[str, Any]:
-    """Validate + normalize a ``sffs_publer_read`` request. Pure.
-
-    Returns ``{"sub": "accounts"|"posts", "params": <stdin dict|None>}``. The
-    ``params`` dict uses the bridge's OWN field names (e.g. ``state``) — those go
-    on the Node bridge's stdin and are NEVER seen by the framework's publish guard
-    (which only inspects the TOOL args). Raises :class:`ReadGuardError` on any bad
-    input.
-    """
-    if not isinstance(args, dict):
-        raise ReadGuardError("args must be a JSON object")
-
-    what = args.get("what", "accounts")
-    if what not in ("accounts", "posts"):
-        raise ReadGuardError("'what' must be 'accounts' or 'posts'")
-
-    if what == "accounts":
-        return {"sub": "accounts", "params": None}
-
-    params: Dict[str, Any] = {}
-
-    state = args.get("state_filter")
-    if state is not None:
-        if not isinstance(state, str) or not state.strip():
-            raise ReadGuardError("state_filter must be a non-empty string")
-        s = state.strip().lower()
-        if s not in _READ_STATES:
-            raise ReadGuardError(f"state_filter must be one of {sorted(_READ_STATES)}")
-        params["state"] = s
-
-    if args.get("page") is not None:
-        params["page"] = _pos_int(args.get("page"), "page", allow_zero=True)
-
-    if args.get("account_ids") is not None:
-        params["account_ids"] = _string_list(args.get("account_ids"), "account_ids")
-
-    query = args.get("query")
-    if query is not None:
-        if not isinstance(query, str):
-            raise ReadGuardError("query must be a string")
-        if query.strip():
-            params["query"] = query.strip()
-
-    all_pages = args.get("all_pages")
-    if all_pages is not None:
-        if not isinstance(all_pages, bool):
-            raise ReadGuardError("all_pages must be a boolean")
-        if all_pages:
-            params["all"] = True
-
-    if args.get("max_pages") is not None:
-        params["max_pages"] = _pos_int(args.get("max_pages"), "max_pages", allow_zero=False)
-
-    return {"sub": "posts", "params": params}
-
-
 def build_score_request(args: Dict[str, Any]) -> Dict[str, Any]:
     """Validate + normalize a ``sffs_score`` request. Pure.
 
-    Returns the params dict for the bridge's ``insights`` subcommand. ``from`` /
+    Returns the params dict for the bridge's ``analytics`` subcommand. ``from`` /
     ``to`` are validated (YYYY-MM-DD) when present; the handler fills a default
     window when they are absent. Raises :class:`ReadGuardError` on any bad input.
+
+    Metricool returns the whole brand's rows in one call, so there is no paging and
+    no sort parameter to pass through — the Publer-era ``sort_by`` / ``sort_type`` /
+    ``max_pages`` arguments were dropped rather than silently ignored, which would
+    have let a caller believe it had asked for something it had not.
     """
     if not isinstance(args, dict):
         raise ReadGuardError("args must be a JSON object")
@@ -172,22 +83,6 @@ def build_score_request(args: Dict[str, Any]) -> Dict[str, Any]:
     if args.get("account_ids") is not None:
         params["account_ids"] = _string_list(args.get("account_ids"), "account_ids")
 
-    sort_by = args.get("sort_by")
-    if sort_by is not None:
-        if not isinstance(sort_by, str) or sort_by.strip() not in _SORT_BY:
-            raise ReadGuardError(f"sort_by must be one of {sorted(_SORT_BY)}")
-        params["sort_by"] = sort_by.strip()
-
-    sort_type = args.get("sort_type")
-    if sort_type is not None:
-        st = sort_type.strip().upper() if isinstance(sort_type, str) else sort_type
-        if st not in ("ASC", "DESC"):
-            raise ReadGuardError("sort_type must be 'ASC' or 'DESC'")
-        params["sort_type"] = st
-
-    if args.get("max_pages") is not None:
-        params["max_pages"] = _pos_int(args.get("max_pages"), "max_pages", allow_zero=False)
-
     return params
 
 
@@ -199,7 +94,7 @@ def default_window(days: int = 30) -> Tuple[str, str]:
 
 
 # ---------------------------------------------------------------------------
-# Node bridge plumbing (mirrors donottouch.py — read-only entry publer-read.ts)
+# Node bridge plumbing (mirrors donottouch.py — read-only entry metricool-read.ts)
 # ---------------------------------------------------------------------------
 def _repo_dir() -> Path:
     """Absolute path to the pipeline repo root (symlink-safe via resolve()).
@@ -213,7 +108,7 @@ def _repo_dir() -> Path:
 
 
 def _bridge_entry() -> Path:
-    return _repo_dir() / "hermes-nous" / "bridge" / "publer-read.ts"
+    return _repo_dir() / "hermes-nous" / "bridge" / "metricool-read.ts"
 
 
 def _parse_last_json(stdout: str) -> Optional[Dict[str, Any]]:
@@ -235,11 +130,11 @@ def _parse_last_json(stdout: str) -> Optional[Dict[str, Any]]:
 
 
 def _bridge_env() -> Dict[str, str]:
-    """Env for the Node bridge — ensures it can find the Publer keys.
+    """Env for the Node bridge — ensures it can find the Metricool credentials.
 
     config.ts loads ``HERMES_ENV_FILE`` (default /home/ec2-user/hermes.env, absent
     here). Under the isolated HERMES_HOME we point it at ``$HERMES_HOME/.env``
-    (gitignored, holds PUBLER_*) so a live read works without exporting keys first.
+    (gitignored, holds METRICOOL_*) so a live read works without exporting keys first.
     """
     env = os.environ.copy()
     if not env.get("HERMES_ENV_FILE"):
@@ -258,7 +153,7 @@ def run_node_bridge(
     dry_run: bool,
     timeout: int = 120,
 ) -> Dict[str, Any]:
-    """Shell out to the READ-ONLY Node bridge (``accounts`` | ``posts`` | ``insights``).
+    """Shell out to the READ-ONLY Node bridge (``scheduled`` | ``analytics``).
 
     Raises :class:`ReadGuardError` on any failure so the handler can convert it to
     a result. ``dry_run=True`` runs the bridge network-free.
@@ -298,50 +193,14 @@ def run_node_bridge(
 
 
 # ---------------------------------------------------------------------------
-# Tool handlers (Hermes contract: return a JSON string; NEVER raise)
+# Tool handler (Hermes contract: return a JSON string; NEVER raise)
 # ---------------------------------------------------------------------------
-def sffs_publer_read(args: Dict[str, Any], **kwargs: Any) -> str:
-    """Hermes tool handler: list Publer accounts, or list posts. READ-ONLY.
-
-    ``dry_run=True`` makes NO network call. Always returns a JSON string; never
-    raises.
-    """
-    try:
-        req = build_read_request(args if isinstance(args, dict) else {})
-    except ReadGuardError as exc:
-        return json.dumps({"ok": False, "error": str(exc)})
-    except Exception as exc:
-        return json.dumps({"ok": False, "error": f"invalid args: {exc}"})
-
-    dry_run = bool(args.get("dry_run", False)) if isinstance(args, dict) else False
-    if dry_run:
-        return json.dumps(
-            {
-                "ok": True,
-                "dry_run": True,
-                "what": req["sub"],
-                "request": req["params"] or {},
-                "note": "dry-run made no network call",
-            }
-        )
-
-    try:
-        result = run_node_bridge(req["sub"], req["params"], dry_run=False)
-    except Exception as exc:
-        return json.dumps({"ok": False, "error": str(exc)})
-    if not isinstance(result, dict):
-        return json.dumps({"ok": False, "error": "bridge returned a non-object result"})
-    result.setdefault("ok", True)
-    return json.dumps(result)
-
-
 def sffs_score(args: Dict[str, Any], **kwargs: Any) -> str:
     """Hermes tool handler: read per-post analytics (the scoring input). READ-ONLY.
 
-    Pulls Publer ``post_insights`` for the SFFS accounts over ``from``..``to``
-    (defaults to the last 30 days) and returns flattened per-post metrics.
-    ``dry_run=True`` makes NO network call. Always returns a JSON string; never
-    raises.
+    Pulls Metricool analytics for the SFFS brand over ``from``..``to`` (defaults to
+    the last 30 days) and returns per-post metrics. ``dry_run=True`` makes NO
+    network call. Always returns a JSON string; never raises.
     """
     a = args if isinstance(args, dict) else {}
     try:
@@ -370,7 +229,7 @@ def sffs_score(args: Dict[str, Any], **kwargs: Any) -> str:
         )
 
     try:
-        result = run_node_bridge("insights", req, dry_run=False, timeout=180)
+        result = run_node_bridge("analytics", req, dry_run=False, timeout=180)
     except Exception as exc:
         return json.dumps({"ok": False, "error": str(exc)})
     if not isinstance(result, dict):

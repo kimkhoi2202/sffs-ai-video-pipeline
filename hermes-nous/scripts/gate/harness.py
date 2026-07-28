@@ -10,8 +10,8 @@ a single machine-readable **GREEN / RED** verdict. Three legs:
      here. (The gate's own tests under ``tests/e2e/`` are deliberately excluded
      from this leg — they *test the harness*, so running them here would be
      circular; they run under the normal ``pytest hermes-nous/tests`` collection.)
-  2. **Node bridge dry-run matrix** — actually executes the three Node bridges
-     (``publer-draft`` / ``donottouch`` / ``publer-read``) in ``--dry-run`` mode
+  2. **Node bridge dry-run matrix** — actually executes the Node bridges
+     (``donottouch`` / ``metricool-read``) in ``--dry-run`` mode
      across a matrix that proves they run network-free AND that the Node layer
      REFUSES publishing/scheduling (draft-only) and exposes no publish/schedule/
      delete subcommand.
@@ -106,40 +106,9 @@ def run_pytest(tests_dir: Path = TESTS_DIR, *, repo_dir: Path = REPO_DIR) -> Dic
 # bad-usage · 4 do-not-touch violation.
 def _node_matrix() -> Tuple[Dict[str, Any], ...]:
     return (
-        # publer-draft: valid draft dry-run -> ok, state=draft, no network
-        {
-            "label": "draft valid (dry-run)", "bridge": "publer-draft.ts", "argv": ["--dry-run"],
-            "stdin": json.dumps({"account_ids": ["a"], "text": "hi"}), "exit": 0,
-            "want": lambda o: o.get("ok") is True and o.get("state") == "draft" and o.get("dry_run") is True,
-        },
-        # publer-draft: scheduling -> REFUSED at the Node layer (exit 3)
-        {
-            "label": "draft scheduled_at REFUSED", "bridge": "publer-draft.ts", "argv": ["--dry-run"],
-            "stdin": json.dumps({"account_ids": ["a"], "text": "hi", "scheduled_at": "2026-08-01T00:00:00Z"}),
-            "exit": 3, "want": None,
-        },
-        # publer-draft: non-draft state -> REFUSED at the Node layer (exit 3)
-        {
-            "label": "draft state=published REFUSED", "bridge": "publer-draft.ts", "argv": ["--dry-run"],
-            "stdin": json.dumps({"account_ids": ["a"], "text": "hi", "state": "published"}), "exit": 3, "want": None,
-        },
-        # publer-draft: defense-in-depth — even a stray publish flag is FORCED to a
-        # draft by the Node layer (state=="draft", no publish/scheduled_at leaks
-        # into the payload). The Python belt + framework hook refuse it earlier;
-        # this proves the Node layer can still never emit a non-draft.
-        {
-            "label": "draft forces state=draft despite stray publish flag", "bridge": "publer-draft.ts",
-            "argv": ["--dry-run"], "stdin": json.dumps({"account_ids": ["a"], "text": "hi", "publish": True}),
-            "exit": 0,
-            "want": lambda o: (
-                o.get("ok") is True
-                and o.get("state") == "draft"
-                and isinstance(o.get("payload"), dict)
-                and o["payload"].get("state") == "draft"
-                and "publish" not in o["payload"]
-                and "scheduled_at" not in o["payload"]
-            ),
-        },
+        # NOTE: the Publer draft bridge used to head this matrix. Publer is retired and
+        # the loop's draft guarantee now lives at the platform level (Metricool
+        # draft:true / autoPublish:false), asserted in hermes/src/publishGate.test.ts.
         # donottouch: snapshot dry-run -> ok, no network
         {
             "label": "donottouch snapshot (dry-run)", "bridge": "donottouch.ts", "argv": ["snapshot", "--dry-run"],
@@ -161,26 +130,37 @@ def _node_matrix() -> Tuple[Dict[str, Any], ...]:
             "label": "donottouch has no publish subcommand", "bridge": "donottouch.ts", "argv": ["publish", "--dry-run"],
             "stdin": None, "exit": 3, "want": None,
         },
-        # publer-read: accounts dry-run -> ok, no network
+        # metricool-read: scheduled dry-run -> ok, no network
         {
-            "label": "read accounts (dry-run)", "bridge": "publer-read.ts", "argv": ["accounts", "--dry-run"],
+            "label": "read scheduled (dry-run)", "bridge": "metricool-read.ts", "argv": ["scheduled", "--dry-run"],
             "stdin": None, "exit": 0, "want": lambda o: o.get("ok") is True and o.get("dry_run") is True,
         },
-        # publer-read: posts dry-run echoes the validated request
+        # metricool-read: analytics dry-run echoes the validated window
         {
-            "label": "read posts (dry-run)", "bridge": "publer-read.ts", "argv": ["posts", "--dry-run"],
-            "stdin": json.dumps({"state": "published"}), "exit": 0,
-            "want": lambda o: o.get("ok") is True and o.get("dry_run") is True,
-        },
-        # publer-read: insights dry-run with from/to
-        {
-            "label": "read insights (dry-run)", "bridge": "publer-read.ts", "argv": ["insights", "--dry-run"],
+            "label": "read analytics (dry-run)", "bridge": "metricool-read.ts", "argv": ["analytics", "--dry-run"],
             "stdin": json.dumps({"from": "2026-06-01", "to": "2026-07-01"}), "exit": 0,
             "want": lambda o: o.get("ok") is True and o.get("dry_run") is True,
         },
-        # publer-read: no write/publish subcommand (proves read-only surface)
+        # metricool-read: an explicit window is echoed back validated
         {
-            "label": "read has no publish subcommand", "bridge": "publer-read.ts", "argv": ["publish", "--dry-run"],
+            "label": "read scheduled explicit window (dry-run)", "bridge": "metricool-read.ts",
+            "argv": ["scheduled", "--dry-run"], "stdin": json.dumps({"start": "2026-07-01", "end": "2026-07-31"}),
+            "exit": 0,
+            "want": lambda o: o.get("ok") is True and o.get("request", {}).get("start", "").startswith("2026-07-01"),
+        },
+        # metricool-read: no write/publish subcommand (proves read-only surface)
+        {
+            "label": "read has no publish subcommand", "bridge": "metricool-read.ts", "argv": ["publish", "--dry-run"],
+            "stdin": None, "exit": 3, "want": None,
+        },
+        # metricool-read: nor a delete one — the whole surface is read-only
+        {
+            "label": "read has no delete subcommand", "bridge": "metricool-read.ts", "argv": ["delete", "--dry-run"],
+            "stdin": None, "exit": 3, "want": None,
+        },
+        # metricool-read: nor a schedule one
+        {
+            "label": "read has no schedule subcommand", "bridge": "metricool-read.ts", "argv": ["schedule", "--dry-run"],
             "stdin": None, "exit": 3, "want": None,
         },
     )

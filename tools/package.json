@@ -2,5 +2,5 @@
   "name": "sffs-tools",
   "private": true,
   "type": "module",
-  "description": "Dependency-light pipeline tools (Node built-ins + global fetch only): media upload + Publer posting."
+  "description": "Dependency-light pipeline tools (Node built-ins + global fetch only): media upload. Posting lives in hermes/src/metricool.ts."
 }

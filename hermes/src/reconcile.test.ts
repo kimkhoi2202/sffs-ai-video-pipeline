@@ -1,11 +1,11 @@
 /**
  * reconcile.test.ts — the PURE core of the A/B learning-loop reconciler (P0):
- *   - nativeRefsFromInsights / nativeRefsFromRawPosts extraction
+ *   - normalizePermalink canonicalisation (the join key both Metricool APIs share)
+ *   - nativeRefsFromBoard: planner published posts joined to analytics on permalink
  *   - indexRefs first-non-null-wins merge
  *   - backfillAbPosts: fills empty fields, IDEMPOTENT, never overwrites, matches
- *     only on publer_post_id
- *   - indexInsights + matchInsight: native join with a publer_post_id FALLBACK
- *     when platform_post_id is null (the score.ts join fix)
+ *     only on metricool_uuid
+ *   - indexInsights + matchInsight: the native platform_post_id join score.ts uses
  *
  * Hermetic: points config at a tmp dir BEFORE importing the module and calls only
  * the pure (network-free) functions — reconcile() itself (the live orchestrator)
@@ -25,8 +25,8 @@ process.env.HERMES_DATA_DIR = TMP;
 const {
   idStr,
   isEmptyField,
-  nativeRefsFromInsights,
-  nativeRefsFromRawPosts,
+  normalizePermalink,
+  nativeRefsFromBoard,
   indexRefs,
   backfillAbPosts,
   indexInsights,
@@ -49,69 +49,85 @@ test("isEmptyField true for null/undefined/blank only", () => {
   assert.equal(isEmptyField(0), false); // a real value
 });
 
-test("nativeRefsFromInsights maps documented fields + skips empty publer_id", () => {
-  const flat: any[] = [
-    { publer_id: "P1", post_id: "NATIVE1", post_link: "https://t/1", scheduled_at: "2026-07-01T00:00:00Z", network: "tiktok", account_id: "acc" },
-    { publer_id: "", post_id: "X", post_link: "y" }, // skipped (no publer id)
-    { publer_id: "P2", post_id: "", post_link: "", scheduled_at: "" }, // nulls for blanks
-  ];
-  const refs = nativeRefsFromInsights(flat);
-  assert.equal(refs.length, 2);
-  assert.deepEqual(refs[0], {
-    publer_id: "P1",
-    platform_post_id: "NATIVE1",
-    permalink: "https://t/1",
-    posted_at: "2026-07-01T00:00:00Z",
-    network: "tiktok",
-    account_id: "acc",
-  });
-  assert.equal(refs[1].platform_post_id, null);
-  assert.equal(refs[1].permalink, null);
-  assert.equal(refs[1].posted_at, null);
+test("normalizePermalink strips trailing slash, query and case", () => {
+  assert.equal(
+    normalizePermalink("https://www.instagram.com/reel/ABC/"),
+    normalizePermalink("https://www.instagram.com/reel/ABC"),
+  );
+  assert.equal(
+    normalizePermalink("https://www.instagram.com/reel/ABC?igsh=x"),
+    "https://www.instagram.com/reel/abc",
+  );
+  assert.equal(normalizePermalink(null), "");
+  assert.equal(normalizePermalink("  "), "");
 });
 
-test("nativeRefsFromRawPosts digs candidate keys + skips no-id", () => {
-  const raw: any[] = [
-    { id: "P1", post_id: "N1", url: "https://u/1", posted_at: "2026-07-02T00:00:00Z", provider: "instagram", account_id: "acc" },
-    { _id: "P2", external_id: "N2", permalink: "https://u/2", published_at: "2026-07-03" },
-    { nope: 1 }, // skipped (no id)
+test("nativeRefsFromBoard joins published planner posts to analytics on permalink", () => {
+  const board: any[] = [
+    {
+      uuid: "-6297496666514044627", // negative uuid: must survive as TEXT
+      publicationDate: { dateTime: "2026-07-27T22:00:00" },
+      providers: [{ network: "instagram", status: "PUBLISHED", publicUrl: "https://www.instagram.com/reel/AAA/" }],
+    },
+    {
+      uuid: "222",
+      publicationDate: { dateTime: "2026-07-28T10:00:00" },
+      // published, but analytics has not caught up yet -> ref with no native id
+      providers: [{ network: "tiktok", status: "PUBLISHED", publicUrl: "https://www.tiktok.com/@x/video/BBB" }],
+    },
+    {
+      uuid: "333",
+      providers: [{ network: "instagram", status: "PENDING", publicUrl: null }], // not published -> skipped
+    },
+    { uuid: "", providers: [{ status: "PUBLISHED", publicUrl: "https://x/1" }] }, // no uuid -> skipped
   ];
-  const refs = nativeRefsFromRawPosts(raw);
+  const insights: any[] = [
+    { post_id: "NATIVE_A", post_link: "https://www.instagram.com/reel/AAA", network: "instagram" },
+  ];
+  const refs = nativeRefsFromBoard(board, insights);
   assert.equal(refs.length, 2);
-  assert.equal(refs[0].publer_id, "P1");
-  assert.equal(refs[0].platform_post_id, "N1");
-  assert.equal(refs[0].permalink, "https://u/1");
-  assert.equal(refs[0].posted_at, "2026-07-02T00:00:00Z");
-  assert.equal(refs[1].publer_id, "P2");
-  assert.equal(refs[1].platform_post_id, "N2");
-  assert.equal(refs[1].posted_at, "2026-07-03");
+
+  assert.equal(refs[0].metricool_uuid, "-6297496666514044627");
+  assert.equal(refs[0].platform_post_id, "NATIVE_A"); // matched despite the trailing slash
+  assert.equal(refs[0].permalink, "https://www.instagram.com/reel/AAA/");
+  assert.equal(refs[0].posted_at, "2026-07-27T22:00:00");
+  assert.equal(refs[0].network, "instagram");
+
+  assert.equal(refs[1].metricool_uuid, "222");
+  assert.equal(refs[1].platform_post_id, null); // no analytics row yet
+  assert.equal(refs[1].posted_at, "2026-07-28T10:00:00");
 });
 
 test("indexRefs merges first-non-null-wins per field", () => {
-  const insights = [{ publer_id: "P1", platform_post_id: "N1", permalink: "L1", posted_at: null, network: "tiktok", account_id: null }];
-  const published = [{ publer_id: "P1", platform_post_id: "IGNORED", permalink: null, posted_at: "2026-07-04", network: null, account_id: "acc" }];
-  const idx = indexRefs([insights, published]);
-  const r = idx.get("P1")!;
-  assert.equal(r.platform_post_id, "N1"); // insights won (first)
+  const primary = [
+    { metricool_uuid: "U1", platform_post_id: "N1", permalink: "L1", posted_at: null, network: "tiktok", account_id: null },
+  ];
+  const filler = [
+    { metricool_uuid: "U1", platform_post_id: "IGNORED", permalink: null, posted_at: "2026-07-04", network: null, account_id: "acc" },
+  ];
+  const idx = indexRefs([primary, filler]);
+  const r = idx.get("U1")!;
+  assert.equal(r.platform_post_id, "N1"); // primary won (first)
   assert.equal(r.permalink, "L1");
-  assert.equal(r.posted_at, "2026-07-04"); // filled from published (insights had null)
-  assert.equal(r.account_id, "acc"); // filled from published
+  assert.equal(r.posted_at, "2026-07-04"); // filled from the gap-filler
+  assert.equal(r.account_id, "acc");
 });
 
-test("backfillAbPosts fills empty fields, matches only on publer_post_id", () => {
+test("backfillAbPosts fills empty fields, matches only on metricool_uuid", () => {
   const posts: any[] = [
-    { publer_post_id: "P1", platform_post_id: null, permalink: null, posted_at: null },
-    { publer_post_id: 42, platform_post_id: "ALREADY", permalink: "keep", posted_at: null }, // numeric id + partial
-    { publer_post_id: "P9" }, // no matching ref
-    { platform_post_id: "N" }, // no publer id -> never matched
+    { metricool_uuid: "U1", platform_post_id: null, permalink: null, posted_at: null },
+    { metricool_uuid: "-42", platform_post_id: "ALREADY", permalink: "keep", posted_at: null }, // negative uuid + partial
+    { metricool_uuid: "U9" }, // no matching ref
+    { platform_post_id: "N" }, // no uuid -> never matched
+    { metricool_uuid: null, legacy_publer_post_id: "6a5ff4e8324fde90b165a22e" }, // legacy row -> never matched
   ];
   const idx = indexRefs([[
-    { publer_id: "P1", platform_post_id: "N1", permalink: "https://l/1", posted_at: "2026-07-01", network: null, account_id: null },
-    { publer_id: "42", platform_post_id: "N42", permalink: "https://l/42", posted_at: "2026-07-02", network: null, account_id: null },
+    { metricool_uuid: "U1", platform_post_id: "N1", permalink: "https://l/1", posted_at: "2026-07-01", network: null, account_id: null },
+    { metricool_uuid: "-42", platform_post_id: "N42", permalink: "https://l/42", posted_at: "2026-07-02", network: null, account_id: null },
   ]]);
   const res = backfillAbPosts(posts, idx);
-  assert.equal(res.records, 4);
-  assert.equal(res.matched, 2); // P1 + 42
+  assert.equal(res.records, 5);
+  assert.equal(res.matched, 2); // U1 + -42
   assert.equal(res.records_changed, 2);
   assert.equal(posts[0].platform_post_id, "N1");
   assert.equal(posts[0].permalink, "https://l/1");
@@ -123,11 +139,13 @@ test("backfillAbPosts fills empty fields, matches only on publer_post_id", () =>
   assert.equal(res.filled.platform_post_id, 1);
   assert.equal(res.filled.permalink, 1);
   assert.equal(res.filled.posted_at, 2);
+  // a legacy Publer-era row is untouched, never dropped
+  assert.equal(posts[4].legacy_publer_post_id, "6a5ff4e8324fde90b165a22e");
 });
 
 test("backfillAbPosts is IDEMPOTENT (second run changes nothing)", () => {
-  const posts: any[] = [{ publer_post_id: "P1", platform_post_id: null, permalink: null, posted_at: null }];
-  const idx = indexRefs([[{ publer_id: "P1", platform_post_id: "N1", permalink: "L", posted_at: "T", network: null, account_id: null }]]);
+  const posts: any[] = [{ metricool_uuid: "U1", platform_post_id: null, permalink: null, posted_at: null }];
+  const idx = indexRefs([[{ metricool_uuid: "U1", platform_post_id: "N1", permalink: "L", posted_at: "T", network: null, account_id: null }]]);
   const first = backfillAbPosts(posts, idx);
   assert.equal(first.records_changed, 1);
   const second = backfillAbPosts(posts, idx);
@@ -136,20 +154,15 @@ test("backfillAbPosts is IDEMPOTENT (second run changes nothing)", () => {
   assert.equal(second.filled.platform_post_id, 0);
 });
 
-test("matchInsight joins on platform_post_id, falls back to publer_post_id when null", () => {
+test("matchInsight joins on platform_post_id and nothing else", () => {
   const flat: any[] = [
-    { publer_id: "P1", post_id: "N1", reach: 1 },
-    { publer_id: "P2", post_id: "", reach: 2 }, // agent's own post: only a publer id
+    { post_id: "N1", reach: 1 },
+    { post_id: "N2", reach: 2 },
   ];
   const idx = indexInsights(flat);
-  // native id present + found -> native join
-  assert.equal(matchInsight({ platform_post_id: "N1", publer_post_id: "P1" }, idx)?.reach, 1);
-  // native id present but NOT found -> no fallback (platform_post_id is not null)
-  assert.equal(matchInsight({ platform_post_id: "UNKNOWN", publer_post_id: "P1" }, idx), undefined);
-  // native id null -> fall back to publer_post_id
-  assert.equal(matchInsight({ platform_post_id: null, publer_post_id: "P2" }, idx)?.reach, 2);
-  // native id null + publer id unknown -> undefined
-  assert.equal(matchInsight({ platform_post_id: null, publer_post_id: "NOPE" }, idx), undefined);
-  // neither id -> undefined
+  assert.equal(matchInsight({ platform_post_id: "N1" }, idx)?.reach, 1);
+  assert.equal(matchInsight({ platform_post_id: "UNKNOWN" }, idx), undefined);
+  // a record still awaiting reconcile has no native id, so it simply does not join
+  assert.equal(matchInsight({ platform_post_id: null, metricool_uuid: "U9" }, idx), undefined);
   assert.equal(matchInsight({}, idx), undefined);
 });

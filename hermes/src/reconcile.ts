@@ -1,36 +1,42 @@
 /**
  * reconcile.ts — close the A/B LEARNING LOOP for the agent's OWN posts.
  *
- * The loop creates Publer DRAFTS and records each in ab-database.json with a
- * `publer_post_id` (Publer's internal id) but a NULL `platform_post_id` (the
- * network-native TikTok video id / Instagram media id), a null `permalink`, and
- * no `posted_at` — those only exist once a human PUBLISHES the draft. Until they
- * are back-filled, scoring (which joins matured analytics onto ab-database by
- * `platform_post_id`) can never attach metrics to the agent's own posts, so the
- * agent cannot learn from them.
+ * The loop creates Metricool DRAFTS and records each in ab-database.json with a
+ * `metricool_uuid` (Metricool's stable planner id) but a NULL `platform_post_id`
+ * (the network-native TikTok video id / Instagram media id), a null `permalink` and
+ * no `posted_at` — those only exist once a human APPROVES the draft and it actually
+ * goes out. Until they are back-filled, scoring (which joins matured analytics onto
+ * ab-database by `platform_post_id`) can never attach metrics to the agent's own
+ * posts, so the agent cannot learn from them.
+ *
+ * THE JOIN, AND WHY IT LOOKS LIKE THIS
+ *
+ * Metricool splits the two halves of a post across two APIs that share no id:
+ *   - the PLANNER (`listPosts`) knows `uuid` and, once published, the provider's
+ *     `publicUrl` — but never the native post id;
+ *   - ANALYTICS (`insights.ts`) knows the native `post_id` and the post's `url` —
+ *     but never the planner uuid.
+ * The permalink is the only field both sides carry, so it is the join key:
+ *   ab-database.metricool_uuid -> planner.publicUrl == analytics.url -> post_id.
+ *
+ * `uuid` is a signed 64-bit integer rendered as a string and CAN BE NEGATIVE, so it
+ * is compared and stored as TEXT throughout. The numeric `id` is reassigned on every
+ * update, so it is deliberately never persisted as a join key.
  *
  * This module does two things:
- *   1. `reconcile()` — read Publer (analytics + the published-post list, GET only)
- *      and back-fill `platform_post_id` / `permalink` / `posted_at` onto each
- *      ab-database record by matching on `publer_post_id`. IDEMPOTENT (fills a
- *      field only when it is currently empty) and DRAFT-SAFE (read + local JSON
- *      write only — it imports ZERO create/schedule/publish/delete/update paths).
- *   2. the pure `indexInsights` / `matchInsight` helpers score.ts uses so the
- *      metrics join can FALL BACK to `publer_post_id` when `platform_post_id`
- *      is null (the agent's freshly-published posts, before/without reconcile).
+ *   1. `reconcile()` — read Metricool (planner + analytics, GET only) and back-fill
+ *      `platform_post_id` / `permalink` / `posted_at` onto each ab-database record by
+ *      matching on `metricool_uuid`. IDEMPOTENT (fills a field only when it is
+ *      currently empty) and DRAFT-SAFE (read + local JSON write only — it imports
+ *      ZERO create/schedule/publish/delete/update paths).
+ *   2. the pure `indexInsights` / `matchInsight` helpers score.ts uses to attach
+ *      matured metrics to a record by its native `platform_post_id`.
  *
  * The pure functions here (no network) are the hermetically unit-tested core
- * (reconcile.test.ts); `reconcile()` is the thin live orchestrator around them,
- * exercised via the tool/bridge dry-run + tests.
+ * (reconcile.test.ts); `reconcile()` is the thin live orchestrator around them.
  */
-// Publer is dead (403 on all content endpoints). Reconcile's own pulls are best-effort
-// and already warn-and-continue, so they are stubbed rather than ported: the data they
-// used to backfill now arrives through insights.ts, and leaving live calls here just
-// produced three 403 warnings per cycle that trained the reader to ignore warnings.
-const getPostInsights = async (): Promise<never> => { throw new Error("publer retired — see insights.ts"); };
-const flattenPostInsights = (x: unknown[]): unknown[] => x;
-const listAllPosts = async (): Promise<unknown[]> => [];
-const postId = (p: any): string => String(p?.id ?? "");
+import { listPosts, type McPost } from "./metricool.ts";
+import { pullInsights, type FlatInsight } from "./insights.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
@@ -50,11 +56,23 @@ export function isEmptyField(v: unknown): boolean {
 }
 
 /**
- * A normalized "what Publer knows about this post" reference, keyed by the Publer
- * internal id (== ab-database `publer_post_id`).
+ * Canonical form of a post permalink, so the planner side and the analytics side of
+ * the same post compare equal. Instagram hands back the same reel URL with and
+ * without its trailing slash depending on which endpoint answered, which would
+ * otherwise silently halve the match rate.
  */
-export interface PublerNativeRef {
-  publer_id: string;
+export function normalizePermalink(u: unknown): string {
+  const s = idStr(u);
+  if (!s) return "";
+  return s.replace(/[?#].*$/, "").replace(/\/+$/, "").toLowerCase();
+}
+
+/**
+ * A normalized "what Metricool knows about this post" reference, keyed by the stable
+ * planner uuid (== ab-database `metricool_uuid`).
+ */
+export interface NativeRef {
+  metricool_uuid: string;
   platform_post_id: string | null; // network-native id (TikTok video id / IG media id)
   permalink: string | null;
   posted_at: string | null;
@@ -62,67 +80,51 @@ export interface PublerNativeRef {
   account_id?: string | null;
 }
 
-/** Build native refs from flattened post insights (the DOCUMENTED, primary source). */
-export function nativeRefsFromInsights(flat: FlatPostInsight[]): PublerNativeRef[] {
-  const out: PublerNativeRef[] = [];
-  for (const f of flat ?? []) {
-    const publer_id = idStr(f?.publer_id);
-    if (!publer_id) continue;
-    out.push({
-      publer_id,
-      platform_post_id: idStr(f?.post_id) || null,
-      permalink: (f?.post_link && String(f.post_link).trim()) || null,
-      // insights expose scheduled_at (the publish/schedule time) — a good posted_at proxy.
-      posted_at: (f?.scheduled_at && String(f.scheduled_at).trim()) || null,
-      network: f?.network ?? null,
-      account_id: f?.account_id ?? null,
-    });
-  }
-  return out;
-}
-
 /**
- * Build native refs from raw Publer /posts objects (listAllPosts). The /posts
- * shape is tolerant/variant, so probe a set of candidate keys defensively. Used
- * as a gap-filler behind the insights source (esp. for a real `posted_at`).
+ * Build native refs by joining the PLANNER's published posts to ANALYTICS on the
+ * permalink. A planner post that has published but whose analytics row has not
+ * appeared yet still yields a ref (permalink + posted_at), just without a native id;
+ * the next cycle fills that in, because back-fill is idempotent per field.
  */
-export function nativeRefsFromRawPosts(rawPosts: any[]): PublerNativeRef[] {
-  const pick = (o: any, keys: string[]): string | null => {
-    for (const k of keys) {
-      const v = o?.[k];
-      if (v != null && String(v).trim() !== "") return String(v).trim();
+export function nativeRefsFromBoard(boardPosts: McPost[], insights: FlatInsight[]): NativeRef[] {
+  const byUrl = new Map<string, FlatInsight>();
+  for (const f of insights ?? []) {
+    const u = normalizePermalink(f?.post_link);
+    if (u) byUrl.set(u, f);
+  }
+  const out: NativeRef[] = [];
+  for (const p of boardPosts ?? []) {
+    const uuid = idStr((p as any)?.uuid);
+    if (!uuid) continue;
+    for (const pr of ((p as any)?.providers ?? []) as any[]) {
+      if (pr?.status !== "PUBLISHED") continue;
+      const permalink = idStr(pr?.publicUrl) || null;
+      const hit = permalink ? byUrl.get(normalizePermalink(permalink)) : undefined;
+      out.push({
+        metricool_uuid: uuid,
+        platform_post_id: (hit && idStr(hit.post_id)) || null,
+        permalink,
+        posted_at: idStr((p as any)?.publicationDate?.dateTime) || hit?.scheduled_at || null,
+        network: idStr(pr?.network) || hit?.network || null,
+        account_id: CONFIG.ACCOUNTS[idStr(pr?.network)] ?? null,
+      });
     }
-    return null;
-  };
-  const out: PublerNativeRef[] = [];
-  for (const p of rawPosts ?? []) {
-    const publer_id = idStr(p?.id ?? p?._id);
-    if (!publer_id) continue;
-    out.push({
-      publer_id,
-      platform_post_id: pick(p, ["post_id", "native_id", "provider_id", "external_id", "network_post_id"]),
-      permalink: pick(p, ["url", "permalink", "post_link", "link", "short_link", "postUrl"]),
-      posted_at: pick(p, ["posted_at", "published_at", "used_at", "completed_at", "scheduled_at", "created_at"]),
-      network: (p?.provider ?? p?.network ?? p?.account_type ?? null) as string | null,
-      account_id: idStr(p?.account_id) || null,
-    });
   }
   return out;
 }
 
 /**
- * Merge several ref lists into one map keyed by publer_id, FIRST-NON-NULL-WINS
- * per field. Pass the primary/most-trusted source first (insights), gap-fillers
- * after (raw published posts).
+ * Merge several ref lists into one map keyed by metricool_uuid, FIRST-NON-NULL-WINS
+ * per field. Pass the primary/most-trusted source first.
  */
-export function indexRefs(refsLists: PublerNativeRef[][]): Map<string, PublerNativeRef> {
-  const map = new Map<string, PublerNativeRef>();
+export function indexRefs(refsLists: NativeRef[][]): Map<string, NativeRef> {
+  const map = new Map<string, NativeRef>();
   for (const refs of refsLists) {
     for (const r of refs ?? []) {
-      if (!r?.publer_id) continue;
-      const cur = map.get(r.publer_id);
+      if (!r?.metricool_uuid) continue;
+      const cur = map.get(r.metricool_uuid);
       if (!cur) {
-        map.set(r.publer_id, { ...r });
+        map.set(r.metricool_uuid, { ...r });
         continue;
       }
       cur.platform_post_id = cur.platform_post_id ?? r.platform_post_id;
@@ -144,11 +146,11 @@ export interface BackfillResult {
 
 /**
  * Back-fill platform_post_id / permalink / posted_at onto ab-database posts[] by
- * matching each record's `publer_post_id` against the ref index. Mutates posts in
- * place. IDEMPOTENT: a field is only written when currently empty AND the ref has
- * a value, so re-running after a successful fill changes nothing. Pure (no I/O).
+ * matching each record's `metricool_uuid` against the ref index. Mutates posts in
+ * place. IDEMPOTENT: a field is only written when currently empty AND the ref has a
+ * value, so re-running after a successful fill changes nothing. Pure (no I/O).
  */
-export function backfillAbPosts(posts: any[], refIndex: Map<string, PublerNativeRef>): BackfillResult {
+export function backfillAbPosts(posts: any[], refIndex: Map<string, NativeRef>): BackfillResult {
   const res: BackfillResult = {
     records: 0,
     matched: 0,
@@ -157,9 +159,9 @@ export function backfillAbPosts(posts: any[], refIndex: Map<string, PublerNative
   };
   for (const p of posts ?? []) {
     res.records++;
-    const pid = idStr(p?.publer_post_id);
-    if (!pid) continue;
-    const ref = refIndex.get(pid);
+    const uuid = idStr(p?.metricool_uuid);
+    if (!uuid) continue;
+    const ref = refIndex.get(uuid);
     if (!ref) continue;
     res.matched++;
     let changed = false;
@@ -184,41 +186,39 @@ export function backfillAbPosts(posts: any[], refIndex: Map<string, PublerNative
 }
 
 // ---------------------------------------------------------------------------
-// Metrics-join fallback helpers (used by score.ts) — pure, network-free.
+// Metrics-join helpers (used by score.ts) — pure, network-free.
 // ---------------------------------------------------------------------------
 export interface InsightIndex {
-  byNative: Map<string, FlatPostInsight>;
-  byPubler: Map<string, FlatPostInsight>;
-}
-
-/** Index flattened insights by BOTH the native post_id and the Publer id. */
-export function indexInsights(flat: FlatPostInsight[]): InsightIndex {
-  const byNative = new Map<string, FlatPostInsight>();
-  const byPubler = new Map<string, FlatPostInsight>();
-  for (const f of flat ?? []) {
-    const n = idStr(f?.post_id);
-    if (n) byNative.set(n, f);
-    const pu = idStr(f?.publer_id);
-    if (pu) byPubler.set(pu, f);
-  }
-  return { byNative, byPubler };
+  byNative: Map<string, FlatInsight>;
 }
 
 /**
- * Find the insight for an ab-database post: join on `platform_post_id` when set,
- * else FALL BACK to `publer_post_id` (so the agent's own freshly-published posts,
- * whose native id has not been reconciled yet, still attach metrics).
+ * Index matured insights by the network-native post id.
+ *
+ * There is deliberately no second index here. The Publer-era join carried a fallback
+ * on Publer's own internal post id, because Publer's analytics reported it alongside
+ * the native id. Metricool's analytics expose no planner uuid at all, so no such
+ * fallback can exist — which is why reconcile() runs BEFORE scoring in cycle.ts: it
+ * back-fills the native id first so the very next join can find it.
  */
-export function matchInsight(p: any, idx: InsightIndex): FlatPostInsight | undefined {
+export function indexInsights(flat: FlatInsight[]): InsightIndex {
+  const byNative = new Map<string, FlatInsight>();
+  for (const f of flat ?? []) {
+    const n = idStr(f?.post_id);
+    if (n) byNative.set(n, f);
+  }
+  return { byNative };
+}
+
+/** Find the matured insight for an ab-database post, by its native platform id. */
+export function matchInsight(p: any, idx: InsightIndex): FlatInsight | undefined {
   const native = idStr(p?.platform_post_id);
-  if (native) return idx.byNative.get(native);
-  const pub = idStr(p?.publer_post_id);
-  if (pub) return idx.byPubler.get(pub);
-  return undefined;
+  if (!native) return undefined;
+  return idx.byNative.get(native);
 }
 
 // ---------------------------------------------------------------------------
-// Live orchestrator — read Publer (GET only), back-fill ab-database.json.
+// Live orchestrator — read Metricool (GET only), back-fill ab-database.json.
 // ---------------------------------------------------------------------------
 export interface ReconcileResult {
   ok: boolean;
@@ -226,15 +226,18 @@ export interface ReconcileResult {
   matched: number;
   records_changed: number;
   filled: { platform_post_id: number; permalink: number; posted_at: number };
-  sources: { insights: number; published_posts: number };
+  sources: { board_published: number; insights: number };
   wrote: boolean;
   note: string;
 }
 
+const BOARD_FROM = "2026-01-01T00:00:00";
+const BOARD_TO = "2030-12-31T23:59:59";
+
 /**
- * Back-fill native ids/permalinks/posted_at onto ab-database.json from Publer.
- * Read-only on Publer (analytics GET + published-post GET); the only write is the
- * local ab-database.json (atomic), and only when something actually changed.
+ * Back-fill native ids/permalinks/posted_at onto ab-database.json from Metricool.
+ * Read-only on Metricool (planner GET + analytics GET); the only write is the local
+ * ab-database.json (atomic), and only when something actually changed.
  */
 export async function reconcile(): Promise<ReconcileResult> {
   const empty = { platform_post_id: 0, permalink: 0, posted_at: 0 };
@@ -246,7 +249,7 @@ export async function reconcile(): Promise<ReconcileResult> {
       matched: 0,
       records_changed: 0,
       filled: empty,
-      sources: { insights: 0, published_posts: 0 },
+      sources: { board_published: 0, insights: 0 },
       wrote: false,
       note: "ab-database.json missing/invalid; nothing to reconcile",
     };
@@ -255,32 +258,22 @@ export async function reconcile(): Promise<ReconcileResult> {
   const to = ymd(new Date());
   const from = ymd(new Date(Date.now() - 90 * 86400_000));
 
-  // (1) primary source: matured post insights (documented publer_id -> native id + permalink).
-  let insightsRefs: PublerNativeRef[] = [];
+  let board: McPost[] = [];
   try {
-    const flat: FlatPostInsight[] = [];
-    for (const acc of CONFIG.ACCOUNT_IDS) {
-      for (let page = 0; page < 20; page++) {
-        const { posts, total } = await getPostInsights(acc, { from, to, sort_by: "reach", sort_type: "DESC", page });
-        flat.push(...flattenPostInsights(posts));
-        if (flat.length >= total || posts.length === 0) break;
-      }
-    }
-    insightsRefs = nativeRefsFromInsights(flat);
+    board = await listPosts(BOARD_FROM, BOARD_TO);
   } catch (e) {
-    warn("reconcile: insights pull failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+    warn("reconcile: planner pull failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
   }
 
-  // (2) gap-filler: the published-post list (real posted_at / any post insights missed).
-  let publishedRefs: PublerNativeRef[] = [];
+  let insights: FlatInsight[] = [];
   try {
-    const published = await listAllPosts("published", 30);
-    publishedRefs = nativeRefsFromRawPosts(published);
+    insights = await pullInsights(from, to);
   } catch (e) {
-    warn("reconcile: published-post pull failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+    warn("reconcile: analytics pull failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
   }
 
-  const refIndex = indexRefs([insightsRefs, publishedRefs]);
+  const refs = nativeRefsFromBoard(board, insights);
+  const refIndex = indexRefs([refs]);
   const res = backfillAbPosts(db.posts, refIndex);
 
   let wrote = false;
@@ -292,7 +285,7 @@ export async function reconcile(): Promise<ReconcileResult> {
 
   const note =
     refIndex.size === 0
-      ? "no Publer refs available (no keys / no published posts yet) — nothing back-filled"
+      ? "no published posts on the Metricool board yet — nothing to back-fill"
       : res.records_changed === 0
       ? "already reconciled — nothing to back-fill (idempotent no-op)"
       : `back-filled ${res.records_changed} record(s)`;
@@ -301,8 +294,8 @@ export async function reconcile(): Promise<ReconcileResult> {
     matched: res.matched,
     records_changed: res.records_changed,
     filled: res.filled,
-    insights: insightsRefs.length,
-    published: publishedRefs.length,
+    board_published: refs.length,
+    insights: insights.length,
   });
 
   return {
@@ -311,7 +304,7 @@ export async function reconcile(): Promise<ReconcileResult> {
     matched: res.matched,
     records_changed: res.records_changed,
     filled: res.filled,
-    sources: { insights: insightsRefs.length, published_posts: publishedRefs.length },
+    sources: { board_published: refs.length, insights: insights.length },
     wrote,
     note,
   };

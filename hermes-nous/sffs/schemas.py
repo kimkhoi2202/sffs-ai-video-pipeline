@@ -6,68 +6,6 @@ to even request a non-draft or scheduled post through this tool — reinforcing
 that ``sffs_publer_draft`` is physically DRAFT-ONLY.
 """
 
-SFFS_PUBLER_DRAFT_SCHEMA = {
-    "name": "sffs_publer_draft",
-    "description": (
-        "Create a Publer DRAFT for the SFFS quiz-video accounts (Instagram + TikTok). "
-        "This is the ONLY sanctioned Publer write path and it can ONLY create drafts — "
-        "it can never publish or schedule a live post (going live is a human action). "
-        "Use it to attach a rendered short (already uploaded to Publer as media) as a "
-        "draft for human review. Set dry_run=true to validate and preview the exact "
-        "draft payload without creating anything (no network call)."
-    ),
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "account_ids": {
-                "type": "array",
-                "items": {"type": "string"},
-                "description": (
-                    "Publer social account ids to draft for (e.g. the Instagram and "
-                    "TikTok account ids for the SFFS brand)."
-                ),
-            },
-            "text": {
-                "type": "string",
-                "description": "The post caption / text (include hashtags as desired).",
-            },
-            "media_ids": {
-                "type": "array",
-                "items": {"type": "string"},
-                "description": "Publer media ids to attach (returned by a prior media import).",
-            },
-            "media_objects": {
-                "type": "array",
-                "items": {"type": "object"},
-                "description": (
-                    "Full per-network media objects (e.g. carrying a custom video cover). "
-                    "Use INSTEAD of media_ids when a custom cover/thumbnail is required."
-                ),
-            },
-            "type": {
-                "type": "string",
-                "enum": ["video", "photo", "carousel", "status"],
-                "description": "Content type. Defaults to 'video' (these are video shorts).",
-            },
-            "dry_run": {
-                "type": "boolean",
-                "description": (
-                    "If true, validate and return the draft payload WITHOUT creating "
-                    "anything and without any network call."
-                ),
-            },
-        },
-        "required": ["account_ids", "text"],
-    },
-}
-
-
-# ---------------------------------------------------------------------------
-# Do-not-touch (READ-ONLY) — snapshot before a cycle, verify after. These only
-# ever LIST scheduled + published posts; they can never write/schedule/publish/
-# delete/update anything (see donottouch.py + bridge/donottouch.ts).
-# ---------------------------------------------------------------------------
-
 SFFS_DONOTTOUCH_SNAPSHOT_SCHEMA = {
     "name": "sffs_donottouch_snapshot",
     "description": (
@@ -133,72 +71,6 @@ SFFS_DONOTTOUCH_VERIFY_SCHEMA = {
 # NOTE: the post-state filter is deliberately named ``state_filter`` (not
 # ``state``) so the framework publish guard never mistakes a READ filter value
 # like "published"/"scheduled" for an attempt to SET a live post state.
-# ---------------------------------------------------------------------------
-
-SFFS_PUBLER_READ_SCHEMA = {
-    "name": "sffs_publer_read",
-    "description": (
-        "READ-ONLY. List the connected Publer social accounts, or list posts. Use "
-        "what='accounts' to get account ids/providers (Instagram + TikTok), or "
-        "what='posts' to list posts filtered by state_filter (draft|scheduled|"
-        "published), account_ids, and/or a text query. This only reads (GET); it "
-        "can never create, publish, schedule, delete, or modify any post. Set "
-        "dry_run=true to preview the request with no network call."
-    ),
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "what": {
-                "type": "string",
-                "enum": ["accounts", "posts"],
-                "description": "What to read: 'accounts' (default) or 'posts'.",
-            },
-            "state_filter": {
-                "type": "string",
-                "enum": ["draft", "scheduled", "published"],
-                "description": (
-                    "For what='posts': only list posts in this state. This is a "
-                    "read FILTER, not a state to set."
-                ),
-            },
-            "account_ids": {
-                "type": "array",
-                "items": {"type": "string"},
-                "description": "For what='posts': restrict to these Publer account ids.",
-            },
-            "query": {
-                "type": "string",
-                "description": "For what='posts': a free-text search over post captions.",
-            },
-            "page": {
-                "type": "integer",
-                "description": "For what='posts': 0-based page (Publer pages are ~10 posts).",
-            },
-            "all_pages": {
-                "type": "boolean",
-                "description": (
-                    "For what='posts': page through and return ALL posts in the "
-                    "state_filter (defaults to 'published' if state_filter is unset)."
-                ),
-            },
-            "max_pages": {
-                "type": "integer",
-                "description": "For what='posts' with all_pages: cap on pages to fetch.",
-            },
-            "dry_run": {
-                "type": "boolean",
-                "description": "If true, preview the request WITHOUT any network call.",
-            },
-        },
-        "required": [],
-    },
-}
-
-# ---------------------------------------------------------------------------
-# DESIGN — plan the day's A/B batch (or introspect the A/B dimension catalog).
-# DESIGN/READ-only: no create / schedule / publish / delete / update path is
-# reachable (see design.py + bridge/design.ts). No state/schedule/publish
-# vocabulary is exposed (schema-as-guardrail).
 # ---------------------------------------------------------------------------
 
 SFFS_DESIGN_SCHEMA = {
@@ -631,7 +503,7 @@ SFFS_SCORE_ROLLUP_SCHEMA = {
 
 # ---------------------------------------------------------------------------
 # RECONCILE — close the A/B LEARNING LOOP for the agent's OWN posts by matching
-# each ab-database record's publer_post_id to the native published post and
+# each ab-database record's metricool_uuid to the native published post and
 # back-filling platform_post_id / permalink / posted_at (the join keys scoring
 # needs). Read Publer (GET only) + write ONE local JSON file; idempotent;
 # no state/schedule/publish vocabulary is exposed (schema-as-guardrail).
@@ -641,7 +513,7 @@ SFFS_RECONCILE_SCHEMA = {
     "name": "sffs_reconcile",
     "description": (
         "Close the A/B learning loop for the agent's OWN posts: for each "
-        "ab-database.json record, match its publer_post_id (Publer's internal id, "
+        "ab-database.json record, match its metricool_uuid (Metricool's stable planner id, "
         "recorded when the loop created the DRAFT) to the native published post and "
         "back-fill platform_post_id (the network-native TikTok video id / Instagram "
         "media id), permalink, and posted_at. Those native ids are the join keys "
@@ -678,7 +550,7 @@ SFFS_RECONCILE_SCHEMA = {
 # ---------------------------------------------------------------------------
 # CYCLE — run ONE full DRAFT-ONLY A/B cycle end to end (ties all the tools
 # together by wrapping cycle.ts runCycle). It can ONLY ever create DRAFTS
-# (createDraftOnly), and it can NEVER push to main (HERMES_SKIP_GIT is forced).
+# (Metricool draft:true/autoPublish:false), and it can NEVER push to main (HERMES_SKIP_GIT is forced).
 # No state/schedule/publish vocabulary is exposed (schema-as-guardrail).
 # ---------------------------------------------------------------------------
 

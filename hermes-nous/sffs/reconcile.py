@@ -1,8 +1,8 @@
 """SFFS RECONCILE tool — close the A/B LEARNING LOOP for the agent's OWN posts.
 
 One tool, ``sffs_reconcile``, wrapping hermes/src/reconcile.ts ``reconcile``: for
-each ``ab-testing/ab-database.json`` record it matches the ``publer_post_id``
-(Publer's internal id, recorded when the loop created the DRAFT) to the native
+each ``ab-testing/ab-database.json`` record it matches the ``metricool_uuid``
+(Metricool's stable planner id, recorded when the loop created the DRAFT) to the native
 published post and back-fills ``platform_post_id`` (the network-native TikTok
 video id / Instagram media id), ``permalink``, and ``posted_at``. Those native
 ids are what ``sffs_score`` / ``sffs_score_rollup`` join matured analytics on — so
@@ -11,7 +11,7 @@ its own posts once a human publishes them.
 
 IDEMPOTENT + DRAFT-SAFE: a field is filled only when currently empty, and the only
 write is the local ab-database.json. reconcile.ts imports ONLY read primitives
-from the Publer facade (getPostInsights / flattenPostInsights / listAllPosts) — it
+from the Metricool facade (listPosts / pullInsights) — it
 has NO create / schedule / publish / delete / update path in its dependency tree,
 so the Node bridge (hermes-nous/bridge/reconcile.ts) is physically unable to post,
 publish, schedule, or mutate any Publer post.
@@ -158,7 +158,7 @@ def run_node_bridge(*, dry_run: bool, data_dir: Optional[str] = None, timeout: i
 def sffs_reconcile(args: Dict[str, Any], **kwargs: Any) -> str:
     """Hermes tool handler: back-fill native post ids/permalinks onto ab-database.
 
-    Matches each ab-database record's ``publer_post_id`` to the native published
+    Matches each ab-database record's ``metricool_uuid`` to the native published
     post (via Publer analytics + published-post GETs) and back-fills
     ``platform_post_id`` / ``permalink`` / ``posted_at`` — the join keys scoring
     needs to learn from the agent's OWN posts. IDEMPOTENT + DRAFT-SAFE (read +
@@ -181,7 +181,7 @@ def sffs_reconcile(args: Dict[str, Any], **kwargs: Any) -> str:
                 "note": (
                     "dry-run made no network call and wrote no files; a live run would "
                     "back-fill platform_post_id/permalink/posted_at onto ab-database.json "
-                    "by matching publer_post_id -> the native published post"
+                    "by matching metricool_uuid -> the native published post"
                 ),
             }
         )

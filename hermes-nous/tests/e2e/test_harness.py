@@ -12,7 +12,7 @@ import harness as h
 def test_discover_tool_tests_finds_suite_and_excludes_e2e():
     names = [p.name for p in h.discover_tool_tests()]
     assert "test_publish_guard.py" in names
-    assert "test_draft_only.py" in names
+    assert "test_reads.py" in names
     # the gate's OWN e2e tests must NOT be part of the harness's gating pytest leg
     assert all(not str(p).endswith("test_harness.py") for p in h.discover_tool_tests())
     assert all("/e2e/" not in str(p) for p in h.discover_tool_tests())

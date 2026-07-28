@@ -13,15 +13,15 @@ into the Nous framework as tools the agent calls around every cycle:
 Both are strictly READ-ONLY: the Node bridge (hermes-nous/bridge/donottouch.ts)
 imports ONLY ``snapshotDoNotTouch`` / ``verifyDoNotTouch``, which only ever
 ``listPosts`` (GET). No write/schedule/publish/delete/update path is imported or
-reachable. They complement the write-side belt in draft_guard.py.
+reachable.
 
-Running LIVE needs PUBLER_API_KEY + PUBLER_WORKSPACE_ID (now in $HERMES_HOME/.env).
+Running LIVE needs the METRICOOL_* credentials (in $HERMES_HOME/.env).
 ``dry_run=True`` performs NO network call (snapshot returns a stub; verify only
 validates the snapshot's shape), so the tools are testable without keys/network —
 see hermes-nous/tests/test_donottouch.py.
 
 Kept stdlib-only and free of intra-package imports so it can be imported directly
-by the hermetic test suite (mirrors draft_guard.py).
+by the hermetic test suite.
 """
 
 from __future__ import annotations
@@ -63,7 +63,7 @@ def validate_snapshot(obj: Any) -> Dict[str, Any]:
 def _repo_dir() -> Path:
     """Absolute path to the pipeline repo root (symlink-safe via resolve()).
 
-    Mirrors draft_guard._repo_dir: donottouch.py → sffs/ → hermes-nous/ → repo.
+    donottouch.py → sffs/ → hermes-nous/ → repo.
     ``HERMES_SFFS_REPO_DIR`` overrides.
     """
     override = os.environ.get("HERMES_SFFS_REPO_DIR")
@@ -96,11 +96,11 @@ def _parse_last_json(stdout: str) -> Optional[Dict[str, Any]]:
 
 
 def _bridge_env() -> Dict[str, str]:
-    """Env for the Node bridge. Ensures the Node side can find the Publer keys.
+    """Env for the Node bridge. Ensures the Node side can find the Metricool keys.
 
     The Node config.ts loads ``HERMES_ENV_FILE`` (default /home/ec2-user/hermes.env,
     which does not exist here). When running under the isolated HERMES_HOME we point
-    it at ``$HERMES_HOME/.env`` (gitignored, holds PUBLER_*) so a live read works
+    it at ``$HERMES_HOME/.env`` (gitignored, holds METRICOOL_*) so a live read works
     without the keys having to be exported into the process first.
     """
     env = os.environ.copy()
@@ -177,7 +177,7 @@ def sffs_donottouch_snapshot(args: Dict[str, Any], **kwargs: Any) -> str:
             {
                 "ok": True,
                 "dry_run": True,
-                "note": "snapshot requires a live Publer read; dry-run made no network call",
+                "note": "snapshot requires a live Metricool read; dry-run made no network call",
             }
         )
     try:

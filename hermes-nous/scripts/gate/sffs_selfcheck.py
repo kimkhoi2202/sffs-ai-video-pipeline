@@ -52,10 +52,8 @@ PLUGIN_YAML = PLUGIN_DIR / "plugin.yaml"
 # harness picks up new test_*.py, and the selfcheck tolerates new tool names.)
 REQUIRED_TOOLS = frozenset(
     {
-        "sffs_publer_draft",          # the ONLY write path — draft-only
         "sffs_donottouch_snapshot",   # read-only
         "sffs_donottouch_verify",     # read-only
-        "sffs_publer_read",           # read-only
         "sffs_score",                 # read-only
     }
 )
@@ -114,12 +112,7 @@ BLOCK_MATRIX: Tuple[Tuple[str, str, Dict[str, Any]], ...] = (
 
 ALLOW_MATRIX: Tuple[Tuple[str, str, Dict[str, Any]], ...] = (
     # --- the sanctioned draft path + read tools
-    (
-        "sanctioned draft (valid)",
-        "sffs_publer_draft",
-        {"account_ids": ["6a5fc9dc4ccd63dc1f041549"], "text": "Smart Fella? 🧠", "type": "video", "dry_run": True},
-    ),
-    ("draft with explicit draft state", "publer_create_post", {"state": "draft", "account_ids": ["a"], "text": "x"}),
+    ("draft with explicit draft state", "metricool_create_post", {"state": "draft", "account_ids": ["a"], "text": "x"}),
     (
         "do-not-touch verify snapshot (scheduled_ids/published_ids)",
         "sffs_donottouch_verify",
@@ -127,7 +120,7 @@ ALLOW_MATRIX: Tuple[Tuple[str, str, Dict[str, Any]], ...] = (
     ),
     (
         "read posts filtered to published (state_filter, not state)",
-        "sffs_publer_read",
+        "metricool_read_posts",
         {"what": "posts", "state_filter": "published"},
     ),
     ("score read window", "sffs_score", {"from": "2026-06-01", "to": "2026-07-01"}),

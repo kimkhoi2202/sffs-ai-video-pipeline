@@ -1,5 +1,9 @@
 # ab-testing/ — the campaign A/B "brain"
 
+> **Publer is retired (2026-07-28).** Every mention of Publer below is historical.
+> Posting, the live calendar and analytics all run on Metricool now — see
+> [`docs/hermes/metricool-migration.md`](../docs/hermes/metricool-migration.md).
+
 This folder is the accumulating memory for the **Smart Fella or Fart Smella** short-form
 video experiment. It correlates every **published post** back to the **rendered video
 variant** it came from, tags it with **A/B dimensions**, and joins it to **performance
