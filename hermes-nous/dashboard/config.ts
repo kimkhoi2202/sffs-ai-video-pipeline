@@ -43,6 +43,16 @@ export const CONFIG = Object.freeze({
   /** This dashboard is strictly read-only. Never make it configurable. */
   READ_ONLY: true as const,
 
+  /**
+   * Whether the human approval gate is retired. Read with the SAME idiom and the same
+   * default as hermes/src/config.ts, off the same /etc/hermes/hermes.env the dashboard
+   * unit already loads, so the two surfaces cannot disagree about what the loop does.
+   * The dashboard only ever DISPLAYS this — it does not act on it.
+   */
+  APPROVAL_PAUSED: String(process.env.HERMES_APPROVAL_PAUSED ?? "true").trim().toLowerCase() !== "false",
+  /** The exact one-liner that brings the gate back, shown to the user in the panel. */
+  APPROVAL_RESTORE_CMD: "HERMES_APPROVAL_PAUSED=false",
+
   // ── paths (same data the live loop reads/writes) ─────────────────────────
   REPO_DIR,
   HERMES_NOUS_DIR,

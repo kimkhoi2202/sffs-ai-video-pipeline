@@ -10,11 +10,14 @@
  *
  * THREE THINGS IT DOES THAT THE PUBLER PATH DID NOT
  *
- * 1. IT CREATES DRAFTS, NOT LIVE POSTS. Everything the loop generates lands as
- *    `draft: true, autoPublish: false`, which is the human approval gate expressed at
- *    the platform level rather than in our own bookkeeping: an unapproved post is
- *    physically incapable of publishing, even if this process, the dashboard and the
- *    box all disappear. Approval flips those two fields; see approval.ts.
+ * 1. IT CREATES WHATEVER THE APPROVAL GATE SAYS. The gate is retired by default now
+ *    (Instagram auto-publishes), so the loop emits `draft: false, autoPublish: true`
+ *    and the post goes out on its own at its slot. Setting HERMES_APPROVAL_PAUSED=false
+ *    inverts both fields and restores the old behaviour, in which the human gate is
+ *    expressed at the PLATFORM level rather than in our own bookkeeping: an unapproved
+ *    post is then physically incapable of publishing even if this process, the
+ *    dashboard and the box all disappear. approval.ts flips the same two fields.
+ *    Either way the state comes from CONFIG.DRAFT_ONLY — this module never decides.
  *
  * 2. IT RESPECTS THE POSTING POLICY, including the TikTok pause. A re-armed loop that
  *    ignored CONFIG.PLATFORM_POLICY.tiktok.paused would silently undo a deliberate
@@ -267,14 +270,17 @@ export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft
     // too, where it is inert today (no YPP) but costs nothing and would start working
     // on its own if the channel is ever admitted.
     videoThumbnailUrl: cover?.url ?? undefined,
-    // THE APPROVAL GATE. Not a flag in our own store — the platform itself will not
-    // publish a draft, so an unapproved video cannot go out even if everything on our
-    // side fails. approval.ts flips exactly these two fields and nothing else.
-    draft: true,
-    autoPublish: false,
+    // THE APPROVAL GATE, under CONFIG.APPROVAL_PAUSED and nothing else. Retired by
+    // default: these go out as draft:false/autoPublish:true and the post publishes
+    // itself. HERMES_APPROVAL_PAUSED=false inverts them and the platform refuses to
+    // publish the post until a human flips it back — the same gate, expressed where
+    // our own bookkeeping cannot fail. approval.ts touches exactly these two fields.
+    draft: CONFIG.DRAFT_ONLY,
+    autoPublish: !CONFIG.DRAFT_ONLY,
     showReelOnFeed: true,
   });
-  info("loop draft created (AWAITING APPROVAL)", { videoId: input.videoId, uuid: post.uuid, at: input.whenLocal });
+  info(CONFIG.DRAFT_ONLY ? "loop draft created (AWAITING APPROVAL)" : "loop post scheduled LIVE (approval gate retired)",
+    { videoId: input.videoId, uuid: post.uuid, at: input.whenLocal, draft: CONFIG.DRAFT_ONLY });
   return {
     uuid: String(post.uuid),
     id: Number(post.id),

@@ -44,7 +44,7 @@ writeFileSync(join(REPO, "hermes", "marker.txt"), "v1");
 git("add", "-A");
 git("commit", "-qm", "seed");
 
-const { gitCommitPush, isRateLimited } = await import("./cycle.ts");
+const { gitCommitPush, isRateLimited, cycleCommitMessage } = await import("./cycle.ts");
 const summary = { planned: 12, drafted: 9, rejected: 2, failed: 1 };
 const dirty = (n: number): void =>
   writeFileSync(join(REPO, "ab-testing/ab-database.json"), JSON.stringify({ seed: true, updated: n }));
@@ -70,8 +70,28 @@ test("commits the day's data even though remotion/hermes does not exist", () => 
   dirty(1);
   const r = gitCommitPush("2026-07-25", summary);
   assert.equal(r.committed, true, `expected a commit, got note: ${r.note}`);
-  assert.match(git("log", "--oneline", "-1"), /hermes: cycle 2026-07-25 — 9 drafts, 2 rejected \[draft-only\]/);
+  // The subject states the posting mode the cycle actually ran in, so it is checked
+  // against both legal forms rather than pinned to the draft-only era's wording.
+  const subject = git("log", "--oneline", "-1");
+  assert.ok(
+    subject.includes(cycleCommitMessage("2026-07-25", summary, false)) ||
+      subject.includes(cycleCommitMessage("2026-07-25", summary, true)),
+    `subject must state the posting mode, got: ${subject}`,
+  );
   assert.equal(git("status", "--porcelain").trim(), "", "working tree clean after the commit");
+});
+
+test("the commit subject states the posting mode — live by default, draft-only once the gate is restored", () => {
+  // DEFAULT (approval gate retired, HERMES_APPROVAL_PAUSED unset): the loop schedules
+  // live, and a subject still claiming "drafts" would put a lie in git history.
+  const live = cycleCommitMessage("2026-07-25", summary, false);
+  assert.equal(live, "hermes: cycle 2026-07-25 — 9 scheduled live, 2 rejected [live]");
+  assert.doesNotMatch(live, /draft/, "nothing was drafted, so nothing may say drafts");
+
+  // THE RESTORE PATH. HERMES_APPROVAL_PAUSED=false puts CONFIG.DRAFT_ONLY back to true
+  // and the subject returns, word for word, to what the draft-only era wrote.
+  const drafts = cycleCommitMessage("2026-07-25", summary, true);
+  assert.equal(drafts, "hermes: cycle 2026-07-25 — 9 drafts, 2 rejected [draft-only]");
 });
 
 test("does NOT push unless HERMES_GIT_PUSH=1, and never leaves a rebase in progress", () => {

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T20:36:02.236Z",
+  "updated_at": "2026-07-29T02:46:22.374Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -4037,7 +4037,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "bet you can't get this one right. drop your answer in the comments and let's see if you're a SMART FELLA or FART SMELLA 🧠 follow for more brain breaks\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "caption": "bet you can't get this one right. drop your answer in the comments and let's see if you're a SMART FELLA or FART SMELLA 🧠 follow for more brain breaks\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-28-v01.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4073,8 +4073,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-8653649687801737780"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "5247850394736738525"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v02:instagram",
@@ -4083,7 +4083,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "think you got this one? drop your answer in the comments and follow for more brain melters 🧠\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "caption": "think you got this one? drop your answer in the comments and follow for more brain melters 🧠\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "hermes-render:2026-07-28-v02.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4119,8 +4119,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-1955623668485568405"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "-432959790053243284"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v03:instagram",
@@ -4129,7 +4129,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "think you got this one? comment your answer before you scroll away and prove you're actually a smart fella 👀\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "caption": "think you got this one? comment your answer before you scroll away and prove you're actually a smart fella 👀\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-28-v03.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4165,8 +4165,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-4961288132120264694"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "1287858405764056728"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v04:instagram",
@@ -4175,7 +4175,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "think you got this one? comment your answer and let's see if you're actually built different or just built confused 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "caption": "think you got this one? comment your answer and let's see if you're actually built different or just built confused 🧠\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-28-v04.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4211,8 +4211,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "4475907405431917056"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "5242831877833113641"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v05:instagram",
@@ -4221,7 +4221,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "bet you're gonna get this wrong but comment your answer anyway so we can laugh at you together 😭 follow for more brain tests\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "caption": "bet you're gonna get this wrong but comment your answer anyway so we can laugh at you together 😭 follow for more brain tests\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "hermes-render:2026-07-28-v05.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4257,8 +4257,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "835881856047008449"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "5558355175274925437"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v06:instagram",
@@ -4267,7 +4267,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "think you're built different? drop your answer in the comments and let's see if you're actually a smart fella or just a fart smella 🧠 follow for more brain breaks\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "caption": "think you're built different? drop your answer in the comments and let's see if you're actually a smart fella or just a fart smella 🧠 follow for more brain breaks\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-28-v06.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4303,8 +4303,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "3023359844234840000"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "124500195309734574"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v07:instagram",
@@ -4313,7 +4313,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "bet you can't guess this one without looking it up. drop your answer in the comments and follow so you don't miss the reveal 👀\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "caption": "bet you can't guess this one without looking it up. drop your answer in the comments and follow so you don't miss the reveal 👀\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-28-v07.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4349,8 +4349,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-4581787596087736043"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "2814476112370026384"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v10:instagram",
@@ -4359,7 +4359,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "think you're big brain? drop your answer in the comments and let's see if you're a smart fella or just a fart smella 👃 follow for more brain tests\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "caption": "think you're big brain? drop your answer in the comments and let's see if you're a smart fella or just a fart smella 👃 follow for more brain tests\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-28-v10.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4395,8 +4395,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "3654407114425713515"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "-4429812250027079068"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v11:instagram",
@@ -4405,7 +4405,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "bet you can't get this one right. drop your answer in the comments and let's see if you're a smart fella or fart smella 🧠\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "caption": "bet you can't get this one right. drop your answer in the comments and let's see if you're a smart fella or fart smella 🧠\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "hermes-render:2026-07-28-v11.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4441,8 +4441,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-9163607534410775428"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "-145337685670279926"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v12:instagram",
@@ -4451,7 +4451,7 @@
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
       "permalink": null,
-      "caption": "think you're built different? drop your answer in the comments and let's see if you're a smart fella or a fart smella 👃 follow for more brain tests\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "caption": "think you're built different? drop your answer in the comments and let's see if you're a smart fella or a fart smella 👃 follow for more brain tests\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-28-v12.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
       "variant": {
@@ -4487,8 +4487,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop (DRAFT-ONLY).",
-      "metricool_uuid": "-4948186210865626552"
+      "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
+      "metricool_uuid": "1627254329677267358"
     }
   ],
   "variant_families": {

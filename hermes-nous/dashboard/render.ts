@@ -908,14 +908,41 @@ function experimentPanel(view?: ScheduledView): string {
 }
 
 
+/** Whether the human approval gate is in force, and how to put it back if not. */
+export interface ApprovalGate { paused: boolean; restoreCmd: string; }
+
+/** Shipped default: the gate is retired. Matches hermes/src/config.ts. */
+const GATE_DEFAULT: ApprovalGate = { paused: true, restoreCmd: "HERMES_APPROVAL_PAUSED=false" };
+
 /**
- * The approval queue. Deliberately loud: if the user does not notice a queue, nothing
- * ships, so an empty queue is a quiet line and a non-empty one is a banner.
+ * The approval queue. Deliberately loud WHEN THERE IS A GATE: if the user does not
+ * notice a queue, nothing ships, so an empty queue is a quiet line and a non-empty one
+ * is a banner.
+ *
+ * WHEN THE GATE IS RETIRED IT DEGRADES HONESTLY. The failure mode being avoided is a
+ * panel that still looks like a review step — an empty queue reading "nothing awaiting
+ * approval" implies approval is a thing that happens, and a row of Approve/Reject
+ * buttons that no post will ever reach is a dead control. So with the gate retired and
+ * nothing queued, this states plainly that there is no approval step, renders NO
+ * buttons, and shows the single line that brings the gate back.
+ *
+ * Leftover drafts created BEFORE the gate was retired are a real exception: they exist,
+ * they genuinely cannot publish, and approve/reject genuinely still work on them. Those
+ * keep their buttons and are labelled as leftovers rather than as a queue.
  */
-function approvalPanel(view?: ScheduledView, defaults?: AbDefaults): string {
+function approvalPanel(view?: ScheduledView, defaults?: AbDefaults, gate: ApprovalGate = GATE_DEFAULT): string {
   const waiting = (view?.posts ?? []).filter((p) => p.awaiting_approval);
   if (!waiting.length) {
-    return `<section class="card"><h2>APPROVAL QUEUE</h2>
+    return gate.paused
+      ? `<section class="card"><h2>APPROVAL QUEUE — RETIRED</h2>
+      <p class="muted"><b>There is no approval step.</b> Instagram auto-publishes, so the autonomous loop
+      schedules posts <b>live</b> and they go out at their slot. Nothing is waiting on you, and no button
+      here would do anything, so none is shown. The five content gates (dedup, question validity,
+      brand/copy, render sanity, and Instagram's thumbnail requirement) still run on every post and are
+      now the only automated check between the loop and the account.</p>
+      <p class="muted">To bring the gate back, add one line to <code>/etc/hermes/hermes.env</code> and
+      restart the loop: <code>${esc(gate.restoreCmd)}</code></p></section>`
+      : `<section class="card"><h2>APPROVAL QUEUE</h2>
       <p class="muted"><b>Nothing awaiting approval.</b> Videos the autonomous loop generates land here as
       drafts and cannot publish until approved. The reels already on the calendar were reviewed before
       scheduling and are exempt.</p></section>`;
@@ -950,11 +977,20 @@ function approvalPanel(view?: ScheduledView, defaults?: AbDefaults): string {
       </div>
     </div>`;
   }).join("");
-  return `<section class="card apr-card"><h2>APPROVAL QUEUE — ${waiting.length} AWAITING</h2>
-    <p class="muted">These are loop-generated drafts. They <b>cannot publish</b> until approved:
+  const heading = gate.paused
+    ? `APPROVAL QUEUE — ${waiting.length} LEFTOVER DRAFT${waiting.length === 1 ? "" : "S"}`
+    : `APPROVAL QUEUE — ${waiting.length} AWAITING`;
+  const preamble = gate.paused
+    ? `<p class="muted"><b>The approval gate is retired</b> — new posts schedule live and never queue here.
+    These ${waiting.length} are older drafts from before that change. They are held as Metricool drafts, so
+    they <b>cannot publish</b> on their own, and approve/reject still work on them. Rejecting soft-deletes
+    (restorable). <b>Tap a cover to play it</b> full-frame (9:16, uncropped) before you decide.</p>`
+    : `<p class="muted">These are loop-generated drafts. They <b>cannot publish</b> until approved:
     they are held as Metricool drafts, so nothing goes out even if this box dies. Rejecting soft-deletes
     (restorable). Anything still unapproved when its slot arrives slides forward automatically.
-    <b>Tap a cover to play it</b> full-frame (9:16, uncropped) before you decide.</p>
+    <b>Tap a cover to play it</b> full-frame (9:16, uncropped) before you decide.</p>`;
+  return `<section class="card apr-card"><h2>${heading}</h2>
+    ${preamble}
     ${rows}
     <script>
     (function () {
@@ -1073,15 +1109,24 @@ export interface PageData {
   goal?: GoalProgress;
   /** winner-replication ledger view (optional; degrades to "no replication state"). */
   replication?: ReplicationView;
+  /** Whether the human approval gate is in force. Display only; defaults to retired. */
+  approvalGate?: ApprovalGate;
 }
 
 export function page(opts: PageData): string {
   // Surfaced first, before any other panel, because an unnoticed queue ships nothing.
+  const gate = opts.approvalGate ?? GATE_DEFAULT;
   const awaitingCount = (opts.scheduled?.posts ?? []).filter((p: any) => p.awaiting_approval).length;
-  const awaitingBanner = awaitingCount
-    ? `<div class="apr-banner"><b>${awaitingCount} video${awaitingCount === 1 ? "" : "s"} awaiting your approval</b>
-       — nothing publishes until you decide. <a href="#approval">Review now</a></div>`
-    : "";
+  // With the gate retired, "nothing publishes until you decide" is simply untrue, and a
+  // banner that says it would send the user looking for a decision that does not exist.
+  const awaitingBanner = !awaitingCount
+    ? ""
+    : gate.paused
+      ? `<div class="apr-banner"><b>${awaitingCount} leftover draft${awaitingCount === 1 ? "" : "s"}</b>
+       from before the approval gate was retired — new posts schedule live and never queue.
+       <a href="#approval">Clear them</a></div>`
+      : `<div class="apr-banner"><b>${awaitingCount} video${awaitingCount === 1 ? "" : "s"} awaiting your approval</b>
+       — nothing publishes until you decide. <a href="#approval">Review now</a></div>`;
 
   const { runs, db, l, bank, schedule, disk, selected, pr, logItems } = opts;
   const cov: BankCoverage =
@@ -1297,7 +1342,7 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 
   <div class="card">
     <h2><span class="pin">SCHEDULED</span> Posts &amp; times <span class="pin" style="background:var(--mint)">LIVE FROM METRICOOL</span></h2>
-    ${awaitingBanner}<span id="approval"></span>${approvalPanel(opts.scheduled, opts.defaults?.defaults)}${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
+    ${awaitingBanner}<span id="approval"></span>${approvalPanel(opts.scheduled, opts.defaults?.defaults, gate)}${scheduledPanel(opts.scheduled, opts.defaults?.defaults)}
   </div>
 
   <div class="card">

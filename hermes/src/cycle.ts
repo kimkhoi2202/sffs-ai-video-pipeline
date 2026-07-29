@@ -29,7 +29,7 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { CONFIG, assertDraftOnly } from "./config.ts";
+import { CONFIG, assertPostState } from "./config.ts";
 import { setRunLog, info, warn, error, decision, gate } from "./log.ts";
 import {
   loadRun,
@@ -302,7 +302,7 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
     permalinks: [],
   };
   v.status = "drafted";
-  decision(`AWAITING APPROVAL — draft created ${v.id}`, {
+  decision(CONFIG.DRAFT_ONLY ? `AWAITING APPROVAL — draft created ${v.id}` : `SCHEDULED LIVE — ${v.id} publishes at its slot`, {
     dimension: v.dimension,
     arm: v.arm,
     posts: results.map((r) => ({ platform: r.platform, post_id: r.post_id, scheduled_at: r.scheduled_at })),
@@ -437,7 +437,9 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
       scheduled_at: pr.scheduled_at ?? null,
       metrics: { reach: null, video_views: null, reactions: null, comments: null, shares: null, eng_rate: null, as_of: null, source: "pending" },
       match_confidence: "high",
-      notes: "Created by the Hermes autonomous loop (DRAFT-ONLY).",
+      notes: CONFIG.DRAFT_ONLY
+        ? "Created by the Hermes autonomous loop (DRAFT-ONLY)."
+        : "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
     });
     if (!existing) db.posts.push(rec);
   }
@@ -451,6 +453,20 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
 // authored under a personal email can't be safely rewritten; only future commits.)
 const BOT_NAME = "SFFS Hermes Bot";
 const BOT_EMAIL = "deploy@sffs.local";
+
+/**
+ * The cycle's commit subject. Pure, and takes the posting mode as an argument rather
+ * than reading CONFIG, so the restore path is testable in-process: CONFIG is frozen at
+ * import time and an env flip cannot be observed by a test that already imported it.
+ */
+export function cycleCommitMessage(
+  runId: string,
+  summary: { drafted: number; rejected: number },
+  draftOnly: boolean,
+): string {
+  const what = draftOnly ? "drafts" : "scheduled live";
+  return `hermes: cycle ${runId} — ${summary.drafted} ${what}, ${summary.rejected} rejected [${draftOnly ? "draft-only" : "live"}]`;
+}
 
 export function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
   const candidates = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "ab-testing/replication.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
@@ -470,7 +486,7 @@ export function gitCommitPush(runId: string, summary: RunState["summary"]): { co
     if (missing.length) info("git: skipping absent paths", { missing });
     const status = run(["status", "--porcelain"]).stdout || "";
     if (!status.trim()) return { committed: false, pushed: false, note: "nothing to commit" };
-    const msg = `hermes: cycle ${runId} — ${summary.drafted} drafts, ${summary.rejected} rejected [draft-only]`;
+    const msg = cycleCommitMessage(runId, summary, CONFIG.DRAFT_ONLY);
     // -c pins author AND committer identity for THIS commit (belt: also set in box git config).
     const c = run(["-c", `user.name=${BOT_NAME}`, "-c", `user.email=${BOT_EMAIL}`, "commit", "-m", msg]);
     // git reports "nothing to commit" on STDOUT, so fall back to it when stderr is
@@ -500,7 +516,7 @@ export function gitCommitPush(runId: string, summary: RunState["summary"]): { co
 }
 
 export async function runCycle(): Promise<RunState> {
-  assertDraftOnly();
+  assertPostState();
   mkdirSync(CONFIG.DATA_DIR, { recursive: true });
   mkdirSync(CONFIG.RUNS_DIR, { recursive: true });
   const runId = process.env.HERMES_RUN_ID || todayRunId();
@@ -511,7 +527,7 @@ export async function runCycle(): Promise<RunState> {
   let state = loadRun(runId) ?? newRun(runId, ceiling);
   state.status = "running";
   saveRun(state);
-  info(`=== Hermes cycle ${runId} (floor ${floor}, ceiling ${ceiling}, DRAFT-ONLY${DRY ? ", DRY_RUN" : ""}) ===`);
+  info(`=== Hermes cycle ${runId} (floor ${floor}, ceiling ${ceiling}, ${CONFIG.DRAFT_ONLY ? "DRAFT-ONLY" : "LIVE — approval gate retired"}${DRY ? ", DRY_RUN" : ""}) ===`);
 
   // preflight
   const health = await ping();

@@ -1201,22 +1201,62 @@ test("approval: an oversized body is refused before it is parsed", async () => {
   assert.equal(out.status, 413);
 });
 
-test("page: the awaiting-approval count is impossible to miss", () => {
-  const html = page(emptyPageData({
-    scheduled: { ok: true, count: 2, by_status: {}, by_platform: {}, posts: [
-      { post_id: "-1", video_id: "2026-07-30-v01", awaiting_approval: true, opening: "motion-hook", scheduled_cst: "Thu 08:12" },
-      { post_id: "-2", video_id: "2026-07-30-v02", awaiting_approval: true, opening: "cold-plate", scheduled_cst: "Thu 09:40" },
-    ] } as any,
-  }));
+/** The gate as it behaves once restored, and as it ships. */
+const GATE_IN_FORCE = { paused: false, restoreCmd: "HERMES_APPROVAL_PAUSED=false" };
+const GATE_RETIRED = { paused: true, restoreCmd: "HERMES_APPROVAL_PAUSED=false" };
+const twoWaiting = { ok: true, count: 2, by_status: {}, by_platform: {}, posts: [
+  { post_id: "-1", video_id: "2026-07-30-v01", awaiting_approval: true, opening: "motion-hook", scheduled_cst: "Thu 08:12" },
+  { post_id: "-2", video_id: "2026-07-30-v02", awaiting_approval: true, opening: "cold-plate", scheduled_cst: "Thu 09:40" },
+] } as any;
+const noneWaiting = { ok: true, count: 0, by_status: {}, by_platform: {}, posts: [] } as any;
+
+test("page: with the gate RESTORED, the awaiting-approval count is impossible to miss", () => {
+  const html = page(emptyPageData({ scheduled: twoWaiting, approvalGate: GATE_IN_FORCE }));
   assert.match(html, /2 videos awaiting your approval/i);
   assert.match(html, /APPROVAL QUEUE — 2 AWAITING/);
   assert.match(html, /2026-07-30-v01/);
 });
 
-test("page: an empty approval queue says so without shouting", () => {
-  const html = page(emptyPageData({ scheduled: { ok: true, count: 0, by_status: {}, by_platform: {}, posts: [] } as any }));
+test("page: with the gate RETIRED, drafts left over from before it read as leftovers, not as a queue", () => {
+  const html = page(emptyPageData({ scheduled: twoWaiting, approvalGate: GATE_RETIRED }));
+  // The promise that made the old banner urgent is no longer true of new posts.
+  assert.doesNotMatch(html, /awaiting your approval/i);
+  assert.doesNotMatch(html, /nothing publishes until you decide/i);
+  // But these particular rows ARE real unapproved drafts, so they stay actionable —
+  // degrading honestly is not the same as hiding work that still exists.
+  assert.match(html, /2 leftover drafts/i);
+  assert.match(html, /APPROVAL QUEUE — 2 LEFTOVER DRAFTS/);
+  assert.match(html, /2026-07-30-v01/);
+  assert.match(html, /fetch\("\/api\/approve"/, "approve still works on a genuine leftover draft");
+});
+
+test("page: with the gate RESTORED, an empty approval queue says so without shouting", () => {
+  const html = page(emptyPageData({ scheduled: noneWaiting, approvalGate: GATE_IN_FORCE }));
   assert.doesNotMatch(html, /awaiting your approval/i);
   assert.match(html, /Nothing awaiting approval/i);
+});
+
+test("page: with the gate RETIRED and nothing queued, the panel degrades honestly — no dead buttons", () => {
+  const html = page(emptyPageData({ scheduled: noneWaiting, approvalGate: GATE_RETIRED }));
+  assert.doesNotMatch(html, /awaiting your approval/i);
+  // "Nothing awaiting approval" implies approval is a step that happens. It is not.
+  assert.doesNotMatch(html, /Nothing awaiting approval/i);
+  assert.match(html, /APPROVAL QUEUE — RETIRED/);
+  assert.match(html, /There is no approval step/i);
+  // A control that can never do anything is worse than no control.
+  assert.doesNotMatch(html, /data-act="approve"/);
+  assert.doesNotMatch(html, /data-act="reject"/);
+  // And the way back is stated on the page, not left in a commit message.
+  assert.match(html, /HERMES_APPROVAL_PAUSED=false/);
+  assert.match(html, /\/etc\/hermes\/hermes\.env/);
+  // The five content gates are still the automated protection and the panel says so.
+  assert.match(html, /dedup,\s+question validity,\s+brand\/copy,\s+render sanity/i);
+});
+
+test("page: the SHIPPED DEFAULT is the retired gate, so an unconfigured dashboard tells the truth", () => {
+  const html = page(emptyPageData({ scheduled: noneWaiting }));
+  assert.match(html, /APPROVAL QUEUE — RETIRED/);
+  assert.doesNotMatch(html, /Nothing awaiting approval/i);
 });
 
 /** A stub shaped like hermes/src/approval.ts when its `isUnapproved` re-read says no. */
@@ -1468,7 +1508,7 @@ test("QUEUE: the password field and all client-side password plumbing are GONE",
 });
 
 test("QUEUE: every row is reviewable — poster, player source, plain-language test, hook, time", () => {
-  const html = page(emptyPageData({ scheduled: queueFixture }));
+  const html = page(emptyPageData({ scheduled: queueFixture, approvalGate: GATE_IN_FORCE }));
   assert.match(html, /APPROVAL QUEUE \u2014 2 AWAITING/);
   for (const p of queueFixture.posts) {
     assert.ok(html.includes(`data-uuid="${p.post_id}"`), `row for ${p.post_id}`);
@@ -1504,9 +1544,18 @@ test("SECURITY: the approval queue never emits an S3 presigned url", () => {
 });
 
 test("QUEUE: the yellow awaiting banner still renders (regression lock on ee8cd1e)", () => {
-  const html = page(emptyPageData({ scheduled: queueFixture }));
+  const html = page(emptyPageData({ scheduled: queueFixture, approvalGate: GATE_IN_FORCE }));
   assert.match(html, /apr-banner/);
   assert.match(html, /2 videos awaiting your approval/i);
+});
+
+test("QUEUE: the banner survives the retired gate but stops claiming a decision is owed", () => {
+  // ee8cd1e was a banner that silently vanished. It must still render for leftover
+  // drafts — just without the line that is no longer true.
+  const html = page(emptyPageData({ scheduled: queueFixture, approvalGate: GATE_RETIRED }));
+  assert.match(html, /apr-banner/);
+  assert.match(html, /2 leftover drafts/i);
+  assert.doesNotMatch(html, /awaiting your approval/i);
 });
 
 

@@ -1,9 +1,22 @@
 /**
  * config.ts — central config + the HARD, NON-NEGOTIABLE safety constants.
  *
- * DRAFT_ONLY is frozen true here on purpose: the loop may ONLY ever create Metricool
- * posts with state="draft". Nothing in this codebase reads a "publish" flag from
- * config — going live is a HUMAN action, never the loop's. See guardrails.ts.
+ * THE APPROVAL GATE IS RETIRED, AND RESTORABLE IN ONE LINE. Instagram auto-publishes,
+ * so the loop creates LIVE scheduled posts rather than drafts a human has to release.
+ * The behaviour hangs off HERMES_APPROVAL_PAUSED, which takes the same shape and the
+ * same default polarity as HERMES_TIKTOK_PAUSED: anything but the literal "false"
+ * leaves the gate retired, and the single line
+ *
+ *     HERMES_APPROVAL_PAUSED=false
+ *
+ * in /etc/hermes/hermes.env brings it back — every new post returns to
+ * draft:true/autoPublish:false and the dashboard queue relights, with no code change.
+ *
+ * WHAT THIS FLAG DOES NOT TOUCH. It is a POSTING policy, not a content one. The five
+ * deterministic content gates (dedup, question validity, brand/copy, render sanity and
+ * Instagram's explicit-thumbnail requirement) run identically either way, and with the
+ * human out of the loop they are now the ONLY automated protection on a post. See
+ * guardrails.ts and publishGate.ts.
  */
 import { existsSync } from "node:fs";
 import { resolve, join } from "node:path";
@@ -25,12 +38,20 @@ const REPO_DIR = process.env.HERMES_REPO_DIR || resolve(import.meta.dirname, "..
 const DATA_DIR = process.env.HERMES_DATA_DIR || "/home/ec2-user/hermes-data";
 const HERMES_HOME = (process.env.HERMES_HOME || "").trim();
 
+/**
+ * The one switch that restores the human approval gate. Read once, here, so there is a
+ * single place to look and a single line to change on the box.
+ */
+const APPROVAL_PAUSED = String(process.env.HERMES_APPROVAL_PAUSED ?? "true").trim().toLowerCase() !== "false";
+
 export const CONFIG = Object.freeze({
-  // ── HARD SAFETY CONSTANTS ──────────────────────────────────────────────
-  /** The loop can ONLY create drafts. Frozen. Never make this configurable. */
-  DRAFT_ONLY: true as const,
-  /** The single post state the loop is allowed to emit. */
-  ALLOWED_POST_STATE: "draft" as const,
+  // ── POSTING STATE ──────────────────────────────────────────────────────
+  /** True while the approval gate is retired and the loop may schedule live. */
+  APPROVAL_PAUSED,
+  /** True only while the gate is in force. DERIVED — never set this by hand. */
+  DRAFT_ONLY: !APPROVAL_PAUSED,
+  /** The single post state the loop is allowed to emit, given the gate above. */
+  ALLOWED_POST_STATE: (APPROVAL_PAUSED ? "live" : "draft") as "live" | "draft",
 
   // ── LLM (TrueFoundry gateway) ──────────────────────────────────────────
   TFY_BASE_URL: (process.env.TFY_LLM_BASE_URL || "https://tfy.promptlens.trilogy.com/api/llm/v1").trim(),
@@ -316,8 +337,19 @@ export const CONFIG = Object.freeze({
   REMOTION_DIR: join(REPO_DIR, "remotion"),
 });
 
-export function assertDraftOnly(): void {
-  if (CONFIG.DRAFT_ONLY !== true || CONFIG.ALLOWED_POST_STATE !== "draft") {
-    throw new Error("FATAL: DRAFT_ONLY invariant violated — refusing to run.");
+/**
+ * The post-state invariant. This used to assert a frozen constant; now that the state
+ * is configurable, the thing worth asserting is COHERENCE — that the gate flag, the
+ * derived DRAFT_ONLY and the emitted post state all agree. A half-applied change (a
+ * run that believes it is drafting while it emits live posts, or the reverse) still
+ * refuses to start rather than discovering the disagreement one write at a time.
+ */
+export function assertPostState(): void {
+  const gated = !CONFIG.APPROVAL_PAUSED;
+  if (CONFIG.DRAFT_ONLY !== gated || CONFIG.ALLOWED_POST_STATE !== (gated ? "draft" : "live")) {
+    throw new Error(
+      `FATAL: post-state invariant violated (APPROVAL_PAUSED=${CONFIG.APPROVAL_PAUSED} ` +
+        `DRAFT_ONLY=${CONFIG.DRAFT_ONLY} ALLOWED_POST_STATE=${CONFIG.ALLOWED_POST_STATE}) — refusing to run.`,
+    );
   }
 }

@@ -204,6 +204,7 @@ const server = createServer(async (req, res) => {
           supervisor: supervisorStatus(),
           goal: goalProgress(),
           replication: replication(),
+          approvalGate: { paused: CONFIG.APPROVAL_PAUSED, restoreCmd: CONFIG.APPROVAL_RESTORE_CMD },
         }),
       );
     }
