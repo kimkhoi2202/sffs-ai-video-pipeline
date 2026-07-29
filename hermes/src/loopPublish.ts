@@ -31,7 +31,7 @@
  */
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
-import { nextSlots, WINDOW_OPEN_HOUR } from "./scheduler.ts";
+import { nextSlots, instantFromWallClock, WINDOW_OPEN_HOUR } from "./scheduler.ts";
 import { decide, NETWORKS, perDayFor, type Network } from "./postingPolicy.ts";
 import { createPost, listPosts, youtubeTitleFrom, type McPost } from "./metricool.ts";
 import { hostedCoverUrlFor, coverMomentMs } from "./covers.ts";
@@ -62,21 +62,16 @@ export function timesByNetwork(rows: McPost[]): Record<string, string[]> {
     const dt = p.publicationDate?.dateTime;
     const tz = p.publicationDate?.timezone || CONFIG.METRICOOL_TZ;
     if (!dt) continue;
-    // Metricool reports naive local time; the scheduler wants an instant.
-    const iso = new Date(`${dt}${offsetFor(tz)}`).toISOString();
+    // Metricool reports naive local time; the scheduler wants an instant. Resolved
+    // against the post's OWN zone at the post's OWN date — see instantFromWallClock.
+    const ms = instantFromWallClock(dt, tz);
+    if (!Number.isFinite(ms)) continue;
+    const iso = new Date(ms).toISOString();
     for (const pr of p.providers ?? []) {
       if (out[pr.network]) out[pr.network].push(iso);
     }
   }
   return out;
-}
-
-/** Chicago is the only zone this campaign uses; -05:00 in July, -06:00 otherwise. */
-function offsetFor(_tz: string): string {
-  const jan = new Date(Date.UTC(2026, 0, 1)).getTimezoneOffset();
-  const now = new Date();
-  const isDst = now.getTimezoneOffset() < jan;
-  return isDst ? "-05:00" : "-06:00";
 }
 
 /** How many posts a given network already has on a given local day. */
@@ -175,7 +170,9 @@ export function planSlots(
     const room = roomOn(day);
     if (room <= 0) continue;
     const take = Math.min(count - times.length, room);
-    const windowOpen = new Date(`${day}T${String(WINDOW_OPEN_HOUR).padStart(2, "0")}:00:00${offsetFor(CONFIG.METRICOOL_TZ)}`);
+    const windowOpen = new Date(
+      instantFromWallClock(`${day}T${String(WINDOW_OPEN_HOUR).padStart(2, "0")}:00:00`, CONFIG.METRICOOL_TZ),
+    );
     const fromMs = Math.max(now.getTime(), windowOpen.getTime());
     const got = nextSlots(take, { seed: `${seed}|${day}`, platform: network, avoid, fromMs });
     if (!got.length) continue;

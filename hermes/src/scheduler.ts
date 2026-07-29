@@ -88,6 +88,30 @@ function fromChicago(y: number, mo: number, d: number, h: number, mi: number): D
   return new Date(Date.UTC(y, mo - 1, d, h, mi, 0) - off);
 }
 
+/**
+ * The UTC instant whose `tz` wall clock reads `naive` ("YYYY-MM-DDTHH:MM:SS", no zone).
+ *
+ * Metricool stores naive local time, so every post already on the calendar has to be
+ * turned back into an instant before MIN_GAP_MIN can be measured against it. Deriving
+ * that offset from the HOST's clock is what silently killed the floor: the box runs UTC,
+ * so an "is it DST?" probe against the local zone answered no all summer and every
+ * existing post was read exactly 60 minutes late. 60 > MIN_GAP_MIN, so a slot genuinely
+ * colliding with an existing post measured as comfortably clear, and the miss was
+ * one-sided — anything placed EARLIER than an existing post sailed through.
+ *
+ * The offset is resolved from `tz` at the instant in question, so it is correct on both
+ * sides of a DST transition and does not care which zone the process runs in.
+ */
+export function instantFromWallClock(naive: string, tz: string = TZ): number {
+  const asIfUtc = Date.parse(`${String(naive).trim()}Z`);
+  if (!Number.isFinite(asIfUtc)) return NaN;
+  // offsetMs() needs a real instant to resolve the zone's rules at. The naive string
+  // read as UTC is within a day of the answer — near enough to pick the right side of a
+  // transition — and the second pass settles the hour it was out by.
+  const first = asIfUtc - offsetMs(new Date(asIfUtc), tz);
+  return asIfUtc - offsetMs(new Date(first), tz);
+}
+
 // --- seeded RNG (LCG; same family used elsewhere in the loop) ----------------
 function hashSeed(s: string): number {
   let h = 2166136261;

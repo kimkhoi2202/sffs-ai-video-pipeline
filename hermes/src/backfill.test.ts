@@ -13,12 +13,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { perDayFor, NETWORKS, budgetForecast, monthlyRecords } from "./postingPolicy.ts";
-import { planSlots, countOnDay, localDay } from "./loopPublish.ts";
+import { planSlots, countOnDay, localDay, timesByNetwork } from "./loopPublish.ts";
 import { retargetPropsToYouTube, endKeyForCard, RENDER_PLATFORMS } from "./render.ts";
 import { CONFIG } from "./config.ts";
 import { isWithinWindow, MIN_GAP_MIN } from "./scheduler.ts";
 
-const TZ_OFFSET = "-05:00"; // July = CDT, matching loopPublish.offsetFor
+// July in America/Chicago is CDT. Hardcoded ON PURPOSE: an independent ground truth to
+// measure the code under test against, never a value the code under test computed.
+const TZ_OFFSET = "-05:00";
 const ytRow = (dateTime: string, network = "youtube") =>
   ({ id: 1, uuid: `u-${dateTime}-${network}`, publicationDate: { dateTime, timezone: CONFIG.METRICOOL_TZ }, providers: [{ network }] }) as any;
 
@@ -336,4 +338,115 @@ test("CALENDAR: localDayOf agrees with the date countOnDay matches on", () => {
   assert.equal(countOnDay(rows, "youtube", "2026-07-30"), 1);
   const iso = new Date("2026-07-30T05:45:00Z").toISOString(); // 00:45 CDT on the 30th
   assert.equal(localDayOf(iso), "2026-07-30");
+});
+
+
+// ── The 56-minute floor ACROSS independently-created batches ─────────────────
+//
+// There was already a cross-batch test and it passed the whole time the floor was
+// broken, because of WHAT IT FED IN. scheduler.test.ts hands nextSlots the ISO instants
+// a previous nextSlots call returned — the two batches speak the same units, so the
+// floor holds trivially. A REAL second batch never gets ISO instants. It gets rows back
+// from Metricool carrying NAIVE LOCAL time, and something has to convert those before
+// the floor can be measured against them. That conversion was an hour out (it probed the
+// HOST's zone for DST, and the box runs UTC), which put every existing post 60 minutes
+// late in the avoid list. 60 > 56, so a colliding slot measured as clear — one-sidedly,
+// for anything placed EARLIER than an existing post.
+//
+// It shipped two YouTube posts 10 minutes apart on 2026-07-30 — 17:31 from the loop,
+// 17:41 from the catalogue backfill — with every test green.
+//
+// So these go in through the ROW shape, and measure against TZ_OFFSET, an independent
+// constant, never against a value the code under test produced.
+
+test("CROSS-BATCH: naive->instant follows the DATE's DST, not the host's clock", () => {
+  // The killer property, and it fails on ANY host: January in Chicago is CST (-06:00)
+  // and July is CDT (-05:00). Anything that resolves ONE offset for the whole process —
+  // a constant, or a probe of the runner's own zone — must get one of these two wrong,
+  // whatever TZ the test happens to run under.
+  const jan = timesByNetwork([ytRow("2026-01-15T12:00:00")]).youtube[0];
+  const jul = timesByNetwork([ytRow("2026-07-15T12:00:00")]).youtube[0];
+  assert.equal(jan, "2026-01-15T18:00:00.000Z", "noon on a January day in Chicago is 18:00Z (CST)");
+  assert.equal(jul, "2026-07-15T17:00:00.000Z", "noon on a July day in Chicago is 17:00Z (CDT)");
+  assert.notEqual(
+    Date.parse(jan) - Date.UTC(2026, 0, 15, 12),
+    Date.parse(jul) - Date.UTC(2026, 6, 15, 12),
+    "a single fixed offset for both dates is exactly the bug",
+  );
+});
+
+test("CROSS-BATCH: a board row converts to its TRUE instant, to the minute", () => {
+  // The specific row the loop planned on top of.
+  const [iso] = timesByNetwork([ytRow("2026-07-30T17:41:00")]).youtube;
+  assert.equal(iso, new Date(Date.parse(`2026-07-30T17:41:00${TZ_OFFSET}`)).toISOString());
+});
+
+test("CROSS-BATCH: the live 2026-07-30 YouTube collision does not reproduce", () => {
+  // The board exactly as Metricool returned it that morning: four catalogue-backfill
+  // posts on the 30th (ramp cap 5, so room for one more) and the loop asking for it.
+  // Swept over seeds because the offending slot is seed-chosen — one seed proves
+  // nothing, and the failure it is guarding is a SILENT one.
+  const now = new Date("2026-07-30T13:00:00Z"); // 08:00 CDT on the day itself
+  const backfill = ["2026-07-30T10:03:00", "2026-07-30T14:07:00", "2026-07-30T17:41:00", "2026-07-30T21:37:00"];
+  const rows = backfill.map((t) => ytRow(t));
+  const truth = backfill.map((t) => Date.parse(`${t}${TZ_OFFSET}`));
+  for (let i = 0; i < 60; i++) {
+    const plan = planSlots(1, "youtube", rows, `live-collision-${i}`, now);
+    for (const iso of plan.times) {
+      const m = Date.parse(iso);
+      for (let k = 0; k < truth.length; k++) {
+        const gap = Math.abs(m - truth[k]) / 60_000;
+        assert.ok(
+          gap >= MIN_GAP_MIN,
+          `seed ${i}: new slot ${iso} is ${gap.toFixed(0)}min from the backfill post at ${backfill[k]} (floor ${MIN_GAP_MIN})`,
+        );
+      }
+    }
+  }
+});
+
+test("CROSS-BATCH: an independently-created batch never lands inside the floor of the board", () => {
+  // Generic form of the same thing, with room to spare so a saturated window cannot be
+  // mistaken for a floor breach: Instagram's cap is 12 and the board holds 5.
+  const now = new Date("2026-07-30T13:00:00Z");
+  const onBoard = ["2026-07-30T08:49:00", "2026-07-30T11:29:00", "2026-07-30T14:31:00", "2026-07-30T17:57:00", "2026-07-30T21:09:00"];
+  const rows = onBoard.map((t) => ytRow(t, "instagram"));
+  const truth = onBoard.map((t) => Date.parse(`${t}${TZ_OFFSET}`));
+  for (let i = 0; i < 30; i++) {
+    const plan = planSlots(3, "instagram", rows, `cross-batch-${i}`, now);
+    assert.ok(plan.times.length > 0, `seed ${i} placed nothing`);
+    for (const iso of plan.times) {
+      const m = Date.parse(iso);
+      for (let k = 0; k < truth.length; k++) {
+        const gap = Math.abs(m - truth[k]) / 60_000;
+        assert.ok(gap >= MIN_GAP_MIN, `seed ${i}: ${iso} is ${gap.toFixed(0)}min from board post ${onBoard[k]}`);
+      }
+    }
+    // and the COMBINED calendar — board plus the new batch — has no pair inside the floor
+    const all = [...truth, ...plan.times.map((t) => Date.parse(t))].sort((a, b) => a - b);
+    for (let k = 1; k < all.length; k++) {
+      assert.ok(
+        (all[k] - all[k - 1]) / 60_000 >= MIN_GAP_MIN,
+        `seed ${i}: combined schedule has a ${((all[k] - all[k - 1]) / 60_000).toFixed(0)}min gap`,
+      );
+    }
+  }
+});
+
+test("CROSS-BATCH: the floor survives a batch planned from the OTHER side of a DST flip", () => {
+  // A November board read in July (or the reverse) is where a process-wide offset does
+  // its worst. The floor must hold on a date whose offset differs from today's.
+  const now = new Date("2026-10-30T13:00:00Z");
+  const onBoard = ["2026-11-05T09:01:00", "2026-11-05T13:03:00", "2026-11-05T17:05:00"];
+  const rows = onBoard.map((t) => ytRow(t));
+  const truth = onBoard.map((t) => Date.parse(`${t}-06:00`)); // November = CST
+  for (let i = 0; i < 30; i++) {
+    for (const iso of planSlots(2, "youtube", rows, `dst-flip-${i}`, now).times) {
+      const m = Date.parse(iso);
+      for (let k = 0; k < truth.length; k++) {
+        const gap = Math.abs(m - truth[k]) / 60_000;
+        assert.ok(gap >= MIN_GAP_MIN, `seed ${i}: ${iso} is ${gap.toFixed(0)}min from ${onBoard[k]} (CST)`);
+      }
+    }
+  }
 });
