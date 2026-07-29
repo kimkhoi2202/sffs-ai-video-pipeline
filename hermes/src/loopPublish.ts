@@ -32,7 +32,7 @@ import { nextSlots, WINDOW_OPEN_HOUR } from "./scheduler.ts";
 import { decide, NETWORKS, perDayFor, type Network } from "./postingPolicy.ts";
 import { createPost, listPosts, youtubeTitleFrom, type McPost } from "./metricool.ts";
 import { hostedCoverUrlFor, coverMomentMs } from "./covers.ts";
-import { withAttribution } from "./attribution.ts";
+import { captionForNetwork } from "./platformCaption.ts";
 import { publishGate } from "./publishGate.ts";
 import { uploadToS3 } from "./s3.ts";
 import type { HermesQ } from "./state.ts";
@@ -226,7 +226,11 @@ export interface LoopPublishInput {
 export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft> {
   const cover = hostedCoverUrlFor(input.runId, input.index, input.network);
   const coverMs = coverMomentMs(input.renderProps as any);
-  const caption = withAttribution(input.caption, input.videoId);
+  // ONE caption, adapted on the way out. The designer writes it once in the brand's
+  // voice; this is where the words that only mean something on one network are
+  // swapped for that network's (follow -> subscribe on YouTube, #fyp -> #shorts) and
+  // where the per-platform vanity link replaces the per-post /go/ tracker.
+  const caption = captionForNetwork(input.caption, input.network);
 
   const gate = publishGate(
     {

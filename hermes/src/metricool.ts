@@ -473,6 +473,84 @@ export async function setCover(uuid: string, coverUrl: string): Promise<{ update
 }
 
 /**
+ * Rewrite the TEXT of an existing post, in place, touching nothing else.
+ *
+ * WHY A PUT AND NOT A DELETE-AND-RECREATE. A caption fix does not need to cost the post
+ * its identity. PATCH cannot do it (ScheduledPostUpdateRequest models exactly one
+ * property, `publicationDate`, and rejects anything else), so this is a
+ * read-modify-write through PUT built from the PUT_WRITABLE whitelist, in which `text`
+ * is a member. Media is the field that makes PUT dangerous: a body whose `media`
+ * DIFFERS from the live row returns HTTP 500, while the identical body with media
+ * unchanged returns 200. buildUpdateBody carries `media` straight through from the read
+ * post, so it is byte-identical by construction and never re-sent as something new.
+ *
+ * THIS FUNCTION NEVER DELETES ANYTHING, AND THAT IS THE WHOLE POINT.
+ *
+ * setCover() and approve() both follow a PUT with `retireStaleId(oldId)`, on the theory
+ * that a PUT mints a new numeric id and leaves the old one addressable as a duplicate
+ * row. Retiring that stale id DESTROYED AN INNOCENT PUBLISHED POST on 2026-07-29: the
+ * caption backfill PUT one YouTube post (id 355134984 -> 355166520), retireStaleId
+ * re-read 355134984, saw the expected uuid, deleted it, and the row that actually went
+ * away was a published Instagram reel from 08:22 that same day (uuid
+ * 7336925031927533355) whose own id had been reassigned onto 355134984 in between. The
+ * uuid check does not close that window, because Metricool re-indexes ids across the
+ * WHOLE BRAND on every write and the check is a read followed by a separate delete.
+ *
+ * The same run also disproved the premise: the board held 46 rows before the PUT and 46
+ * after it. The PUT REPLACED THE RECORD IN PLACE and minted no duplicate at all. There
+ * was nothing to retire; the retirement was pure loss.
+ *
+ * So the contract here is census, not cleanup. The row count is measured before and
+ * after, and:
+ *   - unchanged  -> the normal case, nothing to do;
+ *   - one fewer  -> something was destroyed, THROW so the caller stops;
+ *   - one more   -> a real duplicate, THROW so a human decides which row dies.
+ * Deleting by a numeric id we are not certain about is the one thing this account has
+ * proven it cannot survive, and a stray row is cheaper than a wrong delete.
+ *
+ * The numeric id is re-resolved from the stable uuid first, because Metricool
+ * reassigns the id on every update and any cached one is stale by default.
+ *
+ * Returns `changed: false` without writing when the text is already what was asked for,
+ * so a re-run of a backfill is free rather than another mutation.
+ */
+export async function setText(uuid: string, text: string): Promise<{ updated: boolean; changed: boolean; id: number | null; rows: number }> {
+  const rowsBefore = (await listPosts("2020-01-01T00:00:00", "2030-12-31T23:59:59")).length;
+  const staleId = await resolveId(uuid);
+  if (staleId === null) return { updated: false, changed: false, id: null, rows: rowsBefore };
+  const current = await getPost(staleId);
+  if (String(current.text ?? "") === text) return { updated: true, changed: false, id: staleId, rows: rowsBefore };
+
+  const patch: Record<string, unknown> = { text };
+  // On YouTube `text` is the DESCRIPTION and the title is its own field. Re-derive it
+  // from the corrected caption so the two cannot drift apart; leave every other
+  // youtubeData property exactly as the live row has it.
+  const isYouTube = (current.providers ?? []).some((p) => p.network === "youtube");
+  if (isYouTube && current.youtubeData && typeof current.youtubeData === "object") {
+    patch.youtubeData = { ...(current.youtubeData as Record<string, unknown>), title: youtubeTitleFrom(text).slice(0, YT_TITLE_MAX) };
+  }
+
+  const updated = await putPost(staleId, buildUpdateBody(current, patch));
+  const newId = Number(updated?.id);
+
+  const rowsAfterList = await listPosts("2020-01-01T00:00:00", "2030-12-31T23:59:59");
+  const rowsAfter = rowsAfterList.length;
+  const mine = rowsAfterList.filter((p) => String(p.uuid) === String(uuid));
+  if (rowsAfter < rowsBefore) {
+    throw new Error(`setText(${uuid}): the board LOST a row (${rowsBefore} -> ${rowsAfter}). Something was destroyed; stopping.`);
+  }
+  if (rowsAfter > rowsBefore) {
+    throw new Error(`setText(${uuid}): the PUT left a duplicate row (${rowsBefore} -> ${rowsAfter}, ${mine.length} rows carry this uuid). Refusing to guess which id to delete.`);
+  }
+  if (mine.length !== 1) {
+    throw new Error(`setText(${uuid}): expected exactly one row for this uuid after the write, found ${mine.length}.`);
+  }
+
+  info("metricool text set", { uuid, id: newId || staleId, rows: rowsAfter });
+  return { updated: true, changed: true, id: Number.isFinite(newId) ? newId : staleId, rows: rowsAfter };
+}
+
+/**
  * Delete ONE post, resolved from its uuid.
  *
  * Single id only, deliberately: Metricool has no bulk-delete route in any of its 497

@@ -84,6 +84,19 @@ export const CONFIG = Object.freeze({
   // ── Attribution ────────────────────────────────────────────────────────
   /** Per-video short link, so signups attribute to a single video instead of the bio. */
   SITE_BASE_URL: (process.env.HERMES_SITE_BASE_URL || "https://smartfellaorfartsmella.com").trim(),
+  /**
+   * The host NEW captions link to, via the per-platform vanity paths
+   * `/instagram`, `/youtube` and `/tiktok` (see platformCaption.vanityUrl).
+   *
+   * WWW, NOT THE APEX, and that is measured rather than assumed. The apex answers
+   * HTTP 308 to the www host and www then answers the 307 that actually carries the
+   * attribution, so the apex form works but spends an extra hop before anything is
+   * tagged. www is one hop to `/?utm_source=<network>&utm_medium=social`.
+   *
+   * Kept separate from SITE_BASE_URL, which still addresses the legacy `/go/<id>`
+   * tracker that already-published captions point at.
+   */
+  SITE_VANITY_BASE: (process.env.HERMES_SITE_VANITY_BASE || "https://www.smartfellaorfartsmella.com").trim(),
   GO_LINK_PREFIX: (process.env.HERMES_GO_LINK_PREFIX || "/go/").trim(),
 
   // ── Media (S3 via tools/upload-media.ts) ───────────────────────────────
@@ -244,9 +257,26 @@ export const CONFIG = Object.freeze({
     "audio/music/winner.mp3",
   ],
   // Alternate music bed (see hermes/src/music.ts). OFF unless HERMES_MUSIC_APT=1.
-  // When on it applies to the INSTAGRAM render only; TikTok keeps MUSIC_TRACKS.
+  // When on it applies to NET-NEW Instagram and YouTube renders; TikTok keeps
+  // MUSIC_TRACKS (paused, and the account is already under distribution suppression).
   // Off => MUSIC_TRACKS above stays the shipped default on every platform.
+  //
+  // A REPOST IS NEVER AFFECTED by this switch, on any platform. The catalogue backfill
+  // renders from a stored props sidecar and never runs music selection at all, so an
+  // already-published video keeps whatever bed it shipped with. See render.ts musicFor.
   MUSIC_APT: process.env.HERMES_MUSIC_APT === "1",
+  /**
+   * YouTube-only kill switch for the alternate bed, ON by default whenever MUSIC_APT
+   * is on. `HERMES_MUSIC_APT_YOUTUBE=0` takes YouTube back to its licensed beds while
+   * leaving Instagram on.
+   *
+   * This exists because the YouTube downside is categorically worse than Instagram's.
+   * A Content ID claim on a Short OVER ONE MINUTE is a HARD BLOCK rather than a
+   * monetisation redirect, and these videos run 69 to 91 seconds — all of them over
+   * the line. On Instagram the realistic outcome is muted audio or reach suppression.
+   * Same switch shape, one line either way.
+   */
+  MUSIC_APT_YOUTUBE: process.env.HERMES_MUSIC_APT_YOUTUBE !== "0",
   HASHTAG_SETS: {
     A: ["#fyp", "#foryou", "#quiz", "#trivia", "#brainteaser"],
     B: ["#smartorfart", "#iqtest", "#puzzletok", "#riddles", "#mindgames"],

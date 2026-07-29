@@ -423,13 +423,47 @@ function buildDurs(id: string, mapped: Mapped, opts: { force?: boolean }): { dur
 // ---------------------------------------------------------------------------
 // Render
 // ---------------------------------------------------------------------------
-/** The bed for one render. Default is the planned CONFIG.MUSIC_TRACKS pick. With
- *  CONFIG.MUSIC_APT on, the INSTAGRAM render instead gets a per-video entry point
- *  from the alternate track (see music.ts, including the rights warning); TikTok
- *  is untouched. Keyed on `id`, so a re-render yields the same segment. */
-function musicFor(props: any, id: string, platform: Platform): string {
+/**
+ * The bed for one render. Default is the planned CONFIG.MUSIC_TRACKS pick. With
+ * CONFIG.MUSIC_APT on, a NET-NEW Instagram or YouTube render instead gets a per-video
+ * entry point from the alternate track (see music.ts, including the rights warning).
+ * Keyed on `id`, so a re-render yields the same segment.
+ *
+ * REPOST VERSUS NET-NEW, and why there is no flag for it. A catalogue repost keeps
+ * whatever bed its source video had; only new loop output gets the alternate track.
+ * That distinction needs no new parameter because the two paths ALREADY differ in
+ * whether music selection happens at all:
+ *
+ *   - NET-NEW  : cycle -> renderForPlatforms -> renderPlatform -> shortProps -> HERE.
+ *   - REPOST   : renderYouTubeFromSidecar -> retargetPropsToYouTube -> runRemotion,
+ *                which spreads the STORED sidecar (`{ ...sp }`) and carries its
+ *                `music` field through verbatim. It never calls shortProps, so it
+ *                never reaches this function.
+ *
+ * The sidecar is the record of what the original render actually used, so "came from a
+ * sidecar" IS "is a repost". Inventing a boolean would only restate what the call graph
+ * already says, and could then disagree with it.
+ *
+ * TikTok is excluded outright: it is paused, and the account is already under what
+ * looks like distribution suppression.
+ *
+ * The switch matrix lives in the pure `aptAppliesTo` predicate below so it can be
+ * tested without reaching for the environment (CONFIG is frozen at import).
+ */
+export function aptAppliesTo(
+  platform: Platform,
+  on: boolean = CONFIG.MUSIC_APT,
+  youtubeOn: boolean = CONFIG.MUSIC_APT_YOUTUBE,
+): boolean {
+  if (!on) return false;
+  if (platform === "tiktok") return false; // paused, and already reach-suppressed
+  if (platform === "youtube") return youtubeOn;
+  return platform === "instagram";
+}
+
+export function musicFor(props: any, id: string, platform: Platform, applies: boolean = aptAppliesTo(platform)): string {
   const planned = String(props.music ?? "audio/music/gameshow-fanfare.mp3").replace(/^audio\/music\//, "");
-  if (!CONFIG.MUSIC_APT || platform !== "instagram") return planned;
+  if (!applies) return planned;
   const seg = aptSegmentFor(id);
   info("music: alternate bed selected", { id, platform, segment: seg, replaced: planned });
   return seg;
