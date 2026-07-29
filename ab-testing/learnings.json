@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T18:06:26.132Z",
+  "updated_at": "2026-07-29T14:07:13.116Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -117,9 +117,9 @@
         "n_posts": 3,
         "n_with_metrics": 2,
         "median_eng_rate": 2.33,
-        "avg_reach": 127.5,
+        "avg_reach": 128,
         "median_views": 133,
-        "median_reach": 127.5,
+        "median_reach": 128,
         "median_skip_rate": 79.5,
         "n_by_metric": {
           "median_eng_rate": 2,
@@ -175,17 +175,17 @@
       },
       "mascot": {
         "n_posts": 11,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 2,
+        "median_eng_rate": 0,
+        "avg_reach": 58,
+        "median_views": 92.5,
+        "median_reach": 58,
+        "median_skip_rate": 41.85,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "hook": {
@@ -327,17 +327,17 @@
     "by_platform": {
       "instagram": {
         "n_posts": 46,
-        "n_with_metrics": 6,
-        "median_eng_rate": 2.17,
-        "avg_reach": 124,
-        "median_views": 135,
-        "median_reach": 124,
-        "median_skip_rate": 79.5,
+        "n_with_metrics": 8,
+        "median_eng_rate": 1.75,
+        "avg_reach": 121,
+        "median_views": 134,
+        "median_reach": 121,
+        "median_skip_rate": 79.45,
         "n_by_metric": {
-          "median_eng_rate": 6,
-          "median_skip_rate": 6,
-          "median_views": 6,
-          "median_reach": 6
+          "median_eng_rate": 8,
+          "median_skip_rate": 8,
+          "median_views": 8,
+          "median_reach": 8
         }
       },
       "tiktok": {
@@ -359,32 +359,32 @@
     "by_hashtag_set": {
       "B": {
         "n_posts": 22,
-        "n_with_metrics": 1,
-        "median_eng_rate": 3.05,
-        "avg_reach": 131,
-        "median_views": 131,
-        "median_reach": 131,
-        "median_skip_rate": null,
+        "n_with_metrics": 2,
+        "median_eng_rate": 1.53,
+        "avg_reach": 68,
+        "median_views": 94.5,
+        "median_reach": 68,
+        "median_skip_rate": 7.8,
         "n_by_metric": {
-          "median_eng_rate": 1,
-          "median_skip_rate": 0,
-          "median_views": 1,
-          "median_reach": 1
+          "median_eng_rate": 2,
+          "median_skip_rate": 1,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "A": {
         "n_posts": 29,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0,
+        "avg_reach": 111,
+        "median_views": 127,
+        "median_reach": 111,
+        "median_skip_rate": 75.9,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       },
       "C": {
@@ -405,18 +405,18 @@
     },
     "by_time_bucket": {
       "evening (18-24)": {
-        "n_posts": 8,
-        "n_with_metrics": 7,
-        "median_eng_rate": 3.05,
-        "avg_reach": 124,
-        "median_views": 135,
-        "median_reach": 124,
-        "median_skip_rate": 79.5,
+        "n_posts": 9,
+        "n_with_metrics": 8,
+        "median_eng_rate": 3.03,
+        "avg_reach": 124.5,
+        "median_views": 133,
+        "median_reach": 124.5,
+        "median_skip_rate": 78.9,
         "n_by_metric": {
-          "median_eng_rate": 7,
-          "median_skip_rate": 3,
-          "median_views": 7,
-          "median_reach": 7
+          "median_eng_rate": 8,
+          "median_skip_rate": 4,
+          "median_views": 8,
+          "median_reach": 8
         }
       },
       "afternoon (12-18)": {
@@ -450,18 +450,18 @@
         }
       },
       "night (0-6)": {
-        "n_posts": 4,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_posts": 5,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0,
+        "avg_reach": 5,
+        "median_views": 58,
+        "median_reach": 5,
+        "median_skip_rate": 7.8,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       }
     },
@@ -678,32 +678,32 @@
       },
       "mascot-absent": {
         "n_posts": 6,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0,
+        "avg_reach": 111,
+        "median_views": 127,
+        "median_reach": 111,
+        "median_skip_rate": 75.9,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       },
       "mascot-standard": {
         "n_posts": 3,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0,
+        "avg_reach": 5,
+        "median_views": 58,
+        "median_reach": 5,
+        "median_skip_rate": 7.8,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       },
       "tempo-fast": {
@@ -769,7 +769,7 @@
     }
   },
   "front_runners": {
-    "as_of": "2026-07-28",
+    "as_of": "2026-07-29",
     "variant_family": "standard",
     "platform": "tiktok",
     "hashtag_set": null,
@@ -945,6 +945,14 @@
       "pulled": 89,
       "updated": 15,
       "n_with_metrics": 15
+    },
+    {
+      "date": "2026-07-29",
+      "from": "2026-06-29",
+      "to": "2026-07-29",
+      "pulled": 103,
+      "updated": 17,
+      "n_with_metrics": 17
     }
   ]
 }

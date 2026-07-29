@@ -1538,6 +1538,303 @@
           "answerNorm": "51"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-29-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "1573fffe0592",
+          "sig": "text|verbal|verbal-analogy|monkey is to jungle as bat is to || cave~ice~ocean~water|cave",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "CAVE"
+        },
+        {
+          "hash": "e7d649c10bf2",
+          "sig": "numseries|quantitative|number-series|3~7~10~17~27|44",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "44"
+        },
+        {
+          "hash": "802abde8dabf",
+          "sig": "text|quantitative|number-puzzle|if 3 1 12 2 1 9 4 3 21 then 2 4 || 16~18~28~6|18",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "18"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v02",
+      "test": "mascot",
+      "variant": "mascot-standard",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "70e2904c54d7",
+          "sig": "text|verbal|odd-one-out|which one does not belong || drum~flute~harp~soda|soda",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "SODA"
+        },
+        {
+          "hash": "b2d5dc6e730d",
+          "sig": "numseries|quantitative|number-series|1~4~5~9~14|23",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "23"
+        },
+        {
+          "hash": "7b65b565d660",
+          "sig": "text|quantitative|number-analogy|which number fits 3 13 5 21 6 25 8 || 29~33~36~38|33",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "33"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "3fe4fd1832ac",
+          "sig": "text|quantitative|word-problem|20 of the 30 kids in class wear glasses how many is that || 10~3~5~6|6",
+          "tier": "WORD PROBLEM",
+          "answerNorm": "6"
+        },
+        {
+          "hash": "ac031527fd7b",
+          "sig": "numseries|quantitative|number-series|1~5~6~11~17|28",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "28"
+        },
+        {
+          "hash": "343d3e0f8cc8",
+          "sig": "text|quantitative|compare|which decimal is the smallest || 0 45~0 5~0 55~0 6|0 45",
+          "tier": "COMPARE",
+          "answerNorm": "0.45"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v04",
+      "test": "tempo",
+      "variant": "tempo-slow",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "e36aa42209da",
+          "sig": "text|verbal|sentence-completion|the baby was sleeping so we all tried to stay and not wake her up || awake~busy~loud~quiet|quiet",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "QUIET"
+        },
+        {
+          "hash": "f916eb1b8a3a",
+          "sig": "numseries|quantitative|number-series|2~7~9~16~25|41",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "41"
+        },
+        {
+          "hash": "e9d83dcc83db",
+          "sig": "text|verbal|verbal-analogy|up is to down as rich is to || far~poor~quiet~sell|poor",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "POOR"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v06",
+      "test": "hook",
+      "variant": "hook-challenge",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "42e732cacab4",
+          "sig": "text|quantitative|number-analogy|which number fits 2 9 4 15 5 18 7 || 14~23~24~27|24",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "24"
+        },
+        {
+          "hash": "d9c1fca092a9",
+          "sig": "numseries|quantitative|number-series|1~9~10~19~29|48",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "48"
+        },
+        {
+          "hash": "dd7185a633a9",
+          "sig": "text|verbal|sentence-completion|the cake tasted very because my aunt added lots of sugar || bitter~salty~sour~sweet|sweet",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "SWEET"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v07",
+      "test": "narration",
+      "variant": "no-options-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b50f6f17c6ef",
+          "sig": "text|verbal|verbal-analogy|knife is to cut as broom is to || clean~dust~floor~sweep|sweep",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SWEEP"
+        },
+        {
+          "hash": "ec4d2428351d",
+          "sig": "text|verbal|odd-one-out|which one does not belong || dress~glove~iron~scarf|iron",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "IRON"
+        },
+        {
+          "hash": "b30423fc3d5d",
+          "sig": "text|verbal|sentence-completion|the story was so that i could not stop turning the pages || boring~interesting~quiet~short|interesting",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "INTERESTING"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v08",
+      "test": "narration",
+      "variant": "no-narration",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "4a25b1c3e3d3",
+          "sig": "text|verbal|verbal-analogy|table is to wood as ring is to || clay~gold~plastic~wax|gold",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "GOLD"
+        },
+        {
+          "hash": "0ddb54551190",
+          "sig": "text|verbal|odd-one-out|which one does not belong || eel~hail~rain~thunder|eel",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "EEL"
+        },
+        {
+          "hash": "574f15012729",
+          "sig": "text|verbal|sentence-completion|the plant on the windowsill grew tall because it got plenty of and water || darkness~noise~paper~sunlight|sunlight",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "SUNLIGHT"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v09",
+      "test": "type-nonverbal-shapes",
+      "variant": "shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "789b121e0b14",
+          "sig": "matrix|nonverbal|figure-matrix|matrix:c3544b7e96dd|flipped triangle",
+          "tier": "FIGURE MATRIX",
+          "answerNorm": "flipped triangle"
+        },
+        {
+          "hash": "8468f28b89f3",
+          "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:06f98b54eb13|empty star",
+          "tier": "VISUAL ODD ONE OUT",
+          "answerNorm": "empty star"
+        },
+        {
+          "hash": "6b141e38ff2d",
+          "sig": "fold|nonverbal|paper-folding|fold:8bf366f27e5d|4 corners",
+          "tier": "PAPER FOLDING",
+          "answerNorm": "4 corners"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v10",
+      "test": "ending",
+      "variant": "no-answer",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "ba611798c21c",
+          "sig": "text|quantitative|number-analogy|which number fits 4 14 5 18 6 22 8 || 25~28~30~32|30",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "30"
+        },
+        {
+          "hash": "3da48dd1c0c0",
+          "sig": "numseries|quantitative|number-series|5~4~9~13~22|35",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "35"
+        },
+        {
+          "hash": "8d2fb6353347",
+          "sig": "text|quantitative|number-puzzle|if 1 5 30 4 3 35 3 2 25 then 3 9 || 57~60~63~65|60",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "60"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v11",
+      "test": "narration",
+      "variant": "no-question-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "d03fb6142223",
+          "sig": "text|verbal|sentence-completion|the soup was far too to eat so we waited for it to cool down first || cold~empty~hot~sweet|hot",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "HOT"
+        },
+        {
+          "hash": "046596fe9460",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cocoa~mercury~milk~tea|mercury",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "MERCURY"
+        },
+        {
+          "hash": "f099abe7df26",
+          "sig": "text|verbal|verbal-analogy|window is to glass as tire is to || cotton~metal~plastic~rubber|rubber",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "RUBBER"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-29-v12",
+      "test": "progress-counter",
+      "variant": "progress-hidden",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "8d26f0dd2aaf",
+          "sig": "text|quantitative|number-analogy|which number fits 2 6 4 10 6 14 5 || 10~11~12~9|12",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "12"
+        },
+        {
+          "hash": "199999be3f8e",
+          "sig": "numseries|quantitative|number-series|2~4~8~16|32",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "32"
+        },
+        {
+          "hash": "c4fd38b374c1",
+          "sig": "text|quantitative|number-puzzle|if 5 2 21 5 4 27 6 6 36 then 4 8 || 12~24~36~37|36",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "36"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
