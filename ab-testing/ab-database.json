@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-29T15:11:43.490Z",
+  "updated_at": "2026-07-30T14:43:48.181Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -73,7 +73,7 @@
         "eng_rate": 10.483870967741936,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": 78.3
@@ -110,7 +110,7 @@
         "eng_rate": 3,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -151,7 +151,7 @@
         "eng_rate": 3.272727272727273,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -192,7 +192,7 @@
         "eng_rate": 1.5151515151515151,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": 79.4
@@ -233,7 +233,7 @@
         "eng_rate": 5.622489959839357,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -267,17 +267,17 @@
       "metrics": {
         "reach": 118,
         "reach_rate": "11.3%",
-        "video_views": 133,
+        "video_views": 135,
         "reactions": 2,
         "comments": 2,
         "shares": 0,
         "eng_rate": 3.389830508474576,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
-        "skip_rate": 80.3
+        "skip_rate": 79.7
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 01). IG twin of the 991-reach TikTok post (publer 195306517) but only 113 reach / 0.88% eng -> platform is the dominant confound. Only post with a comment (1).",
@@ -315,7 +315,7 @@
         "eng_rate": 2.6058631921824107,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -356,7 +356,7 @@
         "eng_rate": 4.436860068259386,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -397,7 +397,7 @@
         "eng_rate": 2.4193548387096775,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": 79.5
@@ -438,7 +438,7 @@
         "eng_rate": 1.9047619047619049,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": 89.3
@@ -479,7 +479,7 @@
         "eng_rate": 42.857142857142854,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -523,7 +523,7 @@
         "eng_rate": 3.9867109634551494,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -569,7 +569,7 @@
         "eng_rate": 1.6,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": 79.5
@@ -613,7 +613,7 @@
         "eng_rate": 4.3557168784029034,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -655,7 +655,7 @@
         "eng_rate": 3.0534351145038165,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -4063,16 +4063,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-28T23:57:00",
       "metrics": {
-        "reach": 111,
-        "video_views": 127,
-        "reactions": 0,
+        "reach": 408,
+        "video_views": 461,
+        "reactions": 4,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0,
-        "as_of": "2026-07-29",
+        "eng_rate": 0.9803921568627451,
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
-        "skip_rate": 75.9
+        "skip_rate": 61
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4112,16 +4112,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-29T00:53:00",
       "metrics": {
-        "reach": 5,
-        "video_views": 58,
-        "reactions": 0,
+        "reach": 247,
+        "video_views": 281,
+        "reactions": 3,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0,
-        "as_of": "2026-07-29",
+        "eng_rate": 1.214574898785425,
+        "as_of": "2026-07-30",
         "source": "api",
         "saves": null,
-        "skip_rate": 7.8
+        "skip_rate": 62.6
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4134,7 +4134,7 @@
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/Dba1b-3lGz2/",
       "caption": "think you got this one? comment your answer before you scroll away and prove you're actually a smart fella 👀\n\nhttps://www.smartfellaorfartsmella.com/instagram\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-28-v03.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -4172,7 +4172,8 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
-      "metricool_uuid": "1287858405764056728"
+      "metricool_uuid": "1287858405764056728",
+      "posted_at": "2026-07-30T08:49:00"
     },
     {
       "_hermes_key": "hermes:2026-07-28-v04:instagram",
@@ -5507,6 +5508,738 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v04:instagram",
+      "metricool_uuid": "2229311113450900000",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you got this one wrong. drop your answer in the comments and let's see if you're really built different or just built confused 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-v04.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "type-nonverbal-shapes",
+        "arm": "shapes",
+        "label": "shapes",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "FIGURE ANALOGY",
+          "FIGURE MATRIX",
+          "VISUAL ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "type-nonverbal-shapes",
+        "arm": "shapes",
+        "rationale": "nonverbal variety: paper-folding + figure matrix/analogy/odd-one-out (options are figures; prompt-only VO)",
+        "hermes_video_id": "2026-07-30-v04"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-07-30T18:53:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v04:youtube",
+      "metricool_uuid": "-6869344980708339839",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you got this one wrong. drop your answer in the comments and let's see if you're really built different or just built confused 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-v04.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "type-nonverbal-shapes",
+        "arm": "shapes",
+        "label": "shapes",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "FIGURE ANALOGY",
+          "FIGURE MATRIX",
+          "VISUAL ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "type-nonverbal-shapes",
+        "arm": "shapes",
+        "rationale": "nonverbal variety: paper-folding + figure matrix/analogy/odd-one-out (options are figures; prompt-only VO)",
+        "hermes_video_id": "2026-07-30-v04"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-01T17:09:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v07:instagram",
+      "metricool_uuid": "-1906582899232125046",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "which one's the imposter? drop your answer in the comments and follow so you don't miss the reveal 👀\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-v07.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "type-nonverbal-classic",
+        "arm": "classic-shapes",
+        "label": "classic-shapes",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "FIGURE SERIES",
+          "POSITION",
+          "FIGURE ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "type-nonverbal-classic",
+        "arm": "classic-shapes",
+        "rationale": "classic nonverbal variety: dot position / shaded figure-analogy / polygon figure-series (options are figures; prompt-only VO)",
+        "hermes_video_id": "2026-07-30-v07"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-07-31T07:45:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v07:youtube",
+      "metricool_uuid": "7227566825037253764",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "which one's the imposter? drop your answer in the comments and follow so you don't miss the reveal 👀\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-v07.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "type-nonverbal-classic",
+        "arm": "classic-shapes",
+        "label": "classic-shapes",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "FIGURE SERIES",
+          "POSITION",
+          "FIGURE ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "type-nonverbal-classic",
+        "arm": "classic-shapes",
+        "rationale": "classic nonverbal variety: dot position / shaded figure-analogy / polygon figure-series (options are figures; prompt-only VO)",
+        "hermes_video_id": "2026-07-30-v07"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T10:17:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v10:instagram",
+      "metricool_uuid": "3040421413535499795",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you got this one wrong 🧠 drop your answer in the comments and follow so you don't miss the next brain buster\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-v10.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "category-mix",
+        "arm": "verbal-only",
+        "label": "verbal-only",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "category-mix",
+        "arm": "verbal-only",
+        "rationale": "verbal-only (odd-one-out / analogy)",
+        "hermes_video_id": "2026-07-30-v10"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-07-31T13:17:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v10:youtube",
+      "metricool_uuid": "427354886139037024",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you got this one wrong 🧠 drop your answer in the comments and follow so you don't miss the next brain buster\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-v10.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "category-mix",
+        "arm": "verbal-only",
+        "label": "verbal-only",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "category-mix",
+        "arm": "verbal-only",
+        "rationale": "verbal-only (odd-one-out / analogy)",
+        "hermes_video_id": "2026-07-30-v10"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T16:43:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v11:instagram",
+      "metricool_uuid": "-898931430105723949",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "got a big brain or a big yikes? drop your score in the comments and follow for more brain rot that actually tests you 🧠\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:2026-07-30-v11.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "ending",
+        "arm": "full-reveal",
+        "label": "full-reveal",
+        "narration": "full",
+        "ending": "full-reveal",
+        "question_types": [
+          "NUMBER PUZZLE",
+          "NUMBER SERIES",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "ending",
+        "arm": "full-reveal",
+        "rationale": "TEST ARM vs the 'cliffhanger' ending default: reveal EVERY answer (full-reveal / score-screen style) (keeps full narration)",
+        "hermes_video_id": "2026-07-30-v11"
+      },
+      "hashtag_set": "B",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-07-31T17:23:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v11:youtube",
+      "metricool_uuid": "6669634005058077270",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "got a big brain or a big yikes? drop your score in the comments and follow for more brain rot that actually tests you 🧠\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:2026-07-30-v11.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "ending",
+        "arm": "full-reveal",
+        "label": "full-reveal",
+        "narration": "full",
+        "ending": "full-reveal",
+        "question_types": [
+          "NUMBER PUZZLE",
+          "NUMBER SERIES",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "ending",
+        "arm": "full-reveal",
+        "rationale": "TEST ARM vs the 'cliffhanger' ending default: reveal EVERY answer (full-reveal / score-screen style) (keeps full narration)",
+        "hermes_video_id": "2026-07-30-v11"
+      },
+      "hashtag_set": "B",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T22:15:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v12:instagram",
+      "metricool_uuid": "7398777080547790221",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you can't get this one right without looking it up. what's your answer? comment below and follow for more brain tests 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-30-v12.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "length",
+        "arm": "one-question",
+        "label": "one-question",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 1
+      },
+      "experiment": {
+        "dimension": "length",
+        "arm": "one-question",
+        "rationale": "single-question payoff vs three (the cliffhanger default collapses to withholding the one verdict + comment-CTA)",
+        "hermes_video_id": "2026-07-30-v12"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-07-31T23:03:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-v12:youtube",
+      "metricool_uuid": "-2975191625348005343",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you can't get this one right without looking it up. what's your answer? comment below and follow for more brain tests 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-30-v12.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "length",
+        "arm": "one-question",
+        "label": "one-question",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 1
+      },
+      "experiment": {
+        "dimension": "length",
+        "arm": "one-question",
+        "rationale": "single-question payoff vs three (the cliffhanger default collapses to withholding the one verdict + comment-CTA)",
+        "hermes_video_id": "2026-07-30-v12"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-03T19:03:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-t1-v01:instagram",
+      "metricool_uuid": "-3748298417111937586",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "think you're slick? prove it in the comments. get this right and you might just be the smart fella we're looking for 👀\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-t1-v01.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "mascot",
+        "arm": "mascot-absent",
+        "label": "mascot-absent",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "NUMBER SERIES",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "mascot",
+        "arm": "mascot-absent",
+        "rationale": "TEST ARM vs the 'mascot-prominent' mascot default: HIDE the brand brain mascot (no brain on the intro cover or outro) — the clean no-mascot control (keeps full narration + cliffhanger ending)",
+        "hermes_video_id": "2026-07-30-t1-v01"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-07-31T11:01:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-t1-v01:youtube",
+      "metricool_uuid": "3550812854241608422",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "think you're slick? prove it in the comments. get this right and you might just be the smart fella we're looking for 👀\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-t1-v01.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "mascot",
+        "arm": "mascot-absent",
+        "label": "mascot-absent",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "NUMBER SERIES",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "mascot",
+        "arm": "mascot-absent",
+        "rationale": "TEST ARM vs the 'mascot-prominent' mascot default: HIDE the brand brain mascot (no brain on the intro cover or outro) — the clean no-mascot control (keeps full narration + cliffhanger ending)",
+        "hermes_video_id": "2026-07-30-t1-v01"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-03T12:53:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-t1-v04:instagram",
+      "metricool_uuid": "4108418913864011532",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you know this one. drop your answer in the comments and follow so you don't miss the next brain bender 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-t1-v04.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "category-mix",
+        "arm": "verbal-only",
+        "label": "verbal-only",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "category-mix",
+        "arm": "verbal-only",
+        "rationale": "verbal-only (odd-one-out / analogy)",
+        "hermes_video_id": "2026-07-30-t1-v04"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-01T10:31:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-t1-v04:youtube",
+      "metricool_uuid": "1114008794856770380",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you know this one. drop your answer in the comments and follow so you don't miss the next brain bender 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-07-30-t1-v04.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "category-mix",
+        "arm": "verbal-only",
+        "label": "verbal-only",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "category-mix",
+        "arm": "verbal-only",
+        "rationale": "verbal-only (odd-one-out / analogy)",
+        "hermes_video_id": "2026-07-30-t1-v04"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-03T22:47:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-t2-v03:instagram",
+      "metricool_uuid": "-8000610643589837917",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "think you got this one? comment your answer and let's see if you're a smart fella or a fart smella 🧠 follow for more brain tests\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-30-t2-v03.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "mascot",
+        "arm": "mascot-absent",
+        "label": "mascot-absent",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "NUMBER ANALOGY",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "mascot",
+        "arm": "mascot-absent",
+        "rationale": "TEST ARM vs the 'mascot-prominent' mascot default: HIDE the brand brain mascot (no brain on the intro cover or outro) — the clean no-mascot control (keeps full narration + cliffhanger ending)",
+        "hermes_video_id": "2026-07-30-t2-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-01T09:35:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-07-30-t2-v03:youtube",
+      "metricool_uuid": "2181190465031849979",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "think you got this one? comment your answer and let's see if you're a smart fella or a fart smella 🧠 follow for more brain tests\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-07-30-t2-v03.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "mascot",
+        "arm": "mascot-absent",
+        "label": "mascot-absent",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "NUMBER ANALOGY",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "mascot",
+        "arm": "mascot-absent",
+        "rationale": "TEST ARM vs the 'mascot-prominent' mascot default: HIDE the brand brain mascot (no brain on the intro cover or outro) — the clean no-mascot control (keeps full narration + cliffhanger ending)",
+        "hermes_video_id": "2026-07-30-t2-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-03T16:43:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
     }
   ],
   "variant_families": {
@@ -5525,7 +6258,7 @@
       "median_eng_rate": 3.27,
       "median_views": 142,
       "median_reach": 132,
-      "median_skip_rate": 79.9,
+      "median_skip_rate": 79.6,
       "n_by_metric": {
         "median_eng_rate": 9,
         "median_skip_rate": 4,
@@ -5671,18 +6404,18 @@
       "count": 0,
       "metrics_n": 0,
       "avg_eng_rate": null,
-      "avg_reach": 58,
+      "avg_reach": 327.5,
       "notes": "Rendered (video-1/2, talking-brain narrator) but NOT yet posted. mascot-poc.mp4 also exists.",
       "drafts": 0,
       "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet).",
       "scheduled": 2,
       "scheduled_note": "2 post(s) scheduled via schedule-variants.ts (video-1, both platforms) as of 2026-07-21; auto-publish at the set time (no metrics yet).",
-      "n_posts": 11,
+      "n_posts": 17,
       "n_with_metrics": 2,
-      "median_eng_rate": 0,
-      "median_views": 92.5,
-      "median_reach": 58,
-      "median_skip_rate": 41.85,
+      "median_eng_rate": 1.1,
+      "median_views": 371,
+      "median_reach": 327.5,
+      "median_skip_rate": 61.8,
       "n_by_metric": {
         "median_eng_rate": 2,
         "median_skip_rate": 2,
@@ -5691,7 +6424,7 @@
       }
     },
     "hook": {
-      "n_posts": 3,
+      "n_posts": 5,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -5751,7 +6484,7 @@
       }
     },
     "tempo": {
-      "n_posts": 5,
+      "n_posts": 7,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -5766,7 +6499,7 @@
       }
     },
     "narration": {
-      "n_posts": 13,
+      "n_posts": 19,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -5796,7 +6529,7 @@
       }
     },
     "ending": {
-      "n_posts": 3,
+      "n_posts": 5,
       "n_with_metrics": 0,
       "median_eng_rate": null,
       "avg_reach": null,
@@ -5811,6 +6544,21 @@
       }
     },
     "type-nonverbal-shapes": {
+      "n_posts": 4,
+      "n_with_metrics": 0,
+      "median_eng_rate": null,
+      "avg_reach": null,
+      "median_views": null,
+      "median_reach": null,
+      "median_skip_rate": null,
+      "n_by_metric": {
+        "median_eng_rate": 0,
+        "median_skip_rate": 0,
+        "median_views": 0,
+        "median_reach": 0
+      }
+    },
+    "progress-counter": {
       "n_posts": 2,
       "n_with_metrics": 0,
       "median_eng_rate": null,
@@ -5829,12 +6577,12 @@
   "aggregate_cuts": {
     "by_platform": {
       "instagram": {
-        "n_posts": 46,
+        "n_posts": 57,
         "n_with_metrics": 8,
         "median_eng_rate": 1.75,
-        "avg_reach": 121,
-        "median_views": 134,
-        "median_reach": 121,
+        "avg_reach": 124.5,
+        "median_views": 138.5,
+        "median_reach": 124.5,
         "median_skip_rate": 79.45,
         "n_by_metric": {
           "median_eng_rate": 8,
@@ -5856,6 +6604,21 @@
           "median_skip_rate": 0,
           "median_views": 9,
           "median_reach": 9
+        }
+      },
+      "youtube": {
+        "n_posts": 11,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null,
+        "median_skip_rate": null,
+        "n_by_metric": {
+          "median_eng_rate": 0,
+          "median_skip_rate": 0,
+          "median_views": 0,
+          "median_reach": 0
         }
       }
     },
@@ -5981,7 +6744,7 @@
         }
       },
       "no-question-vo": {
-        "n_posts": 3,
+        "n_posts": 5,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -5996,7 +6759,7 @@
         }
       },
       "no-narration": {
-        "n_posts": 5,
+        "n_posts": 7,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -6026,7 +6789,7 @@
         }
       },
       "no-options-vo": {
-        "n_posts": 3,
+        "n_posts": 5,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -6056,7 +6819,7 @@
         }
       },
       "shapes": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -6071,13 +6834,13 @@
         }
       },
       "mascot-absent": {
-        "n_posts": 6,
+        "n_posts": 10,
         "n_with_metrics": 1,
-        "median_eng_rate": 0,
-        "avg_reach": 111,
-        "median_views": 127,
-        "median_reach": 111,
-        "median_skip_rate": 75.9,
+        "median_eng_rate": 0.98,
+        "avg_reach": 408,
+        "median_views": 461,
+        "median_reach": 408,
+        "median_skip_rate": 61,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
@@ -6086,13 +6849,13 @@
         }
       },
       "mascot-standard": {
-        "n_posts": 3,
+        "n_posts": 5,
         "n_with_metrics": 1,
-        "median_eng_rate": 0,
-        "avg_reach": 5,
-        "median_views": 58,
-        "median_reach": 5,
-        "median_skip_rate": 7.8,
+        "median_eng_rate": 1.21,
+        "avg_reach": 247,
+        "median_views": 281,
+        "median_reach": 247,
+        "median_skip_rate": 62.6,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
@@ -6116,7 +6879,7 @@
         }
       },
       "hook-challenge": {
-        "n_posts": 1,
+        "n_posts": 3,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -6131,7 +6894,7 @@
         }
       },
       "no-answer": {
-        "n_posts": 1,
+        "n_posts": 3,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -6146,7 +6909,22 @@
         }
       },
       "tempo-slow": {
-        "n_posts": 1,
+        "n_posts": 3,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null,
+        "median_skip_rate": null,
+        "n_by_metric": {
+          "median_eng_rate": 0,
+          "median_skip_rate": 0,
+          "median_views": 0,
+          "median_reach": 0
+        }
+      },
+      "progress-hidden": {
+        "n_posts": 2,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -6166,9 +6944,9 @@
         "n_posts": 9,
         "n_with_metrics": 8,
         "median_eng_rate": 3.03,
-        "avg_reach": 124.5,
-        "median_views": 133,
-        "median_reach": 124.5,
+        "avg_reach": 128,
+        "median_views": 156,
+        "median_reach": 128,
         "median_skip_rate": 78.9,
         "n_by_metric": {
           "median_eng_rate": 8,
@@ -6193,7 +6971,7 @@
         }
       },
       "morning (6-12)": {
-        "n_posts": 5,
+        "n_posts": 6,
         "n_with_metrics": 1,
         "median_eng_rate": 4.36,
         "avg_reach": 551,
@@ -6210,11 +6988,11 @@
       "night (0-6)": {
         "n_posts": 5,
         "n_with_metrics": 1,
-        "median_eng_rate": 0,
-        "avg_reach": 5,
-        "median_views": 58,
-        "median_reach": 5,
-        "median_skip_rate": 7.8,
+        "median_eng_rate": 1.21,
+        "avg_reach": 247,
+        "median_views": 281,
+        "median_reach": 247,
+        "median_skip_rate": 62.6,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,

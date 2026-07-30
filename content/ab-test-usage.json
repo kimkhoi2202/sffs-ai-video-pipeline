@@ -1835,6 +1835,264 @@
           "answerNorm": "36"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-30-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "000d5db0fa10",
+          "sig": "text|quantitative|number-analogy|which number fits 3 7 4 9 5 11 8 || 14~15~17~19|17",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "17"
+        },
+        {
+          "hash": "dd69cc673833",
+          "sig": "numseries|quantitative|number-series|60~54~48~42|36",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "36"
+        },
+        {
+          "hash": "1b224640d4bc",
+          "sig": "text|verbal|odd-one-out|which one does not belong || jeep~taxi~tractor~willow|willow",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "WILLOW"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "26c7654643d2",
+          "sig": "text|verbal|sentence-completion|the suitcase was too to lift alone so two people carried it together || empty~heavy~light~open|heavy",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "HEAVY"
+        },
+        {
+          "hash": "21cd96a48026",
+          "sig": "numseries|quantitative|number-series|5~3~8~11~19|30",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "30"
+        },
+        {
+          "hash": "d76dc68ec43d",
+          "sig": "text|verbal|verbal-analogy|big is to small as tall is to || closed~far~narrow~short|short",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SHORT"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-v04",
+      "test": "type-nonverbal-shapes",
+      "variant": "shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "e28041826162",
+          "sig": "analogy2|nonverbal|figure-analogy|analogy2:b106f5aaa811|two squares",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "two squares"
+        },
+        {
+          "hash": "bc0a7ed7bbb0",
+          "sig": "matrix|nonverbal|figure-matrix|matrix:ad22567f687e|small square",
+          "tier": "FIGURE MATRIX",
+          "answerNorm": "small square"
+        },
+        {
+          "hash": "21125473f106",
+          "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:5e69fb11b2e3|downward arrow",
+          "tier": "VISUAL ODD ONE OUT",
+          "answerNorm": "downward arrow"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-v07",
+      "test": "type-nonverbal-classic",
+      "variant": "classic-shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "3a2288850bc7",
+          "sig": "polygon|nonverbal|figure-series|8~6=>4|4",
+          "tier": "FIGURE SERIES",
+          "answerNorm": "4"
+        },
+        {
+          "hash": "dbbd59eb280f",
+          "sig": "dot|nonverbal|position|bm~tr~lm~br~tm~bl=>rm|rm",
+          "tier": "POSITION",
+          "answerNorm": "rm"
+        },
+        {
+          "hash": "a16ef6f0d6b0",
+          "sig": "shaded|nonverbal|figure-analogy|teardrop>teardrop=>teardrop:true|filled-teardrop",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "filled-teardrop"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-v10",
+      "test": "category-mix",
+      "variant": "verbal-only",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "642d6f562225",
+          "sig": "text|verbal|odd-one-out|which one does not belong || crow~hawk~sparrow~stone|stone",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "STONE"
+        },
+        {
+          "hash": "c4080328da5e",
+          "sig": "text|verbal|sentence-completion|the museum guide gave such a talk that nobody in the group wanted it to end || boring~fascinating~quiet~short|fascinating",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "FASCINATING"
+        },
+        {
+          "hash": "9bc79a2c2366",
+          "sig": "text|verbal|verbal-analogy|cow is to barn as dog is to || den~hive~kennel~nest|kennel",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "KENNEL"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-v11",
+      "test": "ending",
+      "variant": "full-reveal",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "d4755ff53d96",
+          "sig": "text|quantitative|number-puzzle|if 3 5 24 1 3 12 5 4 27 then 6 4 || 10~20~30~40|30",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "30"
+        },
+        {
+          "hash": "6bf13455bb6c",
+          "sig": "numseries|quantitative|number-series|3~9~12~21~33|54",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "54"
+        },
+        {
+          "hash": "f291dc2671d3",
+          "sig": "text|verbal|odd-one-out|which one does not belong || duck~eagle~pigeon~shoulder|shoulder",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "SHOULDER"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-v12",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "7e3a59516be2",
+          "sig": "text|quantitative|number-analogy|which number fits 2 7 4 13 7 22 8 || 23~24~25~28|25",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "25"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-t1-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "745c745d17ac",
+          "sig": "text|verbal|odd-one-out|which one does not belong || gold~owl~parrot~pigeon|gold",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "GOLD"
+        },
+        {
+          "hash": "0f011866eb50",
+          "sig": "numseries|quantitative|number-series|5~7~12~19~31|50",
+          "tier": "NUMBER SERIES",
+          "answerNorm": "50"
+        },
+        {
+          "hash": "7dcf4b6d2a6b",
+          "sig": "text|verbal|verbal-analogy|toe is to foot as tooth is to || car~flower~house~mouth|mouth",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "MOUTH"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-t1-v04",
+      "test": "category-mix",
+      "variant": "verbal-only",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "f7d3ddbb525a",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cat~dog~horse~snake|snake",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "SNAKE"
+        },
+        {
+          "hash": "1d9569dc515b",
+          "sig": "text|verbal|sentence-completion|please be with the glass vase so that it does not fall and break || careful~loud~quick~silly|careful",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "CAREFUL"
+        },
+        {
+          "hash": "1a44c585692e",
+          "sig": "text|verbal|verbal-analogy|tooth is to mouth as page is to || book~car~house~plant|book",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "BOOK"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-30-t2-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "f07aafba21d0",
+          "sig": "text|verbal|verbal-analogy|dog is to puppy as sheep is to || cub~fawn~kitten~lamb|lamb",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "LAMB"
+        },
+        {
+          "hash": "9370f3053366",
+          "sig": "text|quantitative|number-analogy|which number fits 3 9 4 11 5 13 8 || 16~19~21~9|19",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "19"
+        },
+        {
+          "hash": "7950be4b131b",
+          "sig": "text|verbal|odd-one-out|which one does not belong || bed~chair~desk~twelve|twelve",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "TWELVE"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
