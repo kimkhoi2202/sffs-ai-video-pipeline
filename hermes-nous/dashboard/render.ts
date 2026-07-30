@@ -915,38 +915,26 @@ export interface ApprovalGate { paused: boolean; restoreCmd: string; }
 const GATE_DEFAULT: ApprovalGate = { paused: true, restoreCmd: "HERMES_APPROVAL_PAUSED=false" };
 
 /**
- * The approval queue. Deliberately loud WHEN THERE IS A GATE: if the user does not
- * notice a queue, nothing ships, so an empty queue is a quiet line and a non-empty one
- * is a banner.
+ * The approval queue. Renders ONLY when a post is actually awaiting approval.
  *
- * WHEN THE GATE IS RETIRED IT DEGRADES HONESTLY. The failure mode being avoided is a
- * panel that still looks like a review step — an empty queue reading "nothing awaiting
- * approval" implies approval is a thing that happens, and a row of Approve/Reject
- * buttons that no post will ever reach is a dead control. So with the gate retired and
- * nothing queued, this states plainly that there is no approval step, renders NO
- * buttons, and shows the single line that brings the gate back.
+ * AN EMPTY QUEUE RENDERS NOTHING AT ALL: no heading, no explanatory copy, no empty
+ * state. What used to sit here was a tombstone for the retired gate, taking the top of
+ * the page to describe a step that does not happen. Silence says that better and costs
+ * no space.
  *
- * Leftover drafts created BEFORE the gate was retired are a real exception: they exist,
- * they genuinely cannot publish, and approve/reject genuinely still work on them. Those
- * keep their buttons and are labelled as leftovers rather than as a queue.
+ * THE MACHINERY BELOW IS DELIBERATELY INTACT, and this is the point of the condition.
+ * If the gate is restored, or a draft turns up for any other reason, the queue comes
+ * straight back with working Approve/Reject controls. `gate` still separates leftover
+ * drafts (gate retired, but those rows are real and still actionable) from a live
+ * review queue (gate in force), because the two need different wording.
+ *
+ * The one line that brings the gate back is recorded in /etc/hermes/hermes.env, beside
+ * the commented-out HERMES_APPROVAL_PAUSED, rather than on screen.
  */
 function approvalPanel(view?: ScheduledView, defaults?: AbDefaults, gate: ApprovalGate = GATE_DEFAULT): string {
   const waiting = (view?.posts ?? []).filter((p) => p.awaiting_approval);
-  if (!waiting.length) {
-    return gate.paused
-      ? `<section class="card"><h2>APPROVAL QUEUE — RETIRED</h2>
-      <p class="muted"><b>There is no approval step.</b> Instagram auto-publishes, so the autonomous loop
-      schedules posts <b>live</b> and they go out at their slot. Nothing is waiting on you, and no button
-      here would do anything, so none is shown. The five content gates (dedup, question validity,
-      brand/copy, render sanity, and Instagram's thumbnail requirement) still run on every post and are
-      now the only automated check between the loop and the account.</p>
-      <p class="muted">To bring the gate back, add one line to <code>/etc/hermes/hermes.env</code> and
-      restart the loop: <code>${esc(gate.restoreCmd)}</code></p></section>`
-      : `<section class="card"><h2>APPROVAL QUEUE</h2>
-      <p class="muted"><b>Nothing awaiting approval.</b> Videos the autonomous loop generates land here as
-      drafts and cannot publish until approved. The reels already on the calendar were reviewed before
-      scheduling and are exempt.</p></section>`;
-  }
+  // Nothing to decide, so nothing to draw. The panel below moves up into this space.
+  if (!waiting.length) return "";
   const rows = waiting.map((p) => {
     // Both urls go through the render-side CDN choke point, so an S3 presigned url can
     // never reach the DOM even if the data layer's allowlist ever regressed.
