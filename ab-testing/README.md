@@ -170,34 +170,52 @@ viewers gone in three seconds. Only two surfaces can move it, and they are diffe
   enforces exact-match caption novelty over `NOVELTY_WINDOW = 30`, so fresh bodies are a
   standing requirement regardless.
 
-Lines are grouped under `mechanisms` (eight of them, plus one reserved-and-empty) rather
-than listed flat. At our sample sizes an individual sentence is noise; a mechanism with
-four or five interchangeable phrasings can reach the `min_sample: 5` bar in
-`content-defaults.json` and produce a result that means something.
+Lines are grouped under `mechanisms` (eight of them) rather than listed flat. At our sample
+sizes an individual sentence is noise; a mechanism with four to seven interchangeable
+phrasings can reach the `min_sample: 5` bar in `content-defaults.json` and produce a result
+that means something.
+
+`stated-difficulty-stat` is the priority category and carries the largest allocation
+(7 openings, 6 captions). `declared-difficulty` is deliberately the same hook with the
+number removed, which makes the two of them the cleanest single-variable A/B in the bank.
 
 ### Claim rules (read this before adding a line)
 
-`compliance.md` §3 requires that every claim be "truthful and substantiated; nothing
-misleading about difficulty, odds". We have **no measured item-difficulty data** — the
-question bank's `tier` is a question TYPE, not a difficulty, and there are 10 comments in
-the entire database — so every line carries a `claim_class`, and only four are legal:
+**A number attached to how hard the QUESTION is, is in policy. A number attached to what
+the PRODUCT does for the viewer, is not.** That is the whole rule.
+
+`97% get this wrong`, `only 3% spot it`, and `9 out of 10 pick B` are difficulty framing.
+They are genre convention for this format, nobody reads them as statistics, and they are
+approved (owner decision, 2026-07-31, recorded in `claim_rules.owner_approval`). We do not
+have data behind them and do not pretend to.
+
+`97% of players raise their score`, `users get smarter in a week`, and anything else
+shaped like an efficacy promise about the app stay out. That is a different category, it is
+the kind that actually gets challenged, and it is not what the format needs. Where a source
+hook made an outcome claim, the number was moved onto the question's difficulty instead.
+
+Every line carries a `claim_class`:
 
 | `claim_class` | Means | Example |
 |---|---|---|
-| `none` | Asserts nothing: an imperative, a question, a dare, or a rule we define | `Bet you cannot get all three.` |
+| `stated-stat` | An unmeasured number about **the question's** difficulty | `Ninety seven percent get this wrong.` |
+| `none` | Asserts nothing: an imperative, a question, a dare, or a rule we define | `Bet you can't get all three.` |
 | `opinion` | A subjective judgement of **our own puzzle** | `Heads up. This one is sneaky.` |
 | `self-verifiable` | A fact readable straight off the render props | `Two answers. One secret.` |
-| `measured` | A real statistic with a stated population and n | **reserved, currently empty** |
+| `measured` | A real statistic with a stated population and n | none yet, and nothing waits on it |
 
-Anything asserting how many *people* get something right or wrong is banned, and that
-includes the soft form. `most people miss this` is cut for the same reason as `97% fail`:
-both quantify a population we have never measured, and the "nothing misleading about
-difficulty" rule has no soft-claim exemption. The bank's `provenance.what_was_screened_out`
-records what that removed.
+Two things are still excluded, for different reasons. **Product-efficacy and creator-result
+claims** are excluded on the rule above. **Uncontrolled per-item pre-judgements** (`the
+obvious answer is wrong`) are excluded for internal consistency, not policy: the bank
+attaches to a randomly selected question, so a hook that guesses the answer will contradict
+its own reveal on camera. The one version worth keeping, naming a decoy option, survives as
+`open-stat-07` with a `fill` block the selector must resolve to a letter that is *not* the
+answer.
 
-`honest_numbers` in the bank spells out the two ways we could earn a real number (grading
-comments against the answer key at volume, or deliberately norming an item before it ships).
-Neither is assumed. Until one is executed, `measured-difficulty` stays empty.
+`numeric_claims.upgrade_path` records the two ways we could put a real number behind the
+pattern later (grading comments against the answer key at volume, or norming an item before
+it ships). Neither is required. A real number is just strictly better than an invented one
+at the same cost.
 
 ### `requires` is load-bearing
 
@@ -212,9 +230,9 @@ The opening surface **is not wired yet**. `design.ts` writes `plan.props.title` 
 them, and `remotion/src/full/timeline.ts` makes shorts permanently cold-open. Today the
 `hook-challenge` arm renders a video byte-identical to control. Wiring it means forwarding
 the two props, adding an intro segment to the short timeline, and adding an `intro` beat to
-`narration.ts planBeats`. Retire the existing `ONLY 1% PASS` hook copy at the same time — it
-is exactly the unsubstantiated difficulty claim §3 forbids, and it has never shipped, so
-removing it costs nothing.
+`narration.ts planBeats`. The existing `ONLY 1% PASS` copy is in policy and is kept as
+`open-stat-01`, with a spoken line added; it has never actually shipped, so wiring the arm
+will ship it for the first time.
 
 ## Posting defaults (poster tooling)
 

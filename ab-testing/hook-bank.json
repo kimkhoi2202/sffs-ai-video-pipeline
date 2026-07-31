@@ -14,36 +14,45 @@
   },
 
   "claim_rules": {
-    "why": "compliance.md section 3 requires that 'All claims are truthful and substantiated; nothing misleading about difficulty, odds, or ...'. The audience skews minor, which raises the bar, not lowers it. We have NO measured item-difficulty data (see honest_numbers below), so no line in this bank may assert one.",
+    "the_line": "A number attached to HOW HARD THE QUESTION IS is in policy. A number attached to WHAT THE PRODUCT DOES FOR THE VIEWER is not. That is the whole rule, and it is a real distinction rather than a hedge: difficulty framing is genre convention that nobody reads as data, while an efficacy claim about the app is the kind that actually gets challenged.",
+    "owner_approval": {
+      "date": "2026-07-31",
+      "decision": "Unmeasured numeric difficulty claims about the question ('97% get this wrong', 'only 3% spot it', '9 out of 10 pick B') are APPROVED and are a first-class category, not an edge case. They are understood as difficulty framing and are standard for the format.",
+      "note": "This is a recorded decision, not an oversight. compliance.md section 3 ('nothing misleading about difficulty, odds') reads conservatively on its face; the owner has scoped it to product and outcome claims, where it still binds hard. Anyone tightening this later should change it here rather than quietly re-filtering the bank."
+    },
     "allowed_claim_classes": {
-      "none": "Asserts nothing. Imperatives, questions, dares, and rules we ourselves define. Always safe.",
-      "opinion": "A subjective judgement about OUR OWN puzzle ('this one is sneaky'). Not a measurable claim about the world. Already brand-native: the host says 'and this one is tricky!' and 'it's sneaky!' verbatim in the corpus.",
-      "self-verifiable": "A fact about THIS video that can be read straight off the render props (question count, countdown seconds, whether the last answer is withheld). True by construction; the `requires` field pins the props it depends on.",
-      "measured": "A real, measured statistic with a stated population. RESERVED. Currently empty and must stay empty until honest_numbers.how_we_could_get_them is actually executed."
+      "stated-stat": "An unmeasured numeric or quantified claim about how hard THE QUESTION is. The approved pattern. Attaches to the puzzle or to the viewer's odds on the puzzle, never to the product.",
+      "none": "Asserts nothing. Imperatives, questions, dares, and rules we ourselves define.",
+      "opinion": "A subjective judgement about OUR OWN puzzle ('this one is sneaky'). Brand-native: the host says 'and this one is tricky!' and 'it's sneaky!' verbatim in the corpus. This is the no-number counterpart to stated-stat and the natural A/B partner for it.",
+      "self-verifiable": "A fact about THIS video readable straight off the render props (question count, countdown seconds, whether the last answer is withheld). True by construction; `requires` pins the props it depends on.",
+      "measured": "A real statistic with a stated population and n. Not required, and nothing here depends on it, but strictly better than an invented number if we ever cheaply have one. See numeric_claims.upgrade_path."
     },
     "banned_claim_classes": {
-      "population-stat": "Any assertion about how many people get something right or wrong. Covers hard numbers ('97% fail', 'ONLY 1% PASS') AND soft quantifiers ('most people miss this', 'almost nobody gets this'). A majority claim is still a claim about a population we have never measured, and 'nothing misleading about difficulty' does not have a soft-claim exemption.",
-      "authority-result": "First-person performance brags ('this method got me a 92% retention rate'). Structurally unavailable to us anyway: we are a game show, not a person with results.",
-      "conditional-untruth": "Anything true only for SOME questions ('the obvious answer is wrong', 'there is a trap in here'). The bank attaches to a randomly selected item, so a per-item claim would silently become false. Excluded rather than gated."
+      "product-efficacy": "Any claim about what the app, the brand, or the videos DO for the viewer. '97% of players raise their score', 'users get smarter in a week', 'watch daily and your IQ goes up'. Different category from difficulty framing, genuinely challengeable, and not what was asked for. If a source hook made an outcome claim, the number was moved onto the question's difficulty or the hook was dropped.",
+      "authority-result": "First-person performance brags ('this method got me a 92% retention rate'). Structurally unavailable to us anyway: we are a game show, not a person with results. 26 of the 69 numeric hooks in the source pack are this shape.",
+      "per-item-contradiction": "Anything true only for SOME questions when the specific option is not controlled: 'the obvious answer is wrong', 'there is a trap in here'. Excluded for INTERNAL CONSISTENCY, not for legal reasons. The bank attaches to a randomly selected item, so a hook that pre-judges the answer will contradict its own reveal roughly whenever it guesses wrong, which makes us look sloppy on camera. Lines that name a specific option are allowed only with a `fill` block so the selector can pick a letter that is genuinely NOT the answer."
     }
   },
 
-  "honest_numbers": {
-    "do_we_have_item_difficulty": false,
+  "numeric_claims": {
+    "status": "APPROVED for question difficulty. See claim_rules.owner_approval.",
+    "how_numbers_are_chosen": "Magnitude is varied on purpose across the stated-difficulty-stat entries (1%, 3%, 8%, 12%, 30%, 70%, 88%, 97%, 9-in-10). Extreme numbers are more dramatic, moderate ones more believable, and which direction wins is a real sub-axis worth reading once the arm has volume. Do not collapse them all to 97%.",
+    "do_we_have_real_item_difficulty": false,
     "evidence": [
       "content/master-question-bank.json (1544 entries) has no difficulty field. `tier` is the question TYPE (ODD ONE OUT, NUMBER SERIES, ...), not a difficulty rating.",
       "hermes/src/gates.ts asks the rubric LLM for a difficulty label (easy|medium|hard|off) but it is a model opinion used to reject items, is not persisted per question, and is not a human failure rate.",
-      "ab-testing/ab-database.json: 10 comments total across the 15 posts that have metrics. There is no per-question response data of any kind."
+      "ab-testing/ab-database.json: 10 comments total across the 15 posts that have metrics. No per-question response data of any kind."
     ],
-    "how_we_could_get_them": [
-      "GRADE THE COMMENTS. The cliffhanger default already withholds the last answer and asks for it in the comments, and ab-testing/comment-reply-guide.md already grades a commenter against the answer key. Persisting that grade per (post, question) yields a real failure rate. Caveats that MUST ship with any number derived this way: commenters self-select, so the population is 'people who commented on this post', never 'people'. Not usable below roughly n=100 per item, which at current comment volume is far off.",
-      "NORM THE ITEM DELIBERATELY. Put the exact item in front of a known sample before it ships (an Instagram Stories poll on our own audience, or a small paid panel) and record the failure rate. This is the only route that produces a number defensible as 'X% of N people got this wrong' with a stated population, and it is cheap for the handful of items a difficulty-stat arm would actually need.",
-      "Neither is assumed here. If one is executed, add the entry under mechanism `measured-difficulty` with the population, n, and date in the `claim_evidence` field, and only then may claim_class be `measured`."
+    "upgrade_path": [
+      "Nothing here waits on this. But a real number is strictly better than an invented one at the same cost, so if either route below gets executed, swap the figure and set claim_class to `measured` with the population, n, and date in a `claim_evidence` field.",
+      "GRADE THE COMMENTS. The cliffhanger default already withholds the last answer and asks for it, and ab-testing/comment-reply-guide.md already grades a commenter against the answer key. Persisting that grade per (post, question) yields a real failure rate. The population is always 'people who commented on this post', never 'people'. Needs roughly n=100 per item, which is far off at current comment volume.",
+      "NORM THE ITEM DELIBERATELY. Put the exact item in front of a known sample before it ships (an Instagram Stories poll on our own audience, or a small paid panel). This is the only route that yields a defensible 'X% of N people got this wrong', and it is cheap for the handful of items a difficulty-stat arm actually needs."
     ]
   },
 
   "conventions": {
-    "opening.vo": "Spoken by the cloned host voice. Write it exactly as it should be SPOKEN: no digits (the intro beat builder must run text through n2w like narration.ts planBeats does, so words avoid surprises), no symbols, one or two short sentences, roughly 1.0 to 2.0 seconds. The synthesizer adds the `[excited]` tag, same as planBeats.",
+    "opening.vo": "Spoken by the cloned host voice. Write it exactly as it should be SPOKEN: no digits (the intro beat builder must run text through n2w like narration.ts planBeats does, so words avoid surprises), no symbols, one or two short sentences, roughly 1.0 to 2.0 seconds. The synthesizer adds the `[excited]` tag, same as planBeats. This is why every stat is spelled out in `vo` ('Ninety seven percent') and written as a numeral on the plate ('97%'): the plate wants the glance-readable form and the voice wants the speakable one.",
+    "fill": "Present only on lines that name a specific answer option. The selector must substitute every placeholder before render, using an option letter that is NOT the answer. A line with an unresolved or wrongly-resolved placeholder must never ship: it would contradict its own reveal on camera.",
     "opening.plate.title": "ALL CAPS, Anton, <= 20 characters. Matches the existing on-screen convention (SMART or FART?, ONLY 1% PASS, ARE YOU SMART OR FART?).",
     "opening.plate.subtitle": "lowercase casual, <= 32 characters.",
     "opening.emoji": "NONE. Plates in this brand carry no emoji.",
@@ -57,11 +66,26 @@
   },
 
   "mechanisms": {
+    "stated-difficulty-stat": {
+      "surfaces": ["opening", "caption"],
+      "priority": "FIRST. This is the named pattern and the highest-value untested idea available to us.",
+      "source_claim": "Authority via statistics plus exclusivity of success. The pack's own labels: 'Authority via statistics', 'Exclusivity effect: being in the minority feels powerful', 'Social contrast: makes action feel like elite behavior'.",
+      "what_we_test": "Leading with a specific failure rate about the question itself, spoken and on the plate, before the question is asked.",
+      "hypothesis": "A number does two jobs a soft framing cannot. It sets a concrete bar the viewer can measure themselves against in under a second, and it converts watching into a status test. The pack's strongest single device is the SPLIT construction ('90% will scroll, will you be the 10%?'), which fuses the stat with an identity dare, and it maps onto a quiz better than onto anything the pack was actually written for.",
+      "sub_shapes": {
+        "failure-rate": "97% get this wrong.",
+        "scarcity-of-success": "Only 3% get all three.",
+        "split-the-audience": "Only 8% get this. Are you one? (the pack's best transferable device)",
+        "ratio": "Nine in ten get this one wrong.",
+        "option-decoy": "Nine in ten pick {WRONG}. (requires a `fill`, see conventions)"
+      },
+      "note_on_supply": "The pack named this pattern; it did not supply a bank of it. Only 69 of 3750 entries carry any number, 26 of those are creator-result brags, and most of the rest are world-fact trivia. The difficulty-framing subset is roughly six distinct constructions. Every line below is authored by us against those shapes."
+    },
     "declared-difficulty": {
       "surfaces": ["opening", "caption"],
       "source_claim": "Attention bias / curiosity through contradiction. The source pack's framing is that flagging an item as hard makes the viewer commit before they know why.",
-      "what_we_test": "The honest substitute for the difficulty-stat open. Same job as 'most people get this wrong' but stated as our opinion of our own puzzle, which asserts nothing about anyone.",
-      "hypothesis": "Naming the difficulty up front converts a passive scroll into an active attempt, which is the only thing that survives three seconds."
+      "what_we_test": "The SAME job as stated-difficulty-stat with the number removed: our opinion that the puzzle is hard, stated as an opinion.",
+      "hypothesis": "This is the designated control for the numeric arm and the most informative pairing in the bank. Same slot, same intent, same brand register, one variable. If the number is doing the work, this loses; if 'sneaky' does it just as well, the number is decoration and we learn that cheaply. It is also verbatim host vocabulary, so it cannot lose for sounding foreign."
     },
     "challenge-dare": {
       "surfaces": ["opening", "caption"],
@@ -104,16 +128,74 @@
       "source_claim": "Tribal validation / polarizing engagement. The source's comment-farming family.",
       "what_we_test": "Inviting disagreement in the comments rather than asking for a score.",
       "hypothesis": "Caption-only, and the one mechanism aimed at comments rather than retention. Comments are our thinnest signal (10 across the whole database) and they feed the auto-replier, so cheap volume here is worth something even if reach does not move."
-    },
-    "measured-difficulty": {
-      "surfaces": ["opening", "caption"],
-      "source_claim": "Authority via statistics. The source pack's numeric family.",
-      "what_we_test": "NOTHING YET. Reserved slot, deliberately empty. This is the mechanism the difficulty-stat assessment actually wanted, and it stays empty until honest_numbers.how_we_could_get_them produces a real number with a stated population and n.",
-      "hypothesis": "Untestable today. Do not fill this by inventing a number."
     }
   },
 
   "openings": [
+    {
+      "id": "open-stat-01",
+      "mechanism": "stated-difficulty-stat",
+      "vo": "Only one percent pass this.",
+      "plate": { "title": "ONLY 1% PASS", "subtitle": "can you get all 3?" },
+      "claim_class": "stated-stat",
+      "requires": { "numQ": 3 },
+      "source": "the copy already sitting in the hook-challenge arm in hermes/src/dimensions.ts, preserved verbatim now that the pattern is in policy, with a spoken line added. Closest source shape: 'The top 1% don't work harder' (Mindset Shifts)."
+    },
+    {
+      "id": "open-stat-02",
+      "mechanism": "stated-difficulty-stat",
+      "vo": "Ninety seven percent get this wrong.",
+      "plate": { "title": "97% GET THIS WRONG", "subtitle": "can you?" },
+      "claim_class": "stated-stat",
+      "requires": null,
+      "source": "adapted from 'Here's why 99% of people fail at [goal]' (Authority & Expertise), psychology 'Authority via statistics'. The failure was moved off the viewer's life and onto the puzzle. The flagship phrasing of the category."
+    },
+    {
+      "id": "open-stat-03",
+      "mechanism": "stated-difficulty-stat",
+      "vo": "Only eight percent get this. Are you one?",
+      "plate": { "title": "ONLY 8% GET THIS", "subtitle": "are you one of them?" },
+      "claim_class": "stated-stat",
+      "requires": null,
+      "source": "the pack's best transferable device: '90% of people will see this and scroll, will you be the 10%?' (FOMO & Urgency), psychology 'Exclusivity effect'. The scroll was swapped for the solve, which is the version that fits a quiz."
+    },
+    {
+      "id": "open-stat-04",
+      "mechanism": "stated-difficulty-stat",
+      "vo": "Only three percent get all three.",
+      "plate": { "title": "ONLY 3% GET ALL 3", "subtitle": "prove you're one" },
+      "claim_class": "stated-stat",
+      "requires": { "numQ": 3 },
+      "source": "adapted from '99% will wait, 1% will act, who are you?' (FOMO & Urgency), psychology 'Social contrast'. Attaches the scarcity to a clean score of three, which is the one number in the format everybody understands."
+    },
+    {
+      "id": "open-stat-05",
+      "mechanism": "stated-difficulty-stat",
+      "vo": "Nine in ten get this one wrong.",
+      "plate": { "title": "9 IN 10 GET IT WRONG", "subtitle": "be the one" },
+      "claim_class": "stated-stat",
+      "requires": null,
+      "source": "ratio form of the same claim. Included because a ratio reads faster on a plate than a percentage and lands harder spoken, which is worth a separate read."
+    },
+    {
+      "id": "open-stat-06",
+      "mechanism": "stated-difficulty-stat",
+      "vo": "Seventy percent get this one wrong.",
+      "plate": { "title": "70% GET THIS WRONG", "subtitle": "the other 30% are smart" },
+      "claim_class": "stated-stat",
+      "requires": null,
+      "source": "the deliberate MODERATE-magnitude entry. Same construction as open-stat-02 with a believable number instead of a dramatic one, so the arm can eventually tell us whether extremity helps or costs credibility."
+    },
+    {
+      "id": "open-stat-07",
+      "mechanism": "stated-difficulty-stat",
+      "vo": "Nine out of ten people pick {WRONG}.",
+      "plate": { "title": "9 IN 10 PICK {WRONG}", "subtitle": "don't be the nine" },
+      "claim_class": "stated-stat",
+      "requires": null,
+      "fill": { "{WRONG}": "any option letter that is NOT the answer. The selector knows the answer, so this is a lookup, not a judgement. Never leave the placeholder unresolved and never let it resolve to the correct letter, or the hook contradicts its own reveal." },
+      "source": "the option-decoy shape, requested by name. No direct source line; built from the pack's ratio construction plus the specificity principle it labels 'Data + shock'."
+    },
     {
       "id": "open-declared-01",
       "mechanism": "declared-difficulty",
@@ -333,6 +415,54 @@
   ],
 
   "captions": [
+    {
+      "id": "cap-stat-01",
+      "mechanism": "stated-difficulty-stat",
+      "text": "97% get this one wrong. are you the 3%? comment your answer below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "stated-stat",
+      "requires": null
+    },
+    {
+      "id": "cap-stat-02",
+      "mechanism": "stated-difficulty-stat",
+      "text": "only 3% get all 3. prove it in the comments 👇 follow for a new one every day",
+      "ask": "either",
+      "claim_class": "stated-stat",
+      "requires": { "numQ": 3 }
+    },
+    {
+      "id": "cap-stat-03",
+      "mechanism": "stated-difficulty-stat",
+      "text": "9 in 10 people miss the last one. comment your answer 👇 follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "stated-stat",
+      "requires": { "ending": "cliffhanger" }
+    },
+    {
+      "id": "cap-stat-04",
+      "mechanism": "stated-difficulty-stat",
+      "text": "70% get this wrong first try. the other 30% are certified smart fellas. comment your answer 👇 follow for more",
+      "ask": "answer",
+      "claim_class": "stated-stat",
+      "requires": null
+    },
+    {
+      "id": "cap-stat-05",
+      "mechanism": "stated-difficulty-stat",
+      "text": "only 1% pass all 3. can you? comment your answer below 👇 and follow for a new one every day",
+      "ask": "answer",
+      "claim_class": "stated-stat",
+      "requires": { "numQ": 3 }
+    },
+    {
+      "id": "cap-stat-06",
+      "mechanism": "stated-difficulty-stat",
+      "text": "88% get this one wrong. be the 12%. comment your answer below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "stated-stat",
+      "requires": null
+    },
     {
       "id": "cap-declared-01",
       "mechanism": "declared-difficulty",
@@ -576,22 +706,30 @@
   ],
 
   "provenance": {
-    "external_source": "'5,000 Viral Hooks with Psychology' (paid pack, ~3,750 entries, ~3,508 unique after removing an ~800-line block duplicated between the Educational and Relatable sections). Structure is per-hook: a templated hook line, a worked example, and a one-line psychology label. The labels are ad hoc rather than a taxonomy (roughly 2,000 distinct label strings), so the eight mechanisms above are our consolidation of them, not the pack's.",
-    "why_nothing_is_pasted": "The pack is written for talking-head personal-brand creators. Its dominant voice is first-person authority ('I audited 200 accounts', 'my clients') which we structurally cannot use, and its numeric family is creator-result brags rather than item difficulty. Every line here was rewritten against brand/brand-voice.md and the 262-example corpus.",
+    "external_source": "'5,000 Viral Hooks with Psychology' (paid pack, ~3,750 entries, ~3,508 unique after removing an ~800-line block duplicated between the Educational and Relatable sections). Structure is per-hook: a templated hook line, a worked example, and a one-line psychology label. The labels are ad hoc rather than a taxonomy (roughly 2,000 distinct label strings), so the mechanisms above are our consolidation of them, not the pack's.",
+    "why_nothing_is_pasted": "The pack is written for talking-head personal-brand creators. Its dominant voice is first-person authority ('I audited 200 accounts', 'my clients') which we structurally cannot use. Every line here was rewritten against brand/brand-voice.md and the 262-example corpus.",
+    "how_thin_the_numeric_family_actually_is": {
+      "entries_with_any_number": 69,
+      "of_3750_entries": "1.8%",
+      "attached_to_creator_or_product_results": 26,
+      "world_fact_trivia": "most of the remaining 43 ('78% live paycheck to paycheck', '90% of serotonin is in the gut'). Shocking-stat hooks, not difficulty hooks.",
+      "actual_difficulty_framing_constructions": "roughly six, and the best of them is the SPLIT form ('90% will scroll, will you be the 10%?').",
+      "conclusion": "The pack's value on the requested pattern is one idea, not a supply. It named the shape and supplied the split construction; the seven openings and six captions under stated-difficulty-stat are authored by us against those shapes."
+    },
     "what_was_screened_out": {
-      "population_stats": "All 105 hooks in the 'most people / N% of people' family. The soft ones ('most people miss this') were cut for the same reason as the hard ones ('99% of people fail'): both are claims about a population we have never measured, and compliance.md forbids anything misleading about difficulty.",
-      "first_person_authority": "The whole Authority & Expertise, Case Studies & Proof, and Social Proof sections (roughly 460 entries). No host persona to attach them to.",
-      "per_item_claims": "'The obvious answer is wrong', 'there is a trap in here', and similar. True for some items, false for others, and the bank attaches to a randomly selected question.",
-      "fear_and_loss_framing": "The Fear & Urgency and FOMO sections' loss framing ('every second you wait is costing you'). Not kid-safe in tone and reads as smug, which the brand forbids.",
+      "product_efficacy_claims": "Any number attached to what the product does for the viewer. Where a source hook made an outcome claim worth keeping, the number was moved onto the question's difficulty instead; otherwise it was dropped.",
+      "first_person_authority": "The whole Authority & Expertise, Case Studies & Proof, and Social Proof sections (roughly 460 entries), including all 26 creator-result numeric brags. No host persona to attach them to.",
+      "per_item_contradictions": "'The obvious answer is wrong', 'there is a trap in here'. Dropped for internal consistency: the bank attaches to a randomly selected item, so an uncontrolled pre-judgement of the answer will contradict its own reveal. The one case worth keeping (naming a decoy option) survives as open-stat-07 with a `fill`.",
+      "fear_and_loss_framing": "The Fear & Urgency and FOMO sections' loss framing ('every second you wait is costing you'). Not kid-safe in tone and reads as smug, which the brand forbids. Note the split-the-audience construction was rescued OUT of this section: the device is good, only its framing was wrong.",
       "off_niche_bulk": "Money, fitness, sales, freelancing and business sections. Roughly two thirds of the pack by volume."
     }
   },
 
   "known_gaps": [
     "NOT WIRED. hermes/src/design.ts sets plan.props.title / plan.props.subtitle from the dimension's `hook`, but hermes/src/render.ts shortProps() does not forward either to the renderer, and remotion/src/full/timeline.ts makes shorts permanently cold-open with no intro segment. The existing `hook-challenge` arm ('ONLY 1% PASS') therefore renders a video identical to control. Wiring the opening surface means (a) forwarding title/subtitle, (b) adding an intro segment to the short timeline, and (c) adding an `intro` beat to narration.ts planBeats. That work is deliberately not in this file.",
-    "ONLY 1% PASS should be retired when the hook arm is wired. It is an unsubstantiated numeric difficulty claim of exactly the kind compliance.md section 3 forbids. It has never shipped (it appears only in dimensions.ts and the worktree copies, never in ab-database.json), so retiring it costs nothing.",
-    "The caption count is 30 because publishGate.ts NOVELTY_WINDOW is 30 and caption novelty is exact-match: 30 distinct bodies is the minimum that guarantees no repeat inside the window. It is a floor, not a target. Grow it as posting volume rises.",
-    "`measured-difficulty` is empty by design. See honest_numbers.",
-    "brand.ts ruleCheckCopy does not test for the en dash (U+2013) and does not test numeric claims at all. Both rules are human-enforced against this bank today. A `claim_class` check in gateCopy would make the numeric rule mechanical."
+    "ONLY 1% PASS is now IN POLICY and is preserved as open-stat-01 rather than retired. It has never actually shipped (it appears only in dimensions.ts and the worktree copies, never in ab-database.json), so wiring the arm will ship it for the first time.",
+    "The caption count floor is 30, because publishGate.ts NOVELTY_WINDOW is 30 and caption novelty is exact-match: 30 distinct bodies is the minimum that guarantees no repeat inside the window. There are 36 here. Grow it as posting volume rises.",
+    "open-stat-07 is the only entry that is not literally drop-in: its `fill` must be resolved by the selector. Everything else renders as written.",
+    "brand.ts ruleCheckCopy does not test for the en dash (U+2013) and has no notion of claim_class. The one rule worth making mechanical is the product-efficacy ban: a regex in gateCopy for a number co-occurring with product or outcome vocabulary (score, smarter, IQ, results, users, players, in a week) would catch the only claim class that actually matters, and would cost about five lines."
   ]
 }
