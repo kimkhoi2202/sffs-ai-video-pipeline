@@ -719,6 +719,122 @@ export function verifyShortForYouTube(path: string): ShortCheck {
 }
 
 /**
+ * TikTok's own duration ceiling for this account's uploads. TikTok itself allows far
+ * longer, so this is not a platform limit but a sanity bound: a render that overruns it
+ * is a props/length bug rather than an intentionally long video, and shipping it during
+ * a distribution probe would confound the experiment with a second variable.
+ */
+export const TIKTOK_MAX_SECONDS = 600;
+
+/**
+ * Retarget an ALREADY-RENDERED video's stored props sidecar
+ * (`<id>.<platform>.props.json`, written by runRemotion) at TikTok.
+ *
+ * WHY THIS EXISTS, and why it is NOT the same shrug as "just upload the master". The
+ * Instagram cut is laid out for the IG safe box (SafeArea.SAFE -> x120-960, y220-1570).
+ * TikTok's content-safe box is TT_BOX -> x140-940, y214-1440, because TikTok's bottom
+ * caption/username/CTA band starts at y1440. So the IG cut's content runs 130px INTO
+ * TikTok's caption band, where the platform's own chrome sits on top of it. Re-uploading
+ * the Instagram master to TikTok ships that fault, which is the same mistake already
+ * made once by shipping an IG cut to YouTube. Re-rendering from the sidecar reproduces
+ * the SAME VIDEO -- same questions, same measured `durs`, same VO, same music and sfx,
+ * same opening arm -- through the TikTok layout path, so the only thing that changes is
+ * the thing we want changed.
+ *
+ * LENGTH. Unlike the YouTube retarget this is normally a pure field swap: endKeyForCard
+ * resolves `instagram` and `tiktok` to the SAME end beat (`outro-follow` on the
+ * full-reveal ending, `outro-noanswer` / `verdict` on the others), so the delta is zero
+ * and totalFrames carries through untouched. The measurement is kept anyway rather than
+ * assumed, because the only thing guaranteeing the two agree is endKeyForCard, and a
+ * future divergence there should change the length rather than silently truncate the
+ * render the way the YouTube case would have.
+ *
+ * Pure apart from the ffprobe measurement, and it never mutates the input.
+ */
+export function retargetPropsToTikTok(sp: any): { props: any; endKey: string; frameDelta: number } {
+  if (!sp || typeof sp !== "object") throw new Error("retargetPropsToTikTok: no props");
+  const from = String(sp.platform ?? "") as Platform;
+  const durs: Record<string, number> = { ...(sp.durs ?? {}) };
+  const oldKey = endKeyForCard(sp.endCard, from);
+  const newKey = endKeyForCard(sp.endCard, "tiktok");
+
+  let delta = 0;
+  if (newKey !== oldKey) {
+    if (!(durs[newKey] > 0)) durs[newKey] = metaDur(newKey);
+    const oldDur = durs[oldKey];
+    if (!(oldDur > 0)) {
+      throw new Error(`retargetPropsToTikTok: sidecar has no duration for its own end beat "${oldKey}" — refusing to guess the length`);
+    }
+    delta = frames(SHORT_LEAD + durs[newKey] + SHORT_TRAIL) - frames(SHORT_LEAD + oldDur + SHORT_TRAIL);
+  }
+  const totalFrames = Number(sp.totalFrames) + delta;
+  if (!Number.isFinite(totalFrames) || totalFrames <= 0) {
+    throw new Error(`retargetPropsToTikTok: bad totalFrames ${sp.totalFrames} -> ${totalFrames}`);
+  }
+  return { props: { ...sp, platform: "tiktok" as Platform, durs, totalFrames }, endKey: newKey, frameDelta: delta };
+}
+
+/**
+ * Render `id` for TikTok from its STORED sidecar. Idempotent like renderOne: an
+ * existing non-trivial `<id>.tiktok.mp4` is reused unless force.
+ *
+ * THE MUSIC IS CARRIED THROUGH VERBATIM, and that is load-bearing rather than
+ * incidental. This path never calls shortProps, so it never reaches musicFor and the
+ * alternate APT bed can NOT be substituted here even when HERMES_MUSIC_APT is on. That
+ * matches aptAppliesTo, which excludes TikTok outright: the account is already under
+ * what looks like distribution suppression, and an unlicensed sync use is exactly the
+ * confound a suppression experiment cannot afford. Two independent mechanisms therefore
+ * have to fail before an APT segment reaches TikTok.
+ */
+export function renderTikTokFromSidecar(id: string, sidecarPath: string, opts: { force?: boolean } = {}): PlatformRender {
+  mkdirSync(CONFIG.RENDERS_DIR, { recursive: true });
+  const stored = JSON.parse(readFileSync(sidecarPath, "utf8"));
+  const { props: sp } = retargetPropsToTikTok(stored);
+  const outMp4 = join(CONFIG.RENDERS_DIR, `${id}.tiktok.mp4`);
+  if (!opts.force && existsSync(outMp4) && statSync(outMp4).size > 100_000) {
+    info("tiktok render reused", { id, out: outMp4 });
+    return { platform: "tiktok", path: outMp4, frames: sp.totalFrames, reused: true };
+  }
+  runRemotion(id, "tiktok", sp, outMp4);
+  info("rendered for tiktok from sidecar", { id, out: outMp4, bytes: statSync(outMp4).size, frames: sp.totalFrames });
+  return { platform: "tiktok", path: outMp4, frames: sp.totalFrames, reused: false };
+}
+
+/**
+ * Assert a rendered file is actually publishable ON TIKTOK.
+ *
+ * Same division of labour as verifyShortForYouTube: this judges the FILE, not the
+ * content. What TikTok decides from the file alone is whether it plays full-bleed in the
+ * feed (portrait) and whether it has audio at all — a silent render is what a broken VO
+ * path produces and it is invisible to every other check we run. The frame size is
+ * pinned exactly rather than merely "portrait" because the TT_BOX safe-box geometry in
+ * remotion/src/components/SafeArea.tsx is expressed in 1080x1920 pixels; at any other
+ * raster those coordinates, and the pixel proof built on them, mean nothing.
+ */
+export function verifyForTikTok(path: string): ShortCheck {
+  const probe = execFileSync(resolveFfprobe().replace(/ffprobe$/, "ffprobe"), [
+    "-v", "error", "-show_entries", "stream=codec_type,width,height:format=duration",
+    "-of", "json", path,
+  ], { encoding: "utf8" });
+  const j = JSON.parse(probe);
+  const v = (j.streams ?? []).find((x: any) => x.codec_type === "video") ?? {};
+  const width = Number(v.width ?? 0);
+  const height = Number(v.height ?? 0);
+  const seconds = Number(j.format?.duration ?? 0);
+  const hasAudio = (j.streams ?? []).some((x: any) => x.codec_type === "audio");
+  const problems: string[] = [];
+  if (!(width > 0 && height > 0)) problems.push("no video stream");
+  else if (height < width) problems.push(`landscape ${width}x${height} — TikTok would letterbox this in a portrait feed`);
+  else if (width !== 1080 || height !== 1920) {
+    problems.push(`${width}x${height} is not the 1080x1920 raster the TT_BOX safe-box geometry is defined in`);
+  }
+  if (!(seconds > 0)) problems.push("no duration");
+  else if (seconds > TIKTOK_MAX_SECONDS) problems.push(`${seconds.toFixed(1)}s exceeds the ${TIKTOK_MAX_SECONDS}s ceiling`);
+  if (!hasAudio) problems.push("no audio stream — a silent render is what a broken VO path produces");
+  return { ok: problems.length === 0, width, height, seconds, hasAudio, problems };
+}
+
+/**
  * Frame count for `props`. After a render it is EXACT (stashed on props.__short);
  * for the dry-run PREVIEW (bridge/render.ts --dry-run: no TTS/ffprobe/Chromium)
  * it is a nominal estimate. MUST stay a plain number for gateRenderSanity/preview.
