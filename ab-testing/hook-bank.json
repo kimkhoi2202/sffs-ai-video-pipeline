@@ -1,0 +1,597 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-31T00:00:00.000Z",
+  "campaign": "Smart Fella or Fart Smella",
+  "description": "The HOOK BANK: pre-approved, in-voice, claim-safe opening lines and captions, grouped by the PSYCHOLOGICAL MECHANISM they exercise so the loop can A/B mechanisms against each other rather than individual lines. Adapted (never pasted) from an external viral-hook pack; every line here was rewritten into the SFFS voice against brand/brand-voice.md + brand/brand-voice-examples.json. Read by the hook A/B arm (hermes/src/dimensions.ts) and by caption generation (hermes/src/design.ts makeCaption). See ab-testing/README.md for the schema and the claim rules.",
+
+  "purpose": {
+    "problem": "Median skip rate is 77.2% in the first three seconds. The opening line and first plate are the only surfaces that fight it.",
+    "surfaces": {
+      "opening": "The spoken opener + the plate it burns in, BEFORE question one. High value: this is what fights the 77.2%.",
+      "caption": "The post caption. Near-zero retention effect, but free to improve and required to be novel (see publishGate NOVELTY_WINDOW)."
+    },
+    "why_mechanisms_not_lines": "Individual lines are noise at our sample sizes. Grouping by mechanism means an arm can be scored on n>=5 posts (content-defaults.json promotion.min_sample) with the wording varied inside the arm, so a win is attributable to the mechanism and not to one lucky sentence."
+  },
+
+  "claim_rules": {
+    "why": "compliance.md section 3 requires that 'All claims are truthful and substantiated; nothing misleading about difficulty, odds, or ...'. The audience skews minor, which raises the bar, not lowers it. We have NO measured item-difficulty data (see honest_numbers below), so no line in this bank may assert one.",
+    "allowed_claim_classes": {
+      "none": "Asserts nothing. Imperatives, questions, dares, and rules we ourselves define. Always safe.",
+      "opinion": "A subjective judgement about OUR OWN puzzle ('this one is sneaky'). Not a measurable claim about the world. Already brand-native: the host says 'and this one is tricky!' and 'it's sneaky!' verbatim in the corpus.",
+      "self-verifiable": "A fact about THIS video that can be read straight off the render props (question count, countdown seconds, whether the last answer is withheld). True by construction; the `requires` field pins the props it depends on.",
+      "measured": "A real, measured statistic with a stated population. RESERVED. Currently empty and must stay empty until honest_numbers.how_we_could_get_them is actually executed."
+    },
+    "banned_claim_classes": {
+      "population-stat": "Any assertion about how many people get something right or wrong. Covers hard numbers ('97% fail', 'ONLY 1% PASS') AND soft quantifiers ('most people miss this', 'almost nobody gets this'). A majority claim is still a claim about a population we have never measured, and 'nothing misleading about difficulty' does not have a soft-claim exemption.",
+      "authority-result": "First-person performance brags ('this method got me a 92% retention rate'). Structurally unavailable to us anyway: we are a game show, not a person with results.",
+      "conditional-untruth": "Anything true only for SOME questions ('the obvious answer is wrong', 'there is a trap in here'). The bank attaches to a randomly selected item, so a per-item claim would silently become false. Excluded rather than gated."
+    }
+  },
+
+  "honest_numbers": {
+    "do_we_have_item_difficulty": false,
+    "evidence": [
+      "content/master-question-bank.json (1544 entries) has no difficulty field. `tier` is the question TYPE (ODD ONE OUT, NUMBER SERIES, ...), not a difficulty rating.",
+      "hermes/src/gates.ts asks the rubric LLM for a difficulty label (easy|medium|hard|off) but it is a model opinion used to reject items, is not persisted per question, and is not a human failure rate.",
+      "ab-testing/ab-database.json: 10 comments total across the 15 posts that have metrics. There is no per-question response data of any kind."
+    ],
+    "how_we_could_get_them": [
+      "GRADE THE COMMENTS. The cliffhanger default already withholds the last answer and asks for it in the comments, and ab-testing/comment-reply-guide.md already grades a commenter against the answer key. Persisting that grade per (post, question) yields a real failure rate. Caveats that MUST ship with any number derived this way: commenters self-select, so the population is 'people who commented on this post', never 'people'. Not usable below roughly n=100 per item, which at current comment volume is far off.",
+      "NORM THE ITEM DELIBERATELY. Put the exact item in front of a known sample before it ships (an Instagram Stories poll on our own audience, or a small paid panel) and record the failure rate. This is the only route that produces a number defensible as 'X% of N people got this wrong' with a stated population, and it is cheap for the handful of items a difficulty-stat arm would actually need.",
+      "Neither is assumed here. If one is executed, add the entry under mechanism `measured-difficulty` with the population, n, and date in the `claim_evidence` field, and only then may claim_class be `measured`."
+    ]
+  },
+
+  "conventions": {
+    "opening.vo": "Spoken by the cloned host voice. Write it exactly as it should be SPOKEN: no digits (the intro beat builder must run text through n2w like narration.ts planBeats does, so words avoid surprises), no symbols, one or two short sentences, roughly 1.0 to 2.0 seconds. The synthesizer adds the `[excited]` tag, same as planBeats.",
+    "opening.plate.title": "ALL CAPS, Anton, <= 20 characters. Matches the existing on-screen convention (SMART or FART?, ONLY 1% PASS, ARE YOU SMART OR FART?).",
+    "opening.plate.subtitle": "lowercase casual, <= 32 characters.",
+    "opening.emoji": "NONE. Plates in this brand carry no emoji.",
+    "caption.body": "<= 180 characters before hashtags (the ceiling hermes/src/design.ts makeCaption enforces). Hashtags are appended per-post from the rotating set A/B/C, not stored here.",
+    "caption.emoji": "AT MOST ONE Extended_Pictographic codepoint. This is stricter than it reads: brand/brand-voice.md says the combined glyph counts as one emoji, but brand.ts ruleCheckCopy counts codepoints, so the two-codepoint brain+wind glyph fails the gate on its own and fails harder next to a pointing finger. Historical captions in the corpus predate that gate. Every caption here uses exactly one pointing-finger emoji and never the combined glyph.",
+    "caption.nudge": "Every caption ends on a follow or come-back nudge. Non-negotiable per brand/brand-voice.md section 3.",
+    "opening.nudge": "Openings deliberately carry NO nudge: the nudge belongs at the end of the video, where the existing endcard already delivers it (defaultOutro). Front-loading a follow ask into the first second would spend the three seconds we are trying to win.",
+    "dashes": "No em dashes and no en dashes anywhere. Note that brand.ts ruleCheckCopy only tests for the em dash, so the en dash is a human-enforced rule for now.",
+    "ask": "Which CTA verb a caption uses. `answer` pairs with the cliffhanger ending (the current default, so most of the bank), `score` pairs with full-reveal, `either` works under both. Mirrors defaults.ts captionAsk.",
+    "requires": "Render props a line depends on to stay true. null means unconditional. A selector MUST honour this: picking a `{ending: cliffhanger}` line for a full-reveal arm turns a self-verifiable line into a false one."
+  },
+
+  "mechanisms": {
+    "declared-difficulty": {
+      "surfaces": ["opening", "caption"],
+      "source_claim": "Attention bias / curiosity through contradiction. The source pack's framing is that flagging an item as hard makes the viewer commit before they know why.",
+      "what_we_test": "The honest substitute for the difficulty-stat open. Same job as 'most people get this wrong' but stated as our opinion of our own puzzle, which asserts nothing about anyone.",
+      "hypothesis": "Naming the difficulty up front converts a passive scroll into an active attempt, which is the only thing that survives three seconds."
+    },
+    "challenge-dare": {
+      "surfaces": ["opening", "caption"],
+      "source_claim": "Challenge format sparks engagement; social identity bias (being in the minority who can do it feels good).",
+      "what_we_test": "A direct second-person dare instead of a neutral invitation.",
+      "hypothesis": "A dare recruits ego. It is also the closest mechanism to the brand's existing binary, so it should be the cheapest to make sound native."
+    },
+    "expectation-violation": {
+      "surfaces": ["opening", "caption"],
+      "source_claim": "Expectation violation / belief disruption. The source's highest-frequency curiosity device.",
+      "what_we_test": "Telling the viewer the question is not what it looks like, without telling them anything about the specific item.",
+      "hypothesis": "A warning that the surface reading is wrong buys a second look, and a second look is a solve attempt."
+    },
+    "pattern-interrupt": {
+      "surfaces": ["opening"],
+      "source_claim": "Pattern interrupt plus commitment cue. The source's single largest family of scroll-stoppers.",
+      "what_we_test": "An explicit imperative to stop scrolling, versus starting on content.",
+      "hypothesis": "Weakest prior of the six. It is the most burned-out device on the platform and the least game-show. Worth testing precisely because it is the default advice and we should know whether it is dead."
+    },
+    "time-pressure": {
+      "surfaces": ["opening"],
+      "source_claim": "Time pressure effect; time constraint plus curiosity.",
+      "what_we_test": "Front-loading the format's own constraint (five seconds a question) as the hook.",
+      "hypothesis": "Our countdown is already the most game-show thing about us and it is currently a surprise. Announcing it sets a contract the viewer can accept in under a second."
+    },
+    "open-loop": {
+      "surfaces": ["opening", "caption"],
+      "source_claim": "Zeigarnik effect. Open a loop, withhold closure.",
+      "what_we_test": "Announcing the cliffhanger at the top rather than discovering it at the bottom.",
+      "hypothesis": "Genuinely uncertain and worth knowing: telling people the payoff is withheld could buy the watch, or could remove the reason to stay. The cliffhanger ending is already the default, so this tests the ANNOUNCEMENT, not the ending."
+    },
+    "identity-ingroup": {
+      "surfaces": ["caption"],
+      "source_claim": "Affinity targeting / identity affirmation. Speaks to a valued self-image.",
+      "what_we_test": "Addressing a self-selecting group rather than everyone.",
+      "hypothesis": "Caption-only. Twelve source hooks of this shape, all needing a second clause to land, which is too slow for a three-second window but fine in text."
+    },
+    "settle-it": {
+      "surfaces": ["caption"],
+      "source_claim": "Tribal validation / polarizing engagement. The source's comment-farming family.",
+      "what_we_test": "Inviting disagreement in the comments rather than asking for a score.",
+      "hypothesis": "Caption-only, and the one mechanism aimed at comments rather than retention. Comments are our thinnest signal (10 across the whole database) and they feed the auto-replier, so cheap volume here is worth something even if reach does not move."
+    },
+    "measured-difficulty": {
+      "surfaces": ["opening", "caption"],
+      "source_claim": "Authority via statistics. The source pack's numeric family.",
+      "what_we_test": "NOTHING YET. Reserved slot, deliberately empty. This is the mechanism the difficulty-stat assessment actually wanted, and it stays empty until honest_numbers.how_we_could_get_them produces a real number with a stated population and n.",
+      "hypothesis": "Untestable today. Do not fill this by inventing a number."
+    }
+  },
+
+  "openings": [
+    {
+      "id": "open-declared-01",
+      "mechanism": "declared-difficulty",
+      "vo": "Heads up. This one is sneaky.",
+      "plate": { "title": "SNEAKY ONE", "subtitle": "you've been warned" },
+      "claim_class": "opinion",
+      "requires": null,
+      "source": "adapted from 'Watch closely, most people miss this' (Curiosity & Open-Loop); the population half was cut, the attention half kept. 'sneaky' is verbatim host vocabulary."
+    },
+    {
+      "id": "open-declared-02",
+      "mechanism": "declared-difficulty",
+      "vo": "Fair warning. The last one is mean.",
+      "plate": { "title": "THE LAST ONE IS MEAN", "subtitle": "sorry in advance" },
+      "claim_class": "opinion",
+      "requires": null,
+      "source": "adapted from 'Most people never master this' (Authority & Expertise); reframed from a claim about people into an apology about our own puzzle."
+    },
+    {
+      "id": "open-declared-03",
+      "mechanism": "declared-difficulty",
+      "vo": "Okay, this one is tricky. Good luck.",
+      "plate": { "title": "TRICKY ONE", "subtitle": "good luck fella" },
+      "claim_class": "opinion",
+      "requires": null,
+      "source": "the host's own verbatim line 'and this one is tricky!' from brand-voice-examples vo-question, promoted to the opener slot."
+    },
+    {
+      "id": "open-declared-04",
+      "mechanism": "declared-difficulty",
+      "vo": "Warning. Question three bites.",
+      "plate": { "title": "Q3 BITES", "subtitle": "brace yourself" },
+      "claim_class": "opinion",
+      "requires": { "numQ": 3 },
+      "source": "adapted from 'This blind spot ruins most people' (Problem-Solution); the ruin is transferred from the viewer to the question."
+    },
+    {
+      "id": "open-challenge-01",
+      "mechanism": "challenge-dare",
+      "vo": "Bet you can't get all three.",
+      "plate": { "title": "BET YOU CAN'T", "subtitle": "prove us wrong" },
+      "claim_class": "none",
+      "requires": { "numQ": 3 },
+      "source": "'I bet you can't do this' (Relatable Hooks), psychology 'Challenge format = sparks engagement'. Kept almost intact because it was already assertion-free."
+    },
+    {
+      "id": "open-challenge-02",
+      "mechanism": "challenge-dare",
+      "vo": "Think you're a smart fella? Prove it.",
+      "plate": { "title": "PROVE IT", "subtitle": "smart fella or fart smella?" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'If you're a [target audience], you're not going to like this' (Educational); the identity call was kept, the threat dropped, and the brand binary substituted."
+    },
+    {
+      "id": "open-challenge-03",
+      "mechanism": "challenge-dare",
+      "vo": "Three questions. Beat all three.",
+      "plate": { "title": "BEAT ALL 3", "subtitle": "no pressure" },
+      "claim_class": "self-verifiable",
+      "requires": { "numQ": 3 },
+      "source": "'Your move. Clock's ticking' (FOMO & Urgency) stripped to the dare. The count is read off the render props."
+    },
+    {
+      "id": "open-challenge-04",
+      "mechanism": "challenge-dare",
+      "vo": "Get all three and you're certified.",
+      "plate": { "title": "GET ALL 3", "subtitle": "certified or bust" },
+      "claim_class": "none",
+      "requires": { "numQ": 3 },
+      "source": "'Only a few people will act, be one of them' (FOMO & Urgency); the scarcity claim was replaced with our own scoring rule, which is a rule we define rather than a fact we assert."
+    },
+    {
+      "id": "open-expect-01",
+      "mechanism": "expectation-violation",
+      "vo": "This one looks easy. Does it though?",
+      "plate": { "title": "LOOKS EASY", "subtitle": "does it though" },
+      "claim_class": "opinion",
+      "requires": null,
+      "source": "'This looks simple, but it's not' (Curiosity & Open-Loop). The flat contradiction was turned into a question so it asserts nothing about the item."
+    },
+    {
+      "id": "open-expect-02",
+      "mechanism": "expectation-violation",
+      "vo": "Read it twice. We'll wait.",
+      "plate": { "title": "READ IT TWICE", "subtitle": "we'll wait" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'Don't judge this too early' (Curiosity & Open-Loop), rewritten as an instruction, which is the assertion-free form of the same nudge."
+    },
+    {
+      "id": "open-expect-03",
+      "mechanism": "expectation-violation",
+      "vo": "Don't answer too fast.",
+      "plate": { "title": "DON'T RUSH IT", "subtitle": "rushing is a fart smella move" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'At first glance, this looks normal, but it's not' (Curiosity & Intrigue). Kept the instruction, dropped the assertion, landed it on the brand binary."
+    },
+    {
+      "id": "open-expect-04",
+      "mechanism": "expectation-violation",
+      "vo": "Feels too easy, right?",
+      "plate": { "title": "TOO EASY?", "subtitle": "hmm" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'This is not what you think' (Curiosity & Open-Loop) as a question. The shortest opener in the bank, which is the point of having it."
+    },
+    {
+      "id": "open-interrupt-01",
+      "mechanism": "pattern-interrupt",
+      "vo": "Stop scrolling. Three questions.",
+      "plate": { "title": "STOP SCROLLING", "subtitle": "3 questions, go" },
+      "claim_class": "self-verifiable",
+      "requires": { "numQ": 3 },
+      "source": "'Stop scrolling if you're ready to level up' (Motivational), psychology 'Pattern interrupt + commitment cue'. The self-improvement half was cut."
+    },
+    {
+      "id": "open-interrupt-02",
+      "mechanism": "pattern-interrupt",
+      "vo": "Don't scroll past this one.",
+      "plate": { "title": "DON'T SCROLL", "subtitle": "only 3 questions" },
+      "claim_class": "self-verifiable",
+      "requires": { "numQ": 3 },
+      "source": "'Don't scroll, this is urgent' (Fear & Urgency) with the manufactured urgency removed."
+    },
+    {
+      "id": "open-interrupt-03",
+      "mechanism": "pattern-interrupt",
+      "vo": "Thumb down. Brain on.",
+      "plate": { "title": "THUMB DOWN", "subtitle": "brain on" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'Want it? Then stop scrolling' (Motivational) compressed to four words. Playful and a bit dumb on purpose, which is the brand."
+    },
+    {
+      "id": "open-interrupt-04",
+      "mechanism": "pattern-interrupt",
+      "vo": "Freeze. Question one.",
+      "plate": { "title": "FREEZE", "subtitle": "question one, go" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'While you scroll, your chance is slipping' (FOMO & Urgency) reduced to the interrupt, because the loss framing is neither kid-safe in tone nor true."
+    },
+    {
+      "id": "open-timer-01",
+      "mechanism": "time-pressure",
+      "vo": "Five seconds a question. Go.",
+      "plate": { "title": "5 SECONDS EACH", "subtitle": "no calculator" },
+      "claim_class": "self-verifiable",
+      "requires": { "countdownSec": 5 },
+      "source": "'The clock is ticking' (FOMO & Urgency) made concrete with our actual countdown value."
+    },
+    {
+      "id": "open-timer-02",
+      "mechanism": "time-pressure",
+      "vo": "Clock's already running.",
+      "plate": { "title": "CLOCK'S RUNNING", "subtitle": "keep up" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'Your move. Clock's ticking' (FOMO & Urgency). The only unconditional line in this mechanism, so it survives any tempo arm."
+    },
+    {
+      "id": "open-timer-03",
+      "mechanism": "time-pressure",
+      "vo": "Three questions. Fifteen seconds total.",
+      "plate": { "title": "15 SECONDS TOTAL", "subtitle": "that's the whole video" },
+      "claim_class": "self-verifiable",
+      "requires": { "numQ": 3, "countdownSec": 5 },
+      "source": "'This took me 10 years, you get it in 60 seconds' (Authority & Expertise) with the authority brag removed. The number is arithmetic on our own render props, which is what an honest number looks like here."
+    },
+    {
+      "id": "open-timer-04",
+      "mechanism": "time-pressure",
+      "vo": "No pausing. No googling. Go.",
+      "plate": { "title": "NO PAUSING", "subtitle": "no googling either" },
+      "claim_class": "none",
+      "requires": null,
+      "source": "'If you can't explain it in 30 seconds, you can't sell it' (Sales & Persuasion) reduced to its constraint-setting move, which is the transferable part."
+    },
+    {
+      "id": "open-loop-01",
+      "mechanism": "open-loop",
+      "vo": "Stay to the end. There's a catch.",
+      "plate": { "title": "THERE'S A CATCH", "subtitle": "stay to the end" },
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger" },
+      "source": "'Wait until you see the ending' (Curiosity & Open-Loop), psychology 'Zeigarnik effect'. The catch is real: the cliffhanger default withholds the last answer."
+    },
+    {
+      "id": "open-loop-02",
+      "mechanism": "open-loop",
+      "vo": "We're not telling you the last answer.",
+      "plate": { "title": "NO LAST ANSWER", "subtitle": "you'll have to guess" },
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger" },
+      "source": "'I shouldn't be saying this, but' (Curiosity & Open-Loop) inverted: instead of teasing hidden knowledge, we admit up front that we are withholding it."
+    },
+    {
+      "id": "open-loop-03",
+      "mechanism": "open-loop",
+      "vo": "Two answers. One secret.",
+      "plate": { "title": "2 ANSWERS, 1 SECRET", "subtitle": "guess which" },
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger", "numQ": 3 },
+      "source": "'Here's the part nobody talks about' (Curiosity & Open-Loop) made literal and countable."
+    },
+    {
+      "id": "open-loop-04",
+      "mechanism": "open-loop",
+      "vo": "Question three doesn't get an answer.",
+      "plate": { "title": "NO ANSWER FOR Q3", "subtitle": "you tell us" },
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger", "numQ": 3 },
+      "source": "'What happens next will surprise you' (Curiosity & Open-Loop) replaced with the specific, true version, because specificity is the half of that hook that is not a lie."
+    }
+  ],
+
+  "captions": [
+    {
+      "id": "cap-declared-01",
+      "mechanism": "declared-difficulty",
+      "text": "SMART or FART? this one is sneaky and we're not sorry. comment your answer below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "opinion",
+      "requires": null
+    },
+    {
+      "id": "cap-declared-02",
+      "mechanism": "declared-difficulty",
+      "text": "fair warning, the last one is mean. comment your answer below 👇 follow for a new one every day",
+      "ask": "answer",
+      "claim_class": "opinion",
+      "requires": { "ending": "cliffhanger" }
+    },
+    {
+      "id": "cap-declared-03",
+      "mechanism": "declared-difficulty",
+      "text": "tricky af today. get all 3 and you're a certified smart fella. comment your answer 👇 follow for more",
+      "ask": "answer",
+      "claim_class": "opinion",
+      "requires": { "numQ": 3 }
+    },
+    {
+      "id": "cap-declared-04",
+      "mechanism": "declared-difficulty",
+      "text": "we made this one harder on purpose. comment your answer below 👇 and come back tomorrow for another",
+      "ask": "answer",
+      "claim_class": "opinion",
+      "requires": null
+    },
+    {
+      "id": "cap-declared-05",
+      "mechanism": "declared-difficulty",
+      "text": "this one is sneaky. missing it just makes you a fart smella for now. comment your answer 👇 follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "opinion",
+      "requires": null
+    },
+    {
+      "id": "cap-challenge-01",
+      "mechanism": "challenge-dare",
+      "text": "bet you can't get all 3. prove us wrong in the comments 👇 follow for a new one every day",
+      "ask": "either",
+      "claim_class": "none",
+      "requires": { "numQ": 3 }
+    },
+    {
+      "id": "cap-challenge-02",
+      "mechanism": "challenge-dare",
+      "text": "3 questions. no calculator. no pausing. comment your answer below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "self-verifiable",
+      "requires": { "numQ": 3 }
+    },
+    {
+      "id": "cap-challenge-03",
+      "mechanism": "challenge-dare",
+      "text": "think you're a smart fella? settle it. comment your answer 👇 follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-challenge-04",
+      "mechanism": "challenge-dare",
+      "text": "get all 3 and you're certified. get none and you're a fart smella (for now). comment your score 👇 follow for more",
+      "ask": "score",
+      "claim_class": "none",
+      "requires": { "numQ": 3, "ending": "full-reveal" }
+    },
+    {
+      "id": "cap-challenge-05",
+      "mechanism": "challenge-dare",
+      "text": "SMART or FART? only one way to find out. comment your answer below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-expect-01",
+      "mechanism": "expectation-violation",
+      "text": "looks easy. does it though. comment your answer below 👇 follow for a new one every day",
+      "ask": "answer",
+      "claim_class": "opinion",
+      "requires": null
+    },
+    {
+      "id": "cap-expect-02",
+      "mechanism": "expectation-violation",
+      "text": "read it twice before you answer, we'll wait. comment your answer 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-expect-03",
+      "mechanism": "expectation-violation",
+      "text": "slow down on this one. comment your answer below 👇 and follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-expect-04",
+      "mechanism": "expectation-violation",
+      "text": "not every easy looking question is easy. comment your answer 👇 follow for a new one every day",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-expect-05",
+      "mechanism": "expectation-violation",
+      "text": "sure about that? comment your answer below 👇 and follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-identity-01",
+      "mechanism": "identity-ingroup",
+      "text": "if you were the kid who finished the test early, this one is for you. comment your answer 👇 follow for more",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-identity-02",
+      "mechanism": "identity-ingroup",
+      "text": "calling every self proclaimed smart fella. comment your answer below 👇 and follow for a new one every day",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-identity-03",
+      "mechanism": "identity-ingroup",
+      "text": "this one is for the people who read the question twice. comment your answer 👇 follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-identity-04",
+      "mechanism": "identity-ingroup",
+      "text": "for everyone who says they're good at these. comment your answer below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-identity-05",
+      "mechanism": "identity-ingroup",
+      "text": "smart fellas assemble. fart smellas welcome too (for now). comment your answer 👇 follow for a new one every day",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-loop-01",
+      "mechanism": "open-loop",
+      "text": "we're not giving you the last answer. comment your guess below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger" }
+    },
+    {
+      "id": "cap-loop-02",
+      "mechanism": "open-loop",
+      "text": "there is a catch at the end. comment your answer below 👇 follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger" }
+    },
+    {
+      "id": "cap-loop-03",
+      "mechanism": "open-loop",
+      "text": "two answers revealed, one kept secret. comment your guess 👇 and follow for a new one every day",
+      "ask": "answer",
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger", "numQ": 3 }
+    },
+    {
+      "id": "cap-loop-04",
+      "mechanism": "open-loop",
+      "text": "stay to the end, we don't make it easy. comment your answer 👇 follow for more",
+      "ask": "answer",
+      "claim_class": "opinion",
+      "requires": null
+    },
+    {
+      "id": "cap-loop-05",
+      "mechanism": "open-loop",
+      "text": "the last one does not get an answer. that part is your job. comment it below 👇 and follow for more!!",
+      "ask": "answer",
+      "claim_class": "self-verifiable",
+      "requires": { "ending": "cliffhanger" }
+    },
+    {
+      "id": "cap-settle-01",
+      "mechanism": "settle-it",
+      "text": "settle it in the comments. what did you get 👇 follow for a new one every day",
+      "ask": "either",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-settle-02",
+      "mechanism": "settle-it",
+      "text": "the comments are open, go argue about question 3 👇 follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": { "numQ": 3 }
+    },
+    {
+      "id": "cap-settle-03",
+      "mechanism": "settle-it",
+      "text": "drop your answer and see who agrees with you 👇 follow for more!!",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    },
+    {
+      "id": "cap-settle-04",
+      "mechanism": "settle-it",
+      "text": "comment all 3 and let the people judge your fella status 👇 follow for a new one every day",
+      "ask": "either",
+      "claim_class": "none",
+      "requires": { "numQ": 3 }
+    },
+    {
+      "id": "cap-settle-05",
+      "mechanism": "settle-it",
+      "text": "pick your answer, then check the comments 👇 follow so you don't miss one",
+      "ask": "answer",
+      "claim_class": "none",
+      "requires": null
+    }
+  ],
+
+  "provenance": {
+    "external_source": "'5,000 Viral Hooks with Psychology' (paid pack, ~3,750 entries, ~3,508 unique after removing an ~800-line block duplicated between the Educational and Relatable sections). Structure is per-hook: a templated hook line, a worked example, and a one-line psychology label. The labels are ad hoc rather than a taxonomy (roughly 2,000 distinct label strings), so the eight mechanisms above are our consolidation of them, not the pack's.",
+    "why_nothing_is_pasted": "The pack is written for talking-head personal-brand creators. Its dominant voice is first-person authority ('I audited 200 accounts', 'my clients') which we structurally cannot use, and its numeric family is creator-result brags rather than item difficulty. Every line here was rewritten against brand/brand-voice.md and the 262-example corpus.",
+    "what_was_screened_out": {
+      "population_stats": "All 105 hooks in the 'most people / N% of people' family. The soft ones ('most people miss this') were cut for the same reason as the hard ones ('99% of people fail'): both are claims about a population we have never measured, and compliance.md forbids anything misleading about difficulty.",
+      "first_person_authority": "The whole Authority & Expertise, Case Studies & Proof, and Social Proof sections (roughly 460 entries). No host persona to attach them to.",
+      "per_item_claims": "'The obvious answer is wrong', 'there is a trap in here', and similar. True for some items, false for others, and the bank attaches to a randomly selected question.",
+      "fear_and_loss_framing": "The Fear & Urgency and FOMO sections' loss framing ('every second you wait is costing you'). Not kid-safe in tone and reads as smug, which the brand forbids.",
+      "off_niche_bulk": "Money, fitness, sales, freelancing and business sections. Roughly two thirds of the pack by volume."
+    }
+  },
+
+  "known_gaps": [
+    "NOT WIRED. hermes/src/design.ts sets plan.props.title / plan.props.subtitle from the dimension's `hook`, but hermes/src/render.ts shortProps() does not forward either to the renderer, and remotion/src/full/timeline.ts makes shorts permanently cold-open with no intro segment. The existing `hook-challenge` arm ('ONLY 1% PASS') therefore renders a video identical to control. Wiring the opening surface means (a) forwarding title/subtitle, (b) adding an intro segment to the short timeline, and (c) adding an `intro` beat to narration.ts planBeats. That work is deliberately not in this file.",
+    "ONLY 1% PASS should be retired when the hook arm is wired. It is an unsubstantiated numeric difficulty claim of exactly the kind compliance.md section 3 forbids. It has never shipped (it appears only in dimensions.ts and the worktree copies, never in ab-database.json), so retiring it costs nothing.",
+    "The caption count is 30 because publishGate.ts NOVELTY_WINDOW is 30 and caption novelty is exact-match: 30 distinct bodies is the minimum that guarantees no repeat inside the window. It is a floor, not a target. Grow it as posting volume rises.",
+    "`measured-difficulty` is empty by design. See honest_numbers.",
+    "brand.ts ruleCheckCopy does not test for the en dash (U+2013) and does not test numeric claims at all. Both rules are human-enforced against this bank today. A `claim_class` check in gateCopy would make the numeric rule mechanical."
+  ]
+}

@@ -19,6 +19,7 @@ and writes new records + fresh metrics back into it.
 |---|---|
 | `ab-database.json` | The database. One record per post (posted/scheduled/draft) + per-family rollups. Source of truth (raw facts). |
 | `learnings.json` | The **decisions brain**: aggregated rollups (family/platform/hashtag_set/time-bucket), current front-runners, and an append-only decisions log. Derived from `ab-database.json`. |
+| `hook-bank.json` | Pre-approved, in-voice, **claim-safe** opening lines and captions, grouped by psychological MECHANISM so arms test mechanisms rather than individual sentences. See "The hook bank" below. |
 | `README.md` | This file — schema + how to grow the DB. |
 | `analysis-2026-07-21.md` | First-look analysis with hypotheses and caveats (a dated snapshot; add new dated files over time). |
 
@@ -157,6 +158,63 @@ view the loop actually acts on.** Keep them in sync:
   delete — supersede), and bump `updated_at`.
 - **Dimensions tracked:** `variant_family`, `platform`, `hashtag_set` (A/B/C), `time_bucket`
   (morning/midday/evening, America/Chicago).
+
+## The hook bank (`hook-bank.json`)
+
+The single thing worth attacking is the **77.2% median skip rate** — three quarters of
+viewers gone in three seconds. Only two surfaces can move it, and they are different jobs:
+
+- **`openings[]`** — the spoken opener plus the plate it burns in, BEFORE question one.
+  This is the one that fights the skip rate.
+- **`captions[]`** — near-zero retention effect, but free to improve, and `publishGate.ts`
+  enforces exact-match caption novelty over `NOVELTY_WINDOW = 30`, so fresh bodies are a
+  standing requirement regardless.
+
+Lines are grouped under `mechanisms` (eight of them, plus one reserved-and-empty) rather
+than listed flat. At our sample sizes an individual sentence is noise; a mechanism with
+four or five interchangeable phrasings can reach the `min_sample: 5` bar in
+`content-defaults.json` and produce a result that means something.
+
+### Claim rules (read this before adding a line)
+
+`compliance.md` §3 requires that every claim be "truthful and substantiated; nothing
+misleading about difficulty, odds". We have **no measured item-difficulty data** — the
+question bank's `tier` is a question TYPE, not a difficulty, and there are 10 comments in
+the entire database — so every line carries a `claim_class`, and only four are legal:
+
+| `claim_class` | Means | Example |
+|---|---|---|
+| `none` | Asserts nothing: an imperative, a question, a dare, or a rule we define | `Bet you cannot get all three.` |
+| `opinion` | A subjective judgement of **our own puzzle** | `Heads up. This one is sneaky.` |
+| `self-verifiable` | A fact readable straight off the render props | `Two answers. One secret.` |
+| `measured` | A real statistic with a stated population and n | **reserved, currently empty** |
+
+Anything asserting how many *people* get something right or wrong is banned, and that
+includes the soft form. `most people miss this` is cut for the same reason as `97% fail`:
+both quantify a population we have never measured, and the "nothing misleading about
+difficulty" rule has no soft-claim exemption. The bank's `provenance.what_was_screened_out`
+records what that removed.
+
+`honest_numbers` in the bank spells out the two ways we could earn a real number (grading
+comments against the answer key at volume, or deliberately norming an item before it ships).
+Neither is assumed. Until one is executed, `measured-difficulty` stays empty.
+
+### `requires` is load-bearing
+
+A line's `requires` block pins the render props it depends on to stay true. Picking a
+`{"ending": "cliffhanger"}` line for a `full-reveal` arm converts a `self-verifiable`
+line into a false one, so a selector must honour it. `null` means unconditional.
+
+### Before this can ship
+
+The opening surface **is not wired yet**. `design.ts` writes `plan.props.title` /
+`plan.props.subtitle` from a dimension's `hook`, but `render.ts shortProps()` never forwards
+them, and `remotion/src/full/timeline.ts` makes shorts permanently cold-open. Today the
+`hook-challenge` arm renders a video byte-identical to control. Wiring it means forwarding
+the two props, adding an intro segment to the short timeline, and adding an `intro` beat to
+`narration.ts planBeats`. Retire the existing `ONLY 1% PASS` hook copy at the same time — it
+is exactly the unsubstantiated difficulty claim §3 forbids, and it has never shipped, so
+removing it costs nothing.
 
 ## Posting defaults (poster tooling)
 
