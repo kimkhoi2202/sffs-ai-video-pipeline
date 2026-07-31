@@ -2093,6 +2093,225 @@
           "answerNorm": "TWELVE"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-07-31-v02",
+      "test": "mascot",
+      "variant": "mascot-standard",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "31cba671ba76",
+          "sig": "text|quantitative|number-analogy|which number fits 3 5 4 7 7 13 5 || 12~4~7~9|9",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "9"
+        },
+        {
+          "hash": "2c72176b10a2",
+          "sig": "text|verbal|sentence-completion|the old bridge was not safe so the city decided to a brand new one || break~build~climb~paint|build",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "BUILD"
+        },
+        {
+          "hash": "6b59394b3461",
+          "sig": "text|verbal|verbal-analogy|eye is to see as broom is to || cut~light~sweep~weigh|sweep",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SWEEP"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b04ca54b0bdf",
+          "sig": "text|verbal|odd-one-out|which one does not belong || peach~pear~plum~potato|potato",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "POTATO"
+        },
+        {
+          "hash": "80e6ae31a359",
+          "sig": "text|quantitative|number-puzzle|if 7 2 18 6 2 16 8 6 28 then 9 2 || 11~22~23~32|22",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "22"
+        },
+        {
+          "hash": "fe037f633e09",
+          "sig": "text|verbal|sentence-completion|the tortoise moved so that it took an hour to cross the small yard || loudly~neatly~quickly~slowly|slowly",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "SLOWLY"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-v04",
+      "test": "narration",
+      "variant": "no-options-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b63312d99e26",
+          "sig": "text|verbal|verbal-analogy|dog is to puppy as goat is to || duckling~joey~kid~lamb|kid",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "KID"
+        },
+        {
+          "hash": "cd3d32396fc2",
+          "sig": "text|verbal|odd-one-out|which one does not belong || brown~copper~gold~iron|brown",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "BROWN"
+        },
+        {
+          "hash": "9f5375f917ee",
+          "sig": "text|verbal|sentence-completion|the path was so that only one person could squeeze through at a time || narrow~short~smooth~wide|narrow",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "NARROW"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-v07",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "df0d4143dca8",
+          "sig": "text|quantitative|number-analogy|which number fits 3 14 4 18 6 26 9 || 36~38~40~48|38",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "38"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-v09",
+      "test": "type-nonverbal-shapes",
+      "variant": "shapes",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "a03c2383fdb3",
+          "sig": "matrix|nonverbal|figure-matrix|matrix:83d6ae2870b7|two hearts",
+          "tier": "FIGURE MATRIX",
+          "answerNorm": "two hearts"
+        },
+        {
+          "hash": "c2e3440364a5",
+          "sig": "analogy2|nonverbal|figure-analogy|analogy2:a4864f82333a|filled star",
+          "tier": "FIGURE ANALOGY",
+          "answerNorm": "filled star"
+        },
+        {
+          "hash": "f13f3bc02e3d",
+          "sig": "figure-odd|nonverbal|visual-odd-one-out|figure-odd:720b7899037f|lightning bolt",
+          "tier": "VISUAL ODD ONE OUT",
+          "answerNorm": "lightning bolt"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-v10",
+      "test": "narration",
+      "variant": "no-question-vo",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "dfe8e00b6eda",
+          "sig": "text|verbal|sentence-completion|after the long dry summer the once green field looked completely with no plants left at all || barren~cheerful~crowded~frozen|barren",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "BARREN"
+        },
+        {
+          "hash": "501a84dc350f",
+          "sig": "text|verbal|verbal-analogy|deep is to shallow as float is to || quiet~short~sink~soft|sink",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SINK"
+        },
+        {
+          "hash": "980610449a92",
+          "sig": "text|verbal|odd-one-out|which one does not belong || broccoli~celery~flute~pea|flute",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "FLUTE"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-t1-v01",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6432e24b9b5a",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cider~cocoa~hail~tea|hail",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "HAIL"
+        },
+        {
+          "hash": "671ad6bce755",
+          "sig": "text|verbal|verbal-analogy|pig is to oink as frog is to || bark~buzz~croak~quack|croak",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "CROAK"
+        },
+        {
+          "hash": "a6b29df6e29a",
+          "sig": "text|quantitative|number-analogy|which number fits 3 11 4 15 7 27 6 || 21~23~24~28|23",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "23"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-t1-v03",
+      "test": "mascot",
+      "variant": "mascot-absent",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "cc75b39b0c6c",
+          "sig": "text|quantitative|number-analogy|which number fits 2 7 4 13 7 22 5 || 11~16~18~26|16",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "16"
+        },
+        {
+          "hash": "87b6db17d918",
+          "sig": "text|quantitative|number-puzzle|if 8 5 27 5 8 27 9 9 63 then 7 4 || 15~17~19~20|17",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "17"
+        },
+        {
+          "hash": "1fff8ff18aab",
+          "sig": "text|verbal|odd-one-out|which one does not belong || gold~iron~jet~nickel|jet",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "JET"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-07-31-t1-v04",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "cc7465e66c31",
+          "sig": "text|verbal|sentence-completion|the ice cream started to quickly because the summer day was so hot || freeze~grow~melt~shine|melt",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "MELT"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
