@@ -310,6 +310,29 @@ export function applyBatchOverrides(
   return out;
 }
 
+/**
+ * Fill `target` slots from a RESTRICTED catalog by cycling it, balanced.
+ *
+ * Why this exists. `applyBatchOverrides({only})` returns one spec per named arm, and
+ * planBatch then took `.slice(0, target)`. Pinning three arms therefore produced a batch
+ * of THREE videos rather than twelve: the override silently cut the day's output to a
+ * quarter. Worse, it did the opposite of what an operator asks it for — concentrating
+ * onto three arms to reach a conclusion FASTER instead yielded one post per arm per day
+ * instead of four, so the sample took longer to mature.
+ *
+ * Concentration must change WHICH arms run, never HOW MANY posts run. So a restricted
+ * catalog is cycled round-robin up to target, which also makes the arms balanced by
+ * construction: 12 slots over 3 arms is exactly 4 each, and any remainder is spread one
+ * per arm rather than piled on the first. A catalog at or above target is unchanged.
+ */
+export function cycleToTarget(specs: DimSpec[], target: number): DimSpec[] {
+  if (target <= 0 || specs.length === 0) return [];
+  if (specs.length >= target) return specs.slice(0, target);
+  const out: DimSpec[] = [];
+  for (let i = 0; i < target; i++) out.push(specs[i % specs.length]);
+  return out;
+}
+
 /** Default number of MASCOT slots forced into every batch (weight). Elevated out of
  *  the seeded random subset so the mascot dimension is measured EVERY cycle. */
 export const MASCOT_WEIGHT_DEFAULT = 3;

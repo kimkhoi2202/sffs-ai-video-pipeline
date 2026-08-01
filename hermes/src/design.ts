@@ -26,8 +26,8 @@ import { chat } from "./llm.ts";
 import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
-import { contentDefaults, captionAsk, defaultOutro, type RevealMode } from "./defaults.ts";
-import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally, elevateMascot, MASCOT_WEIGHT_DEFAULT, type DimSpec, type SpreadTally } from "./dimensions.ts";
+import { contentDefaults, captionAsk, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
+import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally, elevateMascot, cycleToTarget, MASCOT_WEIGHT_DEFAULT, type DimSpec, type SpreadTally } from "./dimensions.ts";
 import { currentDirective, replicaCount, normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
 import { pickHook } from "./hooks.ts";
 
@@ -178,6 +178,48 @@ export interface Learnings {
   rollups?: Record<string, unknown>;
 }
 
+/**
+ * WHICH ARMS this batch will run, and in what slot order. Split out of planBatch so the
+ * decision can be inspected WITHOUT rendering: planBatch goes on to generate captions,
+ * call the LLM gates and render video, none of which you want to do just to find out
+ * whether an operator override took effect. `sffs_design arms` and the tests call this
+ * exact function, so what they show is what the cycle will do, not a lookalike.
+ *
+ * Reads two operator overrides from the environment:
+ *   HERMES_ONLY_DIMENSIONS  restrict the batch to these dimension OR arm names. The
+ *                           restricted catalog is CYCLED to fill the slots, so pinning
+ *                           changes which arms run and never how many posts run.
+ *   HERMES_SHAPE_NUMQ       question count for the nonverbal shape dimension.
+ * A pinned batch also suppresses mascot elevation and winner replication, so what an
+ * operator asked for is what runs, verbatim.
+ */
+export function selectBatchSpecs(
+  runId: string,
+  target: number,
+  defaults: ContentDefaults = contentDefaults(),
+): { specs: DimSpec[]; onlyDims: string[]; directive: ReplicationDirective; nReplicas: number; fp?: StyleFingerprint } {
+  const onlyDims = (process.env.HERMES_ONLY_DIMENSIONS || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const shapeNumQEnv = Number(process.env.HERMES_SHAPE_NUMQ || "");
+  const catalog = applyBatchOverrides(buildDimensions(defaults), {
+    only: onlyDims,
+    shapeNumQ: Number.isInteger(shapeNumQEnv) && shapeNumQEnv > 0 ? shapeNumQEnv : undefined,
+  });
+  const seeded = seededOrder(catalog, seedOf(runId));
+  const mascotWeightEnv = Number(process.env.HERMES_MASCOT_WEIGHT);
+  const mascotWeight = Number.isFinite(mascotWeightEnv) && mascotWeightEnv >= 0 ? mascotWeightEnv : MASCOT_WEIGHT_DEFAULT;
+  const directive: ReplicationDirective = onlyDims.length ? { active: false, share: 0, share_cap: 0 } : currentDirective();
+  const nReplicas = replicaCount(target, directive);
+  const fp = directive.fingerprint;
+  const explore = target - nReplicas;
+  const specs: DimSpec[] = [
+    ...(nReplicas > 0 && fp ? replicaSpecs(nReplicas, fp) : []),
+    // A pinned batch CYCLES its restricted catalog to fill the slots (see
+    // cycleToTarget): concentration changes which arms run, not how many posts run.
+    ...(onlyDims.length ? cycleToTarget(seeded, explore) : elevateMascot(seeded, explore, mascotWeight)),
+  ];
+  return { specs, onlyDims, directive, nReplicas, fp };
+}
+
 /** Build the day's batch: up to `target` videos, each a different dimension. */
 export async function planBatch(runId: string, target: number): Promise<VideoPlan[]> {
   const learnings = readJSON<Learnings>(CONFIG.LEARNINGS, {});
@@ -187,43 +229,19 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   // video AND don't cluster the same types across the day's batch (P1). Shared
   // across every video in this batch. See dimensions.ts selectSpread.
   const batchSpread = newSpreadTally();
-  // Optional targeted / showcase overrides (env-gated; unset => identical to the
-  // default seeded rotation). Lets an operator drive a reviewable DRAFT batch that
-  // features specific dimensions — e.g. the nonverbal SHAPE types — via:
-  //   HERMES_ONLY_DIMENSIONS=shapes,verbal-only,quant-only  (dimension OR arm names)
-  //   HERMES_SHAPE_NUMQ=4                                    (all 4 shape kinds/video)
-  const onlyDims = (process.env.HERMES_ONLY_DIMENSIONS || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const shapeNumQEnv = Number(process.env.HERMES_SHAPE_NUMQ || "");
-  const catalog = applyBatchOverrides(buildDimensions(defaults), {
-    only: onlyDims,
-    shapeNumQ: Number.isInteger(shapeNumQEnv) && shapeNumQEnv > 0 ? shapeNumQEnv : undefined,
-  });
-  // Bias the batch to test MORE mascot variants (Part B): elevate the mascot
-  // dimension out of the seeded random subset so it runs EVERY cycle, weighted by
-  // HERMES_MASCOT_WEIGHT (default MASCOT_WEIGHT_DEFAULT; 0 disables). An operator
-  // pinning the batch via HERMES_ONLY_DIMENSIONS is respected verbatim (no
-  // injection). Always capped at `target`, so the 12/day/platform cap is intact.
-  const seeded = seededOrder(catalog, seedOf(runId));
-  const mascotWeightEnv = Number(process.env.HERMES_MASCOT_WEIGHT);
-  const mascotWeight = Number.isFinite(mascotWeightEnv) && mascotWeightEnv >= 0 ? mascotWeightEnv : MASCOT_WEIGHT_DEFAULT;
-  // WINNER REPLICATION: give the front of the batch to the reach front-runner's
-  // style, capped so the remainder is always still exploring. An operator pinning
-  // the batch via HERMES_ONLY_DIMENSIONS is respected verbatim (no replication
-  // injection), exactly like the mascot elevation below it.
-  const directive: ReplicationDirective = onlyDims.length ? { active: false, share: 0, share_cap: 0 } : currentDirective();
-  const nReplicas = replicaCount(target, directive);
-  const fp = directive.fingerprint;
-  const explore = target - nReplicas;
-  const specs: DimSpec[] = [
-    ...(nReplicas > 0 && fp ? replicaSpecs(nReplicas, fp) : []),
-    ...(onlyDims.length ? seeded.slice(0, explore) : elevateMascot(seeded, explore, mascotWeight)),
-  ];
+  const { specs, onlyDims, directive, nReplicas, fp } = selectBatchSpecs(runId, target, defaults);
   if (nReplicas > 0 && fp) {
     decision(
-      `REPLICATE ${fp.key}: ${nReplicas}/${target} slots (share ${(directive.share * 100).toFixed(0)}% of a ${(directive.share_cap * 100).toFixed(0)}% cap) — ${explore} exploration slot(s) held back`,
+      `REPLICATE ${fp.key}: ${nReplicas}/${target} slots (share ${(directive.share * 100).toFixed(0)}% of a ${(directive.share_cap * 100).toFixed(0)}% cap) — ${target - nReplicas} exploration slot(s) held back`,
       { round: directive.round, confidence: directive.confidence, vary_only: directive.vary_only, evidence: directive.evidence },
     );
   }
+  if (onlyDims.length) {
+    const tally: Record<string, number> = {};
+    for (const sp of specs) tally[sp.arm] = (tally[sp.arm] ?? 0) + 1;
+    decision(`PINNED batch (HERMES_ONLY_DIMENSIONS): ${specs.length} slot(s) across ${Object.keys(tally).length} arm(s)`, tally);
+  }
+
   const plans: VideoPlan[] = [];
 
   for (let i = 0; i < specs.length; i++) {
@@ -277,7 +295,10 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       .map((o, oi) => (o === q0.answer ? null : letters[oi]))
       .filter((l): l is string => Boolean(l));
     const hook = spec.hookMechanism
-      ? pickHook(spec.hookMechanism, `${runId}:${spec.arm}`, {
+      // Seeded with the SLOT INDEX as well as the arm: a pinned batch runs the same
+      // arm several times in one day, and without the index all of them would speak
+      // the identical line.
+      ? pickHook(spec.hookMechanism, `${runId}:${spec.arm}:${i}`, {
           numQ: spec.numQ,
           countdownSec: spec.countdownSec,
           ending: resolved.endingArm,
