@@ -12,7 +12,7 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView, ScheduledPost } from "./data.ts";
 import { summarizeExperiment } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
@@ -1043,6 +1043,46 @@ function approvalPanel(view?: ScheduledView, defaults?: AbDefaults, gate: Approv
     </script></section>`;
 }
 
+/**
+ * How much published history stays EXPANDED on the board, in hours.
+ *
+ * 48 rather than 24, because Metricool's analytics land on a nightly cycle up to ~24h
+ * behind: a 24h window would routinely show a whole day of posts whose skip rate still
+ * reads "pending", which is the number the published section exists for. 48h is the
+ * smallest window that always contains at least one fully-matured day.
+ */
+export const BOARD_RECENT_HOURS = 48;
+
+/**
+ * Split the board into the three things a human actually wants, in that order.
+ *
+ * The board was one ascending list, so the top of the page was five days of already
+ * published posts and the next thing to go out was ~70 cards down. It read as stale.
+ * Upcoming leads, soonest first; then recently published, newest first, because the
+ * useful question there is "how did the last few do"; then the rest of history, kept on
+ * the page but collapsed, because 115 cards should not stand between the human and today.
+ *
+ * Pure and time-injected so it can be tested without waiting for a Tuesday.
+ */
+export function partitionBoard(
+  posts: ScheduledPost[],
+  nowMs: number = Date.now(),
+  recentHours: number = BOARD_RECENT_HOURS,
+): { upcoming: ScheduledPost[]; recent: ScheduledPost[]; older: ScheduledPost[] } {
+  const at = (p: ScheduledPost) => Date.parse(p.scheduled_at) || 0;
+  const cutoff = nowMs - recentHours * 3600_000;
+  // Status is the source of truth, not the clock: a post whose time has passed but which
+  // Metricool has not published yet is still upcoming, and burying it is exactly the
+  // failure that needs a human to notice it.
+  const upcoming = posts.filter((p) => p.status !== "PUBLISHED").sort((a, b) => at(a) - at(b));
+  const published = posts.filter((p) => p.status === "PUBLISHED").sort((a, b) => at(b) - at(a));
+  return {
+    upcoming,
+    recent: published.filter((p) => at(p) >= cutoff),
+    older: published.filter((p) => at(p) < cutoff),
+  };
+}
+
 function scheduledPanel(view?: ScheduledView, defaults?: AbDefaults): string {
   if (!view) {
     return `<p class="muted">Scheduled posts appear here once autonomy is ARMED. Until then the loop is DRAFT-ONLY (nothing is scheduled).</p>`;
@@ -1063,8 +1103,16 @@ function scheduledPanel(view?: ScheduledView, defaults?: AbDefaults): string {
   }, {});
   const pub = tally.PUBLISHED || 0;
   const pend = tally.PENDING || 0;
+  const { upcoming, recent, older } = partitionBoard(view.posts);
+  const grid = (xs: ScheduledPost[]) => `<div class="draftgrid">${xs.map((p) => scheduledCard(p, defaults)).join("")}</div>`;
+  const section = (title: string, note: string, xs: ScheduledPost[]) =>
+    !xs.length ? "" : `<h3 class="boardh">${esc(title)} <span class="boardn">${xs.length}</span></h3>
+    <p class="muted boardsub">${esc(note)}</p>${grid(xs)}`;
+
   return `<p class="muted" style="margin-bottom:12px">${view.count} post(s) on the calendar — <b>${pub} published</b>, <b>${pend} pending</b>. Pulled LIVE from Metricool, so these are the SAME posts and times the Metricool planner shows. ${esc(byPlat)}. Each card shows the FULL 9:16 preview (letterboxed, never cropped), played directly from Metricool's public CDN. As of ${esc(view.as_of)}.</p>
-  <div class="draftgrid">${view.posts.map((p) => scheduledCard(p, defaults)).join("")}</div>`;
+  ${section("Upcoming", "Not yet published, soonest first. The next thing to go out is the first card.", upcoming)}
+  ${section("Recently published", `Last ${BOARD_RECENT_HOURS} hours, newest first. Skip rate can read "pending" for up to ~24h after publishing.`, recent)}
+  ${!older.length ? "" : `<details class="boardold"><summary><b>Older history</b> <span class="boardn">${older.length}</span> <span class="muted">published more than ${BOARD_RECENT_HOURS}h ago, newest first</span></summary>${grid(older)}</details>`}`;
 }
 
 // ── the page ──────────────────────────────────────────────────────────────────
@@ -1214,6 +1262,13 @@ select{padding:6px 8px;border:3px solid var(--ink);border-radius:8px;font-size:1
 details summary{cursor:pointer;font-size:13px;color:#333;margin-top:6px}
 code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .draftgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.boardh{margin:22px 0 2px;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.boardh:first-of-type{margin-top:4px}
+.boardn{display:inline-block;border:2px solid var(--ink);border-radius:999px;padding:0 8px;font-size:12px;font-weight:800;background:var(--cream)}
+.boardsub{margin:0 0 10px}
+.boardold{margin-top:22px;border:3px solid var(--ink);border-radius:14px;background:var(--cream);padding:10px 12px}
+.boardold>summary{cursor:pointer;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.boardold[open]>summary{margin-bottom:12px}
 .draftcard{display:flex;flex-direction:column;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--cream)}
 .dthumb{background:#000;border-bottom:3px solid var(--ink);aspect-ratio:9/16;max-height:360px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
 /* full 9:16 frame: contain (letterbox) rather than cover (crop) */
