@@ -170,7 +170,9 @@ else," **no** false urgency. **No Alpha** anything in caption, bio, or handle.
 - [ ] **Zero child PII** in cut, caption, alt text, bio, handle, or metadata.
 - [ ] **No Alpha** name/logo/color/URL anywhere (incl. captions, hashtags, blog embeds).
 - [ ] Prize mentions link to **public rules** (parent-facing) — [`prizes.md`](prizes.md).
-- [ ] CARU-safe: truthful hook, no false urgency, no "tag/nag friends," non-shaming tiers, non-scary.
+- [ ] CARU-safe: hook stays about the **puzzle** ("X% fail" is fine), never about the product or the
+      viewer's outcome (`compliance.md` §3); no false urgency, no "tag/nag friends," non-shaming
+      tiers, non-scary.
 - [ ] Puzzles/copy/music **original** (or licensed); on-brand tokens (Anton/DM Sans, flat palette, hard shadows).
 - [ ] Platform kids'/audience flags set correctly per surface.
 

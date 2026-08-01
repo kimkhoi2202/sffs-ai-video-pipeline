@@ -191,7 +191,12 @@ export async function gateCopy(pieces: { label: string; text: string }[]): Promi
     (bv.examples.length ? " Real on-brand examples: " + bv.examples.slice(0, 20).map((e) => `"${e}"`).join("; ") : "");
   const user =
     "Judge whether ALL of these on-screen/caption pieces are on-brand, kid-safe, concise, funny, Gen-Z, " +
-    "no em dashes, at most one emoji, and NOT AI-slop. " +
+    "no em or en dashes, at most one emoji beyond the 🧠💨 logo, and NOT AI-slop. " +
+    "IMPORTANT on claims: difficulty puffery about the PUZZLE is ALLOWED and is house style. " +
+    "Do NOT flag '97% get this wrong', 'only 3% can solve this', '9 out of 10 pick B' or similar; " +
+    "they need no substantiation and are the native idiom of the format. DO flag any claim about the " +
+    "PRODUCT or the viewer's OUTCOME, such as '97% of users gain 20 IQ points', 'watch daily and get " +
+    "smarter', 'improves memory/focus/grades', 'scientifically proven', or 'guaranteed to'. " +
     'Return JSON {"pass":boolean,"reason":"short","perPiece":[{"label":string,"ok":boolean,"issue":string}]}.\n\n' +
     JSON.stringify(pieces);
   try {

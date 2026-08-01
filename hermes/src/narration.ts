@@ -29,7 +29,7 @@ import { info } from "./log.ts";
 import { n2w } from "../../content/gen-narration-scripts.mjs";
 
 export type NarrationMode = "full" | "none" | "no-question-vo" | "no-options-vo";
-export type ClipKind = "full" | "stem" | "options";
+export type ClipKind = "full" | "stem" | "options" | "hook";
 
 export interface NarrationClip {
   index: number; // question index (0-based)
@@ -54,6 +54,25 @@ const cap = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 const speakNum = (s: string) => (isNum(s) ? n2w(s) : String(s).toLowerCase());
 /** Spell any bare integers embedded in free text (e.g. "5, 10, 15"). */
 export const spellNums = (s: string) => String(s).replace(/\b\d+\b/g, (m) => n2w(m));
+
+/**
+ * Speakable form of a HOOK line. The hook bank already writes its voiceover field
+ * in words, but the whole point of the stated-difficulty-stat mechanism is that a
+ * human will eventually paste "97% get this wrong" straight in, and a raw "%" is
+ * not something TTS can be trusted with. So percentages become "<number> percent"
+ * BEFORE the generic integer speller runs (otherwise "97%" degrades to
+ * "ninety-seven%"), and bare integers fall through to n2w as everywhere else.
+ */
+export function speakHook(text: string): string {
+  return String(text ?? "")
+    .replace(/(\d+(?:\.\d+)?)\s*%/g, (_m, n: string) => `${spellNums(String(n))} percent`)
+    .replace(/\b(\d+)\s*\/\s*(\d+)\b/g, (_m, a: string, b: string) => `${n2w(a)} out of ${n2w(b)}`)
+    .split(/\s+/)
+    .map((w) => (/^\d+$/.test(w.replace(/[^\d]/g, "")) ? w.replace(/\d+/g, (d) => n2w(d)) : w))
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 // Short, position-neutral openers (no "next/first/last") — same spirit as the
 // production ENERGIZERS, so a clip reads fine regardless of its slot.
@@ -107,9 +126,20 @@ function fullText(q: RenderQ, idx: number): string {
  * (numseries), "no-question-vo" gracefully falls back to the stem so we never
  * synthesize an empty clip.
  */
-export function planBeats(questions: RenderQ[], mode: NarrationMode): Array<{ index: number; beat: string; text: string; kind: ClipKind }> {
+export function planBeats(
+  questions: RenderQ[],
+  mode: NarrationMode,
+  hookVo?: string,
+): Array<{ index: number; beat: string; text: string; kind: ClipKind }> {
   if (mode === "none") return [];
   const out: Array<{ index: number; beat: string; text: string; kind: ClipKind }> = [];
+  // The HOOK beat leads, before question one. index -1 keeps it out of the per-question
+  // clip indexing (readClips are matched to questions by index). It follows the narration
+  // mode rather than overriding it: mode "none" is the music-only ARM, and giving that arm
+  // a spoken hook would confound the axis it exists to measure.
+  if (hookVo && hookVo.trim()) {
+    out.push({ index: -1, beat: "hook", text: `[excited] ${speakHook(hookVo)}`, kind: "hook" });
+  }
   questions.forEach((q, idx) => {
     let text = "";
     let kind: ClipKind = "full";
@@ -212,7 +242,7 @@ export function generateVO(
   questions: RenderQ[],
   mode: NarrationMode,
   reveals: RevealBeatInput[],
-  opts: { force?: boolean } = {},
+  opts: { force?: boolean; hookVo?: string } = {},
 ): VOResult {
   const voiceId = resolveVoiceId();
   const relDir = join("audio", "hermes-vo", id);
@@ -220,7 +250,7 @@ export function generateVO(
   const outDir = join(CONFIG.REMOTION_DIR, "public", relDir);
   if (opts.force) rmSync(outDir, { recursive: true, force: true });
 
-  const readBeats = planBeats(questions, mode); // [] when mode==="none"
+  const readBeats = planBeats(questions, mode, opts.hookVo); // [] when mode==="none"
   const revealBeats = reveals.map((r) => ({ index: r.index, beat: `r${r.index}`, text: r.text }));
   const allBeats = [
     ...readBeats.map((b) => ({ beat: b.beat, text: b.text })),
@@ -239,12 +269,16 @@ export function generateVO(
     if (!(Number(durs[b.beat]) > 0)) throw new Error(`narration: missing/zero duration for ${id} ${b.beat}`);
   }
 
-  const readClips: NarrationClip[] = readBeats.map((b) => ({
-    index: b.index,
-    src: `${qrBase}${b.beat}.mp3`,
-    durSec: Number(durs[b.beat]),
-    kind: b.kind,
-  }));
+  // The hook beat (index -1) is NOT a read clip: readClips are matched to questions
+  // by index downstream, so leaking it in would shift every question's VO by one.
+  const readClips: NarrationClip[] = readBeats
+    .filter((b) => b.index >= 0)
+    .map((b) => ({
+      index: b.index,
+      src: `${qrBase}${b.beat}.mp3`,
+      durSec: Number(durs[b.beat]),
+      kind: b.kind,
+    }));
   info("narration: VO ready", { id, mode, read: readClips.length, reveal: revealBeats.length });
   return { voiceId, qrBase, durs, readClips };
 }

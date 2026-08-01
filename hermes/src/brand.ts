@@ -15,8 +15,37 @@ export interface BrandVoice {
 
 const HARD_RULES =
   "concise; funny; Gen Z lowercase-casual; kid-safe (no hard/explicit profanity, mild slang like 'af' ok); " +
-  "NO em dashes; at most ONE tasteful emoji (never spam); no AI-slop tone; no over-explaining/lecturing; " +
-  "always end social copy with a follow / come-back nudge.";
+  "NO em dashes and NO en dashes; the 🧠💨 glyph is the LOGO and is free, plus at most ONE other emoji " +
+  "(never spam); no AI-slop tone; no over-explaining/lecturing; " +
+  "always end social copy with a follow / come-back nudge. " +
+  "CLAIMS: difficulty puffery about the PUZZLE is fine and encouraged ('97% get this wrong', " +
+  "'only 3% can solve this', '9 out of 10 pick B') and needs no substantiation; claims about the " +
+  "PRODUCT or the viewer's OUTCOME are forbidden ('97% of users gain 20 IQ points', 'watch daily and " +
+  "get smarter', 'scientifically proven', 'improves memory/focus/grades'). See compliance.md section 3.";
+
+/**
+ * The brand LOGO glyph (brain + wind). It is two codepoints but reads as one mark,
+ * and it is the single most-used element of the house caption style, so it does NOT
+ * count against the one-emoji cap. Counting codepoints made ruleCheckCopy reject the
+ * brand's own signature, which is why the guide and the gate had drifted apart.
+ */
+const BRAND_GLYPH = /\u{1F9E0}\u{1F4A8}/gu;
+
+/**
+ * Product / outcome efficacy claims. compliance.md section 3 permits difficulty
+ * puffery about a puzzle and forbids claims about what the app does for the viewer,
+ * so this deliberately keys on the OUTCOME vocabulary rather than on the presence of
+ * a number: "97% get this wrong" must pass and "97% of users gain 20 IQ points" must not.
+ */
+const PRODUCT_EFFICACY = [
+  /\b(?:users?|players?|kids|children|students?|subscribers?|customers?)\b[^.!?]{0,40}\b(?:gain|gains|raise|raises|boost|boosts|improve|improves|increase|increases|get smarter|score higher)\b/i,
+  /\b(?:gain|raise|boost|improve|increase)\b[^.!?]{0,25}\b(?:iq|iq points|score|scores|memory|focus|grades|test scores|attention)\b/i,
+  /\b(?:scientifically|clinically)\s+(?:proven|shown|validated|backed)\b/i,
+  /\bbacked by (?:research|science|studies)\b/i,
+  /\b(?:proven|guaranteed) to\s+(?:make|help|improve|boost|raise|increase)\b/i,
+  /\bwatch(?:ing)? (?:daily|every day|this)\b[^.!?]{0,30}\b(?:smarter|iq|sharper|memory|focus)\b/i,
+  /\b(?:get|getting|makes you|make you|makes them|become)\s+smarter\b/i,
+];
 
 export function loadBrandVoice(): BrandVoice {
   let guide = "";
@@ -48,12 +77,18 @@ export function loadBrandVoice(): BrandVoice {
 export function ruleCheckCopy(text: string): { pass: boolean; violations: string[] } {
   const violations: string[] = [];
   if (/\u2014/.test(text)) violations.push("contains em dash (—)");
-  const emojis = (text.match(/\p{Extended_Pictographic}/gu) || []).length;
-  if (emojis > 1) violations.push(`too many emoji (${emojis} > 1)`);
+  if (/\u2013/.test(text)) violations.push("contains en dash (–)");
+  // The logo glyph is exempt from the cap (see BRAND_GLYPH); everything else counts.
+  const emojis = (text.replace(BRAND_GLYPH, "").match(/\p{Extended_Pictographic}/gu) || []).length;
+  if (emojis > 1) violations.push(`too many emoji (${emojis} > 1, excluding the 🧠💨 logo)`);
   const profanity = /\b(fuck|shit|bitch|asshole|cunt|dick|pussy|nigger|faggot|retard)\b/i;
   if (profanity.test(text)) violations.push("contains hard profanity (not kid-safe)");
   if (text.length > 600) violations.push(`too long (${text.length} chars)`);
   if (/\b(as an ai|dive in|unleash|elevate|game[- ]changer|in today's world|delve)\b/i.test(text))
     violations.push("AI-slop phrasing");
+  // Difficulty puffery about the puzzle is allowed; efficacy claims about the product
+  // are not. compliance.md section 3.
+  if (PRODUCT_EFFICACY.some((re) => re.test(text)))
+    violations.push("product/outcome efficacy claim (compliance.md section 3)");
   return { pass: violations.length === 0, violations };
 }

@@ -102,6 +102,14 @@ export type Variant = {
   metaBase?: string;
   opening?: Opening;
   /**
+   * HOOK COPY carried BY the motion opening, when this is a spoken-hook arm.
+   * The title replaces the wordless "?" inside the Hook scene and the line is spoken
+   * OVER the animation, so the curiosity payload is free: the segment stays exactly
+   * HOOK_SECONDS and question one does not move. Omitted => the wordless arm, byte for
+   * byte as before.
+   */
+  hook?: { title: string; subtitle?: string };
+  /**
    * Is this a SHORT (tight pacing, cold open) rather than the long-form master?
    *
    * This used to be inferred as `platform !== "youtube"`, which was true only while
@@ -165,7 +173,7 @@ function build(
   qrBase = "audio/narration/",
   variant: Variant = {},
 ): TimelineData {
-  const { readVO = "full", dropReveal = false, dropScore = false, endCard = "default", metaBase = "audio/narration/", opening = "cold-plate" } = variant;
+  const { readVO = "full", dropReveal = false, dropScore = false, endCard = "default", metaBase = "audio/narration/", opening = "cold-plate", hook } = variant;
   const D = durs;
   const questions = resolve(ids, questionsSrc);
   const segments: Segment[] = [];
@@ -206,6 +214,23 @@ function build(
   if (isShort && opening === "motion-hook") {
     const hookDur = frames(HOOK_SECONDS);
     segments.push({ type: "hook", start: cur, dur: hookDur });
+    // A spoken hook rides OVER the animation instead of in front of it. The segment
+    // length is unchanged, so this arm costs the viewer nothing beyond the animation
+    // that was already there -- which is the entire point: the motion arm lost to the
+    // cold plate by 5.6pp on skip rate while spending 2.2s carrying no information.
+    //
+    // The VO must FIT. If it does not, the clip is dropped rather than allowed to run
+    // long, because bleeding into the question read would both collide with the question
+    // VO and reintroduce the serial delay this design exists to remove. buildDurs
+    // refuses over-budget lines up front, so this is the belt to that braces.
+    const hookVo = D.hook ?? 0;
+    if (hookVo > 0 && lead + hookVo <= HOOK_SECONDS) {
+      narration.push({ src: `${qrBase}hook.mp3`, from: cur + leadFrames });
+      // Registering the VO window is what ducks the music bed under the voice, exactly
+      // as it does for every question read. Without it the bed would run at full swell
+      // over the line (the wordless arm wants that; a spoken one very much does not).
+      voWindows.push([cur + leadFrames, cur + leadFrames + frames(hookVo)]);
+    }
     cur += hookDur;
   }
 
@@ -316,7 +341,13 @@ export const getTimeline = (
   const drKey = variant.dropReveal === "last" ? "drL" : variant.dropReveal ? "dr" : "";
   // isShort is IN the key: without it the Short and the 16:9 master would collide on
   // one cache entry and the second render would silently reuse the first one's pacing.
-  const vKey = `${variant.readVO ?? "full"}|${drKey}|${variant.dropScore ? "ds" : ""}|${variant.endCard ?? "default"}|${variant.metaBase ?? "def"}|${variant.isShort === undefined ? "auto" : variant.isShort ? "short" : "long"}`;
+  // `opening` was missing from this key, which is a latent cache collision: two cuts
+  // with identical questions/durs but different opening arms would have been served the
+  // same timeline. It has been invisible so far only because the two arms never render
+  // in one process. The spoken-hook arms make that a real risk, so both the arm and the
+  // hook copy are keyed now.
+  const hookKey = variant.hook ? `${variant.hook.title}\u0001${variant.hook.subtitle ?? ""}` : "";
+  const vKey = `${variant.readVO ?? "full"}|${drKey}|${variant.dropScore ? "ds" : ""}|${variant.endCard ?? "default"}|${variant.metaBase ?? "def"}|${variant.isShort === undefined ? "auto" : variant.isShort ? "short" : "long"}|${variant.opening ?? "cold-plate"}|${hookKey}`;
   const key = `${platform}:${ids.join(",")}:${sfxSet ? `${sfxSet.whoosh}|${sfxSet.ding}|${sfxSet.sting}` : "def"}:${qrBase ?? "def"}:${vKey}`;
   let t = CACHE.get(key);
   if (!t) {

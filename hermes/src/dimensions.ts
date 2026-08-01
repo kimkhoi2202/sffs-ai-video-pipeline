@@ -16,6 +16,7 @@
  * See defaults.ts.
  */
 import { type NarrationMode } from "./narration.ts";
+import { hookArms } from "./hooks.ts";
 import type { HermesQ, ShapeKind } from "./state.ts";
 import {
   contentDefaults,
@@ -42,7 +43,12 @@ export interface DimSpec {
   showProgress: boolean;
   progressStyle: "short" | "full";
   countdownSec: number;
-  hook?: { title: string; subtitle: string };
+  /** OPENING arms only. "motion-hook" prepends the 2.2s wordless animation. */
+  opening?: "cold-plate" | "motion-hook";
+  /** SPOKEN-hook arms only: which ab-testing/hook-bank.json mechanism this arm
+   *  exercises. design.ts resolves it to a concrete line per video (pickHook), which
+   *  is then spoken OVER the animation rather than in front of it. */
+  hookMechanism?: string;
   // At most ONE of these is set per spec — the single axis this arm deviates from
   // the current defaults. Unset => inherit the current default for that axis.
   narrationArm?: NarrationArm; // set only on NARRATION test arms
@@ -138,14 +144,53 @@ const OTHER_DIMENSIONS: DimSpec[] = [
     category: "quantitative",
     kinds: ["numseries"],
   },
-  {
-    ...BASE,
-    dimension: "hook",
-    arm: "hook-challenge",
-    rationale: "hard-challenge opener vs neutral opener",
-    hook: { title: "ONLY 1% PASS", subtitle: "can you get all 3?" },
-  },
 ];
+
+/**
+ * The OPENING dimension: what a short shows before question one.
+ *
+ * The campaign measured the first two arms over 41 matured posts and the wordless
+ * motion opening LOST to the cold plate by 5.6 percentage points of skip rate. The
+ * likely reason is arithmetic rather than aesthetic: it spends 2.2 seconds on
+ * animation that carries no information, and the median viewer leaves at three.
+ *
+ * So the third family of arms does not add time, it makes the existing time work. The
+ * SAME 2.2s animation now carries a spoken hook and a title in place of its wordless
+ * "?", so question one arrives at exactly the moment it already does on the motion arm.
+ * Everything sits on ONE axis on purpose:
+ *
+ *   cold-plate                control, question one at 0.00s
+ *   motion-hook               today's wordless arm, question one at 2.20s
+ *   motion-hook-<mechanism>   same 2.2s, now carrying a payload, question one at 2.20s
+ *
+ * motion-hook vs motion-hook-<mechanism> isolates the PAYLOAD with the animation held
+ * constant; either against cold-plate isolates the whole opening. A hook can only ever
+ * ride the motion arm: on cold-plate it would have to be serial, which is the delay we
+ * are removing, so render.ts makes that combination unrepresentable rather than merely
+ * discouraged.
+ *
+ * Replaces the old `hook` dimension, whose single "ONLY 1% PASS" arm never rendered
+ * anything (shortProps dropped title/subtitle and shorts were unconditionally
+ * cold-open), so there is no rollup history to preserve.
+ */
+function openingDimensions(): DimSpec[] {
+  const wordless: DimSpec = {
+    ...BASE,
+    dimension: "opening",
+    arm: "motion-hook",
+    opening: "motion-hook",
+    rationale: "2.2s wordless motion opening before question one (vs the cold-plate control)",
+  };
+  const spoken: DimSpec[] = hookArms().map(({ mechanism, arm }) => ({
+    ...BASE,
+    dimension: "opening",
+    arm,
+    opening: "motion-hook",
+    hookMechanism: mechanism,
+    rationale: `the same 2.2s motion opening, now carrying a spoken '${mechanism}' hook (question one does not move)`,
+  }));
+  return [wordless, ...spoken];
+}
 
 /**
  * The NONVERBAL SHAPE/FIGURE dimension: paper-folding + the figure-matrix family
@@ -231,7 +276,7 @@ export function buildDimensions(defaults: ContentDefaults = contentDefaults()): 
   // HERMES_ENABLE_SHAPE_QUESTIONS=0 removes them and restores the exact prior list).
   // Both the FigState family (shapes) and the unlocked legacy classic kinds.
   const shapeDims: DimSpec[] = shapeQuestionsEnabled() ? [SHAPE_DIMENSION, CLASSIC_SHAPE_DIMENSION] : [];
-  return [CONTROL, ...narrationArms, ...endingArms, ...mascotArms, ...OTHER_DIMENSIONS, ...shapeDims];
+  return [CONTROL, ...narrationArms, ...endingArms, ...mascotArms, ...OTHER_DIMENSIONS, ...openingDimensions(), ...shapeDims];
 }
 
 /**

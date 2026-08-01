@@ -223,16 +223,47 @@ A line's `requires` block pins the render props it depends on to stay true. Pick
 `{"ending": "cliffhanger"}` line for a `full-reveal` arm converts a `self-verifiable`
 line into a false one, so a selector must honour it. `null` means unconditional.
 
-### Before this can ship
+### The opening surface: the hook rides the animation
 
-The opening surface **is not wired yet**. `design.ts` writes `plan.props.title` /
-`plan.props.subtitle` from a dimension's `hook`, but `render.ts shortProps()` never forwards
-them, and `remotion/src/full/timeline.ts` makes shorts permanently cold-open. Today the
-`hook-challenge` arm renders a video byte-identical to control. Wiring it means forwarding
-the two props, adding an intro segment to the short timeline, and adding an `intro` beat to
-`narration.ts planBeats`. The existing `ONLY 1% PASS` copy is in policy and is kept as
-`open-stat-01`, with a spoken line added; it has never actually shipped, so wiring the arm
-will ship it for the first time.
+The campaign read on 41 matured posts put the wordless **motion opening 5.6 percentage
+points WORSE than the cold plate** on skip rate. The likely cause is arithmetic rather
+than aesthetic: it spends 2.2 seconds on animation that carries no information, and the
+median viewer leaves at three. So the hook does not add time, it makes the existing time
+work. The line is spoken **over** the animation and the title replaces its wordless `?`.
+
+Everything sits on ONE axis, the `opening` dimension:
+
+| arm | question one arrives | what it is |
+|---|---|---|
+| `cold-plate` | **0.00s** | control, the historical cold open |
+| `motion-hook` | **2.20s** | today's wordless arm |
+| `motion-hook-<mechanism>` | **2.20s** | the same 2.2s, now carrying a payload |
+
+`motion-hook` against `motion-hook-<mechanism>` isolates the payload with the animation
+held constant; either against `cold-plate` isolates the whole opening.
+
+**The cold plate never gets a hook.** On an arm with no animation to hide under, a hook
+would have to be serial, which is the delay this design removes. `render.ts mapProps`
+drops hook copy unless `opening` is `motion-hook`, so that combination is unrepresentable
+rather than merely discouraged, and no arm can be quietly confounded.
+
+### The spoken budget
+
+A line must fit inside the animation: **2.08s hard** (2.2s minus the 0.12s lead), and only
+**1.93s or less is offered**, because ElevenLabs is generative and one line measured 2.08s
+at calibration then came back 2.16s on a real render. Three things enforce it:
+
+1. `tools/calibrate-hooks.ts` synthesizes every line once and records its real length as
+   `vo_sec`. Word count is not a usable proxy: the host puts about half a second of air at
+   each sentence boundary, so a four-word two-sentence line measured *longer* than a
+   six-word one-sentence line. Re-run it after editing any `vo`.
+2. `hooks.ts` refuses anything unmeasured or over the offer threshold. Unmeasured fails
+   closed; we never guess.
+3. `render.ts` re-checks the measured clip at synth time and drops it if it overran, so the
+   video degrades to the wordless motion arm rather than growing the delay.
+
+**22 of 31 opening lines are currently offered**, every mechanism has at least one, and
+captions are unaffected (they have no time budget).
 
 ## Posting defaults (poster tooling)
 

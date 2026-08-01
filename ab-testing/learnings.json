@@ -8,13 +8,15 @@
     "files": {
       "guide": "brand/brand-voice.md",
       "examples_md": "brand/brand-voice-examples.md",
-      "examples_json": "brand/brand-voice-examples.json"
+      "examples_json": "brand/brand-voice-examples.json",
+      "hook_bank": "ab-testing/hook-bank.json"
     },
     "corpus": {
       "surfaces": 33,
       "examples": 230
     },
-    "hard_rules": "concise; funny; Gen Z lowercase-casual; kid-safe (no HARD/explicit profanity, but mild slang like 'af' is on-brand and allowed); NO em dashes; at most ONE tasteful emoji (never spam); no AI-slop tone; no over-explaining/lecturing; always end social copy with a follow / come-back nudge.",
+    "hard_rules": "concise; funny; Gen Z lowercase-casual; kid-safe (no HARD/explicit profanity, but mild slang like 'af' is on-brand and allowed); NO em dashes and NO en dashes; the brain+wind logo glyph is FREE and does not count, plus at most ONE other tasteful emoji (never spam); no AI-slop tone; no over-explaining/lecturing; always end social copy with a follow / come-back nudge.",
+    "claims_rule": "Difficulty puffery about the PUZZLE is permitted and needs no substantiation ('97% get this wrong', 'only 3% can solve this', '9 out of 10 pick B'). Claims about the PRODUCT or the viewer's OUTCOME are forbidden with or without a number ('users gain 20 IQ points', 'watch daily and get smarter', 'scientifically proven', 'improves memory/focus/grades'). Full rule + the enforcement map: compliance.md section 3. Per-line claim_class tagging: ab-testing/hook-bank.json.",
     "signature_device": "SMART FELLA vs FART SMELLA binary: praise = Smart Fella, miss = Fart Smella '(for now)'."
   },
   "how_the_loop_uses_this": {

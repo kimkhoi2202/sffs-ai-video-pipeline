@@ -141,7 +141,10 @@ Every analyzed video — regardless of variant — follows this spine. **Keep th
 surface.**
 
 1. **Hook / "X% fail" title.** An opening claim that dares the viewer (e.g. *"Only ___% can solve
-   this"*). Sets stakes in the first seconds. (Write your own; keep it truthful & CARU-safe.)
+   this"*). Sets stakes in the first seconds. Write your own; the stat is **difficulty puffery about
+   the puzzle and needs no substantiation**. It must never become a claim about the product or the
+   viewer's outcome (`compliance.md` §3). Pre-approved, in-voice lines live in
+   `ab-testing/hook-bank.json`.
 2. **Number / title card.** Names the promise and the count ("N riddles / questions").
 3. **Question (+ options).** One question per screen; options present in variant (a).
 4. **Visible countdown timer.** A fixed think-window the viewer can *see* draining (§8).

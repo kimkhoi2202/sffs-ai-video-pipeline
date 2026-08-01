@@ -215,7 +215,7 @@ function revealVoText(kind: string, letter: string, answerSpoken: string, explan
   return `[excited] ${body} ${tail}`.replace(/\s+/g, " ").trim();
 }
 
-interface Mapped {
+export interface Mapped {
   questions: any[]; // Short/FullVideo Question[]
   reveals: RevealBeatInput[]; // reveal VO to synthesize (r<idx>)
   ending: Ending;
@@ -223,6 +223,10 @@ interface Mapped {
   readVO: "full" | "none";
   /** Opening arm for the 3-second skip-rate experiment. */
   opening: Opening;
+  /** Spoken-hook copy for the motion opening. Undefined on cold-plate and on the
+   *  wordless motion arm. `vo` is synthesized as hook.mp3 and played OVER the
+   *  animation, so it costs no extra time. */
+  hook?: { title: string; subtitle?: string; vo?: string };
 }
 
 /**
@@ -307,6 +311,17 @@ export function mapProps(props: any): Mapped {
   }
   const readVO = mode === "none" ? "none" : "full";
   const opening: Opening = props.opening === "motion-hook" ? "motion-hook" : "cold-plate";
+  // A spoken hook is only ever carried BY the motion opening. On cold-plate it would
+  // have to be a serial segment ahead of question one, which is precisely the delay the
+  // motion arm already pays and lost 5.6pp of skip rate to. Enforced here rather than by
+  // convention so no caller can accidentally reintroduce it.
+  const hook = opening === "motion-hook" && props.hook && props.hook.title
+    ? {
+        title: String(props.hook.title),
+        subtitle: props.hook.subtitle == null ? undefined : String(props.hook.subtitle),
+        vo: props.hook.vo == null ? undefined : String(props.hook.vo),
+      }
+    : undefined;
   const revealIdxs = revealIndexes(loopQs.length, ending);
 
   const questions: any[] = [];
@@ -359,7 +374,7 @@ export function mapProps(props: any): Mapped {
     if (revealIdxs.includes(i)) reveals.push({ index: i, text: revealVoText(lq.kind, ansLetter, answerSpoken, q.explanation, i) });
   });
 
-  return { questions, reveals, ending, mode, readVO, opening };
+  return { questions, reveals, ending, mode, readVO, opening, hook };
 }
 
 // ---------------------------------------------------------------------------
@@ -376,7 +391,7 @@ function endKeyFor(ending: Ending, platform: Platform): string {
   return platform === "youtube" ? "outro-youtube" : "outro-follow";
 }
 /** Replicated Short timeline total (isShort path: cold-open, tight lead/trail). */
-function computeShortFrames(mapped: Mapped, durs: Record<string, number>, platform: Platform): number {
+export function computeShortFrames(mapped: Mapped, durs: Record<string, number>, platform: Platform): number {
   const lead = SHORT_LEAD;
   const trail = SHORT_TRAIL;
   let cur = 0;
@@ -402,9 +417,22 @@ function computeShortFrames(mapped: Mapped, durs: Record<string, number>, platfo
 // ---------------------------------------------------------------------------
 function buildDurs(id: string, mapped: Mapped, opts: { force?: boolean }): { durs: Record<string, number>; qrBase: string } {
   // read (q<idx>) + reveal (r<idx>) VO, one tts_batch call, measured seconds.
-  const vo = generateVO(id, mapped.questions.map((q) => ({ kind: q.kind, tier: q.tier ?? "", prompt: q.kind === "text" ? q.question : q.prompt, options: q.kind === "text" ? q.options.map((o: any) => o.text) : undefined, seq: q.kind === "numseries" ? q.seq.filter((t: string) => t !== "?") : undefined, answer: q.ansLabel })), mapped.mode, mapped.reveals, opts);
+  const vo = generateVO(id, mapped.questions.map((q) => ({ kind: q.kind, tier: q.tier ?? "", prompt: q.kind === "text" ? q.question : q.prompt, options: q.kind === "text" ? q.options.map((o: any) => o.text) : undefined, seq: q.kind === "numseries" ? q.seq.filter((t: string) => t !== "?") : undefined, answer: q.ansLabel })), mapped.mode, mapped.reveals, { ...opts, hookVo: mapped.hook?.vo });
   // meta beats actually referenced by the timeline (measured from committed mp3s).
   const durs: Record<string, number> = { ...vo.durs };
+  // BUDGET GUARD. The hook segment is a FIXED HOOK_SECONDS, so a VO longer than the
+  // segment would bleed into the question read: it would talk over the question VO and
+  // put the serial delay back. Drop the clip instead. The video still renders as the
+  // wordless motion arm, which is a real arm rather than a broken one, and the drop is
+  // loud because it means a bank line needs shortening.
+  if (mapped.hook?.vo) {
+    const spoken = Number(vo.durs.hook ?? 0);
+    const budget = HOOK_SECONDS - SHORT_LEAD;
+    if (!(spoken > 0) || spoken > budget) {
+      info("hook VO over budget, dropping to the wordless motion arm", { id, spoken, budget, line: mapped.hook.vo });
+      delete vo.durs.hook;
+    }
+  }
   durs.timesup = metaDur("timesup");
   if (!mapped.ending.dropScore) durs.score = metaDur("score");
   // The end beat is NOT platform-agnostic any more. It was, while the only platforms
@@ -494,6 +522,8 @@ function shortProps(mapped: Mapped, durs: Record<string, number>, qrBase: string
     // Opening arm. "cold-plate" is today's render byte-for-byte; "motion-hook" is the
     // only thing that differs between the two arms of the skip-rate experiment.
     opening: mapped.opening,
+    // Plate copy for the spoken-hook arms. The Hook scene swaps its "?" for this.
+    hook: mapped.hook ? { title: mapped.hook.title, subtitle: mapped.hook.subtitle } : undefined,
     totalFrames,
   };
 }

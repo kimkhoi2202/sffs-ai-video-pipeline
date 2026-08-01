@@ -29,6 +29,7 @@ import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode } from "./defaults.ts";
 import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally, elevateMascot, MASCOT_WEIGHT_DEFAULT, type DimSpec, type SpreadTally } from "./dimensions.ts";
 import { currentDirective, replicaCount, normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
+import { pickHook } from "./hooks.ts";
 
 // Re-export the catalog surface so existing importers (bridge/design.ts) are
 // unchanged, while the actual definitions live in the dependency-free module.
@@ -60,8 +61,11 @@ async function makeCaption(reveal: RevealMode, tags: string[]): Promise<{ captio
   const ask = captionAsk(reveal).toUpperCase();
   const system =
     "You write captions for 'Smart Fella or Fart Smella', a Gen-Z brain-quiz brand. Voice: concise, funny, " +
-    "lowercase-casual, kid-safe, NO em dashes, at most ONE emoji, no AI-slop, always end with a follow/come-back nudge. " +
-    "Signature: SMART FELLA (smart) vs FART SMELLA (miss).";
+    "lowercase-casual, kid-safe, NO em or en dashes, at most ONE emoji beyond the 🧠💨 logo, no AI-slop, " +
+    "always end with a follow/come-back nudge. Signature: SMART FELLA (smart) vs FART SMELLA (miss). " +
+    "Difficulty puffery about the puzzle is house style and needs no substantiation ('97% get this wrong'). " +
+    "NEVER claim anything about the product or the viewer's outcome ('users gain IQ points', 'get smarter', " +
+    "'scientifically proven') - see compliance.md section 3.";
   const user =
     `Write ONE short TikTok/Reels caption (max 180 chars, before hashtags) for a quiz short. It must nudge viewers to ${ask} ` +
     `and to follow. Do NOT include hashtags. Return ONLY the caption text.`;
@@ -257,8 +261,32 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     const tags = CONFIG.HASHTAG_SETS[hashtagSet];
     const { caption, source } = await makeCaption(resolved.reveal, tags);
 
-    const title = spec.hook?.title ?? "SMART or FART?";
-    const subtitle = spec.hook?.subtitle ?? "how many can you get?";
+    // SPOKEN-HOOK arms resolve a concrete, claim-tagged, BUDGETED line from
+    // ab-testing/hook-bank.json. Three constraints are enforced at selection:
+    //   - `requires` is checked against THIS video's props, so a line can never assert
+    //     something the render then contradicts ("two answers, one secret" on a
+    //     full-reveal arm);
+    //   - {WRONG} decoys resolve to a letter that is NOT the answer;
+    //   - the line's measured VO must fit inside the animation, so the hook is carried
+    //     BY the 2.2s opening rather than added in front of it.
+    // No eligible line => the video ships as the wordless motion arm, which is a real
+    // arm rather than a broken one, and the drop is logged.
+    const letters = ["A", "B", "C", "D"];
+    const q0 = chosen[0];
+    const wrongLetters = (q0?.options ?? [])
+      .map((o, oi) => (o === q0.answer ? null : letters[oi]))
+      .filter((l): l is string => Boolean(l));
+    const hook = spec.hookMechanism
+      ? pickHook(spec.hookMechanism, `${runId}:${spec.arm}`, {
+          numQ: spec.numQ,
+          countdownSec: spec.countdownSec,
+          ending: resolved.endingArm,
+          wrongLetters,
+        })
+      : null;
+    if (spec.hookMechanism && !hook) {
+      warn("spoken-hook arm has no eligible bank line; rendering the wordless motion arm", { id, arm: spec.arm, mechanism: spec.hookMechanism });
+    }
     const outro = defaultOutro(resolved.reveal);
 
     const renderQuestions = chosen.map((q) => ({
@@ -291,8 +319,11 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       gates: { copy: { pass: true, reason: `caption ${source}` } },
       status: "planned",
       props: {
-        title,
-        subtitle,
+        // The OPENING axis. Undefined/cold-plate => the historical cold open, so every
+        // non-opening arm renders byte-identically to its own history.
+        opening: spec.opening ?? "cold-plate",
+        // Spoken-hook copy, carried BY the motion opening (never in front of it).
+        hook: hook ? { title: hook.title, subtitle: hook.subtitle, vo: hook.vo } : undefined,
         outro,
         music,
         showProgress: spec.showProgress,
@@ -316,7 +347,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     };
     plans.push(plan);
     decision(
-      `PLAN ${id}: dimension=${spec.dimension} arm=${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${resolved.narration} ending=${resolved.endingArm} reveal=${resolved.reveal}`,
+      `PLAN ${id}: dimension=${spec.dimension} arm=${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${resolved.narration} ending=${resolved.endingArm} reveal=${resolved.reveal}${hook ? ` hook=${hook.id}` : ""}`,
       { questions: chosen.map((q) => q.tier) },
     );
   }

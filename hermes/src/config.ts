@@ -316,6 +316,7 @@ export const CONFIG = Object.freeze({
   CONTENT_DEFAULTS: join(REPO_DIR, "ab-testing", "content-defaults.json"),
   // Durable default-promotion proposal queue (written by the Python promotion engine).
   PROPOSALS: join(REPO_DIR, "ab-testing", "proposals.json"),
+  HOOK_BANK: join(REPO_DIR, "ab-testing", "hook-bank.json"),
   USAGE: join(REPO_DIR, "content", "ab-test-usage.json"),
   BANK: join(REPO_DIR, "content", "master-question-bank.json"),
   BRAND_VOICE: join(REPO_DIR, "brand", "brand-voice.md"),

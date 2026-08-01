@@ -40,11 +40,21 @@ These are non-negotiable for all agent-generated SOCIAL copy (captions, comment 
 
 **DON'T**
 - **No HARD or explicit profanity.** No swear words, slurs, or crude / sexual language. The audience skews young, it can get a minor-directed account restricted, and parents notice. This does NOT ban mild slang: "af" and similar mild intensifiers are allowed and on-brand (see the DO above).
-- **No em dashes.** Use a period, comma, or "(...)" instead. (A few legacy WEBSITE strings in the corpus contain em dashes - they are preserved as mined, but never reproduce them.)
-- **No emoji spam.** **At most ONE** tasteful, well-placed emoji (e.g. 🫡 🥳 😭 💀 🔥 👇). Zero is fine. The 🧠💨 glyph counts as the one.
+- **No em dashes and no en dashes.** Use a period, comma, or "(...)" instead. (A few legacy WEBSITE strings in the corpus contain em dashes - they are preserved as mined, but never reproduce them.)
+- **No emoji spam.** The **🧠💨 glyph is the LOGO and is free** - it does not count. On top of it, **at most ONE** other tasteful, well-placed emoji (e.g. 🫡 🥳 😭 💀 🔥 👇). Zero is fine. So `SMART or FART? 🧠💨 ... comment your score 👇` is correct house style, and it is what the real captions below actually do.
+  - _Why this is spelled out:_ the guide used to say the glyph "counts as the one" while `hermes/src/brand.ts` counted codepoints, which scores 🧠💨 as **two** and rejected the brand's own signature. Resolved 2026-07-31 in favour of the shipped house style: the gate now strips the glyph before counting.
 - **No AI-slop tone.** No "Great question!", no "Let's dive in", no hedging, no corporate polish.
 - **No over-explaining / lecturing.** Never spell out the solution in a reply (no "each number is the sum of the two before it" lectures). The math/why belongs ONLY in the video reveal, never in a comment.
 - Don't argue with trolls; keep it light or skip.
+- **No product or outcome claims.** Never say what the app does for the viewer: no "users gain 20 IQ points", no "watch daily and get smarter", no "improves memory / focus / grades", no "scientifically proven". See the claims rule directly below.
+
+### 3.1 Claims: puzzle yes, product no
+
+**Difficulty puffery about the PUZZLE is on-brand and needs no substantiation.** "97% get this wrong", "only 3% can solve this", "9 out of 10 pick B". Nobody parses these as research, they promise the viewer nothing, and they are the native idiom of the quiz-short format. Pre-approved, in-voice lines live in `../ab-testing/hook-bank.json` under the `stated-difficulty-stat` mechanism.
+
+**Claims about the PRODUCT or the viewer's OUTCOME are forbidden**, with or without a number. That is the class that is genuinely actionable. The tell: would the sentence still be true if the app did not exist? If no, it is a product claim.
+
+The full rule, the forbidden list, and every place it is enforced live in `../compliance.md` §3. Enforced in code by `hermes/src/brand.ts` (`ruleCheckCopy` + `HARD_RULES`), `hermes/src/gates.ts` (`gateCopy`), and `hermes/src/design.ts` (`makeCaption`).
 
 ## 4. Signature vocabulary + recurring phrases
 

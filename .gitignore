@@ -31,6 +31,8 @@ tools/*
 !tools/schedule-variants.ts
 !tools/edit-captions.ts
 !tools/retime-variants.ts
+!tools/render-hook-proof.ts
+!tools/calibrate-hooks.ts
 !tools/package.json
 
 # Python
@@ -82,3 +84,7 @@ voice/_backups/
 *.log
 .vercel/
 hermes/node_modules/
+
+# Hook calibration audio: regenerable by tools/calibrate-hooks.ts, and only the MEASURED
+# durations matter (they live in ab-testing/hook-bank.json as vo_sec).
+remotion/public/audio/hook-calibration/

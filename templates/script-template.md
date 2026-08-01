@@ -67,7 +67,10 @@ Score tiers: Rookie Riddler ({{0–x}}) · Sharp Cookie ({{x–y}}) · Certified
 ```
 
 ### 3.1 Cold-open hook  *(0:00–~0:12)*
-> Dare them in the first seconds; keep it **truthful** (no invented "99% fail" stats — see §5).
+> Dare them in the first seconds. **"X% fail / only Y% can solve this" hooks are fine** — they are
+> difficulty puffery about the puzzle and need no substantiation. What is NOT fine is any claim about
+> the product or the viewer's outcome ("97% of users gain 20 IQ points", "watch daily and get
+> smarter"). See `compliance.md` §3 for the line and the full forbidden list.
 
 ```
 (MUSIC: bed up, bright)  (SFX: slam)

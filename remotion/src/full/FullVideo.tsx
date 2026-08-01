@@ -50,12 +50,13 @@ const renderSegment = (
   endCard: EndCard,
   mascot: MascotVis,
   hookBg: string,
+  hook?: { title: string; subtitle?: string },
 ): React.ReactNode => {
   switch (seg.type) {
     case "intro":
       return <Intro mascot={mascot} />;
     case "hook":
-      return <Hook bg={hookBg} />;
+      return <Hook bg={hookBg} title={hook?.title} subtitle={hook?.subtitle} />;
     case "read":
       return <QuestionPlate q={seg.q} elapsed={0} pos={seg.pos} total={total} />;
     case "countdown":
@@ -125,7 +126,9 @@ export const FullVideo: React.FC<{
   /** Opening arm for the 3-second skip-rate experiment (shorts only). "cold-plate"
    *  is today's behaviour; "motion-hook" prepends the wordless Hook scene. */
   opening?: Opening;
-}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, showProgress, progressStyle, debugSafeZones, mascot, opening }) => {
+  /** Spoken-hook copy carried BY the motion opening (see timeline.ts Variant.hook). */
+  hook?: { title: string; subtitle?: string };
+}> = ({ slug, platform: platformProp, questionIds, music: musicProp, sfx: sfxProp, questions, durs, qrBase, readVO, dropReveal, dropScore, endCard, metaBase, showProgress, progressStyle, debugSafeZones, mascot, opening, hook }) => {
   const cut = slug ? bySlug(slug) : undefined;
   const platform: Platform = cut?.platform ?? platformProp ?? "youtube";
   const ids = cut?.ids ?? questionIds;
@@ -138,8 +141,8 @@ export const FullVideo: React.FC<{
   const { width: compW, height: compH } = useVideoConfig();
   const isShort = compH > compW;
   const variant: Variant = useMemo(
-    () => ({ readVO, dropReveal, dropScore, endCard, metaBase, opening, isShort }),
-    [readVO, dropReveal, dropScore, endCard, metaBase, opening, isShort],
+    () => ({ readVO, dropReveal, dropScore, endCard, metaBase, opening, hook, isShort }),
+    [readVO, dropReveal, dropScore, endCard, metaBase, opening, hook, isShort],
   );
   const T: TimelineData = useMemo(
     () => getTimeline(platform, ids, sfx, questions, durs, qrBase, variant),
@@ -160,7 +163,7 @@ export const FullVideo: React.FC<{
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
       {T.segments.map((seg, i) => (
         <Sequence key={i} from={seg.start} durationInFrames={seg.dur} name={segName(seg)}>
-          {renderSegment(seg, platform, total, endCard ?? "default", mascot ?? "standard", hookBg)}
+          {renderSegment(seg, platform, total, endCard ?? "default", mascot ?? "standard", hookBg, hook)}
         </Sequence>
       ))}
 

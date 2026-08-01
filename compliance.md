@@ -101,10 +101,47 @@ store it against a child identity.**
 Run this on **every** video script, asset, and the gate before CARU submission.
 
 **Truthfulness & fairness**
-- [ ] All claims are **truthful and substantiated**; nothing misleading about difficulty, odds, or
-      what the child/parent "gets."
-- [ ] "X% fail / only Y% can solve" style hooks are **honest** (don't invent stats you can't stand behind).
-- [ ] Product/prize benefits not exaggerated; no creating unrealistic expectations.
+
+> **The rule turns on WHAT THE CLAIM IS ABOUT, not on whether it contains a number.**
+> A claim about the puzzle is puffery. A claim about the product is an efficacy claim.
+> An earlier version of this checklist collapsed those into one prohibition, which banned
+> the format's native idiom while doing nothing to stop the claim that would actually cause
+> trouble. (Amended 2026-07-31.)
+
+- [ ] **Puzzle-difficulty framing is PERMITTED as puffery.** "97% get this wrong", "only 3%
+      can solve this", "9 out of 10 people pick B" are claims about how hard one specific
+      puzzle is. They are the native idiom of the quiz-short format, no viewer parses them as
+      research, and they promise the child nothing. Keep them about the puzzle and keep them
+      playful. No substantiation is required, and none is implied.
+- [ ] **Claims about the PRODUCT, the app, or the child's OUTCOME are forbidden**, with or
+      without a number. This is the class that is genuinely actionable and it is the one to
+      police. Forbidden, non-exhaustively:
+      - "97% of users gain 20 IQ points" · "players raise their score by X" · "N% improvement"
+      - "watch daily and get smarter" · "improves memory / focus / grades / test scores"
+      - "scientifically proven" · "clinically shown" · "backed by research" · "guaranteed"
+      - "your child will ___" in any measurable form
+
+      An efficacy claim requires competent and reliable substantiation before it ships, which
+      in practice means **we do not make one.**
+- [ ] **Never dress a product claim as difficulty framing.** "Only 3% solve this before taking
+      our course" is a product claim wearing a puzzle's clothes. The tell is whether the
+      sentence would still be true if the app did not exist.
+- [ ] Prize benefits not exaggerated; **odds stated honestly** (§5); no unrealistic expectations.
+- [ ] Nothing misleading about **what the child or parent actually gets** for the email.
+
+> **Where this rule is enforced.** Changing it here is not enough; these must agree or a hook
+> that reads as legal in the doc gets silently rejected at publish time.
+>
+> | Enforcement point | What it does |
+> |---|---|
+> | `hermes/src/brand.ts` → `ruleCheckCopy()` | Deterministic gate. Rejects product-efficacy phrasing. |
+> | `hermes/src/brand.ts` → `HARD_RULES` | The rule text handed to every LLM copy prompt. |
+> | `hermes/src/gates.ts` → `gateCopy()` | LLM brand-voice judge that runs on captions + on-screen copy. |
+> | `hermes/src/design.ts` → `makeCaption()` | Caption generation system prompt. |
+> | `brand/brand-voice.md` §3 | The human-facing voice rules. |
+> | `ab-testing/hook-bank.json` → `claim_rules` | Per-line `claim_class` tagging for the hook bank. |
+> | `templates/script-template.md` §3.1 | Cold-open hook guidance. |
+> | `riddle-video-style-spec.md` §3 | The format spine that specifies the "X% fail" beat. |
 
 **Age-appropriateness & pressure**
 - [ ] Language, difficulty, and tone suit the target age; non-scary, non-violent, non-shaming.

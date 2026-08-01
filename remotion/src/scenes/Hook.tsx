@@ -50,6 +50,29 @@ import { COLORS, hardShadow } from "../theme/brand";
  */
 export const HOOK_SECONDS = 2.2;
 
+/**
+ * SPOKEN-HOOK VARIANT. When `title` is supplied the scene keeps every beat, every
+ * timing and its full length, and swaps only the focal glyph: the oversized "?" is
+ * replaced by the hook line, which the host speaks OVER the animation.
+ *
+ * This does not break the no-reading rule above, it satisfies it differently. The "?"
+ * said "a puzzle is coming" without words; a four-word title says the same thing AND
+ * carries a reason to stay, and because the voiceover speaks it, reading stays optional.
+ * The reading task the rule exists to prevent is the 8-to-12-word prompt plus four
+ * option tiles, and that is still nowhere near frame one.
+ *
+ * Why it goes in the "?" slot rather than beside it: that slot is the one the animation
+ * was already composed around, clear of all four shapes at every frame. Anywhere else
+ * either collides with a shape or lands in TikTok's top/bottom chrome.
+ */
+const titleSize = (text: string): number => {
+  const chars = text.trim().length;
+  if (chars <= 8) return 290;
+  if (chars <= 12) return 232;
+  if (chars <= 17) return 184;
+  return 150;
+};
+
 /** Quadrant positions. Fixed and axis-aligned — these never move, tilt or scale. */
 const QUADRANTS = [
   { qx: 0, qy: 0 },
@@ -111,7 +134,7 @@ const Shape: React.FC<{ kind: ShapeKind; color: string; size: number }> = ({ kin
   );
 };
 
-export const Hook: React.FC<{ bg?: string }> = ({ bg = COLORS.blue }) => {
+export const Hook: React.FC<{ bg?: string; title?: string; subtitle?: string }> = ({ bg = COLORS.blue, title, subtitle }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const total = Math.round(HOOK_SECONDS * fps);
@@ -207,6 +230,45 @@ export const Hook: React.FC<{ bg?: string }> = ({ bg = COLORS.blue }) => {
                 transform: `scale(${qScale})`,
               }}
             >
+              {title ? (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 44 }}>
+                  <span
+                    style={{
+                      fontFamily: "Bungee, system-ui, sans-serif",
+                      fontSize: titleSize(title),
+                      lineHeight: 1.02,
+                      color: COLORS.paper,
+                      WebkitTextStroke: `${Math.round(titleSize(title) * 0.1)}px ${COLORS.ink}`,
+                      paintOrder: "stroke fill",
+                      textShadow: `${Math.round(titleSize(title) * 0.12)}px ${Math.round(titleSize(title) * 0.12)}px 0 ${COLORS.ink}`,
+                      textAlign: "center",
+                      textWrap: "balance",
+                      maxWidth: 900,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {title}
+                  </span>
+                  {subtitle ? (
+                    <span
+                      style={{
+                        fontFamily: "Bungee, system-ui, sans-serif",
+                        fontSize: 58,
+                        lineHeight: 1,
+                        color: COLORS.ink,
+                        background: COLORS.paper,
+                        border: `9px solid ${COLORS.ink}`,
+                        borderRadius: 9999,
+                        padding: "20px 48px",
+                        boxShadow: hardShadow(14),
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {subtitle}
+                    </span>
+                  ) : null}
+                </div>
+              ) : (
               <span
                 style={{
                   fontFamily: "Bungee, system-ui, sans-serif",
@@ -220,6 +282,7 @@ export const Hook: React.FC<{ bg?: string }> = ({ bg = COLORS.blue }) => {
               >
                 ?
               </span>
+              )}
             </div>
           </div>
         </AbsoluteFill>
