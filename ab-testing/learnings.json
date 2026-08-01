@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-31T14:05:14.103Z",
+  "updated_at": "2026-08-01T14:03:57.534Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -74,9 +74,9 @@
         "n_posts": 2,
         "n_with_metrics": 2,
         "median_eng_rate": 6.74,
-        "avg_reach": 262,
-        "median_views": 288.5,
-        "median_reach": 262,
+        "avg_reach": 262.5,
+        "median_views": 289,
+        "median_reach": 262.5,
         "median_skip_rate": 78.3,
         "n_by_metric": {
           "median_eng_rate": 2,
@@ -176,28 +176,28 @@
         }
       },
       "mascot": {
-        "n_posts": 21,
-        "n_with_metrics": 6,
-        "median_eng_rate": 2.02,
-        "avg_reach": 215,
-        "median_views": 236.5,
-        "median_reach": 215,
-        "median_skip_rate": 63.8,
+        "n_posts": 29,
+        "n_with_metrics": 7,
+        "median_eng_rate": 1.59,
+        "avg_reach": 275,
+        "median_views": 309,
+        "median_reach": 275,
+        "median_skip_rate": 61.9,
         "n_by_metric": {
-          "median_eng_rate": 6,
-          "median_skip_rate": 6,
-          "median_views": 6,
-          "median_reach": 6
+          "median_eng_rate": 7,
+          "median_skip_rate": 7,
+          "median_views": 7,
+          "median_reach": 7
         }
       },
       "hook": {
         "n_posts": 5,
         "n_with_metrics": 2,
-        "median_eng_rate": 2.21,
-        "avg_reach": 687,
-        "median_views": 869,
-        "median_reach": 687,
-        "median_skip_rate": 43.8,
+        "median_eng_rate": 2.56,
+        "avg_reach": 880.5,
+        "median_views": 1073,
+        "median_reach": 880.5,
+        "median_skip_rate": 58.35,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -206,18 +206,18 @@
         }
       },
       "length": {
-        "n_posts": 4,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_posts": 6,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0.81,
+        "avg_reach": 124,
+        "median_views": 135,
+        "median_reach": 124,
+        "median_skip_rate": 70.7,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       },
       "control": {
@@ -237,27 +237,27 @@
       },
       "category-mix": {
         "n_posts": 9,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 2,
+        "median_eng_rate": 2.12,
+        "avg_reach": 134,
+        "median_views": 151.5,
+        "median_reach": 134,
+        "median_skip_rate": 63.4,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "tempo": {
         "n_posts": 7,
         "n_with_metrics": 2,
-        "median_eng_rate": 0.87,
-        "avg_reach": 127,
-        "median_views": 145.5,
-        "median_reach": 127,
-        "median_skip_rate": 67.8,
+        "median_eng_rate": 2.28,
+        "avg_reach": 651.5,
+        "median_views": 762.5,
+        "median_reach": 651.5,
+        "median_skip_rate": 62.05,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -266,13 +266,43 @@
         }
       },
       "narration": {
-        "n_posts": 19,
+        "n_posts": 23,
+        "n_with_metrics": 6,
+        "median_eng_rate": 0.21,
+        "avg_reach": 130.5,
+        "median_views": 156,
+        "median_reach": 130.5,
+        "median_skip_rate": 71.4,
+        "n_by_metric": {
+          "median_eng_rate": 6,
+          "median_skip_rate": 6,
+          "median_views": 6,
+          "median_reach": 6
+        }
+      },
+      "type-nonverbal-classic": {
+        "n_posts": 4,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0.61,
+        "avg_reach": 489,
+        "median_views": 560,
+        "median_reach": 489,
+        "median_skip_rate": 59.2,
+        "n_by_metric": {
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
+        }
+      },
+      "ending": {
+        "n_posts": 7,
         "n_with_metrics": 3,
         "median_eng_rate": 0,
-        "avg_reach": 123,
-        "median_views": 143,
-        "median_reach": 123,
-        "median_skip_rate": 69,
+        "avg_reach": 120,
+        "median_views": 135,
+        "median_reach": 120,
+        "median_skip_rate": 77.7,
         "n_by_metric": {
           "median_eng_rate": 3,
           "median_skip_rate": 3,
@@ -280,81 +310,51 @@
           "median_reach": 3
         }
       },
-      "type-nonverbal-classic": {
-        "n_posts": 4,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
-        "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
-        }
-      },
-      "ending": {
-        "n_posts": 7,
-        "n_with_metrics": 1,
-        "median_eng_rate": 1.43,
-        "avg_reach": 70,
-        "median_views": 86,
-        "median_reach": 70,
-        "median_skip_rate": 71.1,
-        "n_by_metric": {
-          "median_eng_rate": 1,
-          "median_skip_rate": 1,
-          "median_views": 1,
-          "median_reach": 1
-        }
-      },
       "type-nonverbal-shapes": {
-        "n_posts": 6,
-        "n_with_metrics": 1,
-        "median_eng_rate": 2.81,
-        "avg_reach": 178,
-        "median_views": 214,
-        "median_reach": 178,
-        "median_skip_rate": 55.4,
+        "n_posts": 8,
+        "n_with_metrics": 2,
+        "median_eng_rate": 1.51,
+        "avg_reach": 220,
+        "median_views": 247.5,
+        "median_reach": 220,
+        "median_skip_rate": 62,
         "n_by_metric": {
-          "median_eng_rate": 1,
-          "median_skip_rate": 1,
-          "median_views": 1,
-          "median_reach": 1
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "progress-counter": {
         "n_posts": 2,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0,
+        "avg_reach": 114,
+        "median_views": 137,
+        "median_reach": 114,
+        "median_skip_rate": 59.5,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       }
     },
     "by_platform": {
       "instagram": {
-        "n_posts": 65,
-        "n_with_metrics": 21,
-        "median_eng_rate": 1.9,
-        "avg_reach": 131,
+        "n_posts": 73,
+        "n_with_metrics": 33,
+        "median_eng_rate": 1.5,
+        "avg_reach": 126,
         "median_views": 147,
-        "median_reach": 131,
-        "median_skip_rate": 69,
+        "median_reach": 126,
+        "median_skip_rate": 68,
         "n_by_metric": {
-          "median_eng_rate": 21,
-          "median_skip_rate": 21,
-          "median_views": 21,
-          "median_reach": 21
+          "median_eng_rate": 33,
+          "median_skip_rate": 33,
+          "median_views": 33,
+          "median_reach": 33
         }
       },
       "tiktok": {
@@ -373,7 +373,7 @@
         }
       },
       "youtube": {
-        "n_posts": 19,
+        "n_posts": 27,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -390,110 +390,110 @@
     },
     "by_hashtag_set": {
       "B": {
-        "n_posts": 30,
-        "n_with_metrics": 5,
-        "median_eng_rate": 2.19,
-        "avg_reach": 183,
-        "median_views": 209,
-        "median_reach": 183,
-        "median_skip_rate": 64.7,
+        "n_posts": 32,
+        "n_with_metrics": 8,
+        "median_eng_rate": 1.64,
+        "avg_reach": 191.5,
+        "median_views": 225,
+        "median_reach": 191.5,
+        "median_skip_rate": 66.9,
         "n_by_metric": {
-          "median_eng_rate": 5,
-          "median_skip_rate": 4,
-          "median_views": 5,
-          "median_reach": 5
+          "median_eng_rate": 8,
+          "median_skip_rate": 7,
+          "median_views": 8,
+          "median_reach": 8
         }
       },
       "A": {
-        "n_posts": 47,
-        "n_with_metrics": 7,
-        "median_eng_rate": 2.34,
-        "avg_reach": 148,
-        "median_views": 170,
-        "median_reach": 148,
-        "median_skip_rate": 67.8,
+        "n_posts": 55,
+        "n_with_metrics": 12,
+        "median_eng_rate": 0.81,
+        "avg_reach": 163.5,
+        "median_views": 190.5,
+        "median_reach": 163.5,
+        "median_skip_rate": 65.15,
         "n_by_metric": {
-          "median_eng_rate": 7,
-          "median_skip_rate": 7,
-          "median_views": 7,
-          "median_reach": 7
+          "median_eng_rate": 12,
+          "median_skip_rate": 12,
+          "median_views": 12,
+          "median_reach": 12
         }
       },
       "C": {
-        "n_posts": 31,
-        "n_with_metrics": 4,
-        "median_eng_rate": 1.16,
-        "avg_reach": 100.5,
-        "median_views": 128,
-        "median_reach": 100.5,
-        "median_skip_rate": 67.25,
+        "n_posts": 37,
+        "n_with_metrics": 8,
+        "median_eng_rate": 0.93,
+        "avg_reach": 128,
+        "median_views": 140.5,
+        "median_reach": 128,
+        "median_skip_rate": 67.05,
         "n_by_metric": {
-          "median_eng_rate": 4,
-          "median_skip_rate": 4,
-          "median_views": 4,
-          "median_reach": 4
+          "median_eng_rate": 8,
+          "median_skip_rate": 8,
+          "median_views": 8,
+          "median_reach": 8
         }
       }
     },
     "by_time_bucket": {
       "evening (18-24)": {
-        "n_posts": 13,
-        "n_with_metrics": 12,
-        "median_eng_rate": 2.63,
-        "avg_reach": 128,
-        "median_views": 148,
-        "median_reach": 128,
-        "median_skip_rate": 74.2,
+        "n_posts": 16,
+        "n_with_metrics": 15,
+        "median_eng_rate": 2.15,
+        "avg_reach": 124,
+        "median_views": 135,
+        "median_reach": 124,
+        "median_skip_rate": 74.8,
         "n_by_metric": {
-          "median_eng_rate": 12,
-          "median_skip_rate": 8,
-          "median_views": 12,
-          "median_reach": 12
+          "median_eng_rate": 15,
+          "median_skip_rate": 11,
+          "median_views": 15,
+          "median_reach": 15
         }
       },
       "afternoon (12-18)": {
-        "n_posts": 13,
-        "n_with_metrics": 12,
-        "median_eng_rate": 2.43,
-        "avg_reach": 158,
-        "median_views": 178,
-        "median_reach": 158,
-        "median_skip_rate": 70.95,
+        "n_posts": 17,
+        "n_with_metrics": 15,
+        "median_eng_rate": 1.69,
+        "avg_reach": 132,
+        "median_views": 147,
+        "median_reach": 132,
+        "median_skip_rate": 71,
         "n_by_metric": {
-          "median_eng_rate": 12,
-          "median_skip_rate": 8,
-          "median_views": 12,
-          "median_reach": 12
+          "median_eng_rate": 15,
+          "median_skip_rate": 11,
+          "median_views": 15,
+          "median_reach": 15
         }
       },
       "morning (6-12)": {
-        "n_posts": 10,
-        "n_with_metrics": 4,
-        "median_eng_rate": 2.52,
-        "avg_reach": 388,
-        "median_views": 399.5,
-        "median_reach": 388,
-        "median_skip_rate": 63.7,
+        "n_posts": 13,
+        "n_with_metrics": 8,
+        "median_eng_rate": 0.85,
+        "avg_reach": 254.5,
+        "median_views": 281,
+        "median_reach": 254.5,
+        "median_skip_rate": 64.3,
         "n_by_metric": {
-          "median_eng_rate": 4,
-          "median_skip_rate": 3,
-          "median_views": 4,
-          "median_reach": 4
+          "median_eng_rate": 8,
+          "median_skip_rate": 7,
+          "median_views": 8,
+          "median_reach": 8
         }
       },
       "night (0-6)": {
-        "n_posts": 7,
-        "n_with_metrics": 2,
-        "median_eng_rate": 1.84,
-        "avg_reach": 275,
-        "median_views": 344,
-        "median_reach": 275,
-        "median_skip_rate": 43.55,
+        "n_posts": 8,
+        "n_with_metrics": 4,
+        "median_eng_rate": 2.23,
+        "avg_reach": 264.5,
+        "median_views": 310.5,
+        "median_reach": 264.5,
+        "median_skip_rate": 60.25,
         "n_by_metric": {
-          "median_eng_rate": 2,
-          "median_skip_rate": 2,
-          "median_views": 2,
-          "median_reach": 2
+          "median_eng_rate": 4,
+          "median_skip_rate": 4,
+          "median_views": 4,
+          "median_reach": 4
         }
       }
     },
@@ -529,18 +529,18 @@
         }
       },
       "one-question": {
-        "n_posts": 4,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_posts": 6,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0.81,
+        "avg_reach": 124,
+        "median_views": 135,
+        "median_reach": 124,
+        "median_skip_rate": 70.7,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       },
       "baseline": {
@@ -560,17 +560,17 @@
       },
       "quant-only": {
         "n_posts": 5,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 1,
+        "median_eng_rate": 3.42,
+        "avg_reach": 146,
+        "median_views": 168,
+        "median_reach": 146,
+        "median_skip_rate": 61,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       },
       "slow-7s": {
@@ -619,88 +619,73 @@
         }
       },
       "no-question-vo": {
-        "n_posts": 5,
-        "n_with_metrics": 1,
+        "n_posts": 7,
+        "n_with_metrics": 2,
         "median_eng_rate": 0,
-        "avg_reach": 109,
-        "median_views": 115,
-        "median_reach": 109,
-        "median_skip_rate": 83.2,
+        "avg_reach": 116.5,
+        "median_views": 129,
+        "median_reach": 116.5,
+        "median_skip_rate": 79.9,
         "n_by_metric": {
-          "median_eng_rate": 1,
-          "median_skip_rate": 1,
-          "median_views": 1,
-          "median_reach": 1
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "no-narration": {
         "n_posts": 7,
-        "n_with_metrics": 1,
-        "median_eng_rate": 2.19,
-        "avg_reach": 183,
-        "median_views": 209,
-        "median_reach": 183,
-        "median_skip_rate": 68.3,
+        "n_with_metrics": 2,
+        "median_eng_rate": 1.42,
+        "avg_reach": 191.5,
+        "median_views": 225,
+        "median_reach": 191.5,
+        "median_skip_rate": 71.05,
         "n_by_metric": {
-          "median_eng_rate": 1,
-          "median_skip_rate": 1,
-          "median_views": 1,
-          "median_reach": 1
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "classic-shapes": {
         "n_posts": 4,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
-        "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
-        }
-      },
-      "no-options-vo": {
-        "n_posts": 5,
         "n_with_metrics": 1,
-        "median_eng_rate": 0,
-        "avg_reach": 123,
-        "median_views": 143,
-        "median_reach": 123,
-        "median_skip_rate": 69,
+        "median_eng_rate": 0.61,
+        "avg_reach": 489,
+        "median_views": 560,
+        "median_reach": 489,
+        "median_skip_rate": 59.2,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
           "median_views": 1,
           "median_reach": 1
+        }
+      },
+      "no-options-vo": {
+        "n_posts": 7,
+        "n_with_metrics": 2,
+        "median_eng_rate": 0.61,
+        "avg_reach": 179.5,
+        "median_views": 199.5,
+        "median_reach": 179.5,
+        "median_skip_rate": 68,
+        "n_by_metric": {
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "full-reveal": {
         "n_posts": 4,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
-        "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
-        }
-      },
-      "shapes": {
-        "n_posts": 6,
         "n_with_metrics": 1,
-        "median_eng_rate": 2.81,
-        "avg_reach": 178,
-        "median_views": 214,
-        "median_reach": 178,
-        "median_skip_rate": 55.4,
+        "median_eng_rate": 0,
+        "avg_reach": 122,
+        "median_views": 158,
+        "median_reach": 122,
+        "median_skip_rate": 79.7,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
@@ -708,29 +693,44 @@
           "median_reach": 1
         }
       },
-      "mascot-absent": {
-        "n_posts": 14,
-        "n_with_metrics": 4,
-        "median_eng_rate": 1.67,
-        "avg_reach": 186.5,
-        "median_views": 209,
-        "median_reach": 186.5,
-        "median_skip_rate": 65.75,
+      "shapes": {
+        "n_posts": 8,
+        "n_with_metrics": 2,
+        "median_eng_rate": 1.51,
+        "avg_reach": 220,
+        "median_views": 247.5,
+        "median_reach": 220,
+        "median_skip_rate": 62,
         "n_by_metric": {
-          "median_eng_rate": 4,
-          "median_skip_rate": 4,
-          "median_views": 4,
-          "median_reach": 4
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
+        }
+      },
+      "mascot-absent": {
+        "n_posts": 20,
+        "n_with_metrics": 5,
+        "median_eng_rate": 1.09,
+        "avg_reach": 201,
+        "median_views": 235,
+        "median_reach": 201,
+        "median_skip_rate": 64.3,
+        "n_by_metric": {
+          "median_eng_rate": 5,
+          "median_skip_rate": 5,
+          "median_views": 5,
+          "median_reach": 5
         }
       },
       "mascot-standard": {
-        "n_posts": 5,
+        "n_posts": 7,
         "n_with_metrics": 2,
-        "median_eng_rate": 2.02,
-        "avg_reach": 353.5,
-        "median_views": 400,
-        "median_reach": 353.5,
-        "median_skip_rate": 57.65,
+        "median_eng_rate": 1.64,
+        "avg_reach": 547,
+        "median_views": 631.5,
+        "median_reach": 547,
+        "median_skip_rate": 51.75,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -756,11 +756,11 @@
       "hook-challenge": {
         "n_posts": 3,
         "n_with_metrics": 2,
-        "median_eng_rate": 2.21,
-        "avg_reach": 687,
-        "median_views": 869,
-        "median_reach": 687,
-        "median_skip_rate": 43.8,
+        "median_eng_rate": 2.56,
+        "avg_reach": 880.5,
+        "median_views": 1073,
+        "median_reach": 880.5,
+        "median_skip_rate": 58.35,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -770,27 +770,27 @@
       },
       "no-answer": {
         "n_posts": 3,
-        "n_with_metrics": 1,
-        "median_eng_rate": 1.43,
-        "avg_reach": 70,
-        "median_views": 86,
-        "median_reach": 70,
-        "median_skip_rate": 71.1,
+        "n_with_metrics": 2,
+        "median_eng_rate": 0.5,
+        "avg_reach": 110.5,
+        "median_views": 123,
+        "median_reach": 110.5,
+        "median_skip_rate": 76.35,
         "n_by_metric": {
-          "median_eng_rate": 1,
-          "median_skip_rate": 1,
-          "median_views": 1,
-          "median_reach": 1
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "tempo-slow": {
         "n_posts": 3,
         "n_with_metrics": 2,
-        "median_eng_rate": 0.87,
-        "avg_reach": 127,
-        "median_views": 145.5,
-        "median_reach": 127,
-        "median_skip_rate": 67.8,
+        "median_eng_rate": 2.28,
+        "avg_reach": 651.5,
+        "median_views": 762.5,
+        "median_reach": 651.5,
+        "median_skip_rate": 62.05,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -800,42 +800,42 @@
       },
       "progress-hidden": {
         "n_posts": 2,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0,
+        "avg_reach": 114,
+        "median_views": 137,
+        "median_reach": 114,
+        "median_skip_rate": 59.5,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       },
       "verbal-only": {
         "n_posts": 4,
-        "n_with_metrics": 0,
-        "median_eng_rate": null,
-        "avg_reach": null,
-        "median_views": null,
-        "median_reach": null,
-        "median_skip_rate": null,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0.82,
+        "avg_reach": 122,
+        "median_views": 135,
+        "median_reach": 122,
+        "median_skip_rate": 65.8,
         "n_by_metric": {
-          "median_eng_rate": 0,
-          "median_skip_rate": 0,
-          "median_views": 0,
-          "median_reach": 0
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
         }
       }
     }
   },
   "front_runners": {
-    "as_of": "2026-07-31",
+    "as_of": "2026-08-01",
     "variant_family": "standard",
     "platform": "tiktok",
-    "hashtag_set": "A",
-    "time_bucket": "evening (18-24)",
+    "hashtag_set": "B",
+    "time_bucket": "night (0-6)",
     "confidence": "medium",
     "notes": "Only platform has a historical read (TikTok median eng 4.24% vs IG 0.78% on identical source videos). Family/hashtag_set/time_bucket front-runners are unknown until the A/B arms publish and metrics are pulled."
   },
@@ -1031,6 +1031,14 @@
       "pulled": 128,
       "updated": 30,
       "n_with_metrics": 30
+    },
+    {
+      "date": "2026-08-01",
+      "from": "2026-07-02",
+      "to": "2026-08-01",
+      "pulled": 141,
+      "updated": 42,
+      "n_with_metrics": 42
     }
   ]
 }

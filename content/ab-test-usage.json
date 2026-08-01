@@ -2312,6 +2312,222 @@
           "answerNorm": "MELT"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-08-01-v05",
+      "test": "opening",
+      "variant": "motion-hook-stat",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "c8260dd54e37",
+          "sig": "text|quantitative|number-analogy|which number fits 3 10 5 16 7 22 6 || 14~16~19~20|19",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "19"
+        },
+        {
+          "hash": "95e798eb01f2",
+          "sig": "text|quantitative|number-puzzle|if 1 2 15 5 6 55 5 3 40 then 4 6 || 49~50~55~60|50",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "50"
+        },
+        {
+          "hash": "9d747c33334b",
+          "sig": "text|verbal|sentence-completion|the bell was so that we covered our ears until it finally stopped || loud~quiet~slow~soft|loud",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "LOUD"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-01-v07",
+      "test": "opening",
+      "variant": "motion-hook-declared",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "0481e29f2fd2",
+          "sig": "text|verbal|odd-one-out|which one does not belong || coat~helicopter~jacket~sweater|helicopter",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "HELICOPTER"
+        },
+        {
+          "hash": "8130f0b58da1",
+          "sig": "text|quantitative|number-analogy|which number fits 3 10 5 18 7 26 9 || 29~30~31~34|34",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "34"
+        },
+        {
+          "hash": "cf3ba05687be",
+          "sig": "text|verbal|verbal-analogy|baker is to bakery as pilot is to || airplane~court~hospital~library|airplane",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "AIRPLANE"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-01-v08",
+      "test": "opening",
+      "variant": "motion-hook-stat",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "160f014c75c3",
+          "sig": "text|quantitative|number-analogy|which number fits 3 7 5 13 7 19 9 || 23~25~26~35|25",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "25"
+        },
+        {
+          "hash": "9a8d49011d17",
+          "sig": "text|quantitative|number-puzzle|if 9 5 70 7 9 80 4 7 55 then 8 6 || 14~70~71~73|70",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "70"
+        },
+        {
+          "hash": "274955f6ca70",
+          "sig": "text|verbal|odd-one-out|which one does not belong || ant~bee~beetle~whale|whale",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "WHALE"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-01-v10",
+      "test": "opening",
+      "variant": "motion-hook-declared",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "02b506cb40c2",
+          "sig": "text|verbal|odd-one-out|which one does not belong || gray~pea~pumpkin~spinach|gray",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "GRAY"
+        },
+        {
+          "hash": "c7fa192ed3cd",
+          "sig": "text|quantitative|number-analogy|which number fits 2 6 3 8 5 12 9 || 20~21~22~30|20",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "20"
+        },
+        {
+          "hash": "e571831a4703",
+          "sig": "text|verbal|sentence-completion|the hikers felt so after climbing all day that they stopped to rest beside the trail || curious~early~exhausted~gentle|exhausted",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "EXHAUSTED"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-01-v11",
+      "test": "opening",
+      "variant": "motion-hook-stat",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "4052fb1cfb2c",
+          "sig": "text|verbal|verbal-analogy|chef is to kitchen as teacher is to || airplane~bakery~library~school|school",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SCHOOL"
+        },
+        {
+          "hash": "64c2ac5fcb6c",
+          "sig": "text|verbal|odd-one-out|which one does not belong || drill~hammer~nail~saw|nail",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "NAIL"
+        },
+        {
+          "hash": "185bc53205c3",
+          "sig": "text|quantitative|number-analogy|which number fits 3 11 6 20 7 23 8 || 23~24~26~36|26",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "26"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-01-v12",
+      "test": "opening",
+      "variant": "motion-hook",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6570264edd80",
+          "sig": "text|quantitative|number-puzzle|if 9 4 27 7 9 56 5 7 30 then 5 4 || 10~15~17~20|15",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "15"
+        },
+        {
+          "hash": "fae242c5d5b5",
+          "sig": "text|verbal|sentence-completion|the library was so quiet that even a whisper seemed so everyone tried hard not to make a sound || colorful~expensive~heavy~loud|loud",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "LOUD"
+        },
+        {
+          "hash": "902adc2ab852",
+          "sig": "text|quantitative|number-analogy|which number fits 3 11 4 15 5 19 8 || 21~29~31~36|31",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "31"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-01-t1-v03",
+      "test": "opening",
+      "variant": "motion-hook-declared",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "0f740f628373",
+          "sig": "text|quantitative|number-analogy|which number fits 2 9 4 15 7 24 8 || 24~27~29~37|27",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "27"
+        },
+        {
+          "hash": "b5c653e038e0",
+          "sig": "text|verbal|verbal-analogy|duck is to quack as lion is to || buzz~hiss~oink~roar|roar",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "ROAR"
+        },
+        {
+          "hash": "972fc19adfd4",
+          "sig": "text|verbal|sentence-completion|we wore thick coats and gloves because the winter day was so || cold~hot~loud~sunny|cold",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "COLD"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-01-t1-v04",
+      "test": "opening",
+      "variant": "motion-hook-stat",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "c33bb05e5b43",
+          "sig": "text|quantitative|number-puzzle|if 4 3 24 6 6 72 2 5 20 then 5 3 || 15~28~30~35|30",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "30"
+        },
+        {
+          "hash": "8a5038914476",
+          "sig": "text|verbal|verbal-analogy|painter is to brush as farmer is to || needle~pickaxe~plow~scissors|plow",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "PLOW"
+        },
+        {
+          "hash": "f92ea32a9db8",
+          "sig": "text|verbal|sentence-completion|the parrot was so that it learned the new trick in just one try || clever~grumpy~hungry~sleepy|clever",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "CLEVER"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
