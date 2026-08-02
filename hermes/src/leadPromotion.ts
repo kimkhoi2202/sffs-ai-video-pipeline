@@ -75,6 +75,31 @@ export function normType(t: unknown): string {
   return TYPE_ALIASES[n] ?? n;
 }
 
+/** The opening question, as the fields a post record carries about it. */
+export interface LeadStamp {
+  lead_type: string;
+  lead_prompt_words: number;
+  lead_band: string;
+}
+
+/**
+ * What the loop writes about question one when it publishes.
+ *
+ * ONE definition, because these three fields have to agree with each other and with the
+ * bands the policy later reads: lead_band must be bandOf(lead_prompt_words), and it is
+ * the kind of pair that drifts the moment it is spelled out twice at the call site.
+ *
+ * Stamping is not a convenience. Both of leadWordsFor's fallbacks re-derive a post's
+ * length from the CURRENT bank, so once bank prompts became editable (the 2026-08-02
+ * shortening) an unstamped post would silently report today's wording rather than the
+ * wording it actually shipped with. The stamp is what makes a published post's evidence
+ * immutable.
+ */
+export function leadStamp(q: { tier?: string; prompt?: string } | undefined): LeadStamp {
+  const words = promptWords(q?.prompt);
+  return { lead_type: normType(q?.tier), lead_prompt_words: words, lead_band: bandOf(words) };
+}
+
 interface BankEntry { sig: string; tier?: string; prompt?: string; promptNorm?: string }
 
 /**
@@ -100,10 +125,28 @@ export function typeWordTable(entries: BankEntry[]): Record<string, number> {
   return out;
 }
 
-interface RecoveryCtx {
+export interface RecoveryCtx {
   bySig: Map<string, BankEntry>;
   bySlug: Map<string, { questions?: Array<{ sig?: string; tier?: string }> }>;
   typeWords: Record<string, number>;
+}
+
+/**
+ * The lookup tables leadWordsFor recovers against, built from the repo's own files.
+ *
+ * Exported because ops/freeze_lead_words.mjs has to recover the SAME way this module
+ * does — a second copy of the three-way logic that drifted would silently mis-stamp the
+ * history it exists to protect.
+ */
+export function buildRecoveryCtx(): RecoveryCtx {
+  const bank = readJSON<{ entries?: BankEntry[] }>(CONFIG.BANK, {});
+  const usage = readJSON<{ videos?: Array<{ videoSlug?: string; questions?: Array<{ sig?: string; tier?: string }> }> }>(CONFIG.USAGE, {});
+  const entries = Array.isArray(bank.entries) ? bank.entries : [];
+  return {
+    bySig: new Map(entries.map((e) => [e.sig, e])),
+    bySlug: new Map((usage.videos ?? []).filter((v) => v.videoSlug).map((v) => [String(v.videoSlug), v])),
+    typeWords: typeWordTable(entries),
+  };
 }
 
 /**
@@ -114,6 +157,15 @@ interface RecoveryCtx {
  *   stamped — the loop wrote it at publish time (every post from this change onward)
  *   ledger  — _hermes_key -> ab-test-usage.json -> the bank entry that actually shipped
  *   type    — variant.question_types[0] -> the bank's per-type prompt length
+ *
+ * STAMPED IS NOW LOAD-BEARING, NOT MERELY MORE EXACT. Both fallbacks resolve a post's
+ * word count out of the CURRENT bank, which was safe only while the bank's prompts never
+ * changed. They do now: the 2026-08-02 shortening rewrote six types' prompts, so a post
+ * published under the old 9-word verbal analogy would come back from the ledger path as
+ * a 6-word one and the evidence would quietly restate itself as "everything was always
+ * short" — erasing the contrast the policy is built on. ops/freeze_lead_words.mjs
+ * therefore stamped every already-published post BEFORE that rewrite. Any future edit to
+ * bank prompts must do the same, or it silently rewrites history instead of making it.
  */
 export function leadWordsFor(p: any, ctx: RecoveryCtx): { words: number; type: string | null; via: string } | null {
   const v = p?.variant ?? {};
@@ -150,15 +202,7 @@ export function leadWordsFor(p: any, ctx: RecoveryCtx): { words: number; type: s
  */
 export function buildLeadEvidence(): { rows: LeadEvidenceDetail[]; considered: number } {
   const db = readJSON<any>(CONFIG.AB_DB, null);
-  const bank = readJSON<{ entries?: BankEntry[] }>(CONFIG.BANK, {});
-  const usage = readJSON<{ videos?: Array<{ videoSlug?: string; questions?: Array<{ sig?: string; tier?: string }> }> }>(CONFIG.USAGE, {});
-
-  const entries = Array.isArray(bank.entries) ? bank.entries : [];
-  const ctx: RecoveryCtx = {
-    bySig: new Map(entries.map((e) => [e.sig, e])),
-    bySlug: new Map((usage.videos ?? []).filter((v) => v.videoSlug).map((v) => [String(v.videoSlug), v])),
-    typeWords: typeWordTable(entries),
-  };
+  const ctx = buildRecoveryCtx();
 
   const rows: LeadEvidenceDetail[] = [];
   let considered = 0;

@@ -87,6 +87,37 @@ const TYPE_PHRASE: Record<string, string> = {
 
 const LETTERS = ["A", "B", "C", "D"];
 
+/**
+ * The on-screen prompt as the host should SAY it.
+ *
+ * THE PLATE AND THE VOICEOVER ARE ONE STRING. stemText reads q.prompt verbatim, so a
+ * prompt trimmed for reading load is also a line somebody has to say out loud, and the
+ * two surfaces want opposite things: the plate wants fewer glyphs in the three seconds
+ * where ~70% of viewers leave, the read wants ordinary English.
+ *
+ * Arrow notation is where they actually diverge. "HOT -> COLD" is two words to read and
+ * an unpronounceable glyph to speak, so the arrow expands back to "is to" here and the
+ * host reads the long-form analogy the plate used to spell out. This also fixes an
+ * existing roughness rather than only serving the new short prompts: NUMBER ANALOGY has
+ * always shipped its mapping table as "2 -> 3", and until now the raw "->" went to TTS
+ * as a glyph.
+ *
+ * Newlines are treated differently depending on the prompt. On an arrow prompt the
+ * authored breaks separate whole pairs, so they become commas — TTS needs the pause, and
+ * without it "hot is to cold day is to?" runs together. Everywhere else a break falls
+ * MID-SENTENCE (SENTENCE COMPLETION wraps one sentence over three lines) and a comma
+ * there would be wrong, so those keep newline-as-space exactly as before.
+ */
+export function speakPrompt(raw: unknown): string {
+  const text = String(raw ?? "");
+  const hasArrow = /(?:->|→)/.test(text);
+  let s = text.replace(/_+/g, " what ");
+  if (hasArrow) s = s.replace(/\n+/g, ", ").replace(/\s*(?:->|→)\s*/g, " is to ");
+  s = spellNums(s.replace(/\s+/g, " ").trim());
+  // "five is to ?" -> "five is to?" so the query mark rides the phrase it belongs to.
+  return hasArrow ? s.replace(/\s+\?/g, "?") : s;
+}
+
 /** The spoken question stem (no options), for a Hermes render question. */
 function stemText(q: RenderQ, idx: number): string {
   const tier = (q.tier || "").toUpperCase();
@@ -98,8 +129,8 @@ function stemText(q: RenderQ, idx: number): string {
     const nums = (q.seq ?? []).filter((t) => t !== "?").map((t) => n2w(t)).join(", ");
     return `[excited] ${lead} ${cap(nums)}, and then... what comes next?`.replace(/\s+/g, " ").trim();
   }
-  // text: read the on-screen prompt, spelling numbers and voicing blanks.
-  const prompt = spellNums(String(q.prompt || "").replace(/_+/g, " what ").replace(/\s+/g, " ").trim());
+  // text: read the on-screen prompt, spelling numbers, voicing blanks and arrows.
+  const prompt = speakPrompt(q.prompt);
   return `[excited] ${lead} ${cap(prompt)}${/[.?!]$/.test(prompt) ? "" : "?"}`.replace(/\s+/g, " ").trim();
 }
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-26",
+  "updated": "2026-08-02",
   "count": 1544,
   "entries": [
     {
@@ -16,7 +16,7 @@
       "slug": "round-001",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "APPLE",
         "BANANA",
@@ -83,7 +83,7 @@
       "slug": "round-001",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HOT IS TO COLD AS\nDAY IS TO ?",
+      "prompt": "HOT -> COLD\nDAY -> ?",
       "options": [
         "MORNING",
         "NIGHT",
@@ -135,7 +135,7 @@
       "slug": "round-001",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEE IS TO HIVE AS\nBIRD IS TO ?",
+      "prompt": "BEE -> HIVE\nBIRD -> ?",
       "options": [
         "NEST",
         "TREE",
@@ -188,7 +188,7 @@
       "slug": "round-001",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FISH IS TO SWIM AS\nBIRD IS TO ?",
+      "prompt": "FISH -> SWIM\nBIRD -> ?",
       "options": [
         "WALK",
         "SING",
@@ -241,7 +241,7 @@
       "slug": "round-001",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PIANO",
         "GUITAR",
@@ -317,7 +317,7 @@
       "slug": "round-001",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?",
+      "prompt": "2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?",
       "options": [
         "8",
         "10",
@@ -363,7 +363,7 @@
       "slug": "round-002",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ROSE",
         "OAK",
@@ -430,7 +430,7 @@
       "slug": "round-002",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO HUGE AS\nSMALL IS TO ?",
+      "prompt": "BIG -> HUGE\nSMALL -> ?",
       "options": [
         "LITTLE",
         "SHORT",
@@ -482,7 +482,7 @@
       "slug": "round-002",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER IS TO HAND AS\nTOE IS TO ?",
+      "prompt": "FINGER -> HAND\nTOE -> ?",
       "options": [
         "LEG",
         "SHOE",
@@ -535,7 +535,7 @@
       "slug": "round-002",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PUPPY IS TO DOG AS\nKITTEN IS TO ?",
+      "prompt": "PUPPY -> DOG\nKITTEN -> ?",
       "options": [
         "PET",
         "PAW",
@@ -587,7 +587,7 @@
       "slug": "round-002",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ROAD",
         "CAR",
@@ -663,7 +663,7 @@
       "slug": "round-002",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n1 -> 3,   2 -> 6,   3 -> 9,   4 -> ?",
+      "prompt": "1 -> 3,   2 -> 6,   3 -> 9,   4 -> ?",
       "options": [
         "7",
         "12",
@@ -709,7 +709,7 @@
       "slug": "round-003",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MONDAY",
         "TUESDAY",
@@ -776,7 +776,7 @@
       "slug": "round-003",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO MOO AS\nDOG IS TO ?",
+      "prompt": "COW -> MOO\nDOG -> ?",
       "options": [
         "MEOW",
         "BARK",
@@ -828,7 +828,7 @@
       "slug": "round-003",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHOE IS TO FOOT AS\nHAT IS TO ?",
+      "prompt": "SHOE -> FOOT\nHAT -> ?",
       "options": [
         "HEAD",
         "HAIR",
@@ -881,7 +881,7 @@
       "slug": "round-003",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CATERPILLAR IS TO BUTTERFLY AS\nTADPOLE IS TO ?",
+      "prompt": "CATERPILLAR -> BUTTERFLY\nTADPOLE -> ?",
       "options": [
         "FISH",
         "FROG",
@@ -933,7 +933,7 @@
       "slug": "round-003",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SQUARE",
         "TRIANGLE",
@@ -1009,7 +1009,7 @@
       "slug": "round-003",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n1 -> 4,   2 -> 6,   3 -> 8,   4 -> ?",
+      "prompt": "1 -> 4,   2 -> 6,   3 -> 8,   4 -> ?",
       "options": [
         "9",
         "10",
@@ -1055,7 +1055,7 @@
       "slug": "round-004",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "EYE",
         "EAR",
@@ -1122,7 +1122,7 @@
       "slug": "round-004",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY IS TO SAD AS\nFAST IS TO ?",
+      "prompt": "HAPPY -> SAD\nFAST -> ?",
       "options": [
         "SLOW",
         "QUICK",
@@ -1174,7 +1174,7 @@
       "slug": "round-004",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PEN IS TO WRITE AS\nSCISSORS IS TO ?",
+      "prompt": "PEN -> WRITE\nSCISSORS -> ?",
       "options": [
         "PAPER",
         "CUT",
@@ -1227,7 +1227,7 @@
       "slug": "round-004",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHICKEN IS TO EGG AS\nCOW IS TO ?",
+      "prompt": "CHICKEN -> EGG\nCOW -> ?",
       "options": [
         "MILK",
         "GRASS",
@@ -1279,7 +1279,7 @@
       "slug": "round-004",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "COPPER",
         "GOLD",
@@ -1355,7 +1355,7 @@
       "slug": "round-004",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 12,   4 -> 16,   5 -> ?",
+      "prompt": "2 -> 8,   3 -> 12,   4 -> 16,   5 -> ?",
       "options": [
         "20",
         "18",
@@ -1401,7 +1401,7 @@
       "slug": "round-005",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "NAIL",
         "HAMMER",
@@ -1468,7 +1468,7 @@
       "slug": "round-005",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KING IS TO QUEEN AS\nPRINCE IS TO ?",
+      "prompt": "KING -> QUEEN\nPRINCE -> ?",
       "options": [
         "CROWN",
         "CASTLE",
@@ -1520,7 +1520,7 @@
       "slug": "round-005",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SUGAR IS TO SWEET AS\nLEMON IS TO ?",
+      "prompt": "SUGAR -> SWEET\nLEMON -> ?",
       "options": [
         "YELLOW",
         "FRUIT",
@@ -1573,7 +1573,7 @@
       "slug": "round-005",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DAY IS TO WEEK AS\nMONTH IS TO ?",
+      "prompt": "DAY -> WEEK\nMONTH -> ?",
       "options": [
         "HOUR",
         "MINUTE",
@@ -1626,7 +1626,7 @@
       "slug": "round-005",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SUN",
         "JUPITER",
@@ -1702,7 +1702,7 @@
       "slug": "round-005",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n1 -> 5,   2 -> 7,   3 -> 9,   4 -> ?",
+      "prompt": "1 -> 5,   2 -> 7,   3 -> 9,   4 -> ?",
       "options": [
         "10",
         "12",
@@ -1748,7 +1748,7 @@
       "slug": "round-006",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DOG",
         "COW",
@@ -1815,7 +1815,7 @@
       "slug": "round-006",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO SMALL AS\nTALL IS TO ?",
+      "prompt": "BIG -> SMALL\nTALL -> ?",
       "options": [
         "WIDE",
         "SHORT",
@@ -1867,7 +1867,7 @@
       "slug": "round-006",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nHEAVY IS TO ?",
+      "prompt": "HARD -> SOFT\nHEAVY -> ?",
       "options": [
         "ROCK",
         "LIGHT",
@@ -1920,7 +1920,7 @@
       "slug": "round-006",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FAST IS TO SLOW AS\nEARLY IS TO ?",
+      "prompt": "FAST -> SLOW\nEARLY -> ?",
       "options": [
         "SOON",
         "QUICK",
@@ -1972,7 +1972,7 @@
       "slug": "round-006",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SPOON",
         "SHIRT",
@@ -2048,7 +2048,7 @@
       "slug": "round-006",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 14,   6 -> 17,   7 -> ?",
+      "prompt": "4 -> 11,   5 -> 14,   6 -> 17,   7 -> ?",
       "options": [
         "20",
         "25",
@@ -2097,7 +2097,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BLUE",
         "THREE",
@@ -2173,7 +2173,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "PETAL IS TO FLOWER AS\nPAGE IS TO ?",
+      "prompt": "PETAL -> FLOWER\nPAGE -> ?",
       "options": [
         "STORY",
         "BOOK",
@@ -2231,7 +2231,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "LION IS TO ROAR AS\nSNAKE IS TO ?",
+      "prompt": "LION -> ROAR\nSNAKE -> ?",
       "options": [
         "BITE",
         "SLITHER",
@@ -2290,7 +2290,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "NEAR IS TO FAR AS\nHIGH IS TO ?",
+      "prompt": "NEAR -> FAR\nHIGH -> ?",
       "options": [
         "UP",
         "SKY",
@@ -2348,7 +2348,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PURPLE",
         "CIRCLE",
@@ -2436,7 +2436,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   4 -> 10,   7 -> 16,   8 -> ?",
+      "prompt": "3 -> 8,   4 -> 10,   7 -> 16,   8 -> ?",
       "options": [
         "18",
         "19",
@@ -2485,7 +2485,7 @@
       "slug": "round-008",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GOLD",
         "WOOD",
@@ -2552,7 +2552,7 @@
       "slug": "round-008",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nPUSH IS TO ?",
+      "prompt": "OPEN -> CLOSED\nPUSH -> ?",
       "options": [
         "SHUT",
         "PULL",
@@ -2604,7 +2604,7 @@
       "slug": "round-008",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EYE IS TO SEE AS\nEAR IS TO ?",
+      "prompt": "EYE -> SEE\nEAR -> ?",
       "options": [
         "SOUND",
         "HEAR",
@@ -2657,7 +2657,7 @@
       "slug": "round-008",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO CALF AS\nHORSE IS TO ?",
+      "prompt": "COW -> CALF\nHORSE -> ?",
       "options": [
         "HAY",
         "RUN",
@@ -2709,7 +2709,7 @@
       "slug": "round-008",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SQUARE",
         "TRIANGLE",
@@ -2785,7 +2785,7 @@
       "slug": "round-008",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   5 -> 19,   8 -> ?",
+      "prompt": "3 -> 11,   4 -> 15,   5 -> 19,   8 -> ?",
       "options": [
         "36",
         "29",
@@ -2831,7 +2831,7 @@
       "slug": "round-009",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GRAPE",
         "LION",
@@ -2898,7 +2898,7 @@
       "slug": "round-009",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE IS TO STABLE AS\nRABBIT IS TO ?",
+      "prompt": "HORSE -> STABLE\nRABBIT -> ?",
       "options": [
         "CARROT",
         "HOP",
@@ -2950,7 +2950,7 @@
       "slug": "round-009",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT IS TO AIRPLANE AS\nSAILOR IS TO ?",
+      "prompt": "PILOT -> AIRPLANE\nSAILOR -> ?",
       "options": [
         "SHIP",
         "SEA",
@@ -3003,7 +3003,7 @@
       "slug": "round-009",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE IS TO NEIGH AS\nSHEEP IS TO ?",
+      "prompt": "HORSE -> NEIGH\nSHEEP -> ?",
       "options": [
         "WOOL",
         "BAA",
@@ -3056,7 +3056,7 @@
       "slug": "round-009",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SNAKE",
         "DOG",
@@ -3132,7 +3132,7 @@
       "slug": "round-009",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 19,   6 -> 27,   7 -> 31,   8 -> ?",
+      "prompt": "4 -> 19,   6 -> 27,   7 -> 31,   8 -> ?",
       "options": [
         "45",
         "35",
@@ -3178,7 +3178,7 @@
       "slug": "round-010",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRILL",
         "MILK",
@@ -3245,7 +3245,7 @@
       "slug": "round-010",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TIRE IS TO RUBBER AS\nRING IS TO ?",
+      "prompt": "TIRE -> RUBBER\nRING -> ?",
       "options": [
         "SHINY",
         "GOLD",
@@ -3297,7 +3297,7 @@
       "slug": "round-010",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "KING IS TO CROWN AS\nSOLDIER IS TO ?",
+      "prompt": "KING -> CROWN\nSOLDIER -> ?",
       "options": [
         "BOOT",
         "SWORD",
@@ -3350,7 +3350,7 @@
       "slug": "round-010",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "KNIFE IS TO CUT AS\nBROOM IS TO ?",
+      "prompt": "KNIFE -> CUT\nBROOM -> ?",
       "options": [
         "DUST",
         "CLEAN",
@@ -3402,7 +3402,7 @@
       "slug": "round-010",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GOAT",
         "COW",
@@ -3478,7 +3478,7 @@
       "slug": "round-010",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   7 -> 13,   8 -> ?",
+      "prompt": "2 -> 3,   4 -> 7,   7 -> 13,   8 -> ?",
       "options": [
         "25",
         "13",
@@ -3524,7 +3524,7 @@
       "slug": "round-011",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRESS",
         "SHIRT",
@@ -3591,7 +3591,7 @@
       "slug": "round-011",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO LAMB AS\nFROG IS TO ?",
+      "prompt": "SHEEP -> LAMB\nFROG -> ?",
       "options": [
         "GREEN",
         "JUMP",
@@ -3643,7 +3643,7 @@
       "slug": "round-011",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DOG IS TO BARK AS\nCAT IS TO ?",
+      "prompt": "DOG -> BARK\nCAT -> ?",
       "options": [
         "MEOW",
         "TAIL",
@@ -3696,7 +3696,7 @@
       "slug": "round-011",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BUY IS TO SELL AS\nGIVE IS TO ?",
+      "prompt": "BUY -> SELL\nGIVE -> ?",
       "options": [
         "KEEP",
         "HAND",
@@ -3749,7 +3749,7 @@
       "slug": "round-011",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CLOUD",
         "PINE",
@@ -3825,7 +3825,7 @@
       "slug": "round-011",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   5 -> 11,   7 -> 15,   6 -> ?",
+      "prompt": "2 -> 5,   5 -> 11,   7 -> 15,   6 -> ?",
       "options": [
         "10",
         "23",
@@ -3871,7 +3871,7 @@
       "slug": "round-012",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BOAT",
         "TRUCK",
@@ -3938,7 +3938,7 @@
       "slug": "round-012",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LAMP IS TO LIGHT AS\nOVEN IS TO ?",
+      "prompt": "LAMP -> LIGHT\nOVEN -> ?",
       "options": [
         "FOOD",
         "COOK",
@@ -3990,7 +3990,7 @@
       "slug": "round-012",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CAT IS TO KITTEN AS\nDOG IS TO ?",
+      "prompt": "CAT -> KITTEN\nDOG -> ?",
       "options": [
         "TAIL",
         "PUPPY",
@@ -4043,7 +4043,7 @@
       "slug": "round-012",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF IS TO KITCHEN AS\nJUDGE IS TO ?",
+      "prompt": "CHEF -> KITCHEN\nJUDGE -> ?",
       "options": [
         "LAW",
         "JAIL",
@@ -4095,7 +4095,7 @@
       "slug": "round-012",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SPARROW",
         "STONE",
@@ -4171,7 +4171,7 @@
       "slug": "round-012",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   5 -> 11,   6 -> 13,   8 -> ?",
+      "prompt": "2 -> 5,   5 -> 11,   6 -> 13,   8 -> ?",
       "options": [
         "7",
         "15",
@@ -4217,7 +4217,7 @@
       "slug": "round-013",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GLASS",
         "HAMMER",
@@ -4284,7 +4284,7 @@
       "slug": "round-013",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TEACHER IS TO SCHOOL AS\nDOCTOR IS TO ?",
+      "prompt": "TEACHER -> SCHOOL\nDOCTOR -> ?",
       "options": [
         "MEDICINE",
         "HOSPITAL",
@@ -4336,7 +4336,7 @@
       "slug": "round-013",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO MOO AS\nDUCK IS TO ?",
+      "prompt": "COW -> MOO\nDUCK -> ?",
       "options": [
         "WING",
         "POND",
@@ -4389,7 +4389,7 @@
       "slug": "round-013",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LION IS TO CUB AS\nSHEEP IS TO ?",
+      "prompt": "LION -> CUB\nSHEEP -> ?",
       "options": [
         "LAMB",
         "BAA",
@@ -4441,7 +4441,7 @@
       "slug": "round-013",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WHALE",
         "BEETLE",
@@ -4517,7 +4517,7 @@
       "slug": "round-013",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 15,   5 -> 18,   7 -> 24,   6 -> ?",
+      "prompt": "4 -> 15,   5 -> 18,   7 -> 24,   6 -> ?",
       "options": [
         "21",
         "19",
@@ -4563,7 +4563,7 @@
       "slug": "round-014",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DOG",
         "RABBIT",
@@ -4630,7 +4630,7 @@
       "slug": "round-014",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEE IS TO BUZZ AS\nWOLF IS TO ?",
+      "prompt": "BEE -> BUZZ\nWOLF -> ?",
       "options": [
         "MOON",
         "HOWL",
@@ -4682,7 +4682,7 @@
       "slug": "round-014",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WHEEL IS TO CAR AS\nSAIL IS TO ?",
+      "prompt": "WHEEL -> CAR\nSAIL -> ?",
       "options": [
         "BOAT",
         "WIND",
@@ -4735,7 +4735,7 @@
       "slug": "round-014",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER IS TO HAMMER AS\nTAILOR IS TO ?",
+      "prompt": "CARPENTER -> HAMMER\nTAILOR -> ?",
       "options": [
         "CLOTH",
         "SHIRT",
@@ -4787,7 +4787,7 @@
       "slug": "round-014",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "RAIN",
         "BED",
@@ -4863,7 +4863,7 @@
       "slug": "round-014",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
+      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
       "options": [
         "16",
         "6",
@@ -4909,7 +4909,7 @@
       "slug": "round-015",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FIVE",
         "ONE",
@@ -4976,7 +4976,7 @@
       "slug": "round-015",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TABLE IS TO WOOD AS\nBOTTLE IS TO ?",
+      "prompt": "TABLE -> WOOD\nBOTTLE -> ?",
       "options": [
         "CAP",
         "WATER",
@@ -5028,7 +5028,7 @@
       "slug": "round-015",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SPOON IS TO METAL AS\nCANDLE IS TO ?",
+      "prompt": "SPOON -> METAL\nCANDLE -> ?",
       "options": [
         "FLAME",
         "LIGHT",
@@ -5081,7 +5081,7 @@
       "slug": "round-015",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "UP IS TO DOWN AS\nLEFT IS TO ?",
+      "prompt": "UP -> DOWN\nLEFT -> ?",
       "options": [
         "BACK",
         "RIGHT",
@@ -5134,7 +5134,7 @@
       "slug": "round-015",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "ARM",
@@ -5210,7 +5210,7 @@
       "slug": "round-015",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   6 -> 15,   7 -> 17,   9 -> ?",
+      "prompt": "3 -> 9,   6 -> 15,   7 -> 17,   9 -> ?",
       "options": [
         "21",
         "22",
@@ -5256,7 +5256,7 @@
       "slug": "round-016",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HOCKEY",
         "SOCCER",
@@ -5323,7 +5323,7 @@
       "slug": "round-016",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WINDOW IS TO GLASS AS\nBOOK IS TO ?",
+      "prompt": "WINDOW -> GLASS\nBOOK -> ?",
       "options": [
         "READ",
         "COVER",
@@ -5375,7 +5375,7 @@
       "slug": "round-016",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD IS TO FLY AS\nFISH IS TO ?",
+      "prompt": "BIRD -> FLY\nFISH -> ?",
       "options": [
         "SWIM",
         "JUMP",
@@ -5428,7 +5428,7 @@
       "slug": "round-016",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TEACHER IS TO CHALK AS\nGARDENER IS TO ?",
+      "prompt": "TEACHER -> CHALK\nGARDENER -> ?",
       "options": [
         "SOIL",
         "SEED",
@@ -5480,7 +5480,7 @@
       "slug": "round-016",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SHARK",
         "ROBIN",
@@ -5556,7 +5556,7 @@
       "slug": "round-016",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 17,   5 -> 21,   6 -> 25,   8 -> ?",
+      "prompt": "4 -> 17,   5 -> 21,   6 -> 25,   8 -> ?",
       "options": [
         "28",
         "33",
@@ -5602,7 +5602,7 @@
       "slug": "round-017",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "APPLE",
         "PIANO",
@@ -5669,7 +5669,7 @@
       "slug": "round-017",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PAINTER IS TO BRUSH AS\nFARMER IS TO ?",
+      "prompt": "PAINTER -> BRUSH\nFARMER -> ?",
       "options": [
         "BARN",
         "CROP",
@@ -5721,7 +5721,7 @@
       "slug": "round-017",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "ACTOR IS TO STAGE AS\nBAKER IS TO ?",
+      "prompt": "ACTOR -> STAGE\nBAKER -> ?",
       "options": [
         "CAKE",
         "OVEN",
@@ -5774,7 +5774,7 @@
       "slug": "round-017",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DAY IS TO NIGHT AS\nSUMMER IS TO ?",
+      "prompt": "DAY -> NIGHT\nSUMMER -> ?",
       "options": [
         "WINTER",
         "SUN",
@@ -5826,7 +5826,7 @@
       "slug": "round-017",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TIGER",
         "EAGLE",
@@ -5902,7 +5902,7 @@
       "slug": "round-017",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   4 -> 15,   7 -> 24,   8 -> ?",
+      "prompt": "2 -> 9,   4 -> 15,   7 -> 24,   8 -> ?",
       "options": [
         "37",
         "24",
@@ -5948,7 +5948,7 @@
       "slug": "round-018",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ROSE",
         "TRAIN",
@@ -6015,7 +6015,7 @@
       "slug": "round-018",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEAR IS TO CUB AS\nHEN IS TO ?",
+      "prompt": "BEAR -> CUB\nHEN -> ?",
       "options": [
         "CHICK",
         "EGG",
@@ -6067,7 +6067,7 @@
       "slug": "round-018",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WET IS TO DRY AS\nFULL IS TO ?",
+      "prompt": "WET -> DRY\nFULL -> ?",
       "options": [
         "HALF",
         "WATER",
@@ -6120,7 +6120,7 @@
       "slug": "round-018",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WRITER IS TO PEN AS\nCHEF IS TO ?",
+      "prompt": "WRITER -> PEN\nCHEF -> ?",
       "options": [
         "OVEN",
         "FOOD",
@@ -6172,7 +6172,7 @@
       "slug": "round-018",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PLUM",
         "POTATO",
@@ -6248,7 +6248,7 @@
       "slug": "round-018",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   5 -> 11,   9 -> ?",
+      "prompt": "2 -> 5,   4 -> 9,   5 -> 11,   9 -> ?",
       "options": [
         "20",
         "24",
@@ -6294,7 +6294,7 @@
       "slug": "round-019",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "IRON",
         "SHEEP",
@@ -6361,7 +6361,7 @@
       "slug": "round-019",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nUP IS TO ?",
+      "prompt": "LIGHT -> DARK\nUP -> ?",
       "options": [
         "DOWN",
         "SOFT",
@@ -6384,7 +6384,7 @@
       "slug": "round-019",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 4,   5 -> 8,   7 -> 12,   6 -> ?",
+      "prompt": "3 -> 4,   5 -> 8,   7 -> 12,   6 -> ?",
       "options": [
         "12",
         "10",
@@ -6407,7 +6407,7 @@
       "slug": "round-019",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD IS TO QUIET AS\nWIN IS TO ?",
+      "prompt": "LOUD -> QUIET\nWIN -> ?",
       "options": [
         "WEAK",
         "SLOW",
@@ -6460,7 +6460,7 @@
       "slug": "round-019",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEAR IS TO CUB AS\nCAT IS TO ?",
+      "prompt": "BEAR -> CUB\nCAT -> ?",
       "options": [
         "DUCKLING",
         "CALF",
@@ -6512,7 +6512,7 @@
       "slug": "round-019",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WILLOW",
         "SHELF",
@@ -6588,7 +6588,7 @@
       "slug": "round-019",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   7 -> 15,   5 -> ?",
+      "prompt": "2 -> 5,   4 -> 9,   7 -> 15,   5 -> ?",
       "options": [
         "12",
         "21",
@@ -6634,7 +6634,7 @@
       "slug": "round-020",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TRUMPET",
         "PINK",
@@ -6701,7 +6701,7 @@
       "slug": "round-020",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PETAL IS TO FLOWER AS\nWHEEL IS TO ?",
+      "prompt": "PETAL -> FLOWER\nWHEEL -> ?",
       "options": [
         "BOOK",
         "HOUSE",
@@ -6724,7 +6724,7 @@
       "slug": "round-020",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 14,   6 -> 17,   9 -> ?",
+      "prompt": "4 -> 11,   5 -> 14,   6 -> 17,   9 -> ?",
       "options": [
         "23",
         "26",
@@ -6747,7 +6747,7 @@
       "slug": "round-020",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nWIN IS TO ?",
+      "prompt": "OPEN -> CLOSED\nWIN -> ?",
       "options": [
         "LOSE",
         "QUIET",
@@ -6800,7 +6800,7 @@
       "slug": "round-020",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nFAST IS TO ?",
+      "prompt": "LIGHT -> DARK\nFAST -> ?",
       "options": [
         "SLOW",
         "NIGHT",
@@ -6852,7 +6852,7 @@
       "slug": "round-020",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SLEET",
         "SNOW",
@@ -6928,7 +6928,7 @@
       "slug": "round-020",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   3 -> 14,   5 -> 22,   9 -> ?",
+      "prompt": "2 -> 10,   3 -> 14,   5 -> 22,   9 -> ?",
       "options": [
         "34",
         "41",
@@ -6974,7 +6974,7 @@
       "slug": "round-021",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MOTORCYCLE",
         "SHOVEL",
@@ -7041,7 +7041,7 @@
       "slug": "round-021",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH IS TO PULL AS\nBEGIN IS TO ?",
+      "prompt": "PUSH -> PULL\nBEGIN -> ?",
       "options": [
         "FAR",
         "WEAK",
@@ -7064,7 +7064,7 @@
       "slug": "round-021",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
+      "prompt": "4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
       "options": [
         "15",
         "12",
@@ -7087,7 +7087,7 @@
       "slug": "round-021",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nRICH IS TO ?",
+      "prompt": "LIGHT -> DARK\nRICH -> ?",
       "options": [
         "POOR",
         "SOFT",
@@ -7140,7 +7140,7 @@
       "slug": "round-021",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEE IS TO BUZZ AS\nPIG IS TO ?",
+      "prompt": "BEE -> BUZZ\nPIG -> ?",
       "options": [
         "ROAR",
         "MOO",
@@ -7192,7 +7192,7 @@
       "slug": "round-021",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JACKET",
         "COAT",
@@ -7268,7 +7268,7 @@
       "slug": "round-021",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   6 -> 23,   8 -> ?",
+      "prompt": "3 -> 11,   4 -> 15,   6 -> 23,   8 -> ?",
       "options": [
         "32",
         "31",
@@ -7314,7 +7314,7 @@
       "slug": "round-022",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "RADISH",
         "CABINET",
@@ -7381,7 +7381,7 @@
       "slug": "round-022",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SPOON IS TO METAL AS\nBOTTLE IS TO ?",
+      "prompt": "SPOON -> METAL\nBOTTLE -> ?",
       "options": [
         "RUBBER",
         "PLASTIC",
@@ -7404,7 +7404,7 @@
       "slug": "round-022",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   5 -> 9,   7 -> ?",
+      "prompt": "3 -> 5,   4 -> 7,   5 -> 9,   7 -> ?",
       "options": [
         "11",
         "18",
@@ -7427,7 +7427,7 @@
       "slug": "round-022",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nFLOAT IS TO ?",
+      "prompt": "BEGIN -> END\nFLOAT -> ?",
       "options": [
         "SHALLOW",
         "EMPTY",
@@ -7480,7 +7480,7 @@
       "slug": "round-022",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BARBER IS TO SCISSORS AS\nFARMER IS TO ?",
+      "prompt": "BARBER -> SCISSORS\nFARMER -> ?",
       "options": [
         "KNIFE",
         "NEEDLE",
@@ -7532,7 +7532,7 @@
       "slug": "round-022",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "COD",
         "MELON",
@@ -7608,7 +7608,7 @@
       "slug": "round-022",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   7 -> 31,   5 -> ?",
+      "prompt": "3 -> 15,   4 -> 19,   7 -> 31,   5 -> ?",
       "options": [
         "19",
         "23",
@@ -7654,7 +7654,7 @@
       "slug": "round-023",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SNOW",
         "MOTH",
@@ -7721,7 +7721,7 @@
       "slug": "round-023",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FARMER IS TO PLOW AS\nBARBER IS TO ?",
+      "prompt": "FARMER -> PLOW\nBARBER -> ?",
       "options": [
         "SCISSORS",
         "NEEDLE",
@@ -7744,7 +7744,7 @@
       "slug": "round-023",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   6 -> 21,   7 -> 24,   9 -> ?",
+      "prompt": "2 -> 9,   6 -> 21,   7 -> 24,   9 -> ?",
       "options": [
         "33",
         "20",
@@ -7767,7 +7767,7 @@
       "slug": "round-023",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LION IS TO ROAR AS\nWOLF IS TO ?",
+      "prompt": "LION -> ROAR\nWOLF -> ?",
       "options": [
         "QUACK",
         "NEIGH",
@@ -7820,7 +7820,7 @@
       "slug": "round-023",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nDAY IS TO ?",
+      "prompt": "HARD -> SOFT\nDAY -> ?",
       "options": [
         "LATE",
         "NIGHT",
@@ -7872,7 +7872,7 @@
       "slug": "round-023",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HARP",
         "PIANO",
@@ -7948,7 +7948,7 @@
       "slug": "round-023",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   7 -> 19,   6 -> ?",
+      "prompt": "2 -> 4,   3 -> 7,   7 -> 19,   6 -> ?",
       "options": [
         "16",
         "15",
@@ -7994,7 +7994,7 @@
       "slug": "round-024",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "VOLLEYBALL",
         "CRICKET",
@@ -8061,7 +8061,7 @@
       "slug": "round-024",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SAILOR IS TO SHIP AS\nFARMER IS TO ?",
+      "prompt": "SAILOR -> SHIP\nFARMER -> ?",
       "options": [
         "SCHOOL",
         "KITCHEN",
@@ -8084,7 +8084,7 @@
       "slug": "round-024",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 12,   7 -> 16,   6 -> ?",
+      "prompt": "3 -> 8,   5 -> 12,   7 -> 16,   6 -> ?",
       "options": [
         "14",
         "12",
@@ -8107,7 +8107,7 @@
       "slug": "round-024",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nTALL IS TO ?",
+      "prompt": "HARD -> SOFT\nTALL -> ?",
       "options": [
         "DRY",
         "SHORT",
@@ -8160,7 +8160,7 @@
       "slug": "round-024",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CAMEL IS TO DESERT AS\nMONKEY IS TO ?",
+      "prompt": "CAMEL -> DESERT\nMONKEY -> ?",
       "options": [
         "JUNGLE",
         "SAVANNA",
@@ -8212,7 +8212,7 @@
       "slug": "round-024",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRAGONFLY",
         "FLEA",
@@ -8288,7 +8288,7 @@
       "slug": "round-024",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 9,   5 -> 11,   6 -> 13,   9 -> ?",
+      "prompt": "4 -> 9,   5 -> 11,   6 -> 13,   9 -> ?",
       "options": [
         "19",
         "22",
@@ -8334,7 +8334,7 @@
       "slug": "round-025",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "NEPTUNE",
         "HOCKEY",
@@ -8401,7 +8401,7 @@
       "slug": "round-025",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BARBER IS TO SCISSORS AS\nMINER IS TO ?",
+      "prompt": "BARBER -> SCISSORS\nMINER -> ?",
       "options": [
         "HAMMER",
         "NET",
@@ -8424,7 +8424,7 @@
       "slug": "round-025",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   6 -> 16,   7 -> ?",
+      "prompt": "2 -> 4,   3 -> 7,   6 -> 16,   7 -> ?",
       "options": [
         "19",
         "29",
@@ -8447,7 +8447,7 @@
       "slug": "round-025",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BROOM IS TO SWEEP AS\nOVEN IS TO ?",
+      "prompt": "BROOM -> SWEEP\nOVEN -> ?",
       "options": [
         "WEIGH",
         "HEAT",
@@ -8500,7 +8500,7 @@
       "slug": "round-025",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR IS TO FAR AS\nFLOAT IS TO ?",
+      "prompt": "NEAR -> FAR\nFLOAT -> ?",
       "options": [
         "RIGHT",
         "SHALLOW",
@@ -8552,7 +8552,7 @@
       "slug": "round-025",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TROUT",
         "HAMMER",
@@ -8628,7 +8628,7 @@
       "slug": "round-025",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 13,   7 -> 29,   6 -> ?",
+      "prompt": "2 -> 9,   3 -> 13,   7 -> 29,   6 -> ?",
       "options": [
         "15",
         "28",
@@ -8674,7 +8674,7 @@
       "slug": "round-026",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "COW",
         "HAIL",
@@ -8741,7 +8741,7 @@
       "slug": "round-026",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER IS TO HAND AS\nSAIL IS TO ?",
+      "prompt": "FINGER -> HAND\nSAIL -> ?",
       "options": [
         "MOUTH",
         "BOOK",
@@ -8764,7 +8764,7 @@
       "slug": "round-026",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   6 -> 20,   7 -> 23,   8 -> ?",
+      "prompt": "3 -> 11,   6 -> 20,   7 -> 23,   8 -> ?",
       "options": [
         "24",
         "26",
@@ -8787,7 +8787,7 @@
       "slug": "round-026",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HOT IS TO COLD AS\nTALL IS TO ?",
+      "prompt": "HOT -> COLD\nTALL -> ?",
       "options": [
         "SHORT",
         "WEAK",
@@ -8840,7 +8840,7 @@
       "slug": "round-026",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SPOON IS TO METAL AS\nSHIRT IS TO ?",
+      "prompt": "SPOON -> METAL\nSHIRT -> ?",
       "options": [
         "GOLD",
         "WOOD",
@@ -8892,7 +8892,7 @@
       "slug": "round-026",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HAIL",
         "WIND",
@@ -8968,7 +8968,7 @@
       "slug": "round-026",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 10,   6 -> 16,   9 -> ?",
+      "prompt": "3 -> 7,   4 -> 10,   6 -> 16,   9 -> ?",
       "options": [
         "25",
         "22",
@@ -9014,7 +9014,7 @@
       "slug": "round-027",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "VENUS",
         "SHIRT",
@@ -9081,7 +9081,7 @@
       "slug": "round-027",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WET IS TO DRY AS\nHAPPY IS TO ?",
+      "prompt": "WET -> DRY\nHAPPY -> ?",
       "options": [
         "SHORT",
         "DARK",
@@ -9104,7 +9104,7 @@
       "slug": "round-027",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   4 -> 6,   5 -> 8,   8 -> ?",
+      "prompt": "2 -> 2,   4 -> 6,   5 -> 8,   8 -> ?",
       "options": [
         "15",
         "11",
@@ -9127,7 +9127,7 @@
       "slug": "round-027",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FISH IS TO POND AS\nANT IS TO ?",
+      "prompt": "FISH -> POND\nANT -> ?",
       "options": [
         "NEST",
         "WEB",
@@ -9180,7 +9180,7 @@
       "slug": "round-027",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "ANT IS TO ANTHILL AS\nBEE IS TO ?",
+      "prompt": "ANT -> ANTHILL\nBEE -> ?",
       "options": [
         "HIVE",
         "BARN",
@@ -9233,7 +9233,7 @@
       "slug": "round-027",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "VIOLIN",
         "CELLO",
@@ -9309,7 +9309,7 @@
       "slug": "round-027",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   7 -> 17,   5 -> ?",
+      "prompt": "2 -> 7,   3 -> 9,   7 -> 17,   5 -> ?",
       "options": [
         "13",
         "11",
@@ -9355,7 +9355,7 @@
       "slug": "round-028",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JET",
         "CHAIR",
@@ -9422,7 +9422,7 @@
       "slug": "round-028",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RABBIT IS TO BURROW AS\nBEE IS TO ?",
+      "prompt": "RABBIT -> BURROW\nBEE -> ?",
       "options": [
         "DEN",
         "KENNEL",
@@ -9445,7 +9445,7 @@
       "slug": "round-028",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   4 -> 11,   6 -> 17,   8 -> ?",
+      "prompt": "3 -> 8,   4 -> 11,   6 -> 17,   8 -> ?",
       "options": [
         "24",
         "26",
@@ -9468,7 +9468,7 @@
       "slug": "round-028",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SCALE IS TO WEIGH AS\nBROOM IS TO ?",
+      "prompt": "SCALE -> WEIGH\nBROOM -> ?",
       "options": [
         "SWEEP",
         "HEAT",
@@ -9521,7 +9521,7 @@
       "slug": "round-028",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY IS TO LATE AS\nHOT IS TO ?",
+      "prompt": "EARLY -> LATE\nHOT -> ?",
       "options": [
         "NIGHT",
         "COLD",
@@ -9573,7 +9573,7 @@
       "slug": "round-028",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WRIST",
         "CHIN",
@@ -9649,7 +9649,7 @@
       "slug": "round-028",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   5 -> ?",
+      "prompt": "2 -> 9,   3 -> 12,   6 -> 21,   5 -> ?",
       "options": [
         "21",
         "8",
@@ -9695,7 +9695,7 @@
       "slug": "round-029",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CLARINET",
         "VIOLIN",
@@ -9762,7 +9762,7 @@
       "slug": "round-029",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BUY IS TO SELL AS\nWET IS TO ?",
+      "prompt": "BUY -> SELL\nWET -> ?",
       "options": [
         "EMPTY",
         "DRY",
@@ -9785,7 +9785,7 @@
       "slug": "round-029",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   7 -> 15,   9 -> ?",
+      "prompt": "2 -> 5,   4 -> 9,   7 -> 15,   9 -> ?",
       "options": [
         "21",
         "19",
@@ -9808,7 +9808,7 @@
       "slug": "round-029",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FISH IS TO WATER AS\nLION IS TO ?",
+      "prompt": "FISH -> WATER\nLION -> ?",
       "options": [
         "ICE",
         "CAVE",
@@ -9861,7 +9861,7 @@
       "slug": "round-029",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WOLF IS TO HOWL AS\nCAT IS TO ?",
+      "prompt": "WOLF -> HOWL\nCAT -> ?",
       "options": [
         "QUACK",
         "ROAR",
@@ -9913,7 +9913,7 @@
       "slug": "round-029",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TEA",
         "BRONZE",
@@ -9989,7 +9989,7 @@
       "slug": "round-029",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   5 -> 13,   6 -> ?",
+      "prompt": "2 -> 7,   3 -> 9,   5 -> 13,   6 -> ?",
       "options": [
         "12",
         "13",
@@ -10035,7 +10035,7 @@
       "slug": "round-030",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BLIMP",
         "PLANE",
@@ -10102,7 +10102,7 @@
       "slug": "round-030",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO BAA AS\nDUCK IS TO ?",
+      "prompt": "SHEEP -> BAA\nDUCK -> ?",
       "options": [
         "QUACK",
         "CROAK",
@@ -10125,7 +10125,7 @@
       "slug": "round-030",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 14,   5 -> 17,   9 -> ?",
+      "prompt": "3 -> 11,   4 -> 14,   5 -> 17,   9 -> ?",
       "options": [
         "27",
         "31",
@@ -10148,7 +10148,7 @@
       "slug": "round-030",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO SMALL AS\nFAST IS TO ?",
+      "prompt": "BIG -> SMALL\nFAST -> ?",
       "options": [
         "FAR",
         "SINK",
@@ -10201,7 +10201,7 @@
       "slug": "round-030",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LIBRARIAN IS TO LIBRARY AS\nTEACHER IS TO ?",
+      "prompt": "LIBRARIAN -> LIBRARY\nTEACHER -> ?",
       "options": [
         "SHIP",
         "SCHOOL",
@@ -10254,7 +10254,7 @@
       "slug": "round-030",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CHERRY",
         "KIWI",
@@ -10330,7 +10330,7 @@
       "slug": "round-030",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   7 -> 27,   6 -> ?",
+      "prompt": "3 -> 11,   4 -> 15,   7 -> 27,   6 -> ?",
       "options": [
         "28",
         "23",
@@ -10376,7 +10376,7 @@
       "slug": "round-031",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MERCURY",
         "SATURN",
@@ -10443,7 +10443,7 @@
       "slug": "round-031",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER IS TO HAND AS\nKEY IS TO ?",
+      "prompt": "FINGER -> HAND\nKEY -> ?",
       "options": [
         "FOOT",
         "FLOWER",
@@ -10466,7 +10466,7 @@
       "slug": "round-031",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   6 -> 11,   8 -> ?",
+      "prompt": "2 -> 3,   3 -> 5,   6 -> 11,   8 -> ?",
       "options": [
         "13",
         "17",
@@ -10489,7 +10489,7 @@
       "slug": "round-031",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nBEGIN IS TO ?",
+      "prompt": "HARD -> SOFT\nBEGIN -> ?",
       "options": [
         "END",
         "SHORT",
@@ -10542,7 +10542,7 @@
       "slug": "round-031",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "ANT IS TO ANTHILL AS\nPIG IS TO ?",
+      "prompt": "ANT -> ANTHILL\nPIG -> ?",
       "options": [
         "DEN",
         "POND",
@@ -10594,7 +10594,7 @@
       "slug": "round-031",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "YELLOW",
         "HELICOPTER",
@@ -10670,7 +10670,7 @@
       "slug": "round-031",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 10,   7 -> 19,   5 -> ?",
+      "prompt": "3 -> 7,   4 -> 10,   7 -> 19,   5 -> ?",
       "options": [
         "13",
         "23",
@@ -10716,7 +10716,7 @@
       "slug": "round-032",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JET",
         "HELICOPTER",
@@ -10783,7 +10783,7 @@
       "slug": "round-032",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nUP IS TO ?",
+      "prompt": "BEGIN -> END\nUP -> ?",
       "options": [
         "DOWN",
         "WEAK",
@@ -10806,7 +10806,7 @@
       "slug": "round-032",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   6 -> 19,   8 -> ?",
+      "prompt": "2 -> 7,   4 -> 13,   6 -> 19,   8 -> ?",
       "options": [
         "22",
         "24",
@@ -10829,7 +10829,7 @@
       "slug": "round-032",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "UP IS TO DOWN AS\nHAPPY IS TO ?",
+      "prompt": "UP -> DOWN\nHAPPY -> ?",
       "options": [
         "SHALLOW",
         "SHORT",
@@ -10882,7 +10882,7 @@
       "slug": "round-032",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "THICK IS TO THIN AS\nBEGIN IS TO ?",
+      "prompt": "THICK -> THIN\nBEGIN -> ?",
       "options": [
         "FAR",
         "END",
@@ -10934,7 +10934,7 @@
       "slug": "round-032",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "PURPLE",
@@ -11010,7 +11010,7 @@
       "slug": "round-032",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 18,   5 -> 22,   7 -> 30,   6 -> ?",
+      "prompt": "4 -> 18,   5 -> 22,   7 -> 30,   6 -> ?",
       "options": [
         "23",
         "26",
@@ -11056,7 +11056,7 @@
       "slug": "round-033",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "RAIN",
         "ARM",
@@ -11123,7 +11123,7 @@
       "slug": "round-033",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "ACTOR IS TO STAGE AS\nDOCTOR IS TO ?",
+      "prompt": "ACTOR -> STAGE\nDOCTOR -> ?",
       "options": [
         "KITCHEN",
         "HOSPITAL",
@@ -11146,7 +11146,7 @@
       "slug": "round-033",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
+      "prompt": "4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
       "options": [
         "19",
         "20",
@@ -11169,7 +11169,7 @@
       "slug": "round-033",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO FOLD AS\nHORSE IS TO ?",
+      "prompt": "SHEEP -> FOLD\nHORSE -> ?",
       "options": [
         "DEN",
         "BARN",
@@ -11222,7 +11222,7 @@
       "slug": "round-033",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HOT IS TO COLD AS\nBEGIN IS TO ?",
+      "prompt": "HOT -> COLD\nBEGIN -> ?",
       "options": [
         "DARK",
         "END",
@@ -11274,7 +11274,7 @@
       "slug": "round-033",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ONION",
         "PEA",
@@ -11350,7 +11350,7 @@
       "slug": "round-033",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
+      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
       "options": [
         "27",
         "28",
@@ -11396,7 +11396,7 @@
       "slug": "round-034",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "TABLE",
@@ -11463,7 +11463,7 @@
       "slug": "round-034",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF IS TO KNIFE AS\nFISHERMAN IS TO ?",
+      "prompt": "CHEF -> KNIFE\nFISHERMAN -> ?",
       "options": [
         "SPADE",
         "NET",
@@ -11486,7 +11486,7 @@
       "slug": "round-034",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   6 -> 10,   9 -> ?",
+      "prompt": "2 -> 2,   5 -> 8,   6 -> 10,   9 -> ?",
       "options": [
         "18",
         "16",
@@ -11509,7 +11509,7 @@
       "slug": "round-034",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "JUDGE IS TO COURT AS\nCHEF IS TO ?",
+      "prompt": "JUDGE -> COURT\nCHEF -> ?",
       "options": [
         "KITCHEN",
         "SCHOOL",
@@ -11562,7 +11562,7 @@
       "slug": "round-034",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BOTTLE IS TO PLASTIC AS\nTIRE IS TO ?",
+      "prompt": "BOTTLE -> PLASTIC\nTIRE -> ?",
       "options": [
         "CLAY",
         "GOLD",
@@ -11614,7 +11614,7 @@
       "slug": "round-034",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CELERY",
         "PURPLE",
@@ -11690,7 +11690,7 @@
       "slug": "round-034",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 11,   5 -> 17,   8 -> ?",
+      "prompt": "2 -> 8,   3 -> 11,   5 -> 17,   8 -> ?",
       "options": [
         "23",
         "31",
@@ -11736,7 +11736,7 @@
       "slug": "round-035",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "THUNDER",
         "HAIL",
@@ -11803,7 +11803,7 @@
       "slug": "round-035",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KANGAROO IS TO JOEY AS\nBEAR IS TO ?",
+      "prompt": "KANGAROO -> JOEY\nBEAR -> ?",
       "options": [
         "CHICK",
         "CALF",
@@ -11826,7 +11826,7 @@
       "slug": "round-035",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 13,   6 -> 16,   7 -> 19,   9 -> ?",
+      "prompt": "5 -> 13,   6 -> 16,   7 -> 19,   9 -> ?",
       "options": [
         "25",
         "20",
@@ -11849,7 +11849,7 @@
       "slug": "round-035",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LEAF IS TO PLANT AS\nWHEEL IS TO ?",
+      "prompt": "LEAF -> PLANT\nWHEEL -> ?",
       "options": [
         "CAR",
         "PIANO",
@@ -11902,7 +11902,7 @@
       "slug": "round-035",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FAST IS TO SLOW AS\nHAPPY IS TO ?",
+      "prompt": "FAST -> SLOW\nHAPPY -> ?",
       "options": [
         "NEW",
         "SAD",
@@ -11954,7 +11954,7 @@
       "slug": "round-035",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WILLOW",
         "TAXI",
@@ -12030,7 +12030,7 @@
       "slug": "round-035",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   7 -> 13,   6 -> ?",
+      "prompt": "2 -> 3,   4 -> 7,   7 -> 13,   6 -> ?",
       "options": [
         "10",
         "11",
@@ -12076,7 +12076,7 @@
       "slug": "round-036",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HAND",
         "GOLD",
@@ -12143,7 +12143,7 @@
       "slug": "round-036",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY IS TO SAD AS\nBUY IS TO ?",
+      "prompt": "HAPPY -> SAD\nBUY -> ?",
       "options": [
         "END",
         "NARROW",
@@ -12166,7 +12166,7 @@
       "slug": "round-036",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   6 -> 15,   9 -> ?",
+      "prompt": "2 -> 7,   3 -> 9,   6 -> 15,   9 -> ?",
       "options": [
         "21",
         "19",
@@ -12189,7 +12189,7 @@
       "slug": "round-036",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO LAMB AS\nBEAR IS TO ?",
+      "prompt": "SHEEP -> LAMB\nBEAR -> ?",
       "options": [
         "DUCKLING",
         "CALF",
@@ -12242,7 +12242,7 @@
       "slug": "round-036",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK IS TO CLAY AS\nRING IS TO ?",
+      "prompt": "BRICK -> CLAY\nRING -> ?",
       "options": [
         "GOLD",
         "WOOD",
@@ -12294,7 +12294,7 @@
       "slug": "round-036",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "RECTANGLE",
         "OVAL",
@@ -12370,7 +12370,7 @@
       "slug": "round-036",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   5 -> 18,   7 -> 26,   9 -> ?",
+      "prompt": "3 -> 10,   5 -> 18,   7 -> 26,   9 -> ?",
       "options": [
         "30",
         "34",
@@ -12416,7 +12416,7 @@
       "slug": "round-037",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MILK",
         "LEMONADE",
@@ -12483,7 +12483,7 @@
       "slug": "round-037",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DAY IS TO NIGHT AS\nOPEN IS TO ?",
+      "prompt": "DAY -> NIGHT\nOPEN -> ?",
       "options": [
         "LATE",
         "CLOSED",
@@ -12506,7 +12506,7 @@
       "slug": "round-037",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
+      "prompt": "3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
       "options": [
         "17",
         "16",
@@ -12529,7 +12529,7 @@
       "slug": "round-037",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nDEEP IS TO ?",
+      "prompt": "OPEN -> CLOSED\nDEEP -> ?",
       "options": [
         "SHORT",
         "SHALLOW",
@@ -12582,7 +12582,7 @@
       "slug": "round-037",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TALL IS TO SHORT AS\nPUSH IS TO ?",
+      "prompt": "TALL -> SHORT\nPUSH -> ?",
       "options": [
         "PULL",
         "SHALLOW",
@@ -12634,7 +12634,7 @@
       "slug": "round-037",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TWELVE",
         "TWENTY",
@@ -12710,7 +12710,7 @@
       "slug": "round-037",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   5 -> 23,   7 -> ?",
+      "prompt": "3 -> 15,   4 -> 19,   5 -> 23,   7 -> ?",
       "options": [
         "41",
         "26",
@@ -12756,7 +12756,7 @@
       "slug": "round-038",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ZINC",
         "JACKET",
@@ -12823,7 +12823,7 @@
       "slug": "round-038",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nTALL IS TO ?",
+      "prompt": "LIGHT -> DARK\nTALL -> ?",
       "options": [
         "EMPTY",
         "SHORT",
@@ -12846,7 +12846,7 @@
       "slug": "round-038",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 8,   6 -> 14,   7 -> ?",
+      "prompt": "2 -> 6,   3 -> 8,   6 -> 14,   7 -> ?",
       "options": [
         "16",
         "26",
@@ -12869,7 +12869,7 @@
       "slug": "round-038",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO BARN AS\nFISH IS TO ?",
+      "prompt": "COW -> BARN\nFISH -> ?",
       "options": [
         "FOLD",
         "POND",
@@ -12922,7 +12922,7 @@
       "slug": "round-038",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "STRONG IS TO WEAK AS\nOPEN IS TO ?",
+      "prompt": "STRONG -> WEAK\nOPEN -> ?",
       "options": [
         "CLOSED",
         "SOFT",
@@ -12975,7 +12975,7 @@
       "slug": "round-038",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CABBAGE",
         "RADISH",
@@ -13051,7 +13051,7 @@
       "slug": "round-038",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   4 -> 15,   5 -> 18,   7 -> ?",
+      "prompt": "2 -> 9,   4 -> 15,   5 -> 18,   7 -> ?",
       "options": [
         "23",
         "14",
@@ -13097,7 +13097,7 @@
       "slug": "round-039",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BROCCOLI",
         "TRACTOR",
@@ -13164,7 +13164,7 @@
       "slug": "round-039",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CLEAN IS TO DIRTY AS\nHAPPY IS TO ?",
+      "prompt": "CLEAN -> DIRTY\nHAPPY -> ?",
       "options": [
         "THIN",
         "SAD",
@@ -13187,7 +13187,7 @@
       "slug": "round-039",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 13,   6 -> 15,   7 -> ?",
+      "prompt": "2 -> 7,   5 -> 13,   6 -> 15,   7 -> ?",
       "options": [
         "17",
         "14",
@@ -13210,7 +13210,7 @@
       "slug": "round-039",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "GOAT IS TO KID AS\nCOW IS TO ?",
+      "prompt": "GOAT -> KID\nCOW -> ?",
       "options": [
         "FOAL",
         "PUPPY",
@@ -13263,7 +13263,7 @@
       "slug": "round-039",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "EAR IS TO HEAR AS\nEYE IS TO ?",
+      "prompt": "EAR -> HEAR\nEYE -> ?",
       "options": [
         "WRITE",
         "SEE",
@@ -13315,7 +13315,7 @@
       "slug": "round-039",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CIRCLE",
         "OVAL",
@@ -13353,7 +13353,7 @@
       "slug": "round-039",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT IS TO SINK AS\nHOT IS TO ?",
+      "prompt": "FLOAT -> SINK\nHOT -> ?",
       "options": [
         "DRY",
         "NEW",
@@ -13391,7 +13391,7 @@
       "slug": "round-039",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   5 -> 12,   7 -> 16,   8 -> ?",
+      "prompt": "2 -> 6,   5 -> 12,   7 -> 16,   8 -> ?",
       "options": [
         "17",
         "20",
@@ -13437,7 +13437,7 @@
       "slug": "round-040",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "VAN",
         "MOTORCYCLE",
@@ -13504,7 +13504,7 @@
       "slug": "round-040",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE IS TO TAKE AS\nCLEAN IS TO ?",
+      "prompt": "GIVE -> TAKE\nCLEAN -> ?",
       "options": [
         "LOSE",
         "LATE",
@@ -13527,7 +13527,7 @@
       "slug": "round-040",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   6 -> 19,   7 -> 22,   5 -> ?",
+      "prompt": "3 -> 10,   6 -> 19,   7 -> 22,   5 -> ?",
       "options": [
         "16",
         "15",
@@ -13550,7 +13550,7 @@
       "slug": "round-040",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEE IS TO BUZZ AS\nSHEEP IS TO ?",
+      "prompt": "BEE -> BUZZ\nSHEEP -> ?",
       "options": [
         "BAA",
         "OINK",
@@ -13603,7 +13603,7 @@
       "slug": "round-040",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WHEEL IS TO CAR AS\nSAIL IS TO ?",
+      "prompt": "WHEEL -> CAR\nSAIL -> ?",
       "options": [
         "HOUSE",
         "BOAT",
@@ -13655,7 +13655,7 @@
       "slug": "round-040",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "COW",
         "HOCKEY",
@@ -13693,7 +13693,7 @@
       "slug": "round-040",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "WIN IS TO LOSE AS\nLEFT IS TO ?",
+      "prompt": "WIN -> LOSE\nLEFT -> ?",
       "options": [
         "RIGHT",
         "SINK",
@@ -13731,7 +13731,7 @@
       "slug": "round-040",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   7 -> 13,   8 -> ?",
+      "prompt": "2 -> 3,   3 -> 5,   7 -> 13,   8 -> ?",
       "options": [
         "20",
         "13",
@@ -13777,7 +13777,7 @@
       "slug": "round-041",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SPINACH",
         "PEA",
@@ -13844,7 +13844,7 @@
       "slug": "round-041",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CAMEL IS TO DESERT AS\nBAT IS TO ?",
+      "prompt": "CAMEL -> DESERT\nBAT -> ?",
       "options": [
         "SAVANNA",
         "POND",
@@ -13867,7 +13867,7 @@
       "slug": "round-041",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 13,   6 -> 19,   5 -> ?",
+      "prompt": "3 -> 10,   4 -> 13,   6 -> 19,   5 -> ?",
       "options": [
         "16",
         "18",
@@ -13890,7 +13890,7 @@
       "slug": "round-041",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY IS TO LATE AS\nDEEP IS TO ?",
+      "prompt": "EARLY -> LATE\nDEEP -> ?",
       "options": [
         "FAR",
         "SHALLOW",
@@ -13943,7 +13943,7 @@
       "slug": "round-041",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DOG IS TO KENNEL AS\nBIRD IS TO ?",
+      "prompt": "DOG -> KENNEL\nBIRD -> ?",
       "options": [
         "FOLD",
         "ANTHILL",
@@ -13995,7 +13995,7 @@
       "slug": "round-041",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PEACH",
         "CROW",
@@ -14033,7 +14033,7 @@
       "slug": "round-041",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD IS TO CHIRP AS\nSNAKE IS TO ?",
+      "prompt": "BIRD -> CHIRP\nSNAKE -> ?",
       "options": [
         "HISS",
         "BAA",
@@ -14071,7 +14071,7 @@
       "slug": "round-041",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   3 -> 14,   7 -> 30,   5 -> ?",
+      "prompt": "2 -> 10,   3 -> 14,   7 -> 30,   5 -> ?",
       "options": [
         "22",
         "20",
@@ -14117,7 +14117,7 @@
       "slug": "round-042",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRAGONFLY",
         "LADYBUG",
@@ -14184,7 +14184,7 @@
       "slug": "round-042",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN IS TO HEAT AS\nEAR IS TO ?",
+      "prompt": "OVEN -> HEAT\nEAR -> ?",
       "options": [
         "HEAR",
         "MEASURE",
@@ -14207,7 +14207,7 @@
       "slug": "round-042",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
+      "prompt": "4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
       "options": [
         "30",
         "18",
@@ -14230,7 +14230,7 @@
       "slug": "round-042",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "UP IS TO DOWN AS\nRICH IS TO ?",
+      "prompt": "UP -> DOWN\nRICH -> ?",
       "options": [
         "QUIET",
         "POOR",
@@ -14283,7 +14283,7 @@
       "slug": "round-042",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DOG IS TO PUPPY AS\nSHEEP IS TO ?",
+      "prompt": "DOG -> PUPPY\nSHEEP -> ?",
       "options": [
         "CUB",
         "FAWN",
@@ -14335,7 +14335,7 @@
       "slug": "round-042",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "STOOL",
         "SHELF",
@@ -14373,7 +14373,7 @@
       "slug": "round-042",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DAY IS TO NIGHT AS\nSTRONG IS TO ?",
+      "prompt": "DAY -> NIGHT\nSTRONG -> ?",
       "options": [
         "SELL",
         "RIGHT",
@@ -14411,7 +14411,7 @@
       "slug": "round-042",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   6 -> 20,   7 -> 23,   8 -> ?",
+      "prompt": "2 -> 8,   6 -> 20,   7 -> 23,   8 -> ?",
       "options": [
         "25",
         "26",
@@ -14457,7 +14457,7 @@
       "slug": "round-043",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BED",
         "TWELVE",
@@ -14524,7 +14524,7 @@
       "slug": "round-043",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LEFT IS TO RIGHT AS\nBIG IS TO ?",
+      "prompt": "LEFT -> RIGHT\nBIG -> ?",
       "options": [
         "SHALLOW",
         "LOW",
@@ -14547,7 +14547,7 @@
       "slug": "round-043",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 11,   4 -> 14,   8 -> ?",
+      "prompt": "2 -> 8,   3 -> 11,   4 -> 14,   8 -> ?",
       "options": [
         "26",
         "29",
@@ -14570,7 +14570,7 @@
       "slug": "round-043",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "KANGAROO IS TO JOEY AS\nDEER IS TO ?",
+      "prompt": "KANGAROO -> JOEY\nDEER -> ?",
       "options": [
         "DUCKLING",
         "LAMB",
@@ -14623,7 +14623,7 @@
       "slug": "round-043",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PAGE IS TO BOOK AS\nLEAF IS TO ?",
+      "prompt": "PAGE -> BOOK\nLEAF -> ?",
       "options": [
         "FLOWER",
         "FOOT",
@@ -14675,7 +14675,7 @@
       "slug": "round-043",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SILVER",
         "TIN",
@@ -14713,7 +14713,7 @@
       "slug": "round-043",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT IS TO COTTON AS\nCANDLE IS TO ?",
+      "prompt": "SHIRT -> COTTON\nCANDLE -> ?",
       "options": [
         "METAL",
         "WOOD",
@@ -14751,7 +14751,7 @@
       "slug": "round-043",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
+      "prompt": "4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
       "options": [
         "17",
         "21",
@@ -14797,7 +14797,7 @@
       "slug": "round-044",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRUM",
         "FLUTE",
@@ -14864,7 +14864,7 @@
       "slug": "round-044",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RICH IS TO POOR AS\nEARLY IS TO ?",
+      "prompt": "RICH -> POOR\nEARLY -> ?",
       "options": [
         "LATE",
         "SINK",
@@ -14887,7 +14887,7 @@
       "slug": "round-044",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   5 -> 13,   7 -> 17,   9 -> ?",
+      "prompt": "3 -> 9,   5 -> 13,   7 -> 17,   9 -> ?",
       "options": [
         "21",
         "23",
@@ -14910,7 +14910,7 @@
       "slug": "round-044",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH IS TO MOUTH AS\nROOM IS TO ?",
+      "prompt": "TOOTH -> MOUTH\nROOM -> ?",
       "options": [
         "HAND",
         "HOUSE",
@@ -14963,7 +14963,7 @@
       "slug": "round-044",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "EAR IS TO HEAR AS\nOVEN IS TO ?",
+      "prompt": "EAR -> HEAR\nOVEN -> ?",
       "options": [
         "TIME",
         "HEAT",
@@ -15015,7 +15015,7 @@
       "slug": "round-044",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HEXAGON",
         "OVAL",
@@ -15053,7 +15053,7 @@
       "slug": "round-044",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE IS TO TAKE AS\nWET IS TO ?",
+      "prompt": "GIVE -> TAKE\nWET -> ?",
       "options": [
         "LATE",
         "THIN",
@@ -15091,7 +15091,7 @@
       "slug": "round-044",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   6 -> 19,   7 -> 22,   5 -> ?",
+      "prompt": "4 -> 13,   6 -> 19,   7 -> 22,   5 -> ?",
       "options": [
         "26",
         "15",
@@ -15137,7 +15137,7 @@
       "slug": "round-045",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BASS",
         "NICKEL",
@@ -15204,7 +15204,7 @@
       "slug": "round-045",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT IS TO AIRPLANE AS\nJUDGE IS TO ?",
+      "prompt": "PILOT -> AIRPLANE\nJUDGE -> ?",
       "options": [
         "KITCHEN",
         "SCHOOL",
@@ -15227,7 +15227,7 @@
       "slug": "round-045",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 12,   6 -> 14,   7 -> 16,   8 -> ?",
+      "prompt": "5 -> 12,   6 -> 14,   7 -> 16,   8 -> ?",
       "options": [
         "8",
         "18",
@@ -15250,7 +15250,7 @@
       "slug": "round-045",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEE IS TO HIVE AS\nCOW IS TO ?",
+      "prompt": "BEE -> HIVE\nCOW -> ?",
       "options": [
         "DEN",
         "BARN",
@@ -15303,7 +15303,7 @@
       "slug": "round-045",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nCLEAN IS TO ?",
+      "prompt": "OPEN -> CLOSED\nCLEAN -> ?",
       "options": [
         "DIRTY",
         "LOW",
@@ -15355,7 +15355,7 @@
       "slug": "round-045",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TWENTY",
         "FIFTEEN",
@@ -15393,7 +15393,7 @@
       "slug": "round-045",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nPUSH IS TO ?",
+      "prompt": "HARD -> SOFT\nPUSH -> ?",
       "options": [
         "SHORT",
         "PULL",
@@ -15431,7 +15431,7 @@
       "slug": "round-045",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   6 -> 22,   7 -> 26,   5 -> ?",
+      "prompt": "3 -> 10,   6 -> 22,   7 -> 26,   5 -> ?",
       "options": [
         "14",
         "28",
@@ -15477,7 +15477,7 @@
       "slug": "round-046",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PANTS",
         "JACKET",
@@ -15544,7 +15544,7 @@
       "slug": "round-046",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TALL IS TO SHORT AS\nBEGIN IS TO ?",
+      "prompt": "TALL -> SHORT\nBEGIN -> ?",
       "options": [
         "DOWN",
         "SINK",
@@ -15567,7 +15567,7 @@
       "slug": "round-046",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   7 -> 24,   8 -> ?",
+      "prompt": "2 -> 9,   3 -> 12,   7 -> 24,   8 -> ?",
       "options": [
         "22",
         "24",
@@ -15590,7 +15590,7 @@
       "slug": "round-046",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LAMP IS TO LIGHT AS\nRULER IS TO ?",
+      "prompt": "LAMP -> LIGHT\nRULER -> ?",
       "options": [
         "CUT",
         "MEASURE",
@@ -15643,7 +15643,7 @@
       "slug": "round-046",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nHAPPY IS TO ?",
+      "prompt": "OPEN -> CLOSED\nHAPPY -> ?",
       "options": [
         "DARK",
         "THIN",
@@ -15695,7 +15695,7 @@
       "slug": "round-046",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BEE",
         "PENTAGON",
@@ -15733,7 +15733,7 @@
       "slug": "round-046",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "RING IS TO GOLD AS\nTABLE IS TO ?",
+      "prompt": "RING -> GOLD\nTABLE -> ?",
       "options": [
         "CLAY",
         "WOOD",
@@ -15771,7 +15771,7 @@
       "slug": "round-046",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
+      "prompt": "4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
       "options": [
         "24",
         "15",
@@ -15817,7 +15817,7 @@
       "slug": "round-047",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ANKLE",
         "ELBOW",
@@ -15884,7 +15884,7 @@
       "slug": "round-047",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PIG IS TO OINK AS\nOWL IS TO ?",
+      "prompt": "PIG -> OINK\nOWL -> ?",
       "options": [
         "HOOT",
         "QUACK",
@@ -15907,7 +15907,7 @@
       "slug": "round-047",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
+      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
       "options": [
         "16",
         "15",
@@ -15930,7 +15930,7 @@
       "slug": "round-047",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO SMALL AS\nBUY IS TO ?",
+      "prompt": "BIG -> SMALL\nBUY -> ?",
       "options": [
         "PULL",
         "SELL",
@@ -15983,7 +15983,7 @@
       "slug": "round-047",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BOTTLE IS TO PLASTIC AS\nSPOON IS TO ?",
+      "prompt": "BOTTLE -> PLASTIC\nSPOON -> ?",
       "options": [
         "GLASS",
         "GOLD",
@@ -16035,7 +16035,7 @@
       "slug": "round-047",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BROWN",
         "BLACK",
@@ -16073,7 +16073,7 @@
       "slug": "round-047",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PIG IS TO PEN AS\nSHEEP IS TO ?",
+      "prompt": "PIG -> PEN\nSHEEP -> ?",
       "options": [
         "NEST",
         "FOLD",
@@ -16111,7 +16111,7 @@
       "slug": "round-047",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 14,   4 -> 18,   7 -> 30,   8 -> ?",
+      "prompt": "3 -> 14,   4 -> 18,   7 -> 30,   8 -> ?",
       "options": [
         "44",
         "34",
@@ -16157,7 +16157,7 @@
       "slug": "round-048",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "YELLOW",
         "GREEN",
@@ -16224,7 +16224,7 @@
       "slug": "round-048",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KNIFE IS TO CUT AS\nEYE IS TO ?",
+      "prompt": "KNIFE -> CUT\nEYE -> ?",
       "options": [
         "HEAR",
         "SEE",
@@ -16247,7 +16247,7 @@
       "slug": "round-048",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
+      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
       "options": [
         "14",
         "12",
@@ -16270,7 +16270,7 @@
       "slug": "round-048",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EYE IS TO SEE AS\nSCALE IS TO ?",
+      "prompt": "EYE -> SEE\nSCALE -> ?",
       "options": [
         "WEIGH",
         "HEAT",
@@ -16323,7 +16323,7 @@
       "slug": "round-048",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "RICH IS TO POOR AS\nBEGIN IS TO ?",
+      "prompt": "RICH -> POOR\nBEGIN -> ?",
       "options": [
         "SHORT",
         "END",
@@ -16375,7 +16375,7 @@
       "slug": "round-048",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "KAYAK",
         "FIFTEEN",
@@ -16413,7 +16413,7 @@
       "slug": "round-048",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DOG IS TO KENNEL AS\nSPIDER IS TO ?",
+      "prompt": "DOG -> KENNEL\nSPIDER -> ?",
       "options": [
         "BURROW",
         "POND",
@@ -16451,7 +16451,7 @@
       "slug": "round-048",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 9,   6 -> 11,   7 -> 13,   9 -> ?",
+      "prompt": "5 -> 9,   6 -> 11,   7 -> 13,   9 -> ?",
       "options": [
         "18",
         "16",
@@ -16497,7 +16497,7 @@
       "slug": "round-049",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "STEEL",
         "BUS",
@@ -16564,7 +16564,7 @@
       "slug": "round-049",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TALL IS TO SHORT AS\nBIG IS TO ?",
+      "prompt": "TALL -> SHORT\nBIG -> ?",
       "options": [
         "DOWN",
         "THIN",
@@ -16587,7 +16587,7 @@
       "slug": "round-049",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
+      "prompt": "4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
       "options": [
         "12",
         "17",
@@ -16610,7 +16610,7 @@
       "slug": "round-049",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO LAMB AS\nHORSE IS TO ?",
+      "prompt": "SHEEP -> LAMB\nHORSE -> ?",
       "options": [
         "FOAL",
         "CHICK",
@@ -16663,7 +16663,7 @@
       "slug": "round-049",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FARMER IS TO FARM AS\nJUDGE IS TO ?",
+      "prompt": "FARMER -> FARM\nJUDGE -> ?",
       "options": [
         "LIBRARY",
         "STAGE",
@@ -16715,7 +16715,7 @@
       "slug": "round-049",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ROBIN",
         "TWELVE",
@@ -16753,7 +16753,7 @@
       "slug": "round-049",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH IS TO LOW AS\nEARLY IS TO ?",
+      "prompt": "HIGH -> LOW\nEARLY -> ?",
       "options": [
         "DARK",
         "POOR",
@@ -16791,7 +16791,7 @@
       "slug": "round-049",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 21,   6 -> 25,   7 -> 29,   9 -> ?",
+      "prompt": "5 -> 21,   6 -> 25,   7 -> 29,   9 -> ?",
       "options": [
         "42",
         "40",
@@ -16837,7 +16837,7 @@
       "slug": "round-050",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TENNIS",
         "PINE",
@@ -16904,7 +16904,7 @@
       "slug": "round-050",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER IS TO HAMMER AS\nFARMER IS TO ?",
+      "prompt": "CARPENTER -> HAMMER\nFARMER -> ?",
       "options": [
         "BRUSH",
         "NET",
@@ -16927,7 +16927,7 @@
       "slug": "round-050",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 11,   4 -> 14,   5 -> ?",
+      "prompt": "2 -> 8,   3 -> 11,   4 -> 14,   5 -> ?",
       "options": [
         "7",
         "17",
@@ -16950,7 +16950,7 @@
       "slug": "round-050",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WIN IS TO LOSE AS\nUP IS TO ?",
+      "prompt": "WIN -> LOSE\nUP -> ?",
       "options": [
         "DOWN",
         "NEW",
@@ -17003,7 +17003,7 @@
       "slug": "round-050",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT IS TO AIRPLANE AS\nSAILOR IS TO ?",
+      "prompt": "PILOT -> AIRPLANE\nSAILOR -> ?",
       "options": [
         "SHIP",
         "BAKERY",
@@ -17055,7 +17055,7 @@
       "slug": "round-050",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "POTATO",
         "PEA",
@@ -17093,7 +17093,7 @@
       "slug": "round-050",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nLOUD IS TO ?",
+      "prompt": "LIGHT -> DARK\nLOUD -> ?",
       "options": [
         "PULL",
         "QUIET",
@@ -17131,7 +17131,7 @@
       "slug": "round-050",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 16,   6 -> 19,   7 -> 22,   9 -> ?",
+      "prompt": "5 -> 16,   6 -> 19,   7 -> 22,   9 -> ?",
       "options": [
         "38",
         "28",
@@ -17177,7 +17177,7 @@
       "slug": "round-051",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ROCKET",
         "JACKET",
@@ -17244,7 +17244,7 @@
       "slug": "round-051",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SAILOR IS TO SHIP AS\nTEACHER IS TO ?",
+      "prompt": "SAILOR -> SHIP\nTEACHER -> ?",
       "options": [
         "SCHOOL",
         "HOSPITAL",
@@ -17267,7 +17267,7 @@
       "slug": "round-051",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   5 -> 13,   7 -> 19,   8 -> ?",
+      "prompt": "2 -> 4,   5 -> 13,   7 -> 19,   8 -> ?",
       "options": [
         "22",
         "25",
@@ -17290,7 +17290,7 @@
       "slug": "round-051",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nDEEP IS TO ?",
+      "prompt": "BEGIN -> END\nDEEP -> ?",
       "options": [
         "NEW",
         "NIGHT",
@@ -17343,7 +17343,7 @@
       "slug": "round-051",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO BAA AS\nWOLF IS TO ?",
+      "prompt": "SHEEP -> BAA\nWOLF -> ?",
       "options": [
         "MEOW",
         "HOWL",
@@ -17395,7 +17395,7 @@
       "slug": "round-051",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MARS",
         "SATURN",
@@ -17433,7 +17433,7 @@
       "slug": "round-051",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE IS TO NEIGH AS\nCAT IS TO ?",
+      "prompt": "HORSE -> NEIGH\nCAT -> ?",
       "options": [
         "BARK",
         "HISS",
@@ -17471,7 +17471,7 @@
       "slug": "round-051",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   5 -> 13,   7 -> ?",
+      "prompt": "2 -> 4,   3 -> 7,   5 -> 13,   7 -> ?",
       "options": [
         "22",
         "19",
@@ -17517,7 +17517,7 @@
       "slug": "round-052",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "RED",
         "RAFT",
@@ -17584,7 +17584,7 @@
       "slug": "round-052",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BAKER IS TO BAKERY AS\nPILOT IS TO ?",
+      "prompt": "BAKER -> BAKERY\nPILOT -> ?",
       "options": [
         "LIBRARY",
         "AIRPLANE",
@@ -17607,7 +17607,7 @@
       "slug": "round-052",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   4 -> 15,   8 -> ?",
+      "prompt": "2 -> 9,   3 -> 12,   4 -> 15,   8 -> ?",
       "options": [
         "24",
         "29",
@@ -17630,7 +17630,7 @@
       "slug": "round-052",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO SMALL AS\nNEAR IS TO ?",
+      "prompt": "BIG -> SMALL\nNEAR -> ?",
       "options": [
         "SLOW",
         "RIGHT",
@@ -17683,7 +17683,7 @@
       "slug": "round-052",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR IS TO FAR AS\nHIGH IS TO ?",
+      "prompt": "NEAR -> FAR\nHIGH -> ?",
       "options": [
         "LOW",
         "CLOSED",
@@ -17735,7 +17735,7 @@
       "slug": "round-052",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SHOULDER",
         "KAYAK",
@@ -17773,7 +17773,7 @@
       "slug": "round-052",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN IS TO HEAT AS\nRULER IS TO ?",
+      "prompt": "OVEN -> HEAT\nRULER -> ?",
       "options": [
         "MEASURE",
         "HEAR",
@@ -17811,7 +17811,7 @@
       "slug": "round-052",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   7 -> 19,   9 -> ?",
+      "prompt": "2 -> 4,   3 -> 7,   7 -> 19,   9 -> ?",
       "options": [
         "20",
         "28",
@@ -17857,7 +17857,7 @@
       "slug": "round-053",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GOLD",
         "ARM",
@@ -17924,7 +17924,7 @@
       "slug": "round-053",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DOG IS TO KENNEL AS\nBEE IS TO ?",
+      "prompt": "DOG -> KENNEL\nBEE -> ?",
       "options": [
         "STABLE",
         "ANTHILL",
@@ -17947,7 +17947,7 @@
       "slug": "round-053",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 11,   5 -> 14,   8 -> ?",
+      "prompt": "2 -> 5,   4 -> 11,   5 -> 14,   8 -> ?",
       "options": [
         "20",
         "26",
@@ -17970,7 +17970,7 @@
       "slug": "round-053",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WRITER IS TO PEN AS\nFISHERMAN IS TO ?",
+      "prompt": "WRITER -> PEN\nFISHERMAN -> ?",
       "options": [
         "BRUSH",
         "PICKAXE",
@@ -18023,7 +18023,7 @@
       "slug": "round-053",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE IS TO NARROW AS\nBIG IS TO ?",
+      "prompt": "WIDE -> NARROW\nBIG -> ?",
       "options": [
         "DIRTY",
         "SMALL",
@@ -18075,7 +18075,7 @@
       "slug": "round-053",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HARP",
         "SODA",
@@ -18113,7 +18113,7 @@
       "slug": "round-053",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "THICK IS TO THIN AS\nPUSH IS TO ?",
+      "prompt": "THICK -> THIN\nPUSH -> ?",
       "options": [
         "WEAK",
         "PULL",
@@ -18151,7 +18151,7 @@
       "slug": "round-053",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 18,   6 -> 22,   8 -> ?",
+      "prompt": "4 -> 14,   5 -> 18,   6 -> 22,   8 -> ?",
       "options": [
         "25",
         "32",
@@ -18197,7 +18197,7 @@
       "slug": "round-054",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SQUARE",
         "POTATO",
@@ -18264,7 +18264,7 @@
       "slug": "round-054",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY IS TO LATE AS\nLEFT IS TO ?",
+      "prompt": "EARLY -> LATE\nLEFT -> ?",
       "options": [
         "SHORT",
         "DIRTY",
@@ -18287,7 +18287,7 @@
       "slug": "round-054",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   3 -> 4,   4 -> 6,   7 -> ?",
+      "prompt": "2 -> 2,   3 -> 4,   4 -> 6,   7 -> ?",
       "options": [
         "15",
         "12",
@@ -18310,7 +18310,7 @@
       "slug": "round-054",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "THICK IS TO THIN AS\nWIN IS TO ?",
+      "prompt": "THICK -> THIN\nWIN -> ?",
       "options": [
         "NIGHT",
         "LOSE",
@@ -18363,7 +18363,7 @@
       "slug": "round-054",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FAST IS TO SLOW AS\nLEFT IS TO ?",
+      "prompt": "FAST -> SLOW\nLEFT -> ?",
       "options": [
         "SINK",
         "CLOSED",
@@ -18416,7 +18416,7 @@
       "slug": "round-054",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BASS",
         "FOOT",
@@ -18454,7 +18454,7 @@
       "slug": "round-054",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "STRONG IS TO WEAK AS\nWIDE IS TO ?",
+      "prompt": "STRONG -> WEAK\nWIDE -> ?",
       "options": [
         "DARK",
         "SELL",
@@ -18492,7 +18492,7 @@
       "slug": "round-054",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 11,   6 -> 15,   8 -> ?",
+      "prompt": "2 -> 7,   4 -> 11,   6 -> 15,   8 -> ?",
       "options": [
         "17",
         "22",
@@ -18538,7 +18538,7 @@
       "slug": "round-055",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ANKLE",
         "ELBOW",
@@ -18605,7 +18605,7 @@
       "slug": "round-055",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO BARN AS\nANT IS TO ?",
+      "prompt": "COW -> BARN\nANT -> ?",
       "options": [
         "ANTHILL",
         "FOLD",
@@ -18628,7 +18628,7 @@
       "slug": "round-055",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
+      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
       "options": [
         "21",
         "23",
@@ -18651,7 +18651,7 @@
       "slug": "round-055",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HEN IS TO CHICK AS\nSHEEP IS TO ?",
+      "prompt": "HEN -> CHICK\nSHEEP -> ?",
       "options": [
         "FAWN",
         "DUCKLING",
@@ -18704,7 +18704,7 @@
       "slug": "round-055",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO LAMB AS\nFROG IS TO ?",
+      "prompt": "SHEEP -> LAMB\nFROG -> ?",
       "options": [
         "KITTEN",
         "TADPOLE",
@@ -18756,7 +18756,7 @@
       "slug": "round-055",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FOX",
         "BEAR",
@@ -18794,7 +18794,7 @@
       "slug": "round-055",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PEN IS TO WRITE AS\nEYE IS TO ?",
+      "prompt": "PEN -> WRITE\nEYE -> ?",
       "options": [
         "HEAT",
         "SEE",
@@ -18832,7 +18832,7 @@
       "slug": "round-055",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 8,   5 -> 12,   6 -> ?",
+      "prompt": "2 -> 6,   3 -> 8,   5 -> 12,   6 -> ?",
       "options": [
         "14",
         "12",
@@ -18878,7 +18878,7 @@
       "slug": "round-056",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HELICOPTER",
         "COD",
@@ -18945,7 +18945,7 @@
       "slug": "round-056",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "UP IS TO DOWN AS\nPUSH IS TO ?",
+      "prompt": "UP -> DOWN\nPUSH -> ?",
       "options": [
         "POOR",
         "PULL",
@@ -18968,7 +18968,7 @@
       "slug": "round-056",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   4 -> 15,   6 -> ?",
+      "prompt": "2 -> 9,   3 -> 12,   4 -> 15,   6 -> ?",
       "options": [
         "16",
         "24",
@@ -18991,7 +18991,7 @@
       "slug": "round-056",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nHOT IS TO ?",
+      "prompt": "LIGHT -> DARK\nHOT -> ?",
       "options": [
         "NIGHT",
         "COLD",
@@ -19044,7 +19044,7 @@
       "slug": "round-056",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WIN IS TO LOSE AS\nSTRONG IS TO ?",
+      "prompt": "WIN -> LOSE\nSTRONG -> ?",
       "options": [
         "WEAK",
         "LOW",
@@ -19096,7 +19096,7 @@
       "slug": "round-056",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WILLOW",
         "SAILBOAT",
@@ -19134,7 +19134,7 @@
       "slug": "round-056",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "STRONG IS TO WEAK AS\nLIGHT IS TO ?",
+      "prompt": "STRONG -> WEAK\nLIGHT -> ?",
       "options": [
         "NARROW",
         "SOFT",
@@ -19172,7 +19172,7 @@
       "slug": "round-056",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 8,   5 -> 12,   9 -> ?",
+      "prompt": "2 -> 6,   3 -> 8,   5 -> 12,   9 -> ?",
       "options": [
         "22",
         "30",
@@ -19218,7 +19218,7 @@
       "slug": "round-057",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JEEP",
         "TIGER",
@@ -19285,7 +19285,7 @@
       "slug": "round-057",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DUCK IS TO QUACK AS\nFROG IS TO ?",
+      "prompt": "DUCK -> QUACK\nFROG -> ?",
       "options": [
         "CROAK",
         "HOOT",
@@ -19308,7 +19308,7 @@
       "slug": "round-057",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   5 -> 18,   6 -> 21,   7 -> ?",
+      "prompt": "2 -> 9,   5 -> 18,   6 -> 21,   7 -> ?",
       "options": [
         "21",
         "34",
@@ -19331,7 +19331,7 @@
       "slug": "round-057",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BROOM IS TO SWEEP AS\nRULER IS TO ?",
+      "prompt": "BROOM -> SWEEP\nRULER -> ?",
       "options": [
         "HEAR",
         "WEIGH",
@@ -19384,7 +19384,7 @@
       "slug": "round-057",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DEEP IS TO SHALLOW AS\nWET IS TO ?",
+      "prompt": "DEEP -> SHALLOW\nWET -> ?",
       "options": [
         "SINK",
         "DOWN",
@@ -19436,7 +19436,7 @@
       "slug": "round-057",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CHERRY",
         "PLUM",
@@ -19474,7 +19474,7 @@
       "slug": "round-057",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE IS TO NARROW AS\nBEGIN IS TO ?",
+      "prompt": "WIDE -> NARROW\nBEGIN -> ?",
       "options": [
         "END",
         "SINK",
@@ -19512,7 +19512,7 @@
       "slug": "round-057",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   6 -> 10,   7 -> 12,   8 -> ?",
+      "prompt": "2 -> 2,   6 -> 10,   7 -> 12,   8 -> ?",
       "options": [
         "4",
         "14",
@@ -19558,7 +19558,7 @@
       "slug": "round-058",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SOCCER",
         "MOTORCYCLE",
@@ -19625,7 +19625,7 @@
       "slug": "round-058",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EYE IS TO SEE AS\nBROOM IS TO ?",
+      "prompt": "EYE -> SEE\nBROOM -> ?",
       "options": [
         "LIGHT",
         "SWEEP",
@@ -19648,7 +19648,7 @@
       "slug": "round-058",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   7 -> 13,   9 -> ?",
+      "prompt": "2 -> 3,   3 -> 5,   7 -> 13,   9 -> ?",
       "options": [
         "19",
         "12",
@@ -19671,7 +19671,7 @@
       "slug": "round-058",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DOG IS TO PUPPY AS\nGOAT IS TO ?",
+      "prompt": "DOG -> PUPPY\nGOAT -> ?",
       "options": [
         "KID",
         "JOEY",
@@ -19724,7 +19724,7 @@
       "slug": "round-058",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF IS TO KITCHEN AS\nACTOR IS TO ?",
+      "prompt": "CHEF -> KITCHEN\nACTOR -> ?",
       "options": [
         "AIRPLANE",
         "SHIP",
@@ -19776,7 +19776,7 @@
       "slug": "round-058",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JEEP",
         "CAR",
@@ -19814,7 +19814,7 @@
       "slug": "round-058",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO BARN AS\nBEE IS TO ?",
+      "prompt": "COW -> BARN\nBEE -> ?",
       "options": [
         "PEN",
         "HIVE",
@@ -19852,7 +19852,7 @@
       "slug": "round-058",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   5 -> 17,   7 -> 23,   9 -> ?",
+      "prompt": "3 -> 11,   5 -> 17,   7 -> 23,   9 -> ?",
       "options": [
         "24",
         "19",
@@ -19898,7 +19898,7 @@
       "slug": "round-059",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MOTH",
         "FLEA",
@@ -19965,7 +19965,7 @@
       "slug": "round-059",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SCALE IS TO WEIGH AS\nKNIFE IS TO ?",
+      "prompt": "SCALE -> WEIGH\nKNIFE -> ?",
       "options": [
         "LIGHT",
         "MEASURE",
@@ -19988,7 +19988,7 @@
       "slug": "round-059",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   7 -> 22,   8 -> ?",
+      "prompt": "2 -> 7,   4 -> 13,   7 -> 22,   8 -> ?",
       "options": [
         "23",
         "28",
@@ -20011,7 +20011,7 @@
       "slug": "round-059",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nBUY IS TO ?",
+      "prompt": "BEGIN -> END\nBUY -> ?",
       "options": [
         "SELL",
         "LATE",
@@ -20064,7 +20064,7 @@
       "slug": "round-059",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE IS TO NARROW AS\nHIGH IS TO ?",
+      "prompt": "WIDE -> NARROW\nHIGH -> ?",
       "options": [
         "DIRTY",
         "LOSE",
@@ -20116,7 +20116,7 @@
       "slug": "round-059",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PIGEON",
         "DUCK",
@@ -20154,7 +20154,7 @@
       "slug": "round-059",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nEARLY IS TO ?",
+      "prompt": "LIGHT -> DARK\nEARLY -> ?",
       "options": [
         "POOR",
         "SELL",
@@ -20192,7 +20192,7 @@
       "slug": "round-059",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   5 -> 13,   6 -> 16,   7 -> ?",
+      "prompt": "3 -> 7,   5 -> 13,   6 -> 16,   7 -> ?",
       "options": [
         "19",
         "9",
@@ -20238,7 +20238,7 @@
       "slug": "round-060",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FIFTY",
         "BOAT",
@@ -20305,7 +20305,7 @@
       "slug": "round-060",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY IS TO LATE AS\nUP IS TO ?",
+      "prompt": "EARLY -> LATE\nUP -> ?",
       "options": [
         "DOWN",
         "SAD",
@@ -20328,7 +20328,7 @@
       "slug": "round-060",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   4 -> 10,   6 -> 14,   7 -> ?",
+      "prompt": "2 -> 6,   4 -> 10,   6 -> 14,   7 -> ?",
       "options": [
         "21",
         "17",
@@ -20351,7 +20351,7 @@
       "slug": "round-060",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FULL IS TO EMPTY AS\nDAY IS TO ?",
+      "prompt": "FULL -> EMPTY\nDAY -> ?",
       "options": [
         "NEW",
         "WEAK",
@@ -20404,7 +20404,7 @@
       "slug": "round-060",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "RICH IS TO POOR AS\nSTRONG IS TO ?",
+      "prompt": "RICH -> POOR\nSTRONG -> ?",
       "options": [
         "SELL",
         "WEAK",
@@ -20456,7 +20456,7 @@
       "slug": "round-060",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TRIANGLE",
         "SQUARE",
@@ -20494,7 +20494,7 @@
       "slug": "round-060",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nHIGH IS TO ?",
+      "prompt": "HARD -> SOFT\nHIGH -> ?",
       "options": [
         "POOR",
         "LOW",
@@ -20532,7 +20532,7 @@
       "slug": "round-060",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
+      "prompt": "2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
       "options": [
         "27",
         "28",
@@ -20578,7 +20578,7 @@
       "slug": "round-061",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TEA",
         "SATURN",
@@ -20645,7 +20645,7 @@
       "slug": "round-061",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PETAL IS TO FLOWER AS\nFINGER IS TO ?",
+      "prompt": "PETAL -> FLOWER\nFINGER -> ?",
       "options": [
         "PIANO",
         "MOUTH",
@@ -20668,7 +20668,7 @@
       "slug": "round-061",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   6 -> 17,   7 -> 20,   5 -> ?",
+      "prompt": "2 -> 5,   6 -> 17,   7 -> 20,   5 -> ?",
       "options": [
         "11",
         "14",
@@ -20691,7 +20691,7 @@
       "slug": "round-061",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WHALE IS TO OCEAN AS\nPENGUIN IS TO ?",
+      "prompt": "WHALE -> OCEAN\nPENGUIN -> ?",
       "options": [
         "WATER",
         "JUNGLE",
@@ -20744,7 +20744,7 @@
       "slug": "round-061",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP IS TO BAA AS\nOWL IS TO ?",
+      "prompt": "SHEEP -> BAA\nOWL -> ?",
       "options": [
         "HOOT",
         "NEIGH",
@@ -20796,7 +20796,7 @@
       "slug": "round-061",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TRIANGLE",
         "CUBE",
@@ -20834,7 +20834,7 @@
       "slug": "round-061",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nFLOAT IS TO ?",
+      "prompt": "OPEN -> CLOSED\nFLOAT -> ?",
       "options": [
         "NEW",
         "LOSE",
@@ -20872,7 +20872,7 @@
       "slug": "round-061",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 9,   5 -> 11,   8 -> ?",
+      "prompt": "3 -> 7,   4 -> 9,   5 -> 11,   8 -> ?",
       "options": [
         "14",
         "17",
@@ -20918,7 +20918,7 @@
       "slug": "round-062",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JET",
         "IRON",
@@ -20985,7 +20985,7 @@
       "slug": "round-062",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO CALF AS\nSHEEP IS TO ?",
+      "prompt": "COW -> CALF\nSHEEP -> ?",
       "options": [
         "PUPPY",
         "TADPOLE",
@@ -21008,7 +21008,7 @@
       "slug": "round-062",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   4 -> 11,   5 -> 13,   8 -> ?",
+      "prompt": "3 -> 9,   4 -> 11,   5 -> 13,   8 -> ?",
       "options": [
         "21",
         "9",
@@ -21031,7 +21031,7 @@
       "slug": "round-062",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WET IS TO DRY AS\nHIGH IS TO ?",
+      "prompt": "WET -> DRY\nHIGH -> ?",
       "options": [
         "CLOSED",
         "LOW",
@@ -21084,7 +21084,7 @@
       "slug": "round-062",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY IS TO SAD AS\nBEGIN IS TO ?",
+      "prompt": "HAPPY -> SAD\nBEGIN -> ?",
       "options": [
         "END",
         "SMALL",
@@ -21136,7 +21136,7 @@
       "slug": "round-062",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FERRY",
         "RAFT",
@@ -21174,7 +21174,7 @@
       "slug": "round-062",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO SMALL AS\nTALL IS TO ?",
+      "prompt": "BIG -> SMALL\nTALL -> ?",
       "options": [
         "CLOSED",
         "FAR",
@@ -21212,7 +21212,7 @@
       "slug": "round-062",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 14,   6 -> 26,   7 -> 30,   8 -> ?",
+      "prompt": "3 -> 14,   6 -> 26,   7 -> 30,   8 -> ?",
       "options": [
         "38",
         "36",
@@ -21258,7 +21258,7 @@
       "slug": "round-063",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MERCURY",
         "MILK",
@@ -21325,7 +21325,7 @@
       "slug": "round-063",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT IS TO COTTON AS\nWINDOW IS TO ?",
+      "prompt": "SHIRT -> COTTON\nWINDOW -> ?",
       "options": [
         "PLASTIC",
         "GLASS",
@@ -21348,7 +21348,7 @@
       "slug": "round-063",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
+      "prompt": "4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
       "options": [
         "13",
         "15",
@@ -21371,7 +21371,7 @@
       "slug": "round-063",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WINDOW IS TO GLASS AS\nTIRE IS TO ?",
+      "prompt": "WINDOW -> GLASS\nTIRE -> ?",
       "options": [
         "COTTON",
         "METAL",
@@ -21424,7 +21424,7 @@
       "slug": "round-063",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER IS TO HAMMER AS\nMINER IS TO ?",
+      "prompt": "CARPENTER -> HAMMER\nMINER -> ?",
       "options": [
         "BRUSH",
         "KNIFE",
@@ -21476,7 +21476,7 @@
       "slug": "round-063",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HAWK",
         "DRUM",
@@ -21514,7 +21514,7 @@
       "slug": "round-063",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FISHERMAN IS TO NET AS\nWRITER IS TO ?",
+      "prompt": "FISHERMAN -> NET\nWRITER -> ?",
       "options": [
         "PICKAXE",
         "NEEDLE",
@@ -21552,7 +21552,7 @@
       "slug": "round-063",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   6 -> 16,   8 -> ?",
+      "prompt": "2 -> 4,   3 -> 7,   6 -> 16,   8 -> ?",
       "options": [
         "32",
         "19",
@@ -21598,7 +21598,7 @@
       "slug": "round-064",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TRUMPET",
         "HARP",
@@ -21665,7 +21665,7 @@
       "slug": "round-064",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TIRE IS TO RUBBER AS\nCANDLE IS TO ?",
+      "prompt": "TIRE -> RUBBER\nCANDLE -> ?",
       "options": [
         "GOLD",
         "CLAY",
@@ -21688,7 +21688,7 @@
       "slug": "round-064",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   4 -> 6,   5 -> 8,   6 -> ?",
+      "prompt": "2 -> 2,   4 -> 6,   5 -> 8,   6 -> ?",
       "options": [
         "11",
         "10",
@@ -21711,7 +21711,7 @@
       "slug": "round-064",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DEER IS TO FAWN AS\nCAT IS TO ?",
+      "prompt": "DEER -> FAWN\nCAT -> ?",
       "options": [
         "CALF",
         "KITTEN",
@@ -21764,7 +21764,7 @@
       "slug": "round-064",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH IS TO LOW AS\nLOUD IS TO ?",
+      "prompt": "HIGH -> LOW\nLOUD -> ?",
       "options": [
         "LATE",
         "RIGHT",
@@ -21816,7 +21816,7 @@
       "slug": "round-064",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FOOT",
         "HAT",
@@ -21854,7 +21854,7 @@
       "slug": "round-064",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE IS TO TAKE AS\nFULL IS TO ?",
+      "prompt": "GIVE -> TAKE\nFULL -> ?",
       "options": [
         "WEAK",
         "DOWN",
@@ -21892,7 +21892,7 @@
       "slug": "round-064",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
+      "prompt": "3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
       "options": [
         "23",
         "32",
@@ -21938,7 +21938,7 @@
       "slug": "round-065",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CUBE",
         "HAT",
@@ -22005,7 +22005,7 @@
       "slug": "round-065",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nLIGHT IS TO ?",
+      "prompt": "BEGIN -> END\nLIGHT -> ?",
       "options": [
         "WEAK",
         "EMPTY",
@@ -22028,7 +22028,7 @@
       "slug": "round-065",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   9 -> ?",
+      "prompt": "2 -> 9,   3 -> 12,   6 -> 21,   9 -> ?",
       "options": [
         "20",
         "31",
@@ -22051,7 +22051,7 @@
       "slug": "round-065",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EYE IS TO SEE AS\nCLOCK IS TO ?",
+      "prompt": "EYE -> SEE\nCLOCK -> ?",
       "options": [
         "HEAR",
         "HEAT",
@@ -22104,7 +22104,7 @@
       "slug": "round-065",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DAY IS TO NIGHT AS\nFAST IS TO ?",
+      "prompt": "DAY -> NIGHT\nFAST -> ?",
       "options": [
         "SELL",
         "TAKE",
@@ -22156,7 +22156,7 @@
       "slug": "round-065",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BROWN",
         "TENNIS",
@@ -22194,7 +22194,7 @@
       "slug": "round-065",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DEEP IS TO SHALLOW AS\nFLOAT IS TO ?",
+      "prompt": "DEEP -> SHALLOW\nFLOAT -> ?",
       "options": [
         "QUIET",
         "SINK",
@@ -22232,7 +22232,7 @@
       "slug": "round-065",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   7 -> 23,   8 -> ?",
+      "prompt": "2 -> 8,   4 -> 14,   7 -> 23,   8 -> ?",
       "options": [
         "26",
         "28",
@@ -22278,7 +22278,7 @@
       "slug": "round-066",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CIRCLE",
         "HAMMER",
@@ -22345,7 +22345,7 @@
       "slug": "round-066",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FAST IS TO SLOW AS\nDAY IS TO ?",
+      "prompt": "FAST -> SLOW\nDAY -> ?",
       "options": [
         "SELL",
         "SMALL",
@@ -22368,7 +22368,7 @@
       "slug": "round-066",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   8 -> ?",
+      "prompt": "4 -> 14,   5 -> 17,   7 -> 23,   8 -> ?",
       "options": [
         "26",
         "16",
@@ -22391,7 +22391,7 @@
       "slug": "round-066",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF IS TO KNIFE AS\nCARPENTER IS TO ?",
+      "prompt": "CHEF -> KNIFE\nCARPENTER -> ?",
       "options": [
         "SCISSORS",
         "PEN",
@@ -22444,7 +22444,7 @@
       "slug": "round-066",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FARMER IS TO FARM AS\nSAILOR IS TO ?",
+      "prompt": "FARMER -> FARM\nSAILOR -> ?",
       "options": [
         "STAGE",
         "HOSPITAL",
@@ -22496,7 +22496,7 @@
       "slug": "round-066",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "STEEL",
         "VAN",
@@ -22534,7 +22534,7 @@
       "slug": "round-066",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OWL IS TO HOOT AS\nBEE IS TO ?",
+      "prompt": "OWL -> HOOT\nBEE -> ?",
       "options": [
         "BUZZ",
         "CHIRP",
@@ -22572,7 +22572,7 @@
       "slug": "round-066",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 14,   4 -> 18,   6 -> 26,   9 -> ?",
+      "prompt": "3 -> 14,   4 -> 18,   6 -> 26,   9 -> ?",
       "options": [
         "40",
         "48",
@@ -22618,7 +22618,7 @@
       "slug": "round-067",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BASEBALL",
         "RUGBY",
@@ -22685,7 +22685,7 @@
       "slug": "round-067",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nCLEAN IS TO ?",
+      "prompt": "HARD -> SOFT\nCLEAN -> ?",
       "options": [
         "SAD",
         "COLD",
@@ -22708,7 +22708,7 @@
       "slug": "round-067",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   7 -> 13,   5 -> ?",
+      "prompt": "3 -> 5,   4 -> 7,   7 -> 13,   5 -> ?",
       "options": [
         "4",
         "7",
@@ -22731,7 +22731,7 @@
       "slug": "round-067",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK IS TO CLAY AS\nSPOON IS TO ?",
+      "prompt": "BRICK -> CLAY\nSPOON -> ?",
       "options": [
         "METAL",
         "PLASTIC",
@@ -22784,7 +22784,7 @@
       "slug": "round-067",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF IS TO KITCHEN AS\nTEACHER IS TO ?",
+      "prompt": "CHEF -> KITCHEN\nTEACHER -> ?",
       "options": [
         "SCHOOL",
         "LIBRARY",
@@ -22836,7 +22836,7 @@
       "slug": "round-067",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FLY",
         "YELLOW",
@@ -22874,7 +22874,7 @@
       "slug": "round-067",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT IS TO COTTON AS\nTIRE IS TO ?",
+      "prompt": "SHIRT -> COTTON\nTIRE -> ?",
       "options": [
         "RUBBER",
         "PLASTIC",
@@ -22912,7 +22912,7 @@
       "slug": "round-067",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
+      "prompt": "3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
       "options": [
         "12",
         "14",
@@ -22958,7 +22958,7 @@
       "slug": "round-068",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HAT",
         "PEAR",
@@ -23025,7 +23025,7 @@
       "slug": "round-068",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER IS TO HAND AS\nPAGE IS TO ?",
+      "prompt": "FINGER -> HAND\nPAGE -> ?",
       "options": [
         "PIANO",
         "BOAT",
@@ -23048,7 +23048,7 @@
       "slug": "round-068",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   4 -> 10,   5 -> 12,   8 -> ?",
+      "prompt": "3 -> 8,   4 -> 10,   5 -> 12,   8 -> ?",
       "options": [
         "16",
         "13",
@@ -23071,7 +23071,7 @@
       "slug": "round-068",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CAT IS TO KITTEN AS\nHORSE IS TO ?",
+      "prompt": "CAT -> KITTEN\nHORSE -> ?",
       "options": [
         "PUPPY",
         "KID",
@@ -23124,7 +23124,7 @@
       "slug": "round-068",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT IS TO COTTON AS\nBOTTLE IS TO ?",
+      "prompt": "SHIRT -> COTTON\nBOTTLE -> ?",
       "options": [
         "PLASTIC",
         "WAX",
@@ -23176,7 +23176,7 @@
       "slug": "round-068",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TEA",
         "COCOA",
@@ -23214,7 +23214,7 @@
       "slug": "round-068",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH IS TO LOW AS\nFLOAT IS TO ?",
+      "prompt": "HIGH -> LOW\nFLOAT -> ?",
       "options": [
         "DOWN",
         "POOR",
@@ -23252,7 +23252,7 @@
       "slug": "round-068",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   5 -> 9,   6 -> ?",
+      "prompt": "2 -> 3,   3 -> 5,   5 -> 9,   6 -> ?",
       "options": [
         "14",
         "11",
@@ -23298,7 +23298,7 @@
       "slug": "round-069",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CAT",
         "SQUARE",
@@ -23365,7 +23365,7 @@
       "slug": "round-069",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DOCTOR IS TO HOSPITAL AS\nBAKER IS TO ?",
+      "prompt": "DOCTOR -> HOSPITAL\nBAKER -> ?",
       "options": [
         "BAKERY",
         "AIRPLANE",
@@ -23388,7 +23388,7 @@
       "slug": "round-069",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   7 -> 24,   5 -> ?",
+      "prompt": "2 -> 9,   3 -> 12,   7 -> 24,   5 -> ?",
       "options": [
         "15",
         "19",
@@ -23411,7 +23411,7 @@
       "slug": "round-069",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FAST IS TO SLOW AS\nBUY IS TO ?",
+      "prompt": "FAST -> SLOW\nBUY -> ?",
       "options": [
         "SELL",
         "PULL",
@@ -23464,7 +23464,7 @@
       "slug": "round-069",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH IS TO PULL AS\nDAY IS TO ?",
+      "prompt": "PUSH -> PULL\nDAY -> ?",
       "options": [
         "SAD",
         "DOWN",
@@ -23516,7 +23516,7 @@
       "slug": "round-069",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TEA",
         "BOAT",
@@ -23554,7 +23554,7 @@
       "slug": "round-069",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BOOK IS TO PAPER AS\nSPOON IS TO ?",
+      "prompt": "BOOK -> PAPER\nSPOON -> ?",
       "options": [
         "PLASTIC",
         "METAL",
@@ -23592,7 +23592,7 @@
       "slug": "round-069",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 4,   5 -> 8,   6 -> 10,   9 -> ?",
+      "prompt": "3 -> 4,   5 -> 8,   6 -> 10,   9 -> ?",
       "options": [
         "6",
         "16",
@@ -23638,7 +23638,7 @@
       "slug": "round-070",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PEA",
         "BROCCOLI",
@@ -23705,7 +23705,7 @@
       "slug": "round-070",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT IS TO AIRPLANE AS\nCHEF IS TO ?",
+      "prompt": "PILOT -> AIRPLANE\nCHEF -> ?",
       "options": [
         "BAKERY",
         "KITCHEN",
@@ -23728,7 +23728,7 @@
       "slug": "round-070",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   5 -> 16,   7 -> ?",
+      "prompt": "2 -> 7,   4 -> 13,   5 -> 16,   7 -> ?",
       "options": [
         "25",
         "19",
@@ -23751,7 +23751,7 @@
       "slug": "round-070",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH IS TO MOUTH AS\nPAGE IS TO ?",
+      "prompt": "TOOTH -> MOUTH\nPAGE -> ?",
       "options": [
         "CAR",
         "PLANT",
@@ -23804,7 +23804,7 @@
       "slug": "round-070",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nEARLY IS TO ?",
+      "prompt": "BEGIN -> END\nEARLY -> ?",
       "options": [
         "DIRTY",
         "LATE",
@@ -23856,7 +23856,7 @@
       "slug": "round-070",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CATFISH",
         "SEVEN",
@@ -23894,7 +23894,7 @@
       "slug": "round-070",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD IS TO QUIET AS\nUP IS TO ?",
+      "prompt": "LOUD -> QUIET\nUP -> ?",
       "options": [
         "LOW",
         "SELL",
@@ -23932,7 +23932,7 @@
       "slug": "round-070",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
+      "prompt": "3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
       "options": [
         "33",
         "38",
@@ -23978,7 +23978,7 @@
       "slug": "round-071",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "LADYBUG",
         "ANT",
@@ -24045,7 +24045,7 @@
       "slug": "round-071",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE IS TO STABLE AS\nSPIDER IS TO ?",
+      "prompt": "HORSE -> STABLE\nSPIDER -> ?",
       "options": [
         "FOLD",
         "HIVE",
@@ -24068,7 +24068,7 @@
       "slug": "round-071",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
+      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
       "options": [
         "18",
         "17",
@@ -24091,7 +24091,7 @@
       "slug": "round-071",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nLIGHT IS TO ?",
+      "prompt": "HARD -> SOFT\nLIGHT -> ?",
       "options": [
         "LATE",
         "CLOSED",
@@ -24144,7 +24144,7 @@
       "slug": "round-071",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "RING IS TO GOLD AS\nSHIRT IS TO ?",
+      "prompt": "RING -> GOLD\nSHIRT -> ?",
       "options": [
         "PLASTIC",
         "PAPER",
@@ -24196,7 +24196,7 @@
       "slug": "round-071",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PLIERS",
         "FLY",
@@ -24234,7 +24234,7 @@
       "slug": "round-071",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER IS TO HAMMER AS\nGARDENER IS TO ?",
+      "prompt": "CARPENTER -> HAMMER\nGARDENER -> ?",
       "options": [
         "SPADE",
         "SCISSORS",
@@ -24272,7 +24272,7 @@
       "slug": "round-071",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
+      "prompt": "4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
       "options": [
         "28",
         "25",
@@ -24318,7 +24318,7 @@
       "slug": "round-072",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FOOT",
         "SHOULDER",
@@ -24385,7 +24385,7 @@
       "slug": "round-072",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE IS TO NARROW AS\nNEAR IS TO ?",
+      "prompt": "WIDE -> NARROW\nNEAR -> ?",
       "options": [
         "SINK",
         "THIN",
@@ -24408,7 +24408,7 @@
       "slug": "round-072",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   5 -> 9,   7 -> 13,   8 -> ?",
+      "prompt": "3 -> 5,   5 -> 9,   7 -> 13,   8 -> ?",
       "options": [
         "13",
         "15",
@@ -24431,7 +24431,7 @@
       "slug": "round-072",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH IS TO PULL AS\nHAPPY IS TO ?",
+      "prompt": "PUSH -> PULL\nHAPPY -> ?",
       "options": [
         "CLOSED",
         "LOW",
@@ -24484,7 +24484,7 @@
       "slug": "round-072",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE IS TO TAKE AS\nBIG IS TO ?",
+      "prompt": "GIVE -> TAKE\nBIG -> ?",
       "options": [
         "SMALL",
         "NARROW",
@@ -24536,7 +24536,7 @@
       "slug": "round-072",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JACKET",
         "SKIRT",
@@ -24574,7 +24574,7 @@
       "slug": "round-072",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "GOAT IS TO KID AS\nHEN IS TO ?",
+      "prompt": "GOAT -> KID\nHEN -> ?",
       "options": [
         "FOAL",
         "CHICK",
@@ -24612,7 +24612,7 @@
       "slug": "round-072",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
+      "prompt": "4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
       "options": [
         "18",
         "17",
@@ -24658,7 +24658,7 @@
       "slug": "round-073",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "RAIN",
         "FOG",
@@ -24725,7 +24725,7 @@
       "slug": "round-073",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT IS TO SINK AS\nBUY IS TO ?",
+      "prompt": "FLOAT -> SINK\nBUY -> ?",
       "options": [
         "LOW",
         "NIGHT",
@@ -24748,7 +24748,7 @@
       "slug": "round-073",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   6 -> 19,   7 -> 22,   5 -> ?",
+      "prompt": "2 -> 7,   6 -> 19,   7 -> 22,   5 -> ?",
       "options": [
         "19",
         "16",
@@ -24771,7 +24771,7 @@
       "slug": "round-073",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD IS TO QUIET AS\nWIDE IS TO ?",
+      "prompt": "LOUD -> QUIET\nWIDE -> ?",
       "options": [
         "SHORT",
         "NARROW",
@@ -24824,7 +24824,7 @@
       "slug": "round-073",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BUY IS TO SELL AS\nPUSH IS TO ?",
+      "prompt": "BUY -> SELL\nPUSH -> ?",
       "options": [
         "LOSE",
         "SMALL",
@@ -24876,7 +24876,7 @@
       "slug": "round-073",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GOLD",
         "PIGEON",
@@ -24914,7 +24914,7 @@
       "slug": "round-073",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO SMALL AS\nDAY IS TO ?",
+      "prompt": "BIG -> SMALL\nDAY -> ?",
       "options": [
         "DOWN",
         "DRY",
@@ -24952,7 +24952,7 @@
       "slug": "round-073",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
+      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
       "options": [
         "16",
         "14",
@@ -24998,7 +24998,7 @@
       "slug": "round-074",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BRONZE",
         "VAN",
@@ -25065,7 +25065,7 @@
       "slug": "round-074",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY IS TO SAD AS\nHIGH IS TO ?",
+      "prompt": "HAPPY -> SAD\nHIGH -> ?",
       "options": [
         "LOW",
         "LATE",
@@ -25088,7 +25088,7 @@
       "slug": "round-074",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 17,   6 -> 20,   7 -> 23,   9 -> ?",
+      "prompt": "5 -> 17,   6 -> 20,   7 -> 23,   9 -> ?",
       "options": [
         "26",
         "39",
@@ -25111,7 +25111,7 @@
       "slug": "round-074",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WET IS TO DRY AS\nWIN IS TO ?",
+      "prompt": "WET -> DRY\nWIN -> ?",
       "options": [
         "LOSE",
         "FAR",
@@ -25164,7 +25164,7 @@
       "slug": "round-074",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "JUDGE IS TO COURT AS\nSAILOR IS TO ?",
+      "prompt": "JUDGE -> COURT\nSAILOR -> ?",
       "options": [
         "AIRPLANE",
         "SHIP",
@@ -25216,7 +25216,7 @@
       "slug": "round-074",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ORANGE",
         "GRAPE",
@@ -25254,7 +25254,7 @@
       "slug": "round-074",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH IS TO PULL AS\nFLOAT IS TO ?",
+      "prompt": "PUSH -> PULL\nFLOAT -> ?",
       "options": [
         "POOR",
         "SOFT",
@@ -25292,7 +25292,7 @@
       "slug": "round-074",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   4 -> 10,   6 -> 16,   9 -> ?",
+      "prompt": "2 -> 4,   4 -> 10,   6 -> 16,   9 -> ?",
       "options": [
         "30",
         "15",
@@ -25338,7 +25338,7 @@
       "slug": "round-075",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SOCCER",
         "TIGER",
@@ -25405,7 +25405,7 @@
       "slug": "round-075",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TOE IS TO FOOT AS\nPAGE IS TO ?",
+      "prompt": "TOE -> FOOT\nPAGE -> ?",
       "options": [
         "BOOK",
         "MOUTH",
@@ -25428,7 +25428,7 @@
       "slug": "round-075",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   7 -> 22,   5 -> ?",
+      "prompt": "2 -> 7,   4 -> 13,   7 -> 22,   5 -> ?",
       "options": [
         "18",
         "11",
@@ -25451,7 +25451,7 @@
       "slug": "round-075",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR IS TO FAR AS\nOLD IS TO ?",
+      "prompt": "NEAR -> FAR\nOLD -> ?",
       "options": [
         "NIGHT",
         "SOFT",
@@ -25504,7 +25504,7 @@
       "slug": "round-075",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FOX IS TO DEN AS\nHORSE IS TO ?",
+      "prompt": "FOX -> DEN\nHORSE -> ?",
       "options": [
         "BURROW",
         "HIVE",
@@ -25556,7 +25556,7 @@
       "slug": "round-075",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PURPLE",
         "YELLOW",
@@ -25594,7 +25594,7 @@
       "slug": "round-075",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BAT IS TO CAVE AS\nPENGUIN IS TO ?",
+      "prompt": "BAT -> CAVE\nPENGUIN -> ?",
       "options": [
         "POND",
         "DESERT",
@@ -25632,7 +25632,7 @@
       "slug": "round-075",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
+      "prompt": "3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
       "options": [
         "36",
         "31",
@@ -25678,7 +25678,7 @@
       "slug": "round-076",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRUM",
         "TENNIS",
@@ -25745,7 +25745,7 @@
       "slug": "round-076",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH IS TO LOW AS\nWET IS TO ?",
+      "prompt": "HIGH -> LOW\nWET -> ?",
       "options": [
         "DRY",
         "NIGHT",
@@ -25768,7 +25768,7 @@
       "slug": "round-076",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
+      "prompt": "2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
       "options": [
         "30",
         "27",
@@ -25791,7 +25791,7 @@
       "slug": "round-076",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK IS TO CLAY AS\nCANDLE IS TO ?",
+      "prompt": "BRICK -> CLAY\nCANDLE -> ?",
       "options": [
         "PLASTIC",
         "WAX",
@@ -25844,7 +25844,7 @@
       "slug": "round-076",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BROOM IS TO SWEEP AS\nKNIFE IS TO ?",
+      "prompt": "BROOM -> SWEEP\nKNIFE -> ?",
       "options": [
         "WRITE",
         "WEIGH",
@@ -25896,7 +25896,7 @@
       "slug": "round-076",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WIND",
         "DRIZZLE",
@@ -25934,7 +25934,7 @@
       "slug": "round-076",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BOOK IS TO PAPER AS\nTIRE IS TO ?",
+      "prompt": "BOOK -> PAPER\nTIRE -> ?",
       "options": [
         "GLASS",
         "RUBBER",
@@ -25972,7 +25972,7 @@
       "slug": "round-076",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   3 -> 4,   7 -> 12,   5 -> ?",
+      "prompt": "2 -> 2,   3 -> 4,   7 -> 12,   5 -> ?",
       "options": [
         "6",
         "7",
@@ -26018,7 +26018,7 @@
       "slug": "round-077",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GRAPE",
         "MANGO",
@@ -26085,7 +26085,7 @@
       "slug": "round-077",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK IS TO CLAY AS\nBOOK IS TO ?",
+      "prompt": "BRICK -> CLAY\nBOOK -> ?",
       "options": [
         "PAPER",
         "PLASTIC",
@@ -26108,7 +26108,7 @@
       "slug": "round-077",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 8,   6 -> 10,   7 -> 12,   8 -> ?",
+      "prompt": "5 -> 8,   6 -> 10,   7 -> 12,   8 -> ?",
       "options": [
         "14",
         "13",
@@ -26131,7 +26131,7 @@
       "slug": "round-077",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DUCK IS TO DUCKLING AS\nBEAR IS TO ?",
+      "prompt": "DUCK -> DUCKLING\nBEAR -> ?",
       "options": [
         "LAMB",
         "CUB",
@@ -26184,7 +26184,7 @@
       "slug": "round-077",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BUY IS TO SELL AS\nFULL IS TO ?",
+      "prompt": "BUY -> SELL\nFULL -> ?",
       "options": [
         "TAKE",
         "POOR",
@@ -26236,7 +26236,7 @@
       "slug": "round-077",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "STOOL",
@@ -26274,7 +26274,7 @@
       "slug": "round-077",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FISH IS TO POND AS\nFOX IS TO ?",
+      "prompt": "FISH -> POND\nFOX -> ?",
       "options": [
         "WEB",
         "DEN",
@@ -26312,7 +26312,7 @@
       "slug": "round-077",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
+      "prompt": "3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
       "options": [
         "24",
         "35",
@@ -26358,7 +26358,7 @@
       "slug": "round-078",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SHEEP",
         "MERCURY",
@@ -26425,7 +26425,7 @@
       "slug": "round-078",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RICH IS TO POOR AS\nHAPPY IS TO ?",
+      "prompt": "RICH -> POOR\nHAPPY -> ?",
       "options": [
         "LATE",
         "SAD",
@@ -26448,7 +26448,7 @@
       "slug": "round-078",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
+      "prompt": "2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
       "options": [
         "17",
         "16",
@@ -26471,7 +26471,7 @@
       "slug": "round-078",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BUY IS TO SELL AS\nHOT IS TO ?",
+      "prompt": "BUY -> SELL\nHOT -> ?",
       "options": [
         "SAD",
         "DOWN",
@@ -26524,7 +26524,7 @@
       "slug": "round-078",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD IS TO CHIRP AS\nCAT IS TO ?",
+      "prompt": "BIRD -> CHIRP\nCAT -> ?",
       "options": [
         "HOWL",
         "HOOT",
@@ -26576,7 +26576,7 @@
       "slug": "round-078",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CATFISH",
         "SHARK",
@@ -26614,7 +26614,7 @@
       "slug": "round-078",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "CANDLE IS TO WAX AS\nTABLE IS TO ?",
+      "prompt": "CANDLE -> WAX\nTABLE -> ?",
       "options": [
         "GLASS",
         "GOLD",
@@ -26652,7 +26652,7 @@
       "slug": "round-078",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 11,   6 -> 13,   7 -> 15,   8 -> ?",
+      "prompt": "5 -> 11,   6 -> 13,   7 -> 15,   8 -> ?",
       "options": [
         "17",
         "7",
@@ -26698,7 +26698,7 @@
       "slug": "round-079",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MILK",
         "YACHT",
@@ -26765,7 +26765,7 @@
       "slug": "round-079",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SAIL IS TO BOAT AS\nWHEEL IS TO ?",
+      "prompt": "SAIL -> BOAT\nWHEEL -> ?",
       "options": [
         "HAND",
         "FLOWER",
@@ -26788,7 +26788,7 @@
       "slug": "round-079",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   6 -> 19,   7 -> 22,   8 -> ?",
+      "prompt": "4 -> 13,   6 -> 19,   7 -> 22,   8 -> ?",
       "options": [
         "22",
         "23",
@@ -26811,7 +26811,7 @@
       "slug": "round-079",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FULL IS TO EMPTY AS\nOPEN IS TO ?",
+      "prompt": "FULL -> EMPTY\nOPEN -> ?",
       "options": [
         "WEAK",
         "COLD",
@@ -26864,7 +26864,7 @@
       "slug": "round-079",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DUCK IS TO QUACK AS\nLION IS TO ?",
+      "prompt": "DUCK -> QUACK\nLION -> ?",
       "options": [
         "HISS",
         "ROAR",
@@ -26916,7 +26916,7 @@
       "slug": "round-079",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GRASSHOPPER",
         "FOOT",
@@ -26954,7 +26954,7 @@
       "slug": "round-079",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DAY IS TO NIGHT AS\nLIGHT IS TO ?",
+      "prompt": "DAY -> NIGHT\nLIGHT -> ?",
       "options": [
         "DARK",
         "POOR",
@@ -26992,7 +26992,7 @@
       "slug": "round-079",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 15,   5 -> 18,   6 -> 21,   9 -> ?",
+      "prompt": "4 -> 15,   5 -> 18,   6 -> 21,   9 -> ?",
       "options": [
         "32",
         "35",
@@ -27038,7 +27038,7 @@
       "slug": "round-080",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BROCCOLI",
         "ANT",
@@ -27105,7 +27105,7 @@
       "slug": "round-080",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WIN IS TO LOSE AS\nHARD IS TO ?",
+      "prompt": "WIN -> LOSE\nHARD -> ?",
       "options": [
         "WEAK",
         "SLOW",
@@ -27128,7 +27128,7 @@
       "slug": "round-080",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 16,   6 -> 19,   7 -> ?",
+      "prompt": "2 -> 7,   5 -> 16,   6 -> 19,   7 -> ?",
       "options": [
         "24",
         "27",
@@ -27151,7 +27151,7 @@
       "slug": "round-080",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SNAKE IS TO HISS AS\nCAT IS TO ?",
+      "prompt": "SNAKE -> HISS\nCAT -> ?",
       "options": [
         "MEOW",
         "BUZZ",
@@ -27204,7 +27204,7 @@
       "slug": "round-080",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PENGUIN IS TO ICE AS\nWHALE IS TO ?",
+      "prompt": "PENGUIN -> ICE\nWHALE -> ?",
       "options": [
         "OCEAN",
         "CAVE",
@@ -27256,7 +27256,7 @@
       "slug": "round-080",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRILL",
         "WRENCH",
@@ -27294,7 +27294,7 @@
       "slug": "round-080",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FROG IS TO TADPOLE AS\nKANGAROO IS TO ?",
+      "prompt": "FROG -> TADPOLE\nKANGAROO -> ?",
       "options": [
         "CUB",
         "JOEY",
@@ -27332,7 +27332,7 @@
       "slug": "round-080",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 10,   7 -> 26,   9 -> ?",
+      "prompt": "2 -> 6,   3 -> 10,   7 -> 26,   9 -> ?",
       "options": [
         "32",
         "33",
@@ -27378,7 +27378,7 @@
       "slug": "round-081",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TWELVE",
         "FIFTY",
@@ -27445,7 +27445,7 @@
       "slug": "round-081",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT IS TO DARK AS\nFULL IS TO ?",
+      "prompt": "LIGHT -> DARK\nFULL -> ?",
       "options": [
         "DOWN",
         "EMPTY",
@@ -27468,7 +27468,7 @@
       "slug": "round-081",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   6 -> 15,   7 -> 17,   8 -> ?",
+      "prompt": "2 -> 7,   6 -> 15,   7 -> 17,   8 -> ?",
       "options": [
         "19",
         "24",
@@ -27491,7 +27491,7 @@
       "slug": "round-081",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH IS TO MOUTH AS\nFINGER IS TO ?",
+      "prompt": "TOOTH -> MOUTH\nFINGER -> ?",
       "options": [
         "CAR",
         "PLANT",
@@ -27544,7 +27544,7 @@
       "slug": "round-081",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "THICK IS TO THIN AS\nHAPPY IS TO ?",
+      "prompt": "THICK -> THIN\nHAPPY -> ?",
       "options": [
         "POOR",
         "DARK",
@@ -27596,7 +27596,7 @@
       "slug": "round-081",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GUITAR",
         "BUS",
@@ -27634,7 +27634,7 @@
       "slug": "round-081",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN IS TO HEAT AS\nEYE IS TO ?",
+      "prompt": "OVEN -> HEAT\nEYE -> ?",
       "options": [
         "WEIGH",
         "TIME",
@@ -27672,7 +27672,7 @@
       "slug": "round-081",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 13,   5 -> 16,   6 -> ?",
+      "prompt": "3 -> 10,   4 -> 13,   5 -> 16,   6 -> ?",
       "options": [
         "20",
         "19",
@@ -27718,7 +27718,7 @@
       "slug": "round-082",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TRUCK",
         "WAGON",
@@ -27785,7 +27785,7 @@
       "slug": "round-082",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY IS TO LATE AS\nWIDE IS TO ?",
+      "prompt": "EARLY -> LATE\nWIDE -> ?",
       "options": [
         "TAKE",
         "NARROW",
@@ -27808,7 +27808,7 @@
       "slug": "round-082",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 6,   5 -> 8,   7 -> 12,   9 -> ?",
+      "prompt": "4 -> 6,   5 -> 8,   7 -> 12,   9 -> ?",
       "options": [
         "16",
         "14",
@@ -27831,7 +27831,7 @@
       "slug": "round-082",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD IS TO QUIET AS\nDEEP IS TO ?",
+      "prompt": "LOUD -> QUIET\nDEEP -> ?",
       "options": [
         "NEW",
         "SHALLOW",
@@ -27884,7 +27884,7 @@
       "slug": "round-082",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "ANT IS TO ANTHILL AS\nBIRD IS TO ?",
+      "prompt": "ANT -> ANTHILL\nBIRD -> ?",
       "options": [
         "NEST",
         "HIVE",
@@ -27936,7 +27936,7 @@
       "slug": "round-082",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "TEA",
         "SODA",
@@ -27974,7 +27974,7 @@
       "slug": "round-082",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD IS TO CHIRP AS\nLION IS TO ?",
+      "prompt": "BIRD -> CHIRP\nLION -> ?",
       "options": [
         "OINK",
         "ROAR",
@@ -28012,7 +28012,7 @@
       "slug": "round-082",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   3 -> 14,   6 -> 26,   7 -> ?",
+      "prompt": "2 -> 10,   3 -> 14,   6 -> 26,   7 -> ?",
       "options": [
         "30",
         "40",
@@ -28058,7 +28058,7 @@
       "slug": "round-083",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "KNEE",
         "CHIN",
@@ -28125,7 +28125,7 @@
       "slug": "round-083",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HOT IS TO COLD AS\nCLEAN IS TO ?",
+      "prompt": "HOT -> COLD\nCLEAN -> ?",
       "options": [
         "SELL",
         "DIRTY",
@@ -28148,7 +28148,7 @@
       "slug": "round-083",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   5 -> 13,   7 -> 19,   9 -> ?",
+      "prompt": "3 -> 7,   5 -> 13,   7 -> 19,   9 -> ?",
       "options": [
         "23",
         "35",
@@ -28171,7 +28171,7 @@
       "slug": "round-083",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT IS TO AIRPLANE AS\nACTOR IS TO ?",
+      "prompt": "PILOT -> AIRPLANE\nACTOR -> ?",
       "options": [
         "KITCHEN",
         "FARM",
@@ -28224,7 +28224,7 @@
       "slug": "round-083",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TOE IS TO FOOT AS\nTOOTH IS TO ?",
+      "prompt": "TOE -> FOOT\nTOOTH -> ?",
       "options": [
         "HOUSE",
         "MOUTH",
@@ -28276,7 +28276,7 @@
       "slug": "round-083",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "STOOL",
         "COCOA",
@@ -28314,7 +28314,7 @@
       "slug": "round-083",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FULL IS TO EMPTY AS\nGIVE IS TO ?",
+      "prompt": "FULL -> EMPTY\nGIVE -> ?",
       "options": [
         "TAKE",
         "SMALL",
@@ -28352,7 +28352,7 @@
       "slug": "round-083",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 19,   5 -> 23,   6 -> 27,   8 -> ?",
+      "prompt": "4 -> 19,   5 -> 23,   6 -> 27,   8 -> ?",
       "options": [
         "25",
         "40",
@@ -28398,7 +28398,7 @@
       "slug": "round-084",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BRONZE",
         "BRASS",
@@ -28465,7 +28465,7 @@
       "slug": "round-084",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BIG IS TO SMALL AS\nOLD IS TO ?",
+      "prompt": "BIG -> SMALL\nOLD -> ?",
       "options": [
         "LATE",
         "DRY",
@@ -28488,7 +28488,7 @@
       "slug": "round-084",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   4 -> 10,   6 -> 14,   5 -> ?",
+      "prompt": "2 -> 6,   4 -> 10,   6 -> 14,   5 -> ?",
       "options": [
         "12",
         "9",
@@ -28511,7 +28511,7 @@
       "slug": "round-084",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH IS TO MOUTH AS\nSAIL IS TO ?",
+      "prompt": "TOOTH -> MOUTH\nSAIL -> ?",
       "options": [
         "CAR",
         "PLANT",
@@ -28564,7 +28564,7 @@
       "slug": "round-084",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "MONKEY IS TO JUNGLE AS\nBAT IS TO ?",
+      "prompt": "MONKEY -> JUNGLE\nBAT -> ?",
       "options": [
         "ICE",
         "CAVE",
@@ -28616,7 +28616,7 @@
       "slug": "round-084",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CIRCLE",
         "KIWI",
@@ -28654,7 +28654,7 @@
       "slug": "round-084",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BUY IS TO SELL AS\nFAST IS TO ?",
+      "prompt": "BUY -> SELL\nFAST -> ?",
       "options": [
         "DOWN",
         "LATE",
@@ -28692,7 +28692,7 @@
       "slug": "round-084",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   4 -> 10,   6 -> 16,   8 -> ?",
+      "prompt": "2 -> 4,   4 -> 10,   6 -> 16,   8 -> ?",
       "options": [
         "22",
         "24",
@@ -28738,7 +28738,7 @@
       "slug": "round-085",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WRENCH",
         "SCOOTER",
@@ -28805,7 +28805,7 @@
       "slug": "round-085",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FAST IS TO SLOW AS\nTHICK IS TO ?",
+      "prompt": "FAST -> SLOW\nTHICK -> ?",
       "options": [
         "END",
         "THIN",
@@ -28828,7 +28828,7 @@
       "slug": "round-085",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
+      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
       "options": [
         "26",
         "29",
@@ -28851,7 +28851,7 @@
       "slug": "round-085",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HEN IS TO CHICK AS\nGOAT IS TO ?",
+      "prompt": "HEN -> CHICK\nGOAT -> ?",
       "options": [
         "CALF",
         "FAWN",
@@ -28904,7 +28904,7 @@
       "slug": "round-085",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEAR IS TO CUB AS\nDUCK IS TO ?",
+      "prompt": "BEAR -> CUB\nDUCK -> ?",
       "options": [
         "TADPOLE",
         "FOAL",
@@ -28956,7 +28956,7 @@
       "slug": "round-085",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HORSE",
         "MILK",
@@ -28994,7 +28994,7 @@
       "slug": "round-085",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH IS TO PULL AS\nGIVE IS TO ?",
+      "prompt": "PUSH -> PULL\nGIVE -> ?",
       "options": [
         "TAKE",
         "DRY",
@@ -29032,7 +29032,7 @@
       "slug": "round-085",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   5 -> 22,   7 -> 30,   6 -> ?",
+      "prompt": "2 -> 10,   5 -> 22,   7 -> 30,   6 -> ?",
       "options": [
         "36",
         "26",
@@ -29078,7 +29078,7 @@
       "slug": "round-086",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SHOVEL",
         "SLEET",
@@ -29145,7 +29145,7 @@
       "slug": "round-086",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RICH IS TO POOR AS\nGIVE IS TO ?",
+      "prompt": "RICH -> POOR\nGIVE -> ?",
       "options": [
         "TAKE",
         "CLOSED",
@@ -29168,7 +29168,7 @@
       "slug": "round-086",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 8,   6 -> 10,   7 -> 12,   9 -> ?",
+      "prompt": "5 -> 8,   6 -> 10,   7 -> 12,   9 -> ?",
       "options": [
         "14",
         "26",
@@ -29191,7 +29191,7 @@
       "slug": "round-086",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WRITER IS TO PEN AS\nTAILOR IS TO ?",
+      "prompt": "WRITER -> PEN\nTAILOR -> ?",
       "options": [
         "PICKAXE",
         "HAMMER",
@@ -29244,7 +29244,7 @@
       "slug": "round-086",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nBEGIN IS TO ?",
+      "prompt": "OPEN -> CLOSED\nBEGIN -> ?",
       "options": [
         "THIN",
         "END",
@@ -29296,7 +29296,7 @@
       "slug": "round-086",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "JACKET",
         "SALMON",
@@ -29334,7 +29334,7 @@
       "slug": "round-086",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FULL IS TO EMPTY AS\nPUSH IS TO ?",
+      "prompt": "FULL -> EMPTY\nPUSH -> ?",
       "options": [
         "SMALL",
         "DIRTY",
@@ -29372,7 +29372,7 @@
       "slug": "round-086",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   5 -> 12,   6 -> 14,   8 -> ?",
+      "prompt": "2 -> 6,   5 -> 12,   6 -> 14,   8 -> ?",
       "options": [
         "17",
         "16",
@@ -29418,7 +29418,7 @@
       "slug": "round-087",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "DRESS",
         "SCARF",
@@ -29485,7 +29485,7 @@
       "slug": "round-087",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CAT IS TO KITTEN AS\nDOG IS TO ?",
+      "prompt": "CAT -> KITTEN\nDOG -> ?",
       "options": [
         "FAWN",
         "DUCKLING",
@@ -29508,7 +29508,7 @@
       "slug": "round-087",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 7,   6 -> 13,   9 -> ?",
+      "prompt": "2 -> 5,   3 -> 7,   6 -> 13,   9 -> ?",
       "options": [
         "19",
         "16",
@@ -29531,7 +29531,7 @@
       "slug": "round-087",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PIG IS TO OINK AS\nFROG IS TO ?",
+      "prompt": "PIG -> OINK\nFROG -> ?",
       "options": [
         "BARK",
         "CROAK",
@@ -29584,7 +29584,7 @@
       "slug": "round-087",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO BARN AS\nDOG IS TO ?",
+      "prompt": "COW -> BARN\nDOG -> ?",
       "options": [
         "KENNEL",
         "DEN",
@@ -29636,7 +29636,7 @@
       "slug": "round-087",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "RAIN",
         "GLIDER",
@@ -29674,7 +29674,7 @@
       "slug": "round-087",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SCALE IS TO WEIGH AS\nEAR IS TO ?",
+      "prompt": "SCALE -> WEIGH\nEAR -> ?",
       "options": [
         "WRITE",
         "CUT",
@@ -29712,7 +29712,7 @@
       "slug": "round-087",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 18,   6 -> 22,   7 -> 26,   9 -> ?",
+      "prompt": "5 -> 18,   6 -> 22,   7 -> 26,   9 -> ?",
       "options": [
         "36",
         "34",
@@ -29758,7 +29758,7 @@
       "slug": "round-088",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PLUM",
         "BANANA",
@@ -29825,7 +29825,7 @@
       "slug": "round-088",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LEFT IS TO RIGHT AS\nDAY IS TO ?",
+      "prompt": "LEFT -> RIGHT\nDAY -> ?",
       "options": [
         "DRY",
         "NIGHT",
@@ -29848,7 +29848,7 @@
       "slug": "round-088",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   5 -> 9,   9 -> ?",
+      "prompt": "2 -> 3,   4 -> 7,   5 -> 9,   9 -> ?",
       "options": [
         "17",
         "18",
@@ -29871,7 +29871,7 @@
       "slug": "round-088",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CLEAN IS TO DIRTY AS\nWIN IS TO ?",
+      "prompt": "CLEAN -> DIRTY\nWIN -> ?",
       "options": [
         "RIGHT",
         "SELL",
@@ -29924,7 +29924,7 @@
       "slug": "round-088",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LION IS TO SAVANNA AS\nWHALE IS TO ?",
+      "prompt": "LION -> SAVANNA\nWHALE -> ?",
       "options": [
         "WATER",
         "POND",
@@ -29976,7 +29976,7 @@
       "slug": "round-088",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BLIMP",
         "LEMONADE",
@@ -30014,7 +30014,7 @@
       "slug": "round-088",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nTALL IS TO ?",
+      "prompt": "BEGIN -> END\nTALL -> ?",
       "options": [
         "SHORT",
         "NIGHT",
@@ -30052,7 +30052,7 @@
       "slug": "round-088",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   6 -> 11,   9 -> ?",
+      "prompt": "2 -> 3,   4 -> 7,   6 -> 11,   9 -> ?",
       "options": [
         "19",
         "20",
@@ -30098,7 +30098,7 @@
       "slug": "round-089",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GOLD",
         "NICKEL",
@@ -30165,7 +30165,7 @@
       "slug": "round-089",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD IS TO QUIET AS\nBIG IS TO ?",
+      "prompt": "LOUD -> QUIET\nBIG -> ?",
       "options": [
         "SHORT",
         "PULL",
@@ -30188,7 +30188,7 @@
       "slug": "round-089",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 10,   6 -> 19,   5 -> ?",
+      "prompt": "2 -> 7,   3 -> 10,   6 -> 19,   5 -> ?",
       "options": [
         "16",
         "17",
@@ -30211,7 +30211,7 @@
       "slug": "round-089",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CANDLE IS TO WAX AS\nBRICK IS TO ?",
+      "prompt": "CANDLE -> WAX\nBRICK -> ?",
       "options": [
         "CLAY",
         "PAPER",
@@ -30264,7 +30264,7 @@
       "slug": "round-089",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TALL IS TO SHORT AS\nOLD IS TO ?",
+      "prompt": "TALL -> SHORT\nOLD -> ?",
       "options": [
         "PULL",
         "NARROW",
@@ -30316,7 +30316,7 @@
       "slug": "round-089",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PENTAGON",
         "ELM",
@@ -30354,7 +30354,7 @@
       "slug": "round-089",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH IS TO LOW AS\nLEFT IS TO ?",
+      "prompt": "HIGH -> LOW\nLEFT -> ?",
       "options": [
         "SMALL",
         "RIGHT",
@@ -30392,7 +30392,7 @@
       "slug": "round-089",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
+      "prompt": "4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
       "options": [
         "18",
         "28",
@@ -30438,7 +30438,7 @@
       "slug": "round-090",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CABINET",
         "NINETY",
@@ -30505,7 +30505,7 @@
       "slug": "round-090",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH IS TO PULL AS\nLIGHT IS TO ?",
+      "prompt": "PUSH -> PULL\nLIGHT -> ?",
       "options": [
         "TAKE",
         "DARK",
@@ -30528,7 +30528,7 @@
       "slug": "round-090",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n4 -> 9,   5 -> 11,   7 -> 15,   6 -> ?",
+      "prompt": "4 -> 9,   5 -> 11,   7 -> 15,   6 -> ?",
       "options": [
         "23",
         "11",
@@ -30551,7 +30551,7 @@
       "slug": "round-090",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR IS TO FAR AS\nFULL IS TO ?",
+      "prompt": "NEAR -> FAR\nFULL -> ?",
       "options": [
         "EMPTY",
         "NARROW",
@@ -30604,7 +30604,7 @@
       "slug": "round-090",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HOT IS TO COLD AS\nLIGHT IS TO ?",
+      "prompt": "HOT -> COLD\nLIGHT -> ?",
       "options": [
         "TAKE",
         "DRY",
@@ -30656,7 +30656,7 @@
       "slug": "round-090",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FIFTY",
         "TWELVE",
@@ -30694,7 +30694,7 @@
       "slug": "round-090",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DOCTOR IS TO HOSPITAL AS\nJUDGE IS TO ?",
+      "prompt": "DOCTOR -> HOSPITAL\nJUDGE -> ?",
       "options": [
         "COURT",
         "FARM",
@@ -30732,7 +30732,7 @@
       "slug": "round-090",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   5 -> 9,   7 -> ?",
+      "prompt": "2 -> 3,   4 -> 7,   5 -> 9,   7 -> ?",
       "options": [
         "15",
         "14",
@@ -30778,7 +30778,7 @@
       "slug": "round-091",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CABINET",
         "DESK",
@@ -30845,7 +30845,7 @@
       "slug": "round-091",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CLEAN IS TO DIRTY AS\nLOUD IS TO ?",
+      "prompt": "CLEAN -> DIRTY\nLOUD -> ?",
       "options": [
         "QUIET",
         "NARROW",
@@ -30868,7 +30868,7 @@
       "slug": "round-091",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 14,   6 -> 20,   7 -> ?",
+      "prompt": "3 -> 11,   4 -> 14,   6 -> 20,   7 -> ?",
       "options": [
         "24",
         "21",
@@ -30891,7 +30891,7 @@
       "slug": "round-091",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "OLD IS TO NEW AS\nHIGH IS TO ?",
+      "prompt": "OLD -> NEW\nHIGH -> ?",
       "options": [
         "SLOW",
         "SOFT",
@@ -30944,7 +30944,7 @@
       "slug": "round-091",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PIG IS TO PEN AS\nFISH IS TO ?",
+      "prompt": "PIG -> PEN\nFISH -> ?",
       "options": [
         "FOLD",
         "KENNEL",
@@ -30996,7 +30996,7 @@
       "slug": "round-091",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "WASP",
         "OVAL",
@@ -31034,7 +31034,7 @@
       "slug": "round-091",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "COW IS TO MOO AS\nCAT IS TO ?",
+      "prompt": "COW -> MOO\nCAT -> ?",
       "options": [
         "OINK",
         "MEOW",
@@ -31072,7 +31072,7 @@
       "slug": "round-091",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 12,   5 -> 18,   7 -> 24,   6 -> ?",
+      "prompt": "3 -> 12,   5 -> 18,   7 -> 24,   6 -> ?",
       "options": [
         "21",
         "18",
@@ -31118,7 +31118,7 @@
       "slug": "round-092",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "VOLLEYBALL",
         "FOX",
@@ -31185,7 +31185,7 @@
       "slug": "round-092",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WOLF IS TO HOWL AS\nPIG IS TO ?",
+      "prompt": "WOLF -> HOWL\nPIG -> ?",
       "options": [
         "OINK",
         "NEIGH",
@@ -31208,7 +31208,7 @@
       "slug": "round-092",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 4,   6 -> 10,   7 -> 12,   8 -> ?",
+      "prompt": "3 -> 4,   6 -> 10,   7 -> 12,   8 -> ?",
       "options": [
         "12",
         "13",
@@ -31231,7 +31231,7 @@
       "slug": "round-092",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR IS TO FAR AS\nLEFT IS TO ?",
+      "prompt": "NEAR -> FAR\nLEFT -> ?",
       "options": [
         "THIN",
         "POOR",
@@ -31284,7 +31284,7 @@
       "slug": "round-092",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TABLE IS TO WOOD AS\nRING IS TO ?",
+      "prompt": "TABLE -> WOOD\nRING -> ?",
       "options": [
         "GOLD",
         "WAX",
@@ -31336,7 +31336,7 @@
       "slug": "round-092",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "ROCKET",
         "GLIDER",
@@ -31374,7 +31374,7 @@
       "slug": "round-092",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FROG IS TO CROAK AS\nBIRD IS TO ?",
+      "prompt": "FROG -> CROAK\nBIRD -> ?",
       "options": [
         "QUACK",
         "CHIRP",
@@ -31412,7 +31412,7 @@
       "slug": "round-092",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   7 -> 31,   8 -> ?",
+      "prompt": "3 -> 15,   4 -> 19,   7 -> 31,   8 -> ?",
       "options": [
         "38",
         "34",
@@ -31458,7 +31458,7 @@
       "slug": "round-093",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "HAIL",
         "SOFA",
@@ -31525,7 +31525,7 @@
       "slug": "round-093",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "OWL IS TO HOOT AS\nDUCK IS TO ?",
+      "prompt": "OWL -> HOOT\nDUCK -> ?",
       "options": [
         "ROAR",
         "QUACK",
@@ -31548,7 +31548,7 @@
       "slug": "round-093",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   8 -> ?",
+      "prompt": "2 -> 9,   3 -> 12,   6 -> 21,   8 -> ?",
       "options": [
         "27",
         "29",
@@ -31571,7 +31571,7 @@
       "slug": "round-093",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD IS TO QUIET AS\nFLOAT IS TO ?",
+      "prompt": "LOUD -> QUIET\nFLOAT -> ?",
       "options": [
         "DIRTY",
         "SINK",
@@ -31624,7 +31624,7 @@
       "slug": "round-093",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TOE IS TO FOOT AS\nWHEEL IS TO ?",
+      "prompt": "TOE -> FOOT\nWHEEL -> ?",
       "options": [
         "HAND",
         "FLOWER",
@@ -31676,7 +31676,7 @@
       "slug": "round-093",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PEA",
         "CARP",
@@ -31714,7 +31714,7 @@
       "slug": "round-093",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PETAL IS TO FLOWER AS\nPAGE IS TO ?",
+      "prompt": "PETAL -> FLOWER\nPAGE -> ?",
       "options": [
         "PLANT",
         "BOOK",
@@ -31752,7 +31752,7 @@
       "slug": "round-093",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 12,   4 -> 15,   6 -> 21,   8 -> ?",
+      "prompt": "3 -> 12,   4 -> 15,   6 -> 21,   8 -> ?",
       "options": [
         "25",
         "17",
@@ -31798,7 +31798,7 @@
       "slug": "round-094",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "COPPER",
         "BROWN",
@@ -31865,7 +31865,7 @@
       "slug": "round-094",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF IS TO KITCHEN AS\nJUDGE IS TO ?",
+      "prompt": "CHEF -> KITCHEN\nJUDGE -> ?",
       "options": [
         "BAKERY",
         "COURT",
@@ -31888,7 +31888,7 @@
       "slug": "round-094",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 10,   5 -> 16,   7 -> ?",
+      "prompt": "2 -> 7,   3 -> 10,   5 -> 16,   7 -> ?",
       "options": [
         "12",
         "19",
@@ -31911,7 +31911,7 @@
       "slug": "round-094",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HOT IS TO COLD AS\nOPEN IS TO ?",
+      "prompt": "HOT -> COLD\nOPEN -> ?",
       "options": [
         "LOW",
         "SHORT",
@@ -31964,7 +31964,7 @@
       "slug": "round-094",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR IS TO FAR AS\nRICH IS TO ?",
+      "prompt": "NEAR -> FAR\nRICH -> ?",
       "options": [
         "QUIET",
         "SINK",
@@ -32016,7 +32016,7 @@
       "slug": "round-094",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "MAPLE",
         "ELM",
@@ -32054,7 +32054,7 @@
       "slug": "round-094",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "TIRE IS TO RUBBER AS\nSPOON IS TO ?",
+      "prompt": "TIRE -> RUBBER\nSPOON -> ?",
       "options": [
         "PLASTIC",
         "METAL",
@@ -32092,7 +32092,7 @@
       "slug": "round-094",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   5 -> 9,   6 -> ?",
+      "prompt": "3 -> 5,   4 -> 7,   5 -> 9,   6 -> ?",
       "options": [
         "11",
         "8",
@@ -32138,7 +32138,7 @@
       "slug": "round-095",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "BIRCH",
         "REDWOOD",
@@ -32205,7 +32205,7 @@
       "slug": "round-095",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SNAKE IS TO HISS AS\nFROG IS TO ?",
+      "prompt": "SNAKE -> HISS\nFROG -> ?",
       "options": [
         "CHIRP",
         "ROAR",
@@ -32228,7 +32228,7 @@
       "slug": "round-095",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 13,   6 -> 15,   7 -> 17,   9 -> ?",
+      "prompt": "5 -> 13,   6 -> 15,   7 -> 17,   9 -> ?",
       "options": [
         "19",
         "18",
@@ -32251,7 +32251,7 @@
       "slug": "round-095",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LION IS TO ROAR AS\nHORSE IS TO ?",
+      "prompt": "LION -> ROAR\nHORSE -> ?",
       "options": [
         "NEIGH",
         "MEOW",
@@ -32304,7 +32304,7 @@
       "slug": "round-095",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT IS TO SINK AS\nHARD IS TO ?",
+      "prompt": "FLOAT -> SINK\nHARD -> ?",
       "options": [
         "THIN",
         "SOFT",
@@ -32356,7 +32356,7 @@
       "slug": "round-095",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "FOG",
         "THUNDER",
@@ -32394,7 +32394,7 @@
       "slug": "round-095",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LEFT IS TO RIGHT AS\nPUSH IS TO ?",
+      "prompt": "LEFT -> RIGHT\nPUSH -> ?",
       "options": [
         "SLOW",
         "COLD",
@@ -32432,7 +32432,7 @@
       "slug": "round-095",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   4 -> 10,   6 -> ?",
+      "prompt": "2 -> 4,   3 -> 7,   4 -> 10,   6 -> ?",
       "options": [
         "16",
         "18",
@@ -32478,7 +32478,7 @@
       "slug": "round-096",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CRICKET",
         "TENNIS",
@@ -32545,7 +32545,7 @@
       "slug": "round-096",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HOT IS TO COLD AS\nWIDE IS TO ?",
+      "prompt": "HOT -> COLD\nWIDE -> ?",
       "options": [
         "RIGHT",
         "SELL",
@@ -32568,7 +32568,7 @@
       "slug": "round-096",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   7 -> 20,   9 -> ?",
+      "prompt": "3 -> 8,   5 -> 14,   7 -> 20,   9 -> ?",
       "options": [
         "23",
         "24",
@@ -32591,7 +32591,7 @@
       "slug": "round-096",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "THICK IS TO THIN AS\nNEAR IS TO ?",
+      "prompt": "THICK -> THIN\nNEAR -> ?",
       "options": [
         "NEW",
         "FAR",
@@ -32644,7 +32644,7 @@
       "slug": "round-096",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN IS TO HEAT AS\nBROOM IS TO ?",
+      "prompt": "OVEN -> HEAT\nBROOM -> ?",
       "options": [
         "MEASURE",
         "SWEEP",
@@ -32696,7 +32696,7 @@
       "slug": "round-096",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CELLO",
         "BANJO",
@@ -32734,7 +32734,7 @@
       "slug": "round-096",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "RABBIT IS TO BURROW AS\nFISH IS TO ?",
+      "prompt": "RABBIT -> BURROW\nFISH -> ?",
       "options": [
         "POND",
         "STABLE",
@@ -32772,7 +32772,7 @@
       "slug": "round-096",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 13,   7 -> 17,   9 -> ?",
+      "prompt": "2 -> 7,   5 -> 13,   7 -> 17,   9 -> ?",
       "options": [
         "18",
         "19",
@@ -32818,7 +32818,7 @@
       "slug": "round-097",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CLARINET",
         "DRUM",
@@ -32885,7 +32885,7 @@
       "slug": "round-097",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KANGAROO IS TO JOEY AS\nDOG IS TO ?",
+      "prompt": "KANGAROO -> JOEY\nDOG -> ?",
       "options": [
         "TADPOLE",
         "CALF",
@@ -32908,7 +32908,7 @@
       "slug": "round-097",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   5 -> 16,   7 -> 22,   6 -> ?",
+      "prompt": "3 -> 10,   5 -> 16,   7 -> 22,   6 -> ?",
       "options": [
         "20",
         "19",
@@ -32931,7 +32931,7 @@
       "slug": "round-097",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD IS TO QUIET AS\nWET IS TO ?",
+      "prompt": "LOUD -> QUIET\nWET -> ?",
       "options": [
         "WEAK",
         "SHORT",
@@ -32984,7 +32984,7 @@
       "slug": "round-097",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PAINTER IS TO BRUSH AS\nFARMER IS TO ?",
+      "prompt": "PAINTER -> BRUSH\nFARMER -> ?",
       "options": [
         "NEEDLE",
         "PLOW",
@@ -33036,7 +33036,7 @@
       "slug": "round-097",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "DESK",
@@ -33074,7 +33074,7 @@
       "slug": "round-097",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BUY IS TO SELL AS\nTHICK IS TO ?",
+      "prompt": "BUY -> SELL\nTHICK -> ?",
       "options": [
         "THIN",
         "DARK",
@@ -33112,7 +33112,7 @@
       "slug": "round-097",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   5 -> 23,   7 -> 31,   9 -> ?",
+      "prompt": "3 -> 15,   5 -> 23,   7 -> 31,   9 -> ?",
       "options": [
         "44",
         "40",
@@ -33158,7 +33158,7 @@
       "slug": "round-098",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PARROT",
         "ROCKET",
@@ -33225,7 +33225,7 @@
       "slug": "round-098",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN IS TO END AS\nBIG IS TO ?",
+      "prompt": "BEGIN -> END\nBIG -> ?",
       "options": [
         "SAD",
         "PULL",
@@ -33248,7 +33248,7 @@
       "slug": "round-098",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
+      "prompt": "2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
       "options": [
         "20",
         "19",
@@ -33271,7 +33271,7 @@
       "slug": "round-098",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD IS TO NEST AS\nDOG IS TO ?",
+      "prompt": "BIRD -> NEST\nDOG -> ?",
       "options": [
         "PEN",
         "KENNEL",
@@ -33324,7 +33324,7 @@
       "slug": "round-098",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN IS TO CLOSED AS\nBUY IS TO ?",
+      "prompt": "OPEN -> CLOSED\nBUY -> ?",
       "options": [
         "NEW",
         "SHORT",
@@ -33376,7 +33376,7 @@
       "slug": "round-098",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GOLF",
         "HELICOPTER",
@@ -33414,7 +33414,7 @@
       "slug": "round-098",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH IS TO PULL AS\nOPEN IS TO ?",
+      "prompt": "PUSH -> PULL\nOPEN -> ?",
       "options": [
         "CLOSED",
         "SAD",
@@ -33452,7 +33452,7 @@
       "slug": "round-098",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n5 -> 22,   6 -> 26,   7 -> 30,   8 -> ?",
+      "prompt": "5 -> 22,   6 -> 26,   7 -> 30,   8 -> ?",
       "options": [
         "35",
         "34",
@@ -33498,7 +33498,7 @@
       "slug": "round-099",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SOFA",
         "ANT",
@@ -33565,7 +33565,7 @@
       "slug": "round-099",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE IS TO NARROW AS\nOLD IS TO ?",
+      "prompt": "WIDE -> NARROW\nOLD -> ?",
       "options": [
         "COLD",
         "SHORT",
@@ -33588,7 +33588,7 @@
       "slug": "round-099",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 8,   7 -> 20,   5 -> ?",
+      "prompt": "2 -> 5,   3 -> 8,   7 -> 20,   5 -> ?",
       "options": [
         "12",
         "11",
@@ -33611,7 +33611,7 @@
       "slug": "round-099",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE IS TO NEIGH AS\nSHEEP IS TO ?",
+      "prompt": "HORSE -> NEIGH\nSHEEP -> ?",
       "options": [
         "CHIRP",
         "HOWL",
@@ -33664,7 +33664,7 @@
       "slug": "round-099",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT IS TO SINK AS\nFAST IS TO ?",
+      "prompt": "FLOAT -> SINK\nFAST -> ?",
       "options": [
         "SLOW",
         "LOSE",
@@ -33716,7 +33716,7 @@
       "slug": "round-099",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "GLIDER",
         "PLANE",
@@ -33754,7 +33754,7 @@
       "slug": "round-099",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SAILOR IS TO SHIP AS\nLIBRARIAN IS TO ?",
+      "prompt": "SAILOR -> SHIP\nLIBRARIAN -> ?",
       "options": [
         "LIBRARY",
         "SCHOOL",
@@ -33792,7 +33792,7 @@
       "slug": "round-099",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 11,   3 -> 15,   6 -> 27,   8 -> ?",
+      "prompt": "2 -> 11,   3 -> 15,   6 -> 27,   8 -> ?",
       "options": [
         "45",
         "35",
@@ -33838,7 +33838,7 @@
       "slug": "round-100",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "PANTS",
         "JACKET",
@@ -33905,7 +33905,7 @@
       "slug": "round-100",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR IS TO FAR AS\nTALL IS TO ?",
+      "prompt": "NEAR -> FAR\nTALL -> ?",
       "options": [
         "TAKE",
         "SHORT",
@@ -33928,7 +33928,7 @@
       "slug": "round-100",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 8,   5 -> 14,   6 -> ?",
+      "prompt": "2 -> 5,   3 -> 8,   5 -> 14,   6 -> ?",
       "options": [
         "7",
         "18",
@@ -33951,7 +33951,7 @@
       "slug": "round-100",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FULL IS TO EMPTY AS\nLOUD IS TO ?",
+      "prompt": "FULL -> EMPTY\nLOUD -> ?",
       "options": [
         "QUIET",
         "THIN",
@@ -34004,7 +34004,7 @@
       "slug": "round-100",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HARD IS TO SOFT AS\nLEFT IS TO ?",
+      "prompt": "HARD -> SOFT\nLEFT -> ?",
       "options": [
         "POOR",
         "NEW",
@@ -34056,7 +34056,7 @@
       "slug": "round-100",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH ONE DOES NOT BELONG?",
+      "prompt": "WHICH DOES NOT BELONG?",
       "options": [
         "SEVEN",
         "SHELF",
@@ -34094,7 +34094,7 @@
       "slug": "round-100",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "WIN IS TO LOSE AS\nBIG IS TO ?",
+      "prompt": "WIN -> LOSE\nBIG -> ?",
       "options": [
         "RIGHT",
         "QUIET",
@@ -34132,7 +34132,7 @@
       "slug": "round-100",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 15,   7 -> 27,   5 -> ?",
+      "prompt": "2 -> 7,   4 -> 15,   7 -> 27,   5 -> ?",
       "options": [
         "15",
         "19",
@@ -34322,7 +34322,7 @@
       "slug": "staging-text-1",
       "id": 1,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH WORD MEANS THE\nOPPOSITE OF ANCIENT?",
+      "prompt": "OPPOSITE OF ANCIENT?",
       "options": [
         "OLD",
         "MODERN",
@@ -34345,7 +34345,7 @@
       "slug": "staging-text-1",
       "id": 2,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH WORD MEANS THE\nSAME AS ENORMOUS?",
+      "prompt": "ANOTHER WORD FOR ENORMOUS?",
       "options": [
         "GIGANTIC",
         "TINY",
@@ -34368,7 +34368,7 @@
       "slug": "staging-text-1",
       "id": 3,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH WORD MEANS THE\nOPPOSITE OF GENEROUS?",
+      "prompt": "OPPOSITE OF GENEROUS?",
       "options": [
         "KIND",
         "RICH",
@@ -34391,7 +34391,7 @@
       "slug": "staging-text-1",
       "id": 4,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH WORD MEANS THE\nSAME AS RAPID?",
+      "prompt": "ANOTHER WORD FOR RAPID?",
       "options": [
         "SLOW",
         "QUICK",
@@ -34414,7 +34414,7 @@
       "slug": "staging-text-1",
       "id": 5,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH WORD MEANS THE\nOPPOSITE OF BRAVE?",
+      "prompt": "OPPOSITE OF BRAVE?",
       "options": [
         "BOLD",
         "STRONG",
@@ -34437,7 +34437,7 @@
       "slug": "staging-text-2",
       "id": 1,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH FRACTION IS\nTHE LARGEST?",
+      "prompt": "WHICH FRACTION IS LARGEST?",
       "options": [
         "2/5",
         "1/2",
@@ -34460,7 +34460,7 @@
       "slug": "staging-text-2",
       "id": 2,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH IS THE GREATEST?",
+      "prompt": "WHICH IS GREATEST?",
       "options": [
         "2/3",
         "5/8",
@@ -34483,7 +34483,7 @@
       "slug": "staging-text-2",
       "id": 3,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH DECIMAL IS\nTHE SMALLEST?",
+      "prompt": "WHICH DECIMAL IS SMALLEST?",
       "options": [
         "0.6",
         "0.55",
@@ -34506,7 +34506,7 @@
       "slug": "staging-text-2",
       "id": 4,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH FRACTION IS\nTHE SMALLEST?",
+      "prompt": "WHICH FRACTION IS SMALLEST?",
       "options": [
         "1/3",
         "1/4",
@@ -34529,7 +34529,7 @@
       "slug": "staging-text-2",
       "id": 5,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH DECIMAL IS\nTHE LARGEST?",
+      "prompt": "WHICH DECIMAL IS LARGEST?",
       "options": [
         "0.29",
         "0.4",

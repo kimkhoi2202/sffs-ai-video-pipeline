@@ -46,8 +46,7 @@ import { goalProgress } from "./goal.ts";
 import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
-import { bandOf, promptWords } from "./leadPolicy.ts";
-import { runLeadPromotion, normType } from "./leadPromotion.ts";
+import { runLeadPromotion, leadStamp } from "./leadPromotion.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
 import { markUsed, markRejected, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
@@ -448,9 +447,7 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
         // records still existed, which is how the account's best reels ended up with no
         // attribution at all. Stamping it costs nothing and makes the loop's own
         // learning independent of archaeology.
-        lead_type: normType(v.questions[0]?.tier),
-        lead_prompt_words: promptWords(v.questions[0]?.prompt),
-        lead_band: bandOf(promptWords(v.questions[0]?.prompt)),
+        ...leadStamp(v.questions[0]),
       },
       experiment: { dimension: v.dimension, arm: v.arm, rationale: v.rationale, hermes_video_id: v.id },
       hashtag_set: v.hashtag_set,
