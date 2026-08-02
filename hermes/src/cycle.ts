@@ -490,7 +490,11 @@ export function cycleCommitMessage(
 }
 
 export function gitCommitPush(runId: string, summary: RunState["summary"]): { committed: boolean; pushed: boolean; note: string } {
-  const candidates = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "ab-testing/replication.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
+  // lead-policy.json is in here for the same reason the other ledgers are: it is the
+  // day's DECISION and its evidence, and a decision nobody can go back and read is the
+  // failure the previous promotion engine died of. Leaving it uncommitted would also
+  // leave the working tree permanently dirty, since the cycle rewrites it every run.
+  const candidates = ["ab-testing/ab-database.json", "ab-testing/learnings.json", "ab-testing/proposals.json", "ab-testing/content-defaults.json", "ab-testing/replication.json", "ab-testing/lead-policy.json", "content/ab-test-usage.json", "tools/upload-media.ts", "remotion/hermes", "hermes"];
   // `git add` is ATOMIC over its pathspecs: one path that doesn't exist aborts the
   // whole add (exit 128) and stages NOTHING, after which `git commit` fails with
   // "nothing to commit" on STDOUT — which surfaced as the empty `commit failed: `
