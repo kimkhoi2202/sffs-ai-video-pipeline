@@ -23,22 +23,35 @@ export interface TakeawayInput {
   drafted: number;
   rejected: number;
   failed: number;
-  frontFamily?: string | null;
-  frontTimeBucket?: string | null;
+  /** The format production is PINNED to (a fact about what shipped). */
+  format?: string | null;
+  /** Live view total across every network, from the analytics snapshot. */
+  liveViews?: number | null;
   freshQuestions?: number | null;
+  quarantined?: number | null; // questions the validity gate has retired
   reconciled?: number | null; // records back-filled this cycle
   date?: string; // YYYY-MM-DD (defaults to today, UTC)
 }
 
-/** Build the ONE-LINE takeaway for a cycle. Pure. */
+/**
+ * Build the ONE-LINE takeaway for a cycle. Pure.
+ *
+ * `front-runner` is GONE from this line. MEMORY.md is what the agent reads back as its
+ * own recollection, and it was being handed a nightly champion picked on median
+ * engagement rate — a metric the content policy had already written off as unreliable
+ * for this account. An inference restated often enough becomes a belief, so the line
+ * now carries only things that are true by construction: what shipped, what the live
+ * analytics say, and how much bank is left.
+ */
 export function formatTakeaway(t: TakeawayInput): string {
   const date = t.date || new Date().toISOString().slice(0, 10);
   const parts = [
     `${date} run ${t.run_id}: ${t.drafted} drafted, ${t.rejected} rejected, ${t.failed} failed`,
   ];
-  parts.push(`front-runner: ${t.frontFamily || "n/a"}`);
-  if (t.frontTimeBucket) parts.push(`best time: ${t.frontTimeBucket}`);
+  parts.push(`format: ${t.format || "n/a"}`);
+  if (t.liveViews != null) parts.push(`${t.liveViews.toLocaleString("en-US")} live views to date`);
   if (t.freshQuestions != null) parts.push(`${t.freshQuestions} fresh Qs left`);
+  if (t.quarantined != null && t.quarantined > 0) parts.push(`${t.quarantined} quarantined`);
   if (t.reconciled != null) parts.push(`reconciled ${t.reconciled}`);
   // one line: collapse any stray newlines defensively.
   return parts.join(" · ").replace(/\s*\n\s*/g, " ").trim();

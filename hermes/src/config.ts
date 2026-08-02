@@ -61,8 +61,37 @@ export const CONFIG = Object.freeze({
   // build $HERMES_HOME/.env, where the Nous `custom` provider reads it too). One
   // key, two consumers; behavior-preserving where TFY_API_KEY is set.
   TFY_API_KEY: (process.env.TFY_API_KEY || process.env.OPENAI_API_KEY || "").trim(),
-  MODEL: (process.env.HERMES_MODEL || "claude-opus-4-8").trim(),
+  /**
+   * THE REASONING MODEL. claude-opus-5 as of 2026-08-02, verified against the live
+   * gateway (`GET /models` lists `claude-opus-5` and `claude-group/claude-opus-5`; a
+   * chat call to the bare slug returns 200 and routes to anthropic-primary). Used by
+   * the question-validity judge and the preflight ping.
+   *
+   * DO NOT use the `aws-bedrock/...anthropic.claude-opus-*` slugs. They are listed by
+   * the gateway but this account is not subscribed to them in AWS Marketplace, so they
+   * answer 403 with a message about IAM and Marketplace permissions that reads like an
+   * infrastructure fault rather than a wrong model name.
+   *
+   * COST, MEASURED NOT GUESSED. A real three-question judge call under the current
+   * contract: opus-4-8 $0.0133, opus-5 $0.0240, sonnet-5 $0.0148, haiku-4-5 $0.0032.
+   * At ~12-16 judge calls a cycle that is well under fifty cents a day for the whole
+   * loop. See JUDGE_FALLBACK_MODEL for what happens when the shared cap bites anyway.
+   */
+  MODEL: (process.env.HERMES_MODEL || "claude-opus-5").trim(),
   CAPTION_MODEL: (process.env.HERMES_CAPTION_MODEL || "claude-haiku-4-5").trim(),
+  /**
+   * What the validity judge falls back to when the reasoning model is unreachable.
+   *
+   * The gateway's budget rule is per VIRTUAL ACCOUNT and shared with workloads that
+   * have nothing to do with this loop — the 429 storms on 2026-07-25 and 2026-07-29
+   * were the pool being spent elsewhere, not by us (this loop's whole daily bill is
+   * cents). So an Opus 429 is a statement about someone else's traffic, and answering
+   * it by throwing away the day's judgement is the wrong trade. Haiku judged the same
+   * three-question probe correctly at an eighth of the cost, so it is a real second
+   * opinion rather than a token gesture. The deterministic structural check remains
+   * the last resort, only if BOTH models are unreachable.
+   */
+  JUDGE_FALLBACK_MODEL: (process.env.HERMES_JUDGE_FALLBACK_MODEL || "claude-haiku-4-5").trim(),
 
   // ── Social accounts ────────────────────────────────────────────────────
   ACCOUNTS: {
@@ -145,54 +174,55 @@ export const CONFIG = Object.freeze({
    * FLOOR: the minimum videos a healthy cycle must land. If the first wave finishes
    * short of this (and the ceiling still has room), cycle.ts plans a bounded top-up
    * wave rather than leaving the day thin — the 2026-07-25 incident shipped 1 video.
+   *
+   * RAISED 8 -> 12 on 2026-08-02, to match the ceiling. At 8 the loop stopped topping
+   * up as soon as it had 8, so a day with a normal rejection rate landed 8 and the
+   * remaining 4 slots of the 12/day cap were simply never used — which is how five
+   * consecutive cycles all reported "8 scheduled". Floor == ceiling means the day is
+   * only finished when the cap is full or the waves run out.
    */
-  VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 8),
+  VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 12),
   /**
-   * PER-PLATFORM posting policy for the shape-only restart.
+   * PER-PLATFORM posting policy. EVERY NETWORK RUNS 12/DAY (2026-08-02).
    *
-   * Instagram carries the EXPERIMENT and keeps its full 12/day. It is the only network
-   * that reports a 3-second skip rate, so it is the only place the hook experiment can
-   * be measured, and it is the only channel currently producing anything — its volume
-   * is protected rather than traded away.
+   * The campaign has two weeks left and is optimising for distribution, so all three
+   * networks take the full daily allowance rather than being rationed against each
+   * other. The SPACING rules are unchanged — the same-platform floor and each
+   * network's jitter lane (scheduler.ts LANES) still apply, so raising the counts
+   * changes how many posts a day holds and not how they are laid out in it.
    *
-   * YouTube Shorts is the second live network and takes WHAT IS LEFT of the monthly
-   * record budget: 7/day. That number is derived, not chosen — see the arithmetic in
-   * postingPolicy.ts, and budgetForecast() there, which is the executable version of it.
-   * It shares Instagram's 56-minute same-platform floor and has its own jitter lane
-   * (scheduler.ts LANES) so the two networks never stack. Metricool separately caps
-   * YouTube at 20 publishes per rolling 24h (the counters endpoint exposes
-   * last24HoursPublishedYoutubePostsByBrand); 7 sits well under it.
+   * WHAT THIS COSTS. A fan-out spends one Metricool record PER NETWORK, so three
+   * networks at 12/day is 36 records/day against the 600/month Fair Use budget the
+   * client guards. The month counter stands at 17, and 14 more days at 36 is 504, for
+   * 521 of 600 — it fits the remaining window with room to spare. budget() is
+   * unchanged and still fails closed at 600; it is the pre-existing guard, not a new
+   * monitor, and nothing here alerts.
    *
-   * TikTok is PAUSED. It is under account-level suppression — a previous throttle only
-   * lifted after 27.9 hours of total silence — and it never actually resumed when its
-   * cooldown expired, so the pause makes that state a DECISION rather than an accident
-   * of nothing having scheduled it.
+   * TIKTOK IS LIVE AGAIN. It had been paused under account-level suppression (an
+   * earlier throttle only lifted after 27.9 hours of silence) and the most recent
+   * evidence is not encouraging — 1 view on our best video 22 hours after posting.
+   * Resuming anyway is the owner's explicit decision. It comes back at the same 12/day
+   * as everyone else, but it KEEPS ITS OWN 4-HOUR same-platform floor: that gap is a
+   * platform-behaviour precaution, not a volume lever, and 12 posts at a 4-hour floor
+   * simply spill across days via loopPublish.planSlots the way any over-full network
+   * does.
    *
-   * The pause is a pause, not a removal. The cadence below (2/day, 4-hour floor) is
-   * deliberately left exactly as it should be when TikTok comes back, so nobody has to
-   * reconstruct it later. The TikTok client and its analytics reading are untouched —
-   * we still want to watch whether the account recovers.
+   *   TO PAUSE TIKTOK AGAIN: HERMES_TIKTOK_PAUSED=true in /etc/hermes/hermes.env.
    *
-   *   TO RESUME TIKTOK: set HERMES_TIKTOK_PAUSED=false in /etc/hermes/hermes.env and
-   *   restart. That is the whole step. Nothing else needs editing, and the 2/day cap
-   *   and 4-hour gap come back with it.
-   *
-   * `darkUntil` is a naive local datetime in METRICOOL_TZ and is KEPT. It has already
-   * expired, so on its own it would let TikTok back in; the pause is checked first and
-   * overrides it, which neutralises the date trigger without throwing the cooldown
-   * logic away.
+   * `darkUntil` is a naive local datetime in METRICOOL_TZ, long expired, and kept only
+   * so the cooldown mechanism still exists for a future throttle.
    */
   PLATFORM_POLICY: {
     // 56 minutes is the same-platform floor the campaign has always run under; it was
     // 0 here only because the daily grid happened to space posts further apart anyway.
     instagram: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
-    youtube: { perDay: 7, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
+    youtube: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
     tiktok: {
-      perDay: 2,
+      perDay: 12,
       minGapMinutes: 240,
       darkUntil: (process.env.HERMES_TIKTOK_DARK_UNTIL || "2026-07-27T18:00:00").trim() as string | null,
-      // Defaults to PAUSED, so the pause survives a fresh box or a lost env file.
-      paused: String(process.env.HERMES_TIKTOK_PAUSED ?? "true").trim().toLowerCase() !== "false",
+      // Defaults to LIVE now. Still one env line either way.
+      paused: String(process.env.HERMES_TIKTOK_PAUSED ?? "false").trim().toLowerCase() === "true",
     },
   } as Record<string, { perDay: number; minGapMinutes: number; darkUntil: string | null; paused: boolean }>,
   /**
@@ -252,12 +282,14 @@ export const CONFIG = Object.freeze({
    *
    * RAMP_START is a naive local (METRICOOL_TZ) calendar date. EMPTY DISABLES THE RAMP
    * entirely and every day falls back to PLATFORM_POLICY.youtube.perDay, so this
-   * cannot strand the network at 3/day if it is ever forgotten: past the last step the
-   * ramp already returns 7, and clearing the date returns 7 as well.
+   * cannot strand the network at a seeding cap if it is ever forgotten.
    *
-   * The monthly guard is unaffected — budgetForecast() deliberately keeps costing
-   * YouTube at its terminal 7/day, because that is the steady state the 600-record
-   * budget has to survive. The ramp only ever spends LESS than that.
+   * THE RAMP HAS COMPLETED. It started 2026-07-28 and its last step is +4 days, so from
+   * 2026-08-01 onward it returns the terminal value on every day. That terminal was
+   * raised 7 -> 12 with the policy on 2026-08-02; leaving it at 7 would have silently
+   * held YouTube at 7/day, because perDayFor() takes the MINIMUM of the ramp and the
+   * policy. The early steps are left as they are — they are the history of a channel
+   * that really was seeded that way, and they only apply to dates already past.
    */
   YT_RAMP_START: (process.env.HERMES_YT_RAMP_START ?? "2026-07-28").trim(),
   /** (days after YT_RAMP_START, cap) — ascending, terminal value must be the
@@ -265,7 +297,7 @@ export const CONFIG = Object.freeze({
   YT_RAMP_STEPS: [
     { afterDays: 0, perDay: 3 },
     { afterDays: 2, perDay: 5 },
-    { afterDays: 4, perDay: 7 },
+    { afterDays: 4, perDay: 12 },
   ] as ReadonlyArray<{ afterDays: number; perDay: number }>,
   MUSIC_TRACKS: [
     "audio/music/gameshow-fanfare.mp3",
@@ -322,6 +354,21 @@ export const CONFIG = Object.freeze({
   BRAND_VOICE: join(REPO_DIR, "brand", "brand-voice.md"),
   BRAND_EXAMPLES: join(REPO_DIR, "brand", "brand-voice-examples.json"),
   HERMES_USED: join(DATA_DIR, "hermes-used-sigs.json"),
+  /**
+   * QUARANTINE: questions the validity gate REJECTED. Separate from HERMES_USED
+   * because they were never published — but they must be excluded from selection
+   * just as firmly, or the generator keeps re-proposing them. It did: seven
+   * questions were flagged twice between 2026-07-30 and 2026-08-02 and one burned
+   * two slots inside a single run. See questions.ts markRejected.
+   */
+  HERMES_REJECTED: join(DATA_DIR, "hermes-rejected-sigs.json"),
+  /**
+   * LIVE per-network analytics totals, rewritten every cycle by score.ts. The goal
+   * rollup reads THIS rather than summing the ab-database join, so the headline number
+   * is what the analytics API actually reports and not what the join managed to
+   * attribute. See score.ts buildAnalyticsSnapshot.
+   */
+  ANALYTICS_SNAPSHOT: join(DATA_DIR, "analytics-totals.json"),
   // The framework's live agent memory. Each cycle appends a bounded one-line
   // takeaway here (see memory.ts). On the VPS this is $HERMES_HOME/memories/
   // MEMORY.md (what the agent actually reads); locally it falls back to DATA_DIR

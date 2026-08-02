@@ -205,51 +205,46 @@ test("the cooldown logic is KEPT, not deleted — it still evaluates as it alway
   assert.equal(P.isDark("instagram", before).dark, false);
 });
 
-test("while TikTok is PAUSED, Instagram and YouTube still get their slots", () => {
-  const d = P.decide(600, new Date("2026-07-26T20:00:00Z"));
-  const ig = d.find((x) => x.network === "instagram")!;
-  const yt = d.find((x) => x.network === "youtube")!;
-  const tt = d.find((x) => x.network === "tiktok")!;
-  assert.equal(ig.slots, 12, "Instagram is untouched by the TikTok pause");
-  assert.equal(yt.slots, 7, "YouTube takes the budget residual");
-  assert.equal(yt.allowed, true);
-  assert.ok(!yt.paused, "YouTube is live, not paused — the pause is TikTok's alone");
-  assert.equal(tt.slots, 0);
-  assert.equal(tt.allowed, false);
-  assert.equal(tt.paused, true);
-  assert.match(tt.reason, /PAUSED by config/);
-});
-
-test("the pause OVERRIDES the expired cooldown — no date can re-admit TikTok", () => {
-  // The whole hazard: darkUntil has already passed, so without the pause the platform
-  // would come back on a timer nobody re-approved. Check well past it, and far future.
-  for (const when of ["2026-07-28T02:00:00Z", "2026-08-15T12:00:00Z", "2027-01-01T00:00:00Z"]) {
-    const tt = P.decide(600, new Date(when)).find((x) => x.network === "tiktok")!;
-    assert.equal(tt.slots, 0, `TikTok must get zero slots at ${when}`);
-    assert.equal(tt.paused, true);
+test("ALL THREE networks are live and take 12/day", () => {
+  // TikTok resumed on 2026-08-02, by explicit owner decision and against the evidence
+  // (1 view on our best video 22 hours after posting). The point of asserting it here
+  // is that resuming must be a DECISION visible in the policy, the same way the pause
+  // was — not something that drifts back on a timer.
+  const d = P.decide(600, new Date("2026-08-02T20:00:00Z"));
+  for (const network of ["instagram", "youtube", "tiktok"] as const) {
+    const x = d.find((n) => n.network === network)!;
+    assert.equal(x.slots, 12, `${network} should take the full 12/day`);
+    assert.equal(x.allowed, true);
+    assert.ok(!x.paused, `${network} must not be paused`);
   }
 });
 
-test("a planned batch produces ZERO TikTok slots while paused", () => {
-  // The end-to-end assertion: whatever budget is available, no slot times are handed out.
-  for (const budget of [0, 12, 600]) {
-    const tt = P.decide(budget).find((x) => x.network === "tiktok")!;
-    assert.equal(tt.slots, 0);
-    assert.deepEqual(
-      P.slotTimes(tt.slots, { dayISO: "2026-08-01", startHour: 7, endHour: 22, minGapMinutes: tt.minGapMinutes }),
-      [],
-      "zero slots must yield zero scheduled times",
-    );
-  }
-});
-
-test("the cadence TikTok resumes on is PRESERVED while paused, not zeroed", () => {
-  // A pause must not quietly destroy the settings we want back. Re-deriving 2/day and a
-  // 4-hour floor from a transcript later is how they get lost.
+test("resuming TikTok did NOT relax its 4-hour same-platform floor", () => {
+  // Volume and spacing are different levers. The 4-hour gap is a precaution about
+  // platform behaviour under suppression; the 12/day is a distribution decision. A
+  // resume that quietly compressed the gap would be undoing the recovery.
   const tt = P.decide(600).find((x) => x.network === "tiktok")!;
-  assert.equal(tt.minGapMinutes, 240, "the 4-hour floor is still configured");
-  assert.match(tt.reason, /2\/day/, "the reason states the cadence it will resume on");
-  assert.match(tt.reason, /HERMES_TIKTOK_PAUSED=false/, "and how to resume");
+  assert.equal(tt.minGapMinutes, 240, "the 4-hour floor survives the resume");
+  const ig = P.decide(600).find((x) => x.network === "instagram")!;
+  assert.equal(ig.minGapMinutes, 56, "and Instagram keeps its own 56-minute floor");
+});
+
+test("a 4-hour floor caps how many TikTok slots ONE day can hold, and that is fine", () => {
+  // 12/day at a 4-hour gap does not fit in a single window; planSlots spills the rest
+  // onto following days. slotTimes must refuse to compress rather than silently
+  // violating the floor.
+  const t = P.slotTimes(12, { dayISO: "2026-08-03", startHour: 7, endHour: 22, minGapMinutes: 240 });
+  assert.ok(t.length < 12, "a 15h window at a 4h gap cannot hold 12 posts");
+  for (let i = 1; i < t.length; i++) {
+    const gap = (Date.parse(t[i] + "Z") - Date.parse(t[i - 1] + "Z")) / 60000;
+    assert.ok(gap >= 240, `gap ${gap}min must respect the 4-hour floor`);
+  }
+});
+
+test("the pause MECHANISM still exists, so TikTok can be held again in one line", () => {
+  // The resume must not have deleted the ability to stop. This is the switch, and the
+  // reason string has to tell a human which one it is.
+  assert.equal(P.pauseEnvVar("tiktok"), "HERMES_TIKTOK_PAUSED");
 });
 
 /**
@@ -275,31 +270,41 @@ async function decideWith(env: Record<string, string>): Promise<any[]> {
   return JSON.parse(res.stdout.trim().split("\n").pop()!);
 }
 
-test("CLEARING the pause restores TikTok's normal allocation", async () => {
-  const d = await decideWith({ HERMES_TIKTOK_PAUSED: "false" });
+test("SETTING the pause takes TikTok back out, cleanly", async () => {
+  const d = await decideWith({ HERMES_TIKTOK_PAUSED: "true" });
   const tt = d.find((x) => x.network === "tiktok");
-  assert.ok(!tt.paused, "no longer reported as paused");
-  assert.equal(tt.allowed, true);
-  assert.equal(tt.slots, 2, "back to 2/day");
-  assert.equal(tt.minGapMinutes, 240, "back behind the 4-hour floor");
+  assert.equal(tt.paused, true);
+  assert.equal(tt.allowed, false);
+  assert.equal(tt.slots, 0, "a paused network takes no slots at all");
+  assert.equal(tt.minGapMinutes, 240, "and its cadence is preserved for the next resume");
+  assert.match(tt.reason, /PAUSED by config/);
+  assert.deepEqual(
+    P.slotTimes(tt.slots, { dayISO: "2026-08-03", startHour: 7, endHour: 22, minGapMinutes: tt.minGapMinutes }),
+    [],
+    "zero slots must yield zero scheduled times",
+  );
 });
 
-test("unpausing TikTok still leaves Instagram exactly as it was", async () => {
-  const d = await decideWith({ HERMES_TIKTOK_PAUSED: "false" });
+test("pausing TikTok still leaves Instagram exactly as it was", async () => {
+  const d = await decideWith({ HERMES_TIKTOK_PAUSED: "true" });
   const ig = d.find((x) => x.network === "instagram");
   assert.equal(ig.slots, 12);
   assert.equal(ig.minGapMinutes, 56);
   assert.equal(ig.allowed, true);
 });
 
-test("the pause holds for any truthy spelling, and only 'false' clears it", async () => {
-  for (const v of ["true", "1", "yes", "TRUE", ""]) {
+test("only the literal 'true' pauses; a lost or garbled env var leaves TikTok LIVE", async () => {
+  // The polarity FLIPPED on 2026-08-02 and that is the dangerous kind of change, so it
+  // is pinned here. Before, anything but "false" meant paused; now only "true" means
+  // paused. A fresh box or a lost env file therefore comes up POSTING, which is the
+  // intended default for the remaining campaign.
+  for (const v of ["true", "True", "TRUE"]) {
     const tt = (await decideWith({ HERMES_TIKTOK_PAUSED: v })).find((x) => x.network === "tiktok");
-    assert.equal(tt.slots, 0, `HERMES_TIKTOK_PAUSED="${v}" must keep TikTok paused`);
+    assert.equal(tt.slots, 0, `HERMES_TIKTOK_PAUSED="${v}" must pause TikTok`);
   }
-  for (const v of ["false", "False", "FALSE"]) {
+  for (const v of ["false", "0", "no", "", "garbage"]) {
     const tt = (await decideWith({ HERMES_TIKTOK_PAUSED: v })).find((x) => x.network === "tiktok");
-    assert.equal(tt.slots, 2, `HERMES_TIKTOK_PAUSED="${v}" must resume TikTok`);
+    assert.equal(tt.slots, 12, `HERMES_TIKTOK_PAUSED="${v}" must leave TikTok live`);
   }
 });
 

@@ -47,7 +47,7 @@ import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
-import { markUsed, bankStats } from "./questions.ts";
+import { markUsed, markRejected, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
 import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
@@ -56,7 +56,7 @@ import { uploadToS3 } from "./s3.ts";
 import { publishAsDraft, planSlots, calendarRows, allocatable, type LoopDraft } from "./loopPublish.ts";
 import { NETWORKS, type Network } from "./postingPolicy.ts";
 import { toNaive } from "./approval.ts";
-import { ping } from "./llm.ts";
+import { ping, logLlmUsage } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
 const DRY = process.env.HERMES_DRY_RUN === "1";
@@ -187,7 +187,15 @@ async function prepareVideo(v: VideoPlan): Promise<void> {
   if (!val.gate.pass) {
     v.status = "rejected";
     v.reject_reason = "invalid question(s): " + val.gate.reason;
-    return; // questions NOT marked used -> stay available
+    // QUARANTINE the offending questions. They are not "used" (nothing published),
+    // but they must leave the candidate pool or the next video is handed the same
+    // item and dies the same way — which is exactly what happened on 2026-08-02,
+    // when one question failed twice in one run and cost two slots. Only the
+    // questions that actually FAILED are quarantined; the rest of the video's
+    // questions were never at fault and go back in the pool.
+    const bad = v.questions.filter((q) => !val.results[q.sig]?.valid);
+    markRejected(v.id, bad, Object.fromEntries(bad.map((q) => [q.sig, val.results[q.sig]?.reason ?? ""])));
+    return;
   }
 
   // 3) mark used (only after validity) — the strong never-repeat guarantee
@@ -417,12 +425,12 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
       source_video: `hermes-render:${v.id}.${platform}.mp4`,
       media_url_note: "S3 private object (presigned at post time)",
       variant: {
+        // NOT AN ARM ANY MORE. Every post is the pinned production format, so these
+        // three fields record WHAT SHIPPED rather than which experiment it belonged
+        // to; the rollups keyed on them collapse to a single cell, which is the
+        // honest shape of a batch that is no longer testing anything.
         family: v.dimension,
         arm: v.arm,
-        // Canonical arm ROLLUP LABEL (== v.arm) — the key score.ts aggregates
-        // by_variant_arm on, and the key the default-promotion engine compares
-        // against the incumbent "control". Kept explicit so a future arm rename
-        // never silently breaks the promotion read-side.
         label: v.arm,
         narration: (v.props as any)?.narration?.mode ?? "none",
         // The ENDING arm this video used (cliffhanger | full-reveal | no-answer),
@@ -586,6 +594,23 @@ export async function runCycle(): Promise<RunState> {
     state.errors.push("score: " + (e instanceof Error ? e.message : String(e)));
   }
 
+  // Re-read the goal now that scoring has refreshed the LIVE analytics snapshot. The
+  // preflight read above ran against the PREVIOUS cycle's numbers, which is fine as a
+  // "where we started today" line but is a day stale for the run state, the dashboard
+  // and the memory takeaway that all read this field.
+  try {
+    const goal = goalProgress();
+    (state as any).goal = goal;
+    info("GOAL trajectory (post-score, live analytics)", {
+      views: goal.totals.views,
+      per_platform: goal.per_platform.map((p) => `${p.platform}:${p.views}/${p.posts}`).join(" "),
+      days_left: goal.days_left,
+    });
+    saveRun(state);
+  } catch (e) {
+    warn("goal refresh failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
+  }
+
   // (b) plan wave 1 at the CEILING. Planning the ceiling rather than the floor is
   // the OVERSAMPLE: gate rejections and transient failures come out of the headroom
   // instead of out of the day's floor. It cannot breach the per-day/platform cap —
@@ -714,14 +739,16 @@ export async function runCycle(): Promise<RunState> {
   try {
     const learn = readJSON<any>(CONFIG.LEARNINGS, {});
     const rec = (state as any).reconcile;
+    const bank = bankStats();
     const line = formatTakeaway({
       run_id: runId,
       drafted: state.summary.drafted,
       rejected: state.summary.rejected,
       failed: state.summary.failed,
-      frontFamily: learn?.front_runners?.variant_family ?? null,
-      frontTimeBucket: learn?.front_runners?.time_bucket ?? null,
-      freshQuestions: bankStats().fresh,
+      format: learn?.pinned_format?.arm ?? null,
+      liveViews: (state as any).goal?.totals?.views ?? null,
+      freshQuestions: bank.fresh,
+      quarantined: bank.quarantined,
       reconciled: rec && typeof rec.records_changed === "number" ? rec.records_changed : null,
     });
     const mem = appendTakeaway(line);
@@ -730,6 +757,11 @@ export async function runCycle(): Promise<RunState> {
   } catch (e) {
     warn("memory takeaway failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
   }
+
+  // What this cycle actually spent at the gateway, per model. Recorded on the run so
+  // "is the agent thinking, or just running deterministic paths?" is answerable from
+  // the run state instead of from an afternoon of log archaeology.
+  (state as any).llm = logLlmUsage();
 
   state.finished_at = new Date().toISOString();
   saveRun(state);

@@ -1,20 +1,22 @@
 /**
- * concentration.test.ts — HERMES_ONLY_DIMENSIONS actually concentrates the batch.
+ * concentration.test.ts — the batch designer, before and after the pivot.
  *
- * This repo has a history of configuration that looks live and is inert: experiment_lock
- * is read by nothing, the hook-challenge arm rendered byte-identical to control for
- * weeks, lower_is_better was never consulted. The failure here was a subtler cousin — the
- * flag WAS read and DID filter, but planBatch then took `.slice(0, target)` of a
- * three-arm catalog and planned three videos instead of twelve. Pinning three arms to
- * reach a conclusion faster would have quartered the day's output and made the sample
- * mature slower, and nothing would have said so.
+ * WHAT THESE USED TO ASSERT. That HERMES_ONLY_DIMENSIONS really concentrated the batch:
+ * the flag WAS read and DID filter, but planBatch then took `.slice(0, target)` of a
+ * three-arm catalog and planned three videos instead of twelve, quartering the day's
+ * output while looking like it was accelerating the experiment.
  *
- * So these assert the EFFECT (slot count, arm balance, control present) rather than the
- * wiring, and they call selectBatchSpecs, which is the same function planBatch calls.
+ * WHAT THEY ASSERT NOW. Exploration is over (2026-08-02): every slot runs the PINNED
+ * format, so the operator concentration switch no longer reaches the live path at all.
+ * That is a bigger change than a filter tweak and it deserves tests that would FAIL if
+ * some future edit quietly reopened the rotation — which is what the first group below
+ * does. The catalog helpers (cycleToTarget, applyBatchOverrides) are unchanged and
+ * still tested, because restarting exploration means calling them again, not rebuilding
+ * them.
  */
 import test from "node:test";
 import assert from "node:assert/strict";
-import { cycleToTarget, buildDimensions, applyBatchOverrides, type DimSpec } from "./dimensions.ts";
+import { cycleToTarget, buildDimensions, applyBatchOverrides, PINNED_ARM, type DimSpec } from "./dimensions.ts";
 import { selectBatchSpecs } from "./design.ts";
 
 const spec = (arm: string): DimSpec => ({ dimension: "opening", arm, numQ: 3, category: "mixed", showProgress: true, progressStyle: "short", countdownSec: 5, rationale: "" }) as DimSpec;
@@ -26,7 +28,62 @@ const withEnv = <T>(env: Record<string, string | undefined>, fn: () => T): T => 
   try { return fn(); } finally { for (const k of Object.keys(prev)) { if (prev[k] === undefined) delete process.env[k]; else process.env[k] = prev[k]!; } }
 };
 
-const PINNED = "motion-hook,motion-hook-stat,motion-hook-declared";
+const OLD_PIN = "motion-hook,motion-hook-stat,motion-hook-declared";
+
+// ── The pivot: one format, every slot ────────────────────────────────────────
+
+test("PINNED: every slot of the batch is the pinned format", () => {
+  const { specs } = selectBatchSpecs("2026-08-02", 12);
+  assert.equal(specs.length, 12, "the pin changes WHAT runs, never how many posts run");
+  assert.deepEqual(tally(specs), { [PINNED_ARM]: 12 });
+});
+
+test("PINNED: the format is the shape the winners share, not an A/B arm", () => {
+  const { specs } = selectBatchSpecs("2026-08-02", 3);
+  for (const s of specs) {
+    assert.equal(s.numQ, 3, "three questions");
+    assert.equal(s.opening, "cold-plate", "cold open — question one at 0.00s");
+    assert.equal(s.hookMechanism, undefined, "no spoken hook rides the opening any more");
+    assert.equal(s.countdownSec, 5);
+    assert.equal(s.showProgress, true);
+    assert.equal(s.progressStyle, "short");
+    // Narration / ending / mascot are deliberately UNSET so the video inherits the
+    // current content defaults; a spec that pinned them would silently outrank the
+    // human promotion CLI.
+    assert.equal(s.narrationArm, undefined);
+    assert.equal(s.endingArm, undefined);
+    assert.equal(s.mascotArm, undefined);
+  }
+});
+
+test("PINNED: the concentrated hook arms cannot come back through the env switch", () => {
+  // HERMES_ONLY_DIMENSIONS was live on the box pinning every slot to the three
+  // motion-hook arms — the worst-measured openings in the account. It must now be inert.
+  const { specs, onlyDims } = withEnv({ HERMES_ONLY_DIMENSIONS: OLD_PIN }, () => selectBatchSpecs("2026-08-02", 12));
+  assert.deepEqual(onlyDims, []);
+  assert.deepEqual(tally(specs), { [PINNED_ARM]: 12 });
+  for (const s of specs) assert.notEqual(s.opening, "motion-hook");
+});
+
+test("PINNED: no mascot elevation and no winner replication reach the batch", () => {
+  const r = withEnv({ HERMES_MASCOT_WEIGHT: "3" }, () => selectBatchSpecs("2026-08-02", 12));
+  assert.equal(r.nReplicas, 0);
+  assert.equal(r.directive.active, false);
+  assert.equal(r.specs.some((s) => s.dimension === "mascot" || s.dimension === "replication"), false);
+});
+
+test("PINNED: the batch does not vary with the run id — there is no rotation left", () => {
+  const a = selectBatchSpecs("2026-08-02", 12).specs.map((s) => s.arm);
+  const b = selectBatchSpecs("2026-09-14", 12).specs.map((s) => s.arm);
+  assert.deepEqual(a, b);
+});
+
+test("PINNED: a zero or negative target still yields nothing", () => {
+  assert.equal(selectBatchSpecs("2026-08-02", 0).specs.length, 0);
+  assert.equal(selectBatchSpecs("2026-08-02", -3).specs.length, 0);
+});
+
+// ── The catalog helpers, kept intact for whenever exploration restarts ───────
 
 test("cycleToTarget fills every slot from a short catalog", () => {
   assert.equal(cycleToTarget([spec("a"), spec("b"), spec("c")], 12).length, 12);
@@ -47,53 +104,15 @@ test("cycleToTarget never exceeds target and never invents specs from nothing", 
   assert.equal(cycleToTarget(big, 12).length, 12);
 });
 
-test("THE EFFECT: pinning three arms plans TWELVE videos, four per arm", () => {
-  const { specs } = withEnv({ HERMES_ONLY_DIMENSIONS: PINNED }, () => selectBatchSpecs("2026-08-01", 12));
-  assert.equal(specs.length, 12, "concentration must change which arms run, not how many posts run");
-  assert.deepEqual(tally(specs), { "motion-hook": 4, "motion-hook-stat": 4, "motion-hook-declared": 4 });
-});
-
-test("THE CONTROL SURVIVES: the wordless motion-hook arm is in the pinned batch", () => {
-  const { specs } = withEnv({ HERMES_ONLY_DIMENSIONS: PINNED }, () => selectBatchSpecs("2026-08-01", 12));
-  const wordless = specs.filter((s) => s.arm === "motion-hook");
-  assert.equal(wordless.length, 4);
-  // It is the comparison that answers the question, so it must be genuinely wordless.
-  for (const s of wordless) assert.equal(s.hookMechanism, undefined);
-});
-
-test("a pinned batch contains NOTHING but the named arms", () => {
-  const { specs } = withEnv({ HERMES_ONLY_DIMENSIONS: PINNED }, () => selectBatchSpecs("2026-08-01", 12));
-  const named = new Set(PINNED.split(","));
-  for (const s of specs) assert.ok(named.has(s.arm), `${s.arm} leaked into a pinned batch`);
-  // The other five opening arms, and every other dimension, are absent.
-  const absent = buildDimensions().map((d) => d.arm).filter((a) => !named.has(a));
-  for (const a of absent) assert.equal(specs.some((s) => s.arm === a), false, `${a} should be absent`);
-});
-
-test("pinning suppresses mascot elevation and winner replication (verbatim, no injection)", () => {
-  const r = withEnv({ HERMES_ONLY_DIMENSIONS: PINNED, HERMES_MASCOT_WEIGHT: "3" }, () => selectBatchSpecs("2026-08-01", 12));
-  assert.equal(r.nReplicas, 0);
-  assert.equal(r.directive.active, false);
-  assert.equal(r.specs.some((s) => s.dimension === "mascot" || s.dimension === "replication"), false);
-});
-
-test("NO REGRESSION: unset leaves the batch exactly as it is today", () => {
-  const { specs, onlyDims } = withEnv({ HERMES_ONLY_DIMENSIONS: undefined }, () => selectBatchSpecs("2026-08-01", 12));
-  assert.equal(onlyDims.length, 0);
-  assert.equal(specs.length, 12);
-  // The unpinned batch still ranges across the catalog rather than one dimension.
-  assert.ok(new Set(specs.map((s) => s.dimension)).size > 1);
-  // ...and an empty / whitespace value must not be mistaken for a pin.
-  assert.equal(withEnv({ HERMES_ONLY_DIMENSIONS: "  ,  " }, () => selectBatchSpecs("2026-08-01", 12)).onlyDims.length, 0);
-});
-
-test("an unknown arm name is skipped rather than silently emptying the batch", () => {
-  const { specs } = withEnv({ HERMES_ONLY_DIMENSIONS: "motion-hook,does-not-exist,motion-hook-stat" }, () => selectBatchSpecs("2026-08-01", 12));
-  assert.deepEqual(tally(specs), { "motion-hook": 6, "motion-hook-stat": 6 });
-});
-
 test("applyBatchOverrides itself only ever returns arms that were asked for", () => {
   const out = applyBatchOverrides(buildDimensions(), { only: ["motion-hook-stat"] });
   assert.equal(out.length, 1);
   assert.equal(out[0].arm, "motion-hook-stat");
+});
+
+test("the arm catalog still builds, so exploration is one call away from restarting", () => {
+  const catalog = buildDimensions();
+  assert.ok(catalog.length > 5);
+  assert.ok(catalog.some((d) => d.dimension === "control"));
+  assert.ok(catalog.some((d) => d.dimension === "opening"));
 });

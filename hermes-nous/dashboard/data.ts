@@ -10,7 +10,7 @@ import { execFileSync, spawn } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { CONFIG } from "./config.ts";
 import type { RunState } from "./types.ts";
-import { computeGoalProgress, type GoalProgress, type FollowerSnapshot } from "./goal.ts";
+import { computeGoalProgress, type GoalProgress, type FollowerSnapshot, type LiveAnalyticsRow } from "./goal.ts";
 
 // ── JSON + runs ───────────────────────────────────────────────────────────────
 
@@ -356,13 +356,26 @@ export function accountFollowers(): FollowerSnapshot | null {
 }
 
 /**
- * Live GOAL-PROGRESS: aggregate ab-database posts (windowed at kickoff) against
- * the mandate, with the optional follower snapshot. Pure math lives in goal.ts.
+ * The LIVE analytics snapshot the loop rewrites every cycle, or null when it has not
+ * been written yet. Its `rows` are the source of the goal panel's view totals.
+ */
+export function liveAnalyticsRows(): LiveAnalyticsRow[] | null {
+  const snap = readJSON<{ rows?: LiveAnalyticsRow[] } | null>(CONFIG.ANALYTICS_SNAPSHOT, null);
+  return Array.isArray(snap?.rows) && snap.rows.length ? snap.rows : null;
+}
+
+/**
+ * Live GOAL-PROGRESS against the mandate.
+ *
+ * View TOTALS come from the analytics snapshot; the ab-database supplies the per-arm
+ * attribution and is the fallback when no snapshot exists. Before this split the panel
+ * summed the ab-database join and reported 9,500 views over 28 Instagram posts on a
+ * day the API said 39,382 over 101 across three networks.
  */
 export function goalProgress(): GoalProgress {
   const posts = Array.isArray(abDb()?.posts) ? abDb().posts : [];
   const k = kickoffState();
-  return computeGoalProgress(posts, k.since, accountFollowers(), new Date());
+  return computeGoalProgress(posts, k.since, accountFollowers(), new Date(), liveAnalyticsRows());
 }
 
 // ── kill-switch (DISPLAY-ONLY) ────────────────────────────────────────────────

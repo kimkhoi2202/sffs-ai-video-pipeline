@@ -100,37 +100,47 @@ function analyticsTable(db: any): string {
     <tbody>${rows}</tbody></table></div>`;
 }
 
+/**
+ * Historical rollup by variant family. NO LONGER CROWNS ONE. The ★ front-runner
+ * marker ranked families on median engagement rate, which this account's own content
+ * policy had already abandoned as unreliable here, and it kept doing so at n=2.
+ * The medians themselves are measurements and are still shown.
+ */
 function rollupTable(l: any): string {
   const fam = l?.rollups?.by_variant_family || {};
   const keys = Object.keys(fam);
   if (!keys.length) return `<p class="muted">No variant-family rollups yet (need matured metrics).</p>`;
-  const front = l?.front_runners?.variant_family;
   const rows = keys
     .map((k) => {
       const v = fam[k] || {};
-      const isFront = k === front;
-      return `<tr class="${isFront ? "front" : ""}"><td>${esc(k)}${isFront ? ' <span class="star">★ front-runner</span>' : ""}</td>
+      return `<tr><td>${esc(k)}</td>
         <td>${n(v.n_posts)}</td><td>${n(v.n_with_metrics)}</td><td>${v.median_eng_rate != null ? esc(v.median_eng_rate) + "%" : "—"}</td><td>${n(v.avg_reach)}</td></tr>`;
     })
     .join("");
   return `<div class="tblwrap"><table class="tbl"><thead><tr><th>variant family</th><th>posts</th><th>w/ metrics</th><th>median eng</th><th>avg reach</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function frontRunners(l: any): string {
-  const fr = l?.front_runners;
-  if (!fr || typeof fr !== "object") return "";
+/**
+ * What production is PINNED to — a statement of what ships, replacing the nightly
+ * "front-runner" verdict. Falls back to the retired block, clearly labelled, on a
+ * learnings.json written before the retirement so the panel is never blank.
+ */
+function pinnedFormat(l: any): string {
   const pill = (k: string, v: unknown) =>
     v == null || v === "" ? "" : `<span class="hpill"><b>${esc(k)}</b>${esc(v)}</span>`;
-  const pills = [
-    pill("variant family", fr.variant_family),
-    pill("platform", fr.platform),
-    pill("hashtag set", fr.hashtag_set),
-    pill("time bucket", fr.time_bucket),
-    pill("confidence", fr.confidence),
-    pill("as of", fr.as_of),
-  ].join("");
-  const notes = fr.notes ? `<p class="muted" style="margin-top:8px">${esc(fr.notes)}</p>` : "";
-  return `<div class="health" style="margin-bottom:8px">${pills}</div>${notes}`;
+  const pf = l?.pinned_format;
+  if (pf && typeof pf === "object") {
+    const pills = [pill("format", pf.arm), pill("chosen on", pf.chosen_on), pill("as of", pf.as_of)].join("");
+    const desc = pf.description ? `<p class="muted" style="margin-top:8px">${esc(pf.description)}</p>` : "";
+    const note = pf.note ? `<p class="muted" style="margin-top:4px">${esc(pf.note)}</p>` : "";
+    return `<div class="health" style="margin-bottom:8px">${pills}</div>${desc}${note}`;
+  }
+  const old = l?.retired?.front_runners;
+  if (old && typeof old === "object") {
+    return `<div class="health" style="margin-bottom:8px">${pill("retired front-runner", old.variant_family)}${pill("retired", old.retired_at)}</div>
+      <p class="muted" style="margin-top:8px">${esc(old.reason ?? "")}</p>`;
+  }
+  return "";
 }
 
 function decisionsList(l: any): string {
@@ -1451,8 +1461,8 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   </div>
 
   <div class="card">
-    <h2><span class="pin">LEARN</span> Front-runners &amp; variant-family rollups</h2>
-    ${frontRunners(l)}
+    <h2><span class="pin">PINNED</span> Production format &amp; historical variant rollups</h2>
+    ${pinnedFormat(l)}
     ${rollupTable(l)}
   </div>
 

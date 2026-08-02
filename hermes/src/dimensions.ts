@@ -103,6 +103,74 @@ const CONTROL: DimSpec = {
   rationale: "baseline: the current defaults (full narration + cliffhanger ending), short counter, 5s, mixed 3Q",
 };
 
+// ---------------------------------------------------------------------------
+// THE PINNED FORMAT — exploitation, not exploration (2026-08-02)
+//
+// Testing is over. Every slot now runs ONE format, chosen from what the live
+// Instagram numbers actually say rather than from the rollups.
+//
+// WHAT THE DATA SAID. Across all 114 published reels the account's median is 187
+// views and the best is 1,825. Sorting by every axis the rotation was varying —
+// opening, narration, ending, mascot, tempo, hashtag set, caption wording — moved
+// the median by tens of views on single-digit samples, and the same caption line
+// appears at 1,028 views and at 98. One axis was not like the others:
+//
+//     3-second skip rate     median views
+//     under 50%                    1,556   (n=2)
+//     50-55%                       1,310   (n=10)
+//     55-60%                       1,028   (n=9)
+//     60-65%                         337   (n=16)
+//     65-70%                         165   (n=17)
+//     70-75%                         172   (n=16)
+//     75-80%                         160   (n=24)
+//     80%+                           141   (n=20)
+//
+// Monotonic over eight buckets and a 10x spread, with average watch time tracking
+// it exactly. The top five posts sit at 48.6-55% skip against an account median of
+// 71%. Views on this account are a retention story, and every top performer is the
+// SAME shape: three questions, cold plate, narrated, cliffhanger, branded cover.
+//
+// So the pinned format IS that shape. Two things it deliberately is NOT:
+//
+//   - It is not the rotation's winner. The arms the batch was concentrated on
+//     (motion-hook and the spoken-hook family) are the WORST measured openings —
+//     the wordless motion arm spends 2.2 seconds before question one and medians
+//     137 views against the cold plate's 159. Those are removed.
+//   - It is not a fixed VIDEO. The structure is held; the questions inside it are
+//     freshly generated and still pass dedup, near-duplicate and quality gates
+//     every cycle. A straight repost earned 6 views once, and near-duplicates are
+//     what unoriginal-content detection is built to catch.
+//
+// Anything below that a future measurement contradicts is one edit here.
+// ---------------------------------------------------------------------------
+
+/** The single rollup label every pinned post carries. There is nothing to rotate. */
+export const PINNED_ARM = "pinned-format";
+
+/**
+ * The format every slot runs. Inherits the current content defaults for narration,
+ * ending and mascot (full / cliffhanger / prominent) by setting none of those axes,
+ * so the human promotion CLI remains the one way any of them ever changes.
+ *
+ * `opening` is pinned EXPLICITLY to cold-plate rather than left undefined, because
+ * undefined is what the hook arms were injected into.
+ */
+export const PINNED: DimSpec = {
+  ...BASE, // 3 questions, mixed, progress on + short, 5s countdown
+  dimension: "pinned",
+  arm: PINNED_ARM,
+  opening: "cold-plate",
+  rationale:
+    "PINNED production format: 3 mixed questions, cold-plate open (no pre-roll animation), full narration, " +
+    "cliffhanger ending, short progress counter, 5s per question, branded cover. The shape every top-performing " +
+    "reel shares; fresh questions inside it every time.",
+};
+
+/** `target` slots of the pinned format. The whole batch designer, now. */
+export function pinnedSpecs(target: number): DimSpec[] {
+  return target <= 0 ? [] : Array.from({ length: target }, () => ({ ...PINNED }));
+}
+
 /** Dimensions that inherit BOTH defaults and deviate only their own axis. */
 const OTHER_DIMENSIONS: DimSpec[] = [
   {

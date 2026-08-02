@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-02T14:52:25.315Z",
+  "updated_at": "2026-08-02T19:45:27.832Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -75,8 +75,10 @@
         "ctr": null,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 78.3
+        "saves": 0,
+        "skip_rate": 78.3,
+        "average_watch_time": 6.604,
+        "duration_seconds": null
       },
       "match_confidence": "high",
       "notes": "Brand-intro promo (not a quiz short); caption matches the 'Follow so you don't miss one' brand copy. Source = the single brand-intro asset (sffs-brand-intro-v1). Metrics pending: on analytics page 2 (not in screenshot).",
@@ -113,7 +115,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 31
       },
       "match_confidence": "high",
       "notes": "Brand-intro promo cross-post of the IG brand reel. Source = brand-intro asset. Metrics pending: on analytics page 2 (not in screenshot).",
@@ -154,7 +158,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 99
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, WITH INTRO (package 03). Caption body matches ready-to-post/03 caption.txt verbatim. Metrics pending: on analytics page 2 (not in screenshot).",
@@ -194,8 +200,10 @@
         "ctr": null,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 79.5
+        "saves": 0,
+        "skip_rate": 79.5,
+        "average_watch_time": 8.4,
+        "duration_seconds": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, WITH INTRO (package 03). IG cross-post of the same source video as publer 195306518/195306511.",
@@ -236,7 +244,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 93
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 01). Highest-reach post in the dataset (991 reach, 55 reactions, 5.55% eng). TikTok.",
@@ -276,8 +286,10 @@
         "ctr": null,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 80.5
+        "saves": 0,
+        "skip_rate": 80.5,
+        "average_watch_time": 6.573,
+        "duration_seconds": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 01). IG twin of the 991-reach TikTok post (publer 195306517) but only 113 reach / 0.88% eng -> platform is the dominant confound. Only post with a comment (1).",
@@ -318,7 +330,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 91
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 02). TikTok.",
@@ -359,7 +373,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 91
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 05). TikTok. reach_rate '3.5K%' is a Publer artifact (near-zero follower denominator).",
@@ -399,8 +415,10 @@
         "ctr": null,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 79.5
+        "saves": 0,
+        "skip_rate": 79.5,
+        "average_watch_time": 5.333,
+        "duration_seconds": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 05). IG twin of publer 195306513.",
@@ -440,8 +458,10 @@
         "ctr": null,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 89.3
+        "saves": 0,
+        "skip_rate": 89.3,
+        "average_watch_time": 4.066,
+        "duration_seconds": null
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, NO INTRO (package 02). IG twin of publer 195306515.",
@@ -482,7 +502,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 99
       },
       "match_confidence": "high",
       "notes": "Standard 3Q, WITH INTRO (package 03). reach=4 -> essentially undelivered (cold start / throttle), so eng_rate 25% (1 reaction / 4 reach) is NOISE, not a real win. Different hashtag set than the IG twins but identical caption body + question mix.",
@@ -526,7 +548,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 87
       },
       "match_confidence": "medium",
       "notes": "Family = cliffhanger (HIGH confidence: 'The last one is tricky! Comment your answer' = last-question-withheld). EXACT render is video-1 or video-2 (identical tiers, caption cannot disambiguate) -> source_video null, see source_candidates. Despite the comment-for-answer mechanic, 0 comments.",
@@ -571,8 +595,10 @@
         "ctr": null,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 79.5
+        "saves": 0,
+        "skip_rate": 79.5,
+        "average_watch_time": 3.513,
+        "duration_seconds": null
       },
       "match_confidence": "low",
       "notes": "NEEDS HUMAN CONFIRM. Classified no-answer per guidance ('Comment your answer below', no score ask, no 'last question' signal). BUT 'This one's tricky!' could also be a cliffhanger. If no-answer, question_types = odd-one-out/figure-series/number-series (assumed here); if cliffhanger, they would be odd-one-out/position/number-series. Exact render (video-1 vs video-2) also unknown.",
@@ -616,7 +642,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 87
       },
       "match_confidence": "medium",
       "notes": "Newest post (2026-07-21). Family = cliffhanger (HIGH: 'Did you get the last question? Comment your answer'). Exact render video-1 vs video-2 unknown -> source_video null. Metrics pending: not in the 2026-07-21 screenshot (posted after / not yet in analytics).",
@@ -658,7 +686,9 @@
         "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": null
+        "skip_rate": null,
+        "average_watch_time": null,
+        "duration_seconds": 68
       },
       "match_confidence": "high",
       "post_state": "published",
@@ -4071,8 +4101,10 @@
         "eng_rate": 2.6415094339622645,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 59.5
+        "saves": 0,
+        "skip_rate": 59.5,
+        "average_watch_time": 10.204,
+        "duration_seconds": 91
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4120,8 +4152,10 @@
         "eng_rate": 1.593625498007968,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 51.4
+        "saves": 0,
+        "skip_rate": 51.4,
+        "average_watch_time": 11.084,
+        "duration_seconds": 83
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4169,8 +4203,10 @@
         "eng_rate": 1.444043321299639,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 62.1
+        "saves": 0,
+        "skip_rate": 62.1,
+        "average_watch_time": 8.753,
+        "duration_seconds": 83
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4218,8 +4254,10 @@
         "eng_rate": 2.2496371552975325,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 52.1
+        "saves": 0,
+        "skip_rate": 52.1,
+        "average_watch_time": 19.053,
+        "duration_seconds": 80
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4267,8 +4305,10 @@
         "eng_rate": 2.788844621513944,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 67.1
+        "saves": 0,
+        "skip_rate": 67.1,
+        "average_watch_time": 7.272,
+        "duration_seconds": 49
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4316,8 +4356,10 @@
         "eng_rate": 0.9900990099009901,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 75
+        "saves": 0,
+        "skip_rate": 75,
+        "average_watch_time": 4.555,
+        "duration_seconds": 79
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4365,8 +4407,10 @@
         "eng_rate": 0.8,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 68
+        "saves": 0,
+        "skip_rate": 68,
+        "average_watch_time": 5.34,
+        "duration_seconds": 63
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4414,8 +4458,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 85.2
+        "saves": 0,
+        "skip_rate": 85.2,
+        "average_watch_time": 2.723,
+        "duration_seconds": 66
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4463,8 +4509,10 @@
         "eng_rate": 2.869198312236287,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 53.3
+        "saves": 2,
+        "skip_rate": 53.3,
+        "average_watch_time": 13.402,
+        "duration_seconds": 92
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4512,8 +4560,10 @@
         "eng_rate": 3.4246575342465753,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 61.3
+        "saves": 0,
+        "skip_rate": 61.3,
+        "average_watch_time": 10.202,
+        "duration_seconds": 77
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4562,8 +4612,10 @@
         "eng_rate": 1.9900497512437811,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 64.5
+        "saves": 0,
+        "skip_rate": 64.5,
+        "average_watch_time": 9.661,
+        "duration_seconds": 90
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -4658,8 +4710,10 @@
         "eng_rate": 1.680672268907563,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 52.1
+        "saves": 2,
+        "skip_rate": 52.1,
+        "average_watch_time": 11.408,
+        "duration_seconds": 88
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -4754,8 +4808,10 @@
         "eng_rate": 1.5151515151515151,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 70.5
+        "saves": 0,
+        "skip_rate": 70.5,
+        "average_watch_time": 6.571,
+        "duration_seconds": 83
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -4850,8 +4906,10 @@
         "eng_rate": 1.694915254237288,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 70.8
+        "saves": 0,
+        "skip_rate": 70.8,
+        "average_watch_time": 5.935,
+        "duration_seconds": 91
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -4946,8 +5004,10 @@
         "eng_rate": 3.341288782816229,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 64.1
+        "saves": 0,
+        "skip_rate": 64.1,
+        "average_watch_time": 8.145,
+        "duration_seconds": 92
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5042,8 +5102,10 @@
         "eng_rate": 0.25,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 64.3
+        "saves": 0,
+        "skip_rate": 64.3,
+        "average_watch_time": 10.654,
+        "duration_seconds": 61
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5138,8 +5200,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 74.6
+        "saves": 0,
+        "skip_rate": 74.6,
+        "average_watch_time": 4.759,
+        "duration_seconds": 48
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5234,8 +5298,10 @@
         "eng_rate": 0.8547008547008548,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 69
+        "saves": 0,
+        "skip_rate": 69,
+        "average_watch_time": 7.223,
+        "duration_seconds": 60
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5330,8 +5396,10 @@
         "eng_rate": 0.819672131147541,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 78
+        "saves": 0,
+        "skip_rate": 78,
+        "average_watch_time": 5.163,
+        "duration_seconds": 75
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5425,8 +5493,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 75.2
+        "saves": 0,
+        "skip_rate": 75.2,
+        "average_watch_time": 4.773,
+        "duration_seconds": 69
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5520,8 +5590,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 62.9
+        "saves": 0,
+        "skip_rate": 62.9,
+        "average_watch_time": 8.978,
+        "duration_seconds": 96
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5615,8 +5687,10 @@
         "eng_rate": 2.1406727828746175,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 54.7
+        "saves": 0,
+        "skip_rate": 54.7,
+        "average_watch_time": 10.412,
+        "duration_seconds": 59
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5711,8 +5785,10 @@
         "eng_rate": 0.6036217303822937,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 59.1
+        "saves": 0,
+        "skip_rate": 59.1,
+        "average_watch_time": 9.973,
+        "duration_seconds": 58
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5806,8 +5882,10 @@
         "eng_rate": 0.8064516129032258,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 66.4
+        "saves": 0,
+        "skip_rate": 66.4,
+        "average_watch_time": 5.92,
+        "duration_seconds": 94
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5901,8 +5979,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 79.2
+        "saves": 0,
+        "skip_rate": 79.2,
+        "average_watch_time": 6.854,
+        "duration_seconds": 103
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5994,8 +6074,10 @@
         "eng_rate": 0.7936507936507936,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 71.2
+        "saves": 0,
+        "skip_rate": 71.2,
+        "average_watch_time": 17.374,
+        "duration_seconds": 33
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6087,8 +6169,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 62.3
+        "saves": 0,
+        "skip_rate": 62.3,
+        "average_watch_time": 36.566,
+        "duration_seconds": 81
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6182,8 +6266,10 @@
         "eng_rate": 3.076923076923077,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 67.7
+        "saves": 0,
+        "skip_rate": 67.7,
+        "average_watch_time": 8.713,
+        "duration_seconds": 85
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6277,8 +6363,10 @@
         "eng_rate": 3.225806451612903,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 68.8
+        "saves": 0,
+        "skip_rate": 68.8,
+        "average_watch_time": 5.16,
+        "duration_seconds": 87
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6372,8 +6460,10 @@
         "eng_rate": 0.5050505050505051,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 72
+        "saves": 0,
+        "skip_rate": 72,
+        "average_watch_time": 6.753,
+        "duration_seconds": 91
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6467,8 +6557,10 @@
         "eng_rate": 1.4285714285714286,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 61.2
+        "saves": 0,
+        "skip_rate": 61.2,
+        "average_watch_time": 8.536,
+        "duration_seconds": 98
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6562,8 +6654,10 @@
         "eng_rate": 5.0359712230215825,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 72.5
+        "saves": 0,
+        "skip_rate": 72.5,
+        "average_watch_time": 5.856,
+        "duration_seconds": 62
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6655,8 +6749,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 92.2
+        "saves": 0,
+        "skip_rate": 92.2,
+        "average_watch_time": 2.126,
+        "duration_seconds": 33
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6748,8 +6844,10 @@
         "eng_rate": 2.952029520295203,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 55.7
+        "saves": 0,
+        "skip_rate": 55.7,
+        "average_watch_time": 9.824,
+        "duration_seconds": 60
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6843,8 +6941,10 @@
         "eng_rate": 0,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 68.5
+        "saves": 0,
+        "skip_rate": 68.5,
+        "average_watch_time": 4.06,
+        "duration_seconds": 70
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6938,8 +7038,10 @@
         "eng_rate": 1.5037593984962405,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 69.9
+        "saves": 0,
+        "skip_rate": 69.9,
+        "average_watch_time": 6.336,
+        "duration_seconds": 90
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -7033,8 +7135,10 @@
         "eng_rate": 1.680672268907563,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 71.2
+        "saves": 0,
+        "skip_rate": 71.2,
+        "average_watch_time": 7.166,
+        "duration_seconds": 99
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -7128,8 +7232,10 @@
         "eng_rate": 2.8169014084507045,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 81.7
+        "saves": 0,
+        "skip_rate": 81.7,
+        "average_watch_time": 5.543,
+        "duration_seconds": 103
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -7223,8 +7329,10 @@
         "eng_rate": 0.9009009009009009,
         "as_of": "2026-08-02",
         "source": "api",
-        "saves": null,
-        "skip_rate": 76.4
+        "saves": 0,
+        "skip_rate": 76.4,
+        "average_watch_time": 7.442,
+        "duration_seconds": 95
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -8898,7 +9006,7 @@
       }
     },
     "opening": {
-      "n_posts": 16,
+      "n_posts": 32,
       "n_with_metrics": 2,
       "median_eng_rate": 1.86,
       "avg_reach": 126.5,
@@ -8916,7 +9024,7 @@
   "aggregate_cuts": {
     "by_platform": {
       "instagram": {
-        "n_posts": 81,
+        "n_posts": 89,
         "n_with_metrics": 45,
         "median_eng_rate": 1.52,
         "avg_reach": 132,
@@ -8946,7 +9054,7 @@
         }
       },
       "youtube": {
-        "n_posts": 35,
+        "n_posts": 43,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -9293,7 +9401,7 @@
         }
       },
       "motion-hook-stat": {
-        "n_posts": 8,
+        "n_posts": 14,
         "n_with_metrics": 1,
         "median_eng_rate": 2.82,
         "avg_reach": 142,
@@ -9308,7 +9416,7 @@
         }
       },
       "motion-hook-declared": {
-        "n_posts": 6,
+        "n_posts": 14,
         "n_with_metrics": 1,
         "median_eng_rate": 0.9,
         "avg_reach": 111,
@@ -9323,7 +9431,7 @@
         }
       },
       "motion-hook": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,

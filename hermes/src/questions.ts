@@ -74,6 +74,45 @@ export function loadUsedSigs(): Set<string> {
   return used;
 }
 
+/**
+ * Sigs of questions the validity gate REJECTED, which must never be proposed again.
+ *
+ * A rejected question used to stay in the candidate pool — the gate returned before
+ * markUsed(), by design, so a question lost to a transient judge failure could come
+ * back. In practice the rejections were not transient, so the pool simply re-served
+ * them: seven questions were flagged twice between 2026-07-30 and 2026-08-02, and on
+ * 2026-08-02 one was flagged twice IN THE SAME RUN, killing two videos with the same
+ * item. Quarantine is kept separate from the used ledger because these were never
+ * published; the dedup gate's reasons therefore stay honest.
+ */
+export function loadRejectedSigs(): Set<string> {
+  const j = readJSON<{ sigs?: string[] }>(CONFIG.HERMES_REJECTED, {});
+  return new Set(j.sigs ?? []);
+}
+
+/** Quarantine questions the validity gate rejected. Idempotent. */
+export function markRejected(videoSlug: string, questions: HermesQ[], reasons: Record<string, string> = {}): void {
+  if (!questions.length) return;
+  const j = readJSON<{ sigs?: string[]; log?: Array<Record<string, unknown>>; updated?: string }>(CONFIG.HERMES_REJECTED, {});
+  const set = new Set(j.sigs ?? []);
+  const log = j.log ?? [];
+  let added = 0;
+  for (const q of questions) {
+    if (set.has(q.sig)) continue;
+    set.add(q.sig);
+    added++;
+    // Why it was quarantined, so a bad rule set can be audited and reversed by hand
+    // rather than only inferred from an absence.
+    log.push({ ts: new Date().toISOString(), videoSlug, sig: q.sig, hash: q.hash, tier: q.tier, reason: (reasons[q.sig] ?? "").slice(0, 300) });
+  }
+  if (!added) return;
+  j.sigs = [...set];
+  j.log = log.slice(-500);
+  j.updated = new Date().toISOString();
+  writeJSONAtomic(CONFIG.HERMES_REJECTED, j);
+  info("questions quarantined (rejected by the validity gate)", { videoSlug, added, total: set.size });
+}
+
 const norm = (s: string) => s.trim().toLowerCase();
 
 // ── Fuzzy near-duplicate signature (computed at LOAD-TIME; NEVER persisted) ───
@@ -388,6 +427,7 @@ export interface CandidateFilter {
 /** Return validated, fresh (never-used) candidate questions in a stable order. */
 export function candidateQuestions(filter: CandidateFilter = {}): HermesQ[] {
   const used = loadUsedSigs();
+  const rejected = loadRejectedSigs();
   const extra = filter.exclude ?? new Set<string>();
   const kinds = filter.kinds ?? ["text", "numseries"];
   // SECOND dedup key (additive; exact-sig behavior below is unchanged): skip any
@@ -400,7 +440,7 @@ export function candidateQuestions(filter: CandidateFilter = {}): HermesQ[] {
   for (const e of loadBank()) {
     if (!kinds.includes(e.kind as any)) continue;
     if (filter.category && filter.category !== "mixed" && e.category !== filter.category) continue;
-    if (used.has(e.sig) || extra.has(e.sig)) continue;
+    if (used.has(e.sig) || extra.has(e.sig) || rejected.has(e.sig)) continue;
     const q = toHermesQ(e);
     if (!q) continue;
     const f = fuzzySig(q);
@@ -438,15 +478,16 @@ export function markUsed(videoSlug: string, dimension: string, arm: string, ques
   info("questions marked used", { videoSlug, added, total: set.size });
 }
 
-export function bankStats(): { total: number; usable: number; fresh: number; used: number } {
+export function bankStats(): { total: number; usable: number; fresh: number; used: number; quarantined: number } {
   const used = loadUsedSigs();
+  const rejected = loadRejectedSigs();
   let usable = 0;
   let fresh = 0;
   for (const e of loadBank()) {
     const q = toHermesQ(e);
     if (!q) continue;
     usable++;
-    if (!used.has(e.sig)) fresh++;
+    if (!used.has(e.sig) && !rejected.has(e.sig)) fresh++;
   }
-  return { total: loadBank().length, usable, fresh, used: used.size };
+  return { total: loadBank().length, usable, fresh, used: used.size, quarantined: rejected.size };
 }

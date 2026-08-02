@@ -18,7 +18,11 @@ test("the encoded target is the mandate: 500k views / 7 days + 500 followers eac
   assert.equal(GOAL.views, 500_000);
   assert.equal(GOAL.followers_each, 500);
   assert.equal(GOAL.days, 7);
-  assert.deepEqual([...GOAL.platforms], ["instagram", "tiktok"]);
+  // YouTube joined the VIEWS universe on 2026-08-02. It had been half of everything
+  // published and contributed nothing to the rollup — not zero, absent.
+  assert.deepEqual([...GOAL.platforms], ["instagram", "tiktok", "youtube"]);
+  // The FOLLOWERS target is still IG + TikTok only; there is no YouTube follower goal.
+  assert.deepEqual([...GOAL.follower_platforms], ["instagram", "tiktok"]);
   // likes were dropped from the mandate entirely
   assert.equal((GOAL as Record<string, unknown>).likes, undefined);
 });

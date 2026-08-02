@@ -20,17 +20,25 @@ import { kickoffStatus } from "./kickoff.ts";
 
 // ── THE MANDATE — SINGLE SOURCE OF TRUTH (edit these to change the target) ─────
 export const GOAL = Object.freeze({
-  /** combined (IG + TikTok) 7-day view target. */
+  /** combined 7-day view target, across every publishing network. */
   views: 500_000,
   /**
    * follower target on EACH platform (IG and TikTok independently), i.e. 500 IG
    * AND 500 TikTok. This is "per platform", NOT a combined total — flip this one
    * constant (and drop the *2 in the combined display) if you ever want a single
-   * combined-followers target instead.
+   * combined-followers target instead. YouTube has no follower target.
    */
   followers_each: 500,
   days: 7,
-  platforms: ["instagram", "tiktok"] as const,
+  /**
+   * YOUTUBE IS IN THE ROLLUP (2026-08-02). It was omitted here while it was half of
+   * everything the loop published, so its posts contributed nothing to the totals —
+   * not zero, absent. The followers target stays IG + TikTok only; this list is the
+   * VIEWS universe.
+   */
+  platforms: ["instagram", "tiktok", "youtube"] as const,
+  /** The platforms the 500-followers-each target applies to. */
+  follower_platforms: ["instagram", "tiktok"] as const,
   // NOTE: likes are deliberately NOT part of the goal (no like target / trajectory).
 });
 
@@ -71,15 +79,32 @@ interface AbPost {
 }
 
 /**
- * Pure trajectory math. `posts` = ab-database.json posts (with per-platform metrics);
- * `sinceISO` = kickoff instant (null => not started); `followers` = latest per-
- * platform follower counts (or {} when unmeasured). No I/O; fully unit-testable.
+ * A row of the LIVE analytics snapshot (score.ts writes it, CONFIG.ANALYTICS_SNAPSHOT).
+ * When one is supplied it REPLACES the ab-database sum as the source of the totals.
+ */
+export interface LiveAnalyticsRow {
+  network: string;
+  published_at?: string | null;
+  views?: number | null;
+}
+
+/**
+ * Pure trajectory math. `sinceISO` = kickoff instant (null => not started);
+ * `followers` = latest per-platform follower counts (or {} when unmeasured).
+ *
+ * VIEWS COME FROM `live` WHEN IT IS SUPPLIED, and from the ab-database join only as a
+ * fallback. That ordering is the fix for the dashboard reporting 9,500 views over 28
+ * Instagram posts on a day the analytics API said 39,382 over 101 with YouTube missing
+ * entirely. The join answers "which FORMAT earned this view", which is a harder
+ * question and is allowed to be incomplete; the TOTAL is not, and the API states it
+ * directly. No I/O here; fully unit-testable.
  */
 export function computeGoalProgress(
   posts: AbPost[],
   sinceISO: string | null,
   followers: Record<string, number> = {},
   now: Date = new Date(),
+  live?: LiveAnalyticsRow[] | null,
 ): GoalProgress {
   const nowISO = now.toISOString();
   const base = {
@@ -87,14 +112,28 @@ export function computeGoalProgress(
     window_days: GOAL.days,
     target: { views: GOAL.views, followers_each: GOAL.followers_each },
   };
+  const sinceMs = sinceISO ? Date.parse(sinceISO) : Number.NaN;
+  const useLive = Array.isArray(live) && live.length > 0;
   const perPlatform: PlatformProgress[] = GOAL.platforms.map((platform) => {
-    const mine = posts.filter((p) => (p.platform || "").toLowerCase() === platform);
-    const inWindow = sinceISO
-      ? mine.filter((p) => p.posted_at && Date.parse(p.posted_at) >= Date.parse(sinceISO))
-      : mine;
-    const views = inWindow.reduce((s, p) => s + (Number(p.metrics?.video_views) || 0), 0);
+    let views: number;
+    let count: number;
+    if (useLive) {
+      const mine = live!.filter((r) => String(r.network ?? "").toLowerCase() === platform);
+      const inWindow = Number.isFinite(sinceMs)
+        ? mine.filter((r) => r.published_at && Date.parse(r.published_at) >= sinceMs)
+        : mine;
+      views = inWindow.reduce((s, r) => s + (Number(r.views) || 0), 0);
+      count = inWindow.length;
+    } else {
+      const mine = posts.filter((p) => (p.platform || "").toLowerCase() === platform);
+      const inWindow = Number.isFinite(sinceMs)
+        ? mine.filter((p) => p.posted_at && Date.parse(p.posted_at) >= sinceMs)
+        : mine;
+      views = inWindow.reduce((s, p) => s + (Number(p.metrics?.video_views) || 0), 0);
+      count = inWindow.length;
+    }
     const f = followers[platform];
-    return { platform, views, followers: Number.isFinite(f) ? f : null, posts: inWindow.length };
+    return { platform, views, followers: Number.isFinite(f) ? f : null, posts: count };
   });
   const totals = {
     views: perPlatform.reduce((s, p) => s + p.views, 0),
@@ -172,7 +211,20 @@ export function readFollowers(env: NodeJS.ProcessEnv = process.env): Record<stri
   }
 }
 
-/** Loop-side convenience: read ab-database.json + kickoff + followers -> progress. */
+/**
+ * The LIVE analytics snapshot score.ts writes each cycle, or null when it is absent
+ * (a box that has not scored yet), in which case the caller falls back to the join.
+ */
+export function readLiveAnalytics(path: string = CONFIG.ANALYTICS_SNAPSHOT): LiveAnalyticsRow[] | null {
+  try {
+    const j = JSON.parse(readFileSync(path, "utf8"));
+    return Array.isArray(j?.rows) && j.rows.length ? (j.rows as LiveAnalyticsRow[]) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Loop-side convenience: live analytics (+ ab-database fallback) -> progress. */
 export function goalProgress(env: NodeJS.ProcessEnv = process.env, now: Date = new Date()): GoalProgress {
   let posts: AbPost[] = [];
   try {
@@ -181,5 +233,5 @@ export function goalProgress(env: NodeJS.ProcessEnv = process.env, now: Date = n
   } catch {
     posts = [];
   }
-  return computeGoalProgress(posts, kickoffStatus(env).since, readFollowers(env), now);
+  return computeGoalProgress(posts, kickoffStatus(env).since, readFollowers(env), now, readLiveAnalytics());
 }

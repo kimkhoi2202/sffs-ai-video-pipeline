@@ -125,41 +125,42 @@ test("LANE: YouTube slots keep the window + ODD-minute invariants", () => {
 
 // ── the budget guard ─────────────────────────────────────────────────────────
 
-test("BUDGET: 12 + 7 is understood as 589/month and fits under the 600 guard", () => {
+test("BUDGET: a fan-out costs one record PER NETWORK — 12x3 is 36/day, not 12", () => {
   const m = monthlyRecords(31);
   assert.equal(m.byNetwork.instagram, 12);
-  assert.equal(m.byNetwork.youtube, 7);
-  assert.equal(m.byNetwork.tiktok, undefined, "a paused network costs nothing");
-  assert.equal(m.perDay, 19);
-  assert.equal(m.perMonth, 589);
-
-  const f = budgetForecast(31);
-  assert.equal(f.perMonth, 589);
-  assert.equal(f.budget, 600);
-  assert.ok(f.withinBudget, f.reason);
-  // 30-day months too — the point of picking 7 was that it needs no seasonal tweak.
-  assert.equal(budgetForecast(30).perMonth, 570);
-  assert.ok(budgetForecast(30).withinBudget);
+  assert.equal(m.byNetwork.youtube, 12);
+  assert.equal(m.byNetwork.tiktok, 12, "TikTok is live again and therefore costs records");
+  assert.equal(m.perDay, 36);
+  assert.equal(m.perMonth, 1116);
+  assert.equal(budgetForecast(31).budget, 600);
 });
 
-test("BUDGET: the 80% alert is still meaningful — 589 is above it, and 8/day is NOT", () => {
-  const f = budgetForecast(31);
-  // At 98% the alert is the steady state, so it must actually be ON — a guard that
-  // never fires at the planned volume is not a guard.
-  assert.ok(f.pctOfBudget > CONFIG.MC_MONTHLY_ALERT_AT, `pct ${f.pctOfBudget} should exceed the alert line`);
-  assert.ok(f.alerts, "the 80% alert must be lit at the planned steady state");
-  // And the line that actually stops us is withinBudget, which 8/day would break.
-  assert.equal((12 + 8) * 31, 620);
-  assert.ok(620 > CONFIG.MC_MONTHLY_POST_BUDGET, "YouTube at 8/day would breach the guard");
+test("BUDGET: the guard is HORIZON-dependent, and the campaign's horizon fits", () => {
+  // The 31-day answer is "no" and that is the intended shape of a sprint. The answer
+  // that matters is the 14 days left, plus the 17 records already spent this month.
+  assert.equal(budgetForecast(31).withinBudget, false, "a full month at 36/day does not fit — knowingly");
+  const sprint = budgetForecast(14);
+  assert.equal(sprint.perMonth, 504);
+  assert.ok(sprint.withinBudget, sprint.reason);
+  assert.ok(504 + 17 < CONFIG.MC_MONTHLY_POST_BUDGET, "521 of 600, with slack");
+});
+
+test("BUDGET: the LIVE guard still fails closed, whatever the forecast says", () => {
+  // budgetForecast only reports. decide() is what actually rations, and it must hand
+  // out nothing once the live headroom is gone.
+  const none = decide(0);
+  for (const n of ["instagram", "youtube", "tiktok"] as const) {
+    assert.equal(none.find((x) => x.network === n)!.slots, 0, `${n} gets nothing at zero headroom`);
+  }
 });
 
 test("BUDGET: Instagram is served FIRST when headroom is short", () => {
-  // NETWORKS order is load-bearing: the measurable arm must not be the one that starves.
+  // NETWORKS order is load-bearing: the network that carries the audience, and the only
+  // one that reports a skip rate, must not be the one that starves.
   const d = decide(15);
   assert.equal(d.find((x) => x.network === "instagram")!.slots, 12);
   assert.equal(d.find((x) => x.network === "youtube")!.slots, 3, "YouTube absorbs the shortfall");
-  const none = decide(0);
-  assert.equal(none.find((x) => x.network === "youtube")!.slots, 0);
+  assert.equal(d.find((x) => x.network === "tiktok")!.slots, 0, "and TikTok absorbs the rest of it");
 });
 
 // ── TRAP 2: madeForKids ──────────────────────────────────────────────────────
@@ -324,8 +325,13 @@ test("PLUMBING: timesByNetwork gives YouTube a bucket (an empty one drops its ga
 test("PLUMBING: config carries a YouTube account id and policy entry", () => {
   assert.ok(CONFIG.ACCOUNTS.youtube, "annotateDb reads CONFIG.ACCOUNTS[platform]");
   assert.ok(CONFIG.ACCOUNT_IDS.includes(CONFIG.ACCOUNTS.youtube));
-  assert.equal(CONFIG.PLATFORM_POLICY.youtube.perDay, 7);
-  assert.equal(CONFIG.PLATFORM_POLICY.youtube.paused, false);
-  assert.equal(CONFIG.PLATFORM_POLICY.instagram.perDay, 12, "Instagram's volume is protected");
-  assert.equal(CONFIG.PLATFORM_POLICY.tiktok.paused, true, "TikTok stays paused");
+  // 12/day on all three, TikTok resumed — the 2026-08-02 volume decision.
+  for (const network of ["instagram", "youtube", "tiktok"] as const) {
+    assert.equal(CONFIG.PLATFORM_POLICY[network].perDay, 12, `${network} runs 12/day`);
+    assert.equal(CONFIG.PLATFORM_POLICY[network].paused, false, `${network} is live`);
+  }
+  // Spacing is per-network and was NOT touched by the volume change.
+  assert.equal(CONFIG.PLATFORM_POLICY.instagram.minGapMinutes, 56);
+  assert.equal(CONFIG.PLATFORM_POLICY.youtube.minGapMinutes, 56);
+  assert.equal(CONFIG.PLATFORM_POLICY.tiktok.minGapMinutes, 240, "TikTok keeps its 4-hour floor");
 });

@@ -585,10 +585,7 @@ export async function restoreDeleted(id: number): Promise<boolean> {
 
 /** One post's metrics, normalised across networks. */
 export interface McMetrics {
-  // NOTE: there is no YouTube reader yet — instagramReels() and the TikTok reader are
-  // the only producers. YouTube analytics (and the dashboard goal rollup that consumes
-  // them) still have to be built before YouTube posts can be scored.
-  network: "instagram" | "tiktok";
+  network: McNetwork;
   /** Native platform post id — the join key we already store as platform_post_id. */
   platformPostId: string;
   url?: string;
@@ -599,6 +596,8 @@ export interface McMetrics {
   likes: number | null;
   comments: number | null;
   shares: number | null;
+  /** Saves/bookmarks. Instagram reports this as `saved`; the others do not report it. */
+  saves: number | null;
   /** Percentage of viewers gone before ~3s. Instagram only; the hook-quality metric. */
   skipRate: number | null;
   averageWatchTime: number | null;
@@ -621,10 +620,66 @@ export async function instagramReels(from: string, to: string, timezone = CONFIG
     likes: num(r.likes),
     comments: num(r.comments),
     shares: num(r.shares),
+    // The field is `saved`, not `saves`. It has been in every response all along; the
+    // flattener just hardcoded null, so no post ever carried a save count.
+    saves: num(r.saved),
     skipRate: num(r.reelsSkipRate),
     averageWatchTime: num(r.averageWatchTime),
     durationSeconds: num(r.durationSeconds),
   }));
+}
+
+/**
+ * YouTube post analytics. `/v2/analytics/posts/youtube`, verified live against this
+ * brand: 200, and rows carrying videoId, views, watchMinutes, averageViewDuration,
+ * likes, dislikes, comments, shares, durationSeconds and videoType.
+ *
+ * THIS READER DID NOT EXIST UNTIL 2026-08-02, and its absence was expensive rather than
+ * merely incomplete: YouTube was half of everything the loop published, so every one of
+ * those posts was invisible to scoring, to the learning loop and to the goal rollup —
+ * not counted as zero, simply absent, which is why the dashboard's totals and the live
+ * numbers disagreed by roughly 4x.
+ *
+ * TWO SHAPE DIFFERENCES from the Instagram reader, both real rather than oversights:
+ *
+ *   REACH IS NOT REPORTED. YouTube has no reach concept in this payload, so `reach`
+ *   mirrors `views` — the same call TikTok already makes for the same reason (see TRAP
+ *   4). Leaving it null would silently exclude YouTube from every reach-keyed rollup.
+ *
+ *   THERE IS NO SKIP RATE. `averageViewDuration` is seconds of average view, which maps
+ *   onto averageWatchTime, but nothing in the payload is a 3-second drop-off, so
+ *   skipRate stays null rather than being synthesised from duration. The hook metric
+ *   remains Instagram-only and honestly so.
+ *
+ * COVERAGE IS PARTIAL TODAY and that is upstream of us: the board shows 25 published
+ * YouTube posts and this endpoint returns rows for 2 of them. YouTube Analytics lags
+ * new channels by days, so the reader takes what exists each cycle and the rest arrives
+ * as it matures — the same "not yet mature" path Instagram posts already take.
+ */
+export async function youtubePosts(from: string, to: string, timezone = CONFIG.METRICOOL_TZ): Promise<McMetrics[]> {
+  const rows = await call<any[]>(`${V2}/analytics/posts/youtube`, { query: { from, to, timezone } });
+  return (rows ?? []).map((r) => {
+    const views = num(r.views);
+    return {
+      network: "youtube" as const,
+      platformPostId: String(r.videoId ?? ""),
+      url: r.watchUrl,
+      publishedAt: r.publishedAt,
+      reach: views,
+      views,
+      interactions: null,
+      likes: num(r.likes),
+      comments: num(r.comments),
+      shares: num(r.shares),
+      saves: null,
+      skipRate: null,
+      // Seconds of average view. `watchMinutes` is the TOTAL across all viewers and is
+      // a different quantity — mapping it here would inflate watch time by the audience
+      // size, so it is deliberately not carried.
+      averageWatchTime: num(r.averageViewDuration),
+      durationSeconds: num(r.durationSeconds),
+    };
+  });
 }
 
 export async function tiktokPosts(from: string, to: string, timezone = CONFIG.METRICOOL_TZ): Promise<McMetrics[]> {
@@ -646,8 +701,9 @@ export async function tiktokPosts(from: string, to: string, timezone = CONFIG.ME
       likes: num(r.likeCount),
       comments: num(r.commentCount),
       shares: num(r.shareCount),
+      saves: null, // TikTok's payload carries no save/bookmark count
       // Metricool exposes no usable TikTok watch-time data: the four declared fields
-      // are null on all rows, so the hook experiment can only be measured on Instagram.
+      // are null on all rows, so hook quality can only be measured on Instagram.
       skipRate: null,
       averageWatchTime: null,
       durationSeconds: num(r.duration),

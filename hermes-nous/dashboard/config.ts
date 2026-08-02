@@ -109,6 +109,9 @@ export const CONFIG = Object.freeze({
   KICKOFF_PHRASE: (process.env.HERMES_KICKOFF_PHRASE || "ARM SFFS AUTONOMY").trim(),
   /** optional per-platform follower snapshot ({instagram:{followers},tiktok:{followers}}). */
   ACCOUNT_METRICS: process.env.HERMES_ACCOUNT_METRICS || join(DATA_DIR, "account-metrics.json"),
+  /** LIVE per-network analytics totals, written each cycle by hermes/src/score.ts.
+   *  The goal panel's view totals come from here, not from the ab-database join. */
+  ANALYTICS_SNAPSHOT: process.env.HERMES_ANALYTICS_SNAPSHOT || join(DATA_DIR, "analytics-totals.json"),
 
   // ── question-bank runway estimate (coverage panel) ───────────────────────
   /** est. videos/day and questions/video, used only to estimate days-of-runway. */
@@ -143,7 +146,7 @@ export const CONFIG = Object.freeze({
   // ── LLM gateway health ping (optional, best-effort; no token spend) ──────
   TFY_BASE_URL: (process.env.TFY_LLM_BASE_URL || "https://tfy.promptlens.trilogy.com/api/llm/v1").trim(),
   TFY_API_KEY: (process.env.TFY_API_KEY || process.env.OPENAI_API_KEY || "").trim(),
-  MODEL: (process.env.HERMES_MODEL || "claude-opus-4-8").trim(),
+  MODEL: (process.env.HERMES_MODEL || "claude-opus-5").trim(),
 
   // ── dashboard server + basic auth (like the current dashboard) ──────────
   // Default port 8081 so it can run ALONGSIDE the live dashboard (8080) safely.

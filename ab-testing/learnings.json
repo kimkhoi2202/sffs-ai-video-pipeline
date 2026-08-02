@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-02T14:06:13.510Z",
+  "updated_at": "2026-08-02T19:45:27.834Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -341,7 +341,7 @@
         }
       },
       "opening": {
-        "n_posts": 16,
+        "n_posts": 32,
         "n_with_metrics": 2,
         "median_eng_rate": 1.86,
         "avg_reach": 126.5,
@@ -358,7 +358,7 @@
     },
     "by_platform": {
       "instagram": {
-        "n_posts": 81,
+        "n_posts": 89,
         "n_with_metrics": 45,
         "median_eng_rate": 1.52,
         "avg_reach": 132,
@@ -388,7 +388,7 @@
         }
       },
       "youtube": {
-        "n_posts": 35,
+        "n_posts": 43,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -405,7 +405,7 @@
     },
     "by_hashtag_set": {
       "B": {
-        "n_posts": 38,
+        "n_posts": 40,
         "n_with_metrics": 10,
         "median_eng_rate": 1.64,
         "avg_reach": 170,
@@ -420,7 +420,7 @@
         }
       },
       "A": {
-        "n_posts": 61,
+        "n_posts": 65,
         "n_with_metrics": 18,
         "median_eng_rate": 0.86,
         "avg_reach": 131.5,
@@ -435,7 +435,7 @@
         }
       },
       "C": {
-        "n_posts": 41,
+        "n_posts": 51,
         "n_with_metrics": 12,
         "median_eng_rate": 1.48,
         "avg_reach": 129,
@@ -844,7 +844,7 @@
         }
       },
       "motion-hook-stat": {
-        "n_posts": 8,
+        "n_posts": 14,
         "n_with_metrics": 1,
         "median_eng_rate": 2.82,
         "avg_reach": 142,
@@ -859,7 +859,7 @@
         }
       },
       "motion-hook-declared": {
-        "n_posts": 6,
+        "n_posts": 14,
         "n_with_metrics": 1,
         "median_eng_rate": 0.9,
         "avg_reach": 111,
@@ -874,7 +874,7 @@
         }
       },
       "motion-hook": {
-        "n_posts": 2,
+        "n_posts": 4,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -889,15 +889,6 @@
         }
       }
     }
-  },
-  "front_runners": {
-    "as_of": "2026-08-02",
-    "variant_family": "standard",
-    "platform": "tiktok",
-    "hashtag_set": "B",
-    "time_bucket": "afternoon (12-18)",
-    "confidence": "medium",
-    "notes": "Only platform has a historical read (TikTok median eng 4.24% vs IG 0.78% on identical source videos). Family/hashtag_set/time_bucket front-runners are unknown until the A/B arms publish and metrics are pulled."
   },
   "decisions_log": [
     {
@@ -1107,6 +1098,42 @@
       "pulled": 153,
       "updated": 54,
       "n_with_metrics": 54
+    },
+    {
+      "date": "2026-08-02",
+      "from": "2026-07-03",
+      "to": "2026-08-02",
+      "pulled": 155,
+      "updated": 54,
+      "n_with_metrics": 54
+    },
+    {
+      "date": "2026-08-02",
+      "from": "2026-07-03",
+      "to": "2026-08-02",
+      "pulled": 155,
+      "updated": 54,
+      "n_with_metrics": 54
     }
-  ]
+  ],
+  "retired": {
+    "front_runners": {
+      "as_of": "2026-08-02",
+      "variant_family": "standard",
+      "platform": "tiktok",
+      "hashtag_set": "B",
+      "time_bucket": "afternoon (12-18)",
+      "confidence": "medium",
+      "notes": "Only platform has a historical read (TikTok median eng 4.24% vs IG 0.78% on identical source videos). Family/hashtag_set/time_bucket front-runners are unknown until the A/B arms publish and metrics are pulled.",
+      "retired_at": "2026-08-02",
+      "reason": "Selected on median_eng_rate, which content-defaults.json already abandoned as unreliable for this account, and often on n<5. Superseded by the pinned production format; see dimensions.ts PINNED."
+    }
+  },
+  "pinned_format": {
+    "as_of": "2026-08-02",
+    "arm": "pinned-format",
+    "description": "3 mixed questions, cold-plate open, full narration, cliffhanger ending, 5s, short counter, branded cover",
+    "chosen_on": "3-second skip rate vs views across all published Instagram reels (monotonic over 8 buckets, ~10x spread)",
+    "note": "Exploitation phase: no A/B rotation. Questions inside the format are fresh every video and still pass every gate."
+  }
 }

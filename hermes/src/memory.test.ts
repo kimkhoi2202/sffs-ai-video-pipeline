@@ -27,25 +27,39 @@ test("formatTakeaway: one line with the key fields", () => {
     drafted: 6,
     rejected: 4,
     failed: 0,
-    frontFamily: "narration",
-    frontTimeBucket: "evening (18-24)",
+    format: "pinned-format",
+    liveViews: 42570,
     freshQuestions: 812,
+    quarantined: 6,
     reconciled: 3,
     date: "2026-07-22",
   });
   assert.ok(!line.includes("\n"));
   assert.match(line, /2026-07-22 run 2026-07-22: 6 drafted, 4 rejected, 0 failed/);
-  assert.match(line, /front-runner: narration/);
-  assert.match(line, /best time: evening \(18-24\)/);
+  assert.match(line, /format: pinned-format/);
+  assert.match(line, /42,570 live views to date/);
   assert.match(line, /812 fresh Qs left/);
+  assert.match(line, /6 quarantined/);
   assert.match(line, /reconciled 3/);
+});
+
+test("formatTakeaway: carries no INFERENCE, only measured facts", () => {
+  // MEMORY.md is what the agent reads back as its own recollection, so a nightly
+  // "front-runner" verdict picked on a metric the content policy had abandoned became
+  // a belief by repetition. The line now states what shipped and what was measured.
+  const line = formatTakeaway({
+    run_id: "r", drafted: 1, rejected: 0, failed: 0, format: "pinned-format", liveViews: 1, date: "2026-07-22",
+  });
+  assert.doesNotMatch(line, /front-runner/i);
+  assert.doesNotMatch(line, /best time/i);
 });
 
 test("formatTakeaway: omits optional fields cleanly", () => {
   const line = formatTakeaway({ run_id: "r", drafted: 0, rejected: 0, failed: 0, date: "2026-07-22" });
-  assert.match(line, /front-runner: n\/a/);
-  assert.doesNotMatch(line, /best time:/);
+  assert.match(line, /format: n\/a/);
+  assert.doesNotMatch(line, /live views/);
   assert.doesNotMatch(line, /fresh Qs/);
+  assert.doesNotMatch(line, /quarantined/);
 });
 
 test("mergeTakeaway: empty existing -> just the block", () => {

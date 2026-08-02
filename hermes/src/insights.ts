@@ -1,16 +1,13 @@
 /**
- * insights.ts — matured post analytics, from Metricool.
+ * insights.ts — matured post analytics, from Metricool. ALL THREE networks.
  *
- * Promotion judges on 3-SECOND SKIP RATE, which is the hook-quality signal the whole
- * hook experiment is measured on, and it only exists here.
- *
- * INSTAGRAM ONLY, and that is a real limit rather than an oversight: Metricool declares
- * four TikTok watch-time fields and returns null on every row, so TikTok contributes
- * reach and views but can never contribute a skip rate. With TikTok paused this costs
- * nothing today, and when it resumes its arms simply will not be scoreable on hook
- * quality — which is worth knowing before anyone reads a TikTok skip number as real.
+ * The 3-SECOND SKIP RATE is the only metric on this account that predicts reach, and it
+ * exists here and nowhere else. It is INSTAGRAM-ONLY, which is a real limit rather than
+ * an oversight: Metricool declares four TikTok watch-time fields and returns null on
+ * every row, and the YouTube payload has no drop-off field at all. Both contribute
+ * views, reach and engagement; neither can ever contribute a skip rate.
  */
-import { instagramReels, tiktokPosts, type McMetrics } from "./metricool.ts";
+import { instagramReels, tiktokPosts, youtubePosts, type McMetrics } from "./metricool.ts";
 import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
 
@@ -31,6 +28,8 @@ export interface FlatInsight {
   /** Percentage gone before ~3s. LOWER IS BETTER. The metric promotion judges on. */
   skip_rate: number | null;
   average_watch_time: number | null;
+  /** The video's own length. Pulled every cycle and, until now, thrown away. */
+  duration_seconds: number | null;
 }
 
 /**
@@ -64,11 +63,12 @@ function toFlat(m: McMetrics): FlatInsight {
     likes: m.likes,
     comments: m.comments,
     shares: m.shares,
-    saves: null,
+    saves: m.saves,
     engagement: eng || null,
     engagement_rate: denom > 0 ? (eng / denom) * 100 : null,
     skip_rate: m.skipRate,
     average_watch_time: m.averageWatchTime,
+    duration_seconds: m.durationSeconds,
   };
 }
 
@@ -84,7 +84,14 @@ function stamp(d: string, endOfDay: boolean): string {
   return `${day}T${endOfDay ? "23:59:59" : "00:00:00"}`;
 }
 
-/** Everything matured in the window, across both networks. */
+/**
+ * Everything matured in the window, across ALL THREE networks.
+ *
+ * Each network is pulled independently and a failure in one is warned and skipped, so
+ * one network's outage never costs the cycle the other two. That per-network isolation
+ * is also why YouTube's absence went unnoticed for so long: nothing failed, there was
+ * simply no third block here to fail.
+ */
 export async function pullInsights(fromRaw: string, toRaw: string): Promise<FlatInsight[]> {
   const from = stamp(fromRaw, false);
   const to = stamp(toRaw, true);
@@ -103,6 +110,13 @@ export async function pullInsights(fromRaw: string, toRaw: string): Promise<Flat
     if (tt.length) info("metricool insights: tiktok", { rows: tt.length, note: "no skip rate exists for TikTok" });
   } catch (e) {
     warn("metricool insights: tiktok pull failed", { err: e instanceof Error ? e.message.slice(0, 140) : String(e) });
+  }
+  try {
+    const yt = await youtubePosts(from, to);
+    out.push(...yt.map(toFlat));
+    info("metricool insights: youtube", { rows: yt.length, note: "no skip rate exists for YouTube; reach mirrors views" });
+  } catch (e) {
+    warn("metricool insights: youtube pull failed", { err: e instanceof Error ? e.message.slice(0, 140) : String(e) });
   }
   return out;
 }

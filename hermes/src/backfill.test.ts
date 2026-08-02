@@ -26,13 +26,17 @@ const ytRow = (dateTime: string, network = "youtube") =>
 
 // ── The ramp table ───────────────────────────────────────────────────────────
 
-test("RAMP: YouTube opens at 3/day and climbs 3 -> 5 -> 7 on the documented days", () => {
+test("RAMP: YouTube opened at 3/day and has now climbed out to the full policy cap", () => {
+  // The ramp COMPLETED. Its terminal step was raised 7 -> 12 with the policy on
+  // 2026-08-02, because perDayFor takes the MINIMUM of the ramp and the policy — a
+  // terminal left at 7 would have silently held YouTube there while the policy said 12.
   const start = CONFIG.YT_RAMP_START;
   assert.equal(perDayFor("youtube", "2026-07-28"), 3, "day 0 = 3/day");
   assert.equal(perDayFor("youtube", "2026-07-29"), 3, "day 1 still 3/day");
   assert.equal(perDayFor("youtube", "2026-07-30"), 5, "+2 days = 5/day");
   assert.equal(perDayFor("youtube", "2026-07-31"), 5, "day 3 still 5/day");
-  assert.equal(perDayFor("youtube", "2026-08-01"), 7, "+4 days = 7/day");
+  assert.equal(perDayFor("youtube", "2026-08-01"), 12, "+4 days = the full cap");
+  assert.equal(perDayFor("youtube", "2026-08-02"), 12, "and every day after");
   assert.equal(start, "2026-07-28");
 });
 
@@ -53,9 +57,10 @@ test("RAMP: it applies to YouTube ONLY — Instagram keeps its full 12 every sin
 });
 
 test("RAMP: it FAILS OPEN to the real cap — a day before the start, or a junk date", () => {
-  assert.equal(perDayFor("youtube", "2026-07-27"), 7, "before the ramp starts => the real cap, not 0 and not 3");
-  assert.equal(perDayFor("youtube", "not-a-date"), 7, "an unparseable day must not strand the network at 3");
-  assert.equal(perDayFor("youtube", ""), 7);
+  const cap = CONFIG.PLATFORM_POLICY.youtube.perDay;
+  assert.equal(perDayFor("youtube", "2026-07-27"), cap, "before the ramp starts => the real cap, not 0 and not 3");
+  assert.equal(perDayFor("youtube", "not-a-date"), cap, "an unparseable day must not strand the network at 3");
+  assert.equal(perDayFor("youtube", ""), cap);
 });
 
 // ── Consume, do not add ──────────────────────────────────────────────────────
@@ -153,13 +158,31 @@ test("SLOTS: a new batch keeps its distance from catalogue posts ALREADY on the 
 
 // ── Budget ───────────────────────────────────────────────────────────────────
 
-test("BUDGET: the ramp never RAISES the monthly bill — it is costed at the terminal 7/day", () => {
-  const f = budgetForecast(31);
-  assert.equal(monthlyRecords(31).byNetwork.youtube, 7, "the forecast must assume the steady state, not the ramp");
-  assert.equal(f.perMonth, 589, "instagram 12 + youtube 7 over 31 days");
-  assert.ok(f.withinBudget, f.reason);
+test("BUDGET: the ramp never RAISES the monthly bill — it is costed at the terminal rate", () => {
+  const cap = CONFIG.PLATFORM_POLICY.youtube.perDay;
+  assert.equal(monthlyRecords(31).byNetwork.youtube, cap, "the forecast must assume the steady state, not the ramp");
   // Every ramp day spends at most the terminal rate, so the forecast is an upper bound.
-  for (const s of CONFIG.YT_RAMP_STEPS) assert.ok(s.perDay <= 7);
+  for (const s of CONFIG.YT_RAMP_STEPS) assert.ok(s.perDay <= cap, `ramp step ${s.perDay} must not exceed the cap ${cap}`);
+  assert.equal(CONFIG.YT_RAMP_STEPS.at(-1)!.perDay, cap, "the terminal step must converge on the real cap");
+});
+
+test("BUDGET: 36/day is a SPRINT — it does not fit a full month, and does fit the campaign", () => {
+  // Three networks at 12/day is 36 Metricool records a day, because a fan-out costs one
+  // record PER NETWORK. Stated here as arithmetic rather than left as a comment, so a
+  // future volume change has to confront it.
+  const m = monthlyRecords(31);
+  assert.equal(m.perDay, 36, "instagram 12 + youtube 12 + tiktok 12");
+  assert.equal(m.perMonth, 1116);
+
+  const full = budgetForecast(31);
+  assert.equal(full.withinBudget, false, "a full month at this cadence does NOT fit the 600 guard — deliberately");
+  assert.match(full.reason, /OVER BUDGET/);
+
+  // The horizon that actually matters: 14 days left, and 17 records already spent.
+  const sprint = budgetForecast(14);
+  assert.equal(sprint.perMonth, 504);
+  assert.ok(504 + 17 <= CONFIG.MC_MONTHLY_POST_BUDGET, "the remaining campaign fits inside the guard");
+  assert.ok(sprint.withinBudget, sprint.reason);
 });
 
 // ── The re-render retarget ───────────────────────────────────────────────────

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-07-28T15:36:39.714143Z",
+  "updated_at": "2026-08-02T19:41:38.247352Z",
   "campaign": "Smart Fella or Fart Smella",
-  "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the default-promotion policy (human AND autonomous). Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect proposals, auto-promote confirmed winners, and auto-revert underperformers. `defaults`/`history` are written by (a) the HUMAN approval CLI (sffs_promote_default --approve <id>) AND (b) the AUTONOMOUS gate (promote.auto_promote_cycle) \u2014 but the autonomous path is stricter and reversible: it only adopts a winner AFTER a confirmation round of fresh matured samples, logs every promotion + revert to the reversible auto_ledger (in proposals.json, surfaced on the dashboard), and AUTO-REVERTS a promoted default that later underperforms the arm it replaced. GUARDRAIL: promotion only ever writes an arm LABEL from the fixed whitelist here; it touches NO posting/scheduling/window/ceiling/gate path, so a promoted default can never change cadence or escape the hard posting guardrails (7am-1am CST, <=12/day/platform, quality/brand gates, dedup, do-not-touch). This is the CONTENT analog of the code factory's two-key gate.",
+  "description": "SINGLE SOURCE OF TRUTH for the CONTENT baseline defaults every video gets (unless it is the A/B arm under test) AND the default-promotion policy (human AND autonomous). Read by the TS designer (hermes/src/defaults.ts -> design.ts) to build the control/baseline video + derive test-arm deviations, and by the Python promotion engine (hermes-nous/sffs/promote.py) to detect proposals, auto-promote confirmed winners, and auto-revert underperformers. `defaults`/`history` are written by (a) the HUMAN approval CLI (sffs_promote_default --approve <id>) AND (b) the AUTONOMOUS gate (promote.auto_promote_cycle) — but the autonomous path is stricter and reversible: it only adopts a winner AFTER a confirmation round of fresh matured samples, logs every promotion + revert to the reversible auto_ledger (in proposals.json, surfaced on the dashboard), and AUTO-REVERTS a promoted default that later underperforms the arm it replaced. GUARDRAIL: promotion only ever writes an arm LABEL from the fixed whitelist here; it touches NO posting/scheduling/window/ceiling/gate path, so a promoted default can never change cadence or escape the hard posting guardrails (7am-1am CST, <=12/day/platform, quality/brand gates, dedup, do-not-touch). This is the CONTENT analog of the code factory's two-key gate.",
   "defaults": {
     "narration": "full",
     "ending": "cliffhanger",
@@ -20,18 +20,18 @@
     "min_abs_improvement_pp": 1,
     "min_rel_improvement": 0.2,
     "incumbent_label": "control",
-    "notes": "PROMOTION JUDGES ON 3-SECOND SKIP RATE, LOWER IS BETTER. It previously judged on median_eng_rate with a median_views override for mascot. Both were wrong for this account: reach here is bimodal and views are unreliable at this sample size, while inside the test batch skip rate predicts reach at -0.51 and watch time manages a non-significant +0.21. Judging on views at n=8 could adopt a new default off pure noise. min_sample raised 5 -> 12 for the same reason: 5 is not enough arms to distinguish a real effect from the spread we are actually seeing. Skip rate is INSTAGRAM-ONLY -- Metricool exposes no TikTok watch-time data at all -- which is consistent with Instagram being the only channel posting right now.",
+    "notes": "STOOD DOWN 2026-08-02 alongside auto_promotion. Retained for the thresholds and for the record of WHY the metric moved from median_eng_rate to median_skip_rate. PROMOTION JUDGES ON 3-SECOND SKIP RATE, LOWER IS BETTER. It previously judged on median_eng_rate with a median_views override for mascot. Both were wrong for this account: reach here is bimodal and views are unreliable at this sample size, while inside the test batch skip rate predicts reach at -0.51 and watch time manages a non-significant +0.21. Judging on views at n=8 could adopt a new default off pure noise. min_sample raised 5 -> 12 for the same reason: 5 is not enough arms to distinguish a real effect from the spread we are actually seeing. Skip rate is INSTAGRAM-ONLY -- Metricool exposes no TikTok watch-time data at all -- which is consistent with Instagram being the only channel posting right now.",
     "lower_is_better": true
   },
   "auto_promotion": {
-    "enabled": true,
+    "enabled": false,
     "min_sample": 8,
     "min_abs_improvement_pp": 1,
     "min_rel_improvement": 0.2,
     "confirmation_min_new_samples": 5,
     "revert_min_sample": 8,
     "revert_abs_drop_pp": 1,
-    "notes": "AUTONOMOUS default-promotion policy (promote.auto_promote_cycle). Deliberately STRICTER than the human `promotion` gate: min_sample=8 (vs 5) matured posts on BOTH sides. TWO-STAGE, reversible: STAGE 1 a winner that clears these thresholds enters a confirmation round; STAGE 2 it is only auto-adopted after >= confirmation_min_new_samples FRESH matured challenger samples accrue with the win still holding (a confirmation round of similar posts). Every promotion + revert is appended to proposals.json `auto_ledger` (surfaced on the dashboard) and is reversible. AUTO-REVERT: if a promoted default later underperforms the arm it replaced by >= revert_abs_drop_pp over >= revert_min_sample matured posts, it is automatically reverted. Set enabled=false to fall back to human-only approval. Promotion NEVER touches posting/scheduling \u2014 it only flips a whitelisted arm label \u2014 so it can never escape the hard posting guardrails."
+    "notes": "DISABLED 2026-08-02 (exploitation pivot). The autonomous default-promotion gate compares a challenger ARM against 'control' and flips a default when it wins. There are no arms any more: every slot runs the pinned production format (see hermes/src/dimensions.ts PINNED), so every rollup cell it compares collapses to one value and any 'winner' it found would be an artefact. Disabling here is the durable form of the stand-down -- the engine, its thresholds and its reversible ledger are left intact, so flipping this back to true is the whole of restarting it. AUTONOMOUS default-promotion policy (promote.auto_promote_cycle). Deliberately STRICTER than the human `promotion` gate: min_sample=8 (vs 5) matured posts on BOTH sides. TWO-STAGE, reversible: STAGE 1 a winner that clears these thresholds enters a confirmation round; STAGE 2 it is only auto-adopted after >= confirmation_min_new_samples FRESH matured challenger samples accrue with the win still holding (a confirmation round of similar posts). Every promotion + revert is appended to proposals.json `auto_ledger` (surfaced on the dashboard) and is reversible. AUTO-REVERT: if a promoted default later underperforms the arm it replaced by >= revert_abs_drop_pp over >= revert_min_sample matured posts, it is automatically reverted. Set enabled=false to fall back to human-only approval. Promotion NEVER touches posting/scheduling — it only flips a whitelisted arm label — so it can never escape the hard posting guardrails."
   },
   "history": [
     {
@@ -80,5 +80,12 @@
     "until": "2026-07-30T17:12:00Z",
     "balance_other_dimensions_across_arms": true,
     "notes": "Until the deadline the OPENING dimension belongs to the controlled A/B (ops/resume_posting.mjs), not to Hermes's free rotation. Hermes may still vary other dimensions, but any dimension it varies must be BALANCED ACROSS BOTH HOOK ARMS rather than free-running: if narration, tempo, mascot or question mix drift with the arm, the skip-rate comparison this week was resequenced to produce dissolves into a confound. After 2026-07-30T17:12:00Z the lock expires and rotation is free again -- it is a date, not a permanent restriction."
+  },
+  "pinned_format": {
+    "since": "2026-08-02",
+    "arm": "pinned-format",
+    "description": "3 mixed questions, cold-plate open, full narration, cliffhanger ending, 5s per question, short progress counter, branded cover",
+    "chosen_on": "Live Instagram analytics across all 114 published reels. 3-second skip rate is monotonic with views over eight buckets and a ~10x spread (under 50% skip -> 1,556 median views; over 80% -> 141), and the top five posts sit at 48.6-55% against an account median of 71%. No A/B axis the rotation was varying separated at all.",
+    "not_a_repost": "The STRUCTURE is fixed; the questions inside it are freshly selected every video and still pass dedup, near-duplicate, validity, brand and render gates. An identical repost earned 6 views once, and near-duplicate content is what unoriginal-content detection is built to catch."
   }
 }

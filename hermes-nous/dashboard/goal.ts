@@ -7,9 +7,9 @@
  * testable (see test/dashboard.test.ts) and can never leak anything.
  *
  * THE MANDATE (fixed constants below):
- *   500,000 views in 7 DAYS (combined across IG + TikTok), and 500 followers on
- *   EACH of Instagram and TikTok. (Likes are NOT a goal metric — no like target
- *   or trajectory anywhere in the goal.)
+ *   500,000 views in 7 DAYS (combined across IG + TikTok + YouTube), and 500
+ *   followers on EACH of Instagram and TikTok. (Likes are NOT a goal metric — no
+ *   like target or trajectory anywhere in the goal.)
  *
  * The 7-day clock starts at KICKOFF (t0 = mtime of the armed KICKOFF file). Until
  * armed, `sinceISO` is null: the window is "not started", the clock reads the full
@@ -25,7 +25,7 @@
  * Combined = IG + TikTok.
  */
 export const GOAL = Object.freeze({
-  /** combined (IG + TikTok) 7-day view target. */
+  /** combined (IG + TikTok + YouTube) 7-day view target. */
   views: 500_000,
   /**
    * follower target on EACH platform (IG and TikTok independently) — i.e. 500 on
@@ -41,8 +41,25 @@ export const GOAL = Object.freeze({
 const DAY_MS = 86_400_000;
 const HOUR_MS = 3_600_000;
 
-export type PlatformKey = "instagram" | "tiktok";
+export type PlatformKey = "instagram" | "tiktok" | "youtube";
 export type Scope = PlatformKey | "combined";
+
+/**
+ * A row of the LIVE analytics snapshot the loop writes each cycle
+ * (hermes/src/score.ts buildAnalyticsSnapshot -> hermes-data/analytics-totals.json).
+ *
+ * When it is supplied it is the source of the view totals, REPLACING the sum over
+ * ab-database.metrics.video_views. That sum only ever counted posts the reconcile join
+ * had attributed, which on 2026-08-02 was 45 of 89 Instagram rows and none of the 43
+ * YouTube ones — so this panel showed 9,500 views over 28 posts while the analytics API
+ * reported 39,382 over 101. The panel's job is to state the total honestly; attributing
+ * a view to a format is a separate, harder job that is allowed to lag.
+ */
+export interface LiveAnalyticsRow {
+  network: string;
+  published_at?: string | null;
+  views?: number | null;
+}
 
 /** value-vs-target with the raw percentage (may exceed 100). */
 export interface GoalMetric {
@@ -92,11 +109,16 @@ export interface GoalProgress {
   windowClosed: boolean;
   instagram: ScopeProgress;
   tiktok: ScopeProgress;
+  /** YouTube Shorts. Half of everything published, and absent from this panel until
+   *  2026-08-02 — its posts were not counted as zero, they were not counted at all. */
+  youtube: ScopeProgress;
   combined: ScopeProgress;
   /** "what's moving the needle": top 3 arms by views within the window. */
   topArmsByViews: ArmAgg[];
   /** true when no follower snapshot was supplied (followers render as "pending"). */
   followersPending: boolean;
+  /** "live" when the totals came from the analytics snapshot, "ab-database" on fallback. */
+  viewsSource: "live" | "ab-database";
 }
 
 const num = (x: unknown): number => {
@@ -108,6 +130,7 @@ function platformOf(p: any): string {
   const s = String(p?.platform || "").toLowerCase();
   if (s === "instagram" || s === "ig" || s === "ig_business") return "instagram";
   if (s === "tiktok" || s === "tt") return "tiktok";
+  if (s === "youtube" || s === "yt" || s === "youtube_shorts") return "youtube";
   return s || "other";
 }
 function armOf(p: any): string {
@@ -129,6 +152,7 @@ export function computeGoalProgress(
   sinceISO: string | null,
   followers: FollowerSnapshot | null | undefined,
   now: Date,
+  live?: LiveAnalyticsRow[] | null,
 ): GoalProgress {
   const list = Array.isArray(posts) ? posts : [];
   const nowMs = now instanceof Date && Number.isFinite(now.getTime()) ? now.getTime() : Date.now();
@@ -154,16 +178,37 @@ export function computeGoalProgress(
   const agg: Record<PlatformKey, { views: number; posts: number }> = {
     instagram: { views: 0, posts: 0 },
     tiktok: { views: 0, posts: 0 },
+    youtube: { views: 0, posts: 0 },
   };
   const arms = new Map<string, ArmAgg>();
 
+  // TOTALS come from the live snapshot when we have one; the ab-database is only the
+  // fallback for a box that has not scored yet.
+  const liveRows = Array.isArray(live) ? live : [];
+  const useLive = liveRows.length > 0;
+  if (useLive) {
+    for (const r of liveRows) {
+      const plat = platformOf({ platform: r?.network });
+      if (plat !== "instagram" && plat !== "tiktok" && plat !== "youtube") continue;
+      if (armed) {
+        const t = Date.parse(String(r?.published_at ?? ""));
+        if (!Number.isFinite(t) || t < t0ms) continue;
+      }
+      agg[plat].views += num(r?.views);
+      agg[plat].posts += 1;
+    }
+  }
+
+  // The ARM breakdown always comes from the ab-database — it is the only side that
+  // knows which format a post was. It is attribution, not a total, so an incomplete
+  // join understates a bar rather than the headline number.
   for (const p of list) {
     if (!p || typeof p !== "object") continue;
     if (!inWindow(p)) continue;
     const m = p.metrics && typeof p.metrics === "object" ? p.metrics : {};
     const views = num(m.video_views);
     const plat = platformOf(p);
-    if (plat === "instagram" || plat === "tiktok") {
+    if (!useLive && (plat === "instagram" || plat === "tiktok" || plat === "youtube")) {
       agg[plat].views += views;
       agg[plat].posts += 1;
     }
@@ -177,8 +222,8 @@ export function computeGoalProgress(
   }
 
   const combinedTotals = {
-    views: agg.instagram.views + agg.tiktok.views,
-    posts: agg.instagram.posts + agg.tiktok.posts,
+    views: agg.instagram.views + agg.tiktok.views + agg.youtube.views,
+    posts: agg.instagram.posts + agg.tiktok.posts + agg.youtube.posts,
   };
 
   const metric = (value: number, target: number): GoalMetric => ({
@@ -225,9 +270,11 @@ export function computeGoalProgress(
     neededViewsPerDay: needed(viewsTarget, v.views),
   });
 
-  // The combined mandate is split evenly per platform for the per-platform bars;
-  // the combined bars use the full mandate. Followers are per-platform (500 each).
-  const perViews = GOAL.views / 2;
+  // The combined mandate is split evenly across the three publishing networks for the
+  // per-platform bars; the combined bars use the full mandate. Followers are
+  // per-platform (500 each) and apply to IG and TikTok only — there is no YouTube
+  // follower target, so its bar reads "pending" rather than a fabricated 0/500.
+  const perViews = GOAL.views / 3;
   const igF = followerVal("instagram");
   const ttF = followerVal("tiktok");
   const combinedF = !fSnap || (igF == null && ttF == null) ? null : (igF || 0) + (ttF || 0);
@@ -249,8 +296,10 @@ export function computeGoalProgress(
     windowClosed,
     instagram: scope("instagram", agg.instagram, igF, GOAL.followersPerPlatform, perViews),
     tiktok: scope("tiktok", agg.tiktok, ttF, GOAL.followersPerPlatform, perViews),
+    youtube: scope("youtube", agg.youtube, null, 0, perViews),
     combined: scope("combined", combinedTotals, combinedF, GOAL.followersPerPlatform * 2, GOAL.views),
     topArmsByViews,
     followersPending,
+    viewsSource: useLive ? "live" : "ab-database",
   };
 }

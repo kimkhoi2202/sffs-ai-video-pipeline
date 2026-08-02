@@ -27,29 +27,12 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
-import { buildDimensions, applyBatchOverrides, resolveArm, selectSpread, newSpreadTally, elevateMascot, cycleToTarget, MASCOT_WEIGHT_DEFAULT, type DimSpec, type SpreadTally } from "./dimensions.ts";
-import { currentDirective, replicaCount, normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
-import { pickHook } from "./hooks.ts";
+import { pinnedSpecs, resolveArm, selectSpread, newSpreadTally, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
+import { normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
 
 // Re-export the catalog surface so existing importers (bridge/design.ts) are
 // unchanged, while the actual definitions live in the dependency-free module.
 export { dimensionCatalog, type DimensionInfo } from "./dimensions.ts";
-
-function seededOrder<T>(arr: T[], seed: number): T[] {
-  const a = arr.slice();
-  let s = seed >>> 0;
-  const rand = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-function seedOf(s: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) (h ^= s.charCodeAt(i)), (h = Math.imul(h, 16777619));
-  return h >>> 0;
-}
 
 function fallbackCaption(reveal: RevealMode, tags: string[]): string {
   const ask = captionAsk(reveal);
@@ -153,71 +136,47 @@ export function replicaSpecs(n: number, fp: StyleFingerprint): DimSpec[] {
 /** Fallback question count when the fingerprint predates num_questions. */
 const BASE_NUMQ = 3;
 
-/**
- * Pick this replica's questions with the winner's LEAD TYPE forced into slot 0.
- *
- * The lead question is the style signal — it is what the viewer meets in the first
- * seconds and what the current evidence has in common — so a replica that leads with
- * something else is not a replica. Returns [] when the bank has no fresh question of
- * that type left, which the caller treats as "cannot replicate, explore instead"
- * rather than silently shipping an off-style video.
- */
-function selectReplicaQuestions(pool: HermesQ[], numQ: number, leadType: string, batch: SpreadTally): HermesQ[] {
-  const wanted = normalizeTier(leadType);
-  const lead = pool.filter((q) => normalizeTier(q.tier) === wanted);
-  if (!lead.length) return [];
-  const [first] = selectSpread(lead, 1, batch);
-  if (!first) return [];
-  if (numQ <= 1) return [first];
-  const rest = selectSpread(pool.filter((q) => q.sig !== first.sig), numQ - 1, batch);
-  return rest.length === numQ - 1 ? [first, ...rest] : [];
-}
-
 export interface Learnings {
   front_runners?: Record<string, unknown>;
   rollups?: Record<string, unknown>;
 }
 
 /**
- * WHICH ARMS this batch will run, and in what slot order. Split out of planBatch so the
- * decision can be inspected WITHOUT rendering: planBatch goes on to generate captions,
- * call the LLM gates and render video, none of which you want to do just to find out
- * whether an operator override took effect. `sffs_design arms` and the tests call this
- * exact function, so what they show is what the cycle will do, not a lookalike.
+ * WHICH FORMAT this batch will run. Split out of planBatch so the decision can be
+ * inspected WITHOUT rendering: planBatch goes on to generate captions, call the LLM
+ * gates and render video, none of which you want to do just to find out what the
+ * batch is. `sffs_design arms` and the tests call this exact function, so what they
+ * show is what the cycle will do, not a lookalike.
  *
- * Reads two operator overrides from the environment:
- *   HERMES_ONLY_DIMENSIONS  restrict the batch to these dimension OR arm names. The
- *                           restricted catalog is CYCLED to fill the slots, so pinning
- *                           changes which arms run and never how many posts run.
- *   HERMES_SHAPE_NUMQ       question count for the nonverbal shape dimension.
- * A pinned batch also suppresses mascot elevation and winner replication, so what an
- * operator asked for is what runs, verbatim.
+ * EXPLORATION IS OVER (2026-08-02). Every slot is the PINNED format — see
+ * dimensions.ts PINNED for the live-analytics evidence behind it. Four things that
+ * used to shape a batch are gone from this path:
+ *
+ *   - the seeded DIMENSION ROTATION over the arm catalog;
+ *   - the MASCOT elevation weight;
+ *   - WINNER REPLICATION (already disabled in content-defaults.json; now it is not
+ *     consulted at all, so a stray `sffs_replicate --detect` cannot reopen a round);
+ *   - HERMES_ONLY_DIMENSIONS, the operator concentration switch, which was live on
+ *     the box pinning every slot to `motion-hook,motion-hook-stat,
+ *     motion-hook-declared` — the three worst-measured openings in the account.
+ *
+ * The catalog itself (dimensions.ts buildDimensions and friends) is untouched and
+ * still unit-tested. Restarting exploration means calling it from here again; it does
+ * not mean rebuilding it.
  */
 export function selectBatchSpecs(
   runId: string,
   target: number,
   defaults: ContentDefaults = contentDefaults(),
 ): { specs: DimSpec[]; onlyDims: string[]; directive: ReplicationDirective; nReplicas: number; fp?: StyleFingerprint } {
-  const onlyDims = (process.env.HERMES_ONLY_DIMENSIONS || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const shapeNumQEnv = Number(process.env.HERMES_SHAPE_NUMQ || "");
-  const catalog = applyBatchOverrides(buildDimensions(defaults), {
-    only: onlyDims,
-    shapeNumQ: Number.isInteger(shapeNumQEnv) && shapeNumQEnv > 0 ? shapeNumQEnv : undefined,
-  });
-  const seeded = seededOrder(catalog, seedOf(runId));
-  const mascotWeightEnv = Number(process.env.HERMES_MASCOT_WEIGHT);
-  const mascotWeight = Number.isFinite(mascotWeightEnv) && mascotWeightEnv >= 0 ? mascotWeightEnv : MASCOT_WEIGHT_DEFAULT;
-  const directive: ReplicationDirective = onlyDims.length ? { active: false, share: 0, share_cap: 0 } : currentDirective();
-  const nReplicas = replicaCount(target, directive);
-  const fp = directive.fingerprint;
-  const explore = target - nReplicas;
-  const specs: DimSpec[] = [
-    ...(nReplicas > 0 && fp ? replicaSpecs(nReplicas, fp) : []),
-    // A pinned batch CYCLES its restricted catalog to fill the slots (see
-    // cycleToTarget): concentration changes which arms run, not how many posts run.
-    ...(onlyDims.length ? cycleToTarget(seeded, explore) : elevateMascot(seeded, explore, mascotWeight)),
-  ];
-  return { specs, onlyDims, directive, nReplicas, fp };
+  void runId;
+  void defaults;
+  return {
+    specs: pinnedSpecs(target),
+    onlyDims: [],
+    directive: { active: false, share: 0, share_cap: 0 },
+    nReplicas: 0,
+  };
 }
 
 /** Build the day's batch: up to `target` videos, each a different dimension. */
@@ -229,18 +188,12 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   // video AND don't cluster the same types across the day's batch (P1). Shared
   // across every video in this batch. See dimensions.ts selectSpread.
   const batchSpread = newSpreadTally();
-  const { specs, onlyDims, directive, nReplicas, fp } = selectBatchSpecs(runId, target, defaults);
-  if (nReplicas > 0 && fp) {
-    decision(
-      `REPLICATE ${fp.key}: ${nReplicas}/${target} slots (share ${(directive.share * 100).toFixed(0)}% of a ${(directive.share_cap * 100).toFixed(0)}% cap) — ${target - nReplicas} exploration slot(s) held back`,
-      { round: directive.round, confidence: directive.confidence, vary_only: directive.vary_only, evidence: directive.evidence },
-    );
-  }
-  if (onlyDims.length) {
-    const tally: Record<string, number> = {};
-    for (const sp of specs) tally[sp.arm] = (tally[sp.arm] ?? 0) + 1;
-    decision(`PINNED batch (HERMES_ONLY_DIMENSIONS): ${specs.length} slot(s) across ${Object.keys(tally).length} arm(s)`, tally);
-  }
+  const { specs } = selectBatchSpecs(runId, target, defaults);
+  decision(
+    `PINNED FORMAT: all ${specs.length} slot(s) run ${PINNED_ARM} (3 mixed questions, cold-plate open, ` +
+      `${defaults.narration} narration, ${defaults.ending} ending, 5s, short counter). No A/B rotation. ` +
+      `Questions are freshly selected per video and still pass dedup + validity + brand gates.`,
+  );
 
   const plans: VideoPlan[] = [];
 
@@ -257,20 +210,15 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       seed: `${runId}:${spec.dimension}:${spec.arm}`,
       exclude: claimed,
     });
-    // Pick with per-video type/tier spread + per-batch anti-clustering (P1),
-    // instead of just taking the first numQ of the seeded pool. A REPLICA instead
-    // forces the winner's lead question type into slot 0 — that lead is the style
-    // being replicated, so a video that opens on anything else is not a replica.
-    const isReplica = spec.dimension === "replication" && !!fp;
-    const chosen: HermesQ[] = isReplica
-      ? selectReplicaQuestions(pool, spec.numQ, fp!.lead_type, batchSpread)
-      : selectSpread(pool, spec.numQ, batchSpread);
+    // Pick with per-video type/tier spread + per-batch anti-clustering (P1), instead
+    // of just taking the first numQ of the seeded pool. This is what keeps a PINNED
+    // batch from being twelve near-identical videos: the format is fixed, the
+    // questions inside it are not, and the spread stops the day clustering on one
+    // tier. Fixing the format is not repeating the video.
+    const chosen: HermesQ[] = selectSpread(pool, spec.numQ, batchSpread);
     if (chosen.length < spec.numQ) {
-      const why = isReplica
-        ? `no fresh "${fp!.lead_type}" question left to lead a replica`
-        : `only ${chosen.length}/${spec.numQ} fresh questions`;
-      warn("dropping video: not enough fresh questions", { id, dimension: spec.dimension, want: spec.numQ, got: chosen.length, replica: isReplica });
-      decision(`DROP ${id} (${spec.dimension}/${spec.arm}): ${why}`);
+      warn("dropping video: not enough fresh questions", { id, dimension: spec.dimension, want: spec.numQ, got: chosen.length });
+      decision(`DROP ${id} (${spec.arm}): only ${chosen.length}/${spec.numQ} fresh questions`);
       continue;
     }
     for (const q of chosen) claimed.add(q.sig);
@@ -279,35 +227,6 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     const tags = CONFIG.HASHTAG_SETS[hashtagSet];
     const { caption, source } = await makeCaption(resolved.reveal, tags);
 
-    // SPOKEN-HOOK arms resolve a concrete, claim-tagged, BUDGETED line from
-    // ab-testing/hook-bank.json. Three constraints are enforced at selection:
-    //   - `requires` is checked against THIS video's props, so a line can never assert
-    //     something the render then contradicts ("two answers, one secret" on a
-    //     full-reveal arm);
-    //   - {WRONG} decoys resolve to a letter that is NOT the answer;
-    //   - the line's measured VO must fit inside the animation, so the hook is carried
-    //     BY the 2.2s opening rather than added in front of it.
-    // No eligible line => the video ships as the wordless motion arm, which is a real
-    // arm rather than a broken one, and the drop is logged.
-    const letters = ["A", "B", "C", "D"];
-    const q0 = chosen[0];
-    const wrongLetters = (q0?.options ?? [])
-      .map((o, oi) => (o === q0.answer ? null : letters[oi]))
-      .filter((l): l is string => Boolean(l));
-    const hook = spec.hookMechanism
-      // Seeded with the SLOT INDEX as well as the arm: a pinned batch runs the same
-      // arm several times in one day, and without the index all of them would speak
-      // the identical line.
-      ? pickHook(spec.hookMechanism, `${runId}:${spec.arm}:${i}`, {
-          numQ: spec.numQ,
-          countdownSec: spec.countdownSec,
-          ending: resolved.endingArm,
-          wrongLetters,
-        })
-      : null;
-    if (spec.hookMechanism && !hook) {
-      warn("spoken-hook arm has no eligible bank line; rendering the wordless motion arm", { id, arm: spec.arm, mechanism: spec.hookMechanism });
-    }
     const outro = defaultOutro(resolved.reveal);
 
     const renderQuestions = chosen.map((q) => ({
@@ -340,11 +259,11 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       gates: { copy: { pass: true, reason: `caption ${source}` } },
       status: "planned",
       props: {
-        // The OPENING axis. Undefined/cold-plate => the historical cold open, so every
-        // non-opening arm renders byte-identically to its own history.
+        // COLD PLATE. Question one is on screen at 0.00s. The 2.2s motion opening and
+        // the spoken hooks that rode it are not rendered any more: the wordless arm
+        // measured 5.6 points WORSE on skip rate over 41 posts, and on this account
+        // skip rate is the only thing that separates 1,700 views from 130.
         opening: spec.opening ?? "cold-plate",
-        // Spoken-hook copy, carried BY the motion opening (never in front of it).
-        hook: hook ? { title: hook.title, subtitle: hook.subtitle, vo: hook.vo } : undefined,
         outro,
         music,
         showProgress: spec.showProgress,
@@ -368,11 +287,12 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     };
     plans.push(plan);
     decision(
-      `PLAN ${id}: dimension=${spec.dimension} arm=${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${resolved.narration} ending=${resolved.endingArm} reveal=${resolved.reveal}${hook ? ` hook=${hook.id}` : ""}`,
+      `PLAN ${id}: ${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${resolved.narration} ending=${resolved.endingArm} reveal=${resolved.reveal}`,
       { questions: chosen.map((q) => q.tier) },
     );
   }
 
-  info("batch planned", { runId, planned: plans.length, target, defaults, frontRunner: learnings.front_runners });
+  info("batch planned", { runId, planned: plans.length, target, defaults, format: PINNED_ARM });
+  void learnings;
   return plans;
 }

@@ -18,8 +18,9 @@ import { chatJSON } from "./llm.ts";
 import { loadBrandVoice, ruleCheckCopy } from "./brand.ts";
 import { readJSON, writeJSONAtomic, isShapeKind, type HermesQ, type GateResult } from "./state.ts";
 import { loadUsedSigs, loadUsedFuzzySigs, fuzzySig, shapeStructuralIssue, textStructuralIssue } from "./questions.ts";
+import { quantVerdict } from "./arithmetic.ts";
 import { CONFIG } from "./config.ts";
-import { gate } from "./log.ts";
+import { gate, warn } from "./log.ts";
 import { join } from "node:path";
 
 const FFPROBE = process.env.FFPROBE || "/usr/local/bin/ffprobe";
@@ -61,18 +62,113 @@ export function gateDedup(questions: HermesQ[], claimedThisBatch: Set<string>): 
   };
 }
 
-// ── Gate 2: question validity (LLM rubric, cached by hash) ───────────────────
+// ── Gate 2: question validity ────────────────────────────────────────────────
+//
+// THREE DECIDERS, in order of authority:
+//
+//   1. nonverbal shape/figure questions  -> shapeStructuralIssue (options are
+//      figures, so the verbal rubric does not apply);
+//   2. NUMBER PUZZLE / NUMBER ANALOGY    -> arithmetic.ts, by enumeration;
+//   3. everything else                   -> the LLM rubric, cached by hash.
+//
+// Layer 2 is new and it is why this gate stopped throwing away good questions.
+// The rubric was asked to decide, in one pass, whether a hidden-operator puzzle
+// has a unique solution — a search problem — and it answered before it had done
+// the search. Its verdicts and its own rationales disagreed: "Rule 3->7, 5->13,
+// 6->16, 7->? uses 3n-2 ... Correct, single answer", marked INVALID. Between
+// 2026-07-30 and 2026-08-02 that pattern cost 29 of 35 rejections, and re-deciding
+// those items by enumeration rescued 21 of 23 while upholding 2 real defects.
+//
+// The fix has two halves and both matter. Layer 2 removes the arithmetic from the
+// model's job entirely. The prompt below then fixes the shape of what is left:
+// the model must write its ANALYSIS and name its ISSUES before it may state a
+// VERDICT, and an "invalid" that names no issue is not a rejection — it is a
+// contradiction, and it fails OPEN (see reconcileVerdict). A question whose own
+// rationale says it is fine is never discarded again.
 interface QVerdict {
   valid: boolean;
   reason: string;
   difficulty?: string;
 }
 
+/**
+ * Cache generation. BUMP THIS whenever the rubric's contract changes: cached
+ * verdicts were produced under the OLD contract and a stale "invalid" would keep
+ * a good question buried forever, which is precisely how the answer-before-
+ * reasoning bug survived across cycles instead of being one bad afternoon.
+ */
+const QCACHE_GENERATION = 2;
+
+interface QCacheFile {
+  generation?: number;
+  verdicts?: Record<string, QVerdict>;
+}
+
 function loadQCache(): Record<string, QVerdict> {
-  return readJSON<Record<string, QVerdict>>(join(CONFIG.CACHE_DIR, "qvalidation.json"), {});
+  const raw = readJSON<QCacheFile | Record<string, QVerdict>>(join(CONFIG.CACHE_DIR, "qvalidation.json"), {});
+  const asFile = raw as QCacheFile;
+  if (asFile && typeof asFile === "object" && "generation" in asFile) {
+    return asFile.generation === QCACHE_GENERATION ? { ...(asFile.verdicts ?? {}) } : {};
+  }
+  // Generation 1 wrote bare hash -> verdict with no envelope. Those verdicts came
+  // from the broken contract, so they are dropped rather than migrated.
+  return {};
 }
 function saveQCache(c: Record<string, QVerdict>): void {
-  writeJSONAtomic(join(CONFIG.CACHE_DIR, "qvalidation.json"), c);
+  writeJSONAtomic(join(CONFIG.CACHE_DIR, "qvalidation.json"), { generation: QCACHE_GENERATION, verdicts: c });
+}
+
+/** One rubric row, in the order the model must produce it. */
+interface RubricRow {
+  index: number;
+  analysis?: string;
+  issues?: unknown;
+  verdict?: string;
+  difficulty?: string;
+}
+
+/**
+ * Turn one rubric row into a verdict, refusing to honour a self-contradiction.
+ *
+ * The contract makes `issues` the EVIDENCE for an "invalid" verdict, so an invalid
+ * that names no issue has no evidence behind it. That is not a close call to
+ * adjudicate with string matching — it is a structurally incomplete answer, and the
+ * only safe reading of it is that the model reached "invalid" before it had looked.
+ * Those fail OPEN and are logged, because an item whose own rationale argues it is
+ * valid must not be discarded.
+ */
+export function reconcileVerdict(row: RubricRow): { verdict: QVerdict; contradiction: boolean } {
+  const issues = Array.isArray(row.issues)
+    ? row.issues.map((i) => String(i ?? "").trim()).filter(Boolean)
+    : String(row.issues ?? "").trim() ? [String(row.issues).trim()] : [];
+  const analysis = String(row.analysis ?? "").trim();
+  const said = String(row.verdict ?? "").trim().toLowerCase();
+  // Accept the vocabulary the model actually uses; anything unrecognised is treated
+  // as "not stated", which then hinges on whether it found an issue.
+  const saidInvalid = said === "invalid" || said === "false" || said === "no";
+  const saidValid = said === "valid" || said === "true" || said === "yes";
+
+  if (saidInvalid && issues.length === 0) {
+    return {
+      contradiction: true,
+      verdict: {
+        valid: true,
+        reason: `judge said invalid but named no issue — kept (analysis: ${analysis.slice(0, 300) || "none given"})`,
+        difficulty: row.difficulty,
+      },
+    };
+  }
+  const valid = saidValid ? true : saidInvalid ? false : issues.length === 0;
+  return {
+    contradiction: false,
+    verdict: {
+      valid,
+      // 400, not 200: the 200-char cut truncated the rationales mid-sentence and hid
+      // the contradiction ("...however verify: yes 65 corre") for three days.
+      reason: (valid ? analysis || "valid" : issues.join("; ") || analysis || "invalid").slice(0, 400),
+      difficulty: row.difficulty,
+    },
+  };
 }
 
 export async function validateQuestions(
@@ -87,8 +183,7 @@ export async function validateQuestions(
   // Nonverbal SHAPE/FIGURE questions are validated STRUCTURALLY here — their
   // options are figures (not text), so the verbal/number LLM rubric below does
   // not apply. shapeStructuralIssue is total (never throws) so this can't crash;
-  // a malformed figure fails closed with its reason. Rubric (text/numseries)
-  // questions take the existing cached-LLM path, unchanged.
+  // a malformed figure fails closed with its reason.
   const rubricQuestions = questions.filter((q) => !isShapeKind(q.kind));
   for (const q of questions) {
     if (!isShapeKind(q.kind)) continue;
@@ -98,7 +193,16 @@ export async function validateQuestions(
       : { valid: true, reason: "structural shape check passed", difficulty: q.figure?.difficulty };
   }
 
-  const todo = rubricQuestions.filter((q) => !cache[q.hash]);
+  // DECIDED BY ENUMERATION, not by the model: the hidden-operator tiers. See
+  // arithmetic.ts. Deliberately NOT cached — it is a pure function of the question,
+  // so a cache would only add a way for a stale verdict to outlive a fixed rule set.
+  const decided = new Map<string, QVerdict>();
+  for (const q of rubricQuestions) {
+    const v = quantVerdict(q);
+    if (v.handled) decided.set(q.sig, { valid: v.valid, reason: v.reason });
+  }
+
+  const todo = rubricQuestions.filter((q) => !decided.has(q.sig) && !cache[q.hash]);
 
   if (todo.length) {
     const payload = todo.map((q, i) => ({
@@ -112,23 +216,45 @@ export async function validateQuestions(
     }));
     const system =
       "You are a rigorous quiz-QA reviewer for a kids/teens brain-quiz brand (CogAT-style: verbal analogies, " +
-      "odd-one-out, number series). Be strict: reject anything that could confuse or mislead a learner.";
+      "odd-one-out, sentence completion, number series). Reject what would genuinely confuse a learner, and " +
+      "ONLY that. A question that is solvable and has one correct answer is VALID even if it is hard, and " +
+      "'the rule is non-obvious' or 'this is tricky' is NOT a defect — difficulty is the product.";
+    // ORDER IS THE CONTRACT. `analysis` and `issues` come BEFORE `verdict` so the
+    // model has to do the work before it commits, and `issues` is the evidence the
+    // verdict rests on. The previous contract put the boolean first, which made every
+    // rejection a guess the model then talked itself out of inside the reason string.
     const user =
-      "For EACH question decide validity on ALL of: (a) EXACTLY ONE unambiguous correct answer; " +
-      "(b) the stated_answer is actually correct (no factual errors); (c) difficulty is grade-appropriate " +
-      "(roughly ages 8-16); (d) distractors are plausible but clearly wrong (no second correct option, none absurd). " +
-      'Return JSON {"results":[{"index":number,"valid":boolean,"reason":"short","difficulty":"easy|medium|hard|off"}]}.\n\n' +
+      "For EACH question, in this exact order: (1) `analysis` — work the question out and say what the answer " +
+      "is and why; (2) `issues` — an array naming every CONCRETE defect you found, from: more than one option " +
+      "is correct, the stated_answer is wrong, no option is correct, a distractor is also correct, the item is " +
+      "self-contradictory, or it is far outside ages 8-16. Empty array if there are none; (3) `verdict` — " +
+      '"invalid" ONLY if `issues` is non-empty, otherwise "valid"; (4) `difficulty` — easy|medium|hard|off.\n' +
+      "Do not put a verdict in the analysis, and never return an empty `issues` alongside an invalid verdict.\n" +
+      'Return JSON {"results":[{"index":number,"analysis":"...","issues":[],"verdict":"valid|invalid","difficulty":"..."}]}.\n\n' +
       JSON.stringify(payload);
     try {
-      const resp = await chatJSON<{ results: Array<{ index: number; valid: boolean; reason: string; difficulty?: string }> }>(
-        system,
-        user,
-        { model: CONFIG.MODEL, maxTokens: 1600 },
-      );
+      const resp = await chatJSON<{ results: RubricRow[] }>(system, user, {
+        model: CONFIG.MODEL,
+        // A shared-pool 429 on the reasoning model is not a verdict on these questions.
+        // Take a cheaper real opinion before degrading to the structural check.
+        fallbackModel: CONFIG.JUDGE_FALLBACK_MODEL,
+        // The analysis field is the whole point of the new contract, so the budget has
+        // to fit one per question. At 1600 a full batch truncated the JSON, which
+        // extractJSON then rejected outright and charged to the structural fallback.
+        maxTokens: 6000,
+      });
+      let contradictions = 0;
       for (const r of resp.results ?? []) {
         const q = todo[r.index];
         if (!q) continue;
-        cache[q.hash] = { valid: !!r.valid, reason: String(r.reason ?? "").slice(0, 200), difficulty: r.difficulty };
+        const { verdict, contradiction } = reconcileVerdict(r);
+        if (contradiction) contradictions++;
+        cache[q.hash] = verdict;
+      }
+      if (contradictions) {
+        warn(`question-validity: ${contradictions} self-contradicting verdict(s) kept rather than discarded`, {
+          of: todo.length,
+        });
       }
       // any todo the model skipped -> treat as invalid (fail closed)
       for (const q of todo) if (!cache[q.hash]) cache[q.hash] = { valid: false, reason: "no verdict returned (fail-closed)" };
@@ -158,7 +284,7 @@ export async function validateQuestions(
   }
 
   for (const q of rubricQuestions) {
-    results[q.sig] = cache[q.hash] ?? fallback[q.hash] ?? { valid: false, reason: "uncached (fail-closed)" };
+    results[q.sig] = decided.get(q.sig) ?? cache[q.hash] ?? fallback[q.hash] ?? { valid: false, reason: "uncached (fail-closed)" };
   }
   const invalid = questions.filter((q) => !results[q.sig].valid);
   const suffix = rubricUnavailable ? " (deterministic fallback; LLM rubric unavailable)" : "";

@@ -180,7 +180,11 @@ test("page: renders all required sections", () => {
   assert.match(html, /Cycle status/);
   assert.match(html, /Software-factory PRs/);
   assert.match(html, /A\/B results/);
-  assert.match(html, /Front-runners/);
+  // The "Front-runners" panel is retired: it crowned a nightly winner on median
+  // engagement rate, a metric the content policy had already abandoned for this
+  // account, often at n<5. It is replaced by a statement of the pinned format.
+  assert.match(html, /Production format/);
+  assert.doesNotMatch(html, /Front-runners/);
   assert.match(html, /Double down on reach outliers/);
   assert.match(html, /next run/);
 });
@@ -572,10 +576,14 @@ test("computeGoalProgress: BEFORE kickoff ⇒ pending, full 7d clock, running to
   assert.equal(gp.tiktok.views.value, 200);
   assert.equal(gp.combined.views.value, 700);
   assert.equal(gp.combined.posts, 3);
-  // mandate targets (combined full; per-platform half; followers 500 each / 1k combined). Likes dropped.
+  // mandate targets (combined full; per-platform a THIRD each now that YouTube is in
+  // the views universe; followers 500 each / 1k combined, IG + TikTok only). Likes dropped.
   assert.equal(gp.combined.views.target, 500_000);
-  assert.equal(gp.instagram.views.target, 250_000);
+  assert.equal(gp.instagram.views.target, 500_000 / 3);
+  assert.equal(gp.youtube.views.target, 500_000 / 3);
   assert.equal(gp.instagram.followers.target, 500);
+  assert.equal(gp.youtube.followers.target, 0, "there is no YouTube follower goal");
+  assert.equal(gp.youtube.followers.value, null, "and it reads pending, never a fake 0/500");
   assert.equal(gp.combined.followers.target, 1_000);
   // likes removed from the goal shape entirely
   assert.equal((gp.combined as Record<string, unknown>).likes, undefined);

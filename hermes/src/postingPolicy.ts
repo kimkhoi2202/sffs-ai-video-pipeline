@@ -1,48 +1,41 @@
 /**
  * postingPolicy.ts — which networks may post today, how many times, and how far apart.
  *
- * This exists because the two networks are in completely different states and a single
- * shared cap cannot express that.
+ * ALL THREE NETWORKS RUN 12/DAY (2026-08-02). Instagram, YouTube Shorts and TikTok each
+ * take the full daily allowance. The campaign is in its last two weeks and is optimising
+ * for distribution, so the networks are no longer rationed against one another.
  *
- *   INSTAGRAM runs at 12/day behind a 56-minute floor, UNCHANGED. It is the only
- *   network that reports a 3-second skip rate, so it is the only place the opening
- *   experiment can be measured at all, and it is the only channel currently producing
- *   anything. Its volume is protected; YouTube is fitted around it.
+ * Spacing is per-network and UNCHANGED by that: Instagram and YouTube keep the
+ * 56-minute same-platform floor and their separate jitter lanes (scheduler.ts LANES) so
+ * they never stack, and TikTok keeps its hard 4-HOUR floor. A network whose gap cannot
+ * fit 12 posts in one window simply spills onto the next day via loopPublish.planSlots,
+ * which is the designed behaviour for any over-full network.
  *
- *   YOUTUBE SHORTS is the second live network at 7/day behind the same 56-minute
- *   floor, with its own jitter lane so the two never stack (scheduler.ts LANES). 7 is
- *   the RESIDUAL of the budget, not a preference — see the arithmetic below.
- *
- *   TIKTOK is PAUSED (CONFIG.PLATFORM_POLICY.tiktok.paused). It is under account-level
- *   suppression and never resumed when its cooldown expired, so the pause makes that a
- *   decision instead of an accident. Its cadence — 2/day behind a hard 4-hour floor — is
- *   kept exactly as it should be on resume. Clear HERMES_TIKTOK_PAUSED to bring it back.
- *
- * WHY 9 AND 9, AND WHY THIS IS NOT A BILLING QUESTION
+ * THIS IS A SPRINT BUDGET, NOT A STEADY STATE, AND THAT IS DELIBERATE
  *
  * Metricool's Fair Use ceiling is 700 PUBLISHED POSTS per brand per month, and breaching
  * it triggers a MANUAL HUMAN REVIEW during which the account cannot post at all. That
  * failure is indefinite and mid-campaign, so the monthly guard fails closed at the
- * documented 600 base threshold and warns from 80%.
+ * documented 600 base threshold.
  *
  * The trap is that a fan-out to N networks costs N RECORDS, not one. Metricool splits a
- * multi-network post into one record per network, so the monthly cost is
+ * multi-network post into one record per network, so the cost is
  * (sum of perDay over LIVE networks) * days — see monthlyRecords() below, which is the
  * executable version of this paragraph.
  *
- * YOUTUBE'S 7/DAY IS THE RESIDUAL, DERIVED LIKE THIS. Instagram is fixed at 12/day, so
- * over the longest month it spends 12 * 31 = 372 of the 600, leaving 228. 228 / 31 =
- * 7.35, so YouTube gets 7:
+ * THE ARITHMETIC, STATED PLAINLY. Three networks at 12/day is 36 records/day.
  *
- *   Instagram 12 + YouTube 7 = 19/day = 589 in a 31-day month (98% of the 600 guard)
- *                                     = 570 in a 30-day month (95%)
- *   Instagram 12 + YouTube 8 = 20/day = 620 in a 31-day month — OVER. The guard would
- *                                       fail closed and stop scheduling near month end.
+ *   over a full 31-day month:  1,116 — nearly TWICE the 600 guard, so
+ *                              budgetForecast(31).withinBudget is FALSE, on purpose;
+ *   over the 14 days that are actually left: 504, and the month counter stands at 17,
+ *                              for 521 of 600 — it fits, with 79 records of slack.
  *
- * 7 holds for both month lengths, so there is no seasonal adjustment to remember. Note
- * the plan now sits ABOVE the 80% warn line by design: at 98% the warning is no longer
- * an early signal, it is the steady state, and the number that actually matters is
- * budgetForecast().withinBudget.
+ * So the honest description is: this cadence is affordable for the remaining campaign
+ * and would not be affordable indefinitely. budget() in metricool.ts is the live guard
+ * and is UNCHANGED — it still fails closed at 600 before scheduling anything, so the
+ * downside of the sprint running long is that posting stops, not that the account is
+ * put under review. Nothing here alerts and nothing here monitors; budgetForecast() is
+ * a pure function that tests call.
  *
  * And there is no plan to buy out of it. maxPostsPerBrand is 700 on every API-enabled
  * Metricool plan, so the only lever is posting less on each network.
@@ -117,11 +110,12 @@ export function monthlyRecords(days = 31): { perDay: number; perMonth: number; b
 }
 
 /**
- * Does the CURRENT policy fit inside the monthly guard, and does it trip the 80% warn?
+ * Does the CURRENT policy fit inside the monthly guard over `days`?
  *
- * Fails closed on `withinBudget` so a policy edit that overshoots is caught by a test
- * and a preflight rather than by the scheduler quietly refusing to place posts on the
- * 29th of the month — which is what Instagram 12 + YouTube 9 (651/month) would have done.
+ * `days` is the horizon, and at 36 records/day the answer depends entirely on it: a
+ * full 31-day month does not fit, the 14 days left in the campaign do. Pass the horizon
+ * you actually mean rather than reading the 31-day default as a verdict on the plan.
+ * Pure — this reports, it does not gate. The live guard is metricool.ts budget().
  */
 export function budgetForecast(days = 31): {
   perDay: number;
@@ -225,8 +219,9 @@ export function isDark(network: Network, now: Date = new Date()): { dark: boolea
  *
  * `budgetRemaining` is the live Metricool monthly headroom (see metricool.ts budget()).
  * Instagram is served FIRST when headroom is short — NETWORKS puts it first for exactly
- * this reason. It is the measurable arm and the one carrying the experiment, so if
- * something has to give it is YouTube's slots that shrink, not Instagram's.
+ * this reason. It is the only network that reports a 3-second skip rate, which is the
+ * one metric that predicts reach on this account, and it is where the audience is. If
+ * something has to give it is the other networks' slots that shrink, not Instagram's.
  */
 export function decide(budgetRemaining: number, now: Date = new Date()): PolicyDecision[] {
   const out: PolicyDecision[] = [];
