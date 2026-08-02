@@ -29,7 +29,7 @@ import { CONFIG, assertReadOnly } from "./config.ts";
 import {
   runSummaries, abDb, learnings, bankStats, killSwitch, cycleSchedule, diskInfo, llmPing, runLog,
   proposals, contentDefaults, bankCoverage, costSnapshot, factoryStatus, supervisorStatus,
-  goalProgress, scheduledPosts, replication,
+  goalProgress, scheduledPosts, replication, leadPolicy,
 } from "./data.ts";
 import { buildPRView } from "./prs.ts";
 import { page } from "./render.ts";
@@ -162,6 +162,13 @@ const server = createServer(async (req, res) => {
       return send(res, 200, JSON.stringify(replication()), "application/json");
     }
 
+    if (url.pathname === "/api/lead-policy") {
+      // READ-ONLY: which opening-question band the designer is weighting toward, the
+      // Instagram skip-rate evidence behind it, and the reversible ledger of previous
+      // mixes. A pure read of lead-policy.json — the cycle decides, never this route.
+      return send(res, 200, JSON.stringify(leadPolicy()), "application/json");
+    }
+
     if (url.pathname === "/api/scheduled") {
       // READ-ONLY: post-kickoff SCHEDULED posts + times (mirrored live from Metricool).
       // Media urls are allowlisted to the public static.metricool.com CDN, which serves
@@ -204,6 +211,7 @@ const server = createServer(async (req, res) => {
           supervisor: supervisorStatus(),
           goal: goalProgress(),
           replication: replication(),
+          leadPolicy: leadPolicy(),
           approvalGate: { paused: CONFIG.APPROVAL_PAUSED, restoreCmd: CONFIG.APPROVAL_RESTORE_CMD },
         }),
       );

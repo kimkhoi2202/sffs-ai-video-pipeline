@@ -348,6 +348,13 @@ export const CONFIG = Object.freeze({
   CONTENT_DEFAULTS: join(REPO_DIR, "ab-testing", "content-defaults.json"),
   // Durable default-promotion proposal queue (written by the Python promotion engine).
   PROPOSALS: join(REPO_DIR, "ab-testing", "proposals.json"),
+  /**
+   * The OPENING-QUESTION policy ledger (leadPromotion.ts). Rewritten every cycle with
+   * the evidence table, the resulting mix, and the mix it replaced. This file IS the
+   * reversal mechanism: `history` holds the previous shares, and deleting the file
+   * returns the loop to an even draw on the next run.
+   */
+  LEAD_POLICY: join(REPO_DIR, "ab-testing", "lead-policy.json"),
   HOOK_BANK: join(REPO_DIR, "ab-testing", "hook-bank.json"),
   USAGE: join(REPO_DIR, "content", "ab-test-usage.json"),
   BANK: join(REPO_DIR, "content", "master-question-bank.json"),

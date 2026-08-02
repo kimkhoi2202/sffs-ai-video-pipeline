@@ -18,6 +18,7 @@
 import { type NarrationMode } from "./narration.ts";
 import { hookArms } from "./hooks.ts";
 import type { HermesQ, ShapeKind } from "./state.ts";
+import { bandOf, promptWords, type LeadBand } from "./leadPolicy.ts";
 import {
   contentDefaults,
   narrationModeForArm,
@@ -479,10 +480,36 @@ export function resolveArm(spec: DimSpec, defaults: ContentDefaults): ResolvedAr
 export interface SpreadTally {
   tier: Record<string, number>;
   kind: Record<string, number>;
+  /** how many videos this batch have OPENED with each tier (see leadTypeCap). */
+  lead?: Record<string, number>;
 }
 
 export function newSpreadTally(): SpreadTally {
-  return { tier: {}, kind: {} };
+  return { tier: {}, kind: {}, lead: {} };
+}
+
+/**
+ * The most videos in one batch that may OPEN with the same question type.
+ *
+ * Retention evidence and content variety pull against each other here, and this is where
+ * the trade is made explicit. The evidence (leadPolicy.ts) says short prompts retain
+ * ~9 points better, but the only short-prompt type the renderable pool can currently
+ * supply is odd-one-out: number series exist in the bank in quantity and are then
+ * collapsed by the near-duplicate guard to ~20 distinct step patterns, all of which have
+ * already been published, and the figure types are not in the pinned format's kind
+ * filter. So "follow the evidence" and "open six of twelve videos with the same line"
+ * are, right now, the same instruction.
+ *
+ * 40% rounded up — five of a twelve-video day. That is deliberately looser than today's
+ * incidental four and deliberately tighter than the 55% band cap, because a question TYPE
+ * is the unit a viewer actually recognises. The dedup and near-duplicate gates already
+ * guarantee no two videos share a QUESTION; this guards the softer thing they cannot see,
+ * which is the batch opening the same way over and over.
+ */
+export const LEAD_TYPE_CAP_SHARE = 0.4;
+
+export function leadTypeCap(target: number): number {
+  return Math.max(1, Math.ceil(LEAD_TYPE_CAP_SHARE * Math.max(1, target)));
 }
 
 /** Lexicographic "a < b" over equal-length numeric tuples. */
@@ -508,19 +535,63 @@ function lexLess(a: number[], b: number[]): boolean {
  *
  * Returns fewer than `numQ` only when the pool is too small (the caller drops the
  * video, exactly as before). Never repeats a pool entry.
+ *
+ * THE OPENING SLOT is the one place retention evidence gets to choose. `leadPrefs` is
+ * a PREFERENCE ORDER of prompt-length bands, best first: the first pick is restricted
+ * to the first band that can still supply a question, and everything after it is
+ * unchanged. The opening question is what occupies the screen during the three seconds
+ * where ~70% of viewers leave, and its prompt length is the only property of it that
+ * measurably tracks skip rate (leadPolicy.ts). In-video variety is untouched.
+ *
+ * Two things bound the steer, and both are deliberate:
+ *
+ *   `cap` — the most videos in this batch that may open with the same TYPE (see
+ *   leadTypeCap). A band whose supply is one type would otherwise take every slot the
+ *   policy gives it, which is the variety collapse the exploration floor exists to stop.
+ *   Types already at the cap are removed from the OPENING candidates only; they can
+ *   still appear as question two or three.
+ *
+ *   Falling back. A band with nothing fresh left, or nothing under the cap, yields to
+ *   the next band in `leadPrefs`, and if every band is exhausted the pick reverts to the
+ *   normal ordering. The policy never costs the day a video: quality, freshness and
+ *   shipping all outrank it.
  */
-export function selectSpread(pool: HermesQ[], numQ: number, batch: SpreadTally = newSpreadTally()): HermesQ[] {
+export function selectSpread(
+  pool: HermesQ[],
+  numQ: number,
+  batch: SpreadTally = newSpreadTally(),
+  leadPrefs?: LeadBand[],
+  cap = Infinity,
+): HermesQ[] {
   const chosen: HermesQ[] = [];
   const remaining = pool.map((q, i) => ({ q, i }));
   const vid = newSpreadTally();
+  const leadTally = (batch.lead = batch.lead ?? {});
+
   while (chosen.length < numQ && remaining.length > 0) {
-    let bestPos = 0;
+    let candidates = remaining;
+    if (chosen.length === 0 && leadPrefs?.length) {
+      const underCap = remaining.filter((r) => (leadTally[r.q.tier ?? ""] ?? 0) < cap);
+      for (const band of leadPrefs) {
+        const inBand = underCap.filter((r) => bandOf(promptWords(r.q.prompt)) === band);
+        if (inBand.length) {
+          candidates = inBand;
+          break;
+        }
+      }
+      if (candidates === remaining && underCap.length) candidates = underCap;
+    }
+    let best = candidates[0];
     let bestKey: number[] | null = null;
-    for (let r = 0; r < remaining.length; r++) {
-      const { q, i } = remaining[r];
+    for (const cand of candidates) {
+      const { q, i } = cand;
       const t = q.tier ?? "";
       const k = q.kind ?? "";
       const key = [
+        // On the OPENING pick, rotate types that have not opened a video yet before
+        // anything else — so a band with several usable types spreads across them
+        // instead of exhausting the first one the seeded pool happens to offer.
+        ...(chosen.length === 0 && leadPrefs?.length ? [leadTally[t] ?? 0] : []),
         vid.tier[t] ?? 0,
         vid.kind[k] ?? 0,
         (batch.tier[t] ?? 0) + (vid.tier[t] ?? 0),
@@ -529,10 +600,12 @@ export function selectSpread(pool: HermesQ[], numQ: number, batch: SpreadTally =
       ];
       if (bestKey === null || lexLess(key, bestKey)) {
         bestKey = key;
-        bestPos = r;
+        best = cand;
       }
     }
-    const { q } = remaining.splice(bestPos, 1)[0];
+    remaining.splice(remaining.indexOf(best), 1);
+    const q = best.q;
+    if (chosen.length === 0) leadTally[q.tier] = (leadTally[q.tier] ?? 0) + 1;
     chosen.push(q);
     vid.tier[q.tier] = (vid.tier[q.tier] ?? 0) + 1;
     vid.kind[q.kind] = (vid.kind[q.kind] ?? 0) + 1;

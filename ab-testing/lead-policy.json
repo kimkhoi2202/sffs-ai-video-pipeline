@@ -1,0 +1,415 @@
+{
+  "updated_at": "2026-08-02T22:10:58.850Z",
+  "run_id": "seed-2026-08-02",
+  "evidence_source": "INSTAGRAM ONLY. The 3-second skip rate is the only retention metric that exists on this account: Metricool returns null for every TikTok watch-time field and the YouTube payload has no drop-off field at all. The mix decided here is applied to all three networks, but only Instagram voted.",
+  "policy": {
+    "applied": true,
+    "bands": [
+      {
+        "band": "short",
+        "label": "<=5 words",
+        "n": 17,
+        "median": 62.3,
+        "others_median": 71.2,
+        "ci_lo": 59.1,
+        "ci_hi": 69,
+        "advantage": 8.900000000000006,
+        "passes": true,
+        "reason": "retains better: 90% CI [59.1, 69.0] is entirely below the 71.2 median of the other bands",
+        "weight": 1.8900000000000006,
+        "share": 0.4858611825192803
+      },
+      {
+        "band": "medium",
+        "label": "6-9 words",
+        "n": 13,
+        "median": 72.5,
+        "others_median": 68.5,
+        "ci_lo": 67.1,
+        "ci_hi": 79.2,
+        "advantage": -4,
+        "passes": false,
+        "reason": "indistinguishable: 90% CI [67.1, 79.2] straddles the 68.5 median of the other bands",
+        "weight": 1,
+        "share": 0.2570694087403599
+      },
+      {
+        "band": "long",
+        "label": ">=10 words",
+        "n": 14,
+        "median": 71,
+        "others_median": 67.85,
+        "ci_lo": 67.3,
+        "ci_hi": 73.6,
+        "advantage": -3.1500000000000057,
+        "passes": false,
+        "reason": "indistinguishable: 90% CI [67.3, 73.6] straddles the 67.8 median of the other bands",
+        "weight": 1,
+        "share": 0.2570694087403599
+      }
+    ],
+    "shares": {
+      "short": 0.4858611825192803,
+      "medium": 0.2570694087403599,
+      "long": 0.2570694087403599
+    },
+    "n_posts": 44,
+    "min_posts": 12,
+    "note": "<=5 words retains better by 8.9 pts of skip rate on n=17"
+  },
+  "detail": [
+    {
+      "post_id": "17881110531476716",
+      "band": "medium",
+      "skip": 79.5,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "type"
+    },
+    {
+      "post_id": "18632670970032565",
+      "band": "short",
+      "skip": 80.5,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "type"
+    },
+    {
+      "post_id": "18087380909540755",
+      "band": "short",
+      "skip": 79.5,
+      "words": 3,
+      "type": "NUMBER SERIES",
+      "via": "type"
+    },
+    {
+      "post_id": "18612135376008328",
+      "band": "medium",
+      "skip": 89.3,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "type"
+    },
+    {
+      "post_id": "18137400259598790",
+      "band": "short",
+      "skip": 79.5,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "type"
+    },
+    {
+      "post_id": "18106343042103707",
+      "band": "medium",
+      "skip": 59.5,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17906604453286368",
+      "band": "short",
+      "skip": 51.4,
+      "words": 3,
+      "type": "LETTER SERIES",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18108240704092849",
+      "band": "long",
+      "skip": 62.1,
+      "words": 12,
+      "type": "SENTENCE COMPLETION",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17938273623333449",
+      "band": "short",
+      "skip": 52.1,
+      "words": 5,
+      "type": "COMPARE",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18119198293852638",
+      "band": "medium",
+      "skip": 67.1,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18219700615336275",
+      "band": "medium",
+      "skip": 75,
+      "words": 8,
+      "type": "NUMBER PUZZLE",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18003480944956011",
+      "band": "medium",
+      "skip": 68,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18015321227722356",
+      "band": "medium",
+      "skip": 85.2,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18604528951035176",
+      "band": "long",
+      "skip": 53.3,
+      "words": 12,
+      "type": "WORD PROBLEM",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18083281025670198",
+      "band": "short",
+      "skip": 61.3,
+      "words": 3,
+      "type": "NUMBER SERIES",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18058245773569101",
+      "band": "medium",
+      "skip": 64.5,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18056000744530456",
+      "band": "short",
+      "skip": 52.1,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18609119611059197",
+      "band": "long",
+      "skip": 70.5,
+      "words": 13,
+      "type": "WORD PROBLEM",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17963010093154335",
+      "band": "long",
+      "skip": 70.8,
+      "words": 16,
+      "type": "SENTENCE COMPLETION",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18090721349382831",
+      "band": "long",
+      "skip": 64.1,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18143502478546066",
+      "band": "medium",
+      "skip": 64.3,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18109767020001769",
+      "band": "medium",
+      "skip": 74.6,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18092759906070569",
+      "band": "short",
+      "skip": 69,
+      "words": 5,
+      "type": "FIGURE MATRIX",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18434048482133284",
+      "band": "long",
+      "skip": 78,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18126084889735955",
+      "band": "long",
+      "skip": 75.2,
+      "words": 17,
+      "type": "SENTENCE COMPLETION",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17919167526204434",
+      "band": "long",
+      "skip": 62.9,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17876365992620802",
+      "band": "short",
+      "skip": 54.7,
+      "words": 5,
+      "type": "FIGURE ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18089183222131603",
+      "band": "short",
+      "skip": 59.1,
+      "words": 4,
+      "type": "FIGURE SERIES",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17884255344459012",
+      "band": "short",
+      "skip": 66.4,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18135094090718202",
+      "band": "medium",
+      "skip": 79.2,
+      "words": 8,
+      "type": "NUMBER PUZZLE",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17885518137655709",
+      "band": "long",
+      "skip": 71.2,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18032743880818662",
+      "band": "short",
+      "skip": 62.3,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17874076428688301",
+      "band": "short",
+      "skip": 67.7,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18371752246227497",
+      "band": "medium",
+      "skip": 68.8,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18110451589814376",
+      "band": "long",
+      "skip": 72,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17937780801340008",
+      "band": "short",
+      "skip": 61.2,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17966997813068439",
+      "band": "medium",
+      "skip": 72.5,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17865466503643110",
+      "band": "long",
+      "skip": 92.2,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17950367871247317",
+      "band": "short",
+      "skip": 55.7,
+      "words": 5,
+      "type": "FIGURE MATRIX",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17901322881534600",
+      "band": "long",
+      "skip": 68.5,
+      "words": 18,
+      "type": "SENTENCE COMPLETION",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17901290289534118",
+      "band": "short",
+      "skip": 69.9,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "ledger"
+    },
+    {
+      "post_id": "17876907666525291",
+      "band": "long",
+      "skip": 71.2,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18090647909389348",
+      "band": "long",
+      "skip": 81.7,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "ledger"
+    },
+    {
+      "post_id": "18132460090551057",
+      "band": "short",
+      "skip": 76.4,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "ledger"
+    }
+  ],
+  "history": []
+}

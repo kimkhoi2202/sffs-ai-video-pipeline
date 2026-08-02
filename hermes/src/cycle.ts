@@ -46,6 +46,8 @@ import { goalProgress } from "./goal.ts";
 import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
+import { bandOf, promptWords } from "./leadPolicy.ts";
+import { runLeadPromotion, normType } from "./leadPromotion.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
 import { markUsed, markRejected, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
@@ -438,6 +440,17 @@ function annotateDb(v: VideoPlan, results: PlatformDraft[]): void {
         ending: (v.props as any)?.ending ?? null,
         question_types: v.questions.map((q) => q.tier),
         num_questions: v.questions.length,
+        // THE OPENING QUESTION, recorded as what it IS rather than left to be
+        // reconstructed later. Prompt length is the only property of question one that
+        // measurably tracks the 3-second skip rate (leadPolicy.ts), so it is the
+        // evidence the next cycle's promotion step reads. It was recoverable before
+        // this — via the usage ledger and the bank — but only for posts whose run
+        // records still existed, which is how the account's best reels ended up with no
+        // attribution at all. Stamping it costs nothing and makes the loop's own
+        // learning independent of archaeology.
+        lead_type: normType(v.questions[0]?.tier),
+        lead_prompt_words: promptWords(v.questions[0]?.prompt),
+        lead_band: bandOf(promptWords(v.questions[0]?.prompt)),
       },
       experiment: { dimension: v.dimension, arm: v.arm, rationale: v.rationale, hermes_video_id: v.id },
       hashtag_set: v.hashtag_set,
@@ -592,6 +605,25 @@ export async function runCycle(): Promise<RunState> {
   } catch (e) {
     warn("scoring step failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
     state.errors.push("score: " + (e instanceof Error ? e.message : String(e)));
+  }
+
+  // (a3) PROMOTE WHAT RETAINS — turn the refreshed metrics into the next batch's
+  // opening mix. Runs HERE, between scoring and planning, so it always judges on
+  // metrics that arrived this cycle and the batch below always uses the verdict.
+  //
+  // This is the step that closes the loop. The A/B promotion engine that used to sit in
+  // this slot was stood down in the exploitation pivot because it compared arms and
+  // there are no arms left; nothing replaced it, so measurement stopped turning into a
+  // decision. Its real failure was never being invoked at all — so this is a direct
+  // call on the cycle's own path, not a skill something has to remember to run, and it
+  // records a verdict into the run state on every cycle whether it moved anything or
+  // not. See leadPromotion.ts.
+  try {
+    (state as any).lead_policy = runLeadPromotion(runId);
+    saveRun(state);
+  } catch (e) {
+    warn("lead-opening promotion failed (continuing on an even draw)", { err: e instanceof Error ? e.message : String(e) });
+    state.errors.push("lead promotion: " + (e instanceof Error ? e.message : String(e)));
   }
 
   // Re-read the goal now that scoring has refreshed the LIVE analytics snapshot. The

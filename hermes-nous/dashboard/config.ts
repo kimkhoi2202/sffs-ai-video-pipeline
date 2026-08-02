@@ -65,6 +65,8 @@ export const CONFIG = Object.freeze({
   // CONTENT baseline defaults + the human-approved default-promotion queue.
   CONTENT_DEFAULTS: process.env.HERMES_CONTENT_DEFAULTS || join(REPO_DIR, "ab-testing", "content-defaults.json"),
   PROPOSALS: process.env.HERMES_PROPOSALS || join(REPO_DIR, "ab-testing", "proposals.json"),
+  /** OPENING-QUESTION policy ledger, written each cycle by hermes/src/leadPromotion.ts. */
+  LEAD_POLICY: process.env.HERMES_LEAD_POLICY || join(REPO_DIR, "ab-testing", "lead-policy.json"),
   // Reversible ledger for the winner-replication engine (hermes-nous/sffs/replicate.py):
   // which reach outlier the designer is doubling down on, its share of each batch, and
   // the append-only history of detections / escalations / reverts.

@@ -27,8 +27,10 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
-import { pinnedSpecs, resolveArm, selectSpread, newSpreadTally, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
+import { pinnedSpecs, resolveArm, selectSpread, newSpreadTally, leadTypeCap, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
 import { normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
+import { allocateLeadBands, bandOf, promptWords, BAND_LABEL, LEAD_BANDS, type LeadBand } from "./leadPolicy.ts";
+import { currentLeadShares } from "./leadPromotion.ts";
 
 // Re-export the catalog surface so existing importers (bridge/design.ts) are
 // unchanged, while the actual definitions live in the dependency-free module.
@@ -195,6 +197,27 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       `Questions are freshly selected per video and still pass dedup + validity + brand gates.`,
   );
 
+  // WHICH QUESTION OPENS EACH VIDEO — the one axis still decided by measurement.
+  // The format is pinned, so this is the remaining lever: the opening question is what
+  // holds the screen through the 3 seconds that decide reach on this account. Shares
+  // come from the ledger leadPromotion.ts wrote earlier in the cycle; an even draw if it
+  // has not run, is switched off, or no band has cleared the evidence bar.
+  const lead = currentLeadShares();
+  const leadBands = allocateLeadBands(specs.length, lead.shares);
+  // Bands ranked best-first, so a slot whose band is exhausted (or whose only type has
+  // hit the variety cap) falls to the next-best band rather than to whatever is handy.
+  const bandRank: LeadBand[] = [...LEAD_BANDS].sort((a, b) => lead.shares[b] - lead.shares[a]);
+  const typeCap = leadTypeCap(specs.length);
+  decision(
+    `OPENING MIX: ${(["short", "medium", "long"] as const)
+      .map((b) => `${BAND_LABEL[b]} x${leadBands.filter((x) => x === b).length}`)
+      .join(", ")}` +
+      (lead.applied
+        ? ` — weighted by 3-second skip rate (Instagram only). ${lead.note}`
+        : ` — EVEN DRAW (${lead.note}).`) +
+      ` No single question type may open more than ${typeCap} of ${specs.length}.`,
+  );
+
   const plans: VideoPlan[] = [];
 
   for (let i = 0; i < specs.length; i++) {
@@ -215,7 +238,9 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     // batch from being twelve near-identical videos: the format is fixed, the
     // questions inside it are not, and the spread stops the day clustering on one
     // tier. Fixing the format is not repeating the video.
-    const chosen: HermesQ[] = selectSpread(pool, spec.numQ, batchSpread);
+    const wantBand = leadBands[i];
+    const prefs: LeadBand[] = wantBand ? [wantBand, ...bandRank.filter((b) => b !== wantBand)] : [];
+    const chosen: HermesQ[] = selectSpread(pool, spec.numQ, batchSpread, prefs, typeCap);
     if (chosen.length < spec.numQ) {
       warn("dropping video: not enough fresh questions", { id, dimension: spec.dimension, want: spec.numQ, got: chosen.length });
       decision(`DROP ${id} (${spec.arm}): only ${chosen.length}/${spec.numQ} fresh questions`);
@@ -286,8 +311,12 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       },
     };
     plans.push(plan);
+    const gotBand = bandOf(promptWords(chosen[0]?.prompt));
     decision(
-      `PLAN ${id}: ${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${resolved.narration} ending=${resolved.endingArm} reveal=${resolved.reveal}`,
+      `PLAN ${id}: ${spec.arm} q=${chosen.length} tags=${hashtagSet} narration=${resolved.narration} ending=${resolved.endingArm} reveal=${resolved.reveal} ` +
+        `opening=${chosen[0]?.tier} (${promptWords(chosen[0]?.prompt)}w, ${gotBand}` +
+        (wantBand && gotBand !== wantBand ? `; wanted ${wantBand} — exhausted or at the variety cap` : "") +
+        `)`,
       { questions: chosen.map((q) => q.tier) },
     );
   }

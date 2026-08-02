@@ -12,7 +12,7 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView, ScheduledPost } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView, LeadPolicyView, ScheduledPost } from "./data.ts";
 import { summarizeExperiment } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
@@ -341,6 +341,81 @@ function defaultPromotions(q: ProposalsQueue | undefined, cd: ContentDefaultsFil
     ? `<p class="muted">No pending default changes awaiting a human. When an A/B test arm clearly beats the current default (control) on the configured metric with enough samples, a proposal appears here to approve/reject via the <code>sffs_promote_default</code> CLI — or (if enabled) it is auto-adopted after a confirmation round.</p>`
     : `<p class="muted">${pending.length} proposal(s) awaiting a HUMAN decision (auto-adoption still requires a confirmation round). Approving flips the config default (takes effect next design pass); rejecting keeps the arm testing. Display-only — run the CLI in a shell.</p>${pending.map(proposalCard).join("")}`;
   return `${head}${autoNote}${pendingHtml}${autoLedgerHtml(q)}`;
+}
+
+// ── RETAIN: which question opens the video ───────────────────────────────────
+
+/**
+ * The opening-question policy panel. A pure READ of ab-testing/lead-policy.json; the
+ * cycle computes and writes it (hermes/src/leadPromotion.ts) and nothing here can
+ * change the mix.
+ *
+ * Two things this panel refuses to imply. First, that all three networks voted: skip
+ * rate exists on Instagram alone, and the caveat is stated in words at the top rather
+ * than buried in a footnote. Second, that a band with thin evidence is a finding — the
+ * sample size and the interval are shown for every band, including the ones that did
+ * NOT separate, because "we looked and it was flat" is the result most worth seeing.
+ */
+function leadPolicyPanel(p: LeadPolicyView | undefined): string {
+  if (!p || !p.present) {
+    return `<p class="muted">The opening-question policy has not run yet. It runs inside the daily cycle, between scoring and planning; the next run will write <code>ab-testing/lead-policy.json</code> and fill this in.</p>`;
+  }
+  const pct = (x: number) => `${Math.round(x * 100)}%`;
+  const num = (x: number | null, d = 1) => (x == null ? "—" : Number(x).toFixed(d));
+
+  const caveat = `<p class="muted" style="border-left:3px solid var(--yellow);padding-left:10px">
+    <b>Instagram only.</b> The 3-second skip rate is the one metric on this account that predicts reach, and it exists on Instagram and nowhere else &mdash;
+    Metricool returns <code>null</code> for every TikTok watch-time field, and the YouTube payload carries no drop-off field at all.
+    So the evidence below is Instagram's alone. The mix it decides is applied to <b>all three networks</b>, because the opening question is the same video everywhere;
+    but TikTok and YouTube did not vote, and nothing here should be read as if they had.</p>`;
+
+  const why = `<p class="muted">The format is pinned, so the one thing still varying between videos is the questions &mdash; and question one is what holds the screen through the three seconds where about 70% of viewers leave.
+    This weights which <b>opening</b> question each video gets, by measured skip rate. A band moves the mix only if it has at least <b>${esc(p.min_posts)}</b> matured Instagram posts
+    (one full day of production) <i>and</i> a bootstrap interval on its median that excludes the other bands. Nothing else about the video changes: questions two and three are still chosen for spread,
+    and every dedup, near-duplicate, validity, brand and render gate runs exactly as before.</p>`;
+
+  const rows = p.bands
+    .map(
+      (b) => `<tr>
+      <td><b>${esc(b.label)}</b></td>
+      <td class="num">${esc(b.n)}</td>
+      <td class="num">${esc(num(b.median))}</td>
+      <td class="num">${b.ci_lo == null ? "—" : `${esc(num(b.ci_lo))}&ndash;${esc(num(b.ci_hi))}`}</td>
+      <td class="num">${b.advantage == null ? "—" : `${(b.advantage > 0 ? "+" : "")}${esc(num(b.advantage))}`}</td>
+      <td>${b.passes ? `<span class="hpill" style="background:var(--green)">moves the mix</span>` : `<span class="hpill">no change</span>`}</td>
+      <td class="num"><b>${esc(pct(b.share))}</b></td>
+    </tr>
+    <tr><td colspan="7" class="muted" style="padding-top:0;font-size:12px">${esc(b.reason)}</td></tr>`,
+    )
+    .join("");
+
+  const hist = p.history.length
+    ? `<h3 style="margin:14px 0 6px;font-size:15px">Reversible ledger</h3><div class="logbox">${p.history
+        .map(
+          (h) => `<div class="lg"><span class="lt">${esc(String(h.at || "").slice(0, 16).replace("T", " "))}</span> <span class="ll">${esc(h.run_id || "?")}</span> ${esc(
+            Object.entries(h.shares || {}).map(([k, v]) => `${k} ${Math.round(Number(v) * 100)}%`).join(" · ") + " — " + String(h.note || "").slice(0, 120),
+          )}</div>`,
+        )
+        .join("")}</div>`
+    : `<p class="muted">No previous mix to show yet &mdash; this is the first recorded policy.</p>`;
+
+  const howToUndo = `<p class="muted"><b>How to reverse it.</b> One line on the box: <code>HERMES_LEAD_WEIGHTING=off</code> in <code>/etc/hermes/hermes.env</code> returns every band to an even draw on the next cycle,
+    with no code change and no loss of the evidence (the numbers above keep being computed and shown). Deleting <code>ab-testing/lead-policy.json</code> does the same thing for one run.
+    The ledger above keeps the previous shares, so a specific earlier mix can be restored by hand.</p>`;
+
+  return `${caveat}${why}
+  <div class="health" style="margin-bottom:12px">
+    <span class="hpill" style="background:${p.applied ? "var(--green)" : "var(--yellow)"}"><b>${p.applied ? "weighting live" : "even draw"}</b>${esc(p.note.slice(0, 90))}</span>
+    <span class="hpill"><b>evidence</b>${esc(p.n_posts)} matured Instagram posts</span>
+    <span class="hpill"><b>last run</b>${esc(String(p.updated_at || "").slice(0, 16).replace("T", " "))}Z${p.run_id ? ` · ${esc(p.run_id)}` : ""}</span>
+  </div>
+  <table class="tbl"><thead><tr>
+    <th>opening prompt</th><th class="num">posts</th><th class="num">median skip</th><th class="num">90% CI</th><th class="num">vs rest</th><th>verdict</th><th class="num">share of openings</th>
+  </tr></thead><tbody>${rows}</tbody></table>
+  <p class="muted" style="margin-top:10px">Lower skip rate is better. <b>vs rest</b> is how many points of skip rate the band beats the pooled median of the other two by; positive is better.
+    A single question type may open at most <b>40%</b> of a day's videos whatever the weighting says, so a band whose supply is one type cannot quietly turn the batch into twelve variations of the same opening line.</p>
+  ${howToUndo}
+  ${hist}`;
 }
 
 // ── REPLICATE: doubling down on a reach outlier ──────────────────────────────
@@ -1155,6 +1230,8 @@ export interface PageData {
   goal?: GoalProgress;
   /** winner-replication ledger view (optional; degrades to "no replication state"). */
   replication?: ReplicationView;
+  /** opening-question policy ledger view (optional; degrades to "has not run yet"). */
+  leadPolicy?: LeadPolicyView;
   /** Whether the human approval gate is in force. Display only; defaults to retired. */
   approvalGate?: ApprovalGate;
 }
@@ -1453,6 +1530,14 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
   <div class="card">
     <h2><span class="pin">MAP</span> Published posts — permalinks &amp; native ids (reconciled)</h2>
     ${publishedMap(db)}
+  </div>
+
+  <div class="card" id="retain">
+    <h2><span class="pin">RETAIN</span> Which question opens the video
+      <span class="pin" style="background:var(--yellow)">INSTAGRAM SKIP RATE ONLY</span>
+      ${opts.leadPolicy?.applied ? `<span class="pin" style="background:var(--green)">WEIGHTING LIVE</span>` : `<span class="pin">EVEN DRAW</span>`}
+    </h2>
+    ${leadPolicyPanel(opts.leadPolicy)}
   </div>
 
   <div class="card">

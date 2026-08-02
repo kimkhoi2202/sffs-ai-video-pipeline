@@ -80,6 +80,68 @@ export function contentDefaults(): any {
   return readJSON<any>(CONFIG.CONTENT_DEFAULTS, { defaults: {}, promotion: {} });
 }
 
+// ── opening-question policy (RETAIN panel) ───────────────────────────────────
+
+export interface LeadBandView {
+  band: string;
+  label: string;
+  n: number;
+  median: number | null;
+  ci_lo: number | null;
+  ci_hi: number | null;
+  advantage: number | null;
+  passes: boolean;
+  reason: string;
+  share: number;
+}
+export interface LeadPolicyView {
+  present: boolean;
+  applied: boolean;
+  updated_at: string | null;
+  run_id: string | null;
+  n_posts: number;
+  min_posts: number;
+  note: string;
+  evidence_source: string;
+  bands: LeadBandView[];
+  history: Array<{ at: string; run_id: string; shares: Record<string, number>; applied: boolean; note: string }>;
+}
+
+/**
+ * The opening-question policy, resolved for display. A pure read of
+ * ab-testing/lead-policy.json — the dashboard never computes the policy and never
+ * changes it; that is the cycle's job (hermes/src/leadPromotion.ts), on the loop's
+ * own schedule. Degrades to "not run yet" rather than inventing a mix.
+ */
+export function leadPolicy(): LeadPolicyView {
+  const led = readJSON<any>(CONFIG.LEAD_POLICY, null);
+  const p = led?.policy;
+  if (!p || !Array.isArray(p.bands)) {
+    return {
+      present: false, applied: false, updated_at: null, run_id: null, n_posts: 0,
+      min_posts: 12, note: "The opening-question policy has not run yet.",
+      evidence_source: "", bands: [], history: [],
+    };
+  }
+  return {
+    present: true,
+    applied: !!p.applied,
+    updated_at: led.updated_at ?? null,
+    run_id: led.run_id ?? null,
+    n_posts: Number(p.n_posts) || 0,
+    min_posts: Number(p.min_posts) || 12,
+    note: String(p.note ?? ""),
+    evidence_source: String(led.evidence_source ?? ""),
+    bands: p.bands.map((b: any) => ({
+      band: String(b.band), label: String(b.label), n: Number(b.n) || 0,
+      median: b.median ?? null, ci_lo: b.ci_lo ?? null, ci_hi: b.ci_hi ?? null,
+      advantage: b.advantage ?? null, passes: !!b.passes, reason: String(b.reason ?? ""),
+      share: Number(b.share) || 0,
+    })),
+    history: Array.isArray(led.history) ? led.history.slice(-8).reverse() : [],
+  };
+}
+
 // ── winner replication (REPLICATE panel) ─────────────────────────────────────
 
 /** Hard ceiling on the batch share replication may take (mirrors replicate.py). */
