@@ -15,22 +15,36 @@
  * length and type move together in the existing data, the evidence is equally consistent
  * with a real length effect and with a type effect we cannot separate. It is applied
  * because it is cheap and the mechanism — less to read in the three seconds where ~70% of
- * viewers leave — is plausible. Its real value is that it BREAKS the confound: the same
- * type now ships at two different lengths either side of 2026-08-02, so a week from now
- * the within-type before/after contrast can say whether length was ever the lever.
+ * viewers leave — is plausible.
  *
- * WHAT IS NOT CUT, AND WHY. For six of the twelve live types the "prompt" field is not an
+ * IT ALSO LOOSENS THE CONFOUND, THOUGH LESS THAN IT FIRST DID. Because a type now ships at
+ * two lengths either side of 2026-08-02, a within-type before/after contrast becomes
+ * possible for the first time. But be honest about how much signal that is: after the
+ * verbal-analogy revert the only usable contrasts are NUMBER ANALOGY (15 -> 12 words, the
+ * one with real leverage) and ODD ONE OUT (5 -> 4, almost certainly too small to resolve);
+ * ANTONYM, SYNONYM and COMPARE move further but have n <= 5 between them. The largest type
+ * in the pool no longer varies at all. So a week from now this can support a NUMBER ANALOGY
+ * before/after and little else — worth having, not the clean separation of length from type
+ * that a full rewrite would have bought.
+ *
+ * WHAT IS NOT CUT, AND WHY. For most of the twelve live types the "prompt" field is not an
  * instruction wrapped around an item — it IS the item. A verbal analogy's stem, a
  * syllogism's premises, a word problem's setup and a sentence-completion's sentence carry
  * the information the question is asking about, and deleting words there deletes the
  * question. Those keep their length; see LEFT_LONG below for the reason in each case. The
  * rule applied throughout is cut words, not meaning.
  *
+ * AND NOT AT THE COST OF COMPREHENSION. Fewer words is the proxy, not the goal: what the
+ * finding is really about is how much a viewer must PARSE before deciding to stay. So a
+ * rewrite that trades plain English for a compact convention is not obviously a win, and
+ * every rule below is a deletion of scaffolding rather than a change of notation. The
+ * verbal-analogy arrow form was written, shipped into the bank and then reverted on
+ * exactly this ground; LEFT_LONG records why, so it does not look arbitrary later.
+ *
  * TWO SURFACES. Every prompt here is both drawn on the plate and read aloud by the cloned
  * host (narration.ts stemText reads q.prompt verbatim), so each rule below has to survive
- * being spoken. The arrow rewrites lean on speakPrompt() in narration.ts, which expands
- * "->" back to "is to" for the read — the plate loses the connective scaffolding, the
- * voiceover keeps it.
+ * being spoken. NUMBER ANALOGY still ships "->" inside its mapping table, and
+ * speakPrompt() in narration.ts expands it back to "is to" for the read.
  *
  * IDEMPOTENT AND NARROW. Every rule matches the exact authored shape and returns null if
  * it does not, so a second run is a no-op and an unrecognised prompt is left untouched
@@ -66,15 +80,6 @@ const RULES = {
   "ODD ONE OUT": (p) =>
     p === "WHICH ONE DOES NOT BELONG?" ? "WHICH DOES NOT BELONG?" : null,
 
-  // "IS TO ... AS ... IS TO" is six of the nine words and carries none of the item: the
-  // question is the three terms. The arrow is already the bank's own notation for a
-  // mapping (NUMBER ANALOGY has always used it), the renderer draws it as a real vector
-  // arrow (TextQuestion.tsx), and speakPrompt reads it back as "is to".
-  "VERBAL ANALOGY": (p) => {
-    const m = /^(.+?) IS TO (.+?) AS\n(.+?) IS TO \?$/.exec(p);
-    return m ? `${m[1]} -> ${m[2]}\n${m[3]} -> ?` : null;
-  },
-
   // The mapping table already says what to do — four pairs ending in "?" is the
   // question — and the host still announces "a number analogy" before reading it. The
   // PAIRS stay: three worked examples plus the query is what pins the rule down, and
@@ -106,6 +111,21 @@ const RULES = {
 
 /** Types deliberately left at their current length, and the reason. */
 const LEFT_LONG = {
+  // TRIED AND REVERTED, 2026-08-02. "X IS TO Y AS / A IS TO ?" (9w) was briefly rewritten
+  // to "X -> Y / A -> ?" (6w) on the grounds that the connective scaffolding is six of
+  // the nine words and carries none of the item. It was reverted deliberately, and the
+  // reason is the same premise the whole change rests on: the point is to cut what a
+  // viewer must PARSE in three seconds, and arrow notation is a learned convention an
+  // eight-year-old may simply not have learned. A prompt that is shorter but more cryptic
+  // can cost more in comprehension than it saves in reading — and it would cost it on the
+  // LARGEST type in the pool, showing up as more skipping, not less. Every other rule here
+  // deletes scaffolding and leaves the meaning in plain words, so none carries that risk;
+  // this was the only one that changed HOW the item is expressed rather than trimming
+  // around it. Do not re-apply it without an experiment that can measure comprehension
+  // separately from reading load.
+  "VERBAL ANALOGY":
+    "9 words, and they are plain English an eight-year-old already reads; the shorter " +
+    "arrow form was tried and reverted because notation has to be learned before it is fast",
   "NUMBER SERIES": 'already minimal at 3 words ("WHAT COMES NEXT?")',
   "LETTER SERIES": 'already minimal at 3 words ("WHAT COMES NEXT?")',
   "NUMBER PUZZLE":

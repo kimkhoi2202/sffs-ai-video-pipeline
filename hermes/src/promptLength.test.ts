@@ -6,19 +6,27 @@
  * the 3-second skip rate (leadPolicy.ts): <=5 words medians 62.3%, >=10 medians 71.0%,
  * p = 0.0008. Length and TYPE were perfectly confounded, because the bank shipped one
  * fixed prompt per type, so the weighting engine could only reshuffle toward odd-one-out.
- * content/shorten-prompts.mjs cut six types' prompts instead, which applies the finding
- * to every video AND breaks the confound — the same type now ships at two lengths either
- * side of the change, so the within-type contrast can eventually separate them.
+ * content/shorten-prompts.mjs cuts five types' prompts instead, which applies the finding
+ * to every video AND loosens the confound — those types now ship at two lengths either
+ * side of the change, so a within-type contrast becomes possible.
  *
- * These tests exist because all three failure modes are SILENT — nothing throws, the
+ * A SIXTH WAS TRIED AND REVERTED. Verbal analogy went 9w -> 6w by swapping "IS TO ... AS"
+ * for an arrow, and went back, because fewer words is only a PROXY for less to parse and
+ * the two come apart at notation an eight-year-old has to learn first. That decision is
+ * load-bearing for the whole file: the rules that remain all delete scaffolding and leave
+ * meaning in plain words, and the tests below pin both halves of it.
+ *
+ * These tests exist because all four failure modes are SILENT — nothing throws, the
  * cycle keeps producing videos, and the damage only shows up as a wrong decision later:
  *
  *   1. A shortened plate that reads as a fragment when the host says it out loud. The
  *      prompt is ONE string used for both surfaces, so this is a real risk, not a
- *      hypothetical: "HOT -> COLD" must still be spoken "HOT is to COLD".
+ *      hypothetical: the arrow in a number-analogy mapping must reach TTS as "is to".
  *   2. A future bank import quietly re-lengthening a type, or a later pass "tidying" the
  *      prompts that were left long ON PURPOSE because their words carry the item.
- *   3. The bank edit retro-rewriting history. buildLeadEvidence rebuilds each published
+ *   3. The arrow rewrite creeping back into verbal analogy, where it was judged to cost
+ *      more in comprehension than it saves in reading.
+ *   4. The bank edit retro-rewriting history. buildLeadEvidence rebuilds each published
  *      post's word count out of the CURRENT bank, so a prompt edit would restate the
  *      campaign as always-short unless the stamped value wins.
  */
@@ -32,14 +40,12 @@ import { quantVerdict } from "./arithmetic.ts";
 
 // ── 1. The spoken surface ────────────────────────────────────────────────────
 
-test("VO: an arrow plate is still spoken as a full analogy", () => {
-  assert.equal(speakPrompt("HOT -> COLD\nDAY -> ?"), "HOT is to COLD, DAY is to?");
-  assert.equal(
-    speakPrompt("CATERPILLAR -> BUTTERFLY\nTADPOLE -> ?"),
-    "CATERPILLAR is to BUTTERFLY, TADPOLE is to?",
-  );
-});
-
+/**
+ * NUMBER ANALOGY is the only live type that puts an arrow on the plate, and it always
+ * has — the mapping table shipped "2 -> 3" long before any of this. Until speakPrompt
+ * existed the raw glyph went straight to TTS, so this expansion is a fix in its own
+ * right, independent of the shortening that prompted it.
+ */
 test("VO: a number-analogy mapping speaks its numbers as words, never as arrows", () => {
   const said = speakPrompt("2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?");
   assert.equal(said, "two is to three, three is to five, four is to seven, five is to?");
@@ -47,7 +53,25 @@ test("VO: a number-analogy mapping speaks its numbers as words, never as arrows"
 });
 
 test("VO: the unicode arrow is handled too, so notation drift cannot break the read", () => {
-  assert.equal(speakPrompt("HOT → COLD\nDAY → ?"), "HOT is to COLD, DAY is to?");
+  assert.equal(speakPrompt("2 → 6,   3 → 9,   4 → 12,   5 → ?"), "two is to six, three is to nine, four is to twelve, five is to?");
+});
+
+/**
+ * VERBAL ANALOGY briefly shipped as "HOT -> COLD / DAY -> ?" and was reverted, so the
+ * arrow branch must not touch it any more. Pinned because the failure would be quiet:
+ * speakPrompt turns authored line breaks into COMMAS on an arrow prompt, and if a verbal
+ * analogy ever took that branch the host would read "HOT is to COLD, DAY is to?" over a
+ * plate that says "AS" — the two surfaces disagreeing with nothing to show for it.
+ */
+test("VO: a verbal analogy takes the plain path and is read exactly as written", () => {
+  assert.equal(
+    speakPrompt("HOT IS TO COLD AS\nDAY IS TO ?"),
+    "HOT IS TO COLD AS DAY IS TO ?",
+  );
+  assert.equal(
+    speakPrompt("CATERPILLAR IS TO BUTTERFLY AS\nTADPOLE IS TO ?"),
+    "CATERPILLAR IS TO BUTTERFLY AS TADPOLE IS TO ?",
+  );
 });
 
 /**
@@ -87,12 +111,11 @@ const liveByTier = () => {
   return out;
 };
 
-test("BANK: the six shortened types stay short, and none drifts back", () => {
+test("BANK: the five shortened types stay short, and none drifts back", () => {
   const byTier = liveByTier();
   // tier -> the exact word count every one of its prompts must now have
   const PINNED: Record<string, number> = {
     "ODD ONE OUT": 4,
-    "VERBAL ANALOGY": 6,
     "NUMBER ANALOGY": 12,
     ANTONYM: 3,
     SYNONYM: 4,
@@ -112,10 +135,6 @@ test("BANK: the six shortened types stay short, and none drifts back", () => {
 
 test("BANK: the shortening removed the scaffolding it claimed to remove", () => {
   const byTier = liveByTier();
-  for (const p of byTier.get("VERBAL ANALOGY") ?? []) {
-    assert.ok(/^[^\n]+ -> [^\n]+\n[^\n]+ -> \?$/.test(p), `not the arrow shape: ${JSON.stringify(p)}`);
-    assert.ok(!/ IS TO /.test(p), `"IS TO" scaffolding survived: ${p}`);
-  }
   for (const p of byTier.get("NUMBER ANALOGY") ?? []) {
     assert.ok(!/WHICH NUMBER FITS/.test(p), `instruction line survived: ${p}`);
   }
@@ -131,6 +150,27 @@ test("BANK: the shortening removed the scaffolding it claimed to remove", () => 
  * tripwire for that, and it is the reason the failure would otherwise be invisible: a
  * truncated word problem still renders, still narrates, and is simply unanswerable.
  */
+/**
+ * THE VERBAL-ANALOGY REVERT, pinned so it cannot be quietly undone.
+ *
+ * "X IS TO Y AS / A IS TO ?" was shortened to "X -> Y / A -> ?" (9w -> 6w) and reverted
+ * on purpose. Fewer words is a PROXY for less to parse, and the two come apart exactly
+ * here: arrow notation is a learned convention, an eight-year-old may not have learned
+ * it, and a plate that is shorter but more cryptic can cost more in comprehension than
+ * it saves in reading — on the largest type in the pool, where it would show up as MORE
+ * skipping. Re-applying it is not a refactor; it needs an experiment that can separate
+ * comprehension from reading load.
+ */
+test("BANK: verbal analogy stays in plain words, not arrow notation", () => {
+  const prompts = liveByTier().get("VERBAL ANALOGY") ?? [];
+  assert.ok(prompts.length > 300, "verbal analogy is the largest live type; it should be here");
+  for (const p of prompts) {
+    assert.equal(promptWords(p), 9, `verbal analogy should be 9 plain words: ${JSON.stringify(p)}`);
+    assert.ok(/ IS TO .* AS\n.* IS TO \?$/.test(p), `not the plain-English shape: ${JSON.stringify(p)}`);
+    assert.ok(!/(?:->|→)/.test(p), `arrow notation came back: ${JSON.stringify(p)}`);
+  }
+});
+
 test("BANK: the types that carry meaning in their words were not cut", () => {
   const byTier = liveByTier();
   for (const p of byTier.get("NUMBER PUZZLE") ?? []) {
@@ -167,31 +207,34 @@ test("BANK: the mechanical gate still parses a number analogy with no instructio
 // ── 3. History must not be rewritten by a bank edit ──────────────────────────
 
 /**
- * The whole point of ops/freeze_lead_words.mjs. A post published under the OLD 9-word
- * verbal analogy has to keep reporting nine words even though the bank entry it points
- * at now says six — otherwise shortening the bank silently restates the campaign as
- * having always run short openings, and the contrast the policy rests on disappears.
+ * The whole point of ops/freeze_lead_words.mjs, shown on the type where it actually
+ * bites. A post published under the OLD 15-word number analogy has to keep reporting
+ * fifteen even though the bank entry it points at now says twelve — otherwise editing
+ * the bank silently restates the campaign as having always run shorter openings, and
+ * the contrast the policy rests on disappears. Note the band flips too (long -> long
+ * here, but ODD ONE OUT 5 -> 4 and SYNONYM 7 -> 4 both cross), so this is not a
+ * rounding difference: it would move posts between the very buckets being compared.
  */
 test("EVIDENCE: a stamped post keeps its published length even when the bank now disagrees", () => {
+  const shortened = "2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?"; // 12 words, today's bank
   const ctx = {
-    bySig: new Map([["sig-1", { sig: "sig-1", tier: "VERBAL ANALOGY", prompt: "HOT -> COLD\nDAY -> ?" }]]),
-    bySlug: new Map([["slug-1", { questions: [{ sig: "sig-1", tier: "VERBAL ANALOGY" }] }]]),
-    typeWords: { "VERBAL ANALOGY": 6 },
+    bySig: new Map([["sig-1", { sig: "sig-1", tier: "NUMBER ANALOGY", prompt: shortened }]]),
+    bySlug: new Map([["slug-1", { questions: [{ sig: "sig-1", tier: "NUMBER ANALOGY" }] }]]),
+    typeWords: { "NUMBER ANALOGY": 12 },
   };
   const published = {
     _hermes_key: "hermes:slug-1",
-    variant: { lead_prompt_words: 9, lead_type: "VERBAL ANALOGY", question_types: ["VERBAL ANALOGY"] },
+    variant: { lead_prompt_words: 15, lead_type: "NUMBER ANALOGY", question_types: ["NUMBER ANALOGY"] },
   };
   assert.deepEqual(leadWordsFor(published, ctx as any), {
-    words: 9,
-    type: "VERBAL ANALOGY",
+    words: 15,
+    type: "NUMBER ANALOGY",
     via: "stamped",
   });
-  assert.equal(bandOf(9), "medium", "and it stays in the band it was published in");
 
   // An UNSTAMPED post is the hazard the freeze removed: it resolves against today's bank.
-  const unstamped = { _hermes_key: "hermes:slug-1", variant: { question_types: ["VERBAL ANALOGY"] } };
-  assert.equal(leadWordsFor(unstamped, ctx as any)?.words, 6);
+  const unstamped = { _hermes_key: "hermes:slug-1", variant: { question_types: ["NUMBER ANALOGY"] } };
+  assert.equal(leadWordsFor(unstamped, ctx as any)?.words, 12);
 });
 
 /**
@@ -206,9 +249,9 @@ test("EVIDENCE: the publish-time stamp records length, type and a band that agre
     lead_prompt_words: 4,
     lead_band: "short",
   });
-  assert.deepEqual(leadStamp({ tier: "VERBAL ANALOGY", prompt: "HOT -> COLD\nDAY -> ?" }), {
+  assert.deepEqual(leadStamp({ tier: "VERBAL ANALOGY", prompt: "HOT IS TO COLD AS\nDAY IS TO ?" }), {
     lead_type: "VERBAL ANALOGY",
-    lead_prompt_words: 6,
+    lead_prompt_words: 9,
     lead_band: "medium",
   });
   assert.deepEqual(leadStamp({ tier: "NUMBER ANALOGY", prompt: "2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?" }), {

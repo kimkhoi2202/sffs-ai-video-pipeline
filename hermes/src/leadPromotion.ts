@@ -160,9 +160,9 @@ export function buildRecoveryCtx(): RecoveryCtx {
  *
  * STAMPED IS NOW LOAD-BEARING, NOT MERELY MORE EXACT. Both fallbacks resolve a post's
  * word count out of the CURRENT bank, which was safe only while the bank's prompts never
- * changed. They do now: the 2026-08-02 shortening rewrote six types' prompts, so a post
- * published under the old 9-word verbal analogy would come back from the ledger path as
- * a 6-word one and the evidence would quietly restate itself as "everything was always
+ * changed. They do now: the 2026-08-02 shortening rewrote five types' prompts, so a post
+ * published under the old 15-word number analogy would come back from the ledger path as
+ * a 12-word one and the evidence would quietly restate itself as "everything was always
  * short" — erasing the contrast the policy is built on. ops/freeze_lead_words.mjs
  * therefore stamped every already-published post BEFORE that rewrite. Any future edit to
  * bank prompts must do the same, or it silently rewrites history instead of making it.

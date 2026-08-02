@@ -83,7 +83,7 @@
       "slug": "round-001",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HOT -> COLD\nDAY -> ?",
+      "prompt": "HOT IS TO COLD AS\nDAY IS TO ?",
       "options": [
         "MORNING",
         "NIGHT",
@@ -135,7 +135,7 @@
       "slug": "round-001",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEE -> HIVE\nBIRD -> ?",
+      "prompt": "BEE IS TO HIVE AS\nBIRD IS TO ?",
       "options": [
         "NEST",
         "TREE",
@@ -188,7 +188,7 @@
       "slug": "round-001",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FISH -> SWIM\nBIRD -> ?",
+      "prompt": "FISH IS TO SWIM AS\nBIRD IS TO ?",
       "options": [
         "WALK",
         "SING",
@@ -430,7 +430,7 @@
       "slug": "round-002",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> HUGE\nSMALL -> ?",
+      "prompt": "BIG IS TO HUGE AS\nSMALL IS TO ?",
       "options": [
         "LITTLE",
         "SHORT",
@@ -482,7 +482,7 @@
       "slug": "round-002",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER -> HAND\nTOE -> ?",
+      "prompt": "FINGER IS TO HAND AS\nTOE IS TO ?",
       "options": [
         "LEG",
         "SHOE",
@@ -535,7 +535,7 @@
       "slug": "round-002",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PUPPY -> DOG\nKITTEN -> ?",
+      "prompt": "PUPPY IS TO DOG AS\nKITTEN IS TO ?",
       "options": [
         "PET",
         "PAW",
@@ -776,7 +776,7 @@
       "slug": "round-003",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> MOO\nDOG -> ?",
+      "prompt": "COW IS TO MOO AS\nDOG IS TO ?",
       "options": [
         "MEOW",
         "BARK",
@@ -828,7 +828,7 @@
       "slug": "round-003",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHOE -> FOOT\nHAT -> ?",
+      "prompt": "SHOE IS TO FOOT AS\nHAT IS TO ?",
       "options": [
         "HEAD",
         "HAIR",
@@ -881,7 +881,7 @@
       "slug": "round-003",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CATERPILLAR -> BUTTERFLY\nTADPOLE -> ?",
+      "prompt": "CATERPILLAR IS TO BUTTERFLY AS\nTADPOLE IS TO ?",
       "options": [
         "FISH",
         "FROG",
@@ -1122,7 +1122,7 @@
       "slug": "round-004",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY -> SAD\nFAST -> ?",
+      "prompt": "HAPPY IS TO SAD AS\nFAST IS TO ?",
       "options": [
         "SLOW",
         "QUICK",
@@ -1174,7 +1174,7 @@
       "slug": "round-004",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PEN -> WRITE\nSCISSORS -> ?",
+      "prompt": "PEN IS TO WRITE AS\nSCISSORS IS TO ?",
       "options": [
         "PAPER",
         "CUT",
@@ -1227,7 +1227,7 @@
       "slug": "round-004",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHICKEN -> EGG\nCOW -> ?",
+      "prompt": "CHICKEN IS TO EGG AS\nCOW IS TO ?",
       "options": [
         "MILK",
         "GRASS",
@@ -1468,7 +1468,7 @@
       "slug": "round-005",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KING -> QUEEN\nPRINCE -> ?",
+      "prompt": "KING IS TO QUEEN AS\nPRINCE IS TO ?",
       "options": [
         "CROWN",
         "CASTLE",
@@ -1520,7 +1520,7 @@
       "slug": "round-005",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SUGAR -> SWEET\nLEMON -> ?",
+      "prompt": "SUGAR IS TO SWEET AS\nLEMON IS TO ?",
       "options": [
         "YELLOW",
         "FRUIT",
@@ -1573,7 +1573,7 @@
       "slug": "round-005",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DAY -> WEEK\nMONTH -> ?",
+      "prompt": "DAY IS TO WEEK AS\nMONTH IS TO ?",
       "options": [
         "HOUR",
         "MINUTE",
@@ -1815,7 +1815,7 @@
       "slug": "round-006",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> SMALL\nTALL -> ?",
+      "prompt": "BIG IS TO SMALL AS\nTALL IS TO ?",
       "options": [
         "WIDE",
         "SHORT",
@@ -1867,7 +1867,7 @@
       "slug": "round-006",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nHEAVY -> ?",
+      "prompt": "HARD IS TO SOFT AS\nHEAVY IS TO ?",
       "options": [
         "ROCK",
         "LIGHT",
@@ -1920,7 +1920,7 @@
       "slug": "round-006",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FAST -> SLOW\nEARLY -> ?",
+      "prompt": "FAST IS TO SLOW AS\nEARLY IS TO ?",
       "options": [
         "SOON",
         "QUICK",
@@ -2173,7 +2173,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "PETAL -> FLOWER\nPAGE -> ?",
+      "prompt": "PETAL IS TO FLOWER AS\nPAGE IS TO ?",
       "options": [
         "STORY",
         "BOOK",
@@ -2231,7 +2231,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "LION -> ROAR\nSNAKE -> ?",
+      "prompt": "LION IS TO ROAR AS\nSNAKE IS TO ?",
       "options": [
         "BITE",
         "SLITHER",
@@ -2290,7 +2290,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "NEAR -> FAR\nHIGH -> ?",
+      "prompt": "NEAR IS TO FAR AS\nHIGH IS TO ?",
       "options": [
         "UP",
         "SKY",
@@ -2552,7 +2552,7 @@
       "slug": "round-008",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nPUSH -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nPUSH IS TO ?",
       "options": [
         "SHUT",
         "PULL",
@@ -2604,7 +2604,7 @@
       "slug": "round-008",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EYE -> SEE\nEAR -> ?",
+      "prompt": "EYE IS TO SEE AS\nEAR IS TO ?",
       "options": [
         "SOUND",
         "HEAR",
@@ -2657,7 +2657,7 @@
       "slug": "round-008",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> CALF\nHORSE -> ?",
+      "prompt": "COW IS TO CALF AS\nHORSE IS TO ?",
       "options": [
         "HAY",
         "RUN",
@@ -2898,7 +2898,7 @@
       "slug": "round-009",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE -> STABLE\nRABBIT -> ?",
+      "prompt": "HORSE IS TO STABLE AS\nRABBIT IS TO ?",
       "options": [
         "CARROT",
         "HOP",
@@ -2950,7 +2950,7 @@
       "slug": "round-009",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT -> AIRPLANE\nSAILOR -> ?",
+      "prompt": "PILOT IS TO AIRPLANE AS\nSAILOR IS TO ?",
       "options": [
         "SHIP",
         "SEA",
@@ -3003,7 +3003,7 @@
       "slug": "round-009",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE -> NEIGH\nSHEEP -> ?",
+      "prompt": "HORSE IS TO NEIGH AS\nSHEEP IS TO ?",
       "options": [
         "WOOL",
         "BAA",
@@ -3245,7 +3245,7 @@
       "slug": "round-010",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TIRE -> RUBBER\nRING -> ?",
+      "prompt": "TIRE IS TO RUBBER AS\nRING IS TO ?",
       "options": [
         "SHINY",
         "GOLD",
@@ -3297,7 +3297,7 @@
       "slug": "round-010",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "KING -> CROWN\nSOLDIER -> ?",
+      "prompt": "KING IS TO CROWN AS\nSOLDIER IS TO ?",
       "options": [
         "BOOT",
         "SWORD",
@@ -3350,7 +3350,7 @@
       "slug": "round-010",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "KNIFE -> CUT\nBROOM -> ?",
+      "prompt": "KNIFE IS TO CUT AS\nBROOM IS TO ?",
       "options": [
         "DUST",
         "CLEAN",
@@ -3591,7 +3591,7 @@
       "slug": "round-011",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> LAMB\nFROG -> ?",
+      "prompt": "SHEEP IS TO LAMB AS\nFROG IS TO ?",
       "options": [
         "GREEN",
         "JUMP",
@@ -3643,7 +3643,7 @@
       "slug": "round-011",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DOG -> BARK\nCAT -> ?",
+      "prompt": "DOG IS TO BARK AS\nCAT IS TO ?",
       "options": [
         "MEOW",
         "TAIL",
@@ -3696,7 +3696,7 @@
       "slug": "round-011",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BUY -> SELL\nGIVE -> ?",
+      "prompt": "BUY IS TO SELL AS\nGIVE IS TO ?",
       "options": [
         "KEEP",
         "HAND",
@@ -3938,7 +3938,7 @@
       "slug": "round-012",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LAMP -> LIGHT\nOVEN -> ?",
+      "prompt": "LAMP IS TO LIGHT AS\nOVEN IS TO ?",
       "options": [
         "FOOD",
         "COOK",
@@ -3990,7 +3990,7 @@
       "slug": "round-012",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CAT -> KITTEN\nDOG -> ?",
+      "prompt": "CAT IS TO KITTEN AS\nDOG IS TO ?",
       "options": [
         "TAIL",
         "PUPPY",
@@ -4043,7 +4043,7 @@
       "slug": "round-012",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF -> KITCHEN\nJUDGE -> ?",
+      "prompt": "CHEF IS TO KITCHEN AS\nJUDGE IS TO ?",
       "options": [
         "LAW",
         "JAIL",
@@ -4284,7 +4284,7 @@
       "slug": "round-013",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TEACHER -> SCHOOL\nDOCTOR -> ?",
+      "prompt": "TEACHER IS TO SCHOOL AS\nDOCTOR IS TO ?",
       "options": [
         "MEDICINE",
         "HOSPITAL",
@@ -4336,7 +4336,7 @@
       "slug": "round-013",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> MOO\nDUCK -> ?",
+      "prompt": "COW IS TO MOO AS\nDUCK IS TO ?",
       "options": [
         "WING",
         "POND",
@@ -4389,7 +4389,7 @@
       "slug": "round-013",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LION -> CUB\nSHEEP -> ?",
+      "prompt": "LION IS TO CUB AS\nSHEEP IS TO ?",
       "options": [
         "LAMB",
         "BAA",
@@ -4630,7 +4630,7 @@
       "slug": "round-014",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEE -> BUZZ\nWOLF -> ?",
+      "prompt": "BEE IS TO BUZZ AS\nWOLF IS TO ?",
       "options": [
         "MOON",
         "HOWL",
@@ -4682,7 +4682,7 @@
       "slug": "round-014",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WHEEL -> CAR\nSAIL -> ?",
+      "prompt": "WHEEL IS TO CAR AS\nSAIL IS TO ?",
       "options": [
         "BOAT",
         "WIND",
@@ -4735,7 +4735,7 @@
       "slug": "round-014",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER -> HAMMER\nTAILOR -> ?",
+      "prompt": "CARPENTER IS TO HAMMER AS\nTAILOR IS TO ?",
       "options": [
         "CLOTH",
         "SHIRT",
@@ -4976,7 +4976,7 @@
       "slug": "round-015",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TABLE -> WOOD\nBOTTLE -> ?",
+      "prompt": "TABLE IS TO WOOD AS\nBOTTLE IS TO ?",
       "options": [
         "CAP",
         "WATER",
@@ -5028,7 +5028,7 @@
       "slug": "round-015",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SPOON -> METAL\nCANDLE -> ?",
+      "prompt": "SPOON IS TO METAL AS\nCANDLE IS TO ?",
       "options": [
         "FLAME",
         "LIGHT",
@@ -5081,7 +5081,7 @@
       "slug": "round-015",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "UP -> DOWN\nLEFT -> ?",
+      "prompt": "UP IS TO DOWN AS\nLEFT IS TO ?",
       "options": [
         "BACK",
         "RIGHT",
@@ -5323,7 +5323,7 @@
       "slug": "round-016",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WINDOW -> GLASS\nBOOK -> ?",
+      "prompt": "WINDOW IS TO GLASS AS\nBOOK IS TO ?",
       "options": [
         "READ",
         "COVER",
@@ -5375,7 +5375,7 @@
       "slug": "round-016",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD -> FLY\nFISH -> ?",
+      "prompt": "BIRD IS TO FLY AS\nFISH IS TO ?",
       "options": [
         "SWIM",
         "JUMP",
@@ -5428,7 +5428,7 @@
       "slug": "round-016",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TEACHER -> CHALK\nGARDENER -> ?",
+      "prompt": "TEACHER IS TO CHALK AS\nGARDENER IS TO ?",
       "options": [
         "SOIL",
         "SEED",
@@ -5669,7 +5669,7 @@
       "slug": "round-017",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PAINTER -> BRUSH\nFARMER -> ?",
+      "prompt": "PAINTER IS TO BRUSH AS\nFARMER IS TO ?",
       "options": [
         "BARN",
         "CROP",
@@ -5721,7 +5721,7 @@
       "slug": "round-017",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "ACTOR -> STAGE\nBAKER -> ?",
+      "prompt": "ACTOR IS TO STAGE AS\nBAKER IS TO ?",
       "options": [
         "CAKE",
         "OVEN",
@@ -5774,7 +5774,7 @@
       "slug": "round-017",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DAY -> NIGHT\nSUMMER -> ?",
+      "prompt": "DAY IS TO NIGHT AS\nSUMMER IS TO ?",
       "options": [
         "WINTER",
         "SUN",
@@ -6015,7 +6015,7 @@
       "slug": "round-018",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEAR -> CUB\nHEN -> ?",
+      "prompt": "BEAR IS TO CUB AS\nHEN IS TO ?",
       "options": [
         "CHICK",
         "EGG",
@@ -6067,7 +6067,7 @@
       "slug": "round-018",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WET -> DRY\nFULL -> ?",
+      "prompt": "WET IS TO DRY AS\nFULL IS TO ?",
       "options": [
         "HALF",
         "WATER",
@@ -6120,7 +6120,7 @@
       "slug": "round-018",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WRITER -> PEN\nCHEF -> ?",
+      "prompt": "WRITER IS TO PEN AS\nCHEF IS TO ?",
       "options": [
         "OVEN",
         "FOOD",
@@ -6361,7 +6361,7 @@
       "slug": "round-019",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nUP -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nUP IS TO ?",
       "options": [
         "DOWN",
         "SOFT",
@@ -6407,7 +6407,7 @@
       "slug": "round-019",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD -> QUIET\nWIN -> ?",
+      "prompt": "LOUD IS TO QUIET AS\nWIN IS TO ?",
       "options": [
         "WEAK",
         "SLOW",
@@ -6460,7 +6460,7 @@
       "slug": "round-019",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEAR -> CUB\nCAT -> ?",
+      "prompt": "BEAR IS TO CUB AS\nCAT IS TO ?",
       "options": [
         "DUCKLING",
         "CALF",
@@ -6701,7 +6701,7 @@
       "slug": "round-020",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PETAL -> FLOWER\nWHEEL -> ?",
+      "prompt": "PETAL IS TO FLOWER AS\nWHEEL IS TO ?",
       "options": [
         "BOOK",
         "HOUSE",
@@ -6747,7 +6747,7 @@
       "slug": "round-020",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nWIN -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nWIN IS TO ?",
       "options": [
         "LOSE",
         "QUIET",
@@ -6800,7 +6800,7 @@
       "slug": "round-020",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nFAST -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nFAST IS TO ?",
       "options": [
         "SLOW",
         "NIGHT",
@@ -7041,7 +7041,7 @@
       "slug": "round-021",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH -> PULL\nBEGIN -> ?",
+      "prompt": "PUSH IS TO PULL AS\nBEGIN IS TO ?",
       "options": [
         "FAR",
         "WEAK",
@@ -7087,7 +7087,7 @@
       "slug": "round-021",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nRICH -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nRICH IS TO ?",
       "options": [
         "POOR",
         "SOFT",
@@ -7140,7 +7140,7 @@
       "slug": "round-021",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEE -> BUZZ\nPIG -> ?",
+      "prompt": "BEE IS TO BUZZ AS\nPIG IS TO ?",
       "options": [
         "ROAR",
         "MOO",
@@ -7381,7 +7381,7 @@
       "slug": "round-022",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SPOON -> METAL\nBOTTLE -> ?",
+      "prompt": "SPOON IS TO METAL AS\nBOTTLE IS TO ?",
       "options": [
         "RUBBER",
         "PLASTIC",
@@ -7427,7 +7427,7 @@
       "slug": "round-022",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nFLOAT -> ?",
+      "prompt": "BEGIN IS TO END AS\nFLOAT IS TO ?",
       "options": [
         "SHALLOW",
         "EMPTY",
@@ -7480,7 +7480,7 @@
       "slug": "round-022",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BARBER -> SCISSORS\nFARMER -> ?",
+      "prompt": "BARBER IS TO SCISSORS AS\nFARMER IS TO ?",
       "options": [
         "KNIFE",
         "NEEDLE",
@@ -7721,7 +7721,7 @@
       "slug": "round-023",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FARMER -> PLOW\nBARBER -> ?",
+      "prompt": "FARMER IS TO PLOW AS\nBARBER IS TO ?",
       "options": [
         "SCISSORS",
         "NEEDLE",
@@ -7767,7 +7767,7 @@
       "slug": "round-023",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LION -> ROAR\nWOLF -> ?",
+      "prompt": "LION IS TO ROAR AS\nWOLF IS TO ?",
       "options": [
         "QUACK",
         "NEIGH",
@@ -7820,7 +7820,7 @@
       "slug": "round-023",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nDAY -> ?",
+      "prompt": "HARD IS TO SOFT AS\nDAY IS TO ?",
       "options": [
         "LATE",
         "NIGHT",
@@ -8061,7 +8061,7 @@
       "slug": "round-024",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SAILOR -> SHIP\nFARMER -> ?",
+      "prompt": "SAILOR IS TO SHIP AS\nFARMER IS TO ?",
       "options": [
         "SCHOOL",
         "KITCHEN",
@@ -8107,7 +8107,7 @@
       "slug": "round-024",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nTALL -> ?",
+      "prompt": "HARD IS TO SOFT AS\nTALL IS TO ?",
       "options": [
         "DRY",
         "SHORT",
@@ -8160,7 +8160,7 @@
       "slug": "round-024",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CAMEL -> DESERT\nMONKEY -> ?",
+      "prompt": "CAMEL IS TO DESERT AS\nMONKEY IS TO ?",
       "options": [
         "JUNGLE",
         "SAVANNA",
@@ -8401,7 +8401,7 @@
       "slug": "round-025",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BARBER -> SCISSORS\nMINER -> ?",
+      "prompt": "BARBER IS TO SCISSORS AS\nMINER IS TO ?",
       "options": [
         "HAMMER",
         "NET",
@@ -8447,7 +8447,7 @@
       "slug": "round-025",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BROOM -> SWEEP\nOVEN -> ?",
+      "prompt": "BROOM IS TO SWEEP AS\nOVEN IS TO ?",
       "options": [
         "WEIGH",
         "HEAT",
@@ -8500,7 +8500,7 @@
       "slug": "round-025",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR -> FAR\nFLOAT -> ?",
+      "prompt": "NEAR IS TO FAR AS\nFLOAT IS TO ?",
       "options": [
         "RIGHT",
         "SHALLOW",
@@ -8741,7 +8741,7 @@
       "slug": "round-026",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER -> HAND\nSAIL -> ?",
+      "prompt": "FINGER IS TO HAND AS\nSAIL IS TO ?",
       "options": [
         "MOUTH",
         "BOOK",
@@ -8787,7 +8787,7 @@
       "slug": "round-026",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HOT -> COLD\nTALL -> ?",
+      "prompt": "HOT IS TO COLD AS\nTALL IS TO ?",
       "options": [
         "SHORT",
         "WEAK",
@@ -8840,7 +8840,7 @@
       "slug": "round-026",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SPOON -> METAL\nSHIRT -> ?",
+      "prompt": "SPOON IS TO METAL AS\nSHIRT IS TO ?",
       "options": [
         "GOLD",
         "WOOD",
@@ -9081,7 +9081,7 @@
       "slug": "round-027",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WET -> DRY\nHAPPY -> ?",
+      "prompt": "WET IS TO DRY AS\nHAPPY IS TO ?",
       "options": [
         "SHORT",
         "DARK",
@@ -9127,7 +9127,7 @@
       "slug": "round-027",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FISH -> POND\nANT -> ?",
+      "prompt": "FISH IS TO POND AS\nANT IS TO ?",
       "options": [
         "NEST",
         "WEB",
@@ -9180,7 +9180,7 @@
       "slug": "round-027",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "ANT -> ANTHILL\nBEE -> ?",
+      "prompt": "ANT IS TO ANTHILL AS\nBEE IS TO ?",
       "options": [
         "HIVE",
         "BARN",
@@ -9422,7 +9422,7 @@
       "slug": "round-028",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RABBIT -> BURROW\nBEE -> ?",
+      "prompt": "RABBIT IS TO BURROW AS\nBEE IS TO ?",
       "options": [
         "DEN",
         "KENNEL",
@@ -9468,7 +9468,7 @@
       "slug": "round-028",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SCALE -> WEIGH\nBROOM -> ?",
+      "prompt": "SCALE IS TO WEIGH AS\nBROOM IS TO ?",
       "options": [
         "SWEEP",
         "HEAT",
@@ -9521,7 +9521,7 @@
       "slug": "round-028",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY -> LATE\nHOT -> ?",
+      "prompt": "EARLY IS TO LATE AS\nHOT IS TO ?",
       "options": [
         "NIGHT",
         "COLD",
@@ -9762,7 +9762,7 @@
       "slug": "round-029",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BUY -> SELL\nWET -> ?",
+      "prompt": "BUY IS TO SELL AS\nWET IS TO ?",
       "options": [
         "EMPTY",
         "DRY",
@@ -9808,7 +9808,7 @@
       "slug": "round-029",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FISH -> WATER\nLION -> ?",
+      "prompt": "FISH IS TO WATER AS\nLION IS TO ?",
       "options": [
         "ICE",
         "CAVE",
@@ -9861,7 +9861,7 @@
       "slug": "round-029",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WOLF -> HOWL\nCAT -> ?",
+      "prompt": "WOLF IS TO HOWL AS\nCAT IS TO ?",
       "options": [
         "QUACK",
         "ROAR",
@@ -10102,7 +10102,7 @@
       "slug": "round-030",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> BAA\nDUCK -> ?",
+      "prompt": "SHEEP IS TO BAA AS\nDUCK IS TO ?",
       "options": [
         "QUACK",
         "CROAK",
@@ -10148,7 +10148,7 @@
       "slug": "round-030",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> SMALL\nFAST -> ?",
+      "prompt": "BIG IS TO SMALL AS\nFAST IS TO ?",
       "options": [
         "FAR",
         "SINK",
@@ -10201,7 +10201,7 @@
       "slug": "round-030",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LIBRARIAN -> LIBRARY\nTEACHER -> ?",
+      "prompt": "LIBRARIAN IS TO LIBRARY AS\nTEACHER IS TO ?",
       "options": [
         "SHIP",
         "SCHOOL",
@@ -10443,7 +10443,7 @@
       "slug": "round-031",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER -> HAND\nKEY -> ?",
+      "prompt": "FINGER IS TO HAND AS\nKEY IS TO ?",
       "options": [
         "FOOT",
         "FLOWER",
@@ -10489,7 +10489,7 @@
       "slug": "round-031",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nBEGIN -> ?",
+      "prompt": "HARD IS TO SOFT AS\nBEGIN IS TO ?",
       "options": [
         "END",
         "SHORT",
@@ -10542,7 +10542,7 @@
       "slug": "round-031",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "ANT -> ANTHILL\nPIG -> ?",
+      "prompt": "ANT IS TO ANTHILL AS\nPIG IS TO ?",
       "options": [
         "DEN",
         "POND",
@@ -10783,7 +10783,7 @@
       "slug": "round-032",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nUP -> ?",
+      "prompt": "BEGIN IS TO END AS\nUP IS TO ?",
       "options": [
         "DOWN",
         "WEAK",
@@ -10829,7 +10829,7 @@
       "slug": "round-032",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "UP -> DOWN\nHAPPY -> ?",
+      "prompt": "UP IS TO DOWN AS\nHAPPY IS TO ?",
       "options": [
         "SHALLOW",
         "SHORT",
@@ -10882,7 +10882,7 @@
       "slug": "round-032",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "THICK -> THIN\nBEGIN -> ?",
+      "prompt": "THICK IS TO THIN AS\nBEGIN IS TO ?",
       "options": [
         "FAR",
         "END",
@@ -11123,7 +11123,7 @@
       "slug": "round-033",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "ACTOR -> STAGE\nDOCTOR -> ?",
+      "prompt": "ACTOR IS TO STAGE AS\nDOCTOR IS TO ?",
       "options": [
         "KITCHEN",
         "HOSPITAL",
@@ -11169,7 +11169,7 @@
       "slug": "round-033",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> FOLD\nHORSE -> ?",
+      "prompt": "SHEEP IS TO FOLD AS\nHORSE IS TO ?",
       "options": [
         "DEN",
         "BARN",
@@ -11222,7 +11222,7 @@
       "slug": "round-033",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HOT -> COLD\nBEGIN -> ?",
+      "prompt": "HOT IS TO COLD AS\nBEGIN IS TO ?",
       "options": [
         "DARK",
         "END",
@@ -11463,7 +11463,7 @@
       "slug": "round-034",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF -> KNIFE\nFISHERMAN -> ?",
+      "prompt": "CHEF IS TO KNIFE AS\nFISHERMAN IS TO ?",
       "options": [
         "SPADE",
         "NET",
@@ -11509,7 +11509,7 @@
       "slug": "round-034",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "JUDGE -> COURT\nCHEF -> ?",
+      "prompt": "JUDGE IS TO COURT AS\nCHEF IS TO ?",
       "options": [
         "KITCHEN",
         "SCHOOL",
@@ -11562,7 +11562,7 @@
       "slug": "round-034",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BOTTLE -> PLASTIC\nTIRE -> ?",
+      "prompt": "BOTTLE IS TO PLASTIC AS\nTIRE IS TO ?",
       "options": [
         "CLAY",
         "GOLD",
@@ -11803,7 +11803,7 @@
       "slug": "round-035",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KANGAROO -> JOEY\nBEAR -> ?",
+      "prompt": "KANGAROO IS TO JOEY AS\nBEAR IS TO ?",
       "options": [
         "CHICK",
         "CALF",
@@ -11849,7 +11849,7 @@
       "slug": "round-035",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LEAF -> PLANT\nWHEEL -> ?",
+      "prompt": "LEAF IS TO PLANT AS\nWHEEL IS TO ?",
       "options": [
         "CAR",
         "PIANO",
@@ -11902,7 +11902,7 @@
       "slug": "round-035",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FAST -> SLOW\nHAPPY -> ?",
+      "prompt": "FAST IS TO SLOW AS\nHAPPY IS TO ?",
       "options": [
         "NEW",
         "SAD",
@@ -12143,7 +12143,7 @@
       "slug": "round-036",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY -> SAD\nBUY -> ?",
+      "prompt": "HAPPY IS TO SAD AS\nBUY IS TO ?",
       "options": [
         "END",
         "NARROW",
@@ -12189,7 +12189,7 @@
       "slug": "round-036",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> LAMB\nBEAR -> ?",
+      "prompt": "SHEEP IS TO LAMB AS\nBEAR IS TO ?",
       "options": [
         "DUCKLING",
         "CALF",
@@ -12242,7 +12242,7 @@
       "slug": "round-036",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK -> CLAY\nRING -> ?",
+      "prompt": "BRICK IS TO CLAY AS\nRING IS TO ?",
       "options": [
         "GOLD",
         "WOOD",
@@ -12483,7 +12483,7 @@
       "slug": "round-037",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DAY -> NIGHT\nOPEN -> ?",
+      "prompt": "DAY IS TO NIGHT AS\nOPEN IS TO ?",
       "options": [
         "LATE",
         "CLOSED",
@@ -12529,7 +12529,7 @@
       "slug": "round-037",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nDEEP -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nDEEP IS TO ?",
       "options": [
         "SHORT",
         "SHALLOW",
@@ -12582,7 +12582,7 @@
       "slug": "round-037",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TALL -> SHORT\nPUSH -> ?",
+      "prompt": "TALL IS TO SHORT AS\nPUSH IS TO ?",
       "options": [
         "PULL",
         "SHALLOW",
@@ -12823,7 +12823,7 @@
       "slug": "round-038",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nTALL -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nTALL IS TO ?",
       "options": [
         "EMPTY",
         "SHORT",
@@ -12869,7 +12869,7 @@
       "slug": "round-038",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> BARN\nFISH -> ?",
+      "prompt": "COW IS TO BARN AS\nFISH IS TO ?",
       "options": [
         "FOLD",
         "POND",
@@ -12922,7 +12922,7 @@
       "slug": "round-038",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "STRONG -> WEAK\nOPEN -> ?",
+      "prompt": "STRONG IS TO WEAK AS\nOPEN IS TO ?",
       "options": [
         "CLOSED",
         "SOFT",
@@ -13164,7 +13164,7 @@
       "slug": "round-039",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CLEAN -> DIRTY\nHAPPY -> ?",
+      "prompt": "CLEAN IS TO DIRTY AS\nHAPPY IS TO ?",
       "options": [
         "THIN",
         "SAD",
@@ -13210,7 +13210,7 @@
       "slug": "round-039",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "GOAT -> KID\nCOW -> ?",
+      "prompt": "GOAT IS TO KID AS\nCOW IS TO ?",
       "options": [
         "FOAL",
         "PUPPY",
@@ -13263,7 +13263,7 @@
       "slug": "round-039",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "EAR -> HEAR\nEYE -> ?",
+      "prompt": "EAR IS TO HEAR AS\nEYE IS TO ?",
       "options": [
         "WRITE",
         "SEE",
@@ -13353,7 +13353,7 @@
       "slug": "round-039",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT -> SINK\nHOT -> ?",
+      "prompt": "FLOAT IS TO SINK AS\nHOT IS TO ?",
       "options": [
         "DRY",
         "NEW",
@@ -13504,7 +13504,7 @@
       "slug": "round-040",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE -> TAKE\nCLEAN -> ?",
+      "prompt": "GIVE IS TO TAKE AS\nCLEAN IS TO ?",
       "options": [
         "LOSE",
         "LATE",
@@ -13550,7 +13550,7 @@
       "slug": "round-040",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEE -> BUZZ\nSHEEP -> ?",
+      "prompt": "BEE IS TO BUZZ AS\nSHEEP IS TO ?",
       "options": [
         "BAA",
         "OINK",
@@ -13603,7 +13603,7 @@
       "slug": "round-040",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WHEEL -> CAR\nSAIL -> ?",
+      "prompt": "WHEEL IS TO CAR AS\nSAIL IS TO ?",
       "options": [
         "HOUSE",
         "BOAT",
@@ -13693,7 +13693,7 @@
       "slug": "round-040",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "WIN -> LOSE\nLEFT -> ?",
+      "prompt": "WIN IS TO LOSE AS\nLEFT IS TO ?",
       "options": [
         "RIGHT",
         "SINK",
@@ -13844,7 +13844,7 @@
       "slug": "round-041",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CAMEL -> DESERT\nBAT -> ?",
+      "prompt": "CAMEL IS TO DESERT AS\nBAT IS TO ?",
       "options": [
         "SAVANNA",
         "POND",
@@ -13890,7 +13890,7 @@
       "slug": "round-041",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY -> LATE\nDEEP -> ?",
+      "prompt": "EARLY IS TO LATE AS\nDEEP IS TO ?",
       "options": [
         "FAR",
         "SHALLOW",
@@ -13943,7 +13943,7 @@
       "slug": "round-041",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DOG -> KENNEL\nBIRD -> ?",
+      "prompt": "DOG IS TO KENNEL AS\nBIRD IS TO ?",
       "options": [
         "FOLD",
         "ANTHILL",
@@ -14033,7 +14033,7 @@
       "slug": "round-041",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD -> CHIRP\nSNAKE -> ?",
+      "prompt": "BIRD IS TO CHIRP AS\nSNAKE IS TO ?",
       "options": [
         "HISS",
         "BAA",
@@ -14184,7 +14184,7 @@
       "slug": "round-042",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN -> HEAT\nEAR -> ?",
+      "prompt": "OVEN IS TO HEAT AS\nEAR IS TO ?",
       "options": [
         "HEAR",
         "MEASURE",
@@ -14230,7 +14230,7 @@
       "slug": "round-042",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "UP -> DOWN\nRICH -> ?",
+      "prompt": "UP IS TO DOWN AS\nRICH IS TO ?",
       "options": [
         "QUIET",
         "POOR",
@@ -14283,7 +14283,7 @@
       "slug": "round-042",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DOG -> PUPPY\nSHEEP -> ?",
+      "prompt": "DOG IS TO PUPPY AS\nSHEEP IS TO ?",
       "options": [
         "CUB",
         "FAWN",
@@ -14373,7 +14373,7 @@
       "slug": "round-042",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DAY -> NIGHT\nSTRONG -> ?",
+      "prompt": "DAY IS TO NIGHT AS\nSTRONG IS TO ?",
       "options": [
         "SELL",
         "RIGHT",
@@ -14524,7 +14524,7 @@
       "slug": "round-043",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LEFT -> RIGHT\nBIG -> ?",
+      "prompt": "LEFT IS TO RIGHT AS\nBIG IS TO ?",
       "options": [
         "SHALLOW",
         "LOW",
@@ -14570,7 +14570,7 @@
       "slug": "round-043",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "KANGAROO -> JOEY\nDEER -> ?",
+      "prompt": "KANGAROO IS TO JOEY AS\nDEER IS TO ?",
       "options": [
         "DUCKLING",
         "LAMB",
@@ -14623,7 +14623,7 @@
       "slug": "round-043",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PAGE -> BOOK\nLEAF -> ?",
+      "prompt": "PAGE IS TO BOOK AS\nLEAF IS TO ?",
       "options": [
         "FLOWER",
         "FOOT",
@@ -14713,7 +14713,7 @@
       "slug": "round-043",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT -> COTTON\nCANDLE -> ?",
+      "prompt": "SHIRT IS TO COTTON AS\nCANDLE IS TO ?",
       "options": [
         "METAL",
         "WOOD",
@@ -14864,7 +14864,7 @@
       "slug": "round-044",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RICH -> POOR\nEARLY -> ?",
+      "prompt": "RICH IS TO POOR AS\nEARLY IS TO ?",
       "options": [
         "LATE",
         "SINK",
@@ -14910,7 +14910,7 @@
       "slug": "round-044",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH -> MOUTH\nROOM -> ?",
+      "prompt": "TOOTH IS TO MOUTH AS\nROOM IS TO ?",
       "options": [
         "HAND",
         "HOUSE",
@@ -14963,7 +14963,7 @@
       "slug": "round-044",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "EAR -> HEAR\nOVEN -> ?",
+      "prompt": "EAR IS TO HEAR AS\nOVEN IS TO ?",
       "options": [
         "TIME",
         "HEAT",
@@ -15053,7 +15053,7 @@
       "slug": "round-044",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE -> TAKE\nWET -> ?",
+      "prompt": "GIVE IS TO TAKE AS\nWET IS TO ?",
       "options": [
         "LATE",
         "THIN",
@@ -15204,7 +15204,7 @@
       "slug": "round-045",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT -> AIRPLANE\nJUDGE -> ?",
+      "prompt": "PILOT IS TO AIRPLANE AS\nJUDGE IS TO ?",
       "options": [
         "KITCHEN",
         "SCHOOL",
@@ -15250,7 +15250,7 @@
       "slug": "round-045",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEE -> HIVE\nCOW -> ?",
+      "prompt": "BEE IS TO HIVE AS\nCOW IS TO ?",
       "options": [
         "DEN",
         "BARN",
@@ -15303,7 +15303,7 @@
       "slug": "round-045",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nCLEAN -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nCLEAN IS TO ?",
       "options": [
         "DIRTY",
         "LOW",
@@ -15393,7 +15393,7 @@
       "slug": "round-045",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nPUSH -> ?",
+      "prompt": "HARD IS TO SOFT AS\nPUSH IS TO ?",
       "options": [
         "SHORT",
         "PULL",
@@ -15544,7 +15544,7 @@
       "slug": "round-046",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TALL -> SHORT\nBEGIN -> ?",
+      "prompt": "TALL IS TO SHORT AS\nBEGIN IS TO ?",
       "options": [
         "DOWN",
         "SINK",
@@ -15590,7 +15590,7 @@
       "slug": "round-046",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LAMP -> LIGHT\nRULER -> ?",
+      "prompt": "LAMP IS TO LIGHT AS\nRULER IS TO ?",
       "options": [
         "CUT",
         "MEASURE",
@@ -15643,7 +15643,7 @@
       "slug": "round-046",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nHAPPY -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nHAPPY IS TO ?",
       "options": [
         "DARK",
         "THIN",
@@ -15733,7 +15733,7 @@
       "slug": "round-046",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "RING -> GOLD\nTABLE -> ?",
+      "prompt": "RING IS TO GOLD AS\nTABLE IS TO ?",
       "options": [
         "CLAY",
         "WOOD",
@@ -15884,7 +15884,7 @@
       "slug": "round-047",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PIG -> OINK\nOWL -> ?",
+      "prompt": "PIG IS TO OINK AS\nOWL IS TO ?",
       "options": [
         "HOOT",
         "QUACK",
@@ -15930,7 +15930,7 @@
       "slug": "round-047",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> SMALL\nBUY -> ?",
+      "prompt": "BIG IS TO SMALL AS\nBUY IS TO ?",
       "options": [
         "PULL",
         "SELL",
@@ -15983,7 +15983,7 @@
       "slug": "round-047",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BOTTLE -> PLASTIC\nSPOON -> ?",
+      "prompt": "BOTTLE IS TO PLASTIC AS\nSPOON IS TO ?",
       "options": [
         "GLASS",
         "GOLD",
@@ -16073,7 +16073,7 @@
       "slug": "round-047",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PIG -> PEN\nSHEEP -> ?",
+      "prompt": "PIG IS TO PEN AS\nSHEEP IS TO ?",
       "options": [
         "NEST",
         "FOLD",
@@ -16224,7 +16224,7 @@
       "slug": "round-048",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KNIFE -> CUT\nEYE -> ?",
+      "prompt": "KNIFE IS TO CUT AS\nEYE IS TO ?",
       "options": [
         "HEAR",
         "SEE",
@@ -16270,7 +16270,7 @@
       "slug": "round-048",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EYE -> SEE\nSCALE -> ?",
+      "prompt": "EYE IS TO SEE AS\nSCALE IS TO ?",
       "options": [
         "WEIGH",
         "HEAT",
@@ -16323,7 +16323,7 @@
       "slug": "round-048",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "RICH -> POOR\nBEGIN -> ?",
+      "prompt": "RICH IS TO POOR AS\nBEGIN IS TO ?",
       "options": [
         "SHORT",
         "END",
@@ -16413,7 +16413,7 @@
       "slug": "round-048",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DOG -> KENNEL\nSPIDER -> ?",
+      "prompt": "DOG IS TO KENNEL AS\nSPIDER IS TO ?",
       "options": [
         "BURROW",
         "POND",
@@ -16564,7 +16564,7 @@
       "slug": "round-049",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TALL -> SHORT\nBIG -> ?",
+      "prompt": "TALL IS TO SHORT AS\nBIG IS TO ?",
       "options": [
         "DOWN",
         "THIN",
@@ -16610,7 +16610,7 @@
       "slug": "round-049",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> LAMB\nHORSE -> ?",
+      "prompt": "SHEEP IS TO LAMB AS\nHORSE IS TO ?",
       "options": [
         "FOAL",
         "CHICK",
@@ -16663,7 +16663,7 @@
       "slug": "round-049",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FARMER -> FARM\nJUDGE -> ?",
+      "prompt": "FARMER IS TO FARM AS\nJUDGE IS TO ?",
       "options": [
         "LIBRARY",
         "STAGE",
@@ -16753,7 +16753,7 @@
       "slug": "round-049",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH -> LOW\nEARLY -> ?",
+      "prompt": "HIGH IS TO LOW AS\nEARLY IS TO ?",
       "options": [
         "DARK",
         "POOR",
@@ -16904,7 +16904,7 @@
       "slug": "round-050",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER -> HAMMER\nFARMER -> ?",
+      "prompt": "CARPENTER IS TO HAMMER AS\nFARMER IS TO ?",
       "options": [
         "BRUSH",
         "NET",
@@ -16950,7 +16950,7 @@
       "slug": "round-050",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WIN -> LOSE\nUP -> ?",
+      "prompt": "WIN IS TO LOSE AS\nUP IS TO ?",
       "options": [
         "DOWN",
         "NEW",
@@ -17003,7 +17003,7 @@
       "slug": "round-050",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT -> AIRPLANE\nSAILOR -> ?",
+      "prompt": "PILOT IS TO AIRPLANE AS\nSAILOR IS TO ?",
       "options": [
         "SHIP",
         "BAKERY",
@@ -17093,7 +17093,7 @@
       "slug": "round-050",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nLOUD -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nLOUD IS TO ?",
       "options": [
         "PULL",
         "QUIET",
@@ -17244,7 +17244,7 @@
       "slug": "round-051",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SAILOR -> SHIP\nTEACHER -> ?",
+      "prompt": "SAILOR IS TO SHIP AS\nTEACHER IS TO ?",
       "options": [
         "SCHOOL",
         "HOSPITAL",
@@ -17290,7 +17290,7 @@
       "slug": "round-051",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nDEEP -> ?",
+      "prompt": "BEGIN IS TO END AS\nDEEP IS TO ?",
       "options": [
         "NEW",
         "NIGHT",
@@ -17343,7 +17343,7 @@
       "slug": "round-051",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> BAA\nWOLF -> ?",
+      "prompt": "SHEEP IS TO BAA AS\nWOLF IS TO ?",
       "options": [
         "MEOW",
         "HOWL",
@@ -17433,7 +17433,7 @@
       "slug": "round-051",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE -> NEIGH\nCAT -> ?",
+      "prompt": "HORSE IS TO NEIGH AS\nCAT IS TO ?",
       "options": [
         "BARK",
         "HISS",
@@ -17584,7 +17584,7 @@
       "slug": "round-052",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BAKER -> BAKERY\nPILOT -> ?",
+      "prompt": "BAKER IS TO BAKERY AS\nPILOT IS TO ?",
       "options": [
         "LIBRARY",
         "AIRPLANE",
@@ -17630,7 +17630,7 @@
       "slug": "round-052",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> SMALL\nNEAR -> ?",
+      "prompt": "BIG IS TO SMALL AS\nNEAR IS TO ?",
       "options": [
         "SLOW",
         "RIGHT",
@@ -17683,7 +17683,7 @@
       "slug": "round-052",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR -> FAR\nHIGH -> ?",
+      "prompt": "NEAR IS TO FAR AS\nHIGH IS TO ?",
       "options": [
         "LOW",
         "CLOSED",
@@ -17773,7 +17773,7 @@
       "slug": "round-052",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN -> HEAT\nRULER -> ?",
+      "prompt": "OVEN IS TO HEAT AS\nRULER IS TO ?",
       "options": [
         "MEASURE",
         "HEAR",
@@ -17924,7 +17924,7 @@
       "slug": "round-053",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DOG -> KENNEL\nBEE -> ?",
+      "prompt": "DOG IS TO KENNEL AS\nBEE IS TO ?",
       "options": [
         "STABLE",
         "ANTHILL",
@@ -17970,7 +17970,7 @@
       "slug": "round-053",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WRITER -> PEN\nFISHERMAN -> ?",
+      "prompt": "WRITER IS TO PEN AS\nFISHERMAN IS TO ?",
       "options": [
         "BRUSH",
         "PICKAXE",
@@ -18023,7 +18023,7 @@
       "slug": "round-053",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE -> NARROW\nBIG -> ?",
+      "prompt": "WIDE IS TO NARROW AS\nBIG IS TO ?",
       "options": [
         "DIRTY",
         "SMALL",
@@ -18113,7 +18113,7 @@
       "slug": "round-053",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "THICK -> THIN\nPUSH -> ?",
+      "prompt": "THICK IS TO THIN AS\nPUSH IS TO ?",
       "options": [
         "WEAK",
         "PULL",
@@ -18264,7 +18264,7 @@
       "slug": "round-054",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY -> LATE\nLEFT -> ?",
+      "prompt": "EARLY IS TO LATE AS\nLEFT IS TO ?",
       "options": [
         "SHORT",
         "DIRTY",
@@ -18310,7 +18310,7 @@
       "slug": "round-054",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "THICK -> THIN\nWIN -> ?",
+      "prompt": "THICK IS TO THIN AS\nWIN IS TO ?",
       "options": [
         "NIGHT",
         "LOSE",
@@ -18363,7 +18363,7 @@
       "slug": "round-054",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FAST -> SLOW\nLEFT -> ?",
+      "prompt": "FAST IS TO SLOW AS\nLEFT IS TO ?",
       "options": [
         "SINK",
         "CLOSED",
@@ -18454,7 +18454,7 @@
       "slug": "round-054",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "STRONG -> WEAK\nWIDE -> ?",
+      "prompt": "STRONG IS TO WEAK AS\nWIDE IS TO ?",
       "options": [
         "DARK",
         "SELL",
@@ -18605,7 +18605,7 @@
       "slug": "round-055",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> BARN\nANT -> ?",
+      "prompt": "COW IS TO BARN AS\nANT IS TO ?",
       "options": [
         "ANTHILL",
         "FOLD",
@@ -18651,7 +18651,7 @@
       "slug": "round-055",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HEN -> CHICK\nSHEEP -> ?",
+      "prompt": "HEN IS TO CHICK AS\nSHEEP IS TO ?",
       "options": [
         "FAWN",
         "DUCKLING",
@@ -18704,7 +18704,7 @@
       "slug": "round-055",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> LAMB\nFROG -> ?",
+      "prompt": "SHEEP IS TO LAMB AS\nFROG IS TO ?",
       "options": [
         "KITTEN",
         "TADPOLE",
@@ -18794,7 +18794,7 @@
       "slug": "round-055",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PEN -> WRITE\nEYE -> ?",
+      "prompt": "PEN IS TO WRITE AS\nEYE IS TO ?",
       "options": [
         "HEAT",
         "SEE",
@@ -18945,7 +18945,7 @@
       "slug": "round-056",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "UP -> DOWN\nPUSH -> ?",
+      "prompt": "UP IS TO DOWN AS\nPUSH IS TO ?",
       "options": [
         "POOR",
         "PULL",
@@ -18991,7 +18991,7 @@
       "slug": "round-056",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nHOT -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nHOT IS TO ?",
       "options": [
         "NIGHT",
         "COLD",
@@ -19044,7 +19044,7 @@
       "slug": "round-056",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WIN -> LOSE\nSTRONG -> ?",
+      "prompt": "WIN IS TO LOSE AS\nSTRONG IS TO ?",
       "options": [
         "WEAK",
         "LOW",
@@ -19134,7 +19134,7 @@
       "slug": "round-056",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "STRONG -> WEAK\nLIGHT -> ?",
+      "prompt": "STRONG IS TO WEAK AS\nLIGHT IS TO ?",
       "options": [
         "NARROW",
         "SOFT",
@@ -19285,7 +19285,7 @@
       "slug": "round-057",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DUCK -> QUACK\nFROG -> ?",
+      "prompt": "DUCK IS TO QUACK AS\nFROG IS TO ?",
       "options": [
         "CROAK",
         "HOOT",
@@ -19331,7 +19331,7 @@
       "slug": "round-057",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BROOM -> SWEEP\nRULER -> ?",
+      "prompt": "BROOM IS TO SWEEP AS\nRULER IS TO ?",
       "options": [
         "HEAR",
         "WEIGH",
@@ -19384,7 +19384,7 @@
       "slug": "round-057",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DEEP -> SHALLOW\nWET -> ?",
+      "prompt": "DEEP IS TO SHALLOW AS\nWET IS TO ?",
       "options": [
         "SINK",
         "DOWN",
@@ -19474,7 +19474,7 @@
       "slug": "round-057",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE -> NARROW\nBEGIN -> ?",
+      "prompt": "WIDE IS TO NARROW AS\nBEGIN IS TO ?",
       "options": [
         "END",
         "SINK",
@@ -19625,7 +19625,7 @@
       "slug": "round-058",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EYE -> SEE\nBROOM -> ?",
+      "prompt": "EYE IS TO SEE AS\nBROOM IS TO ?",
       "options": [
         "LIGHT",
         "SWEEP",
@@ -19671,7 +19671,7 @@
       "slug": "round-058",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DOG -> PUPPY\nGOAT -> ?",
+      "prompt": "DOG IS TO PUPPY AS\nGOAT IS TO ?",
       "options": [
         "KID",
         "JOEY",
@@ -19724,7 +19724,7 @@
       "slug": "round-058",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF -> KITCHEN\nACTOR -> ?",
+      "prompt": "CHEF IS TO KITCHEN AS\nACTOR IS TO ?",
       "options": [
         "AIRPLANE",
         "SHIP",
@@ -19814,7 +19814,7 @@
       "slug": "round-058",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> BARN\nBEE -> ?",
+      "prompt": "COW IS TO BARN AS\nBEE IS TO ?",
       "options": [
         "PEN",
         "HIVE",
@@ -19965,7 +19965,7 @@
       "slug": "round-059",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SCALE -> WEIGH\nKNIFE -> ?",
+      "prompt": "SCALE IS TO WEIGH AS\nKNIFE IS TO ?",
       "options": [
         "LIGHT",
         "MEASURE",
@@ -20011,7 +20011,7 @@
       "slug": "round-059",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nBUY -> ?",
+      "prompt": "BEGIN IS TO END AS\nBUY IS TO ?",
       "options": [
         "SELL",
         "LATE",
@@ -20064,7 +20064,7 @@
       "slug": "round-059",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE -> NARROW\nHIGH -> ?",
+      "prompt": "WIDE IS TO NARROW AS\nHIGH IS TO ?",
       "options": [
         "DIRTY",
         "LOSE",
@@ -20154,7 +20154,7 @@
       "slug": "round-059",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nEARLY -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nEARLY IS TO ?",
       "options": [
         "POOR",
         "SELL",
@@ -20305,7 +20305,7 @@
       "slug": "round-060",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY -> LATE\nUP -> ?",
+      "prompt": "EARLY IS TO LATE AS\nUP IS TO ?",
       "options": [
         "DOWN",
         "SAD",
@@ -20351,7 +20351,7 @@
       "slug": "round-060",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FULL -> EMPTY\nDAY -> ?",
+      "prompt": "FULL IS TO EMPTY AS\nDAY IS TO ?",
       "options": [
         "NEW",
         "WEAK",
@@ -20404,7 +20404,7 @@
       "slug": "round-060",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "RICH -> POOR\nSTRONG -> ?",
+      "prompt": "RICH IS TO POOR AS\nSTRONG IS TO ?",
       "options": [
         "SELL",
         "WEAK",
@@ -20494,7 +20494,7 @@
       "slug": "round-060",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nHIGH -> ?",
+      "prompt": "HARD IS TO SOFT AS\nHIGH IS TO ?",
       "options": [
         "POOR",
         "LOW",
@@ -20645,7 +20645,7 @@
       "slug": "round-061",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PETAL -> FLOWER\nFINGER -> ?",
+      "prompt": "PETAL IS TO FLOWER AS\nFINGER IS TO ?",
       "options": [
         "PIANO",
         "MOUTH",
@@ -20691,7 +20691,7 @@
       "slug": "round-061",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WHALE -> OCEAN\nPENGUIN -> ?",
+      "prompt": "WHALE IS TO OCEAN AS\nPENGUIN IS TO ?",
       "options": [
         "WATER",
         "JUNGLE",
@@ -20744,7 +20744,7 @@
       "slug": "round-061",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHEEP -> BAA\nOWL -> ?",
+      "prompt": "SHEEP IS TO BAA AS\nOWL IS TO ?",
       "options": [
         "HOOT",
         "NEIGH",
@@ -20834,7 +20834,7 @@
       "slug": "round-061",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nFLOAT -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nFLOAT IS TO ?",
       "options": [
         "NEW",
         "LOSE",
@@ -20985,7 +20985,7 @@
       "slug": "round-062",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> CALF\nSHEEP -> ?",
+      "prompt": "COW IS TO CALF AS\nSHEEP IS TO ?",
       "options": [
         "PUPPY",
         "TADPOLE",
@@ -21031,7 +21031,7 @@
       "slug": "round-062",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WET -> DRY\nHIGH -> ?",
+      "prompt": "WET IS TO DRY AS\nHIGH IS TO ?",
       "options": [
         "CLOSED",
         "LOW",
@@ -21084,7 +21084,7 @@
       "slug": "round-062",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY -> SAD\nBEGIN -> ?",
+      "prompt": "HAPPY IS TO SAD AS\nBEGIN IS TO ?",
       "options": [
         "END",
         "SMALL",
@@ -21174,7 +21174,7 @@
       "slug": "round-062",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> SMALL\nTALL -> ?",
+      "prompt": "BIG IS TO SMALL AS\nTALL IS TO ?",
       "options": [
         "CLOSED",
         "FAR",
@@ -21325,7 +21325,7 @@
       "slug": "round-063",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT -> COTTON\nWINDOW -> ?",
+      "prompt": "SHIRT IS TO COTTON AS\nWINDOW IS TO ?",
       "options": [
         "PLASTIC",
         "GLASS",
@@ -21371,7 +21371,7 @@
       "slug": "round-063",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WINDOW -> GLASS\nTIRE -> ?",
+      "prompt": "WINDOW IS TO GLASS AS\nTIRE IS TO ?",
       "options": [
         "COTTON",
         "METAL",
@@ -21424,7 +21424,7 @@
       "slug": "round-063",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER -> HAMMER\nMINER -> ?",
+      "prompt": "CARPENTER IS TO HAMMER AS\nMINER IS TO ?",
       "options": [
         "BRUSH",
         "KNIFE",
@@ -21514,7 +21514,7 @@
       "slug": "round-063",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FISHERMAN -> NET\nWRITER -> ?",
+      "prompt": "FISHERMAN IS TO NET AS\nWRITER IS TO ?",
       "options": [
         "PICKAXE",
         "NEEDLE",
@@ -21665,7 +21665,7 @@
       "slug": "round-064",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TIRE -> RUBBER\nCANDLE -> ?",
+      "prompt": "TIRE IS TO RUBBER AS\nCANDLE IS TO ?",
       "options": [
         "GOLD",
         "CLAY",
@@ -21711,7 +21711,7 @@
       "slug": "round-064",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DEER -> FAWN\nCAT -> ?",
+      "prompt": "DEER IS TO FAWN AS\nCAT IS TO ?",
       "options": [
         "CALF",
         "KITTEN",
@@ -21764,7 +21764,7 @@
       "slug": "round-064",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH -> LOW\nLOUD -> ?",
+      "prompt": "HIGH IS TO LOW AS\nLOUD IS TO ?",
       "options": [
         "LATE",
         "RIGHT",
@@ -21854,7 +21854,7 @@
       "slug": "round-064",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE -> TAKE\nFULL -> ?",
+      "prompt": "GIVE IS TO TAKE AS\nFULL IS TO ?",
       "options": [
         "WEAK",
         "DOWN",
@@ -22005,7 +22005,7 @@
       "slug": "round-065",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nLIGHT -> ?",
+      "prompt": "BEGIN IS TO END AS\nLIGHT IS TO ?",
       "options": [
         "WEAK",
         "EMPTY",
@@ -22051,7 +22051,7 @@
       "slug": "round-065",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "EYE -> SEE\nCLOCK -> ?",
+      "prompt": "EYE IS TO SEE AS\nCLOCK IS TO ?",
       "options": [
         "HEAR",
         "HEAT",
@@ -22104,7 +22104,7 @@
       "slug": "round-065",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DAY -> NIGHT\nFAST -> ?",
+      "prompt": "DAY IS TO NIGHT AS\nFAST IS TO ?",
       "options": [
         "SELL",
         "TAKE",
@@ -22194,7 +22194,7 @@
       "slug": "round-065",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DEEP -> SHALLOW\nFLOAT -> ?",
+      "prompt": "DEEP IS TO SHALLOW AS\nFLOAT IS TO ?",
       "options": [
         "QUIET",
         "SINK",
@@ -22345,7 +22345,7 @@
       "slug": "round-066",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FAST -> SLOW\nDAY -> ?",
+      "prompt": "FAST IS TO SLOW AS\nDAY IS TO ?",
       "options": [
         "SELL",
         "SMALL",
@@ -22391,7 +22391,7 @@
       "slug": "round-066",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF -> KNIFE\nCARPENTER -> ?",
+      "prompt": "CHEF IS TO KNIFE AS\nCARPENTER IS TO ?",
       "options": [
         "SCISSORS",
         "PEN",
@@ -22444,7 +22444,7 @@
       "slug": "round-066",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FARMER -> FARM\nSAILOR -> ?",
+      "prompt": "FARMER IS TO FARM AS\nSAILOR IS TO ?",
       "options": [
         "STAGE",
         "HOSPITAL",
@@ -22534,7 +22534,7 @@
       "slug": "round-066",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OWL -> HOOT\nBEE -> ?",
+      "prompt": "OWL IS TO HOOT AS\nBEE IS TO ?",
       "options": [
         "BUZZ",
         "CHIRP",
@@ -22685,7 +22685,7 @@
       "slug": "round-067",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nCLEAN -> ?",
+      "prompt": "HARD IS TO SOFT AS\nCLEAN IS TO ?",
       "options": [
         "SAD",
         "COLD",
@@ -22731,7 +22731,7 @@
       "slug": "round-067",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK -> CLAY\nSPOON -> ?",
+      "prompt": "BRICK IS TO CLAY AS\nSPOON IS TO ?",
       "options": [
         "METAL",
         "PLASTIC",
@@ -22784,7 +22784,7 @@
       "slug": "round-067",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF -> KITCHEN\nTEACHER -> ?",
+      "prompt": "CHEF IS TO KITCHEN AS\nTEACHER IS TO ?",
       "options": [
         "SCHOOL",
         "LIBRARY",
@@ -22874,7 +22874,7 @@
       "slug": "round-067",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT -> COTTON\nTIRE -> ?",
+      "prompt": "SHIRT IS TO COTTON AS\nTIRE IS TO ?",
       "options": [
         "RUBBER",
         "PLASTIC",
@@ -23025,7 +23025,7 @@
       "slug": "round-068",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FINGER -> HAND\nPAGE -> ?",
+      "prompt": "FINGER IS TO HAND AS\nPAGE IS TO ?",
       "options": [
         "PIANO",
         "BOAT",
@@ -23071,7 +23071,7 @@
       "slug": "round-068",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CAT -> KITTEN\nHORSE -> ?",
+      "prompt": "CAT IS TO KITTEN AS\nHORSE IS TO ?",
       "options": [
         "PUPPY",
         "KID",
@@ -23124,7 +23124,7 @@
       "slug": "round-068",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "SHIRT -> COTTON\nBOTTLE -> ?",
+      "prompt": "SHIRT IS TO COTTON AS\nBOTTLE IS TO ?",
       "options": [
         "PLASTIC",
         "WAX",
@@ -23214,7 +23214,7 @@
       "slug": "round-068",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH -> LOW\nFLOAT -> ?",
+      "prompt": "HIGH IS TO LOW AS\nFLOAT IS TO ?",
       "options": [
         "DOWN",
         "POOR",
@@ -23365,7 +23365,7 @@
       "slug": "round-069",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "DOCTOR -> HOSPITAL\nBAKER -> ?",
+      "prompt": "DOCTOR IS TO HOSPITAL AS\nBAKER IS TO ?",
       "options": [
         "BAKERY",
         "AIRPLANE",
@@ -23411,7 +23411,7 @@
       "slug": "round-069",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FAST -> SLOW\nBUY -> ?",
+      "prompt": "FAST IS TO SLOW AS\nBUY IS TO ?",
       "options": [
         "SELL",
         "PULL",
@@ -23464,7 +23464,7 @@
       "slug": "round-069",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH -> PULL\nDAY -> ?",
+      "prompt": "PUSH IS TO PULL AS\nDAY IS TO ?",
       "options": [
         "SAD",
         "DOWN",
@@ -23554,7 +23554,7 @@
       "slug": "round-069",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BOOK -> PAPER\nSPOON -> ?",
+      "prompt": "BOOK IS TO PAPER AS\nSPOON IS TO ?",
       "options": [
         "PLASTIC",
         "METAL",
@@ -23705,7 +23705,7 @@
       "slug": "round-070",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT -> AIRPLANE\nCHEF -> ?",
+      "prompt": "PILOT IS TO AIRPLANE AS\nCHEF IS TO ?",
       "options": [
         "BAKERY",
         "KITCHEN",
@@ -23751,7 +23751,7 @@
       "slug": "round-070",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH -> MOUTH\nPAGE -> ?",
+      "prompt": "TOOTH IS TO MOUTH AS\nPAGE IS TO ?",
       "options": [
         "CAR",
         "PLANT",
@@ -23804,7 +23804,7 @@
       "slug": "round-070",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nEARLY -> ?",
+      "prompt": "BEGIN IS TO END AS\nEARLY IS TO ?",
       "options": [
         "DIRTY",
         "LATE",
@@ -23894,7 +23894,7 @@
       "slug": "round-070",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD -> QUIET\nUP -> ?",
+      "prompt": "LOUD IS TO QUIET AS\nUP IS TO ?",
       "options": [
         "LOW",
         "SELL",
@@ -24045,7 +24045,7 @@
       "slug": "round-071",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE -> STABLE\nSPIDER -> ?",
+      "prompt": "HORSE IS TO STABLE AS\nSPIDER IS TO ?",
       "options": [
         "FOLD",
         "HIVE",
@@ -24091,7 +24091,7 @@
       "slug": "round-071",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nLIGHT -> ?",
+      "prompt": "HARD IS TO SOFT AS\nLIGHT IS TO ?",
       "options": [
         "LATE",
         "CLOSED",
@@ -24144,7 +24144,7 @@
       "slug": "round-071",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "RING -> GOLD\nSHIRT -> ?",
+      "prompt": "RING IS TO GOLD AS\nSHIRT IS TO ?",
       "options": [
         "PLASTIC",
         "PAPER",
@@ -24234,7 +24234,7 @@
       "slug": "round-071",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "CARPENTER -> HAMMER\nGARDENER -> ?",
+      "prompt": "CARPENTER IS TO HAMMER AS\nGARDENER IS TO ?",
       "options": [
         "SPADE",
         "SCISSORS",
@@ -24385,7 +24385,7 @@
       "slug": "round-072",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE -> NARROW\nNEAR -> ?",
+      "prompt": "WIDE IS TO NARROW AS\nNEAR IS TO ?",
       "options": [
         "SINK",
         "THIN",
@@ -24431,7 +24431,7 @@
       "slug": "round-072",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH -> PULL\nHAPPY -> ?",
+      "prompt": "PUSH IS TO PULL AS\nHAPPY IS TO ?",
       "options": [
         "CLOSED",
         "LOW",
@@ -24484,7 +24484,7 @@
       "slug": "round-072",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "GIVE -> TAKE\nBIG -> ?",
+      "prompt": "GIVE IS TO TAKE AS\nBIG IS TO ?",
       "options": [
         "SMALL",
         "NARROW",
@@ -24574,7 +24574,7 @@
       "slug": "round-072",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "GOAT -> KID\nHEN -> ?",
+      "prompt": "GOAT IS TO KID AS\nHEN IS TO ?",
       "options": [
         "FOAL",
         "CHICK",
@@ -24725,7 +24725,7 @@
       "slug": "round-073",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT -> SINK\nBUY -> ?",
+      "prompt": "FLOAT IS TO SINK AS\nBUY IS TO ?",
       "options": [
         "LOW",
         "NIGHT",
@@ -24771,7 +24771,7 @@
       "slug": "round-073",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD -> QUIET\nWIDE -> ?",
+      "prompt": "LOUD IS TO QUIET AS\nWIDE IS TO ?",
       "options": [
         "SHORT",
         "NARROW",
@@ -24824,7 +24824,7 @@
       "slug": "round-073",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BUY -> SELL\nPUSH -> ?",
+      "prompt": "BUY IS TO SELL AS\nPUSH IS TO ?",
       "options": [
         "LOSE",
         "SMALL",
@@ -24914,7 +24914,7 @@
       "slug": "round-073",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> SMALL\nDAY -> ?",
+      "prompt": "BIG IS TO SMALL AS\nDAY IS TO ?",
       "options": [
         "DOWN",
         "DRY",
@@ -25065,7 +25065,7 @@
       "slug": "round-074",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HAPPY -> SAD\nHIGH -> ?",
+      "prompt": "HAPPY IS TO SAD AS\nHIGH IS TO ?",
       "options": [
         "LOW",
         "LATE",
@@ -25111,7 +25111,7 @@
       "slug": "round-074",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WET -> DRY\nWIN -> ?",
+      "prompt": "WET IS TO DRY AS\nWIN IS TO ?",
       "options": [
         "LOSE",
         "FAR",
@@ -25164,7 +25164,7 @@
       "slug": "round-074",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "JUDGE -> COURT\nSAILOR -> ?",
+      "prompt": "JUDGE IS TO COURT AS\nSAILOR IS TO ?",
       "options": [
         "AIRPLANE",
         "SHIP",
@@ -25254,7 +25254,7 @@
       "slug": "round-074",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH -> PULL\nFLOAT -> ?",
+      "prompt": "PUSH IS TO PULL AS\nFLOAT IS TO ?",
       "options": [
         "POOR",
         "SOFT",
@@ -25405,7 +25405,7 @@
       "slug": "round-075",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "TOE -> FOOT\nPAGE -> ?",
+      "prompt": "TOE IS TO FOOT AS\nPAGE IS TO ?",
       "options": [
         "BOOK",
         "MOUTH",
@@ -25451,7 +25451,7 @@
       "slug": "round-075",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR -> FAR\nOLD -> ?",
+      "prompt": "NEAR IS TO FAR AS\nOLD IS TO ?",
       "options": [
         "NIGHT",
         "SOFT",
@@ -25504,7 +25504,7 @@
       "slug": "round-075",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FOX -> DEN\nHORSE -> ?",
+      "prompt": "FOX IS TO DEN AS\nHORSE IS TO ?",
       "options": [
         "BURROW",
         "HIVE",
@@ -25594,7 +25594,7 @@
       "slug": "round-075",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BAT -> CAVE\nPENGUIN -> ?",
+      "prompt": "BAT IS TO CAVE AS\nPENGUIN IS TO ?",
       "options": [
         "POND",
         "DESERT",
@@ -25745,7 +25745,7 @@
       "slug": "round-076",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH -> LOW\nWET -> ?",
+      "prompt": "HIGH IS TO LOW AS\nWET IS TO ?",
       "options": [
         "DRY",
         "NIGHT",
@@ -25791,7 +25791,7 @@
       "slug": "round-076",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK -> CLAY\nCANDLE -> ?",
+      "prompt": "BRICK IS TO CLAY AS\nCANDLE IS TO ?",
       "options": [
         "PLASTIC",
         "WAX",
@@ -25844,7 +25844,7 @@
       "slug": "round-076",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BROOM -> SWEEP\nKNIFE -> ?",
+      "prompt": "BROOM IS TO SWEEP AS\nKNIFE IS TO ?",
       "options": [
         "WRITE",
         "WEIGH",
@@ -25934,7 +25934,7 @@
       "slug": "round-076",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BOOK -> PAPER\nTIRE -> ?",
+      "prompt": "BOOK IS TO PAPER AS\nTIRE IS TO ?",
       "options": [
         "GLASS",
         "RUBBER",
@@ -26085,7 +26085,7 @@
       "slug": "round-077",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BRICK -> CLAY\nBOOK -> ?",
+      "prompt": "BRICK IS TO CLAY AS\nBOOK IS TO ?",
       "options": [
         "PAPER",
         "PLASTIC",
@@ -26131,7 +26131,7 @@
       "slug": "round-077",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "DUCK -> DUCKLING\nBEAR -> ?",
+      "prompt": "DUCK IS TO DUCKLING AS\nBEAR IS TO ?",
       "options": [
         "LAMB",
         "CUB",
@@ -26184,7 +26184,7 @@
       "slug": "round-077",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BUY -> SELL\nFULL -> ?",
+      "prompt": "BUY IS TO SELL AS\nFULL IS TO ?",
       "options": [
         "TAKE",
         "POOR",
@@ -26274,7 +26274,7 @@
       "slug": "round-077",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FISH -> POND\nFOX -> ?",
+      "prompt": "FISH IS TO POND AS\nFOX IS TO ?",
       "options": [
         "WEB",
         "DEN",
@@ -26425,7 +26425,7 @@
       "slug": "round-078",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RICH -> POOR\nHAPPY -> ?",
+      "prompt": "RICH IS TO POOR AS\nHAPPY IS TO ?",
       "options": [
         "LATE",
         "SAD",
@@ -26471,7 +26471,7 @@
       "slug": "round-078",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BUY -> SELL\nHOT -> ?",
+      "prompt": "BUY IS TO SELL AS\nHOT IS TO ?",
       "options": [
         "SAD",
         "DOWN",
@@ -26524,7 +26524,7 @@
       "slug": "round-078",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD -> CHIRP\nCAT -> ?",
+      "prompt": "BIRD IS TO CHIRP AS\nCAT IS TO ?",
       "options": [
         "HOWL",
         "HOOT",
@@ -26614,7 +26614,7 @@
       "slug": "round-078",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "CANDLE -> WAX\nTABLE -> ?",
+      "prompt": "CANDLE IS TO WAX AS\nTABLE IS TO ?",
       "options": [
         "GLASS",
         "GOLD",
@@ -26765,7 +26765,7 @@
       "slug": "round-079",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SAIL -> BOAT\nWHEEL -> ?",
+      "prompt": "SAIL IS TO BOAT AS\nWHEEL IS TO ?",
       "options": [
         "HAND",
         "FLOWER",
@@ -26811,7 +26811,7 @@
       "slug": "round-079",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FULL -> EMPTY\nOPEN -> ?",
+      "prompt": "FULL IS TO EMPTY AS\nOPEN IS TO ?",
       "options": [
         "WEAK",
         "COLD",
@@ -26864,7 +26864,7 @@
       "slug": "round-079",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "DUCK -> QUACK\nLION -> ?",
+      "prompt": "DUCK IS TO QUACK AS\nLION IS TO ?",
       "options": [
         "HISS",
         "ROAR",
@@ -26954,7 +26954,7 @@
       "slug": "round-079",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DAY -> NIGHT\nLIGHT -> ?",
+      "prompt": "DAY IS TO NIGHT AS\nLIGHT IS TO ?",
       "options": [
         "DARK",
         "POOR",
@@ -27105,7 +27105,7 @@
       "slug": "round-080",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WIN -> LOSE\nHARD -> ?",
+      "prompt": "WIN IS TO LOSE AS\nHARD IS TO ?",
       "options": [
         "WEAK",
         "SLOW",
@@ -27151,7 +27151,7 @@
       "slug": "round-080",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "SNAKE -> HISS\nCAT -> ?",
+      "prompt": "SNAKE IS TO HISS AS\nCAT IS TO ?",
       "options": [
         "MEOW",
         "BUZZ",
@@ -27204,7 +27204,7 @@
       "slug": "round-080",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PENGUIN -> ICE\nWHALE -> ?",
+      "prompt": "PENGUIN IS TO ICE AS\nWHALE IS TO ?",
       "options": [
         "OCEAN",
         "CAVE",
@@ -27294,7 +27294,7 @@
       "slug": "round-080",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FROG -> TADPOLE\nKANGAROO -> ?",
+      "prompt": "FROG IS TO TADPOLE AS\nKANGAROO IS TO ?",
       "options": [
         "CUB",
         "JOEY",
@@ -27445,7 +27445,7 @@
       "slug": "round-081",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LIGHT -> DARK\nFULL -> ?",
+      "prompt": "LIGHT IS TO DARK AS\nFULL IS TO ?",
       "options": [
         "DOWN",
         "EMPTY",
@@ -27491,7 +27491,7 @@
       "slug": "round-081",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH -> MOUTH\nFINGER -> ?",
+      "prompt": "TOOTH IS TO MOUTH AS\nFINGER IS TO ?",
       "options": [
         "CAR",
         "PLANT",
@@ -27544,7 +27544,7 @@
       "slug": "round-081",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "THICK -> THIN\nHAPPY -> ?",
+      "prompt": "THICK IS TO THIN AS\nHAPPY IS TO ?",
       "options": [
         "POOR",
         "DARK",
@@ -27634,7 +27634,7 @@
       "slug": "round-081",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN -> HEAT\nEYE -> ?",
+      "prompt": "OVEN IS TO HEAT AS\nEYE IS TO ?",
       "options": [
         "WEIGH",
         "TIME",
@@ -27785,7 +27785,7 @@
       "slug": "round-082",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "EARLY -> LATE\nWIDE -> ?",
+      "prompt": "EARLY IS TO LATE AS\nWIDE IS TO ?",
       "options": [
         "TAKE",
         "NARROW",
@@ -27831,7 +27831,7 @@
       "slug": "round-082",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD -> QUIET\nDEEP -> ?",
+      "prompt": "LOUD IS TO QUIET AS\nDEEP IS TO ?",
       "options": [
         "NEW",
         "SHALLOW",
@@ -27884,7 +27884,7 @@
       "slug": "round-082",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "ANT -> ANTHILL\nBIRD -> ?",
+      "prompt": "ANT IS TO ANTHILL AS\nBIRD IS TO ?",
       "options": [
         "NEST",
         "HIVE",
@@ -27974,7 +27974,7 @@
       "slug": "round-082",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD -> CHIRP\nLION -> ?",
+      "prompt": "BIRD IS TO CHIRP AS\nLION IS TO ?",
       "options": [
         "OINK",
         "ROAR",
@@ -28125,7 +28125,7 @@
       "slug": "round-083",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HOT -> COLD\nCLEAN -> ?",
+      "prompt": "HOT IS TO COLD AS\nCLEAN IS TO ?",
       "options": [
         "SELL",
         "DIRTY",
@@ -28171,7 +28171,7 @@
       "slug": "round-083",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PILOT -> AIRPLANE\nACTOR -> ?",
+      "prompt": "PILOT IS TO AIRPLANE AS\nACTOR IS TO ?",
       "options": [
         "KITCHEN",
         "FARM",
@@ -28224,7 +28224,7 @@
       "slug": "round-083",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TOE -> FOOT\nTOOTH -> ?",
+      "prompt": "TOE IS TO FOOT AS\nTOOTH IS TO ?",
       "options": [
         "HOUSE",
         "MOUTH",
@@ -28314,7 +28314,7 @@
       "slug": "round-083",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FULL -> EMPTY\nGIVE -> ?",
+      "prompt": "FULL IS TO EMPTY AS\nGIVE IS TO ?",
       "options": [
         "TAKE",
         "SMALL",
@@ -28465,7 +28465,7 @@
       "slug": "round-084",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BIG -> SMALL\nOLD -> ?",
+      "prompt": "BIG IS TO SMALL AS\nOLD IS TO ?",
       "options": [
         "LATE",
         "DRY",
@@ -28511,7 +28511,7 @@
       "slug": "round-084",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "TOOTH -> MOUTH\nSAIL -> ?",
+      "prompt": "TOOTH IS TO MOUTH AS\nSAIL IS TO ?",
       "options": [
         "CAR",
         "PLANT",
@@ -28564,7 +28564,7 @@
       "slug": "round-084",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "MONKEY -> JUNGLE\nBAT -> ?",
+      "prompt": "MONKEY IS TO JUNGLE AS\nBAT IS TO ?",
       "options": [
         "ICE",
         "CAVE",
@@ -28654,7 +28654,7 @@
       "slug": "round-084",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BUY -> SELL\nFAST -> ?",
+      "prompt": "BUY IS TO SELL AS\nFAST IS TO ?",
       "options": [
         "DOWN",
         "LATE",
@@ -28805,7 +28805,7 @@
       "slug": "round-085",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "FAST -> SLOW\nTHICK -> ?",
+      "prompt": "FAST IS TO SLOW AS\nTHICK IS TO ?",
       "options": [
         "END",
         "THIN",
@@ -28851,7 +28851,7 @@
       "slug": "round-085",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HEN -> CHICK\nGOAT -> ?",
+      "prompt": "HEN IS TO CHICK AS\nGOAT IS TO ?",
       "options": [
         "CALF",
         "FAWN",
@@ -28904,7 +28904,7 @@
       "slug": "round-085",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "BEAR -> CUB\nDUCK -> ?",
+      "prompt": "BEAR IS TO CUB AS\nDUCK IS TO ?",
       "options": [
         "TADPOLE",
         "FOAL",
@@ -28994,7 +28994,7 @@
       "slug": "round-085",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH -> PULL\nGIVE -> ?",
+      "prompt": "PUSH IS TO PULL AS\nGIVE IS TO ?",
       "options": [
         "TAKE",
         "DRY",
@@ -29145,7 +29145,7 @@
       "slug": "round-086",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "RICH -> POOR\nGIVE -> ?",
+      "prompt": "RICH IS TO POOR AS\nGIVE IS TO ?",
       "options": [
         "TAKE",
         "CLOSED",
@@ -29191,7 +29191,7 @@
       "slug": "round-086",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "WRITER -> PEN\nTAILOR -> ?",
+      "prompt": "WRITER IS TO PEN AS\nTAILOR IS TO ?",
       "options": [
         "PICKAXE",
         "HAMMER",
@@ -29244,7 +29244,7 @@
       "slug": "round-086",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nBEGIN -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nBEGIN IS TO ?",
       "options": [
         "THIN",
         "END",
@@ -29334,7 +29334,7 @@
       "slug": "round-086",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FULL -> EMPTY\nPUSH -> ?",
+      "prompt": "FULL IS TO EMPTY AS\nPUSH IS TO ?",
       "options": [
         "SMALL",
         "DIRTY",
@@ -29485,7 +29485,7 @@
       "slug": "round-087",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CAT -> KITTEN\nDOG -> ?",
+      "prompt": "CAT IS TO KITTEN AS\nDOG IS TO ?",
       "options": [
         "FAWN",
         "DUCKLING",
@@ -29531,7 +29531,7 @@
       "slug": "round-087",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "PIG -> OINK\nFROG -> ?",
+      "prompt": "PIG IS TO OINK AS\nFROG IS TO ?",
       "options": [
         "BARK",
         "CROAK",
@@ -29584,7 +29584,7 @@
       "slug": "round-087",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> BARN\nDOG -> ?",
+      "prompt": "COW IS TO BARN AS\nDOG IS TO ?",
       "options": [
         "KENNEL",
         "DEN",
@@ -29674,7 +29674,7 @@
       "slug": "round-087",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SCALE -> WEIGH\nEAR -> ?",
+      "prompt": "SCALE IS TO WEIGH AS\nEAR IS TO ?",
       "options": [
         "WRITE",
         "CUT",
@@ -29825,7 +29825,7 @@
       "slug": "round-088",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LEFT -> RIGHT\nDAY -> ?",
+      "prompt": "LEFT IS TO RIGHT AS\nDAY IS TO ?",
       "options": [
         "DRY",
         "NIGHT",
@@ -29871,7 +29871,7 @@
       "slug": "round-088",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CLEAN -> DIRTY\nWIN -> ?",
+      "prompt": "CLEAN IS TO DIRTY AS\nWIN IS TO ?",
       "options": [
         "RIGHT",
         "SELL",
@@ -29924,7 +29924,7 @@
       "slug": "round-088",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "LION -> SAVANNA\nWHALE -> ?",
+      "prompt": "LION IS TO SAVANNA AS\nWHALE IS TO ?",
       "options": [
         "WATER",
         "POND",
@@ -30014,7 +30014,7 @@
       "slug": "round-088",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nTALL -> ?",
+      "prompt": "BEGIN IS TO END AS\nTALL IS TO ?",
       "options": [
         "SHORT",
         "NIGHT",
@@ -30165,7 +30165,7 @@
       "slug": "round-089",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD -> QUIET\nBIG -> ?",
+      "prompt": "LOUD IS TO QUIET AS\nBIG IS TO ?",
       "options": [
         "SHORT",
         "PULL",
@@ -30211,7 +30211,7 @@
       "slug": "round-089",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "CANDLE -> WAX\nBRICK -> ?",
+      "prompt": "CANDLE IS TO WAX AS\nBRICK IS TO ?",
       "options": [
         "CLAY",
         "PAPER",
@@ -30264,7 +30264,7 @@
       "slug": "round-089",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TALL -> SHORT\nOLD -> ?",
+      "prompt": "TALL IS TO SHORT AS\nOLD IS TO ?",
       "options": [
         "PULL",
         "NARROW",
@@ -30354,7 +30354,7 @@
       "slug": "round-089",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "HIGH -> LOW\nLEFT -> ?",
+      "prompt": "HIGH IS TO LOW AS\nLEFT IS TO ?",
       "options": [
         "SMALL",
         "RIGHT",
@@ -30505,7 +30505,7 @@
       "slug": "round-090",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH -> PULL\nLIGHT -> ?",
+      "prompt": "PUSH IS TO PULL AS\nLIGHT IS TO ?",
       "options": [
         "TAKE",
         "DARK",
@@ -30551,7 +30551,7 @@
       "slug": "round-090",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR -> FAR\nFULL -> ?",
+      "prompt": "NEAR IS TO FAR AS\nFULL IS TO ?",
       "options": [
         "EMPTY",
         "NARROW",
@@ -30604,7 +30604,7 @@
       "slug": "round-090",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HOT -> COLD\nLIGHT -> ?",
+      "prompt": "HOT IS TO COLD AS\nLIGHT IS TO ?",
       "options": [
         "TAKE",
         "DRY",
@@ -30694,7 +30694,7 @@
       "slug": "round-090",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "DOCTOR -> HOSPITAL\nJUDGE -> ?",
+      "prompt": "DOCTOR IS TO HOSPITAL AS\nJUDGE IS TO ?",
       "options": [
         "COURT",
         "FARM",
@@ -30845,7 +30845,7 @@
       "slug": "round-091",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CLEAN -> DIRTY\nLOUD -> ?",
+      "prompt": "CLEAN IS TO DIRTY AS\nLOUD IS TO ?",
       "options": [
         "QUIET",
         "NARROW",
@@ -30891,7 +30891,7 @@
       "slug": "round-091",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "OLD -> NEW\nHIGH -> ?",
+      "prompt": "OLD IS TO NEW AS\nHIGH IS TO ?",
       "options": [
         "SLOW",
         "SOFT",
@@ -30944,7 +30944,7 @@
       "slug": "round-091",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PIG -> PEN\nFISH -> ?",
+      "prompt": "PIG IS TO PEN AS\nFISH IS TO ?",
       "options": [
         "FOLD",
         "KENNEL",
@@ -31034,7 +31034,7 @@
       "slug": "round-091",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "COW -> MOO\nCAT -> ?",
+      "prompt": "COW IS TO MOO AS\nCAT IS TO ?",
       "options": [
         "OINK",
         "MEOW",
@@ -31185,7 +31185,7 @@
       "slug": "round-092",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WOLF -> HOWL\nPIG -> ?",
+      "prompt": "WOLF IS TO HOWL AS\nPIG IS TO ?",
       "options": [
         "OINK",
         "NEIGH",
@@ -31231,7 +31231,7 @@
       "slug": "round-092",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR -> FAR\nLEFT -> ?",
+      "prompt": "NEAR IS TO FAR AS\nLEFT IS TO ?",
       "options": [
         "THIN",
         "POOR",
@@ -31284,7 +31284,7 @@
       "slug": "round-092",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TABLE -> WOOD\nRING -> ?",
+      "prompt": "TABLE IS TO WOOD AS\nRING IS TO ?",
       "options": [
         "GOLD",
         "WAX",
@@ -31374,7 +31374,7 @@
       "slug": "round-092",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "FROG -> CROAK\nBIRD -> ?",
+      "prompt": "FROG IS TO CROAK AS\nBIRD IS TO ?",
       "options": [
         "QUACK",
         "CHIRP",
@@ -31525,7 +31525,7 @@
       "slug": "round-093",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "OWL -> HOOT\nDUCK -> ?",
+      "prompt": "OWL IS TO HOOT AS\nDUCK IS TO ?",
       "options": [
         "ROAR",
         "QUACK",
@@ -31571,7 +31571,7 @@
       "slug": "round-093",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD -> QUIET\nFLOAT -> ?",
+      "prompt": "LOUD IS TO QUIET AS\nFLOAT IS TO ?",
       "options": [
         "DIRTY",
         "SINK",
@@ -31624,7 +31624,7 @@
       "slug": "round-093",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "TOE -> FOOT\nWHEEL -> ?",
+      "prompt": "TOE IS TO FOOT AS\nWHEEL IS TO ?",
       "options": [
         "HAND",
         "FLOWER",
@@ -31714,7 +31714,7 @@
       "slug": "round-093",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PETAL -> FLOWER\nPAGE -> ?",
+      "prompt": "PETAL IS TO FLOWER AS\nPAGE IS TO ?",
       "options": [
         "PLANT",
         "BOOK",
@@ -31865,7 +31865,7 @@
       "slug": "round-094",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "CHEF -> KITCHEN\nJUDGE -> ?",
+      "prompt": "CHEF IS TO KITCHEN AS\nJUDGE IS TO ?",
       "options": [
         "BAKERY",
         "COURT",
@@ -31911,7 +31911,7 @@
       "slug": "round-094",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HOT -> COLD\nOPEN -> ?",
+      "prompt": "HOT IS TO COLD AS\nOPEN IS TO ?",
       "options": [
         "LOW",
         "SHORT",
@@ -31964,7 +31964,7 @@
       "slug": "round-094",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR -> FAR\nRICH -> ?",
+      "prompt": "NEAR IS TO FAR AS\nRICH IS TO ?",
       "options": [
         "QUIET",
         "SINK",
@@ -32054,7 +32054,7 @@
       "slug": "round-094",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "TIRE -> RUBBER\nSPOON -> ?",
+      "prompt": "TIRE IS TO RUBBER AS\nSPOON IS TO ?",
       "options": [
         "PLASTIC",
         "METAL",
@@ -32205,7 +32205,7 @@
       "slug": "round-095",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "SNAKE -> HISS\nFROG -> ?",
+      "prompt": "SNAKE IS TO HISS AS\nFROG IS TO ?",
       "options": [
         "CHIRP",
         "ROAR",
@@ -32251,7 +32251,7 @@
       "slug": "round-095",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LION -> ROAR\nHORSE -> ?",
+      "prompt": "LION IS TO ROAR AS\nHORSE IS TO ?",
       "options": [
         "NEIGH",
         "MEOW",
@@ -32304,7 +32304,7 @@
       "slug": "round-095",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT -> SINK\nHARD -> ?",
+      "prompt": "FLOAT IS TO SINK AS\nHARD IS TO ?",
       "options": [
         "THIN",
         "SOFT",
@@ -32394,7 +32394,7 @@
       "slug": "round-095",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "LEFT -> RIGHT\nPUSH -> ?",
+      "prompt": "LEFT IS TO RIGHT AS\nPUSH IS TO ?",
       "options": [
         "SLOW",
         "COLD",
@@ -32545,7 +32545,7 @@
       "slug": "round-096",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "HOT -> COLD\nWIDE -> ?",
+      "prompt": "HOT IS TO COLD AS\nWIDE IS TO ?",
       "options": [
         "RIGHT",
         "SELL",
@@ -32591,7 +32591,7 @@
       "slug": "round-096",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "THICK -> THIN\nNEAR -> ?",
+      "prompt": "THICK IS TO THIN AS\nNEAR IS TO ?",
       "options": [
         "NEW",
         "FAR",
@@ -32644,7 +32644,7 @@
       "slug": "round-096",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OVEN -> HEAT\nBROOM -> ?",
+      "prompt": "OVEN IS TO HEAT AS\nBROOM IS TO ?",
       "options": [
         "MEASURE",
         "SWEEP",
@@ -32734,7 +32734,7 @@
       "slug": "round-096",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "RABBIT -> BURROW\nFISH -> ?",
+      "prompt": "RABBIT IS TO BURROW AS\nFISH IS TO ?",
       "options": [
         "POND",
         "STABLE",
@@ -32885,7 +32885,7 @@
       "slug": "round-097",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "KANGAROO -> JOEY\nDOG -> ?",
+      "prompt": "KANGAROO IS TO JOEY AS\nDOG IS TO ?",
       "options": [
         "TADPOLE",
         "CALF",
@@ -32931,7 +32931,7 @@
       "slug": "round-097",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "LOUD -> QUIET\nWET -> ?",
+      "prompt": "LOUD IS TO QUIET AS\nWET IS TO ?",
       "options": [
         "WEAK",
         "SHORT",
@@ -32984,7 +32984,7 @@
       "slug": "round-097",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "PAINTER -> BRUSH\nFARMER -> ?",
+      "prompt": "PAINTER IS TO BRUSH AS\nFARMER IS TO ?",
       "options": [
         "NEEDLE",
         "PLOW",
@@ -33074,7 +33074,7 @@
       "slug": "round-097",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "BUY -> SELL\nTHICK -> ?",
+      "prompt": "BUY IS TO SELL AS\nTHICK IS TO ?",
       "options": [
         "THIN",
         "DARK",
@@ -33225,7 +33225,7 @@
       "slug": "round-098",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "BEGIN -> END\nBIG -> ?",
+      "prompt": "BEGIN IS TO END AS\nBIG IS TO ?",
       "options": [
         "SAD",
         "PULL",
@@ -33271,7 +33271,7 @@
       "slug": "round-098",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "BIRD -> NEST\nDOG -> ?",
+      "prompt": "BIRD IS TO NEST AS\nDOG IS TO ?",
       "options": [
         "PEN",
         "KENNEL",
@@ -33324,7 +33324,7 @@
       "slug": "round-098",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "OPEN -> CLOSED\nBUY -> ?",
+      "prompt": "OPEN IS TO CLOSED AS\nBUY IS TO ?",
       "options": [
         "NEW",
         "SHORT",
@@ -33414,7 +33414,7 @@
       "slug": "round-098",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "PUSH -> PULL\nOPEN -> ?",
+      "prompt": "PUSH IS TO PULL AS\nOPEN IS TO ?",
       "options": [
         "CLOSED",
         "SAD",
@@ -33565,7 +33565,7 @@
       "slug": "round-099",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "WIDE -> NARROW\nOLD -> ?",
+      "prompt": "WIDE IS TO NARROW AS\nOLD IS TO ?",
       "options": [
         "COLD",
         "SHORT",
@@ -33611,7 +33611,7 @@
       "slug": "round-099",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "HORSE -> NEIGH\nSHEEP -> ?",
+      "prompt": "HORSE IS TO NEIGH AS\nSHEEP IS TO ?",
       "options": [
         "CHIRP",
         "HOWL",
@@ -33664,7 +33664,7 @@
       "slug": "round-099",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "FLOAT -> SINK\nFAST -> ?",
+      "prompt": "FLOAT IS TO SINK AS\nFAST IS TO ?",
       "options": [
         "SLOW",
         "LOSE",
@@ -33754,7 +33754,7 @@
       "slug": "round-099",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "SAILOR -> SHIP\nLIBRARIAN -> ?",
+      "prompt": "SAILOR IS TO SHIP AS\nLIBRARIAN IS TO ?",
       "options": [
         "LIBRARY",
         "SCHOOL",
@@ -33905,7 +33905,7 @@
       "slug": "round-100",
       "id": 4,
       "addedAt": "2026-07-19",
-      "prompt": "NEAR -> FAR\nTALL -> ?",
+      "prompt": "NEAR IS TO FAR AS\nTALL IS TO ?",
       "options": [
         "TAKE",
         "SHORT",
@@ -33951,7 +33951,7 @@
       "slug": "round-100",
       "id": 6,
       "addedAt": "2026-07-19",
-      "prompt": "FULL -> EMPTY\nLOUD -> ?",
+      "prompt": "FULL IS TO EMPTY AS\nLOUD IS TO ?",
       "options": [
         "QUIET",
         "THIN",
@@ -34004,7 +34004,7 @@
       "slug": "round-100",
       "id": 8,
       "addedAt": "2026-07-19",
-      "prompt": "HARD -> SOFT\nLEFT -> ?",
+      "prompt": "HARD IS TO SOFT AS\nLEFT IS TO ?",
       "options": [
         "POOR",
         "NEW",
@@ -34094,7 +34094,7 @@
       "slug": "round-100",
       "id": 12,
       "addedAt": "2026-07-19",
-      "prompt": "WIN -> LOSE\nBIG -> ?",
+      "prompt": "WIN IS TO LOSE AS\nBIG IS TO ?",
       "options": [
         "RIGHT",
         "QUIET",
