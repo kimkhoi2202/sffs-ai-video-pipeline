@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-01T14:52:10.694Z",
+  "updated_at": "2026-08-02T14:52:25.315Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -73,7 +73,7 @@
         "eng_rate": 10.483870967741936,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 78.3
@@ -110,7 +110,7 @@
         "eng_rate": 2.9925187032418954,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -151,7 +151,7 @@
         "eng_rate": 3.272727272727273,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -192,7 +192,7 @@
         "eng_rate": 1.5037593984962405,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 79.5
@@ -233,7 +233,7 @@
         "eng_rate": 5.616850551654965,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -274,7 +274,7 @@
         "eng_rate": 3.361344537815126,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 80.5
@@ -315,7 +315,7 @@
         "eng_rate": 2.6058631921824107,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -356,7 +356,7 @@
         "eng_rate": 4.436860068259386,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -397,7 +397,7 @@
         "eng_rate": 2.4193548387096775,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 79.5
@@ -438,7 +438,7 @@
         "eng_rate": 1.9047619047619049,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 89.3
@@ -479,7 +479,7 @@
         "eng_rate": 42.857142857142854,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -523,7 +523,7 @@
         "eng_rate": 3.9867109634551494,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -569,7 +569,7 @@
         "eng_rate": 1.6,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 79.5
@@ -608,12 +608,12 @@
         "reach_rate": null,
         "video_views": 551,
         "reactions": 14,
-        "comments": 8,
+        "comments": 6,
         "shares": 1,
-        "eng_rate": 4.174228675136116,
+        "eng_rate": 3.8112522686025407,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -655,7 +655,7 @@
         "eng_rate": 3.0534351145038165,
         "link_clicks": null,
         "ctr": null,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": null
@@ -4063,16 +4063,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-28T23:57:00",
       "metrics": {
-        "reach": 529,
-        "video_views": 604,
+        "reach": 530,
+        "video_views": 605,
         "reactions": 11,
-        "comments": 2,
+        "comments": 3,
         "shares": 0,
-        "eng_rate": 2.4574669187145557,
-        "as_of": "2026-08-01",
+        "eng_rate": 2.6415094339622645,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 59.4
+        "skip_rate": 59.5
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4118,7 +4118,7 @@
         "comments": 0,
         "shares": 0,
         "eng_rate": 1.593625498007968,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 51.4
@@ -4161,16 +4161,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-30T08:49:00",
       "metrics": {
-        "reach": 275,
-        "video_views": 309,
+        "reach": 277,
+        "video_views": 314,
         "reactions": 2,
-        "comments": 1,
+        "comments": 2,
         "shares": 0,
-        "eng_rate": 1.090909090909091,
-        "as_of": "2026-08-01",
+        "eng_rate": 1.444043321299639,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 61.9
+        "skip_rate": 62.1
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4211,15 +4211,15 @@
       "scheduled_at": "2026-07-30T11:29:00",
       "metrics": {
         "reach": 1378,
-        "video_views": 1693,
+        "video_views": 1697,
         "reactions": 20,
         "comments": 5,
         "shares": 6,
         "eng_rate": 2.2496371552975325,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 52
+        "skip_rate": 52.1
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4259,16 +4259,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-30T13:35:00",
       "metrics": {
-        "reach": 247,
-        "video_views": 284,
+        "reach": 251,
+        "video_views": 291,
         "reactions": 5,
         "comments": 1,
         "shares": 1,
-        "eng_rate": 2.834008097165992,
-        "as_of": "2026-08-01",
+        "eng_rate": 2.788844621513944,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 66.9
+        "skip_rate": 67.1
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4314,7 +4314,7 @@
         "comments": 0,
         "shares": 0,
         "eng_rate": 0.9900990099009901,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 75
@@ -4363,7 +4363,7 @@
         "comments": 0,
         "shares": 0,
         "eng_rate": 0.8,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 68
@@ -4406,16 +4406,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-30T20:13:00",
       "metrics": {
-        "reach": 118,
-        "video_views": 124,
+        "reach": 120,
+        "video_views": 128,
         "reactions": 0,
         "comments": 0,
         "shares": 0,
         "eng_rate": 0,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 85
+        "skip_rate": 85.2
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4456,12 +4456,12 @@
       "scheduled_at": "2026-07-30T22:45:00",
       "metrics": {
         "reach": 1185,
-        "video_views": 1391,
+        "video_views": 1396,
         "reactions": 17,
         "comments": 5,
         "shares": 12,
         "eng_rate": 2.869198312236287,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 53.3
@@ -4505,15 +4505,15 @@
       "scheduled_at": "2026-07-31T01:23:00",
       "metrics": {
         "reach": 146,
-        "video_views": 168,
+        "video_views": 169,
         "reactions": 4,
         "comments": 1,
         "shares": 0,
         "eng_rate": 3.4246575342465753,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 61
+        "skip_rate": 61.3
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop; recreated live (approval gate retired) with the per-network caption fix.",
@@ -4560,7 +4560,7 @@
         "comments": 0,
         "shares": 0,
         "eng_rate": 1.9900497512437811,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 64.5
@@ -4650,13 +4650,13 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-30T12:37:00",
       "metrics": {
-        "reach": 592,
-        "video_views": 688,
+        "reach": 595,
+        "video_views": 690,
         "reactions": 9,
         "comments": 1,
         "shares": 0,
-        "eng_rate": 1.6891891891891893,
-        "as_of": "2026-08-01",
+        "eng_rate": 1.680672268907563,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 52.1
@@ -4747,15 +4747,15 @@
       "scheduled_at": "2026-07-30T15:15:00",
       "metrics": {
         "reach": 132,
-        "video_views": 144,
+        "video_views": 145,
         "reactions": 0,
-        "comments": 1,
+        "comments": 2,
         "shares": 0,
-        "eng_rate": 0.7575757575757576,
-        "as_of": "2026-08-01",
+        "eng_rate": 1.5151515151515151,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 71
+        "skip_rate": 70.5
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -4768,7 +4768,7 @@
       "platform": "youtube",
       "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.youtube.com/shorts/OjsWns6uUYQ",
       "caption": "are you a SMART fella or a FART smella? comment your answer below and follow for more 👇\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-29-v03.youtube.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -4805,7 +4805,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T09:45:00"
     },
     {
       "_hermes_key": "hermes:2026-07-29-v04:instagram",
@@ -4847,7 +4848,7 @@
         "comments": 0,
         "shares": 0,
         "eng_rate": 1.694915254237288,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
         "skip_rate": 70.8
@@ -4863,7 +4864,7 @@
       "platform": "youtube",
       "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.youtube.com/shorts/2_pwCgR8miY",
       "caption": "are you a SMART fella or a FART smella? comment your answer below and follow for more 👇\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-29-v04.youtube.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -4900,7 +4901,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T12:51:00"
     },
     {
       "_hermes_key": "hermes:2026-07-29-v06:instagram",
@@ -4936,16 +4938,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T00:25:00",
       "metrics": {
-        "reach": 383,
-        "video_views": 453,
-        "reactions": 9,
-        "comments": 2,
+        "reach": 419,
+        "video_views": 504,
+        "reactions": 11,
+        "comments": 3,
         "shares": 0,
-        "eng_rate": 2.8720626631853787,
-        "as_of": "2026-08-01",
+        "eng_rate": 3.341288782816229,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 64.7
+        "skip_rate": 64.1
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -4958,7 +4960,7 @@
       "platform": "youtube",
       "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.youtube.com/shorts/5SYmHC3nLfg",
       "caption": "are you a SMART fella or a FART smella? comment your answer below and follow for more 👇\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-29-v06.youtube.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -4995,7 +4997,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T16:13:00"
     },
     {
       "_hermes_key": "hermes:2026-07-29-v07:instagram",
@@ -5031,16 +5034,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T09:01:00",
       "metrics": {
-        "reach": 234,
-        "video_views": 253,
+        "reach": 400,
+        "video_views": 437,
         "reactions": 1,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0.4273504273504274,
-        "as_of": "2026-08-01",
+        "eng_rate": 0.25,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 68
+        "skip_rate": 64.3
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5053,7 +5056,7 @@
       "platform": "youtube",
       "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.youtube.com/shorts/To5mC5oU1gM",
       "caption": "are you a SMART fella or a FART smella? comment your answer below and follow for more 👇\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-29-v07.youtube.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -5090,7 +5093,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T19:25:00"
     },
     {
       "_hermes_key": "hermes:2026-07-29-v08:instagram",
@@ -5126,16 +5130,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T11:57:00",
       "metrics": {
-        "reach": 136,
-        "video_views": 166,
+        "reach": 137,
+        "video_views": 169,
         "reactions": 0,
         "comments": 0,
         "shares": 0,
         "eng_rate": 0,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 75.2
+        "skip_rate": 74.6
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5148,7 +5152,7 @@
       "platform": "youtube",
       "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.youtube.com/shorts/iiLSQb8cRJ8",
       "caption": "are you a SMART fella or a FART smella? comment your answer below and follow for more 👇\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "hermes-render:2026-07-29-v08.youtube.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -5185,7 +5189,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T22:19:00"
     },
     {
       "_hermes_key": "hermes:2026-07-29-v09:instagram",
@@ -5221,16 +5226,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T14:49:00",
       "metrics": {
-        "reach": 114,
-        "video_views": 122,
+        "reach": 117,
+        "video_views": 124,
         "reactions": 1,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0.8771929824561403,
-        "as_of": "2026-08-01",
+        "eng_rate": 0.8547008547008548,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 69.4
+        "skip_rate": 69
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5243,7 +5248,7 @@
       "platform": "youtube",
       "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.youtube.com/shorts/JyQqfPaYV-Y",
       "caption": "are you a SMART fella or a FART smella? comment your answer below and follow for more 👇\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-29-v09.youtube.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -5280,7 +5285,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-02T01:17:00"
     },
     {
       "_hermes_key": "hermes:2026-07-29-v10:instagram",
@@ -5316,16 +5322,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T18:19:00",
       "metrics": {
-        "reach": 120,
-        "video_views": 135,
-        "reactions": 0,
+        "reach": 122,
+        "video_views": 137,
+        "reactions": 1,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0,
-        "as_of": "2026-08-01",
+        "eng_rate": 0.819672131147541,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 77.7
+        "skip_rate": 78
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5411,16 +5417,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T21:29:00",
       "metrics": {
-        "reach": 115,
-        "video_views": 134,
+        "reach": 117,
+        "video_views": 136,
         "reactions": 0,
         "comments": 0,
         "shares": 0,
         "eng_rate": 0,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 74.8
+        "skip_rate": 75.2
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5506,16 +5512,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T00:11:00",
       "metrics": {
-        "reach": 114,
-        "video_views": 137,
+        "reach": 126,
+        "video_views": 148,
         "reactions": 0,
         "comments": 0,
         "shares": 0,
         "eng_rate": 0,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 59.5
+        "skip_rate": 62.9
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5601,16 +5607,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-30T18:53:00",
       "metrics": {
-        "reach": 326,
-        "video_views": 373,
+        "reach": 327,
+        "video_views": 374,
         "reactions": 6,
         "comments": 1,
         "shares": 0,
-        "eng_rate": 2.147239263803681,
-        "as_of": "2026-08-01",
+        "eng_rate": 2.1406727828746175,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 54.6
+        "skip_rate": 54.7
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5623,7 +5629,7 @@
       "platform": "youtube",
       "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.youtube.com/shorts/eQoaQtByKJE",
       "caption": "bet you got this one wrong. drop your answer in the comments and let's see if you're really built different or just built confused 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-30-v04.youtube.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -5660,7 +5666,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T17:09:00"
     },
     {
       "_hermes_key": "hermes:2026-07-30-v07:instagram",
@@ -5696,16 +5703,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T07:45:00",
       "metrics": {
-        "reach": 489,
-        "video_views": 560,
+        "reach": 497,
+        "video_views": 570,
         "reactions": 3,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0.6134969325153374,
-        "as_of": "2026-08-01",
+        "eng_rate": 0.6036217303822937,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 59.2
+        "skip_rate": 59.1
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5791,16 +5798,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T13:17:00",
       "metrics": {
-        "reach": 122,
-        "video_views": 135,
+        "reach": 124,
+        "video_views": 138,
         "reactions": 1,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0.819672131147541,
-        "as_of": "2026-08-01",
+        "eng_rate": 0.8064516129032258,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 65.8
+        "skip_rate": 66.4
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5886,16 +5893,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T17:23:00",
       "metrics": {
-        "reach": 122,
-        "video_views": 158,
+        "reach": 124,
+        "video_views": 160,
         "reactions": 0,
         "comments": 0,
         "shares": 0,
         "eng_rate": 0,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 79.7
+        "skip_rate": 79.2
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -5979,16 +5986,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T23:03:00",
       "metrics": {
-        "reach": 124,
-        "video_views": 135,
+        "reach": 126,
+        "video_views": 137,
         "reactions": 1,
         "comments": 0,
         "shares": 0,
-        "eng_rate": 0.8064516129032258,
-        "as_of": "2026-08-01",
+        "eng_rate": 0.7936507936507936,
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 70.7
+        "skip_rate": 71.2
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6072,16 +6079,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-07-31T11:01:00",
       "metrics": {
-        "reach": 126,
-        "video_views": 133,
+        "reach": 130,
+        "video_views": 137,
         "reactions": 0,
         "comments": 0,
         "shares": 0,
         "eng_rate": 0,
-        "as_of": "2026-08-01",
+        "as_of": "2026-08-02",
         "source": "api",
         "saves": null,
-        "skip_rate": 64.3
+        "skip_rate": 62.3
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6136,11 +6143,11 @@
     {
       "_hermes_key": "hermes:2026-07-30-t1-v04:instagram",
       "metricool_uuid": "4108418913864011532",
-      "platform_post_id": null,
+      "platform_post_id": "17874076428688301",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbgKsfuDkDu/",
       "caption": "bet you know this one. drop your answer in the comments and follow so you don't miss the next brain bender 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-30-t1-v04.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6167,17 +6174,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T10:31:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 130,
+        "video_views": 148,
+        "reactions": 4,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 3.076923076923077,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 67.7
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T10:31:00"
     },
     {
       "_hermes_key": "hermes:2026-07-30-t1-v04:youtube",
@@ -6228,11 +6238,11 @@
     {
       "_hermes_key": "hermes:2026-07-30-t2-v03:instagram",
       "metricool_uuid": "-8000610643589837917",
-      "platform_post_id": null,
+      "platform_post_id": "18371752246227497",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbgESj9k9-v/",
       "caption": "think you got this one? comment your answer and let's see if you're a smart fella or a fart smella 🧠 follow for more brain tests\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-30-t2-v03.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6259,17 +6269,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T09:35:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 124,
+        "video_views": 144,
+        "reactions": 3,
+        "comments": 0,
+        "shares": 1,
+        "eng_rate": 3.225806451612903,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 68.8
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T09:35:00"
     },
     {
       "_hermes_key": "hermes:2026-07-30-t2-v03:youtube",
@@ -6320,7 +6333,7 @@
     {
       "_hermes_key": "hermes:2026-07-31-v02:instagram",
       "metricool_uuid": "-1579909025754428017",
-      "platform_post_id": null,
+      "platform_post_id": "18110451589814376",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
@@ -6351,14 +6364,16 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T07:51:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 198,
+        "video_views": 235,
+        "reactions": 1,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0.5050505050505051,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 72
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
@@ -6413,11 +6428,11 @@
     {
       "_hermes_key": "hermes:2026-07-31-v03:instagram",
       "metricool_uuid": "7210612789874216373",
-      "platform_post_id": null,
+      "platform_post_id": "17937780801340008",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbgRyxGEshJ/",
       "caption": "think you got this one? drop your answer in the comments and let's see if you're a smart fella or a fart smella. follow for more brain melters 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-31-v03.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6444,17 +6459,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T11:33:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 140,
+        "video_views": 159,
+        "reactions": 1,
+        "comments": 0,
+        "shares": 1,
+        "eng_rate": 1.4285714285714286,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 61.2
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T11:33:00"
     },
     {
       "_hermes_key": "hermes:2026-07-31-v03:youtube",
@@ -6505,11 +6523,11 @@
     {
       "_hermes_key": "hermes:2026-07-31-v04:instagram",
       "metricool_uuid": "-100738339910497290",
-      "platform_post_id": null,
+      "platform_post_id": "17966997813068439",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbgoN5Qk7-2/",
       "caption": "think you got this one? drop your answer in the comments and follow for more brain tests that'll actually make you think 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-31-v04.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6536,17 +6554,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T14:49:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 139,
+        "video_views": 155,
+        "reactions": 5,
+        "comments": 2,
+        "shares": 0,
+        "eng_rate": 5.0359712230215825,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 72.5
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T14:49:00"
     },
     {
       "_hermes_key": "hermes:2026-07-31-v04:youtube",
@@ -6597,11 +6618,11 @@
     {
       "_hermes_key": "hermes:2026-07-31-v07:instagram",
       "metricool_uuid": "-6818715629882555677",
-      "platform_post_id": null,
+      "platform_post_id": "17865466503643110",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/Dbg-NhPEWAm/",
       "caption": "bet you're gonna get this wrong lol. drop your answer in the comments and let's see if you're actually the smart one here or if you're just vibing 👀 follow for more brain games\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-31-v07.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6626,17 +6647,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T18:01:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 192,
+        "video_views": 209,
+        "reactions": 0,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 92.2
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T18:01:00"
     },
     {
       "_hermes_key": "hermes:2026-07-31-v07:youtube",
@@ -6685,11 +6709,11 @@
     {
       "_hermes_key": "hermes:2026-07-31-v09:instagram",
       "metricool_uuid": "-4227378212400248504",
-      "platform_post_id": null,
+      "platform_post_id": "17950367871247317",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbhUsLJFIm9/",
       "caption": "bet you got this one right... or did you? drop your answer in the comments and follow so you don't miss the next brain bender 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-31-v09.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6716,17 +6740,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T21:17:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 271,
+        "video_views": 340,
+        "reactions": 4,
+        "comments": 1,
+        "shares": 3,
+        "eng_rate": 2.952029520295203,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 55.7
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T21:17:00"
     },
     {
       "_hermes_key": "hermes:2026-07-31-v09:youtube",
@@ -6777,11 +6804,11 @@
     {
       "_hermes_key": "hermes:2026-07-31-v10:instagram",
       "metricool_uuid": "-3394201402064090190",
-      "platform_post_id": null,
+      "platform_post_id": "17901322881534600",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbhqlimD1ln/",
       "caption": "think you got this one? drop your answer in the comments and let's see if you're actually smart or just lucky 🧠\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-31-v10.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6808,17 +6835,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-02T00:29:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 76,
+        "video_views": 103,
+        "reactions": 0,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 68.5
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-02T00:29:00"
     },
     {
       "_hermes_key": "hermes:2026-07-31-v10:youtube",
@@ -6869,11 +6899,11 @@
     {
       "_hermes_key": "hermes:2026-07-31-t1-v01:instagram",
       "metricool_uuid": "-5962137240292013616",
-      "platform_post_id": null,
+      "platform_post_id": "17901290289534118",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbgYMxZDr5H/",
       "caption": "bet you're gonna get this one wrong lol. comment your answer and let's see if you're actually smart or just lucky 👀\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-07-31-t1-v01.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6900,17 +6930,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T12:29:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 133,
+        "video_views": 151,
+        "reactions": 1,
+        "comments": 0,
+        "shares": 1,
+        "eng_rate": 1.5037593984962405,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 69.9
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T12:29:00"
     },
     {
       "_hermes_key": "hermes:2026-07-31-t1-v01:youtube",
@@ -6961,11 +6994,11 @@
     {
       "_hermes_key": "hermes:2026-07-31-t1-v03:instagram",
       "metricool_uuid": "-2761723129003228720",
-      "platform_post_id": null,
+      "platform_post_id": "17876907666525291",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbhErwQjpVB/",
       "caption": "bet you got this one wrong lol. drop your answer in the comments and let's see if you're actually smart or just lucky 🧠\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
       "source_video": "hermes-render:2026-07-31-t1-v03.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -6992,17 +7025,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T18:57:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 119,
+        "video_views": 121,
+        "reactions": 2,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 1.680672268907563,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 71.2
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T18:57:00"
     },
     {
       "_hermes_key": "hermes:2026-07-31-t1-v03:youtube",
@@ -7053,11 +7089,11 @@
     {
       "_hermes_key": "hermes:2026-08-01-v05:instagram",
       "metricool_uuid": "-9196590483056148045",
-      "platform_post_id": null,
+      "platform_post_id": "18090647909389348",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbgerimlcVL/",
       "caption": "only 3% of people get this one right. what's your answer? comment below and follow for more brain teasers 🧠💨\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "hermes-render:2026-08-01-v05.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -7084,17 +7120,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T13:25:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 142,
+        "video_views": 152,
+        "reactions": 4,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 2.8169014084507045,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 81.7
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T13:25:00"
     },
     {
       "_hermes_key": "hermes:2026-08-01-v05:youtube",
@@ -7145,11 +7184,11 @@
     {
       "_hermes_key": "hermes:2026-08-01-v07:instagram",
       "metricool_uuid": "-5465305844196687735",
-      "platform_post_id": null,
+      "platform_post_id": "18132460090551057",
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbhLEGwjrmY/",
       "caption": "bet you're gonna get this wrong. what do you see? drop your answer in the comments and follow for more brain melters 🧠💨\n\n#fyp #foryou #quiz #trivia #brainteaser",
       "source_video": "hermes-render:2026-08-01-v07.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -7176,17 +7215,20 @@
       "post_state": "scheduled",
       "scheduled_at": "2026-08-01T19:53:00",
       "metrics": {
-        "reach": null,
-        "video_views": null,
-        "reactions": null,
-        "comments": null,
-        "shares": null,
-        "eng_rate": null,
-        "as_of": null,
-        "source": "pending"
+        "reach": 111,
+        "video_views": 122,
+        "reactions": 1,
+        "comments": 0,
+        "shares": 0,
+        "eng_rate": 0.9009009009009009,
+        "as_of": "2026-08-02",
+        "source": "api",
+        "saves": null,
+        "skip_rate": 76.4
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-01T19:53:00"
     },
     {
       "_hermes_key": "hermes:2026-08-01-v07:youtube",
@@ -7241,7 +7283,7 @@
       "platform": "instagram",
       "account_id": "6a5fc9dc4ccd63dc1f041549",
       "account_handle": "@smartfellafartsmellatest",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/DbihSzIgVS1/",
       "caption": "bet 99% of people mess this up. drop your answer in the comments and follow for more brain teasers 🧠💨\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
       "source_video": "hermes-render:2026-08-01-v08.instagram.mp4",
       "media_url_note": "S3 private object (presigned at post time)",
@@ -7278,7 +7320,8 @@
         "source": "pending"
       },
       "match_confidence": "high",
-      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired).",
+      "posted_at": "2026-08-02T08:27:00"
     },
     {
       "_hermes_key": "hermes:2026-08-01-v08:youtube",
@@ -7785,6 +7828,742 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v01:instagram",
+      "metricool_uuid": "-3223169527039702704",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet 99% of people mess this up. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-08-02-v01.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-stat",
+        "label": "motion-hook-stat",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "NUMBER PUZZLE",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-stat",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'stated-difficulty-stat' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v01"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T10:37:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v01:youtube",
+      "metricool_uuid": "3334661194578610079",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet 99% of people mess this up. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-08-02-v01.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-stat",
+        "label": "motion-hook-stat",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "NUMBER PUZZLE",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-stat",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'stated-difficulty-stat' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v01"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-05T11:05:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v03:instagram",
+      "metricool_uuid": "7763879893853358120",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% catch this one. what's your answer? drop it below 👇 and follow for more brain teasers\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v03.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T14:17:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v03:youtube",
+      "metricool_uuid": "8401834238850450044",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% catch this one. what's your answer? drop it below 👇 and follow for more brain teasers\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v03.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-05T20:47:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v04:instagram",
+      "metricool_uuid": "675327598839745192",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 2% solve this without second-guessing themselves. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-08-02-v04.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-stat",
+        "label": "motion-hook-stat",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "VERBAL ANALOGY",
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-stat",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'stated-difficulty-stat' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v04"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T17:17:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v04:youtube",
+      "metricool_uuid": "-8813195903948929754",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 2% solve this without second-guessing themselves. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:2026-08-02-v04.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-stat",
+        "label": "motion-hook-stat",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "ODD ONE OUT",
+          "VERBAL ANALOGY",
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-stat",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'stated-difficulty-stat' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v04"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-06T10:05:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v06:instagram",
+      "metricool_uuid": "1008323058663442334",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet 98% of you are gonna mess this up. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v06.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "VERBAL ANALOGY",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v06"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T20:57:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v06:youtube",
+      "metricool_uuid": "183031163638204213",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet 98% of you are gonna mess this up. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v06.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "VERBAL ANALOGY",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v06"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-06T14:05:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v09:instagram",
+      "metricool_uuid": "2077459657786347084",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% of people get this one right. what's the answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v09.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY",
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v09"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-03T00:19:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v09:youtube",
+      "metricool_uuid": "-1278337578283677940",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% of people get this one right. what's the answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v09.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "SENTENCE COMPLETION",
+          "VERBAL ANALOGY",
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v09"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-06T19:33:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v12:instagram",
+      "metricool_uuid": "1260653686749154676",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% of people get this one right. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v12.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "SENTENCE COMPLETION",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v12"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-03T11:03:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-v12:youtube",
+      "metricool_uuid": "-4758722604754647391",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% of people get this one right. what's your answer? drop it in the comments and follow for more brain teasers 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-v12.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-declared",
+        "label": "motion-hook-declared",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "SENTENCE COMPLETION",
+          "ODD ONE OUT"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-declared",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'declared-difficulty' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-v12"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-07T00:31:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-t1-v02:instagram",
+      "metricool_uuid": "1511174406905547134",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% of people get this one right. comment your answer before you scroll 👀 follow for more brain teasers\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:2026-08-02-t1-v02.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-stat",
+        "label": "motion-hook-stat",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "SENTENCE COMPLETION",
+          "NUMBER PUZZLE"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-stat",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'stated-difficulty-stat' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-t1-v02"
+      },
+      "hashtag_set": "B",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-02T12:23:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-t1-v02:youtube",
+      "metricool_uuid": "-8338941306094926890",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "only 3% of people get this one right. comment your answer before you scroll 👀 follow for more brain teasers\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:2026-08-02-t1-v02.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook-stat",
+        "label": "motion-hook-stat",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER ANALOGY",
+          "SENTENCE COMPLETION",
+          "NUMBER PUZZLE"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook-stat",
+        "rationale": "the same 2.2s motion opening, now carrying a spoken 'stated-difficulty-stat' hook (question one does not move)",
+        "hermes_video_id": "2026-08-02-t1-v02"
+      },
+      "hashtag_set": "B",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-06T13:07:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-t1-v03:instagram",
+      "metricool_uuid": "-8700169369636813599",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet 99% of people mess this one up. comment your answer below and follow for more brain teasers that'll have you questioning everything 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-t1-v03.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook",
+        "label": "motion-hook",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "ODD ONE OUT",
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook",
+        "rationale": "2.2s wordless motion opening before question one (vs the cold-plate control)",
+        "hermes_video_id": "2026-08-02-t1-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-03T12:33:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:2026-08-02-t1-v03:youtube",
+      "metricool_uuid": "-5853602971461139490",
+      "platform_post_id": null,
+      "platform": "youtube",
+      "account_id": "UCaP4hiMhNnFyUAJhLWvxLMQ",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet 99% of people mess this one up. comment your answer below and follow for more brain teasers that'll have you questioning everything 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:2026-08-02-t1-v03.youtube.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "opening",
+        "arm": "motion-hook",
+        "label": "motion-hook",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "VERBAL ANALOGY",
+          "ODD ONE OUT",
+          "NUMBER ANALOGY"
+        ],
+        "num_questions": 3
+      },
+      "experiment": {
+        "dimension": "opening",
+        "arm": "motion-hook",
+        "rationale": "2.2s wordless motion opening before question one (vs the cold-plate control)",
+        "hermes_video_id": "2026-08-02-t1-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-06T21:17:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
     }
   ],
   "variant_families": {
@@ -7844,7 +8623,7 @@
       "scheduled": 0,
       "n_posts": 6,
       "n_with_metrics": 2,
-      "median_eng_rate": 4.08,
+      "median_eng_rate": 3.9,
       "median_views": 426,
       "median_reach": 426,
       "median_skip_rate": null,
@@ -7949,33 +8728,33 @@
       "count": 0,
       "metrics_n": 0,
       "avg_eng_rate": null,
-      "avg_reach": 275,
+      "avg_reach": 169,
       "notes": "Rendered (video-1/2, talking-brain narrator) but NOT yet posted. mascot-poc.mp4 also exists.",
       "drafts": 0,
       "drafts_note": "2 draft(s) created via post-variant.ts (video-1, both platforms) as of 2026-07-21; pending publish (no metrics yet).",
       "scheduled": 2,
       "scheduled_note": "2 post(s) scheduled via schedule-variants.ts (video-1, both platforms) as of 2026-07-21; auto-publish at the set time (no metrics yet).",
       "n_posts": 29,
-      "n_with_metrics": 7,
-      "median_eng_rate": 1.59,
-      "median_views": 309,
-      "median_reach": 275,
-      "median_skip_rate": 61.9,
+      "n_with_metrics": 12,
+      "median_eng_rate": 1.55,
+      "median_views": 197,
+      "median_reach": 169,
+      "median_skip_rate": 63.4,
       "n_by_metric": {
-        "median_eng_rate": 7,
-        "median_skip_rate": 7,
-        "median_views": 7,
-        "median_reach": 7
+        "median_eng_rate": 12,
+        "median_skip_rate": 12,
+        "median_views": 12,
+        "median_reach": 12
       }
     },
     "hook": {
       "n_posts": 5,
       "n_with_metrics": 2,
-      "median_eng_rate": 2.56,
-      "avg_reach": 880.5,
-      "median_views": 1073,
-      "median_reach": 880.5,
-      "median_skip_rate": 58.35,
+      "median_eng_rate": 2.8,
+      "avg_reach": 898.5,
+      "median_views": 1100.5,
+      "median_reach": 898.5,
+      "median_skip_rate": 58.1,
       "n_by_metric": {
         "median_eng_rate": 2,
         "median_skip_rate": 2,
@@ -7985,17 +8764,17 @@
     },
     "length": {
       "n_posts": 6,
-      "n_with_metrics": 1,
-      "median_eng_rate": 0.81,
-      "avg_reach": 124,
-      "median_views": 135,
-      "median_reach": 124,
-      "median_skip_rate": 70.7,
+      "n_with_metrics": 2,
+      "median_eng_rate": 0.4,
+      "avg_reach": 159,
+      "median_views": 173,
+      "median_reach": 159,
+      "median_skip_rate": 81.7,
       "n_by_metric": {
-        "median_eng_rate": 1,
-        "median_skip_rate": 1,
-        "median_views": 1,
-        "median_reach": 1
+        "median_eng_rate": 2,
+        "median_skip_rate": 2,
+        "median_views": 2,
+        "median_reach": 2
       }
     },
     "control": {
@@ -8015,17 +8794,17 @@
     },
     "category-mix": {
       "n_posts": 9,
-      "n_with_metrics": 2,
-      "median_eng_rate": 2.12,
-      "avg_reach": 134,
-      "median_views": 151.5,
-      "median_reach": 134,
-      "median_skip_rate": 63.4,
+      "n_with_metrics": 3,
+      "median_eng_rate": 3.08,
+      "avg_reach": 130,
+      "median_views": 148,
+      "median_reach": 130,
+      "median_skip_rate": 66.4,
       "n_by_metric": {
-        "median_eng_rate": 2,
-        "median_skip_rate": 2,
-        "median_views": 2,
-        "median_reach": 2
+        "median_eng_rate": 3,
+        "median_skip_rate": 3,
+        "median_views": 3,
+        "median_reach": 3
       }
     },
     "tempo": {
@@ -8033,7 +8812,7 @@
       "n_with_metrics": 2,
       "median_eng_rate": 2.28,
       "avg_reach": 651.5,
-      "median_views": 762.5,
+      "median_views": 765,
       "median_reach": 651.5,
       "median_skip_rate": 62.05,
       "n_by_metric": {
@@ -8045,27 +8824,27 @@
     },
     "narration": {
       "n_posts": 23,
-      "n_with_metrics": 6,
-      "median_eng_rate": 0.21,
-      "avg_reach": 130.5,
-      "median_views": 156,
-      "median_reach": 130.5,
-      "median_skip_rate": 71.4,
+      "n_with_metrics": 8,
+      "median_eng_rate": 0.13,
+      "avg_reach": 131,
+      "median_views": 150.5,
+      "median_reach": 131,
+      "median_skip_rate": 70.5,
       "n_by_metric": {
-        "median_eng_rate": 6,
-        "median_skip_rate": 6,
-        "median_views": 6,
-        "median_reach": 6
+        "median_eng_rate": 8,
+        "median_skip_rate": 8,
+        "median_views": 8,
+        "median_reach": 8
       }
     },
     "type-nonverbal-classic": {
       "n_posts": 4,
       "n_with_metrics": 1,
-      "median_eng_rate": 0.61,
-      "avg_reach": 489,
-      "median_views": 560,
-      "median_reach": 489,
-      "median_skip_rate": 59.2,
+      "median_eng_rate": 0.6,
+      "avg_reach": 497,
+      "median_views": 570,
+      "median_reach": 497,
+      "median_skip_rate": 59.1,
       "n_by_metric": {
         "median_eng_rate": 1,
         "median_skip_rate": 1,
@@ -8076,11 +8855,11 @@
     "ending": {
       "n_posts": 7,
       "n_with_metrics": 3,
-      "median_eng_rate": 0,
-      "avg_reach": 120,
-      "median_views": 135,
-      "median_reach": 120,
-      "median_skip_rate": 77.7,
+      "median_eng_rate": 0.82,
+      "avg_reach": 122,
+      "median_views": 137,
+      "median_reach": 122,
+      "median_skip_rate": 78,
       "n_by_metric": {
         "median_eng_rate": 3,
         "median_skip_rate": 3,
@@ -8090,56 +8869,71 @@
     },
     "type-nonverbal-shapes": {
       "n_posts": 8,
-      "n_with_metrics": 2,
-      "median_eng_rate": 1.51,
-      "avg_reach": 220,
-      "median_views": 247.5,
-      "median_reach": 220,
-      "median_skip_rate": 62,
+      "n_with_metrics": 3,
+      "median_eng_rate": 2.14,
+      "avg_reach": 271,
+      "median_views": 340,
+      "median_reach": 271,
+      "median_skip_rate": 55.7,
       "n_by_metric": {
-        "median_eng_rate": 2,
-        "median_skip_rate": 2,
-        "median_views": 2,
-        "median_reach": 2
+        "median_eng_rate": 3,
+        "median_skip_rate": 3,
+        "median_views": 3,
+        "median_reach": 3
       }
     },
     "progress-counter": {
       "n_posts": 2,
       "n_with_metrics": 1,
       "median_eng_rate": 0,
-      "avg_reach": 114,
-      "median_views": 137,
-      "median_reach": 114,
-      "median_skip_rate": 59.5,
+      "avg_reach": 126,
+      "median_views": 148,
+      "median_reach": 126,
+      "median_skip_rate": 62.9,
       "n_by_metric": {
         "median_eng_rate": 1,
         "median_skip_rate": 1,
         "median_views": 1,
         "median_reach": 1
       }
+    },
+    "opening": {
+      "n_posts": 16,
+      "n_with_metrics": 2,
+      "median_eng_rate": 1.86,
+      "avg_reach": 126.5,
+      "median_views": 137,
+      "median_reach": 126.5,
+      "median_skip_rate": 79.05,
+      "n_by_metric": {
+        "median_eng_rate": 2,
+        "median_skip_rate": 2,
+        "median_views": 2,
+        "median_reach": 2
+      }
     }
   },
   "aggregate_cuts": {
     "by_platform": {
       "instagram": {
-        "n_posts": 73,
-        "n_with_metrics": 33,
-        "median_eng_rate": 1.5,
-        "avg_reach": 126,
-        "median_views": 147,
-        "median_reach": 126,
-        "median_skip_rate": 68,
+        "n_posts": 81,
+        "n_with_metrics": 45,
+        "median_eng_rate": 1.52,
+        "avg_reach": 132,
+        "median_views": 151,
+        "median_reach": 132,
+        "median_skip_rate": 69,
         "n_by_metric": {
-          "median_eng_rate": 33,
-          "median_skip_rate": 33,
-          "median_views": 33,
-          "median_reach": 33
+          "median_eng_rate": 45,
+          "median_skip_rate": 45,
+          "median_views": 45,
+          "median_reach": 45
         }
       },
       "tiktok": {
         "n_posts": 38,
         "n_with_metrics": 9,
-        "median_eng_rate": 3.99,
+        "median_eng_rate": 3.81,
         "avg_reach": 301,
         "median_views": 301,
         "median_reach": 301,
@@ -8152,7 +8946,7 @@
         }
       },
       "youtube": {
-        "n_posts": 27,
+        "n_posts": 35,
         "n_with_metrics": 0,
         "median_eng_rate": null,
         "avg_reach": null,
@@ -8200,17 +8994,17 @@
       },
       "one-question": {
         "n_posts": 6,
-        "n_with_metrics": 1,
-        "median_eng_rate": 0.81,
-        "avg_reach": 124,
-        "median_views": 135,
-        "median_reach": 124,
-        "median_skip_rate": 70.7,
+        "n_with_metrics": 2,
+        "median_eng_rate": 0.4,
+        "avg_reach": 159,
+        "median_views": 173,
+        "median_reach": 159,
+        "median_skip_rate": 81.7,
         "n_by_metric": {
-          "median_eng_rate": 1,
-          "median_skip_rate": 1,
-          "median_views": 1,
-          "median_reach": 1
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
         }
       },
       "baseline": {
@@ -8233,9 +9027,9 @@
         "n_with_metrics": 1,
         "median_eng_rate": 3.42,
         "avg_reach": 146,
-        "median_views": 168,
+        "median_views": 169,
         "median_reach": 146,
-        "median_skip_rate": 61,
+        "median_skip_rate": 61.3,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
@@ -8290,27 +9084,27 @@
       },
       "no-question-vo": {
         "n_posts": 7,
-        "n_with_metrics": 2,
+        "n_with_metrics": 3,
         "median_eng_rate": 0,
-        "avg_reach": 116.5,
-        "median_views": 129,
-        "median_reach": 116.5,
-        "median_skip_rate": 79.9,
+        "avg_reach": 117,
+        "median_views": 128,
+        "median_reach": 117,
+        "median_skip_rate": 75.2,
         "n_by_metric": {
-          "median_eng_rate": 2,
-          "median_skip_rate": 2,
-          "median_views": 2,
-          "median_reach": 2
+          "median_eng_rate": 3,
+          "median_skip_rate": 3,
+          "median_views": 3,
+          "median_reach": 3
         }
       },
       "no-narration": {
         "n_posts": 7,
         "n_with_metrics": 2,
-        "median_eng_rate": 1.42,
-        "avg_reach": 191.5,
-        "median_views": 225,
-        "median_reach": 191.5,
-        "median_skip_rate": 71.05,
+        "median_eng_rate": 1.39,
+        "avg_reach": 194,
+        "median_views": 230,
+        "median_reach": 194,
+        "median_skip_rate": 70.85,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -8321,11 +9115,11 @@
       "classic-shapes": {
         "n_posts": 4,
         "n_with_metrics": 1,
-        "median_eng_rate": 0.61,
-        "avg_reach": 489,
-        "median_views": 560,
-        "median_reach": 489,
-        "median_skip_rate": 59.2,
+        "median_eng_rate": 0.6,
+        "avg_reach": 497,
+        "median_views": 570,
+        "median_reach": 497,
+        "median_skip_rate": 59.1,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
@@ -8335,27 +9129,27 @@
       },
       "no-options-vo": {
         "n_posts": 7,
-        "n_with_metrics": 2,
-        "median_eng_rate": 0.61,
-        "avg_reach": 179.5,
-        "median_views": 199.5,
-        "median_reach": 179.5,
+        "n_with_metrics": 3,
+        "median_eng_rate": 0.8,
+        "avg_reach": 139,
+        "median_views": 155,
+        "median_reach": 139,
         "median_skip_rate": 68,
         "n_by_metric": {
-          "median_eng_rate": 2,
-          "median_skip_rate": 2,
-          "median_views": 2,
-          "median_reach": 2
+          "median_eng_rate": 3,
+          "median_skip_rate": 3,
+          "median_views": 3,
+          "median_reach": 3
         }
       },
       "full-reveal": {
         "n_posts": 4,
         "n_with_metrics": 1,
         "median_eng_rate": 0,
-        "avg_reach": 122,
-        "median_views": 158,
-        "median_reach": 122,
-        "median_skip_rate": 79.7,
+        "avg_reach": 124,
+        "median_views": 160,
+        "median_reach": 124,
+        "median_skip_rate": 79.2,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
@@ -8365,47 +9159,47 @@
       },
       "shapes": {
         "n_posts": 8,
-        "n_with_metrics": 2,
-        "median_eng_rate": 1.51,
-        "avg_reach": 220,
-        "median_views": 247.5,
-        "median_reach": 220,
-        "median_skip_rate": 62,
+        "n_with_metrics": 3,
+        "median_eng_rate": 2.14,
+        "avg_reach": 271,
+        "median_views": 340,
+        "median_reach": 271,
+        "median_skip_rate": 55.7,
         "n_by_metric": {
-          "median_eng_rate": 2,
-          "median_skip_rate": 2,
-          "median_views": 2,
-          "median_reach": 2
+          "median_eng_rate": 3,
+          "median_skip_rate": 3,
+          "median_views": 3,
+          "median_reach": 3
         }
       },
       "mascot-absent": {
         "n_posts": 20,
-        "n_with_metrics": 5,
-        "median_eng_rate": 1.09,
-        "avg_reach": 201,
-        "median_views": 235,
-        "median_reach": 201,
-        "median_skip_rate": 64.3,
+        "n_with_metrics": 9,
+        "median_eng_rate": 1.52,
+        "avg_reach": 133,
+        "median_views": 151,
+        "median_reach": 133,
+        "median_skip_rate": 64.5,
         "n_by_metric": {
-          "median_eng_rate": 5,
-          "median_skip_rate": 5,
-          "median_views": 5,
-          "median_reach": 5
+          "median_eng_rate": 9,
+          "median_skip_rate": 9,
+          "median_views": 9,
+          "median_reach": 9
         }
       },
       "mascot-standard": {
         "n_posts": 7,
-        "n_with_metrics": 2,
-        "median_eng_rate": 1.64,
-        "avg_reach": 547,
-        "median_views": 631.5,
-        "median_reach": 547,
-        "median_skip_rate": 51.75,
+        "n_with_metrics": 3,
+        "median_eng_rate": 1.59,
+        "avg_reach": 502,
+        "median_views": 575,
+        "median_reach": 502,
+        "median_skip_rate": 52.1,
         "n_by_metric": {
-          "median_eng_rate": 2,
-          "median_skip_rate": 2,
-          "median_views": 2,
-          "median_reach": 2
+          "median_eng_rate": 3,
+          "median_skip_rate": 3,
+          "median_views": 3,
+          "median_reach": 3
         }
       },
       "tempo-fast": {
@@ -8426,11 +9220,11 @@
       "hook-challenge": {
         "n_posts": 3,
         "n_with_metrics": 2,
-        "median_eng_rate": 2.56,
-        "avg_reach": 880.5,
-        "median_views": 1073,
-        "median_reach": 880.5,
-        "median_skip_rate": 58.35,
+        "median_eng_rate": 2.8,
+        "avg_reach": 898.5,
+        "median_views": 1100.5,
+        "median_reach": 898.5,
+        "median_skip_rate": 58.1,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -8441,11 +9235,11 @@
       "no-answer": {
         "n_posts": 3,
         "n_with_metrics": 2,
-        "median_eng_rate": 0.5,
-        "avg_reach": 110.5,
-        "median_views": 123,
-        "median_reach": 110.5,
-        "median_skip_rate": 76.35,
+        "median_eng_rate": 0.9,
+        "avg_reach": 111.5,
+        "median_views": 124,
+        "median_reach": 111.5,
+        "median_skip_rate": 76.5,
         "n_by_metric": {
           "median_eng_rate": 2,
           "median_skip_rate": 2,
@@ -8458,7 +9252,7 @@
         "n_with_metrics": 2,
         "median_eng_rate": 2.28,
         "avg_reach": 651.5,
-        "median_views": 762.5,
+        "median_views": 765,
         "median_reach": 651.5,
         "median_skip_rate": 62.05,
         "n_by_metric": {
@@ -8472,10 +9266,10 @@
         "n_posts": 2,
         "n_with_metrics": 1,
         "median_eng_rate": 0,
-        "avg_reach": 114,
-        "median_views": 137,
-        "median_reach": 114,
-        "median_skip_rate": 59.5,
+        "avg_reach": 126,
+        "median_views": 148,
+        "median_reach": 126,
+        "median_skip_rate": 62.9,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
@@ -8485,79 +9279,124 @@
       },
       "verbal-only": {
         "n_posts": 4,
+        "n_with_metrics": 2,
+        "median_eng_rate": 1.94,
+        "avg_reach": 127,
+        "median_views": 143,
+        "median_reach": 127,
+        "median_skip_rate": 67.05,
+        "n_by_metric": {
+          "median_eng_rate": 2,
+          "median_skip_rate": 2,
+          "median_views": 2,
+          "median_reach": 2
+        }
+      },
+      "motion-hook-stat": {
+        "n_posts": 8,
         "n_with_metrics": 1,
-        "median_eng_rate": 0.82,
-        "avg_reach": 122,
-        "median_views": 135,
-        "median_reach": 122,
-        "median_skip_rate": 65.8,
+        "median_eng_rate": 2.82,
+        "avg_reach": 142,
+        "median_views": 152,
+        "median_reach": 142,
+        "median_skip_rate": 81.7,
         "n_by_metric": {
           "median_eng_rate": 1,
           "median_skip_rate": 1,
           "median_views": 1,
           "median_reach": 1
         }
+      },
+      "motion-hook-declared": {
+        "n_posts": 6,
+        "n_with_metrics": 1,
+        "median_eng_rate": 0.9,
+        "avg_reach": 111,
+        "median_views": 122,
+        "median_reach": 111,
+        "median_skip_rate": 76.4,
+        "n_by_metric": {
+          "median_eng_rate": 1,
+          "median_skip_rate": 1,
+          "median_views": 1,
+          "median_reach": 1
+        }
+      },
+      "motion-hook": {
+        "n_posts": 2,
+        "n_with_metrics": 0,
+        "median_eng_rate": null,
+        "avg_reach": null,
+        "median_views": null,
+        "median_reach": null,
+        "median_skip_rate": null,
+        "n_by_metric": {
+          "median_eng_rate": 0,
+          "median_skip_rate": 0,
+          "median_views": 0,
+          "median_reach": 0
+        }
       }
     },
     "by_time_bucket": {
       "evening (18-24)": {
-        "n_posts": 16,
-        "n_with_metrics": 15,
-        "median_eng_rate": 2.15,
-        "avg_reach": 124,
-        "median_views": 135,
-        "median_reach": 124,
-        "median_skip_rate": 74.8,
+        "n_posts": 22,
+        "n_with_metrics": 19,
+        "median_eng_rate": 1.9,
+        "avg_reach": 125,
+        "median_views": 137,
+        "median_reach": 125,
+        "median_skip_rate": 75.2,
         "n_by_metric": {
-          "median_eng_rate": 15,
-          "median_skip_rate": 11,
-          "median_views": 15,
-          "median_reach": 15
+          "median_eng_rate": 19,
+          "median_skip_rate": 15,
+          "median_views": 19,
+          "median_reach": 19
         }
       },
       "afternoon (12-18)": {
-        "n_posts": 17,
-        "n_with_metrics": 15,
-        "median_eng_rate": 1.69,
-        "avg_reach": 132,
-        "median_views": 147,
-        "median_reach": 132,
-        "median_skip_rate": 71,
+        "n_posts": 23,
+        "n_with_metrics": 18,
+        "median_eng_rate": 2.05,
+        "avg_reach": 133,
+        "median_views": 151.5,
+        "median_reach": 133,
+        "median_skip_rate": 71.5,
         "n_by_metric": {
-          "median_eng_rate": 15,
-          "median_skip_rate": 11,
-          "median_views": 15,
-          "median_reach": 15
+          "median_eng_rate": 18,
+          "median_skip_rate": 14,
+          "median_views": 18,
+          "median_reach": 18
         }
       },
       "morning (6-12)": {
-        "n_posts": 13,
-        "n_with_metrics": 8,
-        "median_eng_rate": 0.85,
-        "avg_reach": 254.5,
-        "median_views": 281,
-        "median_reach": 254.5,
+        "n_posts": 18,
+        "n_with_metrics": 12,
+        "median_eng_rate": 1.44,
+        "avg_reach": 199.5,
+        "median_views": 235,
+        "median_reach": 199.5,
         "median_skip_rate": 64.3,
         "n_by_metric": {
-          "median_eng_rate": 8,
-          "median_skip_rate": 7,
-          "median_views": 8,
-          "median_reach": 8
+          "median_eng_rate": 12,
+          "median_skip_rate": 11,
+          "median_views": 12,
+          "median_reach": 12
         }
       },
       "night (0-6)": {
-        "n_posts": 8,
-        "n_with_metrics": 4,
-        "median_eng_rate": 2.23,
-        "avg_reach": 264.5,
-        "median_views": 310.5,
-        "median_reach": 264.5,
-        "median_skip_rate": 60.25,
+        "n_posts": 10,
+        "n_with_metrics": 5,
+        "median_eng_rate": 1.59,
+        "avg_reach": 146,
+        "median_views": 169,
+        "median_reach": 146,
+        "median_skip_rate": 62.9,
         "n_by_metric": {
-          "median_eng_rate": 4,
-          "median_skip_rate": 4,
-          "median_views": 4,
-          "median_reach": 4
+          "median_eng_rate": 5,
+          "median_skip_rate": 5,
+          "median_views": 5,
+          "median_reach": 5
         }
       }
     }

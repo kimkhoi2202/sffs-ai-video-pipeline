@@ -2528,6 +2528,222 @@
           "answerNorm": "CLEVER"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-08-02-v01",
+      "test": "opening",
+      "variant": "motion-hook-stat",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "c19ec567dd05",
+          "sig": "text|verbal|verbal-analogy|rich is to poor as happy is to || empty~late~night~sad|sad",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SAD"
+        },
+        {
+          "hash": "5644dd25908a",
+          "sig": "text|quantitative|number-puzzle|if 2 6 24 5 3 24 4 1 15 then 6 7 || 38~39~40~44|39",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "39"
+        },
+        {
+          "hash": "3cf37a1f31f6",
+          "sig": "text|verbal|odd-one-out|which one does not belong || juice~milk~saturn~tea|saturn",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "SATURN"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-02-v03",
+      "test": "opening",
+      "variant": "motion-hook-declared",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "f378b5b14390",
+          "sig": "text|quantitative|number-analogy|which number fits 4 11 5 13 7 17 6 || 10~13~15~20|15",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "15"
+        },
+        {
+          "hash": "d142dee80f17",
+          "sig": "text|verbal|sentence-completion|because it had not rained for weeks the field in the garden was very || cold~dry~green~wet|dry",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "DRY"
+        },
+        {
+          "hash": "774bf817150a",
+          "sig": "text|verbal|verbal-analogy|loud is to quiet as win is to || lose~narrow~slow~weak|lose",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "LOSE"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-02-v04",
+      "test": "opening",
+      "variant": "motion-hook-stat",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b0f680ba98a0",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cherry~mango~plum~rocket|rocket",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "ROCKET"
+        },
+        {
+          "hash": "6f8220828e12",
+          "sig": "text|verbal|verbal-analogy|near is to far as left is to || empty~poor~right~thin|right",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "RIGHT"
+        },
+        {
+          "hash": "21c2497815a7",
+          "sig": "text|quantitative|number-analogy|which number fits 2 5 6 17 7 20 5 || 11~13~14~4|14",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "14"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-02-v06",
+      "test": "opening",
+      "variant": "motion-hook-declared",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "d5afedb1aba3",
+          "sig": "text|quantitative|number-analogy|which number fits 2 2 4 6 5 8 8 || 11~14~15~16|14",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "14"
+        },
+        {
+          "hash": "9944b7c243eb",
+          "sig": "text|verbal|verbal-analogy|camel is to desert as bat is to || cave~pond~savanna~water|cave",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "CAVE"
+        },
+        {
+          "hash": "1071ae584152",
+          "sig": "text|verbal|odd-one-out|which one does not belong || ant~chair~flea~ladybug|chair",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "CHAIR"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-02-v09",
+      "test": "opening",
+      "variant": "motion-hook-declared",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "14278cc45fec",
+          "sig": "text|verbal|sentence-completion|because it was raining hard maya opened her to stay dry on the walk home || book~lamp~umbrella~window|umbrella",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "UMBRELLA"
+        },
+        {
+          "hash": "6b29229670cd",
+          "sig": "text|verbal|verbal-analogy|push is to pull as open is to || closed~new~sad~weak|closed",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "CLOSED"
+        },
+        {
+          "hash": "1f27e6e7e59b",
+          "sig": "text|quantitative|number-analogy|which number fits 2 5 4 11 5 14 8 || 20~23~26~33|23",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "23"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-02-v12",
+      "test": "opening",
+      "variant": "motion-hook-declared",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "52a795286471",
+          "sig": "text|verbal|verbal-analogy|begin is to end as buy is to || empty~late~sell~small|sell",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SELL"
+        },
+        {
+          "hash": "dac90b22bece",
+          "sig": "text|verbal|sentence-completion|the guard was very and stood his ground even when he was afraid || brave~lazy~shy~tired|brave",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "BRAVE"
+        },
+        {
+          "hash": "894de1148597",
+          "sig": "text|verbal|odd-one-out|which one does not belong || coat~foot~hat~skirt|foot",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "FOOT"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-02-t1-v02",
+      "test": "opening",
+      "variant": "motion-hook-stat",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b8e7c6dcd274",
+          "sig": "text|quantitative|number-analogy|which number fits 2 7 3 10 6 19 5 || 15~16~17~18|16",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "16"
+        },
+        {
+          "hash": "33dcf12f2f5d",
+          "sig": "text|verbal|sentence-completion|the wire was too so it snapped as soon as we pulled on it || long~new~strong~weak|weak",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "WEAK"
+        },
+        {
+          "hash": "fc5a5e7d6861",
+          "sig": "text|quantitative|number-puzzle|if 5 1 18 2 7 27 4 4 24 then 5 2 || 21~23~31~7|21",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "21"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-02-t1-v03",
+      "test": "opening",
+      "variant": "motion-hook",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6a8df1d840c8",
+          "sig": "text|verbal|verbal-analogy|shirt is to cotton as tire is to || clay~metal~plastic~rubber|rubber",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "RUBBER"
+        },
+        {
+          "hash": "2df41db6934f",
+          "sig": "text|verbal|odd-one-out|which one does not belong || dragonfly~gold~nickel~zinc|dragonfly",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "DRAGONFLY"
+        },
+        {
+          "hash": "7a734cf6d5ae",
+          "sig": "text|quantitative|number-analogy|which number fits 2 2 3 4 4 6 7 || 12~13~15~22|12",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "12"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
