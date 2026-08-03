@@ -47,6 +47,7 @@ import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
 import { planBatch } from "./design.ts";
 import { runLeadPromotion, leadStamp } from "./leadPromotion.ts";
+import { topUpBank } from "./generate.ts";
 import { gateDedup, validateQuestions, gateCopy, gateRenderSanity } from "./gates.ts";
 import { markUsed, markRejected, bankStats } from "./questions.ts";
 import { appendTakeaway, formatTakeaway } from "./memory.ts";
@@ -644,10 +645,40 @@ export async function runCycle(): Promise<RunState> {
     warn("goal refresh failed (continuing)", { err: e instanceof Error ? e.message : String(e) });
   }
 
+  // (a4) TOP UP THE BANK, if the runway is short. Before planning, so anything written
+  // this cycle is drawable by the batch below rather than a day later.
+  //
+  // TRIGGERED ON RUNWAY, NOT ON A SCHEDULE. The bank is a fixed resource being consumed
+  // daily and the drawable pool is far smaller than the raw count suggests — 660 of
+  // 1,544, because the near-duplicate guard has retired every number series and the
+  // figure kinds sit outside the pinned format's filter. Generating nightly regardless
+  // would burn tokens producing questions nobody needs; generating on the day it runs
+  // out is too late, because the gates reject some of what comes back. See generate.ts.
+  //
+  // The burn is questions, not videos: a video is three, and a video the validity judge
+  // REJECTS spends them too (16 planned videos cost 48 questions to ship 8 on
+  // 2026-08-01), so the estimate is deliberately the ceiling rather than the floor.
+  try {
+    const perDay = CONFIG.VIDEOS_PER_DAY * 3;
+    (state as any).bank_topup = await topUpBank(perDay);
+    saveRun(state);
+  } catch (e) {
+    // Generation is an optimiser. A cycle that cannot generate still posts today's
+    // videos from the stock it has, and posts fewer tomorrow — it never repeats.
+    warn("bank top-up failed (continuing on existing stock)", { err: e instanceof Error ? e.message : String(e) });
+    state.errors.push("bank top-up: " + (e instanceof Error ? e.message : String(e)));
+  }
+
   // (b) plan wave 1 at the CEILING. Planning the ceiling rather than the floor is
   // the OVERSAMPLE: gate rejections and transient failures come out of the headroom
   // instead of out of the day's floor. It cannot breach the per-day/platform cap —
   // only a video that clears every gate becomes a post.
+  //
+  // WHEN THE BANK RUNS THIN THIS SHIPS FEWER VIDEOS, and that is the designed
+  // behaviour rather than a shortfall to paper over: candidateQuestions() filters
+  // against the used-sigs ledger, so the loop CANNOT re-serve a published question.
+  // Degrading to a smaller batch is the graceful end of that guarantee; repeating
+  // would be the failure it exists to prevent.
   if (!state.videos.length) {
     state.videos = await planBatch(runId, ceiling);
     state.summary.planned = state.videos.length;
