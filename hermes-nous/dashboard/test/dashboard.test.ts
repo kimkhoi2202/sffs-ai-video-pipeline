@@ -19,6 +19,7 @@ import {
   resolveReplicationView, REPLICATION_HARD_CAP,
   buildVariantMap, projectScheduledPosts, resolvePostVariant, idKey,
   summarizeSkipRate, SKIP_TARGET_PCT,
+  requiredSkipBand, SKIP_VIEW_PROJECTIONS,
 } from "../data.ts";
 import { computeGoalProgress, GOAL, WINDOW_START, goalWindowStart } from "../goal.ts";
 import { esc, page, abTestLabel } from "../render.ts";
@@ -579,9 +580,9 @@ test("computeGoalProgress: BEFORE kickoff ⇒ pending, full window clock, runnin
   assert.equal(gp.combined.posts, 3);
   // mandate targets (combined full; per-platform a THIRD each now that YouTube is in
   // the views universe; followers 500 each / 1k combined, IG + TikTok only). Likes dropped.
-  assert.equal(gp.combined.views.target, 500_000);
-  assert.equal(gp.instagram.views.target, 500_000 / 3);
-  assert.equal(gp.youtube.views.target, 500_000 / 3);
+  assert.equal(gp.combined.views.target, 200_000);
+  assert.equal(gp.instagram.views.target, 200_000 / 3);
+  assert.equal(gp.youtube.views.target, 200_000 / 3);
   assert.equal(gp.instagram.followers.target, 500);
   assert.equal(gp.youtube.followers.target, 0, "there is no YouTube follower goal");
   assert.equal(gp.youtube.followers.value, null, "and it reads pending, never a fake 0/500");
@@ -595,7 +596,8 @@ test("computeGoalProgress: BEFORE kickoff ⇒ pending, full window clock, runnin
   // no observed pace before kickoff, but the honest "needed/day" mountain is finite
   assert.equal(gp.instagram.paceViewsPerDay, null);
   assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 700) / GOAL.windowDays);
-  assert.ok(gp.combined.neededViewsPerDay > 35_000); // cold account ⇒ big daily pace toward 500k
+  // The retarget's whole point: a pace a batch can plausibly reach, not 35,700/day.
+  assert.equal(Math.round(gp.combined.neededViewsPerDay!), 14_236, "cold account, 200k over 14 days");
   // "what's moving the needle": arms aggregated by views
   assert.equal(gp.topArmsByViews[0].arm, "hook-a");
   assert.equal(gp.topArmsByViews[0].views, 500);
@@ -707,6 +709,81 @@ test("summarizeSkipRate: 55% is the wall the mandate needs, and at-or-under coun
   assert.equal(summarizeSkipRate([reel(55, 1)], NOW_SKIP).delta, null);
 });
 
+// ── THE TARGET'S DEPENDENCY: which band 200,000 actually needs ───────────────
+test("requiredSkipBand: picks the LEAST demanding measured band that still reaches the target", () => {
+  // 200,000 clears 50-55% (215,000) and does NOT clear 55-60% (181,000), so the
+  // required band is 50-55% — not the best band on the table, the cheapest one that works.
+  const band = requiredSkipBand(200_000);
+  assert.equal(band?.label, "50–55%");
+  assert.equal(band?.to, 55);
+  assert.equal(band?.projectedViews, 215_000);
+  // A softer target resolves to a softer band rather than over-demanding.
+  assert.equal(requiredSkipBand(150_000)?.label, "55–60%");
+  assert.equal(requiredSkipBand(30_000)?.label, "~70%");
+  // And a target that only the best band reaches resolves to the best band.
+  assert.equal(requiredSkipBand(250_000)?.label, "under 50%");
+});
+
+test("requiredSkipBand: an unreachable target is NULL, not the best band", () => {
+  // This is the finding that produced the retarget. 500,000 was above every band the
+  // account has ever measured, so there is no skip rate that reaches it — and saying
+  // "get under 50%" would have implied the target was merely hard. It was not available.
+  assert.equal(requiredSkipBand(500_000), null);
+  const best = Math.max(...SKIP_VIEW_PROJECTIONS.map((b) => b.projectedViews));
+  assert.equal(requiredSkipBand(best + 1), null);
+  assert.ok(GOAL.views <= best, "the live target must be reachable from some measured band");
+});
+
+test("requiredSkipBand: the band the live target needs is the band the headline enforces", () => {
+  // The headline tracks the median against SKIP_TARGET_PCT while the goal card states
+  // the band the target depends on. If those two ever disagree the page is arguing with
+  // itself — one number to hit, a different one being measured against.
+  assert.equal(requiredSkipBand(GOAL.views)?.to, SKIP_TARGET_PCT);
+});
+
+test("page: the goal card states the target's dependency — band, projection, live gap", () => {
+  // A view target with no lever beside it is weather. The number, the skip rate it
+  // requires, and where the median actually sits have to be readable in one glance.
+  const data = emptyPageData();
+  (data as any).scheduled = {
+    ok: true, posts: [], count: 0, by_platform: {}, by_status: {},
+    experiment: { target: 0, hook_scheduled: 0, hook_excluded: 0, hook_posted: 0, control_scheduled: 0, control_posted: 0, hook_with_data: 0, hook_median_skip: null, control_median_skip: null, on_track: false },
+    skip: summarizeSkipRate([reel(69.3, 1)], NOW_SKIP),
+    source: "test", as_of: "2026-08-03T12:00:00Z",
+  };
+  const html = page(data);
+  assert.match(html, /Requires a median 3s skip rate in the <b>50–55%<\/b> band/);
+  assert.match(html, /projects <b>215,000<\/b> views over the 14-day window/);
+  assert.match(html, /Current median <b>69\.3%<\/b> is <b>14\.3 points<\/b> above the <b>55%<\/b>/);
+  // it sits with the target, not off in its own panel
+  const mandateIdx = html.indexOf("200,000</b> views combined");
+  const depIdx = html.indexOf("Requires a median 3s skip rate");
+  assert.ok(mandateIdx > -1 && depIdx > mandateIdx, "the dependency reads directly under the target");
+  assert.ok(depIdx < html.indexOf("Posts &amp; times"));
+});
+
+test("page: a median inside the band reads as met, not as a gap", () => {
+  const data = emptyPageData();
+  (data as any).scheduled = {
+    ok: true, posts: [], count: 0, by_platform: {}, by_status: {},
+    experiment: { target: 0, hook_scheduled: 0, hook_excluded: 0, hook_posted: 0, control_scheduled: 0, control_posted: 0, hook_with_data: 0, hook_median_skip: null, control_median_skip: null, on_track: false },
+    skip: summarizeSkipRate([reel(52, 1)], NOW_SKIP),
+    source: "test", as_of: "2026-08-03T12:00:00Z",
+  };
+  const html = page(data);
+  assert.match(html, /Current median <b>52\.0%<\/b> is under the <b>55%<\/b> that band needs/);
+  assert.match(html, /class="gdep gdep-good"/);
+  assert.doesNotMatch(html, /points<\/b> above the/);
+});
+
+test("page: with no matured reels the dependency states the band but NOT a fabricated gap", () => {
+  // The band is a property of the target and is knowable with zero data. The gap is not.
+  const html = page(emptyPageData());
+  assert.match(html, /Requires a median 3s skip rate in the <b>50–55%<\/b> band/);
+  assert.match(html, /Current median is <b>pending<\/b>/);
+  assert.doesNotMatch(html, /is <b>0\.0 points<\/b> above/);
+});
+
 test("page: the HEADLINE is skip rate against the threshold, above the view bars", () => {
   // Views are the goal, skip rate is the lever. An operator staring at a view counter
   // has nothing to act on, so the number at the top of the page has to be the lever.
@@ -725,7 +802,7 @@ test("page: the HEADLINE is skip rate against the threshold, above the view bars
   // It is ABOVE the view bars, and above everything else on the page.
   const skipIdx = html.indexOf("MEDIAN 3s SKIP RATE");
   assert.ok(skipIdx > -1);
-  assert.ok(skipIdx < html.indexOf("500,000</b> views combined"), "the lever leads the goal card");
+  assert.ok(skipIdx < html.indexOf("200,000</b> views combined"), "the lever leads the goal card");
   assert.ok(skipIdx < html.indexOf("Posts &amp; times"));
 });
 
@@ -740,11 +817,15 @@ test("page: GOAL panel renders FRONT-AND-CENTER with the exact mandate targets +
   const html = page(emptyPageData());
   assert.match(html, /Hermes mandate — live 14-day trajectory/);
   assert.match(html, /KICKOFF PENDING/); // no goal data ⇒ pending panel
-  // the exact mandate numbers are on the page (500k views + 500 followers each; NO likes)
-  assert.match(html, /500,000<\/b> views combined/);
+  // the exact mandate numbers are on the page (200k views + 500 followers each; NO likes)
+  assert.match(html, /200,000<\/b> views combined/);
   assert.match(html, /500<\/b> followers on EACH/);
   assert.doesNotMatch(html, /likes combined/i); // likes removed from the mandate line
-  assert.doesNotMatch(html, /200,000/); // old likes target gone
+  // 200,000 was the OLD LIKES target and this line used to ban the digits outright. It
+  // is now the VIEWS target, so the guard names what it was really protecting: no
+  // like/engagement target on the page, whatever number it would have been written as.
+  assert.doesNotMatch(html, /likes (?:target|goal)/i);
+  assert.doesNotMatch(html, /<b>[\d,]+<\/b> likes/i);
   // FRONT-AND-CENTER: the GOAL card comes before SCHEDULED and Cycle status
   const goalIdx = html.indexOf("Hermes mandate");
   const schedIdx = html.indexOf("Posts &amp; times");

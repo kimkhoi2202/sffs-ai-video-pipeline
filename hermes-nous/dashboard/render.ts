@@ -13,7 +13,7 @@
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
 import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView, LeadPolicyView, ScheduledPost, SkipRateHeadline } from "./data.ts";
-import { summarizeExperiment } from "./data.ts";
+import { summarizeExperiment, requiredSkipBand } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
 
@@ -904,6 +904,37 @@ function skipHeadline(sk: SkipRateHeadline | undefined): string {
   </div>`;
 }
 
+/**
+ * THE TARGET AND ITS LEVER, TOGETHER.
+ *
+ * A view target on its own reports the weather. This states the skip-rate band the
+ * target actually depends on and where the live median sits against it, so the
+ * number and the only measured thing that moves it are never read apart. The
+ * headline above already tracks the median; this is what ties it to the goal.
+ *
+ * A BAND, NOT A POINT. The projections behind it come from bucketed reach medians,
+ * so there is no honest single "required skip rate" to print and none is invented.
+ * When NO measured band reaches the target, it says exactly that rather than
+ * clamping to the best band and implying the target is merely difficult.
+ */
+function goalDependency(sk: SkipRateHeadline | undefined): string {
+  const band = requiredSkipBand(GOAL.views);
+  if (!band) {
+    return `<p class="gdep gdep-bad"><b>${gInt(GOAL.views)}</b> views is above every skip-rate band this account has measured — no batch quality it has ever posted reaches it at any cadence.</p>`;
+  }
+  const caveat = band.caveat ? ` <span class="muted">(${esc(band.caveat)})</span>` : "";
+  const requires = `Requires a median 3s skip rate in the <b>${esc(band.label)}</b> band${caveat}, which projects <b>${gInt(band.projectedViews)}</b> views over the ${esc(String(GOAL.windowDays))}-day window.`;
+  if (!sk || sk.median == null) {
+    return `<p class="gdep gdep-pending">${requires} Current median is <b>pending</b> — nothing has matured yet, so the gap to it is not yet knowable.</p>`;
+  }
+  const met = sk.median <= band.to;
+  const gap = Math.round((sk.median - band.to) * 10) / 10;
+  const where = met
+    ? `Current median <b>${sk.median.toFixed(1)}%</b> is under the <b>${esc(String(band.to))}%</b> that band needs.`
+    : `Current median <b>${sk.median.toFixed(1)}%</b> is <b>${gap.toFixed(1)} points</b> above the <b>${esc(String(band.to))}%</b> that band needs.`;
+  return `<p class="gdep ${met ? "gdep-good" : "gdep-bad"}">${requires} ${where}</p>`;
+}
+
 function goalPanel(gp: GoalProgress, sk?: SkipRateHeadline): string {
   const kickoffChip = gp.armed
     ? `<span class="chip c-ok">KICKOFF ARMED · window t0 ${esc(gp.since)}</span>`
@@ -935,10 +966,13 @@ function goalPanel(gp: GoalProgress, sk?: SkipRateHeadline): string {
     ${gScopeBlock("Instagram", gp.instagram, gp.armed)}
     ${gScopeBlock("TikTok", gp.tiktok, gp.armed)}
   </div>`;
-  const perPlatNote = `<p class="muted" style="margin:10px 0 4px">Per-platform view bars measure against ½ of the combined mandate (${gInt(GOAL.views / 2)} views each); the combined bars use the full target. Followers are ${gInt(GOAL.followersPerPlatform)} on each platform.</p>`;
+  // Read the per-platform target off the computed scope rather than re-deriving it.
+  // This note said "½ (250,000 each)" while the bars were already splitting three ways
+  // — it had not been updated when YouTube joined the rollup on 2026-08-02.
+  const perPlatNote = `<p class="muted" style="margin:10px 0 4px">Per-platform view bars measure against an equal share of the combined mandate (${gInt(gp.instagram.views.target)} views each, across the three publishing networks); the combined bars use the full target. Followers are ${gInt(GOAL.followersPerPlatform)} on each platform.</p>`;
   const arms = `<div class="gscope-h" style="margin-top:14px"><span class="gscope-t">What's moving the needle</span> <span class="muted">top arms by views within the window (ab-database variant.arm / family)</span></div>
     ${gArmsTable("Top arms by views", gp.topArmsByViews, "views")}`;
-  return `${skipHeadline(sk)}${mandate}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
+  return `${skipHeadline(sk)}${mandate}${goalDependency(sk)}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
 }
 
 // ── SCHEDULED posts panel (post-KICKOFF) — mirrored LIVE from Metricool ───────
@@ -1449,6 +1483,11 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .sh-pill.sh-down{background:var(--yellow)}
 .sh-sub{font-size:12.5px;line-height:1.5;max-width:76ch}
 @media(max-width:560px){.sh-v{font-size:40px}}
+/* The target's dependency: a view number with no lever beside it is just weather. */
+.gdep{font-size:13px;line-height:1.55;max-width:82ch;border-left:5px solid var(--ink);border-radius:0 8px 8px 0;padding:8px 12px;margin:0 0 12px}
+.gdep-bad{background:#ffe3de;border-left-color:var(--coral)}
+.gdep-good{background:var(--mint);border-left-color:var(--green)}
+.gdep-pending{background:#eee;border-left-color:#999;color:#444}
 .gtwo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:4px}
 .gscope{border:3px solid var(--ink);border-radius:14px;padding:14px;background:var(--cream);margin-top:10px}
 .gscope-big{background:var(--paper);box-shadow:6px 6px 0 0 var(--ink)}

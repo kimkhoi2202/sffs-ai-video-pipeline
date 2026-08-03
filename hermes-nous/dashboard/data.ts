@@ -896,7 +896,7 @@ export interface ScheduledView {
 /**
  * The 3-second skip rate the goal requires, in percent.
  *
- * 500,000 views is the target; skip rate is the only measured lever that can reach it,
+ * 200,000 views is the target; skip rate is the only measured lever that can reach it,
  * so this is the number the operator is actually steering. Against 126 live Instagram
  * reels (2026-07-20..2026-08-03) skip rate predicts reach at Spearman -0.709, monotonic
  * across all eight buckets with a 10.7x spread from best to worst:
@@ -913,6 +913,70 @@ export interface ScheduledView {
 export const SKIP_TARGET_PCT = 55;
 /** Days of published reels the headline median is taken over. */
 export const SKIP_WINDOW_DAYS = 7;
+
+// ── WHAT A BAND IS WORTH IN VIEWS ─────────────────────────────────────────────
+/**
+ * A skip-rate band and the combined views it projects over one full goal window at
+ * the current cadence. This is what lets the panel state the view target and the
+ * thing that moves it in the same breath, instead of showing a number with no lever
+ * attached.
+ *
+ * COARSE ON PURPOSE. The projections descend from bucketed reach medians, so the
+ * honest unit is a band, not a point. "52.4% earns 203,000" would be precision this
+ * data does not have; "land in 50-55% and the target is reachable" is what it
+ * supports. `to` is therefore the number that matters operationally — it is the
+ * threshold a median has to get UNDER to be in the band.
+ *
+ * NOT A PARTITION. 60-70% has no row: these are the bands that were actually
+ * projected, not a fitted curve over the whole range, and inventing the missing
+ * rows would be inventing data.
+ */
+export interface SkipBandProjection {
+  /** inclusive lower bound in percent; null = open below ("under 50%"). */
+  from: number | null;
+  /** the threshold a median must get under to be in this band, in percent. */
+  to: number;
+  /** how the band is written on the page. */
+  label: string;
+  /** combined views this band projects over one full window. */
+  projectedViews: number;
+  /** stated inline when the band's sample is thin enough that a reader should know. */
+  caveat?: string;
+}
+
+/**
+ * The measured band -> window-views projections, best band first.
+ *
+ * Recorded 2026-08-03 against the same 126 live reels as the reach table above, at
+ * 11 posts per network per day over a 14-day window. The status-quo row is what the
+ * account was actually doing when the target was set.
+ */
+export const SKIP_VIEW_PROJECTIONS: readonly SkipBandProjection[] = Object.freeze([
+  { from: null, to: 50, label: "under 50%", projectedViews: 274_000, caveat: "best ever, n=2" },
+  { from: 50, to: 55, label: "50–55%", projectedViews: 215_000 },
+  { from: 55, to: 60, label: "55–60%", projectedViews: 181_000 },
+  { from: 65, to: 75, label: "~70%", projectedViews: 31_000, caveat: "status quo" },
+]);
+
+/**
+ * The least demanding measured band that still reaches `targetViews`.
+ *
+ * NULL MEANS THE TARGET IS NOT REACHABLE from anything this account has measured —
+ * which is not an error case, it is the single most useful thing this function can
+ * say. 500,000 returned null against every band, and that is why the target is now
+ * 200,000. A panel that renders null as "no measured band reaches this" is telling
+ * the truth; one that clamps to the best band is not.
+ */
+export function requiredSkipBand(
+  targetViews: number,
+  bands: readonly SkipBandProjection[] = SKIP_VIEW_PROJECTIONS,
+): SkipBandProjection | null {
+  const reaching = bands.filter((b) => b.projectedViews >= targetViews);
+  if (reaching.length === 0) return null;
+  // Least demanding = smallest projection that still clears the bar, i.e. the band
+  // requiring the smallest improvement rather than the best band on the table.
+  return reaching.reduce((a, b) => (b.projectedViews < a.projectedViews ? b : a));
+}
 
 export interface SkipRateHeadline {
   /** median skip % over the last SKIP_WINDOW_DAYS; null when nothing has matured. */

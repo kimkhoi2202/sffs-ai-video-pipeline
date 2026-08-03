@@ -1,7 +1,7 @@
 /**
  * goal.ts — HERMES'S MANDATE, encoded as the loop's optimization target.
  *
- *   GOAL: 500,000 views in 14 DAYS, and 500 followers on EACH of Instagram and
+ *   GOAL: 200,000 views in 14 DAYS, and 500 followers on EACH of Instagram and
  *   TikTok. (Likes were dropped from the mandate — views + per-platform
  *   followers only; no like/engagement target anywhere in the goal.)
  *
@@ -26,8 +26,23 @@ import { kickoffStatus } from "./kickoff.ts";
 
 // ── THE MANDATE — SINGLE SOURCE OF TRUTH (edit these to change the target) ─────
 export const GOAL = Object.freeze({
-  /** combined view target over the window, across every publishing network. */
-  views: 500_000,
+  /**
+   * Combined view target over the window, across every publishing network.
+   *
+   * 500,000 -> 200,000 on 2026-08-03, by owner decision. This is not a softened
+   * ambition, it is a reachable one: 500,000 was above EVERY skip-rate band this
+   * account has ever measured. The best median it has ever posted (under 50%, n=2)
+   * projects 274,000 views over the window and the status-quo ~70% median projects
+   * 31,000, so the old target could not be reached from any observed batch quality.
+   * A target no measured band reaches is one the loop cannot steer toward.
+   *
+   * 200,000 lands inside the 50-55% band (projects ~215,000) and outside 55-60%
+   * (181,000) — so it is reachable, and reachable ONLY if the median 3s skip rate
+   * improves about fifteen points from the 69.3% it sat at when this was set. That
+   * dependency is rendered next to the number rather than left implicit; the band
+   * table lives in hermes-nous/dashboard/data.ts (SKIP_VIEW_PROJECTIONS).
+   */
+  views: 200_000,
   /**
    * follower target on EACH platform (IG and TikTok independently), i.e. 500 IG
    * AND 500 TikTok. This is "per platform", NOT a combined total — flip this one
@@ -69,7 +84,7 @@ export const GOAL = Object.freeze({
  * gets its own, and the dashboard shows both.
  *
  * COST, STATED PLAINLY: only posts published at/after this instant count toward the
- * 500,000. The 44,204 views earned in the first window are NOT carried forward — they
+ * target. The 44,204 views earned in the first window are NOT carried forward — they
  * belong to a window that closed. The panel labels the prior tally rather than hiding it.
  */
 export const WINDOW_START: string | null = "2026-08-03T22:00:00.000Z";

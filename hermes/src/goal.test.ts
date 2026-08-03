@@ -15,10 +15,12 @@ const post = (platform: string, views: number, likes: number, posted_at: string)
   metrics: { video_views: views, reactions: likes },
 });
 
-test("the encoded target is the mandate: 500k views / 14 days + 500 followers each (no likes goal)", () => {
-  assert.equal(GOAL.views, 500_000);
+test("the encoded target is the mandate: 200k views / 14 days + 500 followers each (no likes goal)", () => {
+  // 500,000 -> 200,000 by owner decision 2026-08-03: 500,000 was above every skip-rate
+  // band this account has measured, so it was not a target the loop could steer toward.
+  assert.equal(GOAL.views, 200_000);
   assert.equal(GOAL.followers_each, 500);
-  assert.equal(GOAL.days, 14, "extended 7 -> 14 by owner decision 2026-08-03");
+  assert.equal(GOAL.days, 14, "window length unchanged by the retarget");
   // YouTube joined the VIEWS universe on 2026-08-02. It had been half of everything
   // published and contributed nothing to the rollup — not zero, absent.
   assert.deepEqual([...GOAL.platforms], ["instagram", "tiktok", "youtube"]);
@@ -87,7 +89,10 @@ test("WINDOW: 14 days from the anchor is what the trajectory is measured against
   assert.equal(g.totals.views, 10_000, "the first window's views do not carry forward");
   assert.equal(g.days_left, 7);
   assert.equal(g.window_days, 14);
-  assert.equal(g.pace.views_needed_per_day, 70_000);
+  // Derived from the target, not restated: the pace has to follow GOAL.views whenever
+  // it is retargeted, which is the property that broke when 500,000 was hardcoded here.
+  assert.equal(g.pace.views_needed_per_day, Math.round((GOAL.views - 10_000) / 7));
+  assert.equal(g.pace.views_needed_per_day, 27_143, "200,000 target, 10k banked, 7 days left");
 });
 
 test("after kickoff: per-platform views/likes aggregate from real post metrics", () => {
@@ -110,10 +115,24 @@ test("after kickoff: per-platform views/likes aggregate from real post metrics",
   assert.equal(g.days_left, 13);
   // pace: ~5000 views in 1 day; need the rest over 13 days
   assert.equal(g.pace.views_per_day, 5000);
-  assert.ok(g.pace.views_needed_per_day > 35000, "needs a big daily pace (honest stretch toward 500k)");
-  assert.equal(g.pace.on_track_views, false); // 5k << 500k*(1/14)
+  assert.equal(g.pace.views_needed_per_day, Math.round((GOAL.views - 5000) / 13), "the required pace tracks the target");
+  assert.equal(g.pace.on_track_views, false); // 5k is under GOAL.views*(1/14)
   // likes are no longer part of the goal shape
   assert.equal((g.totals as Record<string, unknown>).likes, undefined);
+});
+
+test("RETARGET SAFETY: every derived trajectory number follows GOAL.views", () => {
+  // Retargeting only means something if the whole trajectory moves with the constant.
+  // Anything left pinned to a literal would keep rendering the OLD mandate while the
+  // constant claimed the new one — the exact failure this suite exists to catch.
+  const now = new Date("2026-08-10T22:00:00.000Z"); // 7 of the 14 days spent
+  const banked = 50_000;
+  const g = computeGoalProgress([post("instagram", banked, 0, "2026-08-05T12:00:00Z")], WINDOW_START, {}, now);
+  assert.equal(g.target.views, GOAL.views);
+  assert.equal(g.pct.views, banked / GOAL.views);
+  assert.equal(g.pace.views_needed_per_day, Math.round((GOAL.views - banked) / 7));
+  // "on track" is measured against the elapsed fraction of the target, not a literal.
+  assert.equal(g.pace.on_track_views, banked >= GOAL.views * 0.5);
 });
 
 test("followers are honest-pending (null) when unmeasured", () => {

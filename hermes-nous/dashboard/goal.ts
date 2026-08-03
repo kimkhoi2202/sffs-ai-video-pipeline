@@ -7,7 +7,7 @@
  * testable (see test/dashboard.test.ts) and can never leak anything.
  *
  * THE MANDATE (fixed constants below):
- *   500,000 views in 14 DAYS (combined across IG + TikTok + YouTube), and 500
+ *   200,000 views in 14 DAYS (combined across IG + TikTok + YouTube), and 500
  *   followers on EACH of Instagram and TikTok. (Likes are NOT a goal metric — no
  *   like target or trajectory anywhere in the goal.)
  *
@@ -26,8 +26,15 @@
  * Combined = IG + TikTok.
  */
 export const GOAL = Object.freeze({
-  /** combined (IG + TikTok + YouTube) view target over the window. */
-  views: 500_000,
+  /**
+   * Combined (IG + TikTok + YouTube) view target over the window.
+   *
+   * 500,000 -> 200,000 on 2026-08-03 by owner decision, and MUST match
+   * hermes/src/goal.ts GOAL.views — see there for why 200,000 rather than a rounder
+   * number: it is the largest target that any skip-rate band this account has
+   * actually measured still reaches. The panel renders which band that is.
+   */
+  views: 200_000,
   /**
    * follower target on EACH platform (IG and TikTok independently) — i.e. 500 on
    * IG AND 500 on TikTok. This is "per platform", NOT a combined total; flip this
