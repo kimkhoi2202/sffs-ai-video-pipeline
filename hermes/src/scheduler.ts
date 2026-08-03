@@ -69,6 +69,29 @@ function offsetMs(date: Date, tz: string = TZ): number {
   return Date.UTC(p.y, p.mo - 1, p.d, p.h, p.mi, p.s) - date.getTime();
 }
 
+/**
+ * Render a real instant as an ISO-8601 string that CARRIES `tz`'s offset, e.g.
+ * "2026-08-03T00:21:00-05:00".
+ *
+ * Exists because the two ways a timestamp gets read in this repo disagree unless the
+ * offset is present. rollup.ts's timeBucket() reads the hour AS WRITTEN — which is only
+ * the account's posting hour when the string says which zone it is written in — while
+ * everything else calls Date.parse(), which resolves a naive string against the BOX's
+ * zone. An offset-carrying string is the one form both read correctly.
+ */
+export function isoInZone(ms: number, tz: string = TZ): string {
+  const d = new Date(ms);
+  const p = parts(d, tz);
+  const off = offsetMs(d, tz);
+  const a = Math.abs(off);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const sign = off >= 0 ? "+" : "-";
+  return (
+    `${p.y}-${pad(p.mo)}-${pad(p.d)}T${pad(p.h)}:${pad(p.mi)}:${pad(p.s)}` +
+    `${sign}${pad(Math.floor(a / 3_600_000))}:${pad(Math.floor((a % 3_600_000) / 60_000))}`
+  );
+}
+
 /** Chicago wall-clock hour of a UTC instant. */
 export function chicagoHour(date: Date): number {
   return parts(date).h;

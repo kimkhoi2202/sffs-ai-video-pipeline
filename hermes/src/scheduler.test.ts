@@ -5,7 +5,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { nextSlots, isWithinWindow, chicagoHour, MIN_GAP_MIN, WINDOW_OPEN_HOUR, WINDOW_CLOSE_HOUR } from "./scheduler.ts";
+import { nextSlots, isWithinWindow, chicagoHour, MIN_GAP_MIN, WINDOW_OPEN_HOUR, WINDOW_CLOSE_HOUR, isoInZone } from "./scheduler.ts";
 
 const dayFrom = Date.UTC(2026, 6, 20, 12, 0, 0); // fixed base (July 2026 = CDT)
 
@@ -171,4 +171,24 @@ test("collision-aware scales to the daily cap (6 already-scheduled + 6 new) with
   for (let i = 1; i < all.length; i++) {
     assert.ok(all[i] - all[i - 1] >= gapMs, `combined gap ${(all[i] - all[i - 1]) / 60000}min < ${MIN_GAP_MIN}`);
   }
+});
+
+// ── isoInZone — the offset-carrying render used by the analytics read boundary ──
+test("isoInZone: renders a real instant on the Chicago clock WITH its offset", () => {
+  assert.equal(isoInZone(Date.parse("2026-08-03T05:21:00Z")), "2026-08-03T00:21:00-05:00");
+});
+
+test("isoInZone: round-trips back to the same instant", () => {
+  const ms = Date.parse("2026-07-29T22:00:00Z");
+  assert.equal(Date.parse(isoInZone(ms)), ms);
+});
+
+test("isoInZone: honours DST on both sides of the transition", () => {
+  assert.equal(isoInZone(Date.parse("2026-01-15T12:00:00Z")), "2026-01-15T06:00:00-06:00"); // CST
+  assert.equal(isoInZone(Date.parse("2026-07-15T12:00:00Z")), "2026-07-15T07:00:00-05:00"); // CDT
+});
+
+test("isoInZone: an explicit zone overrides the default", () => {
+  assert.equal(isoInZone(Date.parse("2026-08-03T05:21:00Z"), "UTC"), "2026-08-03T05:21:00+00:00");
+  assert.equal(isoInZone(Date.parse("2026-08-03T05:21:00Z"), "Europe/Madrid"), "2026-08-03T07:21:00+02:00");
 });

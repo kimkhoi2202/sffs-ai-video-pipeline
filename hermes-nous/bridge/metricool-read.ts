@@ -113,6 +113,12 @@ async function main(): Promise<void> {
         views: r.views,
         skipRate: r.skipRate,
         averageWatchTime: r.averageWatchTime,
+        // Both of these were already mapped in metricool.ts and then dropped right
+        // here, so no post ever carried them past the bridge. durationSeconds is not
+        // cosmetic: it correlates with reach at about -0.27 on this account, which
+        // makes it one of the few non-skip signals the reel rows actually contain.
+        durationSeconds: r.durationSeconds,
+        saves: r.saves,
       }));
       process.stdout.write(JSON.stringify({ ok: true, reels, as_of }) + "\n");
       return;
