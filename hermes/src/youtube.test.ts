@@ -125,24 +125,25 @@ test("LANE: YouTube slots keep the window + ODD-minute invariants", () => {
 
 // ── the budget guard ─────────────────────────────────────────────────────────
 
-test("BUDGET: a fan-out costs one record PER NETWORK — 12x3 is 36/day, not 12", () => {
+test("BUDGET: a fan-out costs one record PER NETWORK — 11x3 is 33/day, not 11", () => {
   const m = monthlyRecords(31);
-  assert.equal(m.byNetwork.instagram, 12);
-  assert.equal(m.byNetwork.youtube, 12);
-  assert.equal(m.byNetwork.tiktok, 12, "TikTok is live again and therefore costs records");
-  assert.equal(m.perDay, 36);
-  assert.equal(m.perMonth, 1116);
+  assert.equal(m.byNetwork.instagram, 11);
+  assert.equal(m.byNetwork.youtube, 11);
+  assert.equal(m.byNetwork.tiktok, 11, "TikTok is live again and therefore costs records");
+  assert.equal(m.perDay, 33);
+  assert.equal(m.perMonth, 1023);
   assert.equal(budgetForecast(31).budget, 600);
 });
 
-test("BUDGET: the guard is HORIZON-dependent, and the campaign's horizon fits", () => {
+test("BUDGET: the guard is HORIZON-dependent, and the WINDOW's horizon fits", () => {
   // The 31-day answer is "no" and that is the intended shape of a sprint. The answer
-  // that matters is the 14 days left, plus the 17 records already spent this month.
-  assert.equal(budgetForecast(31).withinBudget, false, "a full month at 36/day does not fit — knowingly");
+  // that matters is the 14-day goal window, against the live counter on 2026-08-03:
+  // 57 published and 58 records already on the calendar leaves 485, and 33 x 14 = 462.
+  assert.equal(budgetForecast(31).withinBudget, false, "a full month at 33/day does not fit — knowingly");
   const sprint = budgetForecast(14);
-  assert.equal(sprint.perMonth, 504);
+  assert.equal(sprint.perMonth, 462);
   assert.ok(sprint.withinBudget, sprint.reason);
-  assert.ok(504 + 17 < CONFIG.MC_MONTHLY_POST_BUDGET, "521 of 600, with slack");
+  assert.ok(462 <= 600 - 57 - 58, "462 of the 485 records still unspent on 2026-08-03");
 });
 
 test("BUDGET: the LIVE guard still fails closed, whatever the forecast says", () => {
@@ -158,8 +159,8 @@ test("BUDGET: Instagram is served FIRST when headroom is short", () => {
   // NETWORKS order is load-bearing: the network that carries the audience, and the only
   // one that reports a skip rate, must not be the one that starves.
   const d = decide(15);
-  assert.equal(d.find((x) => x.network === "instagram")!.slots, 12);
-  assert.equal(d.find((x) => x.network === "youtube")!.slots, 3, "YouTube absorbs the shortfall");
+  assert.equal(d.find((x) => x.network === "instagram")!.slots, 11);
+  assert.equal(d.find((x) => x.network === "youtube")!.slots, 4, "YouTube absorbs the shortfall");
   assert.equal(d.find((x) => x.network === "tiktok")!.slots, 0, "and TikTok absorbs the rest of it");
 });
 
@@ -325,11 +326,15 @@ test("PLUMBING: timesByNetwork gives YouTube a bucket (an empty one drops its ga
 test("PLUMBING: config carries a YouTube account id and policy entry", () => {
   assert.ok(CONFIG.ACCOUNTS.youtube, "annotateDb reads CONFIG.ACCOUNTS[platform]");
   assert.ok(CONFIG.ACCOUNT_IDS.includes(CONFIG.ACCOUNTS.youtube));
-  // 12/day on all three, TikTok resumed — the 2026-08-02 volume decision.
+  // 11/day on all three, TikTok resumed — the 2026-08-02 volume decision, trimmed on
+  // 2026-08-03 so the Metricool budget reaches the close of the 14-day window.
   for (const network of ["instagram", "youtube", "tiktok"] as const) {
-    assert.equal(CONFIG.PLATFORM_POLICY[network].perDay, 12, `${network} runs 12/day`);
+    assert.equal(CONFIG.PLATFORM_POLICY[network].perDay, 11, `${network} runs 11/day`);
     assert.equal(CONFIG.PLATFORM_POLICY[network].paused, false, `${network} is live`);
   }
+  // The ceiling and the floor track the policy, or the loop plans a day it cannot place.
+  assert.equal(CONFIG.VIDEOS_PER_DAY, 11);
+  assert.equal(CONFIG.VIDEOS_FLOOR, 11);
   // Spacing is per-network and was NOT touched by the volume change.
   assert.equal(CONFIG.PLATFORM_POLICY.instagram.minGapMinutes, 56);
   assert.equal(CONFIG.PLATFORM_POLICY.youtube.minGapMinutes, 56);

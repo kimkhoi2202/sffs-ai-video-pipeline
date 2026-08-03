@@ -10,7 +10,7 @@ import { execFileSync, spawn } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { CONFIG } from "./config.ts";
 import type { RunState } from "./types.ts";
-import { computeGoalProgress, type GoalProgress, type FollowerSnapshot, type LiveAnalyticsRow } from "./goal.ts";
+import { computeGoalProgress, goalWindowStart, type GoalProgress, type FollowerSnapshot, type LiveAnalyticsRow } from "./goal.ts";
 
 // ── JSON + runs ───────────────────────────────────────────────────────────────
 
@@ -437,7 +437,14 @@ export function liveAnalyticsRows(): LiveAnalyticsRow[] | null {
 export function goalProgress(): GoalProgress {
   const posts = Array.isArray(abDb()?.posts) ? abDb().posts : [];
   const k = kickoffState();
-  return computeGoalProgress(posts, k.since, accountFollowers(), new Date(), liveAnalyticsRows());
+  return computeGoalProgress(
+    posts,
+    goalWindowStart(k.since),
+    accountFollowers(),
+    new Date(),
+    liveAnalyticsRows(),
+    k.since,
+  );
 }
 
 // ── kill-switch (DISPLAY-ONLY) ────────────────────────────────────────────────
@@ -878,9 +885,107 @@ export interface ScheduledView {
   by_platform: Record<string, number>;
   by_status: Record<string, number>;
   experiment: ExperimentView;
+  /** The lever the view target actually depends on. Absent when analytics failed. */
+  skip?: SkipRateHeadline;
   source: string;
   as_of: string;
   error?: string;
+}
+
+// ── SKIP RATE: the headline number ────────────────────────────────────────────
+/**
+ * The 3-second skip rate the goal requires, in percent.
+ *
+ * 500,000 views is the target; skip rate is the only measured lever that can reach it,
+ * so this is the number the operator is actually steering. Against 126 live Instagram
+ * reels (2026-07-20..2026-08-03) skip rate predicts reach at Spearman -0.709, monotonic
+ * across all eight buckets with a 10.7x spread from best to worst:
+ *
+ *     <50%  median reach 1305        65-70%  median reach 157
+ *     50-55%             1058        70-75%              145
+ *     55-60%              849        75-80%              131
+ *     60-65%              296        80%+                123
+ *
+ * The account medians ~70% and therefore lives in the 145 band. The 50-55% band medians
+ * 1,058 reach, which is the band where the target stops being arithmetic fiction — so
+ * 55 is the wall, not a preference. A view counter cannot be acted on; this can.
+ */
+export const SKIP_TARGET_PCT = 55;
+/** Days of published reels the headline median is taken over. */
+export const SKIP_WINDOW_DAYS = 7;
+
+export interface SkipRateHeadline {
+  /** median skip % over the last SKIP_WINDOW_DAYS; null when nothing has matured. */
+  median: number | null;
+  n: number;
+  /** the same median over the window BEFORE it — the trend comparator. */
+  priorMedian: number | null;
+  priorN: number;
+  /** signed change vs the prior window; negative is improvement. null when either is null. */
+  delta: number | null;
+  /** the threshold the mandate requires. */
+  threshold: number;
+  windowDays: number;
+  /** true when the current median is at or under the threshold. */
+  meetingTarget: boolean;
+  /** what that skip rate is currently buying, same window. */
+  medianReach: number | null;
+  medianViews: number | null;
+}
+
+/** A reel row as the read-only analytics bridge emits it. */
+export interface AnalyticsReel {
+  publishedAt?: { dateTime?: string; timezone?: string } | string | null;
+  reach?: number | null;
+  views?: number | null;
+  skipRate?: number | null;
+}
+
+/** Metricool reports publishedAt as a naive local time plus a separate zone. */
+function reelPublishedMs(pa: AnalyticsReel["publishedAt"]): number {
+  if (!pa) return NaN;
+  if (typeof pa === "string") return Date.parse(pa);
+  const dt = pa.dateTime;
+  if (!dt) return NaN;
+  return Date.parse(chicagoNaiveToISO(dt, pa.timezone || "UTC"));
+}
+
+/**
+ * The headline skip-rate reading: current median vs the threshold, plus the trend.
+ *
+ * Pure, so the suite can drive it with fixed rows and a fixed clock. Reels with no skip
+ * rate are EXCLUDED rather than counted as zero — Metricool syncs analytics up to ~24h
+ * behind, and a pending reel scored as 0% would read as a perfect hook.
+ */
+export function summarizeSkipRate(
+  reels: AnalyticsReel[],
+  now: Date = new Date(),
+  windowDays: number = SKIP_WINDOW_DAYS,
+  threshold: number = SKIP_TARGET_PCT,
+): SkipRateHeadline {
+  const nowMs = now.getTime();
+  const win = windowDays * 864e5;
+  const dated = (Array.isArray(reels) ? reels : [])
+    .filter((r) => typeof r?.skipRate === "number")
+    .map((r) => ({ ms: reelPublishedMs(r.publishedAt), skip: r.skipRate as number, reach: r.reach, views: r.views }))
+    .filter((r) => Number.isFinite(r.ms));
+  const cur = dated.filter((r) => r.ms >= nowMs - win);
+  const prior = dated.filter((r) => r.ms >= nowMs - 2 * win && r.ms < nowMs - win);
+  const nums = (xs: (number | null | undefined)[]) => xs.filter((v): v is number => typeof v === "number");
+  const median_ = median(cur.map((r) => r.skip));
+  const priorMedian = median(prior.map((r) => r.skip));
+  return {
+    median: median_,
+    n: cur.length,
+    priorMedian,
+    priorN: prior.length,
+    delta: median_ != null && priorMedian != null ? Math.round((median_ - priorMedian) * 10) / 10 : null,
+    threshold,
+    windowDays,
+    meetingTarget: median_ != null && median_ <= threshold,
+    medianReach: median(nums(cur.map((r) => r.reach))),
+    medianViews: median(nums(cur.map((r) => r.views))),
+  };
 }
 
 /** Format a UTC instant in America/Chicago (DST-correct) — e.g. "Fri Jul 24, 9:39 AM CDT". */
@@ -1079,9 +1184,15 @@ async function computeScheduled(): Promise<ScheduledView> {
 
   // Analytics are best-effort: a published reel with no row yet is PENDING data, not
   // a zero, so a failure here must not blank the whole panel.
+  //
+  // Reaches back TWICE the headline window, unlike the calendar above. The per-card skip
+  // chips only need the posts on screen, but the headline needs a prior window to have a
+  // trend at all, and a trend that only ever reads "—" is not a trend.
+  const analyticsFrom = new Date(Date.now() - 2 * SKIP_WINDOW_DAYS * 864e5).toISOString().slice(0, 19);
   let bySkip = new Map<string, number>();
+  let skip: SkipRateHeadline | undefined;
   try {
-    const a = await runReadBridge("analytics", { from: start, to: end }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS, CONFIG.METRICOOL_READ_BRIDGE);
+    const a = await runReadBridge("analytics", { from: analyticsFrom, to: end }, CONFIG.DRAFTS_BRIDGE_TIMEOUT_MS, CONFIG.METRICOOL_READ_BRIDGE);
     if (a && a.ok === true && Array.isArray(a.reels)) {
       for (const r of a.reels) {
         if (typeof r?.skipRate === "number") {
@@ -1089,6 +1200,7 @@ async function computeScheduled(): Promise<ScheduledView> {
           if (r.platformPostId) bySkip.set(String(r.platformPostId), r.skipRate);
         }
       }
+      skip = summarizeSkipRate(a.reels as AnalyticsReel[]);
     }
   } catch {
     /* leave skip rates null => rendered as "pending" */
@@ -1110,6 +1222,7 @@ async function computeScheduled(): Promise<ScheduledView> {
     ok: true,
     awaiting_approval: awaiting, posts, count: posts.length, by_platform, by_status,
     experiment: summarizeExperiment(posts, CONFIG.HOOK_ARM_TARGET),
+    skip,
     source: "metricool (live, read-only bridge)", as_of: asOf,
   };
 }

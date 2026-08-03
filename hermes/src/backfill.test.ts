@@ -12,7 +12,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { perDayFor, NETWORKS, budgetForecast, monthlyRecords } from "./postingPolicy.ts";
+import { perDayFor, NETWORKS, budgetForecast, monthlyRecords, exhaustionForecast } from "./postingPolicy.ts";
 import { planSlots, countOnDay, localDay, timesByNetwork } from "./loopPublish.ts";
 import { retargetPropsToYouTube, endKeyForCard, RENDER_PLATFORMS } from "./render.ts";
 import { CONFIG } from "./config.ts";
@@ -27,16 +27,17 @@ const ytRow = (dateTime: string, network = "youtube") =>
 // ── The ramp table ───────────────────────────────────────────────────────────
 
 test("RAMP: YouTube opened at 3/day and has now climbed out to the full policy cap", () => {
-  // The ramp COMPLETED. Its terminal step was raised 7 -> 12 with the policy on
-  // 2026-08-02, because perDayFor takes the MINIMUM of the ramp and the policy — a
-  // terminal left at 7 would have silently held YouTube there while the policy said 12.
+  // The ramp COMPLETED. Its terminal step TRACKS the policy (7 -> 12 on 2026-08-02,
+  // 12 -> 11 on 2026-08-03) because perDayFor takes the MINIMUM of the ramp and the
+  // policy — a stale terminal silently holds YouTube below its own cap.
+  const cap = CONFIG.PLATFORM_POLICY.youtube.perDay;
   const start = CONFIG.YT_RAMP_START;
   assert.equal(perDayFor("youtube", "2026-07-28"), 3, "day 0 = 3/day");
   assert.equal(perDayFor("youtube", "2026-07-29"), 3, "day 1 still 3/day");
   assert.equal(perDayFor("youtube", "2026-07-30"), 5, "+2 days = 5/day");
   assert.equal(perDayFor("youtube", "2026-07-31"), 5, "day 3 still 5/day");
-  assert.equal(perDayFor("youtube", "2026-08-01"), 12, "+4 days = the full cap");
-  assert.equal(perDayFor("youtube", "2026-08-02"), 12, "and every day after");
+  assert.equal(perDayFor("youtube", "2026-08-01"), cap, "+4 days = the full cap");
+  assert.equal(perDayFor("youtube", "2026-08-02"), cap, "and every day after");
   assert.equal(start, "2026-07-28");
 });
 
@@ -49,9 +50,9 @@ test("RAMP: it TOPS OUT at the policy cap and never climbs past it", () => {
   assert.ok(maxStep <= CONFIG.PLATFORM_POLICY.youtube.perDay, "no ramp step may exceed the policy perDay");
 });
 
-test("RAMP: it applies to YouTube ONLY — Instagram keeps its full 12 every single day", () => {
+test("RAMP: it applies to YouTube ONLY — Instagram keeps its full cap every single day", () => {
   for (const d of ["2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-01"]) {
-    assert.equal(perDayFor("instagram", d), 12, `instagram must be untouched on ${d}`);
+    assert.equal(perDayFor("instagram", d), CONFIG.PLATFORM_POLICY.instagram.perDay, `instagram must be untouched on ${d}`);
   }
   assert.equal(perDayFor("tiktok", "2026-07-28"), CONFIG.PLATFORM_POLICY.tiktok.perDay, "tiktok cadence preserved for resume");
 });
@@ -114,9 +115,10 @@ test("COLLISION: one batch spanning the ramp sees DIFFERENT caps per day (3,3,5,
 
 test("COLLISION: an INSTAGRAM batch is completely unaffected by the YouTube ramp", () => {
   const now = new Date("2026-07-28T12:30:00Z");
-  const plan = planSlots(12, "instagram", [], "ig-seed", now);
+  const cap = CONFIG.PLATFORM_POLICY.instagram.perDay;
+  const plan = planSlots(cap, "instagram", [], "ig-seed", now);
   const first = plan.spread[0];
-  assert.equal(first.room, 12, "instagram keeps 12/day on a YouTube ramp day");
+  assert.equal(first.room, cap, "instagram keeps its own cap on a YouTube ramp day");
 });
 
 // ── The scheduled posts themselves ───────────────────────────────────────────
@@ -166,23 +168,52 @@ test("BUDGET: the ramp never RAISES the monthly bill — it is costed at the ter
   assert.equal(CONFIG.YT_RAMP_STEPS.at(-1)!.perDay, cap, "the terminal step must converge on the real cap");
 });
 
-test("BUDGET: 36/day is a SPRINT — it does not fit a full month, and does fit the campaign", () => {
-  // Three networks at 12/day is 36 Metricool records a day, because a fan-out costs one
+test("BUDGET: 33/day is a SPRINT — it does not fit a full month, and does fit the WINDOW", () => {
+  // Three networks at 11/day is 33 Metricool records a day, because a fan-out costs one
   // record PER NETWORK. Stated here as arithmetic rather than left as a comment, so a
   // future volume change has to confront it.
   const m = monthlyRecords(31);
-  assert.equal(m.perDay, 36, "instagram 12 + youtube 12 + tiktok 12");
-  assert.equal(m.perMonth, 1116);
+  assert.equal(m.perDay, 33, "instagram 11 + youtube 11 + tiktok 11");
+  assert.equal(m.perMonth, 1023);
 
   const full = budgetForecast(31);
   assert.equal(full.withinBudget, false, "a full month at this cadence does NOT fit the 600 guard — deliberately");
   assert.match(full.reason, /OVER BUDGET/);
 
-  // The horizon that actually matters: 14 days left, and 17 records already spent.
+  // The horizon that actually matters: the 14-day goal window.
   const sprint = budgetForecast(14);
-  assert.equal(sprint.perMonth, 504);
-  assert.ok(504 + 17 <= CONFIG.MC_MONTHLY_POST_BUDGET, "the remaining campaign fits inside the guard");
+  assert.equal(sprint.perMonth, 462);
   assert.ok(sprint.withinBudget, sprint.reason);
+});
+
+test("BUDGET: 11/network is the number that buys the WHOLE window; 12 runs out inside it", () => {
+  // This is the reason the cadence came down on 2026-08-03. Twelve fits the MONTH and
+  // misses the WINDOW, and the days it misses are the last ones — the ones the target is
+  // judged on. The window closes 2026-08-17, fourteen days of posting from 2026-08-03.
+  //
+  // Two live readings taken ninety minutes apart, because the counter moves while you
+  // read it: published/committed shift as scheduled rows publish, but their SUM barely
+  // does, so the verdict holds across both rather than resting on one lucky snapshot.
+  const today = "2026-08-03";
+  for (const [used, committed] of [[55, 82], [57, 58]] as const) {
+    const at12 = exhaustionForecast(used, committed, 36, today);
+    const at11 = exhaustionForecast(used, committed, 33, today);
+    assert.ok(at12.daysLeft < 14, `12/network strands the end of the window (${at12.exhaustsOn})`);
+    assert.ok(at11.daysLeft >= 14, `11/network must reach 2026-08-17, got ${at11.exhaustsOn}`);
+  }
+
+  // And it is the LIVE policy that produces 33, not just a number typed into this test.
+  assert.equal(monthlyRecords().perDay, 33);
+
+  // WHAT EATS THE MARGIN. 33 x 14 = 462 records, against 485 of headroom on the later
+  // reading — 23 spare. The committed side already includes 18 records of a rebus
+  // campaign this loop did not create and does not control; if that campaign is extended
+  // past 2026-08-09 at its current ~4/day, the slack is gone and this number has to come
+  // down again. The guard fails closed at 600, well under the 700 hard cap, so the
+  // failure mode is "the loop stops scheduling", never a Fair Use breach and a manual
+  // account review — which is what makes a margin this thin acceptable at all.
+  assert.ok(485 - 33 * 14 > 0);
+  assert.ok(CONFIG.MC_MONTHLY_POST_BUDGET < CONFIG.MC_MONTHLY_HARD_CAP);
 });
 
 // ── The re-render retarget ───────────────────────────────────────────────────

@@ -205,15 +205,18 @@ test("the cooldown logic is KEPT, not deleted — it still evaluates as it alway
   assert.equal(P.isDark("instagram", before).dark, false);
 });
 
-test("ALL THREE networks are live and take 12/day", () => {
+test("ALL THREE networks are live and take 11/day", () => {
   // TikTok resumed on 2026-08-02, by explicit owner decision and against the evidence
   // (1 view on our best video 22 hours after posting). The point of asserting it here
   // is that resuming must be a DECISION visible in the policy, the same way the pause
   // was — not something that drifts back on a timer.
+  //
+  // 12 -> 11 on 2026-08-03: 33 records/day is what the Metricool headroom buys for the
+  // full 14-day window, where 36 runs out on 2026-08-15 with two days still to play.
   const d = P.decide(600, new Date("2026-08-02T20:00:00Z"));
   for (const network of ["instagram", "youtube", "tiktok"] as const) {
     const x = d.find((n) => n.network === network)!;
-    assert.equal(x.slots, 12, `${network} should take the full 12/day`);
+    assert.equal(x.slots, 11, `${network} should take the full 11/day`);
     assert.equal(x.allowed, true);
     assert.ok(!x.paused, `${network} must not be paused`);
   }
@@ -288,7 +291,7 @@ test("SETTING the pause takes TikTok back out, cleanly", async () => {
 test("pausing TikTok still leaves Instagram exactly as it was", async () => {
   const d = await decideWith({ HERMES_TIKTOK_PAUSED: "true" });
   const ig = d.find((x) => x.network === "instagram");
-  assert.equal(ig.slots, 12);
+  assert.equal(ig.slots, 11);
   assert.equal(ig.minGapMinutes, 56);
   assert.equal(ig.allowed, true);
 });
@@ -304,12 +307,12 @@ test("only the literal 'true' pauses; a lost or garbled env var leaves TikTok LI
   }
   for (const v of ["false", "0", "no", "", "garbage"]) {
     const tt = (await decideWith({ HERMES_TIKTOK_PAUSED: v })).find((x) => x.network === "tiktok");
-    assert.equal(tt.slots, 12, `HERMES_TIKTOK_PAUSED="${v}" must leave TikTok live`);
+    assert.equal(tt.slots, 11, `HERMES_TIKTOK_PAUSED="${v}" must leave TikTok live`);
   }
 });
 
 test("Instagram is unaffected by the TikTok pause at any budget", () => {
-  for (const [budget, want] of [[600, 12], [12, 12], [5, 5]] as const) {
+  for (const [budget, want] of [[600, 11], [11, 11], [5, 5]] as const) {
     const ig = P.decide(budget).find((x) => x.network === "instagram")!;
     assert.equal(ig.slots, want, `budget ${budget} should give Instagram ${want}`);
   }

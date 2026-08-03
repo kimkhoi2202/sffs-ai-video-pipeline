@@ -18,8 +18,9 @@ import {
   resolveScheduledMediaUrl, sanitizeScheduledForPublic,
   resolveReplicationView, REPLICATION_HARD_CAP,
   buildVariantMap, projectScheduledPosts, resolvePostVariant, idKey,
+  summarizeSkipRate, SKIP_TARGET_PCT,
 } from "../data.ts";
-import { computeGoalProgress, GOAL } from "../goal.ts";
+import { computeGoalProgress, GOAL, WINDOW_START, goalWindowStart } from "../goal.ts";
 import { esc, page, abTestLabel } from "../render.ts";
 import { checkBasicAuth, eq } from "../server.ts";
 import type { GateAttempt } from "../types.ts";
@@ -556,19 +557,19 @@ test("LAYOUT: page guards horizontal scroll (overflow-x hidden + wrapped tables 
   assert.match(html, /\.card h2\{[^}]*flex-wrap:wrap/);
 });
 
-// ── GOAL-PROGRESS (Hermes's 7-day mandate) — pure math ───────────────────────
+// ── GOAL-PROGRESS (Hermes's 14-day mandate) — pure math ──────────────────────
 const goalPosts = [
   { platform: "instagram", posted_at: "2026-07-20T10:00:00Z", metrics: { video_views: 100, reactions: 10 }, variant: { arm: "hook-a", family: "hook" } },
   { platform: "tiktok", posted_at: "2026-07-20T11:00:00Z", metrics: { video_views: 200, reactions: 20 }, variant: { arm: "hook-b", family: "hook" } },
   { platform: "instagram", posted_at: "2026-07-21T10:00:00Z", metrics: { video_views: 400, reactions: 5 }, variant: { arm: "hook-a", family: "hook" } },
 ];
 
-test("computeGoalProgress: BEFORE kickoff ⇒ pending, full 7d clock, running totals, followers pending", () => {
+test("computeGoalProgress: BEFORE kickoff ⇒ pending, full window clock, running totals, followers pending", () => {
   const gp = computeGoalProgress(goalPosts, null, null, new Date("2026-07-22T00:00:00Z"));
-  // pending: not armed, no t0, clock reads the full 7 days, not started
+  // pending: not armed, no t0, clock reads the full window, not started
   assert.equal(gp.armed, false);
   assert.equal(gp.since, null);
-  assert.equal(gp.daysLeft, 7);
+  assert.equal(gp.daysLeft, GOAL.windowDays);
   assert.equal(gp.hoursLeft, 0);
   assert.equal(gp.windowClosed, false);
   // running totals over ALL posts (t0 null)
@@ -591,10 +592,10 @@ test("computeGoalProgress: BEFORE kickoff ⇒ pending, full 7d clock, running to
   assert.equal(gp.followersPending, true);
   assert.equal(gp.instagram.followers.value, null);
   assert.equal(gp.combined.followers.value, null);
-  // no observed pace before kickoff, but the honest "needed/day" mountain is finite over 7d
+  // no observed pace before kickoff, but the honest "needed/day" mountain is finite
   assert.equal(gp.instagram.paceViewsPerDay, null);
-  assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 700) / 7);
-  assert.ok(gp.combined.neededViewsPerDay > 70_000); // cold account ⇒ big daily pace toward 500k
+  assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 700) / GOAL.windowDays);
+  assert.ok(gp.combined.neededViewsPerDay > 35_000); // cold account ⇒ big daily pace toward 500k
   // "what's moving the needle": arms aggregated by views
   assert.equal(gp.topArmsByViews[0].arm, "hook-a");
   assert.equal(gp.topArmsByViews[0].views, 500);
@@ -611,7 +612,7 @@ test("computeGoalProgress: AFTER kickoff ⇒ windowed per-platform aggregation +
   );
   assert.equal(gp.armed, true);
   assert.equal(gp.since, new Date(t0).toISOString());
-  assert.equal(gp.daysLeft, 5); // 7 - 2
+  assert.equal(gp.daysLeft, 12); // 14 - 2
   assert.equal(gp.hoursLeft, 0);
   assert.equal(gp.windowClosed, false);
   // windowing: the pre-t0 IG post (10:00) is excluded; only post3 (IG) + post2 (TikTok) count
@@ -622,8 +623,8 @@ test("computeGoalProgress: AFTER kickoff ⇒ windowed per-platform aggregation +
   assert.equal(gp.combined.posts, 2);
   // observed pace over the 2 elapsed days
   assert.equal(gp.combined.paceViewsPerDay, 300); // 600 / 2
-  // needed pace over the remaining 5 days
-  assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 600) / 5);
+  // needed pace over the remaining 12 days
+  assert.equal(gp.combined.neededViewsPerDay, (GOAL.views - 600) / 12);
   // followers now come from the snapshot (not pending)
   assert.equal(gp.followersPending, false);
   assert.equal(gp.instagram.followers.value, 120);
@@ -633,7 +634,7 @@ test("computeGoalProgress: AFTER kickoff ⇒ windowed per-platform aggregation +
 
 test("computeGoalProgress: window closed unmet ⇒ needed=null (∞); target met ⇒ needed=0", () => {
   const t0 = "2026-07-20T00:00:00Z";
-  const closed = computeGoalProgress(goalPosts, t0, null, new Date("2026-07-28T00:00:00Z")); // 8d > 7d
+  const closed = computeGoalProgress(goalPosts, t0, null, new Date("2026-08-04T00:00:00Z")); // 15d > 14d
   assert.equal(closed.windowClosed, true);
   assert.equal(closed.daysLeft, 0);
   assert.equal(closed.combined.neededViewsPerDay, null); // unmet + closed ⇒ impossible
@@ -646,10 +647,98 @@ test("computeGoalProgress: window closed unmet ⇒ needed=null (∞); target met
   assert.ok(met.combined.views.pct >= 100);
 });
 
+test("computeGoalProgress: the window anchor and the kickoff instant are carried separately", () => {
+  // Since 2026-08-03 these are two different facts: when a human armed autonomy, and
+  // when the mandate's clock starts. The panel shows both, so a re-anchored window can
+  // never look like someone quietly re-armed the loop.
+  assert.equal(WINDOW_START, "2026-08-03T22:00:00.000Z");
+  const kickoff = "2026-07-23T17:12:15.000Z";
+  assert.equal(goalWindowStart(kickoff), WINDOW_START, "armed => the explicit anchor wins");
+  assert.equal(goalWindowStart(null), null, "un-armed => no window, whatever the anchor says");
+  const gp = computeGoalProgress([], goalWindowStart(kickoff), null, new Date("2026-08-04T22:00:00.000Z"), null, kickoff);
+  assert.equal(gp.since, WINDOW_START);
+  assert.equal(gp.kickoffSince, kickoff);
+  assert.equal(gp.daysLeft, 13);
+});
+
+// ── THE HEADLINE: median skip rate against the threshold the goal needs ──────
+const reel = (skipRate: number | null, daysAgo: number, reach = 150, views = 175) => ({
+  skipRate,
+  reach,
+  views,
+  publishedAt: { dateTime: new Date(Date.parse("2026-08-03T12:00:00Z") - daysAgo * 864e5).toISOString().slice(0, 19), timezone: "UTC" },
+});
+const NOW_SKIP = new Date("2026-08-03T12:00:00Z");
+
+test("summarizeSkipRate: the median is the current window's, and the trend is the one before it", () => {
+  const sk = summarizeSkipRate(
+    [
+      reel(70, 1), reel(72, 2), reel(74, 3), // current 7d
+      reel(80, 9), reel(82, 10), // prior 7d
+    ],
+    NOW_SKIP,
+  );
+  assert.equal(sk.median, 72);
+  assert.equal(sk.n, 3);
+  assert.equal(sk.priorMedian, 81);
+  assert.equal(sk.priorN, 2);
+  assert.equal(sk.delta, -9, "negative delta is an IMPROVEMENT — lower skip is better");
+  assert.equal(sk.threshold, SKIP_TARGET_PCT);
+  assert.equal(sk.meetingTarget, false);
+});
+
+test("summarizeSkipRate: a reel with no skip rate is PENDING, never counted as a perfect 0%", () => {
+  // Metricool syncs analytics up to ~24h behind. Scoring a pending reel as 0 would read
+  // as a flawless hook and drag the headline below the threshold on no evidence at all.
+  const sk = summarizeSkipRate([reel(null, 1), reel(null, 2), reel(80, 3)], NOW_SKIP);
+  assert.equal(sk.n, 1);
+  assert.equal(sk.median, 80);
+  const none = summarizeSkipRate([reel(null, 1)], NOW_SKIP);
+  assert.equal(none.median, null);
+  assert.equal(none.n, 0);
+  assert.equal(none.meetingTarget, false, "no data is not the same as meeting the target");
+});
+
+test("summarizeSkipRate: 55% is the wall the mandate needs, and at-or-under counts as met", () => {
+  assert.equal(SKIP_TARGET_PCT, 55);
+  assert.equal(summarizeSkipRate([reel(55, 1)], NOW_SKIP).meetingTarget, true);
+  assert.equal(summarizeSkipRate([reel(55.1, 1)], NOW_SKIP).meetingTarget, false);
+  // No prior sample ⇒ no fabricated trend.
+  assert.equal(summarizeSkipRate([reel(55, 1)], NOW_SKIP).delta, null);
+});
+
+test("page: the HEADLINE is skip rate against the threshold, above the view bars", () => {
+  // Views are the goal, skip rate is the lever. An operator staring at a view counter
+  // has nothing to act on, so the number at the top of the page has to be the lever.
+  const data = emptyPageData();
+  (data as any).scheduled = {
+    ok: true, posts: [], count: 0, by_platform: {}, by_status: {},
+    experiment: { target: 0, hook_scheduled: 0, hook_excluded: 0, hook_posted: 0, control_scheduled: 0, control_posted: 0, hook_with_data: 0, hook_median_skip: null, control_median_skip: null, on_track: false },
+    skip: summarizeSkipRate([reel(70, 1), reel(72, 2), reel(80, 9)], NOW_SKIP),
+    source: "test", as_of: "2026-08-03T12:00:00Z",
+  };
+  const html = page(data);
+  assert.match(html, /MEDIAN 3s SKIP RATE/);
+  assert.match(html, /71\.0%/, "the live median is the headline figure");
+  assert.match(html, /target &le;55%/);
+  assert.match(html, /16\.0 pts<\/b> above target/, "the gap to the threshold is stated, not left to arithmetic");
+  // It is ABOVE the view bars, and above everything else on the page.
+  const skipIdx = html.indexOf("MEDIAN 3s SKIP RATE");
+  assert.ok(skipIdx > -1);
+  assert.ok(skipIdx < html.indexOf("500,000</b> views combined"), "the lever leads the goal card");
+  assert.ok(skipIdx < html.indexOf("Posts &amp; times"));
+});
+
+test("page: with no matured reels the headline reads pending, not 0%", () => {
+  const html = page(emptyPageData());
+  assert.match(html, /MEDIAN 3s SKIP RATE/);
+  assert.match(html, /this is NOT 0%/);
+});
+
 // ── GOAL-PROGRESS panel renders FRONT-AND-CENTER ─────────────────────────────
 test("page: GOAL panel renders FRONT-AND-CENTER with the exact mandate targets + pure-CSS bars", () => {
   const html = page(emptyPageData());
-  assert.match(html, /Hermes mandate — live 7-day trajectory/);
+  assert.match(html, /Hermes mandate — live 14-day trajectory/);
   assert.match(html, /KICKOFF PENDING/); // no goal data ⇒ pending panel
   // the exact mandate numbers are on the page (500k views + 500 followers each; NO likes)
   assert.match(html, /500,000<\/b> views combined/);

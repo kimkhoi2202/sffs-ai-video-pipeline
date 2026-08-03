@@ -214,12 +214,28 @@ export const EXPLORATION_ARMS: readonly string[] = ["control", "one-question"];
  * Resolved out of the live catalog rather than redeclared, so an exploration arm
  * is always a real, already-tested spec and can never drift from the arm label
  * the rollups and the promotion gate key on.
+ *
+ * `rotate` SHIFTS WHICH ARM STARTS THE CYCLE, and it is the difference between the
+ * slice working and the slice starving. With an ODD number of slots and two arms,
+ * cycleToTarget hands the spare slot to whichever arm is first — every single day. At
+ * 3 slots that is 2 posts/day for the first arm and 1 for the second, forever, so the
+ * second arm needs TWELVE days to reach min_sample=12 rather than the eight the slice
+ * was sized for. Advancing the start by one each day makes the spare slot alternate,
+ * which is what actually delivers 1.5 posts/arm/day. Still fully deterministic: the
+ * caller derives `rotate` from the calendar day, not from a clock or a random seed.
  */
-export function explorationSpecs(target: number, defaults: ContentDefaults = contentDefaults()): DimSpec[] {
+export function explorationSpecs(
+  target: number,
+  defaults: ContentDefaults = contentDefaults(),
+  rotate = 0,
+): DimSpec[] {
   if (target <= 0) return [];
   const catalog = buildDimensions(defaults);
   const picked = EXPLORATION_ARMS.map((arm) => catalog.find((d) => d.arm === arm)).filter((d): d is DimSpec => !!d);
-  return cycleToTarget(picked, target).map((s) => ({ ...s }));
+  if (picked.length === 0) return [];
+  const off = ((Math.trunc(rotate) % picked.length) + picked.length) % picked.length;
+  const ordered = [...picked.slice(off), ...picked.slice(0, off)];
+  return cycleToTarget(ordered, target).map((s) => ({ ...s }));
 }
 
 /** Dimensions that inherit BOTH defaults and deviate only their own axis. */

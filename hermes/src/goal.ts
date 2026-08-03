@@ -1,15 +1,21 @@
 /**
  * goal.ts — HERMES'S MANDATE, encoded as the loop's optimization target.
  *
- *   GOAL: 500,000 views in 7 DAYS, and 500 followers on EACH of Instagram and
+ *   GOAL: 500,000 views in 14 DAYS, and 500 followers on EACH of Instagram and
  *   TikTok. (Likes were dropped from the mandate — views + per-platform
  *   followers only; no like/engagement target anywhere in the goal.)
  *
  * This module is the single source of truth for that target + an HONEST live
  * trajectory computed from REAL metrics (ab-database.json, back-filled each cycle
- * by reconcile.ts) — no vanity numbers. The 7-day clock starts at KICKOFF (t0 =
- * the kickoff arming instant), so "days left" only counts down once a human flips
- * the switch; before kickoff the panel reads "not started (kickoff pending)".
+ * by reconcile.ts) — no vanity numbers. The clock only counts down once a human
+ * has armed KICKOFF; before that the panel reads "not started (kickoff pending)".
+ *
+ * TWO INSTANTS, NOT ONE (2026-08-03). Until today the goal window and the kickoff
+ * switch shared a single t0 — the arming file's mtime — which meant the only way to
+ * re-anchor the mandate's clock was to touch a human-only autonomy switch. Those are
+ * different facts and they now have different homes: kickoff.ts still owns "when did
+ * a human arm autonomy", and WINDOW_START below owns "when does the mandate's clock
+ * start". Arming semantics are untouched; an un-armed box still has no window at all.
  *
  * The pure `computeGoalProgress(...)` takes plain data so both the loop and the
  * read-only dashboard can render the SAME trajectory without shared I/O.
@@ -20,7 +26,7 @@ import { kickoffStatus } from "./kickoff.ts";
 
 // ── THE MANDATE — SINGLE SOURCE OF TRUTH (edit these to change the target) ─────
 export const GOAL = Object.freeze({
-  /** combined 7-day view target, across every publishing network. */
+  /** combined view target over the window, across every publishing network. */
   views: 500_000,
   /**
    * follower target on EACH platform (IG and TikTok independently), i.e. 500 IG
@@ -29,7 +35,11 @@ export const GOAL = Object.freeze({
    * combined-followers target instead. YouTube has no follower target.
    */
   followers_each: 500,
-  days: 7,
+  /**
+   * WINDOW LENGTH IN DAYS. 7 -> 14 on 2026-08-03, by owner decision after the first
+   * window closed at 44,204 of 500,000 views: "keep going, extend the goal to 2 weeks".
+   */
+  days: 14,
   /**
    * YOUTUBE IS IN THE ROLLUP (2026-08-02). It was omitted here while it was half of
    * everything the loop published, so its posts contributed nothing to the totals —
@@ -41,6 +51,38 @@ export const GOAL = Object.freeze({
   follower_platforms: ["instagram", "tiktok"] as const,
   // NOTE: likes are deliberately NOT part of the goal (no like target / trajectory).
 });
+
+/**
+ * WHEN THE MANDATE'S CLOCK STARTS — null means "the kickoff instant", which is the
+ * behaviour every window before this one had.
+ *
+ * Set to an explicit instant on 2026-08-03 when the target was extended to 14 days.
+ * Leaving it null would have anchored the new window on the original kickoff
+ * (2026-07-23T17:12:15Z), which is 11.2 days spent: a "14-day" window that expires in
+ * 2.8 days and demands ~163,000 views/day. That is not the extension the owner asked
+ * for, and it is not a target anyone can act on.
+ *
+ * Re-anchoring here rather than by touching KICKOFF_ARMED is deliberate. The arming
+ * file is a human-only autonomy switch and its mtime is the audit record of when a
+ * person armed the loop; rewriting it to move a reporting clock would destroy that
+ * record and silently re-arm-stamp the box. So kickoff keeps its instant, the window
+ * gets its own, and the dashboard shows both.
+ *
+ * COST, STATED PLAINLY: only posts published at/after this instant count toward the
+ * 500,000. The 44,204 views earned in the first window are NOT carried forward — they
+ * belong to a window that closed. The panel labels the prior tally rather than hiding it.
+ */
+export const WINDOW_START: string | null = "2026-08-03T22:00:00.000Z";
+
+/**
+ * t0 for the goal window: the explicit anchor when one is set, else the kickoff instant.
+ * Null until a human arms kickoff — an un-armed box has no window, exactly as before.
+ */
+export function goalWindowStart(env: NodeJS.ProcessEnv = process.env): string | null {
+  const k = kickoffStatus(env);
+  if (!k.armed) return null;
+  return WINDOW_START ?? k.since;
+}
 
 const DAY_MS = 86_400_000;
 
@@ -155,7 +197,7 @@ export function computeGoalProgress(
         views_needed_per_day: GOAL.views / GOAL.days,
         on_track_views: false,
       },
-      note: "not started — kickoff pending. Flip the KICKOFF switch to start the 7-day clock.",
+      note: `not started — kickoff pending. Flip the KICKOFF switch to start the ${GOAL.days}-day clock.`,
     };
   }
 
@@ -186,7 +228,7 @@ export function computeGoalProgress(
     },
     note:
       daysLeft <= 0
-        ? "7-day window CLOSED — final tally above."
+        ? `${GOAL.days}-day window CLOSED — final tally above.`
         : `pace vs target: need ~${Math.round(viewsNeededPerDay).toLocaleString()} views/day for the remaining ${round2(daysLeft)} days.`,
   };
 }
@@ -233,5 +275,5 @@ export function goalProgress(env: NodeJS.ProcessEnv = process.env, now: Date = n
   } catch {
     posts = [];
   }
-  return computeGoalProgress(posts, kickoffStatus(env).since, readFollowers(env), now, readLiveAnalytics());
+  return computeGoalProgress(posts, goalWindowStart(env), readFollowers(env), now, readLiveAnalytics());
 }

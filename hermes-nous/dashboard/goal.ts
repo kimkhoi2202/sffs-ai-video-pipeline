@@ -7,15 +7,16 @@
  * testable (see test/dashboard.test.ts) and can never leak anything.
  *
  * THE MANDATE (fixed constants below):
- *   500,000 views in 7 DAYS (combined across IG + TikTok + YouTube), and 500
+ *   500,000 views in 14 DAYS (combined across IG + TikTok + YouTube), and 500
  *   followers on EACH of Instagram and TikTok. (Likes are NOT a goal metric — no
  *   like target or trajectory anywhere in the goal.)
  *
- * The 7-day clock starts at KICKOFF (t0 = mtime of the armed KICKOFF file). Until
- * armed, `sinceISO` is null: the window is "not started", the clock reads the full
- * 7 days, and the running totals are computed over ALL posts (informational). Once
- * armed, only posts with posted_at >= t0 count toward the window. Per platform:
- *   views = Σ metrics.video_views.
+ * The clock only runs once KICKOFF is armed. Until armed, `sinceISO` is null: the
+ * window is "not started", the clock reads the full window, and the running totals are
+ * computed over ALL posts (informational). Once armed, only posts with posted_at >= t0
+ * count toward the window, where t0 is WINDOW_START when set and the kickoff mtime
+ * otherwise — see hermes/src/goal.ts for why those became two separate instants.
+ * Per platform: views = Σ metrics.video_views.
  * Followers come ONLY from the snapshot; when it is absent they are `null`
  * ("pending"), never 0/fake.
  */
@@ -25,7 +26,7 @@
  * Combined = IG + TikTok.
  */
 export const GOAL = Object.freeze({
-  /** combined (IG + TikTok + YouTube) 7-day view target. */
+  /** combined (IG + TikTok + YouTube) view target over the window. */
   views: 500_000,
   /**
    * follower target on EACH platform (IG and TikTok independently) — i.e. 500 on
@@ -33,10 +34,26 @@ export const GOAL = Object.freeze({
    * one constant (and the ×2 in the combined row) for a combined-followers target.
    */
   followersPerPlatform: 500,
-  /** the mandate's window length, in days. */
-  windowDays: 7,
+  /** the mandate's window length, in days. 7 -> 14 by owner decision 2026-08-03. */
+  windowDays: 14,
   // NOTE: likes are deliberately NOT a goal metric (no like target / trajectory).
 });
+
+/**
+ * Explicit start of the mandate's clock; null = "use the kickoff instant".
+ * MUST match hermes/src/goal.ts WINDOW_START — the loop and this panel are required to
+ * render the same trajectory, and two different anchors is the one way to break that.
+ */
+export const WINDOW_START: string | null = "2026-08-03T22:00:00.000Z";
+
+/**
+ * t0 for the goal window, given the kickoff instant the caller read off the arming
+ * file. Null in, null out: an un-armed box has no window regardless of WINDOW_START.
+ */
+export function goalWindowStart(kickoffSince: string | null): string | null {
+  if (kickoffSince == null) return null;
+  return WINDOW_START ?? kickoffSince;
+}
 
 const DAY_MS = 86_400_000;
 const HOUR_MS = 3_600_000;
@@ -95,17 +112,20 @@ export interface FollowerSnapshot {
   tiktok?: { followers?: number };
 }
 export interface GoalProgress {
-  /** true once the KICKOFF file is armed (7-day clock running). */
+  /** true once the KICKOFF file is armed (the window clock is running). */
   armed: boolean;
-  /** t0 (ISO) — kickoff mtime — or null when pending. */
+  /** t0 (ISO) — the WINDOW's start — or null when pending. */
   since: string | null;
+  /** When a human armed autonomy. Differs from `since` once the window is re-anchored;
+   *  carried so the panel can show both instants instead of quietly replacing one. */
+  kickoffSince: string | null;
   now: string;
   windowDays: number;
   elapsedMs: number;
   remainingMs: number;
   daysLeft: number;
   hoursLeft: number;
-  /** armed AND the 7-day window has elapsed. */
+  /** armed AND the window has elapsed. */
   windowClosed: boolean;
   instagram: ScopeProgress;
   tiktok: ScopeProgress;
@@ -153,6 +173,7 @@ export function computeGoalProgress(
   followers: FollowerSnapshot | null | undefined,
   now: Date,
   live?: LiveAnalyticsRow[] | null,
+  kickoffSinceISO?: string | null,
 ): GoalProgress {
   const list = Array.isArray(posts) ? posts : [];
   const nowMs = now instanceof Date && Number.isFinite(now.getTime()) ? now.getTime() : Date.now();
@@ -287,6 +308,7 @@ export function computeGoalProgress(
   return {
     armed,
     since: armed ? new Date(t0ms).toISOString() : null,
+    kickoffSince: kickoffSinceISO ?? null,
     now: new Date(nowMs).toISOString(),
     windowDays: GOAL.windowDays,
     elapsedMs,

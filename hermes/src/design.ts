@@ -155,17 +155,24 @@ export interface Learnings {
 /**
  * Fraction of a full batch reserved for the exploration slice.
  *
- * 0.25 is chosen off the arithmetic of the promotion gate, not off taste. It needs
- * min_sample=12 matured posts on BOTH sides. At Instagram's 12/day and two fixed
- * exploration arms: 25% is 3 slots/day, 1.5 per arm, and clears 12 in EIGHT DAYS.
- * The next step down, 20%, is 2 slots/day and takes TWELVE — longer than the
- * campaign has left, which is the same starvation that made the last read
- * unconcludable. 25% is therefore the smallest slice that still finishes.
+ * Chosen off the arithmetic of the promotion gate, not off taste. Promotion needs
+ * min_sample=12 matured posts on BOTH sides, and with two fixed arms the slice must
+ * therefore produce THREE slots a day: three alternating (dimensions.ts
+ * explorationSpecs `rotate`) is 1.5 posts/arm/day and clears 12 in EIGHT DAYS. Two
+ * slots is 1/arm/day and takes TWELVE — which is the whole window, with the read
+ * landing after the target is judged, and is the same starvation that made the
+ * previous seven-arm read unconcludable.
  *
- * It leaves 75% on the pinned format, which remains a decisively exploitative
+ * 0.25 -> 0.30 on 2026-08-03, when the daily ceiling came down 12 -> 11 to fit the
+ * Metricool budget. floor(11 x 0.25) is 2, so the cadence cut would have quietly cost
+ * the slice a third of its sample; 0.30 holds it at 3. At the old ceiling of 12 both
+ * values give 3, so this changes the slice only where it had to.
+ *
+ * It leaves 70% on the pinned format, which remains a decisively exploitative
  * posture: the pre-pivot rotation gave any single arm about a seventh of the day.
+ * And it still FLOORS, so a small top-up wave (target <= 3) is 100% pinned.
  */
-export const EXPLORATION_SHARE = 0.25;
+export const EXPLORATION_SHARE = 0.3;
 
 /**
  * How many of `target` slots the exploration slice takes.
@@ -237,14 +244,29 @@ export function selectBatchSpecs(
   target: number,
   defaults: ContentDefaults = contentDefaults(),
 ): { specs: DimSpec[]; onlyDims: string[]; directive: ReplicationDirective; nReplicas: number; fp?: StyleFingerprint } {
-  void runId;
   const nExplore = explorationCount(target);
   return {
-    specs: interleaveExploration(pinnedSpecs(target - nExplore), explorationSpecs(nExplore, defaults)),
+    specs: interleaveExploration(pinnedSpecs(target - nExplore), explorationSpecs(nExplore, defaults, dayIndex(runId))),
     onlyDims: [],
     directive: { active: false, share: 0, share_cap: 0 },
     nReplicas: 0,
   };
+}
+
+/**
+ * Days since the epoch for a run id, used ONLY to alternate which exploration arm gets
+ * the odd slot (dimensions.ts explorationSpecs).
+ *
+ * A run id is `YYYY-MM-DD`, with top-up waves suffixed `-t1`, `-t2` — so the date prefix
+ * is what is read, and every wave of a day rotates identically. This is the one thing
+ * runId is allowed to influence: it is a calendar fact, not a seed, so the batch stays
+ * reproducible from the date alone. An unparseable id yields 0, i.e. today's behaviour.
+ */
+export function dayIndex(runId: string): number {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(runId).trim());
+  if (!m) return 0;
+  const ms = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  return Number.isFinite(ms) ? Math.floor(ms / 86_400_000) : 0;
 }
 
 /** Build the day's batch: up to `target` videos, each a different dimension. */

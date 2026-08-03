@@ -159,7 +159,7 @@ export const CONFIG = Object.freeze({
   /**
    * CEILING: the most videos one day may schedule. One video fans out to at most one
    * post per ACTIVE platform, so this tracks the LARGEST per-platform/day cap in
-   * PLATFORM_POLICY below (Instagram's 12). The cycle plans up to this many so that
+   * PLATFORM_POLICY below (Instagram's 11). The cycle plans up to this many so that
    * gate rejections and transient failures are absorbed WITHOUT dropping below
    * VIDEOS_FLOOR — oversampling, not a loosened gate.
    *
@@ -169,7 +169,7 @@ export const CONFIG = Object.freeze({
    * planSlots, HORIZON_DAYS). That spill is the existing designed behaviour for a
    * batch bigger than one day's cap, not something YouTube introduced.
    */
-  VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 12),
+  VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 11),
   /**
    * FLOOR: the minimum videos a healthy cycle must land. If the first wave finishes
    * short of this (and the ceiling still has room), cycle.ts plans a bounded top-up
@@ -179,31 +179,44 @@ export const CONFIG = Object.freeze({
    * up as soon as it had 8, so a day with a normal rejection rate landed 8 and the
    * remaining 4 slots of the 12/day cap were simply never used — which is how five
    * consecutive cycles all reported "8 scheduled". Floor == ceiling means the day is
-   * only finished when the cap is full or the waves run out.
+   * only finished when the cap is full or the waves run out. Tracked the ceiling down
+   * to 11 on 2026-08-03; floor == ceiling is the property, 12 was not.
    */
-  VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 12),
+  VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 11),
   /**
-   * PER-PLATFORM posting policy. EVERY NETWORK RUNS 12/DAY (2026-08-02).
+   * PER-PLATFORM posting policy. EVERY NETWORK RUNS 11/DAY (2026-08-03, was 12).
    *
-   * The campaign has two weeks left and is optimising for distribution, so all three
-   * networks take the full daily allowance rather than being rationed against each
-   * other. The SPACING rules are unchanged — the same-platform floor and each
-   * network's jitter lane (scheduler.ts LANES) still apply, so raising the counts
-   * changes how many posts a day holds and not how they are laid out in it.
+   * The campaign is optimising for distribution, so all three networks take the same
+   * daily allowance rather than being rationed against each other. The SPACING rules are
+   * unchanged — the same-platform floor and each network's jitter lane (scheduler.ts
+   * LANES) still apply, so the count changes how many posts a day holds and not how they
+   * are laid out in it.
    *
-   * WHAT THIS COSTS. A fan-out spends one Metricool record PER NETWORK, so three
-   * networks at 12/day is 36 records/day against the 600/month Fair Use budget the
-   * client guards. The month counter stands at 17, and 14 more days at 36 is 504, for
-   * 521 of 600 — it fits the remaining window with room to spare. budget() is
-   * unchanged and still fails closed at 600; it is the pre-existing guard, not a new
-   * monitor, and nothing here alerts.
+   * WHY 11 AND NOT 12. A fan-out spends one Metricool record PER NETWORK, so the daily
+   * bill is 3x this number. Measured against the live counter on 2026-08-03:
+   *
+   *     600 budget - 55 published - 82 already on the calendar = 463 records of headroom
+   *     at 12/network (36/day): 463/36 = 12 full days -> the guard refuses on 2026-08-15
+   *     at 11/network (33/day): 463/33 = 14 full days -> the guard refuses on 2026-08-17
+   *
+   * The goal window closes 2026-08-17. Twelve fits the month; it does not fit the WINDOW,
+   * and it runs out two days before the target is judged. Breaching 600 does not return a
+   * 429 — it puts the brand under manual review, during which nothing posts at all, so
+   * the last two days of the campaign would be silent. 11 buys the whole window.
+   *
+   * The 82 committed records include 30 belonging to a rebus campaign this loop did not
+   * create and does not control (see the 2026-08-03 report). If that campaign is extended
+   * past 2026-08-09, this arithmetic loses days and the number has to come down again.
+   *
+   * budget() is unchanged and still fails closed at 600; since ffedf77 the autonomous
+   * path actually consults it.
    *
    * TIKTOK IS LIVE AGAIN. It had been paused under account-level suppression (an
    * earlier throttle only lifted after 27.9 hours of silence) and the most recent
    * evidence is not encouraging — 1 view on our best video 22 hours after posting.
-   * Resuming anyway is the owner's explicit decision. It comes back at the same 12/day
+   * Resuming anyway is the owner's explicit decision. It comes back at the same 11/day
    * as everyone else, but it KEEPS ITS OWN 4-HOUR same-platform floor: that gap is a
-   * platform-behaviour precaution, not a volume lever, and 12 posts at a 4-hour floor
+   * platform-behaviour precaution, not a volume lever, and 11 posts at a 4-hour floor
    * simply spill across days via loopPublish.planSlots the way any over-full network
    * does.
    *
@@ -215,10 +228,10 @@ export const CONFIG = Object.freeze({
   PLATFORM_POLICY: {
     // 56 minutes is the same-platform floor the campaign has always run under; it was
     // 0 here only because the daily grid happened to space posts further apart anyway.
-    instagram: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
-    youtube: { perDay: 12, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
+    instagram: { perDay: 11, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
+    youtube: { perDay: 11, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
     tiktok: {
-      perDay: 12,
+      perDay: 11,
       minGapMinutes: 240,
       darkUntil: (process.env.HERMES_TIKTOK_DARK_UNTIL || "2026-07-27T18:00:00").trim() as string | null,
       // Defaults to LIVE now. Still one env line either way.
@@ -285,11 +298,11 @@ export const CONFIG = Object.freeze({
    * cannot strand the network at a seeding cap if it is ever forgotten.
    *
    * THE RAMP HAS COMPLETED. It started 2026-07-28 and its last step is +4 days, so from
-   * 2026-08-01 onward it returns the terminal value on every day. That terminal was
-   * raised 7 -> 12 with the policy on 2026-08-02; leaving it at 7 would have silently
-   * held YouTube at 7/day, because perDayFor() takes the MINIMUM of the ramp and the
-   * policy. The early steps are left as they are — they are the history of a channel
-   * that really was seeded that way, and they only apply to dates already past.
+   * 2026-08-01 onward it returns the terminal value on every day. That terminal tracks
+   * the policy (7 -> 12 on 2026-08-02, 12 -> 11 on 2026-08-03) because perDayFor() takes
+   * the MINIMUM of the ramp and the policy, so a stale terminal here silently caps the
+   * network below its policy. The early steps are left as they are — they are the history
+   * of a channel that really was seeded that way, and they only apply to past dates.
    */
   YT_RAMP_START: (process.env.HERMES_YT_RAMP_START ?? "2026-07-28").trim(),
   /** (days after YT_RAMP_START, cap) — ascending, terminal value must be the
@@ -297,7 +310,7 @@ export const CONFIG = Object.freeze({
   YT_RAMP_STEPS: [
     { afterDays: 0, perDay: 3 },
     { afterDays: 2, perDay: 5 },
-    { afterDays: 4, perDay: 12 },
+    { afterDays: 4, perDay: 11 },
   ] as ReadonlyArray<{ afterDays: number; perDay: number }>,
   MUSIC_TRACKS: [
     "audio/music/gameshow-fanfare.mp3",

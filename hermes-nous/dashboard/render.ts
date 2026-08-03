@@ -12,7 +12,7 @@
  * this is a display-only surface (guardrail-locked by a test).
  */
 import type { RunState, VideoPlan, GateAttempt, PRRow, PromotionProposal, ProposalsQueue, ContentDefaultsFile } from "./types.ts";
-import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView, LeadPolicyView, ScheduledPost } from "./data.ts";
+import type { KillSwitchState, Schedule, BankStats, BankCoverage, ScheduledView, ReplicationView, LeadPolicyView, ScheduledPost, SkipRateHeadline } from "./data.ts";
 import { summarizeExperiment } from "./data.ts";
 import type { PRView } from "./prs.ts";
 import { computeGoalProgress, GOAL, type GoalProgress, type ScopeProgress, type GoalMetric, type FollowerMetric, type ArmAgg } from "./goal.ts";
@@ -869,19 +869,62 @@ function gArmsTable(caption: string, arms: ArmAgg[], sortLabel: string): string 
   </div>`;
 }
 
-function goalPanel(gp: GoalProgress): string {
+/**
+ * THE HEADLINE. Views are the goal; skip rate is the lever, and it is the only one of
+ * the two an operator can do anything about at 9am. A view counter reports the weather.
+ *
+ * Renders the live median against the 55% the mandate needs, what that skip rate is
+ * currently buying in reach, and which way it is moving. "pending" when nothing has
+ * matured — never a fabricated 0%, which would read as a perfect hook.
+ */
+function skipHeadline(sk: SkipRateHeadline | undefined): string {
+  if (!sk || sk.median == null) {
+    return `<div class="skiphead skiphead-pending">
+      <div class="sh-l">MEDIAN 3s SKIP RATE <span class="muted">— the lever the view target depends on</span></div>
+      <div class="sh-v">pending</div>
+      <div class="sh-sub">No Instagram reel has matured in the last ${sk?.windowDays ?? 7} days. Metricool syncs analytics up to ~24h behind — this is NOT 0%.</div>
+    </div>`;
+  }
+  const good = sk.meetingTarget;
+  const gap = Math.round((sk.median - sk.threshold) * 10) / 10;
+  const trend =
+    sk.delta == null
+      ? `<span class="sh-pill">trend <b>—</b> <span class="muted">(no prior ${sk.windowDays}-day sample)</span></span>`
+      : `<span class="sh-pill ${sk.delta < 0 ? "sh-up" : sk.delta > 0 ? "sh-down" : ""}">trend <b>${sk.delta < 0 ? "▼" : sk.delta > 0 ? "▲" : "="} ${Math.abs(sk.delta).toFixed(1)} pts</b> <span class="muted">vs prior ${sk.windowDays}d (n=${sk.priorN}, ${sk.priorMedian!.toFixed(1)}%)</span></span>`;
+  return `<div class="skiphead ${good ? "skiphead-good" : "skiphead-bad"}">
+    <div class="sh-l">MEDIAN 3s SKIP RATE <span class="muted">— the lever the view target depends on</span></div>
+    <div class="sh-v">${sk.median.toFixed(1)}%<span class="sh-t"> / target &le;${sk.threshold}%</span></div>
+    <div class="sh-bars">
+      <span class="sh-pill">${good ? "AT TARGET" : `<b>${gap.toFixed(1)} pts</b> above target`}</span>
+      ${trend}
+      <span class="sh-pill">n=<b>${sk.n}</b> <span class="muted">matured reels, last ${sk.windowDays}d</span></span>
+      <span class="sh-pill">buying <b>${gInt(sk.medianReach)}</b> <span class="muted">median reach</span></span>
+    </div>
+    <div class="sh-sub">Lower is better. Skip rate predicts reach at Spearman <b>&minus;0.709</b> over 126 live reels, monotonic across all eight buckets: the <b>50&ndash;55%</b> band medians <b>1,058</b> reach, the <b>70&ndash;75%</b> band medians <b>145</b>. ${good ? "Hold it here." : "Views cannot reach target from this band at any cadence — the batch has to get less skippable."}</div>
+  </div>`;
+}
+
+function goalPanel(gp: GoalProgress, sk?: SkipRateHeadline): string {
   const kickoffChip = gp.armed
-    ? `<span class="chip c-ok">KICKOFF ARMED · since ${esc(gp.since)}</span>`
+    ? `<span class="chip c-ok">KICKOFF ARMED · window t0 ${esc(gp.since)}</span>`
     : `<span class="chip c-warn">KICKOFF PENDING — draft-only</span>`;
+  // Two instants since 2026-08-03: the window was re-anchored when the target was
+  // extended to 14 days, while the kickoff switch (and its mtime) was left untouched.
+  // Showing both is the point — a re-anchored clock must not look like a re-armed loop.
+  const kickoffNote =
+    gp.armed && gp.kickoffSince && gp.kickoffSince !== gp.since
+      ? `<span class="hpill"><b>armed since</b>${esc(gp.kickoffSince.slice(0, 10))} <span class="muted">(window re-anchored ${esc((gp.since || "").slice(0, 10))})</span></span>`
+      : "";
   const timeLeft = gp.armed
     ? `${gp.daysLeft}d ${gp.hoursLeft}h left${gp.windowClosed ? " · WINDOW CLOSED" : ""}`
     : `${gp.windowDays}d 0h (not started)`;
-  const mandate = `<p class="muted" style="margin:2px 0 12px">TARGET (7 days from kickoff): <b>${gInt(GOAL.views)}</b> views combined, and <b>${gInt(GOAL.followersPerPlatform)}</b> followers on EACH of Instagram &amp; TikTok. Real live trajectory below — no vanity metrics.</p>`;
+  const mandate = `<p class="muted" style="margin:2px 0 12px">TARGET (${GOAL.windowDays} days): <b>${gInt(GOAL.views)}</b> views combined, and <b>${gInt(GOAL.followersPerPlatform)}</b> followers on EACH of Instagram &amp; TikTok. Real live trajectory below — no vanity metrics.</p>`;
   const pendingNote = gp.armed
     ? ""
     : `<div class="reject">KICKOFF PENDING — the 7-day clock has not started. It arms when <code>${esc("<DATA_DIR>/KICKOFF_ARMED")}</code> exists and contains the phrase <code>ARM SFFS AUTONOMY</code>; t0 = that file's mtime. Totals shown are running (all posts, all-time); the window is not counting yet. DRAFT-ONLY until a human arms it.</div>`;
   const topBar = `<div class="health" style="margin-bottom:8px">
     ${kickoffChip}
+    ${kickoffNote}
     <span class="hpill"><b>window</b>${esc(String(gp.windowDays))} days</span>
     <span class="hpill"><b>time left</b>${esc(timeLeft)}</span>
     <span class="hpill"><b>followers snapshot</b>${gp.followersPending ? "pending" : "loaded"}</span>
@@ -895,7 +938,7 @@ function goalPanel(gp: GoalProgress): string {
   const perPlatNote = `<p class="muted" style="margin:10px 0 4px">Per-platform view bars measure against ½ of the combined mandate (${gInt(GOAL.views / 2)} views each); the combined bars use the full target. Followers are ${gInt(GOAL.followersPerPlatform)} on each platform.</p>`;
   const arms = `<div class="gscope-h" style="margin-top:14px"><span class="gscope-t">What's moving the needle</span> <span class="muted">top arms by views within the window (ab-database variant.arm / family)</span></div>
     ${gArmsTable("Top arms by views", gp.topArmsByViews, "views")}`;
-  return `${mandate}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
+  return `${skipHeadline(sk)}${mandate}${topBar}${pendingNote}${combined}${perPlatNote}${perPlatform}${arms}`;
 }
 
 // ── SCHEDULED posts panel (post-KICKOFF) — mirrored LIVE from Metricool ───────
@@ -1391,6 +1434,21 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 .timechip-none{background:#e6e6e6;box-shadow:3px 3px 0 0 #555}
 .timechip-none .tc-v{color:#555;font-weight:700}
 .goalcard{background:linear-gradient(180deg,#fffdf3,var(--paper))}
+/* THE HEADLINE: skip rate, not views — the goal is views but this is the lever. */
+.skiphead{border:4px solid var(--ink);border-radius:16px;padding:16px 18px;margin:0 0 16px;box-shadow:6px 6px 0 0 var(--ink)}
+.skiphead-bad{background:var(--coral)}
+.skiphead-good{background:var(--mint)}
+.skiphead-pending{background:repeating-linear-gradient(45deg,#eee,#eee 8px,#f6f4ee 8px,#f6f4ee 16px)}
+.sh-l{font:800 12px/1.3 "Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:1.3px}
+.sh-l .muted{font-weight:700;letter-spacing:.3px;text-transform:none;color:#222}
+.sh-v{font:800 52px/1.05 "Segoe UI",sans-serif;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.sh-t{font-size:20px;font-weight:800;opacity:.72}
+.sh-bars{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 8px}
+.sh-pill{background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:3px 11px;font-size:12px;font-weight:700}
+.sh-pill.sh-up{background:var(--mint)}
+.sh-pill.sh-down{background:var(--yellow)}
+.sh-sub{font-size:12.5px;line-height:1.5;max-width:76ch}
+@media(max-width:560px){.sh-v{font-size:40px}}
 .gtwo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:4px}
 .gscope{border:3px solid var(--ink);border-radius:14px;padding:14px;background:var(--cream);margin-top:10px}
 .gscope-big{background:var(--paper);box-shadow:6px 6px 0 0 var(--ink)}
@@ -1442,8 +1500,8 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 </header>
 <div class="wrap">
   <div class="card goalcard">
-    <h2><span class="pin" style="background:var(--yellow)">GOAL</span> Hermes mandate — live 7-day trajectory</h2>
-    ${goalPanel(goal)}
+    <h2><span class="pin" style="background:var(--yellow)">GOAL</span> Hermes mandate — live ${GOAL.windowDays}-day trajectory</h2>
+    ${goalPanel(goal, opts.scheduled?.skip)}
   </div>
 
   <div class="statgroup">
