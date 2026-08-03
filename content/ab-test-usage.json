@@ -2744,6 +2744,330 @@
           "answerNorm": "12"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-08-03-v01",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "df430265d0e5",
+          "sig": "text|verbal|odd-one-out|which one does not belong || bench~seven~shelf~table|seven",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "SEVEN"
+        },
+        {
+          "hash": "d0c3c71a8fe4",
+          "sig": "text|quantitative|number-analogy|which number fits 3 8 5 14 6 17 7 || 15~20~21~23|20",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "20"
+        },
+        {
+          "hash": "96102b33398a",
+          "sig": "text|verbal|verbal-analogy|sheep is to lamb as bear is to || calf~cub~duckling~joey|cub",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "CUB"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v02",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "264e64f43288",
+          "sig": "text|quantitative|number-puzzle|if 6 1 7 1 5 10 6 5 35 then 7 5 || 37~38~40~43|40",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "40"
+        },
+        {
+          "hash": "d6e5f2692a8b",
+          "sig": "text|verbal|sentence-completion|the lake froze solid in january so the children could across the top || dive~sail~skate~swim|skate",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "SKATE"
+        },
+        {
+          "hash": "0a2619140aec",
+          "sig": "text|verbal|verbal-analogy|tooth is to mouth as finger is to || car~flower~hand~plant|hand",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "HAND"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v03",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6691890583f6",
+          "sig": "text|quantitative|number-analogy|which number fits 3 10 6 19 7 22 5 || 15~16~21~6|16",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "16"
+        },
+        {
+          "hash": "56f2a25def7a",
+          "sig": "text|verbal|odd-one-out|which one does not belong || jacket~pants~shirt~spoon|spoon",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "SPOON"
+        },
+        {
+          "hash": "6987c567fc95",
+          "sig": "text|quantitative|number-puzzle|if 7 4 17 8 4 20 8 7 41 then 4 8 || 12~17~20~24|20",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "20"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v04",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "0e0199952d23",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cod~goldfish~hammer~trout|hammer",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "HAMMER"
+        },
+        {
+          "hash": "54de0a0e612f",
+          "sig": "text|verbal|sentence-completion|the surprise was completely so she gasped when she finally saw it || boring~planned~unexpected~usual|unexpected",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "UNEXPECTED"
+        },
+        {
+          "hash": "5fdb73627f6e",
+          "sig": "text|verbal|verbal-analogy|hard is to soft as heavy is to || big~light~rock~strong|light",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "LIGHT"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v05",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "c6afc5107709",
+          "sig": "text|verbal|verbal-analogy|pig is to pen as sheep is to || burrow~fold~nest~pond|fold",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "FOLD"
+        },
+        {
+          "hash": "5bc3975bbb4b",
+          "sig": "text|quantitative|number-puzzle|if 8 5 53 4 2 14 4 6 34 then 3 8 || 24~32~33~35|35",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "35"
+        },
+        {
+          "hash": "d8f05d2d285c",
+          "sig": "text|quantitative|number-analogy|which number fits 3 10 4 13 6 19 5 || 15~16~18~21|16",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "16"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v06",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "dc3f6623fdb2",
+          "sig": "text|verbal|sentence-completion|after an hour of scrubbing the window was finally sparkling || broken~clean~dark~dirty|clean",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "CLEAN"
+        },
+        {
+          "hash": "6baa7a122ec9",
+          "sig": "text|verbal|odd-one-out|which one does not belong || coffee~lemonade~milk~yacht|yacht",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "YACHT"
+        },
+        {
+          "hash": "b1d2527646af",
+          "sig": "text|quantitative|number-puzzle|if 5 4 24 4 4 20 4 9 45 then 6 7 || 39~49~52~59|49",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "49"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v07",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "038e6a273ada",
+          "sig": "text|verbal|odd-one-out|which one does not belong || bee~fly~oval~wasp|oval",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "OVAL"
+        },
+        {
+          "hash": "48d68b0ed0f2",
+          "sig": "text|quantitative|number-analogy|which number fits 3 11 4 15 6 23 8 || 27~31~32~33|31",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "31"
+        },
+        {
+          "hash": "4d6ebdc8b4ff",
+          "sig": "text|verbal|sentence-completion|because she practiced every single day lila became a very piano player || hungry~lazy~skilled~sleepy|skilled",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "SKILLED"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v08",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "5232b8cda368",
+          "sig": "text|quantitative|number-puzzle|if 2 1 15 1 1 10 3 4 35 then 4 2 || 25~28~30~31|30",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "30"
+        },
+        {
+          "hash": "fd40bcdffa5a",
+          "sig": "text|quantitative|number-analogy|which number fits 2 7 3 9 5 13 6 || 10~12~13~15|15",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "15"
+        },
+        {
+          "hash": "4b8b688fa724",
+          "sig": "text|verbal|verbal-analogy|sailor is to ship as librarian is to || court~farm~library~school|library",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "LIBRARY"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v09",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "0b915cb88461",
+          "sig": "text|verbal|sentence-completion|the slope was so that we had to rest halfway up to catch our breath || flat~short~steep~wide|steep",
+          "tier": "SENTENCE COMPLETION",
+          "answerNorm": "STEEP"
+        },
+        {
+          "hash": "2f1806a246b4",
+          "sig": "text|quantitative|number-puzzle|if 2 3 20 1 9 40 8 1 36 then 7 8 || 30~50~60~63|60",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "60"
+        },
+        {
+          "hash": "5d0c4ed1633c",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cod~glider~helicopter~plane|cod",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "COD"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v10",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "91d84b3e4d5a",
+          "sig": "text|verbal|odd-one-out|which one does not belong || chair~cocoa~shelf~stool|cocoa",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "COCOA"
+        },
+        {
+          "hash": "06b71bf40187",
+          "sig": "text|verbal|verbal-analogy|bird is to nest as dog is to || anthill~den~kennel~pen|kennel",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "KENNEL"
+        },
+        {
+          "hash": "8fb9ba2f0ff1",
+          "sig": "text|quantitative|number-analogy|which number fits 4 15 5 18 7 24 6 || 16~19~21~26|21",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "21"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v11",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "db5359f4fef1",
+          "sig": "text|verbal|odd-one-out|which one does not belong || forty~ninety~robin~twelve|robin",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "ROBIN"
+        },
+        {
+          "hash": "6bce1643629a",
+          "sig": "text|verbal|verbal-analogy|win is to lose as up is to || down~narrow~new~slow|down",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "DOWN"
+        },
+        {
+          "hash": "3d6fbfcac0b3",
+          "sig": "text|quantitative|number-puzzle|if 5 5 20 1 3 8 8 4 24 then 9 6 || 30~32~33~40|30",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "30"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-03-v12",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "e4b3a88c85e0",
+          "sig": "text|verbal|verbal-analogy|tooth is to mouth as sail is to || boat~car~hand~plant|boat",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "BOAT"
+        },
+        {
+          "hash": "6eb47db356e1",
+          "sig": "text|quantitative|number-analogy|which number fits 2 3 3 5 7 13 9 || 12~15~17~19|17",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "17"
+        },
+        {
+          "hash": "f8186f168bf3",
+          "sig": "text|quantitative|number-puzzle|if 1 2 3 4 5 24 6 5 36 then 8 5 || 38~40~45~48|48",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "48"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
