@@ -162,9 +162,28 @@ test("validateQuestions does NOT throw when the rubric judge is unreachable", as
   setUsed([]);
   const q = textQ({ sig: "ok1", hash: "hok1" });
   const r = await G.validateQuestions([q]); // must RESOLVE, not reject
-  assert.equal(r.gate.pass, true, "a structurally-sound question still passes");
-  assert.match(r.gate.reason ?? "", /deterministic fallback/);
-  assert.match(r.results["ok1"].reason, /structural check passed/);
+  // CONTRACT CHANGED 2026-08-03, deliberately. This used to assert that a structurally
+  // sound question PASSES on the deterministic fallback, so the day's posting survived a
+  // judge outage. The structural check cannot read: it confirms exactly one option
+  // matches the stated answer and has nothing to say about whether that answer is
+  // right, so a question claiming 48 has an odd digit sum passed it. A wrong answer key
+  // reaches an audience and cannot be recalled; a missed day costs twelve posts and the
+  // questions come straight back. The question is now HELD BACK, not admitted.
+  assert.equal(r.gate.pass, false, "nothing ships that no model has read");
+  assert.equal(r.results["ok1"].valid, false);
+  assert.equal(r.results["ok1"].unjudged, true, "held back, NOT judged defective");
+  assert.match(r.results["ok1"].reason, /no rubric verdict|unreachable/i);
+});
+
+test("an unjudged question is not a rejected one — quarantine must not touch it", () => {
+  // cycle.ts quarantines the questions behind a failed validity gate and quarantine is
+  // permanent, so this distinction is what stops one shared-budget 429 storm burying the
+  // bank: 28 of 29 questions on 2026-07-25, 20 of 21 on 2026-07-29.
+  const unjudged = { valid: false, unjudged: true, reason: "no rubric verdict" };
+  const defective = { valid: false, reason: "structural: answer matches 0 option(s)" };
+  const quarantine = (r: any) => r && !r.valid && !r.unjudged; // cycle.ts's predicate
+  assert.equal(quarantine(unjudged), false, "an outage must never bury a question");
+  assert.equal(quarantine(defective), true, "a real defect still leaves the pool");
 });
 
 test("the fallback is NOT a blanket bypass — a broken question still fails closed", async () => {

@@ -89,6 +89,17 @@ interface QVerdict {
   valid: boolean;
   reason: string;
   difficulty?: string;
+  /**
+   * NOT INVALID — UNJUDGED. Set only when no model could be reached, so the question
+   * was held back without any opinion being formed about it.
+   *
+   * The distinction is load-bearing rather than cosmetic: cycle.ts QUARANTINES the
+   * questions behind a failed validity gate, and quarantine is permanent. Without this
+   * flag, one shared-budget 429 storm would bury every question it touched — on
+   * 2026-07-25 that would have been 28 of 29, and on 2026-07-29 20 of 21. The storm
+   * costs a day of POSTING; it must never cost the bank its content.
+   */
+  unjudged?: boolean;
 }
 
 /**
@@ -260,24 +271,48 @@ export async function validateQuestions(
       for (const q of todo) if (!cache[q.hash]) cache[q.hash] = { valid: false, reason: "no verdict returned (fail-closed)" };
       saveQCache(cache);
     } catch (e) {
-      // The rubric judge is UNREACHABLE (gateway 429/5xx/timeout) — not a verdict on
-      // the questions. Hard-failing here throws out of the whole video and silently
-      // costs the day its throughput (the 2026-07-25 incident: a budget 429 killed
-      // 9 of 10 videos; only the nonverbal-shape video, which never calls the judge,
-      // survived). Degrade the SAME way gateCopy already does: fall back to the
-      // deterministic structural check, which still enforces exactly-one-correct-
-      // answer, length budgets, and option sanity on what is an already-curated bank.
-      // Fallback verdicts are deliberately NOT written to the cache, so the real
-      // rubric still judges these questions on the next healthy cycle.
+      // BOTH MODELS ARE UNREACHABLE (gateway 429/5xx/timeout) — not a verdict on the
+      // questions. This used to admit them on the deterministic structural check alone,
+      // and that was the wrong trade.
+      //
+      // WHAT THE STRUCTURAL CHECK CAN AND CANNOT DO. It enforces exactly-one-option-
+      // matching-the-stated-answer, the length budgets and option sanity. It cannot
+      // read. It has no way to know whether the stated answer is CORRECT, so a question
+      // asserting that 48 has an odd digit sum passes it perfectly — four options, one
+      // matching "48", nothing structurally wrong. That exact item was produced during
+      // generation testing on 2026-08-03 and would have shipped.
+      //
+      // WHY THE TRADE FLIPPED. The old reasoning was that a judge outage should not cost
+      // the day its posting, which is true as far as it goes. But the two outcomes are
+      // not comparable: a missed day costs twelve posts out of a fourteen-day campaign
+      // and the questions return to the pool untouched, whereas a wrong answer key is
+      // published to an audience, cannot be recalled, and is the one defect a quiz brand
+      // cannot afford. On 2026-07-25 this path admitted 28 of 29 questions with no
+      // semantic check at all, and 20 of 21 on 2026-07-29.
+      //
+      // WHAT STILL GETS THROUGH, because it does not need a model. Shape/figure kinds
+      // never reach here (validated structurally by design — their options are figures).
+      // NUMBER PUZZLE and NUMBER ANALOGY are DECIDED by enumeration in arithmetic.ts and
+      // take precedence in the merge below; those are proofs, not opinions. What is held
+      // back is exactly the set a structural check cannot speak to: the verbal and
+      // reading-dependent types.
+      //
+      // AND CRUCIALLY, HELD BACK IS NOT REJECTED. `unjudged` tells cycle.ts not to
+      // quarantine these, and fallback verdicts are still never cached, so tomorrow's
+      // healthy cycle judges the same questions properly and they ship then.
       rubricUnavailable = true;
       const why = e instanceof Error ? e.message : String(e);
       for (const q of todo) {
         const issue = textStructuralIssue(q);
         fallback[q.hash] = issue
           ? { valid: false, reason: `structural: ${issue}` }
-          : { valid: true, reason: "structural check passed (LLM rubric unavailable)" };
+          : {
+              valid: false,
+              unjudged: true,
+              reason: "no rubric verdict (both models unreachable) — held back rather than published unchecked",
+            };
       }
-      gate(`question-validity: LLM rubric unavailable — deterministic fallback for ${todo.length} question(s)`, {
+      gate(`question-validity: LLM rubric unavailable — HOLDING BACK ${todo.length} unjudged question(s) (they return to the pool)`, {
         err: why.slice(0, 200),
       });
     }

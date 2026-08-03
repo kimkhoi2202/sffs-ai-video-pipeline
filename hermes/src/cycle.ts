@@ -195,7 +195,17 @@ async function prepareVideo(v: VideoPlan): Promise<void> {
     // when one question failed twice in one run and cost two slots. Only the
     // questions that actually FAILED are quarantined; the rest of the video's
     // questions were never at fault and go back in the pool.
-    const bad = v.questions.filter((q) => !val.results[q.sig]?.valid);
+    //
+    // AN UNJUDGED QUESTION IS NOT A FAILED ONE. When no model could be reached the
+    // gate holds the question back without forming an opinion about it (gates.ts,
+    // QVerdict.unjudged). Quarantine is PERMANENT, so treating those as failures
+    // would let a single shared-budget 429 storm bury the bank: 28 of 29 questions
+    // on 2026-07-25, 20 of 21 on 2026-07-29. The storm costs a day of posting. It
+    // must not cost the content.
+    const bad = v.questions.filter((q) => {
+      const r = val.results[q.sig];
+      return r && !r.valid && !r.unjudged;
+    });
     markRejected(v.id, bad, Object.fromEntries(bad.map((q) => [q.sig, val.results[q.sig]?.reason ?? ""])));
     return;
   }
