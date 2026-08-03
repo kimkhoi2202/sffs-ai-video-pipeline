@@ -167,9 +167,59 @@ export const PINNED: DimSpec = {
     "reel shares; fresh questions inside it every time.",
 };
 
-/** `target` slots of the pinned format. The whole batch designer, now. */
+/** `target` slots of the pinned format. Most of the batch — see EXPLORATION_ARMS. */
 export function pinnedSpecs(target: number): DimSpec[] {
   return target <= 0 ? [] : Array.from({ length: target }, () => ({ ...PINNED }));
+}
+
+// ---------------------------------------------------------------------------
+// THE EXPLORATION SLICE — the minority of the batch PINNED is measured against
+// (2026-08-03)
+//
+// The pivot above pinned 100% of output. On 2026-08-03 the pinned format had
+// still never published: all 12 of its Instagram posts were scheduled and none
+// had matured, so the format carried ZERO measured performance of its own. What
+// the pivot actually rests on is a correlation — 3-second skip rate against
+// reach, Spearman -0.71 over 126 live reels, monotonic across eight buckets —
+// and a belief about which shape best serves it. The correlation is solid. The
+// belief is untested, and at a 100% allocation nothing would ever test it.
+//
+// TWO ARMS, ALWAYS THE SAME TWO. Spreading exploration thinly is what starved
+// the previous read: promotion needs min_sample=12 matured posts on BOTH sides,
+// and seven arms sharing 12 posts/day never got there. Two fixed arms at 25% of
+// a 12-video day is 1.5 posts/arm/day, which clears 12 in eight days — inside
+// the campaign window instead of past the end of it. Concentration is the point
+// on the exploration side too.
+//
+//   control       The holdout. Without a live baseline running beside the
+//                 pinned format there is nothing to compare it to except the
+//                 pre-pivot past, which is confounded by every other change
+//                 made in the same week.
+//   one-question  The shortest-form probe. Duration is the one structural axis
+//                 that moves with reach on live numbers (Spearman -0.27,
+//                 n=105); the 30-59s band carries both the best median skip
+//                 (67.9%) and the best median reach (179) of any length band,
+//                 and a one-question video is the only way into that band.
+//
+// This is a floor on measurement, not a hedge on taste. Raising it back to 100%
+// is one number below.
+// ---------------------------------------------------------------------------
+
+/** Arms the exploration slice cycles through. Must exist in buildDimensions(). */
+export const EXPLORATION_ARMS: readonly string[] = ["control", "one-question"];
+
+/**
+ * `target` slots drawn from EXPLORATION_ARMS, cycled so the arms accrue evenly.
+ *
+ * Resolved out of the live catalog rather than redeclared, so an exploration arm
+ * is always a real, already-tested spec and can never drift from the arm label
+ * the rollups and the promotion gate key on.
+ */
+export function explorationSpecs(target: number, defaults: ContentDefaults = contentDefaults()): DimSpec[] {
+  if (target <= 0) return [];
+  const catalog = buildDimensions(defaults);
+  const picked = EXPLORATION_ARMS.map((arm) => catalog.find((d) => d.arm === arm)).filter((d): d is DimSpec => !!d);
+  return cycleToTarget(picked, target).map((s) => ({ ...s }));
 }
 
 /** Dimensions that inherit BOTH defaults and deviate only their own axis. */

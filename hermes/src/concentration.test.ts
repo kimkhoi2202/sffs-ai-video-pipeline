@@ -6,18 +6,19 @@
  * three-arm catalog and planned three videos instead of twelve, quartering the day's
  * output while looking like it was accelerating the experiment.
  *
- * WHAT THEY ASSERT NOW. Exploration is over (2026-08-02): every slot runs the PINNED
- * format, so the operator concentration switch no longer reaches the live path at all.
- * That is a bigger change than a filter tweak and it deserves tests that would FAIL if
- * some future edit quietly reopened the rotation — which is what the first group below
- * does. The catalog helpers (cycleToTarget, applyBatchOverrides) are unchanged and
- * still tested, because restarting exploration means calling them again, not rebuilding
- * them.
+ * WHAT THEY ASSERT NOW. The batch is 75% pinned format and 25% a two-arm exploration
+ * slice (2026-08-03). The operator concentration switch still never reaches the live
+ * path, and the old rotation stays shut — the first group below would FAIL if some
+ * future edit quietly reopened it. The second group pins the exploration floor itself,
+ * because a 100% allocation is exactly how a bet stops being measurable: on 2026-08-03
+ * the pinned format had 12 scheduled Instagram posts and ZERO published, so it carried
+ * no performance data of its own and nothing was running that could produce any. The
+ * catalog helpers (cycleToTarget, applyBatchOverrides) are unchanged and still tested.
  */
 import test from "node:test";
 import assert from "node:assert/strict";
-import { cycleToTarget, buildDimensions, applyBatchOverrides, PINNED_ARM, type DimSpec } from "./dimensions.ts";
-import { selectBatchSpecs } from "./design.ts";
+import { cycleToTarget, buildDimensions, applyBatchOverrides, PINNED_ARM, EXPLORATION_ARMS, type DimSpec } from "./dimensions.ts";
+import { selectBatchSpecs, explorationCount, EXPLORATION_SHARE } from "./design.ts";
 
 const spec = (arm: string): DimSpec => ({ dimension: "opening", arm, numQ: 3, category: "mixed", showProgress: true, progressStyle: "short", countdownSec: 5, rationale: "" }) as DimSpec;
 const tally = (specs: DimSpec[]) => specs.reduce<Record<string, number>>((a, s) => ((a[s.arm] = (a[s.arm] ?? 0) + 1), a), {});
@@ -32,14 +33,16 @@ const OLD_PIN = "motion-hook,motion-hook-stat,motion-hook-declared";
 
 // ── The pivot: one format, every slot ────────────────────────────────────────
 
-test("PINNED: every slot of the batch is the pinned format", () => {
+test("PINNED: the batch is 75% pinned format, 25% exploration", () => {
   const { specs } = selectBatchSpecs("2026-08-02", 12);
-  assert.equal(specs.length, 12, "the pin changes WHAT runs, never how many posts run");
-  assert.deepEqual(tally(specs), { [PINNED_ARM]: 12 });
+  assert.equal(specs.length, 12, "the mix changes WHAT runs, never how many posts run");
+  assert.deepEqual(tally(specs), { [PINNED_ARM]: 9, "control": 2, "one-question": 1 });
 });
 
 test("PINNED: the format is the shape the winners share, not an A/B arm", () => {
+  // target 3 floors to zero exploration slots, so this is the pure pinned spec.
   const { specs } = selectBatchSpecs("2026-08-02", 3);
+  assert.deepEqual(tally(specs), { [PINNED_ARM]: 3 });
   for (const s of specs) {
     assert.equal(s.numQ, 3, "three questions");
     assert.equal(s.opening, "cold-plate", "cold open — question one at 0.00s");
@@ -61,8 +64,10 @@ test("PINNED: the concentrated hook arms cannot come back through the env switch
   // motion-hook arms — the worst-measured openings in the account. It must now be inert.
   const { specs, onlyDims } = withEnv({ HERMES_ONLY_DIMENSIONS: OLD_PIN }, () => selectBatchSpecs("2026-08-02", 12));
   assert.deepEqual(onlyDims, []);
-  assert.deepEqual(tally(specs), { [PINNED_ARM]: 12 });
+  assert.deepEqual(tally(specs), { [PINNED_ARM]: 9, "control": 2, "one-question": 1 });
   for (const s of specs) assert.notEqual(s.opening, "motion-hook");
+  // The exploration slice is a deliberate two-arm list, NOT a reopened rotation.
+  for (const s of specs) assert.ok(s.arm === PINNED_ARM || EXPLORATION_ARMS.includes(s.arm), `unexpected arm ${s.arm}`);
 });
 
 test("PINNED: no mascot elevation and no winner replication reach the batch", () => {
@@ -81,6 +86,55 @@ test("PINNED: the batch does not vary with the run id — there is no rotation l
 test("PINNED: a zero or negative target still yields nothing", () => {
   assert.equal(selectBatchSpecs("2026-08-02", 0).specs.length, 0);
   assert.equal(selectBatchSpecs("2026-08-02", -3).specs.length, 0);
+});
+
+// ── The exploration floor: the batch may never go all-in again ───────────────
+
+test("EXPLORE: a full batch always keeps a measurable exploration slice", () => {
+  for (const target of [4, 6, 8, 10, 12, 16, 24]) {
+    const { specs } = selectBatchSpecs("2026-08-03", target);
+    const n = specs.filter((s) => s.arm !== PINNED_ARM).length;
+    assert.equal(specs.length, target, `target ${target}: slot count is unchanged`);
+    assert.ok(n >= 1, `target ${target}: exploration must never be zero on a full batch`);
+    assert.ok(n < target, `target ${target}: exploration must never take the whole batch`);
+  }
+});
+
+test("EXPLORE: the slice is 25% floored, so the pinned format takes the rounding", () => {
+  assert.equal(EXPLORATION_SHARE, 0.25);
+  assert.equal(explorationCount(12), 3);
+  assert.equal(explorationCount(8), 2);
+  assert.equal(explorationCount(4), 1);
+  // Small top-up waves stay 100% pinned: those slots exist to hit the daily floor.
+  assert.equal(explorationCount(3), 0);
+  assert.equal(explorationCount(1), 0);
+  assert.equal(explorationCount(0), 0);
+  assert.equal(explorationCount(-5), 0);
+});
+
+test("EXPLORE: exploration slots are spread through the batch, not bolted on the end", () => {
+  // Slot index decides the hashtag set (HASHTAG_ROTATION[i % 3]) and the posting
+  // time, so a slice clustered at the tail would confound the arm with both.
+  const { specs } = selectBatchSpecs("2026-08-03", 12);
+  const at = specs.map((s, i) => (s.arm === PINNED_ARM ? -1 : i)).filter((i) => i >= 0);
+  assert.deepEqual(at, [3, 7, 11]);
+  assert.deepEqual([...new Set(at.map((i) => i % 3))].sort(), [0, 1, 2], "one slot per hashtag set");
+});
+
+test("EXPLORE: the slice is the two named arms and stays deterministic", () => {
+  assert.deepEqual([...EXPLORATION_ARMS], ["control", "one-question"]);
+  const a = selectBatchSpecs("2026-08-03", 12).specs.map((s) => s.arm);
+  const b = selectBatchSpecs("2027-01-01", 12).specs.map((s) => s.arm);
+  assert.deepEqual(a, b, "no run id, no clock, no randomness");
+  // A control holdout must actually run, or the pinned format has no comparator.
+  assert.ok(a.includes("control"));
+});
+
+test("EXPLORE: exploration arms are real catalog arms, not redeclared lookalikes", () => {
+  const catalog = buildDimensions();
+  for (const arm of EXPLORATION_ARMS) {
+    assert.ok(catalog.some((d) => d.arm === arm), `${arm} must exist in buildDimensions()`);
+  }
 });
 
 // ── The catalog helpers, kept intact for whenever exploration restarts ───────

@@ -27,7 +27,7 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
-import { pinnedSpecs, resolveArm, selectSpread, newSpreadTally, leadTypeCap, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
+import { pinnedSpecs, explorationSpecs, resolveArm, selectSpread, newSpreadTally, leadTypeCap, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
 import { normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
 import { allocateLeadBands, bandOf, promptWords, BAND_LABEL, LEAD_BANDS, type LeadBand } from "./leadPolicy.ts";
 import { currentLeadShares } from "./leadPromotion.ts";
@@ -144,27 +144,84 @@ export interface Learnings {
 }
 
 /**
+ * Fraction of a full batch reserved for the exploration slice.
+ *
+ * 0.25 is chosen off the arithmetic of the promotion gate, not off taste. It needs
+ * min_sample=12 matured posts on BOTH sides. At Instagram's 12/day and two fixed
+ * exploration arms: 25% is 3 slots/day, 1.5 per arm, and clears 12 in EIGHT DAYS.
+ * The next step down, 20%, is 2 slots/day and takes TWELVE — longer than the
+ * campaign has left, which is the same starvation that made the last read
+ * unconcludable. 25% is therefore the smallest slice that still finishes.
+ *
+ * It leaves 75% on the pinned format, which remains a decisively exploitative
+ * posture: the pre-pivot rotation gave any single arm about a seventh of the day.
+ */
+export const EXPLORATION_SHARE = 0.25;
+
+/**
+ * How many of `target` slots the exploration slice takes.
+ *
+ * FLOORS, so the pinned format always gets the rounding, and is clamped to
+ * `target - 1` so exploration can never take a whole batch. A consequence worth
+ * stating: a small top-up wave (target <= 3) runs 100% pinned. Recovery slots
+ * exist to hit the daily floor, and spending them on measurement would trade
+ * production volume for a sample the main batch is already accruing.
+ */
+export function explorationCount(target: number): number {
+  if (target <= 0) return 0;
+  return Math.max(0, Math.min(Math.floor(target * EXPLORATION_SHARE), target - 1));
+}
+
+/**
+ * Lay the exploration slots at even intervals through the batch instead of
+ * bolting them on the end.
+ *
+ * Position is not cosmetic here. planBatch assigns the hashtag set by slot index
+ * (`HASHTAG_ROTATION[i % 3]`) and loopPublish spaces the day's slots in order, so
+ * a slice appended at the end would arrive with one hashtag set, at the latest
+ * times of day, every single day — and the arm would be confounded with both.
+ * Spread evenly, the three exploration slots of a 12-video day land on indices
+ * 3/7/11 and therefore on hashtag sets A/B/C and across the posting window.
+ *
+ * Deterministic: no run id, no clock, no randomness.
+ */
+export function interleaveExploration(pinned: DimSpec[], explore: DimSpec[]): DimSpec[] {
+  if (explore.length === 0) return pinned;
+  const total = pinned.length + explore.length;
+  const out: DimSpec[] = [];
+  let ei = 0;
+  let pi = 0;
+  for (let i = 0; i < total; i++) {
+    const due = Math.floor(((i + 1) * explore.length) / total) > Math.floor((i * explore.length) / total);
+    out.push(due && ei < explore.length ? explore[ei++] : pinned[pi++]);
+  }
+  return out;
+}
+
+/**
  * WHICH FORMAT this batch will run. Split out of planBatch so the decision can be
  * inspected WITHOUT rendering: planBatch goes on to generate captions, call the LLM
  * gates and render video, none of which you want to do just to find out what the
  * batch is. `sffs_design arms` and the tests call this exact function, so what they
  * show is what the cycle will do, not a lookalike.
  *
- * EXPLORATION IS OVER (2026-08-02). Every slot is the PINNED format — see
- * dimensions.ts PINNED for the live-analytics evidence behind it. Four things that
- * used to shape a batch are gone from this path:
+ * EXPLOITATION, WITH A MEASUREMENT FLOOR. Most of the batch is the PINNED format
+ * — see dimensions.ts PINNED for the live-analytics evidence behind it — and the
+ * remaining EXPLORATION_SHARE runs the two-arm exploration slice that pinned is
+ * measured against (dimensions.ts EXPLORATION_ARMS). Three things that used to
+ * shape a batch are still gone from this path:
  *
- *   - the seeded DIMENSION ROTATION over the arm catalog;
+ *   - the seeded DIMENSION ROTATION over the whole arm catalog;
  *   - the MASCOT elevation weight;
- *   - WINNER REPLICATION (already disabled in content-defaults.json; now it is not
+ *   - WINNER REPLICATION (already disabled in content-defaults.json; it is not
  *     consulted at all, so a stray `sffs_replicate --detect` cannot reopen a round);
  *   - HERMES_ONLY_DIMENSIONS, the operator concentration switch, which was live on
  *     the box pinning every slot to `motion-hook,motion-hook-stat,
  *     motion-hook-declared` — the three worst-measured openings in the account.
  *
  * The catalog itself (dimensions.ts buildDimensions and friends) is untouched and
- * still unit-tested. Restarting exploration means calling it from here again; it does
- * not mean rebuilding it.
+ * still unit-tested. Widening exploration means listing more arms there; it does
+ * not mean rebuilding anything.
  */
 export function selectBatchSpecs(
   runId: string,
@@ -172,9 +229,9 @@ export function selectBatchSpecs(
   defaults: ContentDefaults = contentDefaults(),
 ): { specs: DimSpec[]; onlyDims: string[]; directive: ReplicationDirective; nReplicas: number; fp?: StyleFingerprint } {
   void runId;
-  void defaults;
+  const nExplore = explorationCount(target);
   return {
-    specs: pinnedSpecs(target),
+    specs: interleaveExploration(pinnedSpecs(target - nExplore), explorationSpecs(nExplore, defaults)),
     onlyDims: [],
     directive: { active: false, share: 0, share_cap: 0 },
     nReplicas: 0,
@@ -191,9 +248,16 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   // across every video in this batch. See dimensions.ts selectSpread.
   const batchSpread = newSpreadTally();
   const { specs } = selectBatchSpecs(runId, target, defaults);
+  const nPinned = specs.filter((s) => s.arm === PINNED_ARM).length;
+  const exploreTally = specs
+    .filter((s) => s.arm !== PINNED_ARM)
+    .reduce<Record<string, number>>((a, s) => ((a[s.arm] = (a[s.arm] ?? 0) + 1), a), {});
   decision(
-    `PINNED FORMAT: all ${specs.length} slot(s) run ${PINNED_ARM} (3 mixed questions, cold-plate open, ` +
-      `${defaults.narration} narration, ${defaults.ending} ending, 5s, short counter). No A/B rotation. ` +
+    `FORMAT MIX: ${nPinned}/${specs.length} slot(s) run ${PINNED_ARM} (3 mixed questions, cold-plate open, ` +
+      `${defaults.narration} narration, ${defaults.ending} ending, 5s, short counter); ` +
+      `${specs.length - nPinned}/${specs.length} run the exploration slice ` +
+      `(${Object.entries(exploreTally).map(([a, n]) => `${a} x${n}`).join(", ") || "none"}) ` +
+      `so the pinned format has something live to be measured against. ` +
       `Questions are freshly selected per video and still pass dedup + validity + brand gates.`,
   );
 
@@ -321,7 +385,15 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     );
   }
 
-  info("batch planned", { runId, planned: plans.length, target, defaults, format: PINNED_ARM });
+  info("batch planned", {
+    runId,
+    planned: plans.length,
+    target,
+    defaults,
+    format: PINNED_ARM,
+    pinned: nPinned,
+    exploration: exploreTally,
+  });
   void learnings;
   return plans;
 }
