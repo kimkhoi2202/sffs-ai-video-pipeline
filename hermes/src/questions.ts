@@ -75,6 +75,32 @@ export function loadUsedSigs(): Set<string> {
 }
 
 /**
+ * sig -> the video slug that claimed it, for the questions markUsed() has recorded.
+ *
+ * EXISTS SO A RETRY IS NOT BLOCKED BY ITS OWN CLAIM. markUsed() runs before the render,
+ * so a video that dies anywhere between the validity gate and a passing render leaves
+ * its questions in the used ledger having never shipped. cycle.ts then re-prepares that
+ * same video id, and gateDedup rejects it as a duplicate of itself. It is not
+ * hypothetical: on 2026-07-28 videos v08 and v09 were both rejected with "duplicate
+ * question(s) detected", and every sig in both rejections was owned in this ledger by
+ * the very video being rejected. Two of twelve slots, lost to bookkeeping.
+ *
+ * The usage ledger is a complete index for this purpose because markUsed() writes BOTH
+ * ledgers together — anything in hermes-used-sigs.json that this loop put there has a
+ * videoSlug here. Sigs from before that (or from the original pipeline) simply have no
+ * owner, which correctly leaves them blocking.
+ */
+export function loadUsedSigOwners(): Map<string, string> {
+  const owners = new Map<string, string>();
+  const usage = readJSON<{ videos?: Array<{ videoSlug?: string; questions?: Array<{ sig?: string }> }> }>(CONFIG.USAGE, {});
+  for (const v of usage.videos ?? []) {
+    if (!v.videoSlug) continue;
+    for (const q of v.questions ?? []) if (q.sig && !owners.has(q.sig)) owners.set(q.sig, v.videoSlug);
+  }
+  return owners;
+}
+
+/**
  * Sigs of questions the validity gate REJECTED, which must never be proposed again.
  *
  * A rejected question used to stay in the candidate pool — the gate returned before

@@ -187,6 +187,16 @@ export function logLlmUsage(): ReturnType<typeof llmUsageReport> {
   return r;
 }
 
+/** Cheap connectivity probe for ONE model. No fallback: the point is this model. */
+export async function pingModel(model: string): Promise<{ ok: boolean; model: string; reply?: string; error?: string }> {
+  try {
+    const reply = await chatOnce(model, "You are a health check.", "Reply with the single word: pong", { maxTokens: 8, temperature: 0 }, 1);
+    return { ok: /pong/i.test(reply), model, reply: reply.trim().slice(0, 40) };
+  } catch (e) {
+    return { ok: false, model, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
 /** Cheap connectivity probe used by cycle preflight + the dashboard. */
 export async function ping(): Promise<{ ok: boolean; model: string; reply?: string; error?: string }> {
   try {
@@ -195,4 +205,43 @@ export async function ping(): Promise<{ ok: boolean; model: string; reply?: stri
   } catch (e) {
     return { ok: false, model: CONFIG.MODEL, error: e instanceof Error ? e.message : String(e) };
   }
+}
+
+/**
+ * Probe EVERY model the cycle is configured to use, not just the reasoning one.
+ *
+ * WHY THIS IS NOT REDUNDANT WITH ping(). On 2026-08-03 the preflight reported
+ * `LLM ping {ok:true, model:claude-opus-5}` and the cycle proceeded — while
+ * claude-haiku-4-5, which is BOTH the caption model and the judge's fallback, returned
+ * a 403 to all 133 calls it received. The failure surfaced only as 162 interleaved
+ * WARN lines, and the visible outcome was a healthy "12 drafted, 0 rejected" over
+ * twelve videos that had all silently taken the hardcoded fallback caption.
+ *
+ * A dead caption model is a quality regression; a dead JUDGE FALLBACK is worse, because
+ * it is invisible until the day Opus is rate-limited and then it takes the whole batch
+ * down with it. Both are worth one round trip each at the top of the run.
+ */
+export async function pingConfiguredModels(): Promise<Array<{ role: string; model: string; ok: boolean; error?: string }>> {
+  const roles: Array<[string, string]> = [
+    ["reasoning", CONFIG.MODEL],
+    ["caption", CONFIG.CAPTION_MODEL],
+    ["judge-fallback", CONFIG.JUDGE_FALLBACK_MODEL],
+  ];
+  // One probe per DISTINCT model — the same name in two roles is one dependency.
+  const byModel = new Map<string, { ok: boolean; error?: string }>();
+  const out: Array<{ role: string; model: string; ok: boolean; error?: string }> = [];
+  for (const [role, model] of roles) {
+    if (!model) {
+      out.push({ role, model, ok: false, error: "no model configured for this role" });
+      continue;
+    }
+    let r = byModel.get(model);
+    if (!r) {
+      const p = await pingModel(model);
+      r = { ok: p.ok, error: p.error?.slice(0, 220) };
+      byModel.set(model, r);
+    }
+    out.push({ role, model, ...r });
+  }
+  return out;
 }

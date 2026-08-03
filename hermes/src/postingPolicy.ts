@@ -27,15 +27,19 @@
  *
  *   over a full 31-day month:  1,116 — nearly TWICE the 600 guard, so
  *                              budgetForecast(31).withinBudget is FALSE, on purpose;
- *   over the 14 days that are actually left: 504, and the month counter stands at 17,
- *                              for 521 of 600 — it fits, with 79 records of slack.
+ *   over a 14-day sprint:      504, which fits IF the month's counter starts near zero.
  *
- * So the honest description is: this cadence is affordable for the remaining campaign
- * and would not be affordable indefinitely. budget() in metricool.ts is the live guard
- * and is UNCHANGED — it still fails closed at 600 before scheduling anything, so the
- * downside of the sprint running long is that posting stops, not that the account is
- * put under review. Nothing here alerts and nothing here monitors; budgetForecast() is
- * a pure function that tests call.
+ * So the honest description is: this cadence is affordable for a sprint and would not be
+ * affordable indefinitely.
+ *
+ * WHAT THE GUARD ACTUALLY IS, as of 2026-08-03. budget() in metricool.ts fails closed at
+ * 600 — but until this date NOTHING IN THE CYCLE CALLED IT. cycle.ts asked for slots with
+ * `allocatable(Number.MAX_SAFE_INTEGER)`, so decide() rationed against infinite headroom
+ * and the documented guard existed only for ops/resume_posting.mjs, a script run by hand.
+ * The counter read 54 of 600 with 36/day committed and no cycle had ever logged a budget
+ * line. cycle.ts liveHeadroom() now passes the real number, and exhaustionForecast()
+ * below turns it into a dated countdown that is logged every run instead of a wall the
+ * loop walks into. budgetForecast() remains the pure what-if that tests call.
  *
  * And there is no plan to buy out of it. maxPostsPerBrand is 700 on every API-enabled
  * Metricool plan, so the only lever is posting less on each network.
@@ -139,6 +143,69 @@ export function budgetForecast(days = 31): {
       ? `${shape} = ${perDay} records/day = ${perMonth} in ${days} days (${(pct * 100).toFixed(0)}% of ${budget})`
       : `OVER BUDGET: ${shape} = ${perDay} records/day = ${perMonth} in ${days} days, over the ${budget} guard by ${perMonth - budget}`,
   };
+}
+
+export interface ExhaustionForecast {
+  /** Records still unspent AND uncommitted: budget - published - already on the calendar. */
+  headroom: number;
+  perDay: number;
+  /** Whole days of posting the headroom still buys. */
+  daysLeft: number;
+  /** Local calendar date the guard starts refusing, or null when the cadence is zero. */
+  exhaustsOn: string | null;
+  /** Inside WARN_DAYS of the wall — worth saying out loud every cycle. */
+  warn: boolean;
+  reason: string;
+}
+
+/**
+ * How many more days this cadence can run before the monthly guard refuses.
+ *
+ * COMMITTED IS NOT THE SAME AS SPENT. Metricool's counter is
+ * `monthPublishedPostsByBrand` — it moves when a post PUBLISHES, not when it is
+ * scheduled. At 36 records/day placed one to two days ahead, the counter lags the
+ * real commitment by 40-70 records, so a guard that reads it alone believes it has
+ * headroom it has already promised away. `committed` is the future-dated rows on the
+ * calendar, and subtracting them is what makes the guard fail closed BEFORE the wall
+ * rather than two days after it.
+ *
+ * Pure. `today` is a naive local YYYY-MM-DD.
+ */
+export function exhaustionForecast(
+  used: number,
+  committed: number,
+  perDay: number,
+  today: string,
+  budgetTotal: number = CONFIG.MC_MONTHLY_POST_BUDGET,
+): ExhaustionForecast {
+  const headroom = Math.max(0, budgetTotal - Math.max(0, used) - Math.max(0, committed));
+  if (perDay <= 0) {
+    return { headroom, perDay: 0, daysLeft: Infinity, exhaustsOn: null, warn: false, reason: "nothing is live — no records are being spent" };
+  }
+  const daysLeft = Math.floor(headroom / perDay);
+  const exhaustsOn = addDays(today, daysLeft);
+  const warn = daysLeft <= EXHAUSTION_WARN_DAYS;
+  return {
+    headroom,
+    perDay,
+    daysLeft,
+    exhaustsOn,
+    warn,
+    reason:
+      `${used} published + ${committed} already scheduled of ${budgetTotal} leaves ${headroom} records; ` +
+      `at ${perDay}/day that is ${daysLeft} more full day(s), so the guard starts refusing on ${exhaustsOn}`,
+  };
+}
+
+/** Inside this many days of the guard, every cycle says so. */
+export const EXHAUSTION_WARN_DAYS = 7;
+
+/** `YYYY-MM-DD` plus n days, as `YYYY-MM-DD`. */
+function addDays(dayISO: string, n: number): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dayISO).trim());
+  if (!m) return dayISO;
+  const t = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) + n * 86_400_000;
+  return new Date(t).toISOString().slice(0, 10);
 }
 
 /** Days between two naive local calendar dates (YYYY-MM-DD). NaN if either is unparseable. */

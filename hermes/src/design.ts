@@ -56,7 +56,16 @@ async function makeCaption(reveal: RevealMode, tags: string[]): Promise<{ captio
     `and to follow. Do NOT include hashtags. Return ONLY the caption text.`;
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
-      let text = (await chat(system, user, { model: CONFIG.CAPTION_MODEL, maxTokens: 120, temperature: 0.8 })).trim();
+      // FALL BACK TO THE REASONING MODEL, the way the validity judge already falls back
+      // to the cheap one. On 2026-08-03 the gateway 403'd claude-haiku-4-5 for 56
+      // minutes (14:05-15:01 UTC, 162 times) — squarely inside the cycle window — while
+      // claude-opus-5 answered every request it got. Without a fallback that outage cost
+      // eleven of twelve videos their written caption and shipped the same hardcoded
+      // line to all of them. A caption is cheap; an identical caption on a whole day of
+      // posts is the near-duplicate signal this account is already fighting.
+      let text = (
+        await chat(system, user, { model: CONFIG.CAPTION_MODEL, fallbackModel: CONFIG.MODEL, maxTokens: 120, temperature: 0.8 })
+      ).trim();
       text = text.replace(/^["']|["']$/g, "").replace(/#[\w]+/g, "").trim();
       const rule = ruleCheckCopy(text);
       if (!rule.pass || text.length < 8 || text.length > 200) continue;
@@ -283,6 +292,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   );
 
   const plans: VideoPlan[] = [];
+  let captionFallbacks = 0;
 
   for (let i = 0; i < specs.length; i++) {
     const spec = specs[i];
@@ -315,6 +325,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     const hashtagSet = HASHTAG_ROTATION[i % HASHTAG_ROTATION.length];
     const tags = CONFIG.HASHTAG_SETS[hashtagSet];
     const { caption, source } = await makeCaption(resolved.reveal, tags);
+    if (source === "fallback") captionFallbacks++;
 
     const outro = defaultOutro(resolved.reveal);
 
@@ -385,6 +396,17 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     );
   }
 
+  // A caption that fell back is not a failure anywhere — makeCaption swallows it and
+  // returns a usable string — so without this line a batch in which EVERY video shipped
+  // the same hardcoded caption reports as a clean run. That happened on 2026-08-03.
+  if (captionFallbacks) {
+    decision(
+      `CAPTION FALLBACK: ${captionFallbacks}/${plans.length} video(s) shipped the hardcoded caption because ` +
+        `NEITHER ${CONFIG.CAPTION_MODEL} NOR ${CONFIG.MODEL} could write one. They are on-brand and safe, but ` +
+        `they are identical to each other and nothing was written for the question inside.`,
+    );
+  }
+
   info("batch planned", {
     runId,
     planned: plans.length,
@@ -393,6 +415,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     format: PINNED_ARM,
     pinned: nPinned,
     exploration: exploreTally,
+    caption_fallbacks: captionFallbacks,
   });
   void learnings;
   return plans;

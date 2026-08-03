@@ -17,7 +17,7 @@ import { existsSync } from "node:fs";
 import { chatJSON } from "./llm.ts";
 import { loadBrandVoice, ruleCheckCopy } from "./brand.ts";
 import { readJSON, writeJSONAtomic, isShapeKind, type HermesQ, type GateResult } from "./state.ts";
-import { loadUsedSigs, loadUsedFuzzySigs, fuzzySig, shapeStructuralIssue, textStructuralIssue } from "./questions.ts";
+import { loadUsedSigs, loadUsedSigOwners, loadUsedFuzzySigs, fuzzySig, shapeStructuralIssue, textStructuralIssue } from "./questions.ts";
 import { quantVerdict } from "./arithmetic.ts";
 import { CONFIG } from "./config.ts";
 import { gate, warn } from "./log.ts";
@@ -26,9 +26,18 @@ import { join } from "node:path";
 const FFPROBE = process.env.FFPROBE || "/usr/local/bin/ffprobe";
 
 // ── Gate 1: dedup ────────────────────────────────────────────────────────────
-export function gateDedup(questions: HermesQ[], claimedThisBatch: Set<string>): GateResult {
+/**
+ * `selfId` is the video being gated. Questions this ledger says THIS video already
+ * claimed are not duplicates of anything — they are its own unshipped claim from an
+ * earlier attempt, and treating them as duplicates is what turned a mid-flight crash
+ * into a permanent rejection (see questions.ts loadUsedSigOwners). Omit it and the gate
+ * behaves exactly as before, which is what the batch-planning caller wants.
+ */
+export function gateDedup(questions: HermesQ[], claimedThisBatch: Set<string>, selfId?: string): GateResult {
   const used = loadUsedSigs();
-  const dupUsed = questions.filter((q) => used.has(q.sig)).map((q) => q.sig);
+  const owners = selfId ? loadUsedSigOwners() : null;
+  const ownedBySelf = (sig: string): boolean => Boolean(selfId) && owners?.get(sig) === selfId;
+  const dupUsed = questions.filter((q) => used.has(q.sig) && !ownedBySelf(q.sig)).map((q) => q.sig);
   const dupBatch = questions.filter((q) => claimedThisBatch.has(q.sig)).map((q) => q.sig);
   const internal = new Set<string>();
   const dupInternal: string[] = [];
@@ -49,7 +58,9 @@ export function gateDedup(questions: HermesQ[], claimedThisBatch: Set<string>): 
     const f = fuzzySig(q);
     const isNear = usedFuzzy.has(f) || seenFuzzy.has(f);
     seenFuzzy.add(f);
-    if (isNear && !exactDup.has(q.sig)) nearDup.push(q.sig);
+    // Self-owned questions seeded usedFuzzy themselves, so without this a retry trades
+    // "duplicate" for "near_duplicate" and is rejected all the same.
+    if (isNear && !exactDup.has(q.sig) && !ownedBySelf(q.sig)) nearDup.push(q.sig);
   }
   const reasons: string[] = [];
   if (exactDup.size) reasons.push("duplicate question(s) detected");

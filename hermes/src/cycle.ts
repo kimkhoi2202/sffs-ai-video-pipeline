@@ -41,7 +41,7 @@ import {
 } from "./state.ts";
 import { snapshotDoNotTouch, verifyDoNotTouch } from "./guardrails.ts";
 import { kickoffStatus, type KickoffStatus } from "./kickoff.ts";
-import { nextSlots, WINDOW_OPEN_HOUR, WINDOW_CLOSE_HOUR } from "./scheduler.ts";
+import { nextSlots, WINDOW_OPEN_HOUR, WINDOW_CLOSE_HOUR, instantFromWallClock } from "./scheduler.ts";
 import { goalProgress } from "./goal.ts";
 import { pullAndScore } from "./score.ts";
 import { reconcile } from "./reconcile.ts";
@@ -55,10 +55,11 @@ import { renderForPlatforms } from "./render.ts";
 import { uploadToS3 } from "./s3.ts";
 // Publishing goes through Metricool, reusing the modules the controlled path already
 // proved against the live account.
-import { publishAsDraft, planSlots, calendarRows, allocatable, type LoopDraft } from "./loopPublish.ts";
-import { NETWORKS, type Network } from "./postingPolicy.ts";
+import { publishAsDraft, planSlots, calendarRows, allocatable, localDay, type LoopDraft } from "./loopPublish.ts";
+import { NETWORKS, monthlyRecords, exhaustionForecast, type Network } from "./postingPolicy.ts";
+import { budget, type McPost } from "./metricool.ts";
 import { toNaive } from "./approval.ts";
-import { ping, logLlmUsage } from "./llm.ts";
+import { ping, pingConfiguredModels, logLlmUsage } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
 const DRY = process.env.HERMES_DRY_RUN === "1";
@@ -161,20 +162,20 @@ function newRun(runId: string, target: number): RunState {
 async function prepareVideo(v: VideoPlan): Promise<void> {
   // idempotent: already prepared or published
   if (v.status === "drafted" || v.status === "rendered") return;
-  // RESUME: a video that already rendered and passed its gates must NOT be re-gated.
-  // markUsed() runs BEFORE the render, so its questions are already in the used
-  // ledger and the dedup gate below would now reject the video against itself. A
-  // video that died at the PUBLISH step (e.g. a rate limit) therefore has to
-  // resume at publish, not from the top.
+  // RESUME: a video that already rendered and passed its gates must NOT be re-gated —
+  // it has nothing left to prove and re-running the LLM gates would only spend budget.
+  // A video that died at the PUBLISH step (e.g. a rate limit) resumes at publish.
   if (v.renders?.length && v.gates.render?.pass) {
     info(`${v.id} resuming at publish (already rendered + gated)`);
     v.status = "rendered";
     return;
   }
 
-  // 1) dedup gate
+  // 1) dedup gate. Scoped to THIS video: markUsed() below runs before the render, so a
+  // video that died between here and a passing render is already in the used ledger and
+  // would otherwise be rejected as a duplicate of itself on the retry.
   const claimed = new Set<string>();
-  v.gates.dedup = gateDedup(v.questions, claimed);
+  v.gates.dedup = gateDedup(v.questions, claimed, v.id);
   gate(`${v.id} dedup: ${v.gates.dedup.reason}`);
   if (!v.gates.dedup.pass) {
     v.status = "rejected";
@@ -393,10 +394,67 @@ function extractPostIds(payload: any): string[] {
  * batch on top of that day and leave the next one empty, which is exactly how Thursday
  * came to be empty while Wednesday was full.
  */
+/**
+ * The live Metricool monthly headroom this wave may actually spend.
+ *
+ * This used to be `Number.MAX_SAFE_INTEGER`, which handed decide() infinite budget and
+ * meant the fail-closed guard metricool.ts budget() documents was never once consulted
+ * by the autonomous path — the only caller was ops/resume_posting.mjs, a script a human
+ * runs by hand. Breaching Metricool's Fair Use ceiling does not return a 429; it puts
+ * the brand under manual review, during which nothing can post at all. Sailing into
+ * that silently is the one failure this loop cannot recover from on its own.
+ *
+ * FAILS OPEN ON A LOOKUP ERROR, DELIBERATELY. If Metricool cannot be reached the answer
+ * is unknown, not zero, and refusing to post on an unknown would let one API blip cost a
+ * whole day. The blind spot is logged at WARN so it is visible rather than assumed.
+ */
+async function liveHeadroom(rows: McPost[]): Promise<number> {
+  const { perDay } = monthlyRecords();
+  let b: Awaited<ReturnType<typeof budget>>;
+  try {
+    b = await budget();
+  } catch (e) {
+    warn("metricool budget unreadable — scheduling WITHOUT the monthly guard this wave", {
+      err: e instanceof Error ? e.message.slice(0, 200) : String(e),
+    });
+    return Number.MAX_SAFE_INTEGER;
+  }
+  // Rows already on the calendar and not yet published are spent in every sense that
+  // matters; the counter just has not caught up. See exhaustionForecast.
+  const nowMs = Date.now();
+  const committed = rows.filter((p) => {
+    const dt = p.publicationDate?.dateTime;
+    if (!dt) return false;
+    const ms = instantFromWallClock(dt, p.publicationDate?.timezone || CONFIG.METRICOOL_TZ);
+    return Number.isFinite(ms) && ms > nowMs;
+  }).length;
+
+  const f = exhaustionForecast(b.used, committed, perDay, localDay(0));
+  info("metricool monthly budget", {
+    used: b.used, committed, budget: b.budget, headroom: f.headroom,
+    per_day: f.perDay, days_left: f.daysLeft, exhausts_on: f.exhaustsOn,
+  });
+  if (f.headroom <= 0) {
+    decision(
+      `METRICOOL BUDGET EXHAUSTED — refusing to schedule. ${f.reason}. ` +
+        `Posting resumes when the counter rolls over at the start of next month, or sooner if the ` +
+        `per-network daily rate is cut. This is the guard failing closed on purpose: the alternative ` +
+        `is breaching Fair Use (${b.hardCap}) and having the brand put under manual review.`,
+    );
+  } else if (f.warn) {
+    decision(
+      `METRICOOL BUDGET RUNWAY: ${f.daysLeft} day(s) left at ${f.perDay} records/day — the guard starts ` +
+        `refusing on ${f.exhaustsOn}. ${f.reason}. Cutting a network or a daily rate is the only lever; ` +
+        `see postingPolicy.ts monthlyRecords().`,
+    );
+  }
+  return f.headroom;
+}
+
 async function armedSchedule(runId: string, wave: number, count: number): Promise<SchedCtx> {
   const rows = await calendarRows();
   const seed = wave === 0 ? runId : `${runId}-t${wave}`;
-  const allowed = await allocatable(Number.MAX_SAFE_INTEGER);
+  const allowed = await allocatable(await liveHeadroom(rows));
   // Keyed off NETWORKS: a network absent from this map silently gets no slots at
   // all, which in the logs is indistinguishable from a deliberate pause.
   const slots: Record<string, string[]> = Object.fromEntries(NETWORKS.map((n) => [n, [] as string[]]));
@@ -565,6 +623,24 @@ export async function runCycle(): Promise<RunState> {
   // preflight
   const health = await ping();
   info("LLM ping", health);
+
+  // EVERY configured model, not just the reasoning one — a dead caption model or a dead
+  // judge fallback is invisible in the summary line but shows up in what ships.
+  const models = await pingConfiguredModels();
+  info("LLM models reachable", Object.fromEntries(models.map((m) => [m.role, `${m.model}: ${m.ok ? "ok" : "UNREACHABLE"}`])));
+  const dead = models.filter((m) => !m.ok);
+  (state as any).llm_models = models;
+  for (const m of dead) {
+    decision(
+      `MODEL UNREACHABLE — ${m.role} is configured as ${m.model} and did not answer a one-word health check. ` +
+        (m.role === "caption"
+          ? "Every video this cycle will ship the hardcoded fallback caption instead of a written one."
+          : m.role === "judge-fallback"
+            ? "The question-validity gate has no second opinion: if the reasoning model is rate-limited, the whole batch is held back."
+            : "The cycle cannot plan or judge without it.") +
+        ` Error: ${m.error ?? "unknown"}`,
+    );
+  }
 
   // KICKOFF + GOAL surfacing (logged every cycle; the read-only dashboard reads
   // these). OFF => draft-only; ARMED => autonomous scheduling in the window.
