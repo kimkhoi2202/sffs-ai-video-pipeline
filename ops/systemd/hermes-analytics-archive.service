@@ -1,0 +1,21 @@
+[Unit]
+# Metricool's analytics endpoints serve a rolling ~14 days and report the edge of that
+# window as an empty list with HTTP 200. Anything not captured before it ages out is
+# gone: the Jul 23-28 attribution blackout is already permanent for exactly this reason.
+Description=Append-only snapshot of Metricool analytics (the API keeps only ~14 days)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ec2-user
+WorkingDirectory=/home/ec2-user/sffs-ai-video-pipeline
+EnvironmentFile=/etc/hermes/hermes.env
+Environment=HERMES_DATA_DIR=/home/ec2-user/hermes-data
+# Writes ~/hermes-data/analytics-archive/dt=<day>/snapshot-<instant>.json and the same
+# key under s3://hermes-sffs-media/hermes/analytics-archive/. Both refuse to overwrite.
+# It does NOT commit: a daily automatic commit would compound the unpushed-commit
+# backlog this box is already carrying, and S3 is the copy that outlives the box anyway.
+ExecStart=/usr/bin/env node hermes/src/analyticsArchive.ts
+TimeoutStartSec=900
+Nice=15

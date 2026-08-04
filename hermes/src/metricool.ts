@@ -711,6 +711,51 @@ export async function tiktokPosts(from: string, to: string, timezone = CONFIG.ME
   });
 }
 
+// ── Full-fidelity analytics reads (the archive path) ─────────────────────────
+
+/**
+ * The analytics GET paths, by name.
+ *
+ * Enumerated rather than free-form so rawAnalytics() cannot be handed a mutation
+ * route: everything reachable through it is a read, and adding a write would mean
+ * editing this table in the open. A test asserts every value here is an
+ * `/v2/analytics/` path.
+ */
+export const ANALYTICS_SOURCES = {
+  instagramReels: `${V2}/analytics/reels/instagram`,
+  instagramPosts: `${V2}/analytics/posts/instagram`,
+  tiktokPosts: `${V2}/analytics/posts/tiktok`,
+  youtubePosts: `${V2}/analytics/posts/youtube`,
+} as const;
+
+export type AnalyticsSource = keyof typeof ANALYTICS_SOURCES;
+
+/**
+ * The rows EXACTLY as Metricool returned them — no mapping, no field selection.
+ *
+ * The three readers above are lossy on purpose: they project each payload down to the
+ * dozen fields the loop scores on. That is the right shape for the loop and the wrong
+ * shape for an archive. An Instagram reel row carries twenty keys and instagramReels()
+ * keeps thirteen, dropping among others `content` — the published caption, which is the
+ * only attribute of a published post that survives when the scheduler forgets its uuid,
+ * and therefore the last available join key for a post in the attribution blackout.
+ *
+ * That distinction only matters because these endpoints FORGET. They serve a rolling
+ * window of roughly fourteen days and report the edge of it as an empty list with HTTP
+ * 200, which is indistinguishable from "nothing was published then". Anything not
+ * captured before it ages out is gone for good, so the archive takes the whole row and
+ * decides what matters later.
+ */
+export async function rawAnalytics(
+  source: AnalyticsSource,
+  from: string,
+  to: string,
+  timezone = CONFIG.METRICOOL_TZ,
+): Promise<Record<string, unknown>[]> {
+  const rows = await call<unknown[]>(ANALYTICS_SOURCES[source], { query: { from, to, timezone } });
+  return Array.isArray(rows) ? (rows as Record<string, unknown>[]) : [];
+}
+
 // ── Volume guard ─────────────────────────────────────────────────────────────
 
 export interface McBudget {

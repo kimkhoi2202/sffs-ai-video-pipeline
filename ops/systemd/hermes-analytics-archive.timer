@@ -1,0 +1,16 @@
+[Unit]
+Description=Daily analytics archive (cadence far inside Metricool's ~14-day retention)
+
+[Timer]
+# Daily against a ~14-day window is a 14x margin: the archive would have to miss
+# thirteen consecutive runs before a single day of history could be lost.
+# 09:17 UTC deliberately avoids both existing timers - hermes-nous-loop at 14:00 and
+# hermes-reslot on :00/:30 - so a slow capture can never delay the posting cycle.
+OnCalendar=*-*-* 09:17:00 UTC
+RandomizedDelaySec=180
+# Catch up after a reboot or a stopped box rather than silently skipping the day.
+Persistent=true
+Unit=hermes-analytics-archive.service
+
+[Install]
+WantedBy=timers.target
