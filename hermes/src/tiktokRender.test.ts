@@ -53,14 +53,19 @@ test("retargetPropsToTikTok carries the ORIGINAL bed and cannot substitute APT",
 });
 
 test("aptAppliesTo excludes TikTok however the switches are set", () => {
+  // Rights clearance is passed explicitly (the 4th argument, added 2026-08-04) so this
+  // still tests the TikTok EXCLUSION. Without it every case below would pass for the
+  // unrelated reason that the real bed is recorded as uncleared.
   for (const on of [true, false]) {
     for (const yt of [true, false]) {
-      assert.equal(aptAppliesTo("tiktok", on, yt), false, `tiktok must stay excluded (on=${on}, yt=${yt})`);
+      assert.equal(aptAppliesTo("tiktok", on, yt, true), false, `tiktok must stay excluded (on=${on}, yt=${yt})`);
     }
   }
   // the switch still works for the platforms it is meant for, so this is an
   // exclusion rather than a dead flag.
-  assert.equal(aptAppliesTo("instagram", true, true), true);
+  assert.equal(aptAppliesTo("instagram", true, true, true), true);
+  // and TikTok stays excluded for the rights reason too, belt and braces.
+  assert.equal(aptAppliesTo("tiktok", true, true, false), false);
 });
 
 test("retargetPropsToTikTok refuses nonsense rather than guessing", () => {

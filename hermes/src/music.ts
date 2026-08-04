@@ -29,6 +29,37 @@
  * envelope (shortMusicVolume -> musicLevel, DUCKED 0.38 / SWELL 0.9, parade gain)
  * is untouched and the voiceover keeps exactly the same headroom over the bed.
  */
+import { readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
+
+/** The rights record for this bed. Same resolution style as covers.ts. */
+const MANIFEST_PATH = join(resolve(import.meta.dirname, "..", ".."), "ab-testing", "music-manifest.json");
+
+/**
+ * IS THE ALTERNATE BED CLEARED FOR USE? Read from the manifest's own rights block.
+ *
+ * WHY THIS IS CODE AND NOT A COMMENT. On 2026-07-28 this file already carried the
+ * warning that the source is an uncleared commercial major-label recording and that
+ * enabling it "is a human rights decision, not a code change". The switch was turned on
+ * that same evening anyway, a YouTube default-ON was added the next day, and by
+ * 2026-08-04 four of six Hermes Shorts were hard-blocked with zero views. A warning in
+ * a docstring stopped nothing, because nothing read it.
+ *
+ * So the rights state is now a value the code consults rather than prose a human is
+ * trusted to have read. While `rights.cleared` is false in ab-testing/music-manifest.json
+ * the bed cannot ship no matter what HERMES_MUSIC_APT is set to, and clearing it means
+ * editing a rights record — a deliberate, reviewable act — instead of flipping a flag.
+ *
+ * Fails CLOSED: a missing, unreadable or malformed manifest reads as not cleared.
+ */
+export function aptRightsCleared(manifestPath: string = MANIFEST_PATH): boolean {
+  try {
+    const m = JSON.parse(readFileSync(manifestPath, "utf8"));
+    return m?.rights?.cleared === true;
+  } catch {
+    return false;
+  }
+}
 
 /** The 12 cut segments, relative to remotion/public/audio/music/. Order is the
  *  rotation order; index is the value the per-video hash resolves to. */

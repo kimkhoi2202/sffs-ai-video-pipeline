@@ -3,7 +3,8 @@
   "status": "prepared-off",
   "rights": {
     "cleared": false,
-    "warning": "ROSE & Bruno Mars 'APT.' is a commercial major-label recording. Muxing it into an MP4 and uploading via API is an unlicensed sync use. Do not enable without a human rights decision. See the risk note in hermes/src/music.ts."
+    "warning": "ROSE & Bruno Mars 'APT.' is a commercial major-label recording. Muxing it into an MP4 and uploading via API is an unlicensed sync use. Do not enable without a human rights decision. See the risk note in hermes/src/music.ts.",
+    "enforced_in_code": "hermes/src/music.ts aptRightsCleared() reads THIS FIELD and render.ts aptAppliesTo() refuses the bed unless cleared === true. Setting HERMES_MUSIC_APT=1 is no longer sufficient on its own; clearing this bed means editing this rights record."
   },
   "track": {
     "title": "ROSE & Bruno Mars - APT. [Chorus Loop] | TikTok",
@@ -25,9 +26,21 @@
     "repeats_in_file": 7.61,
     "unique_music_s": 64.36431,
     "sections": [
-      { "bars": "0-7", "t": "0.056-12.93", "character": "loud bass-forward chant hook, 65-75 percent bass energy" },
-      { "bars": "8-15", "t": "12.93-25.80", "character": "stripped breakdown, bass drops to 11 percent and level falls about 8 dB; unusable as a video opening" },
-      { "bars": "16-39", "t": "25.80-64.36", "character": "full-band chorus, level flat at 21-23 dB, vocal share 20-32 percent" }
+      {
+        "bars": "0-7",
+        "t": "0.056-12.93",
+        "character": "loud bass-forward chant hook, 65-75 percent bass energy"
+      },
+      {
+        "bars": "8-15",
+        "t": "12.93-25.80",
+        "character": "stripped breakdown, bass drops to 11 percent and level falls about 8 dB; unusable as a video opening"
+      },
+      {
+        "bars": "16-39",
+        "t": "25.80-64.36",
+        "character": "full-band chorus, level flat at 21-23 dB, vocal share 20-32 percent"
+      }
     ]
   },
   "cut": {
@@ -41,17 +54,120 @@
     "why_two_loops": "Real videos run 69-79 s and can reach 110 s, past the 64.36 s loop, so each segment carries two loop periods and no real video ever reaches the wrap."
   },
   "segments": [
-    { "index": 0, "file": "apt/apt-01.mp3", "bar": 16, "start_s": 25.78672, "downbeat_s": 25.80172, "duration_s": 128.72862, "why": "silence then the full band slams back in, the strongest boundary in the track" },
-    { "index": 1, "file": "apt/apt-02.mp3", "bar": 0, "start_s": 0.041, "downbeat_s": 0.056, "duration_s": 128.72862, "why": "top of the loop, bass-forward chant hook" },
-    { "index": 2, "file": "apt/apt-03.mp3", "bar": 24, "start_s": 38.65959, "downbeat_s": 38.67459, "duration_s": 128.72862, "why": "four-bar phrase start in the driving bass-heavy stretch" },
-    { "index": 3, "file": "apt/apt-04.mp3", "bar": 36, "start_s": 57.96888, "downbeat_s": 57.98388, "duration_s": 128.72862, "why": "most vocal-forward four-bar start in the loop" },
-    { "index": 4, "file": "apt/apt-05.mp3", "bar": 4, "start_s": 6.47743, "downbeat_s": 6.49243, "duration_s": 128.72862, "why": "second phrase of the chant hook, same energy as the top" },
-    { "index": 5, "file": "apt/apt-06.mp3", "bar": 28, "start_s": 45.09602, "downbeat_s": 45.11102, "duration_s": 128.72862, "why": "vocal-forward four-bar start with a hard kick on one" },
-    { "index": 6, "file": "apt/apt-07.mp3", "bar": 32, "start_s": 51.53245, "downbeat_s": 51.54745, "duration_s": 128.72862, "why": "loudest bar in the loop, opens at full level" },
-    { "index": 7, "file": "apt/apt-08.mp3", "bar": 22, "start_s": 35.44137, "downbeat_s": 35.45637, "duration_s": 128.72862, "why": "strongest transient in the chorus body" },
-    { "index": 8, "file": "apt/apt-09.mp3", "bar": 30, "start_s": 48.31423, "downbeat_s": 48.32923, "duration_s": 128.72862, "why": "two-bar cell with a clean isolated kick" },
-    { "index": 9, "file": "apt/apt-10.mp3", "bar": 6, "start_s": 9.69565, "downbeat_s": 9.71065, "duration_s": 128.72862, "why": "most bass-dominant entry, least vocal content" },
-    { "index": 10, "file": "apt/apt-11.mp3", "bar": 26, "start_s": 41.8778, "downbeat_s": 41.8928, "duration_s": 128.72862, "why": "balanced bass and vocal, clean four-on-the-floor entry" },
-    { "index": 11, "file": "apt/apt-12.mp3", "bar": 34, "start_s": 54.75066, "downbeat_s": 54.76566, "duration_s": 128.72862, "why": "late-chorus cell, vocal leaning" }
-  ]
+    {
+      "index": 0,
+      "file": "apt/apt-01.mp3",
+      "bar": 16,
+      "start_s": 25.78672,
+      "downbeat_s": 25.80172,
+      "duration_s": 128.72862,
+      "why": "silence then the full band slams back in, the strongest boundary in the track"
+    },
+    {
+      "index": 1,
+      "file": "apt/apt-02.mp3",
+      "bar": 0,
+      "start_s": 0.041,
+      "downbeat_s": 0.056,
+      "duration_s": 128.72862,
+      "why": "top of the loop, bass-forward chant hook"
+    },
+    {
+      "index": 2,
+      "file": "apt/apt-03.mp3",
+      "bar": 24,
+      "start_s": 38.65959,
+      "downbeat_s": 38.67459,
+      "duration_s": 128.72862,
+      "why": "four-bar phrase start in the driving bass-heavy stretch"
+    },
+    {
+      "index": 3,
+      "file": "apt/apt-04.mp3",
+      "bar": 36,
+      "start_s": 57.96888,
+      "downbeat_s": 57.98388,
+      "duration_s": 128.72862,
+      "why": "most vocal-forward four-bar start in the loop"
+    },
+    {
+      "index": 4,
+      "file": "apt/apt-05.mp3",
+      "bar": 4,
+      "start_s": 6.47743,
+      "downbeat_s": 6.49243,
+      "duration_s": 128.72862,
+      "why": "second phrase of the chant hook, same energy as the top"
+    },
+    {
+      "index": 5,
+      "file": "apt/apt-06.mp3",
+      "bar": 28,
+      "start_s": 45.09602,
+      "downbeat_s": 45.11102,
+      "duration_s": 128.72862,
+      "why": "vocal-forward four-bar start with a hard kick on one"
+    },
+    {
+      "index": 6,
+      "file": "apt/apt-07.mp3",
+      "bar": 32,
+      "start_s": 51.53245,
+      "downbeat_s": 51.54745,
+      "duration_s": 128.72862,
+      "why": "loudest bar in the loop, opens at full level"
+    },
+    {
+      "index": 7,
+      "file": "apt/apt-08.mp3",
+      "bar": 22,
+      "start_s": 35.44137,
+      "downbeat_s": 35.45637,
+      "duration_s": 128.72862,
+      "why": "strongest transient in the chorus body"
+    },
+    {
+      "index": 8,
+      "file": "apt/apt-09.mp3",
+      "bar": 30,
+      "start_s": 48.31423,
+      "downbeat_s": 48.32923,
+      "duration_s": 128.72862,
+      "why": "two-bar cell with a clean isolated kick"
+    },
+    {
+      "index": 9,
+      "file": "apt/apt-10.mp3",
+      "bar": 6,
+      "start_s": 9.69565,
+      "downbeat_s": 9.71065,
+      "duration_s": 128.72862,
+      "why": "most bass-dominant entry, least vocal content"
+    },
+    {
+      "index": 10,
+      "file": "apt/apt-11.mp3",
+      "bar": 26,
+      "start_s": 41.8778,
+      "downbeat_s": 41.8928,
+      "duration_s": 128.72862,
+      "why": "balanced bass and vocal, clean four-on-the-floor entry"
+    },
+    {
+      "index": 11,
+      "file": "apt/apt-12.mp3",
+      "bar": 34,
+      "start_s": 54.75066,
+      "downbeat_s": 54.76566,
+      "duration_s": 128.72862,
+      "why": "late-chorus cell, vocal leaning"
+    }
+  ],
+  "incident": {
+    "date": "2026-08-04",
+    "what_happened": "Four of six Hermes-generated YouTube Shorts published on 2026-08-04 were hard-blocked with zero views. Cross-correlation of the published CDN media against these segments and the licensed beds scored the APT segments at 0.33-0.47 at lag ~0.04s versus 0.013-0.015 for every licensed bed, a ~25x ratio: the uncleared track was in the shipped files. The three posts on the channel that played normally that day (the riddle film, the Roblox announcement, a rebus) are the only ones that do not carry it.",
+    "how_it_got_enabled": "The feature and this manifest, including rights.cleared=false and the do-not-enable warning, landed together in e41d270 on 2026-07-28. HERMES_MUSIC_APT=1 was set in /etc/hermes/hermes.env the same evening: the backup taken immediately before it, hermes.env.bak.pre-apt-20260728T194336Z (19:43:36 UTC), carries no such line and the next backup does. The following day 08b861a added MUSIC_APT_YOUTUBE defaulting ON, so the bed reached YouTube - the platform the same commit identified as having the categorically worse downside, because a Content ID claim on a Short over one minute is a hard block rather than a monetisation redirect, and these run 69-91s. Every one of those commits is authored 'Hermes VPS', the box's own agent identity. No human rights decision is recorded anywhere.",
+    "resolution": "2026-08-04: HERMES_MUSIC_APT=0 and HERMES_MUSIC_APT_YOUTUBE=0 in /etc/hermes/hermes.env (backup hermes.env.bak-20260804T233719Z), plus the code gate above so the env flag is not the only thing standing between the pipeline and a claim. The five already-blocked posts are not recoverable.",
+    "not_explained_by_this": "TikTok. Its median fell from roughly 300 views per post to 1-4 starting 2026-07-24, FIVE DAYS BEFORE this bed was enabled, so the music cannot be its cause and a recovery on YouTube must not be read as having fixed TikTok."
+  }
 }

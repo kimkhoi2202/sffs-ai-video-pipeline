@@ -47,7 +47,7 @@ import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "no
 import { join } from "node:path";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
-import { aptSegmentFor } from "./music.ts";
+import { aptSegmentFor, aptRightsCleared } from "./music.ts";
 import { generateVO, type RevealBeatInput, type NarrationMode, resolveFfprobe, isNum, spellNums } from "./narration.ts";
 import { isShapeKind, type Figure } from "./state.ts";
 // Reuse the pipeline's canonical number-speller so "25" reads "twenty-five".
@@ -482,7 +482,11 @@ export function aptAppliesTo(
   platform: Platform,
   on: boolean = CONFIG.MUSIC_APT,
   youtubeOn: boolean = CONFIG.MUSIC_APT_YOUTUBE,
+  cleared: boolean = aptRightsCleared(),
 ): boolean {
+  // RIGHTS FIRST, ahead of every other consideration. An uncleared bed does not ship
+  // even with the switch on: that combination is what hard-blocked four Shorts.
+  if (!cleared) return false;
   if (!on) return false;
   if (platform === "tiktok") return false; // paused, and already reach-suppressed
   if (platform === "youtube") return youtubeOn;

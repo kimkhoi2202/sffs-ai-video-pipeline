@@ -214,6 +214,24 @@ See [`prizes.md`](prizes.md) for the mechanic, announcement, and winner-document
 - [ ] Puzzles/copy/music **original** (or licensed) and age-appropriate; nothing scary.
 - [ ] Marked **"Made for Kids"** where required (YouTube) and compliant with platform kids' policies.
 
+### OPEN: the provenance of the eight music beds is unestablished
+
+The pipeline's licensed beds — `gameshow-fanfare`, `prize-wheel-parade`, `winner-spin`,
+`bonus-round-bounce`, `final-round-fanfare`, `fanfare`, `parade`, `winner` — were added in
+the repository's first two commits with **no licence file, no attribution and no
+provenance note**. Nothing in this repo establishes where they came from or on what terms
+they may be used.
+
+They are therefore **not known to be claimed**, which is not the same as **cleared**, and
+the checklist item above has never been ticked. On 2026-08-04 the pipeline reverted to
+these beds after an uncleared major-label track hard-blocked four YouTube Shorts (see
+`ab-testing/music-manifest.json` -> `incident`). That revert removed a known problem and
+returned to files of unknown standing; it did not make the audio provably safe.
+
+**To close this**: establish the source and licence terms of all eight files, record them
+here, and tick the box. If any cannot be traced, replace it. Until then, assume the audio
+is unverified rather than cleared.
+
 ## 7. Capture-page compliance checklist (per gate)
 
 - [ ] **Parent email is the ONLY field.** No child fields; no "child's name/age/school."
