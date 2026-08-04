@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-08-03",
+  "updated": "2026-08-04",
   "count": 1544,
   "entries": [
     {
@@ -16,7 +16,7 @@
       "slug": "round-001",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "APPLE",
         "BANANA",
@@ -250,7 +250,7 @@
       "slug": "round-001",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PIANO",
         "GUITAR",
@@ -330,7 +330,7 @@
       "slug": "round-001",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?",
       "options": [
         "8",
         "10",
@@ -378,7 +378,7 @@
       "slug": "round-002",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ROSE",
         "OAK",
@@ -611,7 +611,7 @@
       "slug": "round-002",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ROAD",
         "CAR",
@@ -691,7 +691,7 @@
       "slug": "round-002",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "1 -> 3,   2 -> 6,   3 -> 9,   4 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n1 -> 3,   2 -> 6,   3 -> 9,   4 -> ?",
       "options": [
         "7",
         "12",
@@ -739,7 +739,7 @@
       "slug": "round-003",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MONDAY",
         "TUESDAY",
@@ -972,7 +972,7 @@
       "slug": "round-003",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SQUARE",
         "TRIANGLE",
@@ -1052,7 +1052,7 @@
       "slug": "round-003",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "1 -> 4,   2 -> 6,   3 -> 8,   4 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n1 -> 4,   2 -> 6,   3 -> 8,   4 -> ?",
       "options": [
         "9",
         "10",
@@ -1100,7 +1100,7 @@
       "slug": "round-004",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "EYE",
         "EAR",
@@ -1333,7 +1333,7 @@
       "slug": "round-004",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "COPPER",
         "GOLD",
@@ -1413,7 +1413,7 @@
       "slug": "round-004",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   3 -> 12,   4 -> 16,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 12,   4 -> 16,   5 -> ?",
       "options": [
         "20",
         "18",
@@ -1461,7 +1461,7 @@
       "slug": "round-005",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "NAIL",
         "HAMMER",
@@ -1695,7 +1695,7 @@
       "slug": "round-005",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SUN",
         "JUPITER",
@@ -1775,7 +1775,7 @@
       "slug": "round-005",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "1 -> 5,   2 -> 7,   3 -> 9,   4 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n1 -> 5,   2 -> 7,   3 -> 9,   4 -> ?",
       "options": [
         "10",
         "12",
@@ -1823,7 +1823,7 @@
       "slug": "round-006",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DOG",
         "COW",
@@ -2056,7 +2056,7 @@
       "slug": "round-006",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SPOON",
         "SHIRT",
@@ -2136,7 +2136,7 @@
       "slug": "round-006",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 11,   5 -> 14,   6 -> 17,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 14,   6 -> 17,   7 -> ?",
       "options": [
         "20",
         "25",
@@ -2187,7 +2187,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BLUE",
         "THREE",
@@ -2447,7 +2447,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PURPLE",
         "CIRCLE",
@@ -2539,7 +2539,7 @@
       "posted": true,
       "postedBatch": 1,
       "postedAt": "2026-07-20",
-      "prompt": "3 -> 8,   4 -> 10,   7 -> 16,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   4 -> 10,   7 -> 16,   8 -> ?",
       "options": [
         "18",
         "19",
@@ -2590,7 +2590,7 @@
       "slug": "round-008",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GOLD",
         "WOOD",
@@ -2823,7 +2823,7 @@
       "slug": "round-008",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SQUARE",
         "TRIANGLE",
@@ -2903,7 +2903,7 @@
       "slug": "round-008",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 11,   4 -> 15,   5 -> 19,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   5 -> 19,   8 -> ?",
       "options": [
         "36",
         "29",
@@ -2951,7 +2951,7 @@
       "slug": "round-009",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GRAPE",
         "LION",
@@ -3185,7 +3185,7 @@
       "slug": "round-009",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SNAKE",
         "DOG",
@@ -3265,7 +3265,7 @@
       "slug": "round-009",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 19,   6 -> 27,   7 -> 31,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 19,   6 -> 27,   7 -> 31,   8 -> ?",
       "options": [
         "45",
         "35",
@@ -3313,7 +3313,7 @@
       "slug": "round-010",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRILL",
         "MILK",
@@ -3546,7 +3546,7 @@
       "slug": "round-010",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GOAT",
         "COW",
@@ -3626,7 +3626,7 @@
       "slug": "round-010",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   4 -> 7,   7 -> 13,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   7 -> 13,   8 -> ?",
       "options": [
         "25",
         "13",
@@ -3674,7 +3674,7 @@
       "slug": "round-011",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRESS",
         "SHIRT",
@@ -3908,7 +3908,7 @@
       "slug": "round-011",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CLOUD",
         "PINE",
@@ -3988,7 +3988,7 @@
       "slug": "round-011",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   5 -> 11,   7 -> 15,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   5 -> 11,   7 -> 15,   6 -> ?",
       "options": [
         "10",
         "23",
@@ -4036,7 +4036,7 @@
       "slug": "round-012",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BOAT",
         "TRUCK",
@@ -4269,7 +4269,7 @@
       "slug": "round-012",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SPARROW",
         "STONE",
@@ -4349,7 +4349,7 @@
       "slug": "round-012",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   5 -> 11,   6 -> 13,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   5 -> 11,   6 -> 13,   8 -> ?",
       "options": [
         "7",
         "15",
@@ -4397,7 +4397,7 @@
       "slug": "round-013",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GLASS",
         "HAMMER",
@@ -4630,7 +4630,7 @@
       "slug": "round-013",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WHALE",
         "BEETLE",
@@ -4710,7 +4710,7 @@
       "slug": "round-013",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 15,   5 -> 18,   7 -> 24,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 15,   5 -> 18,   7 -> 24,   6 -> ?",
       "options": [
         "21",
         "19",
@@ -4758,7 +4758,7 @@
       "slug": "round-014",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DOG",
         "RABBIT",
@@ -4991,7 +4991,7 @@
       "slug": "round-014",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "RAIN",
         "BED",
@@ -5071,7 +5071,7 @@
       "slug": "round-014",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
       "options": [
         "16",
         "6",
@@ -5119,7 +5119,7 @@
       "slug": "round-015",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FIVE",
         "ONE",
@@ -5353,7 +5353,7 @@
       "slug": "round-015",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "ARM",
@@ -5433,7 +5433,7 @@
       "slug": "round-015",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 9,   6 -> 15,   7 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   6 -> 15,   7 -> 17,   9 -> ?",
       "options": [
         "21",
         "22",
@@ -5481,7 +5481,7 @@
       "slug": "round-016",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HOCKEY",
         "SOCCER",
@@ -5714,7 +5714,7 @@
       "slug": "round-016",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SHARK",
         "ROBIN",
@@ -5794,7 +5794,7 @@
       "slug": "round-016",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 17,   5 -> 21,   6 -> 25,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 17,   5 -> 21,   6 -> 25,   8 -> ?",
       "options": [
         "28",
         "33",
@@ -5842,7 +5842,7 @@
       "slug": "round-017",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "APPLE",
         "PIANO",
@@ -6075,7 +6075,7 @@
       "slug": "round-017",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TIGER",
         "EAGLE",
@@ -6155,7 +6155,7 @@
       "slug": "round-017",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   4 -> 15,   7 -> 24,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   4 -> 15,   7 -> 24,   8 -> ?",
       "options": [
         "37",
         "24",
@@ -6203,7 +6203,7 @@
       "slug": "round-018",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ROSE",
         "TRAIN",
@@ -6436,7 +6436,7 @@
       "slug": "round-018",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PLUM",
         "POTATO",
@@ -6516,7 +6516,7 @@
       "slug": "round-018",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   4 -> 9,   5 -> 11,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   5 -> 11,   9 -> ?",
       "options": [
         "20",
         "24",
@@ -6564,7 +6564,7 @@
       "slug": "round-019",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "IRON",
         "SHEEP",
@@ -6658,7 +6658,7 @@
       "slug": "round-019",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 4,   5 -> 8,   7 -> 12,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 4,   5 -> 8,   7 -> 12,   6 -> ?",
       "options": [
         "12",
         "10",
@@ -6791,7 +6791,7 @@
       "slug": "round-019",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WILLOW",
         "SHELF",
@@ -6871,7 +6871,7 @@
       "slug": "round-019",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   4 -> 9,   7 -> 15,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   7 -> 15,   5 -> ?",
       "options": [
         "12",
         "21",
@@ -6919,7 +6919,7 @@
       "slug": "round-020",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TRUMPET",
         "PINK",
@@ -7013,7 +7013,7 @@
       "slug": "round-020",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 11,   5 -> 14,   6 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 14,   6 -> 17,   9 -> ?",
       "options": [
         "23",
         "26",
@@ -7146,7 +7146,7 @@
       "slug": "round-020",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SLEET",
         "SNOW",
@@ -7226,7 +7226,7 @@
       "slug": "round-020",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 10,   3 -> 14,   5 -> 22,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   3 -> 14,   5 -> 22,   9 -> ?",
       "options": [
         "34",
         "41",
@@ -7274,7 +7274,7 @@
       "slug": "round-021",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MOTORCYCLE",
         "SHOVEL",
@@ -7368,7 +7368,7 @@
       "slug": "round-021",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
       "options": [
         "15",
         "12",
@@ -7501,7 +7501,7 @@
       "slug": "round-021",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JACKET",
         "COAT",
@@ -7581,7 +7581,7 @@
       "slug": "round-021",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 11,   4 -> 15,   6 -> 23,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   6 -> 23,   8 -> ?",
       "options": [
         "32",
         "31",
@@ -7629,7 +7629,7 @@
       "slug": "round-022",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "RADISH",
         "CABINET",
@@ -7723,7 +7723,7 @@
       "slug": "round-022",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 5,   4 -> 7,   5 -> 9,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   5 -> 9,   7 -> ?",
       "options": [
         "11",
         "18",
@@ -7856,7 +7856,7 @@
       "slug": "round-022",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "COD",
         "MELON",
@@ -7936,7 +7936,7 @@
       "slug": "round-022",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 15,   4 -> 19,   7 -> 31,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   7 -> 31,   5 -> ?",
       "options": [
         "19",
         "23",
@@ -7984,7 +7984,7 @@
       "slug": "round-023",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SNOW",
         "MOTH",
@@ -8078,7 +8078,7 @@
       "slug": "round-023",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   6 -> 21,   7 -> 24,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   6 -> 21,   7 -> 24,   9 -> ?",
       "options": [
         "33",
         "20",
@@ -8211,7 +8211,7 @@
       "slug": "round-023",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HARP",
         "PIANO",
@@ -8291,7 +8291,7 @@
       "slug": "round-023",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   3 -> 7,   7 -> 19,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   7 -> 19,   6 -> ?",
       "options": [
         "16",
         "15",
@@ -8339,7 +8339,7 @@
       "slug": "round-024",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "VOLLEYBALL",
         "CRICKET",
@@ -8433,7 +8433,7 @@
       "slug": "round-024",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   5 -> 12,   7 -> 16,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 12,   7 -> 16,   6 -> ?",
       "options": [
         "14",
         "12",
@@ -8566,7 +8566,7 @@
       "slug": "round-024",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRAGONFLY",
         "FLEA",
@@ -8646,7 +8646,7 @@
       "slug": "round-024",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 9,   5 -> 11,   6 -> 13,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 9,   5 -> 11,   6 -> 13,   9 -> ?",
       "options": [
         "19",
         "22",
@@ -8694,7 +8694,7 @@
       "slug": "round-025",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "NEPTUNE",
         "HOCKEY",
@@ -8788,7 +8788,7 @@
       "slug": "round-025",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   3 -> 7,   6 -> 16,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   6 -> 16,   7 -> ?",
       "options": [
         "19",
         "29",
@@ -8921,7 +8921,7 @@
       "slug": "round-025",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TROUT",
         "HAMMER",
@@ -9001,7 +9001,7 @@
       "slug": "round-025",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 13,   7 -> 29,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 13,   7 -> 29,   6 -> ?",
       "options": [
         "15",
         "28",
@@ -9049,7 +9049,7 @@
       "slug": "round-026",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "COW",
         "HAIL",
@@ -9143,7 +9143,7 @@
       "slug": "round-026",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 11,   6 -> 20,   7 -> 23,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   6 -> 20,   7 -> 23,   8 -> ?",
       "options": [
         "24",
         "26",
@@ -9276,7 +9276,7 @@
       "slug": "round-026",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HAIL",
         "WIND",
@@ -9356,7 +9356,7 @@
       "slug": "round-026",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 7,   4 -> 10,   6 -> 16,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 10,   6 -> 16,   9 -> ?",
       "options": [
         "25",
         "22",
@@ -9404,7 +9404,7 @@
       "slug": "round-027",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "VENUS",
         "SHIRT",
@@ -9498,7 +9498,7 @@
       "slug": "round-027",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   4 -> 6,   5 -> 8,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   4 -> 6,   5 -> 8,   8 -> ?",
       "options": [
         "15",
         "11",
@@ -9632,7 +9632,7 @@
       "slug": "round-027",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "VIOLIN",
         "CELLO",
@@ -9712,7 +9712,7 @@
       "slug": "round-027",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   3 -> 9,   7 -> 17,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   7 -> 17,   5 -> ?",
       "options": [
         "13",
         "11",
@@ -9760,7 +9760,7 @@
       "slug": "round-028",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JET",
         "CHAIR",
@@ -9854,7 +9854,7 @@
       "slug": "round-028",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   4 -> 11,   6 -> 17,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   4 -> 11,   6 -> 17,   8 -> ?",
       "options": [
         "24",
         "26",
@@ -9987,7 +9987,7 @@
       "slug": "round-028",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WRIST",
         "CHIN",
@@ -10067,7 +10067,7 @@
       "slug": "round-028",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 12,   6 -> 21,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   5 -> ?",
       "options": [
         "21",
         "8",
@@ -10115,7 +10115,7 @@
       "slug": "round-029",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CLARINET",
         "VIOLIN",
@@ -10209,7 +10209,7 @@
       "slug": "round-029",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   4 -> 9,   7 -> 15,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 9,   7 -> 15,   9 -> ?",
       "options": [
         "21",
         "19",
@@ -10342,7 +10342,7 @@
       "slug": "round-029",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TEA",
         "BRONZE",
@@ -10422,7 +10422,7 @@
       "slug": "round-029",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   3 -> 9,   5 -> 13,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   5 -> 13,   6 -> ?",
       "options": [
         "12",
         "13",
@@ -10470,7 +10470,7 @@
       "slug": "round-030",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BLIMP",
         "PLANE",
@@ -10564,7 +10564,7 @@
       "slug": "round-030",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 11,   4 -> 14,   5 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 14,   5 -> 17,   9 -> ?",
       "options": [
         "27",
         "31",
@@ -10698,7 +10698,7 @@
       "slug": "round-030",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CHERRY",
         "KIWI",
@@ -10778,7 +10778,7 @@
       "slug": "round-030",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 11,   4 -> 15,   7 -> 27,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 15,   7 -> 27,   6 -> ?",
       "options": [
         "28",
         "23",
@@ -10826,7 +10826,7 @@
       "slug": "round-031",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MERCURY",
         "SATURN",
@@ -10920,7 +10920,7 @@
       "slug": "round-031",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   3 -> 5,   6 -> 11,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   6 -> 11,   8 -> ?",
       "options": [
         "13",
         "17",
@@ -11053,7 +11053,7 @@
       "slug": "round-031",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "YELLOW",
         "HELICOPTER",
@@ -11133,7 +11133,7 @@
       "slug": "round-031",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 7,   4 -> 10,   7 -> 19,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 10,   7 -> 19,   5 -> ?",
       "options": [
         "13",
         "23",
@@ -11181,7 +11181,7 @@
       "slug": "round-032",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JET",
         "HELICOPTER",
@@ -11275,7 +11275,7 @@
       "slug": "round-032",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   4 -> 13,   6 -> 19,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   6 -> 19,   8 -> ?",
       "options": [
         "22",
         "24",
@@ -11408,7 +11408,7 @@
       "slug": "round-032",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "PURPLE",
@@ -11488,7 +11488,7 @@
       "slug": "round-032",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 18,   5 -> 22,   7 -> 30,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 18,   5 -> 22,   7 -> 30,   6 -> ?",
       "options": [
         "23",
         "26",
@@ -11536,7 +11536,7 @@
       "slug": "round-033",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "RAIN",
         "ARM",
@@ -11630,7 +11630,7 @@
       "slug": "round-033",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
       "options": [
         "19",
         "20",
@@ -11763,7 +11763,7 @@
       "slug": "round-033",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ONION",
         "PEA",
@@ -11843,7 +11843,7 @@
       "slug": "round-033",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
       "options": [
         "27",
         "28",
@@ -11891,7 +11891,7 @@
       "slug": "round-034",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "TABLE",
@@ -11985,7 +11985,7 @@
       "slug": "round-034",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   5 -> 8,   6 -> 10,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   6 -> 10,   9 -> ?",
       "options": [
         "18",
         "16",
@@ -12118,7 +12118,7 @@
       "slug": "round-034",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CELERY",
         "PURPLE",
@@ -12198,7 +12198,7 @@
       "slug": "round-034",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   3 -> 11,   5 -> 17,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 11,   5 -> 17,   8 -> ?",
       "options": [
         "23",
         "31",
@@ -12246,7 +12246,7 @@
       "slug": "round-035",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "THUNDER",
         "HAIL",
@@ -12340,7 +12340,7 @@
       "slug": "round-035",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 13,   6 -> 16,   7 -> 19,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 13,   6 -> 16,   7 -> 19,   9 -> ?",
       "options": [
         "25",
         "20",
@@ -12473,7 +12473,7 @@
       "slug": "round-035",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WILLOW",
         "TAXI",
@@ -12553,7 +12553,7 @@
       "slug": "round-035",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   4 -> 7,   7 -> 13,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   7 -> 13,   6 -> ?",
       "options": [
         "10",
         "11",
@@ -12601,7 +12601,7 @@
       "slug": "round-036",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HAND",
         "GOLD",
@@ -12695,7 +12695,7 @@
       "slug": "round-036",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   3 -> 9,   6 -> 15,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 9,   6 -> 15,   9 -> ?",
       "options": [
         "21",
         "19",
@@ -12828,7 +12828,7 @@
       "slug": "round-036",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "RECTANGLE",
         "OVAL",
@@ -12908,7 +12908,7 @@
       "slug": "round-036",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   5 -> 18,   7 -> 26,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   5 -> 18,   7 -> 26,   9 -> ?",
       "options": [
         "30",
         "34",
@@ -12956,7 +12956,7 @@
       "slug": "round-037",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MILK",
         "LEMONADE",
@@ -13050,7 +13050,7 @@
       "slug": "round-037",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
       "options": [
         "17",
         "16",
@@ -13183,7 +13183,7 @@
       "slug": "round-037",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TWELVE",
         "TWENTY",
@@ -13263,7 +13263,7 @@
       "slug": "round-037",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 15,   4 -> 19,   5 -> 23,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   5 -> 23,   7 -> ?",
       "options": [
         "41",
         "26",
@@ -13311,7 +13311,7 @@
       "slug": "round-038",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ZINC",
         "JACKET",
@@ -13405,7 +13405,7 @@
       "slug": "round-038",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   3 -> 8,   6 -> 14,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 8,   6 -> 14,   7 -> ?",
       "options": [
         "16",
         "26",
@@ -13539,7 +13539,7 @@
       "slug": "round-038",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CABBAGE",
         "RADISH",
@@ -13619,7 +13619,7 @@
       "slug": "round-038",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   4 -> 15,   5 -> 18,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   4 -> 15,   5 -> 18,   7 -> ?",
       "options": [
         "23",
         "14",
@@ -13667,7 +13667,7 @@
       "slug": "round-039",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BROCCOLI",
         "TRACTOR",
@@ -13761,7 +13761,7 @@
       "slug": "round-039",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   5 -> 13,   6 -> 15,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 13,   6 -> 15,   7 -> ?",
       "options": [
         "17",
         "14",
@@ -13894,7 +13894,7 @@
       "slug": "round-039",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CIRCLE",
         "OVAL",
@@ -13974,7 +13974,7 @@
       "slug": "round-039",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   5 -> 12,   7 -> 16,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   5 -> 12,   7 -> 16,   8 -> ?",
       "options": [
         "17",
         "20",
@@ -14022,7 +14022,7 @@
       "slug": "round-040",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "VAN",
         "MOTORCYCLE",
@@ -14116,7 +14116,7 @@
       "slug": "round-040",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   6 -> 19,   7 -> 22,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   6 -> 19,   7 -> 22,   5 -> ?",
       "options": [
         "16",
         "15",
@@ -14249,7 +14249,7 @@
       "slug": "round-040",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "COW",
         "HOCKEY",
@@ -14329,7 +14329,7 @@
       "slug": "round-040",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   3 -> 5,   7 -> 13,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   7 -> 13,   8 -> ?",
       "options": [
         "20",
         "13",
@@ -14377,7 +14377,7 @@
       "slug": "round-041",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SPINACH",
         "PEA",
@@ -14471,7 +14471,7 @@
       "slug": "round-041",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   4 -> 13,   6 -> 19,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 13,   6 -> 19,   5 -> ?",
       "options": [
         "16",
         "18",
@@ -14604,7 +14604,7 @@
       "slug": "round-041",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PEACH",
         "CROW",
@@ -14684,7 +14684,7 @@
       "slug": "round-041",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 10,   3 -> 14,   7 -> 30,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   3 -> 14,   7 -> 30,   5 -> ?",
       "options": [
         "22",
         "20",
@@ -14732,7 +14732,7 @@
       "slug": "round-042",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRAGONFLY",
         "LADYBUG",
@@ -14826,7 +14826,7 @@
       "slug": "round-042",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   6 -> ?",
       "options": [
         "30",
         "18",
@@ -14959,7 +14959,7 @@
       "slug": "round-042",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "STOOL",
         "SHELF",
@@ -15039,7 +15039,7 @@
       "slug": "round-042",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   6 -> 20,   7 -> 23,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   6 -> 20,   7 -> 23,   8 -> ?",
       "options": [
         "25",
         "26",
@@ -15087,7 +15087,7 @@
       "slug": "round-043",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BED",
         "TWELVE",
@@ -15181,7 +15181,7 @@
       "slug": "round-043",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   3 -> 11,   4 -> 14,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 11,   4 -> 14,   8 -> ?",
       "options": [
         "26",
         "29",
@@ -15314,7 +15314,7 @@
       "slug": "round-043",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SILVER",
         "TIN",
@@ -15394,7 +15394,7 @@
       "slug": "round-043",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
       "options": [
         "17",
         "21",
@@ -15442,7 +15442,7 @@
       "slug": "round-044",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRUM",
         "FLUTE",
@@ -15536,7 +15536,7 @@
       "slug": "round-044",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 9,   5 -> 13,   7 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   5 -> 13,   7 -> 17,   9 -> ?",
       "options": [
         "21",
         "23",
@@ -15669,7 +15669,7 @@
       "slug": "round-044",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HEXAGON",
         "OVAL",
@@ -15749,7 +15749,7 @@
       "slug": "round-044",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 13,   6 -> 19,   7 -> 22,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   6 -> 19,   7 -> 22,   5 -> ?",
       "options": [
         "26",
         "15",
@@ -15797,7 +15797,7 @@
       "slug": "round-045",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BASS",
         "NICKEL",
@@ -15891,7 +15891,7 @@
       "slug": "round-045",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 12,   6 -> 14,   7 -> 16,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 12,   6 -> 14,   7 -> 16,   8 -> ?",
       "options": [
         "8",
         "18",
@@ -16024,7 +16024,7 @@
       "slug": "round-045",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TWENTY",
         "FIFTEEN",
@@ -16104,7 +16104,7 @@
       "slug": "round-045",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   6 -> 22,   7 -> 26,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   6 -> 22,   7 -> 26,   5 -> ?",
       "options": [
         "14",
         "28",
@@ -16152,7 +16152,7 @@
       "slug": "round-046",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PANTS",
         "JACKET",
@@ -16246,7 +16246,7 @@
       "slug": "round-046",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 12,   7 -> 24,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   7 -> 24,   8 -> ?",
       "options": [
         "22",
         "24",
@@ -16379,7 +16379,7 @@
       "slug": "round-046",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BEE",
         "PENTAGON",
@@ -16459,7 +16459,7 @@
       "slug": "round-046",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
       "options": [
         "24",
         "15",
@@ -16507,7 +16507,7 @@
       "slug": "round-047",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ANKLE",
         "ELBOW",
@@ -16601,7 +16601,7 @@
       "slug": "round-047",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   9 -> ?",
       "options": [
         "16",
         "15",
@@ -16734,7 +16734,7 @@
       "slug": "round-047",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BROWN",
         "BLACK",
@@ -16814,7 +16814,7 @@
       "slug": "round-047",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 14,   4 -> 18,   7 -> 30,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 14,   4 -> 18,   7 -> 30,   8 -> ?",
       "options": [
         "44",
         "34",
@@ -16862,7 +16862,7 @@
       "slug": "round-048",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "YELLOW",
         "GREEN",
@@ -16956,7 +16956,7 @@
       "slug": "round-048",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
       "options": [
         "14",
         "12",
@@ -17089,7 +17089,7 @@
       "slug": "round-048",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "KAYAK",
         "FIFTEEN",
@@ -17169,7 +17169,7 @@
       "slug": "round-048",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 9,   6 -> 11,   7 -> 13,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 9,   6 -> 11,   7 -> 13,   9 -> ?",
       "options": [
         "18",
         "16",
@@ -17217,7 +17217,7 @@
       "slug": "round-049",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "STEEL",
         "BUS",
@@ -17311,7 +17311,7 @@
       "slug": "round-049",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
       "options": [
         "12",
         "17",
@@ -17444,7 +17444,7 @@
       "slug": "round-049",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ROBIN",
         "TWELVE",
@@ -17524,7 +17524,7 @@
       "slug": "round-049",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 21,   6 -> 25,   7 -> 29,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 21,   6 -> 25,   7 -> 29,   9 -> ?",
       "options": [
         "42",
         "40",
@@ -17572,7 +17572,7 @@
       "slug": "round-050",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TENNIS",
         "PINE",
@@ -17666,7 +17666,7 @@
       "slug": "round-050",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   3 -> 11,   4 -> 14,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   3 -> 11,   4 -> 14,   5 -> ?",
       "options": [
         "7",
         "17",
@@ -17799,7 +17799,7 @@
       "slug": "round-050",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "POTATO",
         "PEA",
@@ -17879,7 +17879,7 @@
       "slug": "round-050",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 16,   6 -> 19,   7 -> 22,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 16,   6 -> 19,   7 -> 22,   9 -> ?",
       "options": [
         "38",
         "28",
@@ -17927,7 +17927,7 @@
       "slug": "round-051",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ROCKET",
         "JACKET",
@@ -18021,7 +18021,7 @@
       "slug": "round-051",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   5 -> 13,   7 -> 19,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   5 -> 13,   7 -> 19,   8 -> ?",
       "options": [
         "22",
         "25",
@@ -18154,7 +18154,7 @@
       "slug": "round-051",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MARS",
         "SATURN",
@@ -18234,7 +18234,7 @@
       "slug": "round-051",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   3 -> 7,   5 -> 13,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   5 -> 13,   7 -> ?",
       "options": [
         "22",
         "19",
@@ -18282,7 +18282,7 @@
       "slug": "round-052",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "RED",
         "RAFT",
@@ -18376,7 +18376,7 @@
       "slug": "round-052",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 12,   4 -> 15,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   4 -> 15,   8 -> ?",
       "options": [
         "24",
         "29",
@@ -18509,7 +18509,7 @@
       "slug": "round-052",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SHOULDER",
         "KAYAK",
@@ -18589,7 +18589,7 @@
       "slug": "round-052",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   3 -> 7,   7 -> 19,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   7 -> 19,   9 -> ?",
       "options": [
         "20",
         "28",
@@ -18637,7 +18637,7 @@
       "slug": "round-053",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GOLD",
         "ARM",
@@ -18731,7 +18731,7 @@
       "slug": "round-053",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   4 -> 11,   5 -> 14,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   4 -> 11,   5 -> 14,   8 -> ?",
       "options": [
         "20",
         "26",
@@ -18864,7 +18864,7 @@
       "slug": "round-053",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HARP",
         "SODA",
@@ -18944,7 +18944,7 @@
       "slug": "round-053",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 14,   5 -> 18,   6 -> 22,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 18,   6 -> 22,   8 -> ?",
       "options": [
         "25",
         "32",
@@ -18992,7 +18992,7 @@
       "slug": "round-054",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SQUARE",
         "POTATO",
@@ -19086,7 +19086,7 @@
       "slug": "round-054",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   3 -> 4,   4 -> 6,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   3 -> 4,   4 -> 6,   7 -> ?",
       "options": [
         "15",
         "12",
@@ -19220,7 +19220,7 @@
       "slug": "round-054",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BASS",
         "FOOT",
@@ -19300,7 +19300,7 @@
       "slug": "round-054",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   4 -> 11,   6 -> 15,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 11,   6 -> 15,   8 -> ?",
       "options": [
         "17",
         "22",
@@ -19348,7 +19348,7 @@
       "slug": "round-055",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ANKLE",
         "ELBOW",
@@ -19442,7 +19442,7 @@
       "slug": "round-055",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
       "options": [
         "21",
         "23",
@@ -19575,7 +19575,7 @@
       "slug": "round-055",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FOX",
         "BEAR",
@@ -19655,7 +19655,7 @@
       "slug": "round-055",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   3 -> 8,   5 -> 12,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 8,   5 -> 12,   6 -> ?",
       "options": [
         "14",
         "12",
@@ -19703,7 +19703,7 @@
       "slug": "round-056",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HELICOPTER",
         "COD",
@@ -19797,7 +19797,7 @@
       "slug": "round-056",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 12,   4 -> 15,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   4 -> 15,   6 -> ?",
       "options": [
         "16",
         "24",
@@ -19930,7 +19930,7 @@
       "slug": "round-056",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WILLOW",
         "SAILBOAT",
@@ -20010,7 +20010,7 @@
       "slug": "round-056",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   3 -> 8,   5 -> 12,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 8,   5 -> 12,   9 -> ?",
       "options": [
         "22",
         "30",
@@ -20058,7 +20058,7 @@
       "slug": "round-057",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JEEP",
         "TIGER",
@@ -20152,7 +20152,7 @@
       "slug": "round-057",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   5 -> 18,   6 -> 21,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   5 -> 18,   6 -> 21,   7 -> ?",
       "options": [
         "21",
         "34",
@@ -20285,7 +20285,7 @@
       "slug": "round-057",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CHERRY",
         "PLUM",
@@ -20365,7 +20365,7 @@
       "slug": "round-057",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   6 -> 10,   7 -> 12,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   6 -> 10,   7 -> 12,   8 -> ?",
       "options": [
         "4",
         "14",
@@ -20413,7 +20413,7 @@
       "slug": "round-058",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SOCCER",
         "MOTORCYCLE",
@@ -20507,7 +20507,7 @@
       "slug": "round-058",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   3 -> 5,   7 -> 13,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   7 -> 13,   9 -> ?",
       "options": [
         "19",
         "12",
@@ -20640,7 +20640,7 @@
       "slug": "round-058",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JEEP",
         "CAR",
@@ -20720,7 +20720,7 @@
       "slug": "round-058",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 11,   5 -> 17,   7 -> 23,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   5 -> 17,   7 -> 23,   9 -> ?",
       "options": [
         "24",
         "19",
@@ -20768,7 +20768,7 @@
       "slug": "round-059",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MOTH",
         "FLEA",
@@ -20862,7 +20862,7 @@
       "slug": "round-059",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   4 -> 13,   7 -> 22,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   7 -> 22,   8 -> ?",
       "options": [
         "23",
         "28",
@@ -20995,7 +20995,7 @@
       "slug": "round-059",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PIGEON",
         "DUCK",
@@ -21075,7 +21075,7 @@
       "slug": "round-059",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 7,   5 -> 13,   6 -> 16,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   5 -> 13,   6 -> 16,   7 -> ?",
       "options": [
         "19",
         "9",
@@ -21123,7 +21123,7 @@
       "slug": "round-060",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FIFTY",
         "BOAT",
@@ -21217,7 +21217,7 @@
       "slug": "round-060",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   4 -> 10,   6 -> 14,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   4 -> 10,   6 -> 14,   7 -> ?",
       "options": [
         "21",
         "17",
@@ -21350,7 +21350,7 @@
       "slug": "round-060",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TRIANGLE",
         "SQUARE",
@@ -21430,7 +21430,7 @@
       "slug": "round-060",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
       "options": [
         "27",
         "28",
@@ -21478,7 +21478,7 @@
       "slug": "round-061",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TEA",
         "SATURN",
@@ -21572,7 +21572,7 @@
       "slug": "round-061",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   6 -> 17,   7 -> 20,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   6 -> 17,   7 -> 20,   5 -> ?",
       "options": [
         "11",
         "14",
@@ -21705,7 +21705,7 @@
       "slug": "round-061",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TRIANGLE",
         "CUBE",
@@ -21785,7 +21785,7 @@
       "slug": "round-061",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 7,   4 -> 9,   5 -> 11,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   4 -> 9,   5 -> 11,   8 -> ?",
       "options": [
         "14",
         "17",
@@ -21833,7 +21833,7 @@
       "slug": "round-062",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JET",
         "IRON",
@@ -21927,7 +21927,7 @@
       "slug": "round-062",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 9,   4 -> 11,   5 -> 13,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   4 -> 11,   5 -> 13,   8 -> ?",
       "options": [
         "21",
         "9",
@@ -22060,7 +22060,7 @@
       "slug": "round-062",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FERRY",
         "RAFT",
@@ -22140,7 +22140,7 @@
       "slug": "round-062",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 14,   6 -> 26,   7 -> 30,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 14,   6 -> 26,   7 -> 30,   8 -> ?",
       "options": [
         "38",
         "36",
@@ -22188,7 +22188,7 @@
       "slug": "round-063",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MERCURY",
         "MILK",
@@ -22282,7 +22282,7 @@
       "slug": "round-063",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 11,   5 -> 13,   7 -> 17,   6 -> ?",
       "options": [
         "13",
         "15",
@@ -22415,7 +22415,7 @@
       "slug": "round-063",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HAWK",
         "DRUM",
@@ -22495,7 +22495,7 @@
       "slug": "round-063",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   3 -> 7,   6 -> 16,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   6 -> 16,   8 -> ?",
       "options": [
         "32",
         "19",
@@ -22543,7 +22543,7 @@
       "slug": "round-064",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TRUMPET",
         "HARP",
@@ -22637,7 +22637,7 @@
       "slug": "round-064",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   4 -> 6,   5 -> 8,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   4 -> 6,   5 -> 8,   6 -> ?",
       "options": [
         "11",
         "10",
@@ -22770,7 +22770,7 @@
       "slug": "round-064",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FOOT",
         "HAT",
@@ -22850,7 +22850,7 @@
       "slug": "round-064",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
       "options": [
         "23",
         "32",
@@ -22898,7 +22898,7 @@
       "slug": "round-065",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CUBE",
         "HAT",
@@ -22992,7 +22992,7 @@
       "slug": "round-065",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 12,   6 -> 21,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   9 -> ?",
       "options": [
         "20",
         "31",
@@ -23125,7 +23125,7 @@
       "slug": "round-065",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BROWN",
         "TENNIS",
@@ -23205,7 +23205,7 @@
       "slug": "round-065",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   4 -> 14,   7 -> 23,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   7 -> 23,   8 -> ?",
       "options": [
         "26",
         "28",
@@ -23253,7 +23253,7 @@
       "slug": "round-066",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CIRCLE",
         "HAMMER",
@@ -23347,7 +23347,7 @@
       "slug": "round-066",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 14,   5 -> 17,   7 -> 23,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   5 -> 17,   7 -> 23,   8 -> ?",
       "options": [
         "26",
         "16",
@@ -23480,7 +23480,7 @@
       "slug": "round-066",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "STEEL",
         "VAN",
@@ -23560,7 +23560,7 @@
       "slug": "round-066",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 14,   4 -> 18,   6 -> 26,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 14,   4 -> 18,   6 -> 26,   9 -> ?",
       "options": [
         "40",
         "48",
@@ -23608,7 +23608,7 @@
       "slug": "round-067",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BASEBALL",
         "RUGBY",
@@ -23702,7 +23702,7 @@
       "slug": "round-067",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 5,   4 -> 7,   7 -> 13,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   7 -> 13,   5 -> ?",
       "options": [
         "4",
         "7",
@@ -23835,7 +23835,7 @@
       "slug": "round-067",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FLY",
         "YELLOW",
@@ -23915,7 +23915,7 @@
       "slug": "round-067",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 9,   5 -> 13,   6 -> 15,   7 -> ?",
       "options": [
         "12",
         "14",
@@ -23963,7 +23963,7 @@
       "slug": "round-068",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HAT",
         "PEAR",
@@ -24057,7 +24057,7 @@
       "slug": "round-068",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   4 -> 10,   5 -> 12,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   4 -> 10,   5 -> 12,   8 -> ?",
       "options": [
         "16",
         "13",
@@ -24190,7 +24190,7 @@
       "slug": "round-068",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TEA",
         "COCOA",
@@ -24270,7 +24270,7 @@
       "slug": "round-068",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   3 -> 5,   5 -> 9,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   3 -> 5,   5 -> 9,   6 -> ?",
       "options": [
         "14",
         "11",
@@ -24318,7 +24318,7 @@
       "slug": "round-069",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CAT",
         "SQUARE",
@@ -24412,7 +24412,7 @@
       "slug": "round-069",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 12,   7 -> 24,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   7 -> 24,   5 -> ?",
       "options": [
         "15",
         "19",
@@ -24545,7 +24545,7 @@
       "slug": "round-069",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TEA",
         "BOAT",
@@ -24625,7 +24625,7 @@
       "slug": "round-069",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 4,   5 -> 8,   6 -> 10,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 4,   5 -> 8,   6 -> 10,   9 -> ?",
       "options": [
         "6",
         "16",
@@ -24673,7 +24673,7 @@
       "slug": "round-070",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PEA",
         "BROCCOLI",
@@ -24767,7 +24767,7 @@
       "slug": "round-070",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   4 -> 13,   5 -> 16,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   5 -> 16,   7 -> ?",
       "options": [
         "25",
         "19",
@@ -24900,7 +24900,7 @@
       "slug": "round-070",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CATFISH",
         "SEVEN",
@@ -24980,7 +24980,7 @@
       "slug": "round-070",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 13,   5 -> 21,   6 -> 25,   8 -> ?",
       "options": [
         "33",
         "38",
@@ -25028,7 +25028,7 @@
       "slug": "round-071",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "LADYBUG",
         "ANT",
@@ -25122,7 +25122,7 @@
       "slug": "round-071",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   7 -> ?",
       "options": [
         "18",
         "17",
@@ -25255,7 +25255,7 @@
       "slug": "round-071",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PLIERS",
         "FLY",
@@ -25335,7 +25335,7 @@
       "slug": "round-071",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   5 -> 16,   7 -> 22,   8 -> ?",
       "options": [
         "28",
         "25",
@@ -25383,7 +25383,7 @@
       "slug": "round-072",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FOOT",
         "SHOULDER",
@@ -25477,7 +25477,7 @@
       "slug": "round-072",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 5,   5 -> 9,   7 -> 13,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   5 -> 9,   7 -> 13,   8 -> ?",
       "options": [
         "13",
         "15",
@@ -25610,7 +25610,7 @@
       "slug": "round-072",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JACKET",
         "SKIRT",
@@ -25690,7 +25690,7 @@
       "slug": "round-072",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 7,   6 -> 11,   7 -> 13,   9 -> ?",
       "options": [
         "18",
         "17",
@@ -25738,7 +25738,7 @@
       "slug": "round-073",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "RAIN",
         "FOG",
@@ -25832,7 +25832,7 @@
       "slug": "round-073",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   6 -> 19,   7 -> 22,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   6 -> 19,   7 -> 22,   5 -> ?",
       "options": [
         "19",
         "16",
@@ -25965,7 +25965,7 @@
       "slug": "round-073",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GOLD",
         "PIGEON",
@@ -26045,7 +26045,7 @@
       "slug": "round-073",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   5 -> 8,   7 -> 12,   8 -> ?",
       "options": [
         "16",
         "14",
@@ -26093,7 +26093,7 @@
       "slug": "round-074",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BRONZE",
         "VAN",
@@ -26187,7 +26187,7 @@
       "slug": "round-074",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 17,   6 -> 20,   7 -> 23,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 17,   6 -> 20,   7 -> 23,   9 -> ?",
       "options": [
         "26",
         "39",
@@ -26320,7 +26320,7 @@
       "slug": "round-074",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ORANGE",
         "GRAPE",
@@ -26400,7 +26400,7 @@
       "slug": "round-074",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   4 -> 10,   6 -> 16,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   4 -> 10,   6 -> 16,   9 -> ?",
       "options": [
         "30",
         "15",
@@ -26448,7 +26448,7 @@
       "slug": "round-075",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SOCCER",
         "TIGER",
@@ -26542,7 +26542,7 @@
       "slug": "round-075",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   4 -> 13,   7 -> 22,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 13,   7 -> 22,   5 -> ?",
       "options": [
         "18",
         "11",
@@ -26675,7 +26675,7 @@
       "slug": "round-075",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PURPLE",
         "YELLOW",
@@ -26755,7 +26755,7 @@
       "slug": "round-075",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
       "options": [
         "36",
         "31",
@@ -26803,7 +26803,7 @@
       "slug": "round-076",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRUM",
         "TENNIS",
@@ -26897,7 +26897,7 @@
       "slug": "round-076",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   5 -> 17,   7 -> 23,   9 -> ?",
       "options": [
         "30",
         "27",
@@ -27030,7 +27030,7 @@
       "slug": "round-076",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WIND",
         "DRIZZLE",
@@ -27110,7 +27110,7 @@
       "slug": "round-076",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 2,   3 -> 4,   7 -> 12,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 2,   3 -> 4,   7 -> 12,   5 -> ?",
       "options": [
         "6",
         "7",
@@ -27158,7 +27158,7 @@
       "slug": "round-077",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GRAPE",
         "MANGO",
@@ -27252,7 +27252,7 @@
       "slug": "round-077",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 8,   6 -> 10,   7 -> 12,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 8,   6 -> 10,   7 -> 12,   8 -> ?",
       "options": [
         "14",
         "13",
@@ -27385,7 +27385,7 @@
       "slug": "round-077",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "STOOL",
@@ -27465,7 +27465,7 @@
       "slug": "round-077",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 14,   6 -> 22,   9 -> ?",
       "options": [
         "24",
         "35",
@@ -27513,7 +27513,7 @@
       "slug": "round-078",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SHEEP",
         "MERCURY",
@@ -27607,7 +27607,7 @@
       "slug": "round-078",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
       "options": [
         "17",
         "16",
@@ -27740,7 +27740,7 @@
       "slug": "round-078",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CATFISH",
         "SHARK",
@@ -27820,7 +27820,7 @@
       "slug": "round-078",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 11,   6 -> 13,   7 -> 15,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 11,   6 -> 13,   7 -> 15,   8 -> ?",
       "options": [
         "17",
         "7",
@@ -27868,7 +27868,7 @@
       "slug": "round-079",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MILK",
         "YACHT",
@@ -27962,7 +27962,7 @@
       "slug": "round-079",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 13,   6 -> 19,   7 -> 22,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 13,   6 -> 19,   7 -> 22,   8 -> ?",
       "options": [
         "22",
         "23",
@@ -28095,7 +28095,7 @@
       "slug": "round-079",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GRASSHOPPER",
         "FOOT",
@@ -28175,7 +28175,7 @@
       "slug": "round-079",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 15,   5 -> 18,   6 -> 21,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 15,   5 -> 18,   6 -> 21,   9 -> ?",
       "options": [
         "32",
         "35",
@@ -28223,7 +28223,7 @@
       "slug": "round-080",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BROCCOLI",
         "ANT",
@@ -28317,7 +28317,7 @@
       "slug": "round-080",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   5 -> 16,   6 -> 19,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 16,   6 -> 19,   7 -> ?",
       "options": [
         "24",
         "27",
@@ -28450,7 +28450,7 @@
       "slug": "round-080",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRILL",
         "WRENCH",
@@ -28530,7 +28530,7 @@
       "slug": "round-080",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   3 -> 10,   7 -> 26,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   3 -> 10,   7 -> 26,   9 -> ?",
       "options": [
         "32",
         "33",
@@ -28578,7 +28578,7 @@
       "slug": "round-081",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TWELVE",
         "FIFTY",
@@ -28672,7 +28672,7 @@
       "slug": "round-081",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   6 -> 15,   7 -> 17,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   6 -> 15,   7 -> 17,   8 -> ?",
       "options": [
         "19",
         "24",
@@ -28805,7 +28805,7 @@
       "slug": "round-081",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GUITAR",
         "BUS",
@@ -28885,7 +28885,7 @@
       "slug": "round-081",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   4 -> 13,   5 -> 16,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   4 -> 13,   5 -> 16,   6 -> ?",
       "options": [
         "20",
         "19",
@@ -28933,7 +28933,7 @@
       "slug": "round-082",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TRUCK",
         "WAGON",
@@ -29027,7 +29027,7 @@
       "slug": "round-082",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 6,   5 -> 8,   7 -> 12,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 6,   5 -> 8,   7 -> 12,   9 -> ?",
       "options": [
         "16",
         "14",
@@ -29160,7 +29160,7 @@
       "slug": "round-082",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "TEA",
         "SODA",
@@ -29240,7 +29240,7 @@
       "slug": "round-082",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 10,   3 -> 14,   6 -> 26,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   3 -> 14,   6 -> 26,   7 -> ?",
       "options": [
         "30",
         "40",
@@ -29288,7 +29288,7 @@
       "slug": "round-083",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "KNEE",
         "CHIN",
@@ -29382,7 +29382,7 @@
       "slug": "round-083",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 7,   5 -> 13,   7 -> 19,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 7,   5 -> 13,   7 -> 19,   9 -> ?",
       "options": [
         "23",
         "35",
@@ -29515,7 +29515,7 @@
       "slug": "round-083",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "STOOL",
         "COCOA",
@@ -29595,7 +29595,7 @@
       "slug": "round-083",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 19,   5 -> 23,   6 -> 27,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 19,   5 -> 23,   6 -> 27,   8 -> ?",
       "options": [
         "25",
         "40",
@@ -29643,7 +29643,7 @@
       "slug": "round-084",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BRONZE",
         "BRASS",
@@ -29737,7 +29737,7 @@
       "slug": "round-084",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   4 -> 10,   6 -> 14,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   4 -> 10,   6 -> 14,   5 -> ?",
       "options": [
         "12",
         "9",
@@ -29870,7 +29870,7 @@
       "slug": "round-084",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CIRCLE",
         "KIWI",
@@ -29950,7 +29950,7 @@
       "slug": "round-084",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   4 -> 10,   6 -> 16,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   4 -> 10,   6 -> 16,   8 -> ?",
       "options": [
         "22",
         "24",
@@ -29998,7 +29998,7 @@
       "slug": "round-085",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WRENCH",
         "SCOOTER",
@@ -30092,7 +30092,7 @@
       "slug": "round-085",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   6 -> 17,   9 -> ?",
       "options": [
         "26",
         "29",
@@ -30225,7 +30225,7 @@
       "slug": "round-085",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HORSE",
         "MILK",
@@ -30305,7 +30305,7 @@
       "slug": "round-085",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 10,   5 -> 22,   7 -> 30,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 10,   5 -> 22,   7 -> 30,   6 -> ?",
       "options": [
         "36",
         "26",
@@ -30353,7 +30353,7 @@
       "slug": "round-086",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SHOVEL",
         "SLEET",
@@ -30447,7 +30447,7 @@
       "slug": "round-086",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 8,   6 -> 10,   7 -> 12,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 8,   6 -> 10,   7 -> 12,   9 -> ?",
       "options": [
         "14",
         "26",
@@ -30580,7 +30580,7 @@
       "slug": "round-086",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "JACKET",
         "SALMON",
@@ -30660,7 +30660,7 @@
       "slug": "round-086",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 6,   5 -> 12,   6 -> 14,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 6,   5 -> 12,   6 -> 14,   8 -> ?",
       "options": [
         "17",
         "16",
@@ -30708,7 +30708,7 @@
       "slug": "round-087",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "DRESS",
         "SCARF",
@@ -30802,7 +30802,7 @@
       "slug": "round-087",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   3 -> 7,   6 -> 13,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 7,   6 -> 13,   9 -> ?",
       "options": [
         "19",
         "16",
@@ -30935,7 +30935,7 @@
       "slug": "round-087",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "RAIN",
         "GLIDER",
@@ -31015,7 +31015,7 @@
       "slug": "round-087",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 18,   6 -> 22,   7 -> 26,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 18,   6 -> 22,   7 -> 26,   9 -> ?",
       "options": [
         "36",
         "34",
@@ -31063,7 +31063,7 @@
       "slug": "round-088",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PLUM",
         "BANANA",
@@ -31157,7 +31157,7 @@
       "slug": "round-088",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   4 -> 7,   5 -> 9,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   5 -> 9,   9 -> ?",
       "options": [
         "17",
         "18",
@@ -31290,7 +31290,7 @@
       "slug": "round-088",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BLIMP",
         "LEMONADE",
@@ -31370,7 +31370,7 @@
       "slug": "round-088",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   4 -> 7,   6 -> 11,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   6 -> 11,   9 -> ?",
       "options": [
         "19",
         "20",
@@ -31418,7 +31418,7 @@
       "slug": "round-089",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GOLD",
         "NICKEL",
@@ -31512,7 +31512,7 @@
       "slug": "round-089",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   3 -> 10,   6 -> 19,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 10,   6 -> 19,   5 -> ?",
       "options": [
         "16",
         "17",
@@ -31645,7 +31645,7 @@
       "slug": "round-089",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PENTAGON",
         "ELM",
@@ -31725,7 +31725,7 @@
       "slug": "round-089",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 14,   6 -> 22,   7 -> 26,   5 -> ?",
       "options": [
         "18",
         "28",
@@ -31773,7 +31773,7 @@
       "slug": "round-090",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CABINET",
         "NINETY",
@@ -31867,7 +31867,7 @@
       "slug": "round-090",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "4 -> 9,   5 -> 11,   7 -> 15,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n4 -> 9,   5 -> 11,   7 -> 15,   6 -> ?",
       "options": [
         "23",
         "11",
@@ -32000,7 +32000,7 @@
       "slug": "round-090",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FIFTY",
         "TWELVE",
@@ -32080,7 +32080,7 @@
       "slug": "round-090",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 3,   4 -> 7,   5 -> 9,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 3,   4 -> 7,   5 -> 9,   7 -> ?",
       "options": [
         "15",
         "14",
@@ -32128,7 +32128,7 @@
       "slug": "round-091",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CABINET",
         "DESK",
@@ -32222,7 +32222,7 @@
       "slug": "round-091",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 11,   4 -> 14,   6 -> 20,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 11,   4 -> 14,   6 -> 20,   7 -> ?",
       "options": [
         "24",
         "21",
@@ -32355,7 +32355,7 @@
       "slug": "round-091",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "WASP",
         "OVAL",
@@ -32435,7 +32435,7 @@
       "slug": "round-091",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 12,   5 -> 18,   7 -> 24,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 12,   5 -> 18,   7 -> 24,   6 -> ?",
       "options": [
         "21",
         "18",
@@ -32483,7 +32483,7 @@
       "slug": "round-092",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "VOLLEYBALL",
         "FOX",
@@ -32577,7 +32577,7 @@
       "slug": "round-092",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 4,   6 -> 10,   7 -> 12,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 4,   6 -> 10,   7 -> 12,   8 -> ?",
       "options": [
         "12",
         "13",
@@ -32710,7 +32710,7 @@
       "slug": "round-092",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "ROCKET",
         "GLIDER",
@@ -32790,7 +32790,7 @@
       "slug": "round-092",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 15,   4 -> 19,   7 -> 31,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   4 -> 19,   7 -> 31,   8 -> ?",
       "options": [
         "38",
         "34",
@@ -32838,7 +32838,7 @@
       "slug": "round-093",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "HAIL",
         "SOFA",
@@ -32932,7 +32932,7 @@
       "slug": "round-093",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 9,   3 -> 12,   6 -> 21,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 9,   3 -> 12,   6 -> 21,   8 -> ?",
       "options": [
         "27",
         "29",
@@ -33065,7 +33065,7 @@
       "slug": "round-093",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PEA",
         "CARP",
@@ -33145,7 +33145,7 @@
       "slug": "round-093",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 12,   4 -> 15,   6 -> 21,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 12,   4 -> 15,   6 -> 21,   8 -> ?",
       "options": [
         "25",
         "17",
@@ -33193,7 +33193,7 @@
       "slug": "round-094",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "COPPER",
         "BROWN",
@@ -33287,7 +33287,7 @@
       "slug": "round-094",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   3 -> 10,   5 -> 16,   7 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   3 -> 10,   5 -> 16,   7 -> ?",
       "options": [
         "12",
         "19",
@@ -33420,7 +33420,7 @@
       "slug": "round-094",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "MAPLE",
         "ELM",
@@ -33500,7 +33500,7 @@
       "slug": "round-094",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 5,   4 -> 7,   5 -> 9,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 5,   4 -> 7,   5 -> 9,   6 -> ?",
       "options": [
         "11",
         "8",
@@ -33548,7 +33548,7 @@
       "slug": "round-095",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "BIRCH",
         "REDWOOD",
@@ -33642,7 +33642,7 @@
       "slug": "round-095",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 13,   6 -> 15,   7 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 13,   6 -> 15,   7 -> 17,   9 -> ?",
       "options": [
         "19",
         "18",
@@ -33775,7 +33775,7 @@
       "slug": "round-095",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "FOG",
         "THUNDER",
@@ -33855,7 +33855,7 @@
       "slug": "round-095",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 4,   3 -> 7,   4 -> 10,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 4,   3 -> 7,   4 -> 10,   6 -> ?",
       "options": [
         "16",
         "18",
@@ -33903,7 +33903,7 @@
       "slug": "round-096",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CRICKET",
         "TENNIS",
@@ -33997,7 +33997,7 @@
       "slug": "round-096",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 8,   5 -> 14,   7 -> 20,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 8,   5 -> 14,   7 -> 20,   9 -> ?",
       "options": [
         "23",
         "24",
@@ -34130,7 +34130,7 @@
       "slug": "round-096",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CELLO",
         "BANJO",
@@ -34210,7 +34210,7 @@
       "slug": "round-096",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   5 -> 13,   7 -> 17,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   5 -> 13,   7 -> 17,   9 -> ?",
       "options": [
         "18",
         "19",
@@ -34258,7 +34258,7 @@
       "slug": "round-097",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CLARINET",
         "DRUM",
@@ -34352,7 +34352,7 @@
       "slug": "round-097",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 10,   5 -> 16,   7 -> 22,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 10,   5 -> 16,   7 -> 22,   6 -> ?",
       "options": [
         "20",
         "19",
@@ -34485,7 +34485,7 @@
       "slug": "round-097",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "CHAIR",
         "DESK",
@@ -34565,7 +34565,7 @@
       "slug": "round-097",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "3 -> 15,   5 -> 23,   7 -> 31,   9 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n3 -> 15,   5 -> 23,   7 -> 31,   9 -> ?",
       "options": [
         "44",
         "40",
@@ -34613,7 +34613,7 @@
       "slug": "round-098",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PARROT",
         "ROCKET",
@@ -34707,7 +34707,7 @@
       "slug": "round-098",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 8,   4 -> 14,   6 -> 20,   5 -> ?",
       "options": [
         "20",
         "19",
@@ -34840,7 +34840,7 @@
       "slug": "round-098",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GOLF",
         "HELICOPTER",
@@ -34920,7 +34920,7 @@
       "slug": "round-098",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "5 -> 22,   6 -> 26,   7 -> 30,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n5 -> 22,   6 -> 26,   7 -> 30,   8 -> ?",
       "options": [
         "35",
         "34",
@@ -34968,7 +34968,7 @@
       "slug": "round-099",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SOFA",
         "ANT",
@@ -35062,7 +35062,7 @@
       "slug": "round-099",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   3 -> 8,   7 -> 20,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 8,   7 -> 20,   5 -> ?",
       "options": [
         "12",
         "11",
@@ -35195,7 +35195,7 @@
       "slug": "round-099",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "GLIDER",
         "PLANE",
@@ -35275,7 +35275,7 @@
       "slug": "round-099",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 11,   3 -> 15,   6 -> 27,   8 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 11,   3 -> 15,   6 -> 27,   8 -> ?",
       "options": [
         "45",
         "35",
@@ -35323,7 +35323,7 @@
       "slug": "round-100",
       "id": 1,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "PANTS",
         "JACKET",
@@ -35417,7 +35417,7 @@
       "slug": "round-100",
       "id": 5,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 5,   3 -> 8,   5 -> 14,   6 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 5,   3 -> 8,   5 -> 14,   6 -> ?",
       "options": [
         "7",
         "18",
@@ -35550,7 +35550,7 @@
       "slug": "round-100",
       "id": 10,
       "addedAt": "2026-07-19",
-      "prompt": "WHICH DOES NOT BELONG?",
+      "prompt": "WHICH ONE DOES NOT BELONG?",
       "options": [
         "SEVEN",
         "SHELF",
@@ -35630,7 +35630,7 @@
       "slug": "round-100",
       "id": 14,
       "addedAt": "2026-07-19",
-      "prompt": "2 -> 7,   4 -> 15,   7 -> 27,   5 -> ?",
+      "prompt": "WHICH NUMBER FITS?\n2 -> 7,   4 -> 15,   7 -> 27,   5 -> ?",
       "options": [
         "15",
         "19",
@@ -35827,7 +35827,7 @@
       "slug": "staging-text-1",
       "id": 1,
       "addedAt": "2026-07-22",
-      "prompt": "OPPOSITE OF ANCIENT?",
+      "prompt": "WHICH WORD MEANS THE\nOPPOSITE OF ANCIENT?",
       "options": [
         "OLD",
         "MODERN",
@@ -35851,7 +35851,7 @@
       "slug": "staging-text-1",
       "id": 2,
       "addedAt": "2026-07-22",
-      "prompt": "ANOTHER WORD FOR ENORMOUS?",
+      "prompt": "WHICH WORD MEANS THE\nSAME AS ENORMOUS?",
       "options": [
         "GIGANTIC",
         "TINY",
@@ -35875,7 +35875,7 @@
       "slug": "staging-text-1",
       "id": 3,
       "addedAt": "2026-07-22",
-      "prompt": "OPPOSITE OF GENEROUS?",
+      "prompt": "WHICH WORD MEANS THE\nOPPOSITE OF GENEROUS?",
       "options": [
         "KIND",
         "RICH",
@@ -35899,7 +35899,7 @@
       "slug": "staging-text-1",
       "id": 4,
       "addedAt": "2026-07-22",
-      "prompt": "ANOTHER WORD FOR RAPID?",
+      "prompt": "WHICH WORD MEANS THE\nSAME AS RAPID?",
       "options": [
         "SLOW",
         "QUICK",
@@ -35923,7 +35923,7 @@
       "slug": "staging-text-1",
       "id": 5,
       "addedAt": "2026-07-22",
-      "prompt": "OPPOSITE OF BRAVE?",
+      "prompt": "WHICH WORD MEANS THE\nOPPOSITE OF BRAVE?",
       "options": [
         "BOLD",
         "STRONG",
@@ -35947,7 +35947,7 @@
       "slug": "staging-text-2",
       "id": 1,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH FRACTION IS LARGEST?",
+      "prompt": "WHICH FRACTION IS\nTHE LARGEST?",
       "options": [
         "2/5",
         "1/2",
@@ -35971,7 +35971,7 @@
       "slug": "staging-text-2",
       "id": 2,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH IS GREATEST?",
+      "prompt": "WHICH IS THE GREATEST?",
       "options": [
         "2/3",
         "5/8",
@@ -35995,7 +35995,7 @@
       "slug": "staging-text-2",
       "id": 3,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH DECIMAL IS SMALLEST?",
+      "prompt": "WHICH DECIMAL IS\nTHE SMALLEST?",
       "options": [
         "0.6",
         "0.55",
@@ -36019,7 +36019,7 @@
       "slug": "staging-text-2",
       "id": 4,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH FRACTION IS SMALLEST?",
+      "prompt": "WHICH FRACTION IS\nTHE SMALLEST?",
       "options": [
         "1/3",
         "1/4",
@@ -36043,7 +36043,7 @@
       "slug": "staging-text-2",
       "id": 5,
       "addedAt": "2026-07-22",
-      "prompt": "WHICH DECIMAL IS LARGEST?",
+      "prompt": "WHICH DECIMAL IS\nTHE LARGEST?",
       "options": [
         "0.29",
         "0.4",
