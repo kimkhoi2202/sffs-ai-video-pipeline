@@ -3068,6 +3068,279 @@
           "answerNorm": "48"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-08-04-v01",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "3b9c18c16c9a",
+          "sig": "text|verbal|odd-one-out|which one does not belong || car~cocoa~jeep~van|cocoa",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "COCOA"
+        },
+        {
+          "hash": "19e8cc9f9c23",
+          "sig": "text|quantitative|number-puzzle|if 6 9 48 8 8 56 9 2 9 then 3 6 || 12~13~15~16|15",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "15"
+        },
+        {
+          "hash": "aafd3776654c",
+          "sig": "text|quantitative|number-analogy|which number fits 2 3 3 5 4 7 5 || 10~11~8~9|9",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "9"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v02",
+      "test": "opening-question-type",
+      "variant": "open-analogy",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "8184557ee929",
+          "sig": "text|verbal|verbal-analogy|wide is to narrow as big is to || dirty~poor~small~weak|small",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SMALL"
+        },
+        {
+          "hash": "c1baa51aee7a",
+          "sig": "text|quantitative|number-analogy|which number fits 2 9 6 21 7 24 9 || 20~28~30~33|30",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "30"
+        },
+        {
+          "hash": "25d05380f56e",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cow~hockey~rabbit~tiger|hockey",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "HOCKEY"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v03",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6f6e4acb4c73",
+          "sig": "text|quantitative|number-analogy|which number fits 3 12 5 18 7 24 6 || 18~21~22~24|21",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "21"
+        },
+        {
+          "hash": "a04a2f8a6bf0",
+          "sig": "text|verbal|verbal-analogy|buy is to sell as full is to || empty~poor~soft~take|empty",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "EMPTY"
+        },
+        {
+          "hash": "4dea7e13ade8",
+          "sig": "text|quantitative|number-puzzle|if 2 3 10 3 3 12 3 5 16 then 5 6 || 12~22~24~32|22",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "22"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v04",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "5a24567bf973",
+          "sig": "text|verbal|odd-one-out|which one does not belong || ear~eye~hat~nose|hat",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "HAT"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v05",
+      "test": "opening-question-type",
+      "variant": "open-odd-one-out",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "de85b3a4f4fd",
+          "sig": "text|verbal|odd-one-out|which one does not belong || blue~green~red~three|three",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "THREE"
+        },
+        {
+          "hash": "c90fae73bfe9",
+          "sig": "text|verbal|verbal-analogy|push is to pull as light is to || cold~dark~night~take|dark",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "DARK"
+        },
+        {
+          "hash": "59429a78d883",
+          "sig": "text|quantitative|number-puzzle|if 9 1 20 6 3 18 6 4 20 then 5 5 || 17~20~23~30|20",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "20"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v06",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "03236813f22c",
+          "sig": "text|quantitative|number-analogy|which number fits 4 13 6 19 7 22 8 || 20~22~23~25|25",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "25"
+        },
+        {
+          "hash": "5420ce9e41d3",
+          "sig": "text|quantitative|number-puzzle|if 5 3 7 4 2 2 6 2 4 then 5 4 || 1~11~20~9|11",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "11"
+        },
+        {
+          "hash": "76259cb91fea",
+          "sig": "text|verbal|verbal-analogy|win is to lose as big is to || quiet~right~sell~small|small",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SMALL"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v07",
+      "test": "opening-question-type",
+      "variant": "open-analogy",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "82af393891f1",
+          "sig": "text|verbal|verbal-analogy|fish is to swim as bird is to || fly~hop~sing~walk|fly",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "FLY"
+        },
+        {
+          "hash": "1e2232460afc",
+          "sig": "text|verbal|odd-one-out|which one does not belong || hawk~owl~parrot~rocket|rocket",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "ROCKET"
+        },
+        {
+          "hash": "f3706b692cb5",
+          "sig": "text|quantitative|number-puzzle|if 2 2 2 1 9 8 8 5 32 then 7 6 || 34~35~38~45|35",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "35"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v08",
+      "test": "control",
+      "variant": "control",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "b8759b76440f",
+          "sig": "text|quantitative|number-puzzle|if 7 9 79 4 1 9 7 5 47 then 8 4 || 12~41~43~44|44",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "44"
+        },
+        {
+          "hash": "59f018b27d1c",
+          "sig": "text|quantitative|number-analogy|which number fits 2 5 3 8 5 14 6 || 17~18~19~7|17",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "17"
+        },
+        {
+          "hash": "8e5457fe0c45",
+          "sig": "text|verbal|verbal-analogy|ear is to hear as eye is to || heat~measure~see~write|see",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "SEE"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v09",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "5852f51d5cdb",
+          "sig": "text|verbal|odd-one-out|which one does not belong || cabinet~ninety~three~twelve|cabinet",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "CABINET"
+        },
+        {
+          "hash": "9a462a5c91d6",
+          "sig": "text|quantitative|number-analogy|which number fits 2 8 3 11 4 14 8 || 21~24~26~29|26",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "26"
+        },
+        {
+          "hash": "b0a48cd20abe",
+          "sig": "text|verbal|verbal-analogy|kangaroo is to joey as dog is to || calf~duckling~puppy~tadpole|puppy",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "PUPPY"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-v11",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "9a6c7ae55e4e",
+          "sig": "text|quantitative|number-puzzle|if 6 6 42 4 1 5 6 5 35 then 3 2 || 11~18~5~8|8",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "8"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-04-t1-v01",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "983bbb2f690b",
+          "sig": "text|verbal|odd-one-out|which one does not belong || drum~guitar~harp~hawk|hawk",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "HAWK"
+        },
+        {
+          "hash": "3009e0aa29a0",
+          "sig": "text|verbal|verbal-analogy|lion is to roar as horse is to || bark~chirp~meow~neigh|neigh",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "NEIGH"
+        },
+        {
+          "hash": "8131895381d9",
+          "sig": "text|quantitative|number-puzzle|if 6 8 70 9 7 80 4 9 65 then 6 9 || 72~74~75~76|75",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "75"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
