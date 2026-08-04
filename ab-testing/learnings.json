@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-03T14:05:00.120Z",
+  "updated_at": "2026-08-04T00:35:03.578Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "The campaign 'brain': decision-oriented rollups distilled from ab-database.json. ab-database.json holds raw per-post facts (one row per post); learnings.json is the aggregated view the posting loop uses to decide what to render/post next. Append-only decisions_log; rollups are recomputed from ab-database.json on each metrics pull.",
   "brand_voice": {
@@ -1143,5 +1143,68 @@
     "description": "3 mixed questions, cold-plate open, full narration, cliffhanger ending, 5s, short counter, branded cover",
     "chosen_on": "3-second skip rate vs views across all published Instagram reels (monotonic over 8 buckets, ~10x spread)",
     "note": "Exploitation phase: no A/B rotation. Questions inside the format are fresh every video and still pass every gate."
+  },
+  "time_of_day": {
+    "as_of": "2026-08-04",
+    "computed_from": {
+      "snapshot_id": "20260804T001707Z",
+      "source": "instagramReels",
+      "n": 126,
+      "note": "the FULL published-reel population; no attribution join, so n is not halved by the blackout"
+    },
+    "clock": "America/Chicago, resolved from each row's declared zone (Metricool answers on the brand's Europe/Madrid clock)",
+    "pooled_by_bucket": {
+      "afternoon (12-18)": {
+        "n": 45,
+        "median_skip_rate": 72.6
+      },
+      "evening (18-24)": {
+        "n": 44,
+        "median_skip_rate": 75.55
+      },
+      "morning (6-12)": {
+        "n": 28,
+        "median_skip_rate": 64.5
+      },
+      "night (0-6)": {
+        "n": 9,
+        "median_skip_rate": 64.1
+      }
+    },
+    "within_day": {
+      "afternoon (12-18)": {
+        "days": 11,
+        "median_deviation_pp": 2.55,
+        "better_on_days": 3
+      },
+      "evening (18-24)": {
+        "days": 12,
+        "median_deviation_pp": 0,
+        "better_on_days": 5
+      },
+      "morning (6-12)": {
+        "days": 8,
+        "median_deviation_pp": -3.55,
+        "better_on_days": 6
+      },
+      "night (0-6)": {
+        "days": 2,
+        "median_deviation_pp": -3.95,
+        "better_on_days": 2
+      }
+    },
+    "significance": {
+      "contrast": "night (0-6) vs evening (18-24)",
+      "n": [
+        9,
+        44
+      ],
+      "mann_whitney_z": -1.4,
+      "p": 0.1622
+    },
+    "verdict": "NOT A RELIABLE LEVER",
+    "what_the_data_says": "Pooled, the best and worst buckets are 64.1% and 75.55% median skip — a 11.45pp spread that looks decisive and is not. Held inside each day, the advantage collapses to about 3.55pp, and the pooled contrast does not reach significance (Mann-Whitney p=0.1622). Buckets are also unevenly available across days, so a bucket is partly a proxy for WHICH days it ran on. Treat time of day as worth a few points at most and do not schedule on it; the posting window, the per-network caps and the 56-minute floor decide slots.",
+    "rollup_provenance": "rollups.by_time_bucket is computed by score.ts from ab-database posted_at, which reconcile.ts back-fills from the PLANNER's publicationDate (America/Chicago), NOT from analytics. It is therefore NOT affected by the Europe/Madrid analytics bug fixed in 0707a7d, contrary to that commit's message. Verified 2026-08-04: none of the 66 naive posted_at values matches the Madrid dateTime of the reel it joins to; all sit 2-3 minutes before the true publish instant, which is a SCHEDULED time. Recomputing the rollup from ab-database reproduces the stored numbers exactly, and they sit 1.27pp from the corrected analytics reading against 7.74pp from the Madrid one. The two caveats that remain are that posted_at is a scheduled time (2-3 min early, never enough to change a bucket) and that it only sees the ~57 attributable Instagram posts rather than all 126.",
+    "correction_note": "No entry in learnings.json ever claimed morning was the best slot. The lowest-skip bucket in the stored rollup is night; morning is second; the retired front_runners block names afternoon; and all 11 'best time' lines in MEMORY.md name evening, afternoon or night. What IS true is that the timezone bug moved every one of the 126 analytics rows between buckets (126/126), so any analysis done directly on raw analytics stamps before 2026-08-03 was a third of a day out."
   }
 }
