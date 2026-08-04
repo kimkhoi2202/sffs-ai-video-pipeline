@@ -148,7 +148,7 @@ function metaDur(beat: string): number {
 }
 /** Nominal meta/VO durations for the dry-run frame PREVIEW only (no ffprobe/TTS).
  *  The real render measures every clip; these only size computeFrames() previews. */
-const NOMINAL = { timesup: 1.2, score: 20.8, "outro-follow": 6.0, "outro-youtube": 6.0, "outro-noanswer": 5.0, verdict: 4.0, read: 3.0, reveal: 2.0 } as const;
+const NOMINAL = { timesup: 1.2, score: 20.8, "outro-follow": 6.0, "outro-youtube": 6.0, "outro-noanswer": 5.0, "outro-noanswer-youtube": 5.0, verdict: 4.0, read: 3.0, reveal: 2.0 } as const;
 
 // ---------------------------------------------------------------------------
 // Question mapping: loop HermesQuiz question -> Short/FullVideo Question.
@@ -386,7 +386,7 @@ function countdownFrames(countdown: number, durs: Record<string, number>): numbe
   return Math.max(frames(countdown + 1), frames(countdown + (durs.timesup ?? 0) + 0.3));
 }
 function endKeyFor(ending: Ending, platform: Platform): string {
-  if (ending.endCard === "noanswer") return "outro-noanswer";
+  if (ending.endCard === "noanswer") return platform === "youtube" ? "outro-noanswer-youtube" : "outro-noanswer";
   if (ending.endCard === "verdict") return "verdict";
   return platform === "youtube" ? "outro-youtube" : "outro-follow";
 }
@@ -624,7 +624,7 @@ export function renderVideo(id: string, props: any, opts: { force?: boolean } = 
  * composition length and the audio it has to cover come from different beats.
  */
 export function endKeyForCard(endCard: string | undefined, platform: Platform): string {
-  if (endCard === "noanswer") return "outro-noanswer";
+  if (endCard === "noanswer") return platform === "youtube" ? "outro-noanswer-youtube" : "outro-noanswer";
   if (endCard === "verdict") return "verdict";
   return platform === "youtube" ? "outro-youtube" : "outro-follow";
 }
@@ -649,8 +649,10 @@ export function endKeyForCard(endCard: string | undefined, platform: Platform): 
  * render ~21 frames early, mid subscribe-CTA — and by less than gateRenderSanity's 1.5s
  * tolerance, so it would ship silently. So the end beat is re-measured off the file that
  * will actually play and the delta is applied. On the cliffhanger / no-answer endings
- * both platforms resolve to `outro-noanswer`, the delta is zero, and the length is
- * carried through untouched.
+ * YouTube now has its OWN no-answer clip too (`outro-noanswer-youtube`: "link in the
+ * description" where the others say "link in our bio"), so that ending re-measures the
+ * same way. Only `verdict`, which carries no platform pointer, is still one clip
+ * everywhere and still carries its length through untouched.
  *
  * Pure apart from the ffprobe measurement, and it never mutates the input.
  */
@@ -873,7 +875,7 @@ export function computeFrames(props: any): number {
   if (props?.__short?.totalFrames) return Number(props.__short.totalFrames);
   const mapped = mapProps(props);
   // nominal durs (no TTS, no ffprobe) — a ballpark for the dry-run preview only.
-  const durs: Record<string, number> = { timesup: NOMINAL.timesup, score: NOMINAL.score, "outro-follow": NOMINAL["outro-follow"], "outro-noanswer": NOMINAL["outro-noanswer"], verdict: NOMINAL.verdict };
+  const durs: Record<string, number> = { timesup: NOMINAL.timesup, score: NOMINAL.score, "outro-follow": NOMINAL["outro-follow"], "outro-noanswer": NOMINAL["outro-noanswer"], "outro-noanswer-youtube": NOMINAL["outro-noanswer-youtube"], verdict: NOMINAL.verdict };
   mapped.questions.forEach((q) => {
     if (mapped.readVO !== "none") durs[`q${q.idx}`] = NOMINAL.read;
   });

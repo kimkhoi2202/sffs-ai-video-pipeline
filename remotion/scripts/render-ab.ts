@@ -51,13 +51,16 @@ const SPEED_RATIO_TOL = 0.05; // accept 0.846..0.946
 const SPEED_MUST_SHRINK = 0.96; // and it MUST be clearly shorter (catch the silent no-op)
 
 // New round-agnostic end-card VO (cloned voice), committed under audio/narration/.
-const NOANSWER_TEXT = "[excited] What's your answer? Comment below and I'll let you know if you're a Certified Smart Fella!";
+const NOANSWER_TEXT = "[excited] Want the full test? It's free! Link in our bio.";
+const NOANSWER_YT_TEXT = "[excited] Want the full test? It's free! Link in the description.";
 const VERDICT_TEXT = "[excited] So... are you a smart fella, or a fart smella?";
 const META_TEXT: Record<string, string> = {
   timesup: "TIME'S UP!",
   score: "So, are you smart or fart? Count up your correct answers to find your rank!",
-  "outro-follow": "So, how did you do? Comment your score below, and follow for more!",
-  "outro-noanswer": "What's your answer? Comment below and I'll let you know if you're a Certified Smart Fella!",
+  "outro-follow": "So, how did you do? The full test is free. Link in our bio!",
+  "outro-youtube": "So, how did you do? The full test is free. Link in the description!",
+  "outro-noanswer": "Want the full test? It's free! Link in our bio.",
+  "outro-noanswer-youtube": "Want the full test? It's free! Link in the description.",
   verdict: "So... are you a smart fella, or a fart smella?",
 };
 
@@ -256,8 +259,16 @@ async function main() {
   const videos = only ? VIDEOS.filter((v) => v.test === only) : VIDEOS;
 
   // 0) new committed end-card VO (cloned voice), generated once.
-  console.log(`\n[ab] end-card VO (outro-noanswer, verdict) -> audio/narration/`);
-  ttsBeats([{ beat: "outro-noanswer", text: NOANSWER_TEXT }, { beat: "verdict", text: VERDICT_TEXT }], NARR_COMMITTED_ABS, voiceId);
+  console.log(`\n[ab] end-card VO (outro-noanswer[-youtube], verdict) -> audio/narration/`);
+  ttsBeats(
+    [
+      { beat: "outro-noanswer", text: NOANSWER_TEXT },
+      { beat: "outro-noanswer-youtube", text: NOANSWER_YT_TEXT },
+      { beat: "verdict", text: VERDICT_TEXT },
+    ],
+    NARR_COMMITTED_ABS,
+    voiceId,
+  );
   const NOANSWER_DUR = metaDur("outro-noanswer");
   const VERDICT_DUR = metaDur("verdict");
 

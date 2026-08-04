@@ -294,14 +294,13 @@
     },
     "endcard": {
       "surface": "endcard",
-      "description": "Endcard / brand-promo on-screen lines (outro + self-contained brand intro + reply short). Loud, positive, always ends on a follow/come-back beat.",
+      "description": "Endcard / brand-promo on-screen lines (outro + self-contained brand intro + reply short). Loud, positive; the quiz outro ends on the free-test CTA, the brand promos still end on a follow/come-back beat.",
       "examples": [
-        { "text": "HOW DID YOU DO?", "source": "remotion Outro.tsx (standard)" },
-        { "text": "COMMENT YOUR SCORE BELOW", "source": "remotion Outro.tsx (standard)" },
-        { "text": "WHAT'S YOUR ANSWER?", "source": "remotion Outro.tsx (no-answer variant)" },
-        { "text": "COMMENT YOUR ANSWER BELOW", "source": "remotion Outro.tsx (no-answer variant)" },
-        { "text": "FOLLOW FOR MORE", "source": "remotion Outro.tsx / IntroBrand / ReplyBrand (IG/TikTok CTA)" },
-        { "text": "SUBSCRIBE FOR MORE", "source": "remotion Outro.tsx (YouTube CTA)" },
+        { "text": "THE FULL TEST IS FREE", "source": "remotion Outro.tsx (standard + no-answer)" },
+        { "text": "SMARTFELLAORFARTSMELLA.COM", "source": "remotion Outro.tsx (standard + no-answer)" },
+        { "text": "LINK IN BIO", "source": "remotion Outro.tsx (IG/TikTok CTA pill)" },
+        { "text": "LINK IN DESCRIPTION", "source": "remotion Outro.tsx (YouTube CTA pill)" },
+        { "text": "FOLLOW FOR MORE", "source": "remotion IntroBrand / ReplyBrand (IG/TikTok CTA)" },
         { "text": "SCROLL FOR MORE", "source": "remotion Outro.tsx / IntroBrand.tsx (swipe cue)" },
         { "text": "WHAT IS IT?", "source": "remotion IntroBrand.tsx" },
         { "text": "A REAL IQ TEST", "source": "remotion IntroBrand.tsx" },
@@ -329,7 +328,6 @@
         { "text": "SHARP COOKIE", "source": "remotion Score.tsx (middle tier)" },
         { "text": "CERTIFIED FART SMELLA", "source": "remotion Score.tsx (bottom tier)" },
         { "text": "SMART FELLA OR FART SMELLA?", "source": "remotion Outro.tsx (verdict variant)" },
-        { "text": "COMMENT YOUR VERDICT", "source": "remotion Outro.tsx (verdict variant)" },
         { "text": "CERTIFIED SMART FELLA (rubber stamp thunked onto the winning commenter)", "source": "remotion ReplyBrand.tsx StampBadge" }
       ]
     },
@@ -354,8 +352,10 @@
         { "text": "Take a bow, you are a certified smart fella!", "source": "phrases.ts / score VO (top tier)" },
         { "text": "You're one seriously sharp cookie.", "source": "phrases.ts / score VO (middle tier)" },
         { "text": "Hey, every champion starts out a certified fart smella!", "source": "phrases.ts / score VO (bottom tier)" },
-        { "text": "So, how did you do? Comment your score below, and follow for more!", "source": "captions.json outro-follow" },
-        { "text": "So, how did you do? Comment your score below, and subscribe for more!", "source": "captions.json outro-youtube" },
+        { "text": "So, how did you do? The full test is free. Link in our bio!", "source": "captions.json outro-follow" },
+        { "text": "So, how did you do? The full test is free. Link in the description!", "source": "captions.json outro-youtube" },
+        { "text": "Want the full test? It's free! Link in our bio.", "source": "audio/narration outro-noanswer (IG/TikTok)" },
+        { "text": "Want the full test? It's free! Link in the description.", "source": "audio/narration outro-noanswer-youtube" },
         { "text": "TIME'S UP!", "source": "captions.json timesup" },
         { "text": "Five seconds, go!", "source": "captions.json q1 / q4" },
         { "text": "Five seconds on the clock!", "source": "captions.json q7" }

@@ -1,7 +1,19 @@
 [
   {
     "beat": "outro-noanswer",
-    "text": "[excited] What's your answer? Comment below and I'll let you know if you're a Certified Smart Fella!"
+    "text": "[excited] Want the full test? It's free! Link in our bio."
+  },
+  {
+    "beat": "outro-noanswer-youtube",
+    "text": "[excited] Want the full test? It's free! Link in the description."
+  },
+  {
+    "beat": "outro-follow",
+    "text": "[excited] So, how did you do? The full test is free. Link in our bio!"
+  },
+  {
+    "beat": "outro-youtube",
+    "text": "[excited] So, how did you do? The full test is free. Link in the description!"
   },
   {
     "beat": "verdict",

@@ -57,8 +57,10 @@ const PLATFORMS: Platform[] = ["tiktok", "instagram"];
 const META_TEXT: Record<string, string> = {
   timesup: "TIME'S UP!",
   score: "So, are you smart or fart? Count up your correct answers to find your rank!",
-  "outro-follow": "So, how did you do? Comment your score below, and follow for more!",
-  "outro-noanswer": "What's your answer? Comment below and I'll let you know if you're a Certified Smart Fella!",
+  "outro-follow": "So, how did you do? The full test is free. Link in our bio!",
+  "outro-youtube": "So, how did you do? The full test is free. Link in the description!",
+  "outro-noanswer": "Want the full test? It's free! Link in our bio.",
+  "outro-noanswer-youtube": "Want the full test? It's free! Link in the description.",
   verdict: "So... are you a smart fella, or a fart smella?",
 };
 

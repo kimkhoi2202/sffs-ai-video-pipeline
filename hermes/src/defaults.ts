@@ -154,7 +154,8 @@ export function captionAsk(reveal: RevealMode): string {
   return reveal === "all" ? "comment your score" : "comment your answer";
 }
 
-/** The centered outro CTA card text for a reveal mode (comment-CTA + follow nudge). */
-export function defaultOutro(reveal: RevealMode): string {
-  return `${captionAsk(reveal)} \uD83D\uDC47 follow for more`;
+/** The centered outro CTA card text. The end card no longer asks for a comment — it
+ *  sends people to the free test — so this no longer varies with the reveal mode. */
+export function defaultOutro(_reveal: RevealMode): string {
+  return "the full test is free \uD83D\uDC47 smartfellaorfartsmella.com";
 }

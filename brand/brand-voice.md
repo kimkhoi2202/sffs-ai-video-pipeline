@@ -80,7 +80,7 @@ Reuse these verbatim (full list with sources in the examples file):
 | **FAQ A** | honest + funny, never earnest | `Absolutely not. The Fella Engine runs on vibes, stereotypes, and one very opinionated spreadsheet.` |
 | **Video caption** | HOOK (`SMART or FART? 🧠💨` or `Are you SMART or FART? 🧠💨`) + what's inside / `Can you get all 3?` + `Comment your score 👇` + `follow for more!!` + a hashtag set. Hashtags are appended per-post (rotating set A/B/C). | `Are you SMART or FART? 🧠💨 Comment your score below 👇 and follow for more!!` |
 | **On-screen text** | ALL-CAPS Anton, ultra-short. Prompts, `QUESTION x OF 15`, `CORRECT ANSWER`, `SCORE YOURSELF`, `TIME'S UP!` | `WHICH ONE DOES NOT BELONG?` |
-| **Endcard** | loud, positive, ends on the nudge | `HOW DID YOU DO?` → `COMMENT YOUR SCORE BELOW` → `FOLLOW FOR MORE` (YouTube: `SUBSCRIBE FOR MORE`) |
+| **Endcard** | loud, positive, ends on the CTA | `THE FULL TEST IS FREE` → `SMARTFELLAORFARTSMELLA.COM` → `LINK IN BIO` (YouTube: `LINK IN DESCRIPTION`) |
 | **Verdict** | the smart/fart payoff (score tiers or verdict card / reply stamp) | `CERTIFIED SMART FELLA` · `SMART FELLA OR FART SMELLA?` |
 | **Comment reply (correct)** | hype as a Smart Fella, confirm the answer, one emoji, follow nudge. Never explain. | `39 first try?? certified SMART FELLA 🫡. follow for a new one every day.` |
 | **Comment reply (wrong / idk)** | reveal the answer, playful Fart Smella "(for now)", come-back nudge. Never lecture. | `it was 39. certified Fart Smella 😭 (for now). come back tomorrow and redeem yourself.` |

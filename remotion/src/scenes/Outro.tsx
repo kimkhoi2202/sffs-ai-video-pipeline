@@ -12,9 +12,9 @@ import type { Platform, EndCard } from "../full/timeline";
  * floating rotating HeroShapes over a vibrant green field, a two-line Anton
  * headline in brand color with a hard offset black shadow, the tilted brain-logo
  * accent on the CTA, and a springy staggered entrance. Hierarchy (eyebrow pill
- * removed for a cleaner, more minimal end card): "HOW DID / YOU DO?" -> "COMMENT
- * YOUR SCORE BELOW" -> platform CTA pill (YouTube "SUBSCRIBE FOR MORE", IG/TikTok
- * "FOLLOW FOR MORE"). SHORT/portrait outros also get a "SCROLL FOR MORE" hint
+ * removed for a cleaner, more minimal end card): "THE FULL TEST / IS FREE" ->
+ * "SMARTFELLAORFARTSMELLA.COM" -> platform CTA pill (YouTube "LINK IN DESCRIPTION",
+ * IG/TikTok "LINK IN BIO"). SHORT/portrait outros also get a "SCROLL FOR MORE" hint
  * pinned near the bottom -- a white circle + ink stroke down-arrow (hard shadow) that
  * loop-bobs downward as a swipe-to-next affordance; the 16:9 YouTube outro omits
  * it. Text renders ABOVE the floating shapes. Re-flows + enlarges for portrait.
@@ -63,19 +63,22 @@ export const Outro: React.FC<{ platform?: Platform; variant?: EndCard; mascot?: 
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { w, portrait } = useFmt();
-  const followCta = platform === "youtube" ? "SUBSCRIBE FOR MORE" : "FOLLOW FOR MORE";
+  // WHERE THE LINK ACTUALLY IS, per network. Instagram and TikTok put it in the bio;
+  // YouTube has a description and no bio at all, so "link in bio" would point a Shorts
+  // viewer at something that does not exist.
+  const siteCta = platform === "youtube" ? "LINK IN DESCRIPTION" : "LINK IN BIO";
   const cx = w / 2;
 
-  // The end card is prop-driven: the standard outro asks the score, the NO-ANSWER
-  // test asks for the answer in the comments, and the ONE-QUESTION verdict delivers
-  // the smart-fella/fart-smella payoff. All share the same on-brand green field,
-  // floating shapes, two-color Anton headline, CTA pill, and scroll cue.
+  // The end card sends people to the free test. It used to ask for a comment — the
+  // score on the full-reveal ending, the answer on the cliffhanger — but that ask ran
+  // across ~126 published posts for a median of zero comments, so the seconds are spent
+  // on the site instead. The ONE-QUESTION verdict keeps its smart-fella/fart-smella
+  // payoff headline and carries the same CTA underneath it. All share the on-brand
+  // green field, floating shapes, two-color Anton headline, CTA pill, and scroll cue.
   const COPY =
-    variant === "noanswer"
-      ? { l1: "WHAT'S YOUR", l2: "ANSWER?", sub: "COMMENT YOUR ANSWER BELOW", cta: followCta, headScale: 0.94 }
-      : variant === "verdict"
-        ? { l1: "SMART FELLA", l2: "OR FART SMELLA?", sub: "COMMENT YOUR VERDICT", cta: followCta, headScale: 0.72 }
-        : { l1: "HOW DID", l2: "YOU DO?", sub: "COMMENT YOUR SCORE BELOW", cta: followCta, headScale: 1 };
+    variant === "verdict"
+      ? { l1: "SMART FELLA", l2: "OR FART SMELLA?", sub: "THE FULL TEST IS FREE", cta: siteCta, headScale: 0.72 }
+      : { l1: "THE FULL TEST", l2: "IS FREE", sub: "SMARTFELLAORFARTSMELLA.COM", cta: siteCta, headScale: 0.8 };
   const cta = COPY.cta;
 
   // Eyebrow removed -> bigger headline + re-centered block using the freed space.
@@ -84,11 +87,18 @@ export const Outro: React.FC<{ platform?: Platform; variant?: EndCard; mascot?: 
   // Portrait: the main block sits a touch higher to make room for the SCROLL FOR
   // MORE hint pinned near the bottom (with safe-area padding). Landscape unchanged.
   const L = portrait
-    ? { l1: 636, l2: 824, comment: 998, cta: 1204, commentSize: 58, ctaSize: 74, ctaPad: "30px 62px", brain: { top: -56, right: -34, w: 140 }, scroll: 1688 }
-    : { l1: 330, l2: 480, comment: 632, cta: 776, commentSize: 56, ctaSize: 66, ctaPad: "26px 60px", brain: { top: -52, right: -34, w: 132 }, scroll: 0 };
+    ? { l1: 636, l2: 824, comment: 998, cta: 1204, commentSize: 58, ctaSize: 74, ctaPadV: 30, ctaPadH: 62, brain: { top: -56, right: -34, w: 140 }, scroll: 1688 }
+    : { l1: 330, l2: 480, comment: 632, cta: 776, commentSize: 56, ctaSize: 66, ctaPadV: 26, ctaPadH: 60, brain: { top: -52, right: -34, w: 132 }, scroll: 0 };
   // MASCOT A/B: enlarge the outro brain sticker for "prominent"; hidden below for
   // "absent"; unchanged for "standard".
   const brainW = Math.round(L.brain.w * (mascot === "prominent" ? 1.3 : 1));
+  // RESERVE THE STICKER'S ROOM RATHER THAN MOVING THE STICKER. The brain hangs off the
+  // pill's top-right corner and covers (brainW - |brain.right|) of it. That cost nothing
+  // while the pill read "...FOR MORE" — a half-hidden final E is still obviously MORE —
+  // but the pill now ends in BIO or DESCRIPTION, and that last word IS the instruction:
+  // "LINK IN BI" tells a viewer nothing. So the right padding grows to clear the sticker,
+  // which also tracks the mascot arm's size instead of hard-coding one arm's overlap.
+  const ctaPadRight = mascot === "absent" ? L.ctaPadH : Math.max(L.ctaPadH, brainW - Math.abs(L.brain.right) + 20);
   // Whole scroll-cue bob (the circle + its border + hard shadow + arrow move as
   // ONE unit), matching the website cue (gsap y:8 duration:0.7 yoyo sine.inOut =>
   // a 1.4s sine-eased 0->peak->0 cycle). Amplitude scaled up for the larger video
@@ -130,7 +140,7 @@ export const Outro: React.FC<{ platform?: Platform; variant?: EndCard; mascot?: 
               color: COLORS.ink,
               border: `8px solid ${COLORS.ink}`,
               borderRadius: 9999,
-              padding: L.ctaPad,
+              padding: `${L.ctaPadV}px ${ctaPadRight}px ${L.ctaPadV}px ${L.ctaPadH}px`,
               boxShadow: hardShadow(12),
               fontFamily: ANTON,
               fontSize: L.ctaSize,

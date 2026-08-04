@@ -28,9 +28,22 @@ export const frames = (s: number): number => Math.round(s * FPS);
 export const LEAD_FRAMES = frames(LEAD);
 
 export type Platform = "youtube" | "instagram" | "tiktok";
-/** Outro VO/caption clip key for a platform (YouTube -> subscribe; else follow). */
+/** Outro VO/caption clip key for a platform (YouTube -> description; else bio). */
 export const outroClipKey = (p: Platform): "outro-youtube" | "outro-follow" =>
   p === "youtube" ? "outro-youtube" : "outro-follow";
+
+/**
+ * No-answer end-card VO key for a platform.
+ *
+ * This was ONE clip for all three networks, which was right while the line was
+ * "comment below" — a comment box exists everywhere. The line now sends people to the
+ * site, and the pointer to it does NOT travel: Instagram and TikTok have a bio link,
+ * YouTube has a description and no bio at all. A viewer told to check a bio that does
+ * not exist simply does not convert, so YouTube gets its own clip here exactly as it
+ * already does for `outro-youtube`.
+ */
+export const noanswerClipKey = (p: Platform): "outro-noanswer-youtube" | "outro-noanswer" =>
+  p === "youtube" ? "outro-noanswer-youtube" : "outro-noanswer";
 
 export type Segment =
   | { type: "intro"; start: number; dur: number }
@@ -134,7 +147,7 @@ export const HOOK_SECONDS = 2.2;
 const SILENT_READ = frames(1.5);
 /** End-card VO/duration key for a variant (default -> the platform outro clip). */
 const endCardKey = (endCard: EndCard, platform: Platform): string =>
-  endCard === "noanswer" ? "outro-noanswer" : endCard === "verdict" ? "verdict" : outroClipKey(platform);
+  endCard === "noanswer" ? noanswerClipKey(platform) : endCard === "verdict" ? "verdict" : outroClipKey(platform);
 
 export type TimelineData = {
   platform: Platform;

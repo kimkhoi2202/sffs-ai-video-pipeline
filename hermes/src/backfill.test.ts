@@ -232,19 +232,34 @@ test("RETARGET: the end BEAT switches to outro-youtube and the length grows to m
   assert.equal(endKey, "outro-youtube");
   assert.ok(frameDelta > 0, "outro-youtube is longer than outro-follow");
   assert.equal(props.totalFrames, 2372 + frameDelta);
-  // The 21-frame difference is the one that would have truncated the subscribe CTA
-  // by LESS than gateRenderSanity's 1.5s tolerance — i.e. silently.
-  assert.equal(frameDelta, 21, "outro-youtube (4.754s) vs outro-follow (4.049s) at 30fps");
+  // The delta is the point: it is POSITIVE (so carrying the old length over truncates
+  // the CTA) and SMALLER than gateRenderSanity's 1.5s / 45-frame tolerance (so that
+  // truncation would ship silently). Asserted as a band rather than an exact frame
+  // count, because the exact count is a function of the two clips' measured lengths and
+  // regenerating the outro VO legitimately moves it.
+  assert.ok(frameDelta < 45, `a delta the sanity gate would catch is a different bug (${frameDelta} frames)`);
   assert.ok(props.durs["outro-youtube"] > 0, "the new beat must be measured, not assumed");
 });
 
-test("RETARGET: a cliffhanger/no-answer ending is length-IDENTICAL across platforms", () => {
-  for (const endCard of ["noanswer", "verdict"]) {
-    const { props, frameDelta } = retargetPropsToYouTube(sidecar({ endCard, dropReveal: "last", dropScore: true, totalFrames: 1798, durs: { "outro-noanswer": 5.0, verdict: 4.0 } }));
-    assert.equal(frameDelta, 0, `${endCard} resolves to the same beat on every platform`);
-    assert.equal(props.totalFrames, 1798, "so the stored length carries through untouched");
-    assert.equal(props.platform, "youtube", "but it is still laid out for the Shorts safe box");
-  }
+test("RETARGET: the no-answer end card gets YouTube's OWN clip; only verdict is shared", () => {
+  // The no-answer line sends people to the site, and the pointer to it does not travel:
+  // "link in our bio" on IG/TikTok, "link in the description" on YouTube. So it is two
+  // clips now and the length has to be re-measured, exactly like the default end card.
+  const na = retargetPropsToYouTube(
+    sidecar({ endCard: "noanswer", dropReveal: "last", dropScore: true, totalFrames: 1798, durs: { "outro-noanswer": 5.0 } }),
+  );
+  assert.equal(na.endKey, "outro-noanswer-youtube");
+  assert.ok(na.props.durs["outro-noanswer-youtube"] > 0, "the new beat must be measured, not assumed");
+  assert.equal(na.props.totalFrames, 1798 + na.frameDelta);
+  assert.equal(na.props.platform, "youtube", "and it is still laid out for the Shorts safe box");
+
+  // The verdict card carries no platform pointer, so it is still one clip everywhere.
+  const v = retargetPropsToYouTube(
+    sidecar({ endCard: "verdict", dropReveal: "last", dropScore: true, totalFrames: 1798, durs: { verdict: 4.0 } }),
+  );
+  assert.equal(v.frameDelta, 0, "verdict resolves to the same beat on every platform");
+  assert.equal(v.props.totalFrames, 1798, "so the stored length carries through untouched");
+  assert.equal(v.props.platform, "youtube", "but it is still laid out for the Shorts safe box");
 });
 
 test("RETARGET: it never mutates the stored sidecar", () => {
@@ -267,7 +282,9 @@ test("RETARGET: endKeyForCard mirrors the Remotion timeline's endCardKey", () =>
   assert.equal(endKeyForCard("default", "youtube"), "outro-youtube");
   assert.equal(endKeyForCard("default", "instagram"), "outro-follow");
   assert.equal(endKeyForCard("default", "tiktok"), "outro-follow");
-  assert.equal(endKeyForCard("noanswer", "youtube"), "outro-noanswer");
+  assert.equal(endKeyForCard("noanswer", "youtube"), "outro-noanswer-youtube");
+  assert.equal(endKeyForCard("noanswer", "instagram"), "outro-noanswer");
+  assert.equal(endKeyForCard("noanswer", "tiktok"), "outro-noanswer");
   assert.equal(endKeyForCard("verdict", "youtube"), "verdict");
   assert.equal(endKeyForCard(undefined, "youtube"), "outro-youtube", "undefined defaults to the platform outro");
 });
