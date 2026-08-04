@@ -59,7 +59,7 @@ import { publishAsDraft, planSlots, calendarRows, allocatable, localDay, type Lo
 import { NETWORKS, monthlyRecords, exhaustionForecast, type Network } from "./postingPolicy.ts";
 import { budget, type McPost } from "./metricool.ts";
 import { toNaive } from "./approval.ts";
-import { ping, pingConfiguredModels, logLlmUsage } from "./llm.ts";
+import { ping, pingConfiguredModels, logLlmUsage, llmUsageReport } from "./llm.ts";
 import { readJSON, writeJSONAtomic } from "./state.ts";
 
 const DRY = process.env.HERMES_DRY_RUN === "1";
@@ -150,6 +150,43 @@ function newRun(runId: string, target: number): RunState {
     videos: [],
     summary: { planned: 0, drafted: 0, rejected: 0, failed: 0 },
     errors: [],
+  };
+}
+
+/**
+ * Roles whose primary model IS the designated fallback — i.e. roles with no
+ * cross-model safety net at all.
+ *
+ * chat() refuses to retry a model against itself (`fb === model` throws), which is
+ * right, and which also means this misconfiguration does not degrade the net — it
+ * DELETES it, silently. That is the exact shape of the 2026-08-03 defect: the judge
+ * fallback named claude-haiku-4-5 while haiku was the thing failing. Cheap to state
+ * at the top of a run; expensive to discover during an outage.
+ */
+export function rolesWithoutFallback(model: string, captionModel: string, fallbackModel: string): string[] {
+  const roles: Array<[string, string]> = [
+    ["reasoning", model],
+    ["caption", captionModel],
+  ];
+  return roles.filter(([, m]) => m === fallbackModel).map(([role]) => role);
+}
+
+/**
+ * Count the work that SHIPPED without the model that was supposed to do it.
+ *
+ * Separate from runCycle and exported on purpose: this tally is the only thing that
+ * distinguishes "twelve judged videos" from "twelve unjudged ones", and a number that
+ * important should be checkable without standing up a whole cycle.
+ */
+export function summarizeDegradation(
+  videos: Array<{ caption_source?: string; gates?: Record<string, { degraded?: boolean } | undefined> }>,
+  llmFailedCalls: number,
+): { llm_failed_calls: number; caption_fallbacks: number; copy_gate_unjudged: number; questions_unjudged: number } {
+  return {
+    llm_failed_calls: llmFailedCalls,
+    caption_fallbacks: videos.filter((v) => v.caption_source === "fallback").length,
+    copy_gate_unjudged: videos.filter((v) => v.gates?.copy?.degraded === true).length,
+    questions_unjudged: videos.filter((v) => v.gates?.questions?.degraded === true).length,
   };
 }
 
@@ -628,6 +665,16 @@ export async function runCycle(): Promise<RunState> {
   // judge fallback is invisible in the summary line but shows up in what ships.
   const models = await pingConfiguredModels();
   info("LLM models reachable", Object.fromEntries(models.map((m) => [m.role, `${m.model}: ${m.ok ? "ok" : "UNREACHABLE"}`])));
+
+  // The net has to be made of different rope than the thing it is catching.
+  const netless = rolesWithoutFallback(CONFIG.MODEL, CONFIG.CAPTION_MODEL, CONFIG.JUDGE_FALLBACK_MODEL);
+  if (netless.length) {
+    warn(
+      `NO CROSS-MODEL FALLBACK for ${netless.join(" + ")}: the fallback is ${CONFIG.JUDGE_FALLBACK_MODEL}, the same ` +
+        `model it is meant to rescue, so chat() has nothing to fail over to. One 429 degrades those paths outright.`,
+      { fallback: CONFIG.JUDGE_FALLBACK_MODEL, reasoning: CONFIG.MODEL, caption: CONFIG.CAPTION_MODEL },
+    );
+  }
   const dead = models.filter((m) => !m.ok);
   (state as any).llm_models = models;
   for (const m of dead) {
@@ -881,6 +928,29 @@ export async function runCycle(): Promise<RunState> {
     info("git", (state as any).git);
   }
 
+  // ── DEGRADATION, COUNTED BEFORE THE VERDICT ────────────────────────────────
+  // A cycle that shipped template captions and skipped its judge produces exactly the
+  // same drafted/rejected/failed line as a healthy one. That is not a reporting nicety:
+  // on 2026-08-03 twelve videos went out unjudged behind a clean-looking summary and it
+  // took a day to notice. These counters are the difference, and a non-zero one costs
+  // the run its "success" so the dashboard chip stops saying everything is fine.
+  const degraded = summarizeDegradation(state.videos, llmUsageReport().total.failedCalls);
+  state.summary.degraded = degraded;
+  const unjudged = degraded.caption_fallbacks + degraded.copy_gate_unjudged + degraded.questions_unjudged;
+  if (unjudged > 0 || degraded.llm_failed_calls > 0) {
+    error(
+      `LLM DEGRADED — ${degraded.llm_failed_calls} gateway call(s) failed after retries; ` +
+        `${degraded.caption_fallbacks} caption(s) fell back to the hardcoded template, ` +
+        `${degraded.copy_gate_unjudged} copy gate(s) and ${degraded.questions_unjudged} validity gate(s) ` +
+        `reached a verdict with no model behind it. Those videos shipped UNJUDGED.`,
+      degraded,
+    );
+    state.errors.push(
+      `llm degraded: ${degraded.llm_failed_calls} failed call(s), ${degraded.caption_fallbacks} template caption(s), ` +
+        `${degraded.copy_gate_unjudged} unjudged copy gate(s), ${degraded.questions_unjudged} unjudged validity gate(s)`,
+    );
+  }
+
   state.status = state.summary.failed > 0 || state.errors.length ? (state.summary.drafted > 0 ? "partial" : "failed") : "success";
 
   // (P3) memory hygiene: append a bounded one-line takeaway to MEMORY.md so the
@@ -915,7 +985,15 @@ export async function runCycle(): Promise<RunState> {
 
   state.finished_at = new Date().toISOString();
   saveRun(state);
-  info(`=== cycle ${runId} done: ${state.summary.drafted} drafted, ${state.summary.rejected} rejected, ${state.summary.failed} failed ===`);
+  info(
+    `=== cycle ${runId} done: ${state.summary.drafted} drafted, ${state.summary.rejected} rejected, ` +
+      `${state.summary.failed} failed` +
+      (unjudged > 0 || degraded.llm_failed_calls > 0
+        ? `, DEGRADED (${degraded.llm_failed_calls} failed llm call(s), ${degraded.caption_fallbacks} template caption(s), ` +
+          `${degraded.copy_gate_unjudged + degraded.questions_unjudged} unjudged gate(s))`
+        : "") +
+      " ===",
+  );
   return state;
 }
 

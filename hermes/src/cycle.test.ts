@@ -106,3 +106,80 @@ test("does NOT push unless HERMES_GIT_PUSH=1, and never leaves a rebase in progr
   assert.equal(git("branch", "--show-current").trim(), "main", "must never be detached by a rebase");
   assert.notEqual(git("rev-parse", "HEAD").trim(), before, "HEAD advanced by exactly the new commit");
 });
+
+// ── THE DEGRADATION TALLY ────────────────────────────────────────────────────
+//
+// drafted/rejected/failed cannot tell a healthy cycle from one that shipped template
+// captions past an unjudged gate — that is exactly how 2026-08-03 stayed invisible for
+// a day. These pin the counters that can.
+
+const { summarizeDegradation } = await import("./cycle.ts");
+
+test("a healthy cycle degrades nothing", () => {
+  const d = summarizeDegradation(
+    [
+      { caption_source: "llm:claude-opus-5", gates: { copy: { pass: true }, questions: { pass: true } } },
+      { caption_source: "llm:claude-opus-5", gates: { copy: { pass: true }, questions: { pass: true } } },
+    ] as any,
+    0,
+  );
+  assert.deepEqual(d, { llm_failed_calls: 0, caption_fallbacks: 0, copy_gate_unjudged: 0, questions_unjudged: 0 });
+});
+
+test("counts template captions and unjudged gates separately — they are different failures", () => {
+  const d = summarizeDegradation(
+    [
+      // shipped a hardcoded caption AND was never judged: both counters, one video
+      { caption_source: "fallback", gates: { copy: { pass: true, degraded: true }, questions: { pass: true } } },
+      // written by the model, but the validity rubric never answered
+      { caption_source: "llm:claude-opus-5", gates: { copy: { pass: true }, questions: { pass: false, degraded: true } } },
+      // entirely healthy
+      { caption_source: "llm:claude-opus-5", gates: { copy: { pass: true }, questions: { pass: true } } },
+    ] as any,
+    7,
+  );
+  assert.deepEqual(d, { llm_failed_calls: 7, caption_fallbacks: 1, copy_gate_unjudged: 1, questions_unjudged: 1 });
+});
+
+test("a PASSING gate still counts as degraded when no model stood behind it", () => {
+  // The whole point: `pass: true` is not evidence of judgement. If this ever reads 0
+  // for a degraded pass, the dashboard is lying again.
+  const d = summarizeDegradation([{ caption_source: "llm:x", gates: { copy: { pass: true, degraded: true } } }] as any, 0);
+  assert.equal(d.copy_gate_unjudged, 1);
+});
+
+test("videos from before the counter existed do not fabricate degradation", () => {
+  const d = summarizeDegradation([{ caption: "old" }, { gates: {} }] as any, 0);
+  assert.deepEqual(d, { llm_failed_calls: 0, caption_fallbacks: 0, copy_gate_unjudged: 0, questions_unjudged: 0 });
+});
+
+// ── THE NET MUST BE DIFFERENT ROPE ───────────────────────────────────────────
+//
+// The 2026-08-03 defect was a fallback pointing at the model that was failing. Setting
+// every role to one model recreates it exactly, and chat()'s `fb === model` guard makes
+// the result silent rather than noisy. These pin the preflight that says so out loud.
+
+const { rolesWithoutFallback } = await import("./cycle.ts");
+
+test("a distinct fallback leaves every role covered", () => {
+  assert.deepEqual(rolesWithoutFallback("claude-opus-5", "claude-opus-5", "claude-sonnet-5"), []);
+});
+
+test("all-three-the-same is reported as NO net, for every role — not as a degraded one", () => {
+  assert.deepEqual(
+    rolesWithoutFallback("claude-opus-5", "claude-opus-5", "claude-opus-5"),
+    ["reasoning", "caption"],
+    "this is the trap the ticket exists to remove; it must never be silent",
+  );
+});
+
+test("one role can lose its net while the other keeps one", () => {
+  // Caption on Opus with an Opus fallback is uncovered; the rubric on Sonnet is fine.
+  assert.deepEqual(rolesWithoutFallback("claude-sonnet-5", "claude-opus-5", "claude-opus-5"), ["caption"]);
+});
+
+test("the historical misconfiguration is exactly what this would have caught", () => {
+  // 2026-08-03: reasoning opus, caption haiku, judge fallback haiku — the fallback was
+  // the failing model, so the caption path had no net on the day it needed one.
+  assert.deepEqual(rolesWithoutFallback("claude-opus-5", "claude-haiku-4-5", "claude-haiku-4-5"), ["caption"]);
+});

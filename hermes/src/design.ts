@@ -57,15 +57,26 @@ async function makeCaption(reveal: RevealMode, tags: string[]): Promise<{ captio
     `and to follow. Do NOT include hashtags. Return ONLY the caption text.`;
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
-      // FALL BACK TO THE REASONING MODEL, the way the validity judge already falls back
-      // to the cheap one. On 2026-08-03 the gateway 403'd claude-haiku-4-5 for 56
-      // minutes (14:05-15:01 UTC, 162 times) — squarely inside the cycle window — while
-      // claude-opus-5 answered every request it got. Without a fallback that outage cost
-      // eleven of twelve videos their written caption and shipped the same hardcoded
-      // line to all of them. A caption is cheap; an identical caption on a whole day of
-      // posts is the near-duplicate signal this account is already fighting.
+      // FALL BACK TO THE SHARED SAFETY NET, the way both gates do. On 2026-08-03 the
+      // gateway 403'd claude-haiku-4-5 for 56 minutes (14:05-15:01 UTC, 162 times) —
+      // squarely inside the cycle window — while claude-opus-5 answered every request
+      // it got. Without a fallback that outage cost eleven of twelve videos their
+      // written caption and shipped the same hardcoded line to all of them. A caption
+      // is cheap; an identical caption on a whole day of posts is the near-duplicate
+      // signal this account is already fighting.
+      //
+      // THIS USED TO SAY `fallbackModel: CONFIG.MODEL`, which was right only while the
+      // caption model differed from the reasoning model. Once both became Opus that
+      // named the primary as its own fallback, and chat() turns that into no fallback
+      // at all. Pointing at the one designated net keeps this correct however the two
+      // primaries are configured.
       let text = (
-        await chat(system, user, { model: CONFIG.CAPTION_MODEL, fallbackModel: CONFIG.MODEL, maxTokens: 120, temperature: 0.8 })
+        await chat(system, user, {
+          model: CONFIG.CAPTION_MODEL,
+          fallbackModel: CONFIG.JUDGE_FALLBACK_MODEL,
+          maxTokens: 120,
+          temperature: 0.8,
+        })
       ).trim();
       text = text.replace(/^["']|["']$/g, "").replace(/#[\w]+/g, "").trim();
       const rule = ruleCheckCopy(text);
@@ -403,6 +414,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       arm: spec.arm,
       rationale: spec.rationale,
       caption,
+      caption_source: source,
       hashtag_set: hashtagSet,
       questions: chosen,
       gates: { copy: { pass: true, reason: `caption ${source}` } },
@@ -449,9 +461,16 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   // returns a usable string — so without this line a batch in which EVERY video shipped
   // the same hardcoded caption reports as a clean run. That happened on 2026-08-03.
   if (captionFallbacks) {
+    // Name the pair that was actually tried. If the two are ever configured to the
+    // same model there is no second opinion at all, and the line should say so rather
+    // than print "NEITHER claude-opus-5 NOR claude-opus-5".
+    const tried =
+      CONFIG.CAPTION_MODEL === CONFIG.JUDGE_FALLBACK_MODEL
+        ? `${CONFIG.CAPTION_MODEL} (its own fallback — no second opinion is configured)`
+        : `NEITHER ${CONFIG.CAPTION_MODEL} NOR ${CONFIG.JUDGE_FALLBACK_MODEL}`;
     decision(
       `CAPTION FALLBACK: ${captionFallbacks}/${plans.length} video(s) shipped the hardcoded caption because ` +
-        `NEITHER ${CONFIG.CAPTION_MODEL} NOR ${CONFIG.MODEL} could write one. They are on-brand and safe, but ` +
+        `${tried} could write one. They are on-brand and safe, but ` +
         `they are identical to each other and nothing was written for the question inside.`,
     );
   }

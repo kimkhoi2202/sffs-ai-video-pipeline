@@ -339,6 +339,7 @@ export async function validateQuestions(
     reason: (invalid.length === 0 ? "all questions valid" : `${invalid.length} invalid question(s)`) + suffix,
     detail: invalid.map((q) => ({ sig: q.sig, reason: results[q.sig].reason })),
   };
+  if (rubricUnavailable) g.degraded = true;
   return { results, gate: g };
 }
 
@@ -374,12 +375,24 @@ export async function gateCopy(pieces: { label: string; text: string }[]): Promi
   try {
     const v = await chatJSON<{ pass: boolean; reason: string; perPiece?: any[] }>(system, user, {
       model: CONFIG.CAPTION_MODEL,
+      // THE ONE CALL SITE THAT HAD NO SECOND OPINION. validateQuestions has fallen back
+      // since 2026-08-03 and makeCaption since the same day; this one did not, so a
+      // single caption-model outage retired the brand-voice judge for a whole batch
+      // while every other path stayed up. Same model pair, same asymmetry, same bug.
+      fallbackModel: CONFIG.JUDGE_FALLBACK_MODEL,
       maxTokens: 500,
     });
     return { pass: !!v.pass, reason: v.reason ?? (v.pass ? "on-brand" : "off-brand"), detail: v.perPiece };
   } catch (e) {
-    // If the judge is unreachable, fall back to the deterministic pass (rules already passed).
-    return { pass: true, reason: "rules passed; LLM judge unavailable", detail: { error: e instanceof Error ? e.message : String(e) } };
+    // If the judge is unreachable, fall back to the deterministic pass (rules already
+    // passed). `degraded` is what makes this distinguishable from a real pass: the
+    // reason string alone lived only in the log and nobody read it for a day.
+    return {
+      pass: true,
+      degraded: true,
+      reason: "rules passed; LLM judge unavailable",
+      detail: { error: e instanceof Error ? e.message : String(e) },
+    };
   }
 }
 

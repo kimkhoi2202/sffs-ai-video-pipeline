@@ -1335,6 +1335,17 @@ export function page(opts: PageData): string {
   const goal: GoalProgress = opts.goal ?? computeGoalProgress([], null, null, new Date());
   const cur = selected ? runs.find((r) => r.run_id === selected) || opts.latest : opts.latest;
   const s = cur?.summary || { planned: 0, drafted: 0, rejected: 0, failed: 0 };
+  // DEGRADATION. Runs written before this counter existed have no `degraded` block at
+  // all, and showing those a confident "0" would be the same false all-clear this panel
+  // is here to remove — so they read "—" instead.
+  const deg = cur?.summary?.degraded;
+  const degTotal = deg ? deg.caption_fallbacks + deg.copy_gate_unjudged + deg.questions_unjudged : 0;
+  const degBad = !!deg && (degTotal > 0 || deg.llm_failed_calls > 0);
+  const degValue = !deg ? "—" : degTotal;
+  const degTitle = !deg
+    ? "This run predates the degradation counter."
+    : `${deg.llm_failed_calls} failed gateway call(s) · ${deg.caption_fallbacks} template caption(s) · ` +
+      `${deg.copy_gate_unjudged} unjudged copy gate(s) · ${deg.questions_unjudged} unjudged validity gate(s)`;
   const drafts = (cur?.videos || []).filter((v) => v.status === "drafted");
   const draftTotal = drafts.reduce((a, v) => a + (v.metricool?.uuids?.length || 0), 0);
   // Live cumulative count of posts Metricool currently has SCHEDULED (not this cycle).
@@ -1550,7 +1561,18 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
       <div class="kpi"><div class="v">${s.drafted}</div><div class="k">videos drafted (this cycle)</div></div>
       <div class="kpi"><div class="v">${draftTotal}</div><div class="k">metricool drafts (this cycle)</div></div>
       <div class="kpi"><div class="v">${s.rejected}</div><div class="k">rejected · gates (this cycle)</div></div>
+      <div class="kpi" title="${esc(degTitle)}">
+        <div class="v"${degBad ? ' style="color:var(--coral)"' : ""}>${degValue}</div>
+        <div class="k">unjudged · LLM degraded (this cycle)</div>
+      </div>
     </div>
+    ${
+      degBad
+        ? `<p class="muted" style="margin-top:8px;color:var(--coral)"><b>LLM degraded.</b> ${esc(degTitle)}. ` +
+          `These videos shipped, but the model that was supposed to judge or write them never answered — ` +
+          `a degraded gate and a passing gate are otherwise indistinguishable from here.</p>`
+        : ""
+    }
   </div>
 
   <div class="statgroup">

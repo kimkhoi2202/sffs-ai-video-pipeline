@@ -78,20 +78,69 @@ export const CONFIG = Object.freeze({
    * loop. See JUDGE_FALLBACK_MODEL for what happens when the shared cap bites anyway.
    */
   MODEL: (process.env.HERMES_MODEL || "claude-opus-5").trim(),
-  CAPTION_MODEL: (process.env.HERMES_CAPTION_MODEL || "claude-haiku-4-5").trim(),
   /**
-   * What the validity judge falls back to when the reasoning model is unreachable.
+   * ROUTINE COPY. Opus as of 2026-08-04, by an explicit owner decision: "don't use
+   * Haiku, always use Opus."
    *
-   * The gateway's budget rule is per VIRTUAL ACCOUNT and shared with workloads that
-   * have nothing to do with this loop — the 429 storms on 2026-07-25 and 2026-07-29
-   * were the pool being spent elsewhere, not by us (this loop's whole daily bill is
-   * cents). So an Opus 429 is a statement about someone else's traffic, and answering
-   * it by throwing away the day's judgement is the wrong trade. Haiku judged the same
-   * three-question probe correctly at an eighth of the cost, so it is a real second
-   * opinion rather than a token gesture. The deterministic structural check remains
-   * the last resort, only if BOTH models are unreachable.
+   * WHAT THE 2026-08-03 OUTAGE ACTUALLY WAS, since the model name took the blame.
+   * claude-haiku-4-5 was never unsubscribed and was never a bad model name. Every
+   * model here is a VIRTUAL name the gateway resolves down a two-hop routing order,
+   * visible in the x-tfy-applied-rules response header:
+   *
+   *   requested claude-group/claude-haiku-4-5
+   *   -> [ anthropic-primary/claude-haiku-4-5,                 <- hop 1, 200 today
+   *        aws-bedrock/global.anthropic.claude-haiku-4-5-... ] <- hop 2, 403 that day
+   *
+   * Hop 2 is a Bedrock backend this account holds no Marketplace subscription for, so
+   * every failover produced an identical IAM-denial 403 — an authentication story for
+   * what was really "hop 1 did not answer". RENAMING THE MODEL COULD NOT HAVE FIXED
+   * THAT, and nothing was done to fix it: 2026-08-04 ran clean on the same config.
+   * (The HERMES_SEND_TEMPERATURE guard in llm.ts is worth keeping — a deprecated
+   * `temperature` does make hop 1 refuse — but it is not established as that day's
+   * trigger, since Opus took the same param and answered.)
+   *
+   * AND OPUS DOES NOT ESCAPE THIS. claude-opus-5 and claude-sonnet-5 have the same
+   * two-hop shape; only the hop-2 backend differs (bedrock-024033391934/... rather
+   * than the aws-bedrock/... integration proven to 403). Moving here changes WHICH
+   * model is exposed to the failover, not WHETHER one is. Verified 200 on 2026-08-04:
+   * opus-5 5/5, sonnet-5 5/5, haiku-4-5 5/5.
+   *
+   * SO THIS IS A PRICE DECISION, NOT A REPAIR, AND IT IS A CHEAP ONE. Measured on the
+   * gateway 2026-08-04, same prompts, costInUSD as billed: a caption write is $0.00249
+   * on Opus vs $0.000302 on Haiku (8.2x); a gateCopy judgement is $0.011695 vs
+   * $0.001867 (6.3x). The cycle makes ~36 of these a day (12 videos x 1 caption +
+   * 2 copy gates), so the line item goes from ~$0.04 to ~$0.31 a day and the whole
+   * loop from ~$0.15 to ~$0.42. Roughly $8 a month. The exposure that actually
+   * changed is not the bill — see JUDGE_FALLBACK_MODEL.
    */
-  JUDGE_FALLBACK_MODEL: (process.env.HERMES_JUDGE_FALLBACK_MODEL || "claude-haiku-4-5").trim(),
+  CAPTION_MODEL: (process.env.HERMES_CAPTION_MODEL || "claude-opus-5").trim(),
+  /**
+   * THE SAFETY NET. What EVERY llm path falls back to when its primary is unreachable
+   * — the validity rubric, the copy gate, and (since 2026-08-04) the caption writer.
+   * Despite the name it is no longer judge-only; the env key keeps its old spelling so
+   * the one knob operators already know still works.
+   *
+   * IT MUST NEVER BE THE SAME MODEL AS THE PRIMARY. That is the entire defect this
+   * setting was involved in: it pointed at claude-haiku-4-5 while haiku was the thing
+   * failing, so the net was made of the same rope. chat() refuses to retry a model
+   * against itself (`fb === model` throws), which is correct behaviour and also means
+   * a fallback equal to its primary is not a weak net — it is NO net, silently. Under
+   * the owner's "always use Opus" routing, MODEL and CAPTION_MODEL are both Opus, so
+   * setting this to Opus too would have left the loop with no cross-model fallback
+   * anywhere and one shared 429 able to degrade captions, copy and validity at once.
+   *
+   * SO: primary stays Opus everywhere, as instructed; this stays DIFFERENT. Sonnet is
+   * a real second opinion rather than a token one — config's own measured judge probe
+   * put sonnet-5 at $0.0148 against opus-5's $0.0240 — and it answered 5/5 at the
+   * gateway on 2026-08-04. The deterministic structural check remains the last resort,
+   * only if BOTH models are unreachable.
+   *
+   * WHAT IT DOES NOT PROTECT AGAINST. Both hops resolve through the same gateway and
+   * the same shared per-virtual-account budget rule, so this hedges a model-specific
+   * 429 or capacity fault, NOT a gateway-wide outage. For that case the protection is
+   * visibility, not redundancy — see RunState.summary.degraded.
+   */
+  JUDGE_FALLBACK_MODEL: (process.env.HERMES_JUDGE_FALLBACK_MODEL || "claude-sonnet-5").trim(),
 
   // ── Social accounts ────────────────────────────────────────────────────
   ACCOUNTS: {

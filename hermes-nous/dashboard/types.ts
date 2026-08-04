@@ -24,6 +24,8 @@ export interface GateResult {
   pass: boolean;
   reason?: string;
   detail?: unknown;
+  /** the verdict was reached WITHOUT the model meant to reach it (gateway 403/429/5xx) */
+  degraded?: boolean;
 }
 
 export interface HermesQ {
@@ -48,6 +50,8 @@ export interface VideoPlan {
   rationale: string;
   props?: Record<string, unknown>;
   caption?: string;
+  /** `llm:<model>` or `fallback` (the hardcoded template) */
+  caption_source?: string;
   hashtag_set?: string;
   questions?: HermesQ[];
   /** quality-gate verdicts, keyed by gate name (dedup/questions/copy/render) */
@@ -77,7 +81,19 @@ export interface RunState {
   };
   scoring?: { from?: string; to?: string; pulled?: number; updated?: number; note?: string };
   videos?: VideoPlan[];
-  summary?: { planned: number; drafted: number; rejected: number; failed: number };
+  summary?: {
+    planned: number;
+    drafted: number;
+    rejected: number;
+    failed: number;
+    /** work that shipped without the model that was supposed to do it (all zero when healthy) */
+    degraded?: {
+      llm_failed_calls: number;
+      caption_fallbacks: number;
+      copy_gate_unjudged: number;
+      questions_unjudged: number;
+    };
+  };
   errors?: string[];
 }
 

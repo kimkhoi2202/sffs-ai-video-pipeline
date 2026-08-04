@@ -1828,3 +1828,56 @@ test("LABELS: the opening experiment reads as English, and cold-plate is the CON
   // and the raw arm slug must not survive to the page
   assert.doesNotMatch(hook.text, /^opening: motion-hook$/);
 });
+
+// ── LLM DEGRADATION IS VISIBLE ───────────────────────────────────────────────
+//
+// The 2026-08-03 outage was invisible for a day because a degraded gate and a passing
+// gate render identically. These pin the panel that separates them. If the KPI ever
+// stops distinguishing the two, the dashboard is quietly lying again.
+
+function runWithDegraded(degraded: unknown) {
+  return {
+    run_id: "2026-08-05",
+    started_at: "2026-08-05T14:00:00Z",
+    updated_at: "2026-08-05T15:00:00Z",
+    status: "partial",
+    summary: { planned: 12, drafted: 11, rejected: 1, failed: 0, ...(degraded ? { degraded } : {}) },
+    videos: [],
+  } as any;
+}
+
+test("degradation KPI: a healthy cycle reads 0 and raises no banner", () => {
+  const run = runWithDegraded({ llm_failed_calls: 0, caption_fallbacks: 0, copy_gate_unjudged: 0, questions_unjudged: 0 });
+  const html = page(emptyPageData({ latest: run, runs: [run] }));
+  assert.match(html, /unjudged · LLM degraded \(this cycle\)/);
+  assert.doesNotMatch(html, /<b>LLM degraded\.<\/b>/, "a healthy cycle must not cry wolf");
+});
+
+test("degradation KPI: unjudged videos are counted, coloured and explained", () => {
+  const run = runWithDegraded({ llm_failed_calls: 9, caption_fallbacks: 2, copy_gate_unjudged: 3, questions_unjudged: 1 });
+  const html = page(emptyPageData({ latest: run, runs: [run] }));
+  // 2 + 3 + 1 unjudged pieces of work, shown as the headline number
+  assert.match(html, /<div class="v" style="color:var\(--coral\)">6<\/div>\s*<div class="k">unjudged · LLM degraded/);
+  // the breakdown, so the number is actionable rather than just alarming
+  assert.match(html, /9 failed gateway call\(s\)/);
+  assert.match(html, /2 template caption\(s\)/);
+  assert.match(html, /3 unjudged copy gate\(s\)/);
+  assert.match(html, /1 unjudged validity gate\(s\)/);
+  assert.match(html, /<b>LLM degraded\.<\/b>/, "the banner is the part that gets noticed");
+});
+
+test("degradation KPI: failed gateway calls alone still raise the alarm", () => {
+  // Every video recovered on the fallback, so nothing shipped unjudged — but the
+  // primary was failing and that is worth seeing BEFORE the day it is not recovered.
+  const run = runWithDegraded({ llm_failed_calls: 12, caption_fallbacks: 0, copy_gate_unjudged: 0, questions_unjudged: 0 });
+  const html = page(emptyPageData({ latest: run, runs: [run] }));
+  assert.match(html, /<b>LLM degraded\.<\/b>/);
+  assert.match(html, /12 failed gateway call\(s\)/);
+});
+
+test("degradation KPI: a run from before the counter says so instead of claiming zero", () => {
+  const run = runWithDegraded(null);
+  const html = page(emptyPageData({ latest: run, runs: [run] }));
+  assert.match(html, /This run predates the degradation counter/);
+  assert.doesNotMatch(html, /<b>LLM degraded\.<\/b>/, "unknown is not the same as clean, but it is not an alarm either");
+});

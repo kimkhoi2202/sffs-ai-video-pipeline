@@ -203,3 +203,34 @@ test("fallback verdicts are NOT persisted — the real rubric re-judges later", 
   const cache = existsSync(cachePath) ? JSON.parse(readFileSync(cachePath, "utf8")) : {};
   assert.equal(cache.hnc1, undefined, "a fallback verdict must not poison the rubric cache");
 });
+
+// ── DEGRADED VERDICTS MUST BE LABELLED AS SUCH ───────────────────────────────
+//
+// On 2026-08-03 every copy gate in the batch returned `pass: true` with the reason
+// "rules passed; LLM judge unavailable", and the run summary counted twelve clean
+// passes. The reason string was the only evidence and it lived in a log nobody read.
+// `degraded` is the machine-readable version of that sentence, so the cycle can count
+// it and the dashboard can show it.
+
+test("gateCopy DEGRADES rather than fails when the judge is unreachable — and says so", async () => {
+  // Copy that passes every deterministic rule, so the only thing left is the LLM.
+  const r = await G.gateCopy([{ label: "caption", text: "are you a smart fella or a fart smella? guess below" }]);
+  assert.equal(r.pass, true, "a judge outage must not reject on-brand copy");
+  assert.equal(r.degraded, true, "a pass reached with no model behind it must be labelled degraded");
+  assert.match(r.reason ?? "", /judge unavailable/);
+});
+
+test("a REAL rule violation is not degraded — it is a verdict", async () => {
+  // An em dash is a hard brand rule, caught deterministically before any model is
+  // consulted. Marking this degraded would cry wolf and make the flag worthless.
+  const r = await G.gateCopy([{ label: "caption", text: "smart fella \u2014 or fart smella?" }]);
+  assert.equal(r.pass, false);
+  assert.notEqual(r.degraded, true, "a deterministic rejection is a real verdict, not a degradation");
+});
+
+test("validateQuestions labels a rubric-less verdict as degraded", async () => {
+  setUsed([]);
+  const { gate } = await G.validateQuestions([textQ({ sig: "d1", hash: "hd1" })]);
+  assert.equal(gate.degraded, true, "no rubric reached = degraded, however the verdict lands");
+  assert.match(gate.reason ?? "", /LLM rubric unavailable/);
+});

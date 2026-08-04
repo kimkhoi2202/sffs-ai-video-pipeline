@@ -25,6 +25,13 @@ export interface GateResult {
   pass: boolean;
   reason?: string;
   detail?: unknown;
+  /**
+   * TRUE when this verdict was reached WITHOUT the model that was meant to reach it
+   * (gateway 403/429/5xx). A degraded PASS and a real PASS are the same `pass: true`
+   * from outside, which is precisely how the 2026-08-03 judge outage stayed invisible
+   * for a day. Anything that reports a gate must report this alongside it.
+   */
+  degraded?: boolean;
 }
 
 // ── Nonverbal SHAPE/FIGURE question kinds ────────────────────────────────────
@@ -139,6 +146,8 @@ export interface VideoPlan {
   rationale: string;
   props: Record<string, unknown>; // HermesQuiz render props
   caption: string;
+  /** Where `caption` came from: `llm:<model>` or `fallback` (the hardcoded template). */
+  caption_source?: string;
   hashtag_set: string;
   questions: HermesQ[];
   gates: Record<string, GateResult>;
@@ -173,7 +182,27 @@ export interface RunState {
   do_not_touch: { scheduled_ids: Array<string | number>; published_ids: Array<string | number>; captured_at: string };
   scoring: { from?: string; to?: string; pulled?: number; updated?: number; note?: string };
   videos: VideoPlan[];
-  summary: { planned: number; drafted: number; rejected: number; failed: number };
+  summary: {
+    planned: number;
+    drafted: number;
+    rejected: number;
+    failed: number;
+    /**
+     * Work that SHIPPED without the model that was supposed to do it. Every counter is
+     * zero on a healthy cycle, so a non-zero here is the whole signal: drafted/rejected/
+     * failed cannot distinguish "twelve judged videos" from "twelve unjudged ones".
+     */
+    degraded?: {
+      /** Gateway calls that failed after retries (429 budget, 403, 5xx, timeout). */
+      llm_failed_calls: number;
+      /** Videos that shipped the hardcoded template caption. */
+      caption_fallbacks: number;
+      /** Videos whose brand-voice gate passed on deterministic rules alone. */
+      copy_gate_unjudged: number;
+      /** Videos whose question-validity gate ran without the LLM rubric. */
+      questions_unjudged: number;
+    };
+  };
   errors: string[];
 }
 
