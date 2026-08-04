@@ -35,7 +35,7 @@ import { nextSlots, instantFromWallClock, WINDOW_OPEN_HOUR } from "./scheduler.t
 import { decide, NETWORKS, perDayFor, type Network } from "./postingPolicy.ts";
 import { createPost, listPosts, youtubeTitleFrom, type McPost } from "./metricool.ts";
 import { hostedCoverUrlFor, coverMomentMs } from "./covers.ts";
-import { captionForNetwork } from "./platformCaption.ts";
+import { captionForNetwork, firstCommentFor } from "./platformCaption.ts";
 import { publishGate } from "./publishGate.ts";
 import { uploadToS3 } from "./s3.ts";
 import type { HermesQ } from "./state.ts";
@@ -267,6 +267,11 @@ export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft
     // too, where it is inert today (no YPP) but costs nothing and would start working
     // on its own if the channel is ever admitted.
     videoThumbnailUrl: cover?.url ?? undefined,
+    // YouTube only: the same vanity link the description carries, posted as a comment
+    // the moment the video goes live. A Shorts description is behind a tap on the
+    // title; the comment sheet is not. Undefined on every other network, which means
+    // the key is not sent at all.
+    firstCommentText: firstCommentFor(input.network),
     // THE APPROVAL GATE, under CONFIG.APPROVAL_PAUSED and nothing else. Retired by
     // default: these go out as draft:false/autoPublish:true and the post publishes
     // itself. HERMES_APPROVAL_PAUSED=false inverts them and the platform refuses to

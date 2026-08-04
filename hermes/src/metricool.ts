@@ -274,6 +274,14 @@ export interface CreatePostInput {
    * be short: YouTube rejects an over-length title outright.
    */
   youtubeTitle?: string;
+  /**
+   * Comment posted as the account at publish time. Top-level on Metricool's
+   * ScheduledPost rather than inside a per-network block, which is safe here only
+   * because this loop creates one post per network; it is documented as supported on
+   * YouTube, TikTok and Instagram FEED posts. Omitted entirely when unset, so a network
+   * that does not use one sends no key at all rather than an empty string.
+   */
+  firstCommentText?: string;
   draft?: boolean;
   autoPublish?: boolean;
   showReelOnFeed?: boolean;
@@ -298,6 +306,7 @@ export function buildCreateBody(input: CreatePostInput): Record<string, unknown>
   };
   if (input.videoThumbnailUrl) body.videoThumbnailUrl = input.videoThumbnailUrl;
   if (typeof input.videoCoverMilliseconds === "number") body.videoCoverMilliseconds = input.videoCoverMilliseconds;
+  if (input.firstCommentText) body.firstCommentText = input.firstCommentText;
   if (input.networks.includes("instagram")) {
     body.instagramData = {
       type: "REEL",

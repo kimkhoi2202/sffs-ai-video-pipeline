@@ -49,6 +49,32 @@ export function vanityUrl(network: CaptionNetwork): string {
   return `${base}/${network}`;
 }
 
+/**
+ * The comment Metricool auto-posts as the account the moment the post publishes
+ * (`ScheduledPost.firstCommentText`), or undefined on a network where we do not use one.
+ *
+ * YOUTUBE ONLY, and specifically because of SHORTS. On YouTube the caption already IS
+ * the description, so the link is technically there — but a Shorts description is
+ * hidden behind a tap on the title and most viewers never learn it exists, while the
+ * comment button is always on screen and opening it is ordinary Shorts behaviour. Same
+ * link, somewhere a viewer actually looks.
+ *
+ * WHY NOT THE OTHER TWO. Instagram is documented for FEED posts and this account posts
+ * Reels, so it would likely be silently dropped. TikTok does support it and is the
+ * obvious next one, but nothing here has been proven against a live post yet and an
+ * unverified comment on a second network is not worth more than a verified one on the
+ * first.
+ *
+ * It carries the same per-network vanity path as the caption, so a click arriving from
+ * the comment is still attributable to the network that produced it. Note the loop
+ * creates ONE POST PER NETWORK (loopPublish `networks: [input.network]`), so this
+ * top-level field can never leak onto a network it was not written for.
+ */
+export function firstCommentFor(network: CaptionNetwork): string | undefined {
+  if (network !== "youtube") return undefined;
+  return `Take the full test, free \uD83D\uDC49 ${vanityUrl(network)}`;
+}
+
 /** Give `replacement` the capitalisation the text it replaces was wearing. */
 function matchCase(sample: string, replacement: string): string {
   if (sample.length > 1 && sample === sample.toUpperCase() && /[A-Za-z]/.test(sample)) return replacement.toUpperCase();

@@ -8,6 +8,7 @@ import assert from "node:assert/strict";
 import { nextSlots, LANES, LANE_WIDTH, LANE_GUTTER, laneFor, MIN_GAP_MIN } from "./scheduler.ts";
 import { decide, monthlyRecords, budgetForecast, NETWORKS } from "./postingPolicy.ts";
 import { buildCreateBody, youtubeTitleFrom, YT_TITLE_MAX } from "./metricool.ts";
+import { firstCommentFor, vanityUrl } from "./platformCaption.ts";
 import { publishGate } from "./publishGate.ts";
 import { RENDER_PLATFORMS } from "./render.ts";
 import { CONFIG } from "./config.ts";
@@ -206,6 +207,39 @@ test("PAYLOAD: youtubeData appears ONLY on YouTube posts", () => {
   assert.ok(ig.instagramData);
   const tt = buildCreateBody({ ...base, networks: ["tiktok"] }) as any;
   assert.ok(!("youtubeData" in tt));
+});
+
+// ── The Shorts first comment ─────────────────────────────────────────────────
+
+test("FIRST COMMENT: YouTube gets one, carrying its own vanity path", () => {
+  const c = firstCommentFor("youtube");
+  assert.ok(c, "YouTube must get a first comment");
+  assert.ok(c!.includes(vanityUrl("youtube")), "it must carry the per-network vanity URL, so the click is attributable");
+  assert.match(c!, /free/i, "the offer is that the test costs nothing");
+  // Brand rules apply to it like any other social copy: no em/en dashes, one emoji.
+  assert.ok(!/[\u2014\u2013]/.test(c!), "no em or en dashes");
+});
+
+test("FIRST COMMENT: no other network gets one", () => {
+  // Instagram's is documented for FEED posts and this account posts Reels; TikTok is
+  // supported but deliberately not enabled until YouTube's is verified on a live post.
+  assert.equal(firstCommentFor("instagram"), undefined);
+  assert.equal(firstCommentFor("tiktok"), undefined);
+});
+
+test("FIRST COMMENT: the key is sent on YouTube and ABSENT elsewhere", () => {
+  const base = {
+    text: "hello",
+    mediaUrl: "https://example.com/v.mp4",
+    publicationDate: { dateTime: "2026-08-01T12:01:00", timezone: "America/Chicago" },
+  };
+  const yt = buildCreateBody({ ...base, networks: ["youtube"], firstCommentText: firstCommentFor("youtube") }) as any;
+  assert.equal(yt.firstCommentText, firstCommentFor("youtube"));
+
+  // Unset must mean NO KEY, not an empty string: Metricool would take "" literally and
+  // the post would carry an empty comment.
+  const ig = buildCreateBody({ ...base, networks: ["instagram"], firstCommentText: firstCommentFor("instagram") }) as any;
+  assert.ok(!("firstCommentText" in ig), "an unset first comment must not appear in the body at all");
 });
 
 test("TITLE: within 100 chars, separate from the description, never empty", () => {
