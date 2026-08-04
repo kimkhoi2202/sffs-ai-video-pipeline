@@ -136,6 +136,13 @@ export interface Rollups {
   by_platform: Record<string, RollupCell>;
   by_hashtag_set: Record<string, RollupCell>;
   by_time_bucket: Record<string, RollupCell>;
+  /**
+   * The OPENING-QUESTION-TYPE experiment, keyed on the arm stamped from the question that
+   * actually opened each video (leadStamp). Posts whose opener belongs to neither arm are
+   * excluded rather than pooled into one — a slot that fell back to number puzzle because
+   * an arm's stock ran dry must not be counted as evidence for either side.
+   */
+  by_opening_type: Record<string, RollupCell>;
 }
 
 /** Compute all decision rollups from ab-database posts[]. Pure. */
@@ -148,5 +155,8 @@ export function computeRollups(posts: any[]): Rollups {
     by_hashtag_set: groupMedian(arr, (p) => p.hashtag_set),
     // by time-of-day the post went live (from posted_at, back-filled by reconcile).
     by_time_bucket: groupMedian(arr, (p) => timeBucket(p.posted_at)),
+    // by which KIND of question opened the video. groupMedian drops undefined keys, so a
+    // null arm (neither side) is excluded from both cells rather than becoming a third.
+    by_opening_type: groupMedian(arr, (p) => p.variant?.opening_type_arm ?? undefined),
   };
 }

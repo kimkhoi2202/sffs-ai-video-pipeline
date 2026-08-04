@@ -279,21 +279,27 @@ test("EVIDENCE: a stamped post keeps its published length even when the bank now
  * the only symptom would be a policy that slowly stops matching its own evidence table.
  */
 test("EVIDENCE: the publish-time stamp records length, type and a band that agrees", () => {
+  // opening_type_arm rides along because it is derived from the SAME question — see
+  // openingType.ts. Keeping it in this deepEqual is deliberate: the three length fields
+  // and the arm must be written together or a record can describe two different videos.
   assert.deepEqual(leadStamp({ tier: "odd-one-out", prompt: "WHICH ONE DOES NOT BELONG?" }), {
     lead_type: "ODD ONE OUT",
     lead_prompt_words: 5,
     lead_band: "short",
+    opening_type_arm: "open-odd-one-out",
   });
   assert.deepEqual(leadStamp({ tier: "VERBAL ANALOGY", prompt: "HOT IS TO COLD AS\nDAY IS TO ?" }), {
     lead_type: "VERBAL ANALOGY",
     lead_prompt_words: 9,
     lead_band: "medium",
+    opening_type_arm: "open-analogy",
   });
   // The 12-word form a post published 2026-08-02/03 actually carried.
   assert.deepEqual(leadStamp({ tier: "NUMBER ANALOGY", prompt: "2 -> 3,   3 -> 5,   4 -> 7,   5 -> ?" }), {
     lead_type: "NUMBER ANALOGY",
     lead_prompt_words: 12,
     lead_band: "long",
+    opening_type_arm: "open-analogy",
   });
   // The band is always derivable from the count it ships with, for every live question.
   for (const e of loadBank()) {

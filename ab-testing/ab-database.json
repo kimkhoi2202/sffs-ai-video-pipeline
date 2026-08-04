@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-03T15:20:17.827Z",
+  "updated_at": "2026-08-04T00:51:55.566Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -147,7 +147,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": 275,
@@ -194,7 +195,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": 133,
@@ -241,7 +243,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": 997,
@@ -288,7 +291,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": 119,
@@ -335,7 +339,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": 307,
@@ -382,7 +387,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": null
       },
       "metrics": {
         "reach": 293,
@@ -429,7 +435,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": null
       },
       "metrics": {
         "reach": 124,
@@ -476,7 +483,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": 105,
@@ -523,7 +531,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": 7,
@@ -573,7 +582,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": 301,
@@ -625,7 +635,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": 125,
@@ -675,7 +686,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": 551,
@@ -723,7 +735,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": 131,
@@ -777,7 +790,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": null,
@@ -828,7 +842,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -917,7 +932,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -1006,7 +1022,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": null,
@@ -1114,7 +1131,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": null,
@@ -1222,7 +1240,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ANALOGY",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -1330,7 +1349,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ANALOGY",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -1438,7 +1458,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": null,
@@ -1546,7 +1567,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-odd-one-out"
       },
       "metrics": {
         "reach": null,
@@ -1652,7 +1674,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ANALOGY",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -1742,7 +1765,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ANALOGY",
         "lead_band": "short",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -1834,7 +1858,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -1942,7 +1967,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:type"
+        "lead_words_via": "frozen:type",
+        "opening_type_arm": "open-analogy"
       },
       "metrics": {
         "reach": null,
@@ -2049,7 +2075,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "cliffhanger",
@@ -2097,7 +2124,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "cliffhanger",
@@ -2145,7 +2173,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "hook",
@@ -2194,7 +2223,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "hook",
@@ -2243,7 +2273,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "cliffhanger",
@@ -2292,7 +2323,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "cliffhanger",
@@ -2339,7 +2371,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "length",
@@ -2386,7 +2419,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "length",
@@ -2435,7 +2469,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "control",
@@ -2484,7 +2519,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "control",
@@ -2533,7 +2569,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "category-mix",
@@ -2582,7 +2619,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "category-mix",
@@ -2631,7 +2669,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "tempo",
@@ -2680,7 +2719,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "tempo",
@@ -2729,7 +2769,8 @@
         "lead_prompt_words": 15,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -2778,7 +2819,8 @@
         "lead_prompt_words": 15,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -2829,7 +2871,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "control",
@@ -2880,7 +2923,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "control",
@@ -2931,7 +2975,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -2982,7 +3027,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -3033,7 +3079,8 @@
         "lead_prompt_words": 7,
         "lead_type": "ANTONYM",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -3084,7 +3131,8 @@
         "lead_prompt_words": 7,
         "lead_type": "ANTONYM",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -3135,7 +3183,8 @@
         "lead_prompt_words": 6,
         "lead_type": "POSITION",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-classic",
@@ -3186,7 +3235,8 @@
         "lead_prompt_words": 6,
         "lead_type": "POSITION",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-classic",
@@ -3237,7 +3287,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -3288,7 +3339,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -3339,7 +3391,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "category-mix",
@@ -3390,7 +3443,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "category-mix",
@@ -3441,7 +3495,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "control",
@@ -3492,7 +3547,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "control",
@@ -3543,7 +3599,8 @@
         "lead_prompt_words": 14,
         "lead_type": "WORD PROBLEM",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "ending",
@@ -3594,7 +3651,8 @@
         "lead_prompt_words": 14,
         "lead_type": "WORD PROBLEM",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "ending",
@@ -3645,7 +3703,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -3697,7 +3756,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -3749,7 +3809,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -3801,7 +3862,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -3853,7 +3915,8 @@
         "lead_prompt_words": 3,
         "lead_type": "LETTER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -3905,7 +3968,8 @@
         "lead_prompt_words": 3,
         "lead_type": "LETTER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -3957,7 +4021,8 @@
         "lead_prompt_words": 11,
         "lead_type": "WORD PROBLEM",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -4009,7 +4074,8 @@
         "lead_prompt_words": 11,
         "lead_type": "WORD PROBLEM",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -4061,7 +4127,8 @@
         "lead_prompt_words": 4,
         "lead_type": "COMPARE",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "control",
@@ -4113,7 +4180,8 @@
         "lead_prompt_words": 4,
         "lead_type": "COMPARE",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "control",
@@ -4165,7 +4233,8 @@
         "lead_prompt_words": 10,
         "lead_type": "LOGIC",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "tempo",
@@ -4217,7 +4286,8 @@
         "lead_prompt_words": 10,
         "lead_type": "LOGIC",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "tempo",
@@ -4269,7 +4339,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -4321,7 +4392,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -4373,7 +4445,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -4428,7 +4501,8 @@
         "lead_prompt_words": 3,
         "lead_type": "LETTER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -4483,7 +4557,8 @@
         "lead_prompt_words": 12,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -4538,7 +4613,8 @@
         "lead_prompt_words": 5,
         "lead_type": "COMPARE",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "hook",
@@ -4593,7 +4669,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -4648,7 +4725,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "ending",
@@ -4703,7 +4781,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -4758,7 +4837,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -4813,7 +4893,8 @@
         "lead_prompt_words": 12,
         "lead_type": "WORD PROBLEM",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "tempo",
@@ -4868,7 +4949,8 @@
         "lead_prompt_words": 3,
         "lead_type": "NUMBER SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "category-mix",
@@ -4924,7 +5006,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -4979,7 +5062,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -5030,7 +5114,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -5085,7 +5170,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -5136,7 +5222,8 @@
         "lead_prompt_words": 13,
         "lead_type": "WORD PROBLEM",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -5191,7 +5278,8 @@
         "lead_prompt_words": 13,
         "lead_type": "WORD PROBLEM",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "mascot",
@@ -5242,7 +5330,8 @@
         "lead_prompt_words": 16,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "tempo",
@@ -5297,7 +5386,8 @@
         "lead_prompt_words": 16,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "tempo",
@@ -5348,7 +5438,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "hook",
@@ -5403,7 +5494,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "hook",
@@ -5454,7 +5546,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -5509,7 +5602,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -5560,7 +5654,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -5615,7 +5710,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -5666,7 +5762,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE MATRIX",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -5721,7 +5818,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE MATRIX",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -5772,7 +5870,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "ending",
@@ -5827,7 +5926,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "ending",
@@ -5878,7 +5978,8 @@
         "lead_prompt_words": 17,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -5933,7 +6034,8 @@
         "lead_prompt_words": 17,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -5984,7 +6086,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "progress-counter",
@@ -6039,7 +6142,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "progress-counter",
@@ -6090,7 +6194,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ANALOGY",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -6145,7 +6250,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE ANALOGY",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -6196,7 +6302,8 @@
         "lead_prompt_words": 4,
         "lead_type": "FIGURE SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-classic",
@@ -6251,7 +6358,8 @@
         "lead_prompt_words": 4,
         "lead_type": "FIGURE SERIES",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-classic",
@@ -6302,7 +6410,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "category-mix",
@@ -6357,7 +6466,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "category-mix",
@@ -6408,7 +6518,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "ending",
@@ -6463,7 +6574,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "ending",
@@ -6512,7 +6624,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "length",
@@ -6565,7 +6678,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "length",
@@ -6615,7 +6729,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -6670,7 +6785,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -6720,7 +6836,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "category-mix",
@@ -6775,7 +6892,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "category-mix",
@@ -6825,7 +6943,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -6880,7 +6999,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -6930,7 +7050,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -6985,7 +7106,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -7035,7 +7157,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -7090,7 +7213,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -7140,7 +7264,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -7195,7 +7320,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "narration",
@@ -7243,7 +7369,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "length",
@@ -7296,7 +7423,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "length",
@@ -7346,7 +7474,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE MATRIX",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -7401,7 +7530,8 @@
         "lead_prompt_words": 5,
         "lead_type": "FIGURE MATRIX",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "type-nonverbal-shapes",
@@ -7451,7 +7581,8 @@
         "lead_prompt_words": 18,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -7506,7 +7637,8 @@
         "lead_prompt_words": 18,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "narration",
@@ -7556,7 +7688,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -7611,7 +7744,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "mascot",
@@ -7661,7 +7795,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -7716,7 +7851,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "mascot",
@@ -7766,7 +7902,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -7821,7 +7958,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -7871,7 +8009,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "opening",
@@ -7926,7 +8065,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "opening",
@@ -7976,7 +8116,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8031,7 +8172,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8081,7 +8223,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "opening",
@@ -8136,7 +8279,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "opening",
@@ -8186,7 +8330,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8241,7 +8386,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8291,7 +8437,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "opening",
@@ -8346,7 +8493,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "opening",
@@ -8396,7 +8544,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8451,7 +8600,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8501,7 +8651,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "opening",
@@ -8556,7 +8707,8 @@
         "lead_prompt_words": 8,
         "lead_type": "NUMBER PUZZLE",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "opening",
@@ -8606,7 +8758,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8661,7 +8814,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8711,7 +8865,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8766,7 +8921,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8816,7 +8972,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "opening",
@@ -8871,7 +9028,8 @@
         "lead_prompt_words": 5,
         "lead_type": "ODD ONE OUT",
         "lead_band": "short",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "opening",
@@ -8921,7 +9079,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -8976,7 +9135,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -9026,7 +9186,8 @@
         "lead_prompt_words": 16,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "opening",
@@ -9081,7 +9242,8 @@
         "lead_prompt_words": 16,
         "lead_type": "SENTENCE COMPLETION",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "opening",
@@ -9131,7 +9293,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -9181,7 +9344,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -9231,7 +9395,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -9286,7 +9451,8 @@
         "lead_prompt_words": 15,
         "lead_type": "NUMBER ANALOGY",
         "lead_band": "long",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -9336,7 +9502,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -9386,7 +9553,8 @@
         "lead_prompt_words": 9,
         "lead_type": "VERBAL ANALOGY",
         "lead_band": "medium",
-        "lead_words_via": "frozen:ledger"
+        "lead_words_via": "frozen:ledger",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "opening",
@@ -9435,7 +9603,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9484,7 +9653,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9533,7 +9703,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9582,7 +9753,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER PUZZLE",
         "lead_prompt_words": 8,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -9631,7 +9803,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER PUZZLE",
         "lead_prompt_words": 8,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -9680,7 +9853,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER PUZZLE",
         "lead_prompt_words": 8,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -9729,7 +9903,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER ANALOGY",
         "lead_prompt_words": 12,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9778,7 +9953,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER ANALOGY",
         "lead_prompt_words": 12,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9827,7 +10003,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER ANALOGY",
         "lead_prompt_words": 12,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9876,7 +10053,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9925,7 +10103,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -9974,7 +10153,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10023,7 +10203,8 @@
         "num_questions": 3,
         "lead_type": "VERBAL ANALOGY",
         "lead_prompt_words": 9,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10072,7 +10253,8 @@
         "num_questions": 3,
         "lead_type": "VERBAL ANALOGY",
         "lead_prompt_words": 9,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10121,7 +10303,8 @@
         "num_questions": 3,
         "lead_type": "VERBAL ANALOGY",
         "lead_prompt_words": 9,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10170,7 +10353,8 @@
         "num_questions": 3,
         "lead_type": "SENTENCE COMPLETION",
         "lead_prompt_words": 11,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10219,7 +10403,8 @@
         "num_questions": 3,
         "lead_type": "SENTENCE COMPLETION",
         "lead_prompt_words": 11,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10268,7 +10453,8 @@
         "num_questions": 3,
         "lead_type": "SENTENCE COMPLETION",
         "lead_prompt_words": 11,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10317,7 +10503,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10366,7 +10553,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10415,7 +10603,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10464,7 +10653,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER PUZZLE",
         "lead_prompt_words": 8,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10513,7 +10703,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER PUZZLE",
         "lead_prompt_words": 8,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10562,7 +10753,8 @@
         "num_questions": 3,
         "lead_type": "NUMBER PUZZLE",
         "lead_prompt_words": 8,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10611,7 +10803,8 @@
         "num_questions": 3,
         "lead_type": "SENTENCE COMPLETION",
         "lead_prompt_words": 16,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10660,7 +10853,8 @@
         "num_questions": 3,
         "lead_type": "SENTENCE COMPLETION",
         "lead_prompt_words": 16,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10709,7 +10903,8 @@
         "num_questions": 3,
         "lead_type": "SENTENCE COMPLETION",
         "lead_prompt_words": 16,
-        "lead_band": "long"
+        "lead_band": "long",
+        "opening_type_arm": null
       },
       "experiment": {
         "dimension": "pinned",
@@ -10758,7 +10953,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10807,7 +11003,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10856,7 +11053,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10905,7 +11103,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -10954,7 +11153,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -11003,7 +11203,8 @@
         "num_questions": 3,
         "lead_type": "ODD ONE OUT",
         "lead_prompt_words": 4,
-        "lead_band": "short"
+        "lead_band": "short",
+        "opening_type_arm": "open-odd-one-out"
       },
       "experiment": {
         "dimension": "pinned",
@@ -11052,7 +11253,8 @@
         "num_questions": 3,
         "lead_type": "VERBAL ANALOGY",
         "lead_prompt_words": 9,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -11101,7 +11303,8 @@
         "num_questions": 3,
         "lead_type": "VERBAL ANALOGY",
         "lead_prompt_words": 9,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",
@@ -11150,7 +11353,8 @@
         "num_questions": 3,
         "lead_type": "VERBAL ANALOGY",
         "lead_prompt_words": 9,
-        "lead_band": "medium"
+        "lead_band": "medium",
+        "opening_type_arm": "open-analogy"
       },
       "experiment": {
         "dimension": "pinned",

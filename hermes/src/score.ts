@@ -182,6 +182,10 @@ export async function pullAndScore(): Promise<ScoreResult> {
   // by time-of-day the post went live (from posted_at, back-filled by reconcile) —
   // the "best time to post" signal. Posts without a posted_at are excluded.
   const timeRollup = groupMedian(db.posts, (p) => timeBucket(p.posted_at));
+  // OPENING QUESTION TYPE: the arm stamped from the question that actually opened each
+  // video. Both arms are present on every record that has one, so this cut carries the
+  // whole published history rather than only the slots a planner happened to tag.
+  const openRollup = groupMedian(db.posts, (p) => p.variant?.opening_type_arm ?? undefined);
 
   db.updated_at = new Date().toISOString();
   // merge counts into existing variant_families without destroying notes
@@ -191,6 +195,7 @@ export async function pullAndScore(): Promise<ScoreResult> {
   db.aggregate_cuts.by_platform = platRollup;
   db.aggregate_cuts.by_variant_arm = armRollup;
   db.aggregate_cuts.by_time_bucket = timeRollup;
+  db.aggregate_cuts.by_opening_type = openRollup;
   writeJSONAtomic(CONFIG.AB_DB, db);
 
   // learnings
@@ -203,6 +208,7 @@ export async function pullAndScore(): Promise<ScoreResult> {
   learnings.rollups.by_platform = platRollup;
   learnings.rollups.by_hashtag_set = tagRollup;
   learnings.rollups.by_time_bucket = timeRollup;
+  learnings.rollups.by_opening_type = openRollup;
 
   // ── front_runners is RETIRED (2026-08-02) ──────────────────────────────────
   //

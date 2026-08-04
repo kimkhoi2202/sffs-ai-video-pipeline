@@ -27,7 +27,8 @@ import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
-import { pinnedSpecs, explorationSpecs, resolveArm, selectSpread, newSpreadTally, leadTypeCap, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
+import { pinnedSpecs, explorationSpecs, openingTypeSpecs, openingTypeCount, resolveArm, selectSpread, newSpreadTally, leadTypeCap, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
+import { OPENING_TYPE_DIMENSION, armCounts } from "./openingType.ts";
 import { normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
 import { allocateLeadBands, bandOf, promptWords, BAND_LABEL, LEAD_BANDS, type LeadBand } from "./leadPolicy.ts";
 import { currentLeadShares } from "./leadPromotion.ts";
@@ -245,8 +246,16 @@ export function selectBatchSpecs(
   defaults: ContentDefaults = contentDefaults(),
 ): { specs: DimSpec[]; onlyDims: string[]; directive: ReplicationDirective; nReplicas: number; fp?: StyleFingerprint } {
   const nExplore = explorationCount(target);
+  // THE OPENING-QUESTION-TYPE SLICE. Interleaved by the same routine and for the same
+  // reason as the exploration slice: slot index decides both the posting time and the
+  // hashtag set (HASHTAG_ROTATION[i % 3]), so a block appended at the end would hand one
+  // arm the late slots and one hashtag set. That is not hypothetical — in the
+  // observational data the concrete arm already sits 8 of 10 in set A.
+  const nOpen = openingTypeCount(target - nExplore);
+  const openSpecs = openingTypeSpecs(nOpen, dayIndex(runId));
+  const pinned = interleaveExploration(pinnedSpecs(target - nExplore - nOpen), openSpecs);
   return {
-    specs: interleaveExploration(pinnedSpecs(target - nExplore), explorationSpecs(nExplore, defaults, dayIndex(runId))),
+    specs: interleaveExploration(pinned, explorationSpecs(nExplore, defaults, dayIndex(runId))),
     onlyDims: [],
     directive: { active: false, share: 0, share_cap: 0 },
     nReplicas: 0,
@@ -279,7 +288,10 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   // across every video in this batch. See dimensions.ts selectSpread.
   const batchSpread = newSpreadTally();
   const { specs } = selectBatchSpecs(runId, target, defaults);
-  const nPinned = specs.filter((s) => s.arm === PINNED_ARM).length;
+  // The opening-type arms RUN the pinned format — same props, same cold plate — and only
+  // additionally constrain which TYPE opens. Counting them apart here would report the
+  // format's share as having halved when it has not moved at all.
+  const nPinned = specs.filter((s) => s.arm === PINNED_ARM || s.dimension === OPENING_TYPE_DIMENSION).length;
   const exploreTally = specs
     .filter((s) => s.arm !== PINNED_ARM)
     .reduce<Record<string, number>>((a, s) => ((a[s.arm] = (a[s.arm] ?? 0) + 1), a), {});
@@ -297,6 +309,21 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
   // holds the screen through the 3 seconds that decide reach on this account. Shares
   // come from the ledger leadPromotion.ts wrote earlier in the cycle; an even draw if it
   // has not run, is switched off, or no band has cleared the evidence bar.
+  const openArms = specs.map((s) => (s.dimension === OPENING_TYPE_DIMENSION ? s.arm : null));
+  const nOpenSlots = openArms.filter(Boolean).length;
+  if (nOpenSlots) {
+    const counts = specs
+      .filter((s) => s.dimension === OPENING_TYPE_DIMENSION)
+      .reduce<Record<string, number>>((a, s) => ((a[s.arm] = (a[s.arm] ?? 0) + 1), a), {});
+    decision(
+      `OPENING-TYPE EXPERIMENT: ${nOpenSlots}/${specs.length} slot(s) have question ONE constrained by arm ` +
+        `(${Object.entries(counts).map(([a, n]) => `${a} x${n}`).join(", ")}), balanced WITHIN today and ` +
+        `interleaved across the window so neither arm owns a time of day or a hashtag set. Judged on median ` +
+        `skip rate, lower is better, Instagram only. Every other slot is still stamped with the arm it ` +
+        `happened to open with, so the rollup carries the whole batch and not just these slots.`,
+      { slots: openArms },
+    );
+  }
   const lead = currentLeadShares();
   const leadBands = allocateLeadBands(specs.length, lead.shares);
   // Bands ranked best-first, so a slot whose band is exhausted (or whose only type has
@@ -336,7 +363,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     // tier. Fixing the format is not repeating the video.
     const wantBand = leadBands[i];
     const prefs: LeadBand[] = wantBand ? [wantBand, ...bandRank.filter((b) => b !== wantBand)] : [];
-    const chosen: HermesQ[] = selectSpread(pool, spec.numQ, batchSpread, prefs, typeCap);
+    const chosen: HermesQ[] = selectSpread(pool, spec.numQ, batchSpread, prefs, typeCap, spec.leadTiers);
     if (chosen.length < spec.numQ) {
       warn("dropping video: not enough fresh questions", { id, dimension: spec.dimension, want: spec.numQ, got: chosen.length });
       decision(`DROP ${id} (${spec.arm}): only ${chosen.length}/${spec.numQ} fresh questions`);

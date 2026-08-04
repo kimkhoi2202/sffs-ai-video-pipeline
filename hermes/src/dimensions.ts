@@ -34,6 +34,12 @@ import {
   type MascotArm,
 } from "./defaults.ts";
 
+import {
+  allocateOpeningTypes,
+  OPENING_TYPE_DIMENSION,
+  OPENING_TYPE_TIERS,
+} from "./openingType.ts";
+
 export interface DimSpec {
   dimension: string;
   arm: string; // canonical rollup label (shared with the Python promotion engine)
@@ -50,6 +56,10 @@ export interface DimSpec {
    *  exercises. design.ts resolves it to a concrete line per video (pickHook), which
    *  is then spoken OVER the animation rather than in front of it. */
   hookMechanism?: string;
+  /** OPENING-QUESTION-TYPE arms only: the tiers question ONE may be drawn from.
+   *  Constrains the opening pick and nothing else — questions two and three still draw
+   *  from the whole fresh pool, so the arm varies the hook without narrowing the video. */
+  leadTiers?: readonly string[];
   // At most ONE of these is set per spec — the single axis this arm deviates from
   // the current defaults. Unset => inherit the current default for that axis.
   narrationArm?: NarrationArm; // set only on NARRATION test arms
@@ -236,6 +246,74 @@ export function explorationSpecs(
   const off = ((Math.trunc(rotate) % picked.length) + picked.length) % picked.length;
   const ordered = [...picked.slice(off), ...picked.slice(0, off)];
   return cycleToTarget(ordered, target).map((s) => ({ ...s }));
+}
+
+// ---------------------------------------------------------------------------
+// THE OPENING-QUESTION-TYPE EXPERIMENT (2026-08-04)
+//
+// Replaces the prompt-LENGTH lever, which was withdrawn because in this bank length
+// is a deterministic function of question type: eight of twelve types ship exactly
+// one prompt length and no type contains both a short and a long opener, so the
+// 9.4pp "length" gap was the odd-one-out family being compared to the analogy
+// family. See content/restore-prompts.mjs.
+//
+// Type is the same signal with the confound moved out of the DECISION. You cannot
+// make a verbal analogy short without turning it into notation (339b6a4), but you
+// can choose which type opens the video — so this arm is manipulable in a way the
+// length arm never was, and it is checked clean against the things that could have
+// determined it: duration ranges overlap (analogy 33-103s, concrete 58-98s), both
+// arms render as the same `text` kind, both are followed by overlapping mixes of
+// question two and three, and five of six days already carry both.
+//
+// SIZING. The slice is small on purpose. Its job is to guarantee BALANCE — equal
+// arms every day, interleaved across the window — not to carry the whole sample.
+// Every other slot in the batch is stamped with the arm it happened to open with
+// (leadStamp), so by_opening_type accrues from the entire batch while these slots
+// keep the balanced, date-proof core identifiable by experiment.dimension.
+// ---------------------------------------------------------------------------
+
+/** Share of the non-exploration batch given balanced opening-type slots. */
+export const OPENING_TYPE_SHARE = Number(process.env.HERMES_OPENING_TYPE_SHARE || 0.5);
+
+/**
+ * How many slots the experiment takes, ALWAYS EVEN so the two arms come out equal on
+ * the day rather than only in aggregate. Within-day balance is the specific control
+ * that made the underlying finding survive date confounding: skip rate here is 78%
+ * within-day variance against 22% between-day, so a design balanced only overall can
+ * still hand one arm the good days.
+ */
+export function openingTypeCount(available: number): number {
+  // A wave too small to spare a balanced pair runs none, for the same reason
+  // explorationCount stands down on a top-up: recovery slots exist to hit the daily
+  // floor, and spending them on measurement trades production volume for a sample the
+  // main batch is already accruing.
+  if (available < 4) return 0;
+  const want = Math.floor(available * OPENING_TYPE_SHARE);
+  // Always leave the pinned format at least two slots of its own, so the experiment can
+  // never quietly become the whole batch by way of a share nobody re-read.
+  const even = Math.min(want, available - 2);
+  return Math.max(0, even - (even % 2));
+}
+
+/**
+ * `n` slots alternating between the two arms, inheriting the PINNED format exactly.
+ *
+ * Every property except which type opens is the pinned production format, so the arms
+ * are comparable to each other AND to the pinned slots around them. `rotate` flips
+ * which arm takes the first slot; with an odd count that would otherwise be the same
+ * arm every day, and it would also stand permanently in the earliest slot.
+ */
+export function openingTypeSpecs(n: number, rotate = 0): DimSpec[] {
+  return allocateOpeningTypes(n, rotate).map((arm) => ({
+    ...PINNED,
+    dimension: OPENING_TYPE_DIMENSION,
+    arm,
+    leadTiers: OPENING_TYPE_TIERS[arm],
+    rationale:
+      `OPENING-QUESTION-TYPE experiment, arm "${arm}": the pinned production format in every respect, ` +
+      `with question ONE constrained to ${OPENING_TYPE_TIERS[arm].join(" / ")}. Questions two and three ` +
+      `draw from the whole fresh pool. Judged on median skip rate (lower is better, Instagram only).`,
+  }));
 }
 
 /** Dimensions that inherit BOTH defaults and deviate only their own axis. */
@@ -628,6 +706,7 @@ export function selectSpread(
   batch: SpreadTally = newSpreadTally(),
   leadPrefs?: LeadBand[],
   cap = Infinity,
+  leadTiers?: readonly string[],
 ): HermesQ[] {
   const chosen: HermesQ[] = [];
   const remaining = pool.map((q, i) => ({ q, i }));
@@ -636,7 +715,19 @@ export function selectSpread(
 
   while (chosen.length < numQ && remaining.length > 0) {
     let candidates = remaining;
-    if (chosen.length === 0 && leadPrefs?.length) {
+    // AN ARM'S TIER CONSTRAINT OUTRANKS THE BAND PREFERENCE, because it is the thing under
+    // test rather than a lean. It is applied WITHOUT the variety cap: the cap exists to
+    // stop a band whose supply is one type from taking every opening slot by accident,
+    // and here that concentration is the deliberate design — an arm that ran on four of
+    // eleven slots is what makes the day balanced. It still yields rather than costing the
+    // day a video: an arm with nothing fresh left falls through to the normal ordering,
+    // and the resulting post is stamped with the type it ACTUALLY opened with, so it lands
+    // outside both arms instead of being miscounted into one.
+    if (chosen.length === 0 && leadTiers?.length) {
+      const want = new Set(leadTiers.map((t) => String(t).toUpperCase()));
+      const inArm = remaining.filter((r) => want.has(String(r.q.tier ?? "").toUpperCase()));
+      if (inArm.length) candidates = inArm;
+    } else if (chosen.length === 0 && leadPrefs?.length) {
       const underCap = remaining.filter((r) => (leadTally[r.q.tier ?? ""] ?? 0) < cap);
       for (const band of leadPrefs) {
         const inBand = underCap.filter((r) => bandOf(promptWords(r.q.prompt)) === band);
@@ -655,9 +746,9 @@ export function selectSpread(
       const k = q.kind ?? "";
       const key = [
         // On the OPENING pick, rotate types that have not opened a video yet before
-        // anything else — so a band with several usable types spreads across them
-        // instead of exhausting the first one the seeded pool happens to offer.
-        ...(chosen.length === 0 && leadPrefs?.length ? [leadTally[t] ?? 0] : []),
+        // anything else — so a band (or an arm) with several usable types spreads across
+        // them instead of exhausting the first one the seeded pool happens to offer.
+        ...(chosen.length === 0 && (leadPrefs?.length || leadTiers?.length) ? [leadTally[t] ?? 0] : []),
         vid.tier[t] ?? 0,
         vid.kind[k] ?? 0,
         (batch.tier[t] ?? 0) + (vid.tier[t] ?? 0),

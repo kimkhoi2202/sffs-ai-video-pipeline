@@ -26,6 +26,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { cycleToTarget, buildDimensions, applyBatchOverrides, PINNED_ARM, EXPLORATION_ARMS, type DimSpec } from "./dimensions.ts";
+import { OPENING_TYPE_ARMS, OPENING_TYPE_DIMENSION } from "./openingType.ts";
 import { selectBatchSpecs, explorationCount, EXPLORATION_SHARE } from "./design.ts";
 
 const spec = (arm: string): DimSpec => ({ dimension: "opening", arm, numQ: 3, category: "mixed", showProgress: true, progressStyle: "short", countdownSec: 5, rationale: "" }) as DimSpec;
@@ -41,14 +42,24 @@ const OLD_PIN = "motion-hook,motion-hook-stat,motion-hook-declared";
 
 // ── The pivot: one format, every slot ────────────────────────────────────────
 
-test("PINNED: the batch is 70% pinned format, 30% exploration", () => {
+test("PINNED: the batch is pinned format, an exploration slice, and a balanced experiment", () => {
+  // THREE WAYS now (2026-08-04). The opening-question-type slice still RUNS the pinned
+  // format — identical props, cold plate, three questions — and only constrains which
+  // TYPE opens, so the format's real share is pinned + experiment, not pinned alone.
   const { specs } = selectBatchSpecs("2026-08-03", 12);
   assert.equal(specs.length, 12, "the mix changes WHAT runs, never how many posts run");
-  assert.deepEqual(tally(specs), { [PINNED_ARM]: 9, "control": 2, "one-question": 1 });
-  // At the live ceiling of 11 the slice must still be 3, not 2 — see EXPLORATION_SHARE.
-  const day11 = selectBatchSpecs("2026-08-03", 11);
-  assert.equal(day11.specs.length, 11);
-  assert.deepEqual(tally(day11.specs), { [PINNED_ARM]: 8, "control": 2, "one-question": 1 });
+  const t = tally(specs);
+  assert.equal(t[PINNED_ARM], 5);
+  assert.equal(t["control"] + t["one-question"], 3, "the exploration floor is untouched");
+  assert.equal(t[OPENING_TYPE_ARMS[0]], 2);
+  assert.equal(t[OPENING_TYPE_ARMS[1]], 2);
+  const runsPinnedFormat = specs.filter((s) => s.arm === PINNED_ARM || s.dimension === OPENING_TYPE_DIMENSION).length;
+  assert.equal(runsPinnedFormat, 9, "the pinned FORMAT still runs on nine of twelve slots");
+
+  // At the live ceiling of 11 the exploration slice must still be 3, not 2.
+  const day11 = tally(selectBatchSpecs("2026-08-03", 11).specs);
+  assert.equal(day11["control"] + day11["one-question"], 3, "the live ceiling must still fund three");
+  assert.equal(day11[OPENING_TYPE_ARMS[0]], day11[OPENING_TYPE_ARMS[1]], "the experiment is balanced on the day");
 });
 
 test("PINNED: the format is the shape the winners share, not an A/B arm", () => {
@@ -76,10 +87,12 @@ test("PINNED: the concentrated hook arms cannot come back through the env switch
   // motion-hook arms — the worst-measured openings in the account. It must now be inert.
   const { specs, onlyDims } = withEnv({ HERMES_ONLY_DIMENSIONS: OLD_PIN }, () => selectBatchSpecs("2026-08-03", 12));
   assert.deepEqual(onlyDims, []);
-  assert.deepEqual(tally(specs), { [PINNED_ARM]: 9, "control": 2, "one-question": 1 });
+  assert.equal(tally(specs)[PINNED_ARM], 5);
   for (const s of specs) assert.notEqual(s.opening, "motion-hook");
-  // The exploration slice is a deliberate two-arm list, NOT a reopened rotation.
-  for (const s of specs) assert.ok(s.arm === PINNED_ARM || EXPLORATION_ARMS.includes(s.arm), `unexpected arm ${s.arm}`);
+  // Every arm is a NAMED member of one of the three deliberate lists, not a reopened
+  // rotation. A stray arm here would mean the old catalog had leaked back in.
+  const allowed = new Set<string>([PINNED_ARM, ...EXPLORATION_ARMS, ...OPENING_TYPE_ARMS]);
+  for (const s of specs) assert.ok(allowed.has(s.arm), `unexpected arm ${s.arm}`);
 });
 
 test("PINNED: no mascot elevation and no winner replication reach the batch", () => {
@@ -97,10 +110,17 @@ test("PINNED: the run id moves the exploration arms and nothing else", () => {
   assert.deepEqual(a, b, "same parity day => byte-identical batch");
   const c = selectBatchSpecs("2026-08-04", 12).specs.map((s) => s.arm);
   assert.notDeepEqual(a, c, "consecutive days must alternate the spare exploration slot");
+  // Two things the calendar day is allowed to move, and nothing else: which exploration
+  // arm takes the spare slot, and which opening-type arm leads. The second is what stops
+  // an arm owning a time of day or a hashtag set — see openingType.test.ts.
+  const rotatable = new Set<string>([...EXPLORATION_ARMS, ...OPENING_TYPE_ARMS]);
   for (let i = 0; i < a.length; i++) {
     if (a[i] === c[i]) continue;
-    assert.ok(EXPLORATION_ARMS.includes(a[i]) && EXPLORATION_ARMS.includes(c[i]),
-      `slot ${i} may only differ between exploration arms, got ${a[i]} vs ${c[i]}`);
+    assert.ok(rotatable.has(a[i]) && rotatable.has(c[i]),
+      `slot ${i} may only differ between rotatable arms, got ${a[i]} vs ${c[i]}`);
+    // ...and a slot never crosses BETWEEN the two lists, which would change the day's shape.
+    assert.equal(EXPLORATION_ARMS.includes(a[i]), EXPLORATION_ARMS.includes(c[i]),
+      `slot ${i} changed which slice it belongs to`);
   }
   // The pinned slots are the same slots on both days — only the arms inside the
   // slice move, so the day's shape and volume never change.
@@ -154,7 +174,7 @@ test("EXPLORE: over two days each arm gets three of the six slots", () => {
   const two = [
     ...selectBatchSpecs("2026-08-03", 11).specs,
     ...selectBatchSpecs("2026-08-04", 11).specs,
-  ].filter((s) => s.arm !== PINNED_ARM);
+  ].filter((s) => EXPLORATION_ARMS.includes(s.arm));
   assert.deepEqual(tally(two), { control: 3, "one-question": 3 });
 });
 
@@ -162,7 +182,7 @@ test("EXPLORE: exploration slots are spread through the batch, not bolted on the
   // Slot index decides the hashtag set (HASHTAG_ROTATION[i % 3]) and the posting
   // time, so a slice clustered at the tail would confound the arm with both.
   const { specs } = selectBatchSpecs("2026-08-03", 12);
-  const at = specs.map((s, i) => (s.arm === PINNED_ARM ? -1 : i)).filter((i) => i >= 0);
+  const at = specs.map((s, i) => (EXPLORATION_ARMS.includes(s.arm) ? i : -1)).filter((i) => i >= 0);
   assert.deepEqual(at, [3, 7, 11]);
   assert.deepEqual([...new Set(at.map((i) => i % 3))].sort(), [0, 1, 2], "one slot per hashtag set");
 });
@@ -184,7 +204,10 @@ test("EXPLORE: the slice is the two named arms and stays reproducible", () => {
 test("EXPLORE: an unparseable run id falls back to a fixed order rather than throwing", () => {
   const { specs } = selectBatchSpecs("not-a-date", 12);
   assert.equal(specs.length, 12);
-  assert.deepEqual(tally(specs), { [PINNED_ARM]: 9, control: 2, "one-question": 1 });
+  const t = tally(specs);
+  assert.equal(t[PINNED_ARM], 5);
+  assert.equal(t["control"] + t["one-question"], 3);
+  assert.equal(t[OPENING_TYPE_ARMS[0]], t[OPENING_TYPE_ARMS[1]], "still balanced with no usable date");
 });
 
 test("EXPLORE: exploration arms are real catalog arms, not redeclared lookalikes", () => {

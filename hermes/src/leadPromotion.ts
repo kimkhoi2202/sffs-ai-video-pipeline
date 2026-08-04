@@ -28,6 +28,7 @@
  */
 import { readJSON, writeJSONAtomic } from "./state.ts";
 import { CONFIG } from "./config.ts";
+import { openingTypeArm } from "./openingType.ts";
 import { info, decision, warn } from "./log.ts";
 import {
   LEAD_BANDS, MIN_POSTS_PER_BAND, bandOf, promptWords, computeLeadPolicy,
@@ -80,6 +81,19 @@ export interface LeadStamp {
   lead_type: string;
   lead_prompt_words: number;
   lead_band: string;
+  /**
+   * Which arm of the OPENING-QUESTION-TYPE experiment this post ran, or null when its
+   * opening type belongs to neither (number puzzle, number series, sentence completion).
+   *
+   * Derived here rather than declared by the batch planner, and that is the whole point.
+   * The `opening` hook experiment wrote its arm labels to hermes-data/metricool-scheduled
+   * .json while ab-database.json — the store the rollups and the promotion path read —
+   * only ever saw one side, and two analyses of the same experiment reached opposite
+   * conclusions. A label computed from the question that ACTUALLY SHIPPED cannot fall out
+   * of sync with the video it describes, and lands on every record rather than on the
+   * subset some planner remembered to tag.
+   */
+  opening_type_arm: string | null;
 }
 
 /**
@@ -97,7 +111,12 @@ export interface LeadStamp {
  */
 export function leadStamp(q: { tier?: string; prompt?: string } | undefined): LeadStamp {
   const words = promptWords(q?.prompt);
-  return { lead_type: normType(q?.tier), lead_prompt_words: words, lead_band: bandOf(words) };
+  return {
+    lead_type: normType(q?.tier),
+    lead_prompt_words: words,
+    lead_band: bandOf(words),
+    opening_type_arm: openingTypeArm(q?.tier),
+  };
 }
 
 interface BankEntry { sig: string; tier?: string; prompt?: string; promptNorm?: string }
