@@ -3341,6 +3341,48 @@
           "answerNorm": "75"
         }
       ]
+    },
+    {
+      "videoSlug": "2026-08-05-v08",
+      "test": "length",
+      "variant": "one-question",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "20fa4d27e7c9",
+          "sig": "text|quantitative|number-puzzle|if 4 1 8 5 5 50 1 7 14 then 3 3 || 13~18~19~20|18",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "18"
+        }
+      ]
+    },
+    {
+      "videoSlug": "2026-08-05-v09",
+      "test": "pinned",
+      "variant": "pinned-format",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "ac095bccefac",
+          "sig": "text|verbal|odd-one-out|which one does not belong || blue~grape~lemon~mango|blue",
+          "tier": "ODD ONE OUT",
+          "answerNorm": "BLUE"
+        },
+        {
+          "hash": "757408f6f0e3",
+          "sig": "text|verbal|verbal-analogy|doctor is to hospital as baker is to || airplane~bakery~court~library|bakery",
+          "tier": "VERBAL ANALOGY",
+          "answerNorm": "BAKERY"
+        },
+        {
+          "hash": "9579cb486e57",
+          "sig": "text|quantitative|number-analogy|which number fits 4 19 6 27 7 31 8 || 35~36~39~45|35",
+          "tier": "NUMBER ANALOGY",
+          "answerNorm": "35"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"
