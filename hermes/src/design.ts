@@ -26,7 +26,7 @@ import { chat } from "./llm.ts";
 import { ruleCheckCopy } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
-import { contentDefaults, captionAsk, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
+import { contentDefaults, captionAsk, captionEngagementBeat, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
 import { pinnedSpecs, explorationSpecs, openingTypeSpecs, openingTypeCount, resolveArm, selectSpread, newSpreadTally, leadTypeCap, PINNED_ARM, type DimSpec, type SpreadTally } from "./dimensions.ts";
 import { OPENING_TYPE_DIMENSION, armCounts } from "./openingType.ts";
 import { normalizeTier, type ReplicationDirective, type StyleFingerprint } from "./replication.ts";
@@ -39,22 +39,62 @@ export { dimensionCatalog, type DimensionInfo } from "./dimensions.ts";
 
 function fallbackCaption(reveal: RevealMode, tags: string[]): string {
   const ask = captionAsk(reveal);
-  return `are you a SMART fella or a FART smella? ${ask} below and follow for more \uD83D\uDC47\n\n${tags.join(" ")}`;
+  const beat = captionEngagementBeat(reveal);
+  return `are you a SMART fella or a FART smella? ${beat} below, then ${ask} \uD83D\uDC47\n\n${tags.join(" ")}`;
 }
 
-/** Generate an on-brand caption, gated + reject/regenerate, safe fallback. */
-async function makeCaption(reveal: RevealMode, tags: string[]): Promise<{ caption: string; source: string }> {
+/**
+ * The completion budget for one caption.
+ *
+ * IT WAS 120, AND 120 IS WHY EVERY CAPTION FELL BACK. That number was written for
+ * claude-haiku and never revisited when CAPTION_MODEL became claude-opus-5. Opus
+ * spends the budget before it emits any visible text, so `chat()` returns "" — a
+ * SUCCESSFUL call with an empty completion, which is why the run reported
+ * `llm_failed_calls: 0` while 10 of 11 videos shipped the template. Measured on the
+ * box 2026-08-06 against the live gateway, four samples per setting:
+ *
+ *   maxTokens=120  -> 4/4 empty
+ *   maxTokens=300  -> 4/4 complete captions
+ *
+ * 400 is 300 with headroom. It does NOT license a longer caption: the 200-character
+ * check below still bounds what ships, and the prompt still asks for 180.
+ */
+const CAPTION_MAX_TOKENS = 400;
+
+/** Why one generation attempt was thrown away. Recorded so a fallback is diagnosable
+ *  from the run state instead of needing the model re-run to find out. */
+type CaptionAttemptFailure = string;
+
+/** Generate an on-brand caption, gated + reject/regenerate, safe fallback.
+ *
+ *  Every discard is now NAMED. Two of the three ways an attempt could die used a bare
+ *  `continue`, so the single most common failure in production (an empty completion)
+ *  left no trace anywhere: not in the log, not in the run state, not in the counters. */
+async function makeCaption(
+  reveal: RevealMode,
+  tags: string[],
+): Promise<{ caption: string; source: string; failures: CaptionAttemptFailure[] }> {
   const ask = captionAsk(reveal).toUpperCase();
+  const beat = captionEngagementBeat(reveal).toUpperCase();
   const system =
     "You write captions for 'Smart Fella or Fart Smella', a Gen-Z brain-quiz brand. Voice: concise, funny, " +
     "lowercase-casual, kid-safe, NO em or en dashes, at most ONE emoji beyond the 🧠💨 logo, no AI-slop, " +
-    "always end with a follow/come-back nudge. Signature: SMART FELLA (smart) vs FART SMELLA (miss). " +
+    "always end with a nudge. Signature: SMART FELLA (smart) vs FART SMELLA (miss). " +
     "Difficulty puffery about the puzzle is house style and needs no substantiation ('97% get this wrong'). " +
     "NEVER claim anything about the product or the viewer's outcome ('users gain IQ points', 'get smarter', " +
     "'scientifically proven') - see compliance.md section 3.";
+  // THE ASK IS THE TEST. The caption used to ask for a comment and a follow, which left
+  // the site link in every caption as decoration nobody was told to click. The comment
+  // beat survives because comments are what distribution keys on, but it now leads INTO
+  // the ask rather than being it. Do not ask for a follow: the account gains nothing
+  // from a follower who never takes the test, and one caption cannot carry three asks.
   const user =
-    `Write ONE short TikTok/Reels caption (max 180 chars, before hashtags) for a quiz short. It must nudge viewers to ${ask} ` +
-    `and to follow. Do NOT include hashtags. Return ONLY the caption text.`;
+    `Write ONE short TikTok/Reels caption (max 180 chars, before hashtags) for a quiz short. ` +
+    `The MAIN call to action is to ${ask} on the website, and it must be the LAST thing the caption says. ` +
+    `Before it, include ONE light engagement beat inviting viewers to ${beat} in the comments. ` +
+    `Do NOT ask for a follow or a subscribe. Do NOT write the URL, it is appended separately. ` +
+    `Do NOT include hashtags. Return ONLY the caption text.`;
+  const failures: CaptionAttemptFailure[] = [];
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       // FALL BACK TO THE SHARED SAFETY NET, the way both gates do. On 2026-08-03 the
@@ -70,25 +110,46 @@ async function makeCaption(reveal: RevealMode, tags: string[]): Promise<{ captio
       // named the primary as its own fallback, and chat() turns that into no fallback
       // at all. Pointing at the one designated net keeps this correct however the two
       // primaries are configured.
-      let text = (
-        await chat(system, user, {
-          model: CONFIG.CAPTION_MODEL,
-          fallbackModel: CONFIG.JUDGE_FALLBACK_MODEL,
-          maxTokens: 120,
-          temperature: 0.8,
-        })
-      ).trim();
+      const raw = await chat(system, user, {
+        model: CONFIG.CAPTION_MODEL,
+        fallbackModel: CONFIG.JUDGE_FALLBACK_MODEL,
+        maxTokens: CAPTION_MAX_TOKENS,
+        temperature: 0.8,
+      });
+      let text = raw.trim();
       text = text.replace(/^["']|["']$/g, "").replace(/#[\w]+/g, "").trim();
+
+      // AN EMPTY COMPLETION IS NOT A SHORT CAPTION. It is the model not answering, and
+      // it is worth its own name because it is the only one of these that means the
+      // request never really ran. Folding it into "too short" is what hid it.
+      if (text.length === 0) {
+        failures.push("empty-completion");
+        warn("caption attempt discarded", { attempt, why: "empty-completion", maxTokens: CAPTION_MAX_TOKENS });
+        continue;
+      }
       const rule = ruleCheckCopy(text);
-      if (!rule.pass || text.length < 8 || text.length > 200) continue;
+      if (!rule.pass) {
+        failures.push(`brand-rule: ${rule.violations.join("; ")}`);
+        warn("caption attempt discarded", { attempt, why: "brand-rule", violations: rule.violations });
+        continue;
+      }
+      if (text.length < 8 || text.length > 200) {
+        failures.push(`length ${text.length} outside 8..200`);
+        warn("caption attempt discarded", { attempt, why: "length", chars: text.length });
+        continue;
+      }
       const full = `${text}\n\n${tags.join(" ")}`;
       const g = await gateCopy([{ label: "caption", text: full }]);
-      if (g.pass) return { caption: full, source: `llm:${CONFIG.CAPTION_MODEL}` };
+      if (g.pass) return { caption: full, source: `llm:${CONFIG.CAPTION_MODEL}`, failures };
+      failures.push(`copy-gate: ${g.reason ?? "off-brand"}`);
+      warn("caption attempt discarded", { attempt, why: "copy-gate", reason: g.reason });
     } catch (e) {
-      warn("caption gen attempt failed", { attempt, err: e instanceof Error ? e.message : String(e) });
+      const msg = e instanceof Error ? e.message : String(e);
+      failures.push(`threw: ${msg.slice(0, 160)}`);
+      warn("caption gen attempt failed", { attempt, err: msg });
     }
   }
-  return { caption: fallbackCaption(reveal, tags), source: "fallback" };
+  return { caption: fallbackCaption(reveal, tags), source: "fallback", failures };
 }
 
 const HASHTAG_ROTATION = ["A", "B", "C"];
@@ -384,7 +445,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
 
     const hashtagSet = HASHTAG_ROTATION[i % HASHTAG_ROTATION.length];
     const tags = CONFIG.HASHTAG_SETS[hashtagSet];
-    const { caption, source } = await makeCaption(resolved.reveal, tags);
+    const { caption, source, failures: captionFailures } = await makeCaption(resolved.reveal, tags);
     if (source === "fallback") captionFallbacks++;
 
     const outro = defaultOutro(resolved.reveal);
@@ -415,6 +476,10 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       rationale: spec.rationale,
       caption,
       caption_source: source,
+      // Only carried when the model lost, so a healthy run stays quiet. Every attempt's
+      // discard reason, in order, which is what turns "it fell back" into "it fell back
+      // because the completion came back empty three times".
+      ...(source === "fallback" ? { caption_fallback_reasons: captionFailures } : {}),
       hashtag_set: hashtagSet,
       questions: chosen,
       gates: { copy: { pass: true, reason: `caption ${source}` } },

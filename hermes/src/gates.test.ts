@@ -212,12 +212,18 @@ test("fallback verdicts are NOT persisted — the real rubric re-judges later", 
 // `degraded` is the machine-readable version of that sentence, so the cycle can count
 // it and the dashboard can show it.
 
-test("gateCopy DEGRADES rather than fails when the judge is unreachable — and says so", async () => {
+test("gateCopy reports UNJUDGED rather than a pass when the judge is unreachable", async () => {
   // Copy that passes every deterministic rule, so the only thing left is the LLM.
   const r = await G.gateCopy([{ label: "caption", text: "are you a smart fella or a fart smella? guess below" }]);
   assert.equal(r.pass, true, "a judge outage must not reject on-brand copy");
   assert.equal(r.degraded, true, "a pass reached with no model behind it must be labelled degraded");
-  assert.match(r.reason ?? "", /judge unavailable/);
+  // The flag, not the wording, is the contract. `degraded` alone also covers a verdict
+  // the FALLBACK model reached, which is a genuine judgement; `unjudged` is the
+  // narrower claim that no model verdict exists at all, and it is what the dashboard
+  // counts separately from a rejection.
+  assert.equal(r.unjudged, true, "no model verdict exists, so it must be labelled unjudged");
+  assert.match(r.reason ?? "", /UNJUDGED/);
+  assert.doesNotMatch(r.reason ?? "", /on-brand/, "must not read as a brand verdict nobody reached");
 });
 
 test("a REAL rule violation is not degraded — it is a verdict", async () => {

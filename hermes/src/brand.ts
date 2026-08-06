@@ -17,7 +17,12 @@ const HARD_RULES =
   "concise; funny; Gen Z lowercase-casual; kid-safe (no hard/explicit profanity, mild slang like 'af' ok); " +
   "NO em dashes and NO en dashes; the 🧠💨 glyph is the LOGO and is free, plus at most ONE other emoji " +
   "(never spam); no AI-slop tone; no over-explaining/lecturing; " +
-  "always end social copy with a follow / come-back nudge. " +
+  // The nudge is still mandatory; WHICH nudge changed. Social copy now closes on the
+  // free test, with the comment beat demoted to the line before it. Leaving this as
+  // "follow / come-back" would have the judge reject the very captions the new prompt
+  // is written to produce, which is how a rule text and a prompt drift into opposition.
+  "always end social copy with a nudge, and make TAKING THE FREE TEST the closing ask; " +
+  "a light comment beat may come before it, but do not ask for a follow or subscribe. " +
   "CLAIMS: difficulty puffery about the PUZZLE is fine and encouraged ('97% get this wrong', " +
   "'only 3% can solve this', '9 out of 10 pick B') and needs no substantiation; claims about the " +
   "PRODUCT or the viewer's OUTCOME are forbidden ('97% of users gain 20 IQ points', 'watch daily and " +

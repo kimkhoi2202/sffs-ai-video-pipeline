@@ -380,17 +380,32 @@ export async function gateCopy(pieces: { label: string; text: string }[]): Promi
       // single caption-model outage retired the brand-voice judge for a whole batch
       // while every other path stayed up. Same model pair, same asymmetry, same bug.
       fallbackModel: CONFIG.JUDGE_FALLBACK_MODEL,
-      maxTokens: 500,
+      // WAS 500, AND 500 IS WHY THE JUDGE "WAS UNAVAILABLE" ALL WEEK. This verdict is a
+      // JSON object with a per-piece array, and Opus does not finish one inside 500
+      // tokens: the reply arrived cut off mid-array, chatJSON threw "Unbalanced JSON",
+      // and the catch below turned a judge that HAD ANSWERED into a fabricated pass.
+      // The run state for 2026-08-06 still holds the truncated body, and the part that
+      // survived reads `"pass":true` — a real verdict, thrown away. Same root cause as
+      // the caption fallback's maxTokens: 120, same fix.
+      maxTokens: 1500,
     });
     return { pass: !!v.pass, reason: v.reason ?? (v.pass ? "on-brand" : "off-brand"), detail: v.perPiece };
   } catch (e) {
-    // If the judge is unreachable, fall back to the deterministic pass (rules already
-    // passed). `degraded` is what makes this distinguishable from a real pass: the
-    // reason string alone lived only in the log and nobody read it for a day.
+    // THE JUDGE DID NOT RUN, AND THIS NO LONGER CLAIMS IT DID. The old shape returned
+    // `pass: true, reason: "rules passed; LLM judge unavailable"`, which is a verdict
+    // nobody reached: the deterministic rules had passed, but they check dashes, emoji
+    // count and banned phrases, not whether the copy is on brand. Reporting that as a
+    // pass is what made weak output indistinguishable from a pipeline that never ran.
+    //
+    // `pass` stays true so an outage does not silently reject a whole batch — that is a
+    // different decision and not one a network error should make. What changes is that
+    // the result is now unmistakably UNJUDGED: its own flag, its own reason, its own
+    // counter, and its own state on the dashboard, never folded into the reject count.
     return {
       pass: true,
       degraded: true,
-      reason: "rules passed; LLM judge unavailable",
+      unjudged: true,
+      reason: "UNJUDGED: deterministic rules passed, the brand-voice judge never returned a verdict",
       detail: { error: e instanceof Error ? e.message : String(e) },
     };
   }

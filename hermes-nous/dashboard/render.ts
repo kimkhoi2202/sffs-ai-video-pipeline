@@ -36,6 +36,27 @@ function statusChip(s: string): string {
   return `<span class="chip ${cls}">${esc(s)}</span>`;
 }
 
+/**
+ * A video that shipped the hardcoded template instead of a written caption.
+ *
+ * THIS IS NOT A REJECTION AND MUST NOT LOOK LIKE ONE. A rejected video did not ship;
+ * this one did, carrying copy no model ever wrote. Before this existed the two states
+ * were distinguishable only by reading `caption_source` inside a collapsed <details>,
+ * so a whole cycle of template captions rendered as a clean, healthy run — which is
+ * exactly what happened on 2026-08-03 and again on 2026-08-06.
+ */
+function captionFallbackNotice(v: VideoPlan): string {
+  if (v.caption_source !== "fallback") return "";
+  const why = (v.caption_fallback_reasons || []).filter(Boolean);
+  const detail = why.length
+    ? `<ul class="capfb-why">${why.map((r, i) => `<li>attempt ${i + 1}: ${esc(r)}</li>`).join("")}</ul>`
+    : `<div class="capfb-why muted">No per-attempt reason recorded (run predates reason capture).</div>`;
+  return `<div class="capfb">
+    <b>TEMPLATE CAPTION</b> — this video shipped the hardcoded fallback. No model wrote it.
+    ${detail}
+  </div>`;
+}
+
 // ── cycle: per-video A/B + quality gates ─────────────────────────────────────
 function videoCard(v: VideoPlan): string {
   const g = v.gates || {};
@@ -55,14 +76,19 @@ function videoCard(v: VideoPlan): string {
   const qs = (v.questions || [])
     .map((q) => `<li><b>${esc(q.tier)}</b> — ${esc(q.prompt)} <span class="ans">→ ${esc(q.answer)}</span></li>`)
     .join("");
-  return `<div class="vid">
+  const capChip = v.caption_source === "fallback" ? `<span class="chip c-tpl">template caption</span>` : "";
+  const unjudged = Object.entries(g).filter(([, r]) => r?.unjudged).map(([k]) => k);
+  const unjudgedChip = unjudged.length ? `<span class="chip c-tpl">unjudged: ${esc(unjudged.join(", "))}</span>` : "";
+  return `<div class="vid${v.caption_source === "fallback" ? " vid-tpl" : ""}">
     <div class="vid-h">
       <div><span class="dim">${esc(v.dimension)}</span> <span class="arm">/ ${esc(v.arm)}</span></div>
-      ${statusChip(v.status)}
+      <div>${capChip} ${unjudgedChip} ${statusChip(v.status)}</div>
     </div>
     <div class="rationale">${esc(v.rationale)}</div>
     <div class="gates">${gates}</div>
     ${reject}
+    ${captionFallbackNotice(v)}
+    ${unjudged.length ? `<div class="capfb"><b>UNJUDGED</b> — ${esc(unjudged.join(", "))}: the deterministic rules passed but no model verdict exists. Not a rejection, and not a pass either.</div>` : ""}
     <details><summary>${(v.questions || []).length} question(s) · caption · props</summary>
       <ul class="qs">${qs}</ul>
       <div class="cap"><b>caption:</b> ${esc(v.caption)}</div>
@@ -1339,12 +1365,27 @@ export function page(opts: PageData): string {
   // all, and showing those a confident "0" would be the same false all-clear this panel
   // is here to remove — so they read "—" instead.
   const deg = cur?.summary?.degraded;
-  const degTotal = deg ? deg.caption_fallbacks + deg.copy_gate_unjudged + deg.questions_unjudged : 0;
+  // TEMPLATE CAPTIONS GET THEIR OWN NUMBER. They used to be summed into the "unjudged"
+  // KPI with the two gate counters, which made a cycle where every caption was written
+  // by nobody read as a single amber number next to two unrelated ones. A video that
+  // shipped copy no model wrote is a different failure from a gate that returned a
+  // verdict without a model, and it is a different failure again from a rejection.
+  const capFb = deg ? deg.caption_fallbacks : null;
+  // Cross-check the summary against the videos themselves, because the counter and the
+  // run state have disagreed before and the counter is the one that gets believed.
+  const capFbObserved = (cur?.videos || []).filter((v) => v.caption_source === "fallback").length;
+  const capFbValue = capFb == null ? (capFbObserved || "—") : Math.max(capFb, capFbObserved);
+  const capFbBad = typeof capFbValue === "number" && capFbValue > 0;
+  const capFbTitle = capFbBad
+    ? `${capFbValue} of ${s.planned} video(s) shipped the hardcoded template caption. Open the video below for the per-attempt reason.`
+    : "Every caption this cycle was written by the caption model.";
+
+  const degTotal = deg ? deg.copy_gate_unjudged + deg.questions_unjudged : 0;
   const degBad = !!deg && (degTotal > 0 || deg.llm_failed_calls > 0);
   const degValue = !deg ? "—" : degTotal;
   const degTitle = !deg
     ? "This run predates the degradation counter."
-    : `${deg.llm_failed_calls} failed gateway call(s) · ${deg.caption_fallbacks} template caption(s) · ` +
+    : `${deg.llm_failed_calls} failed gateway call(s) · ` +
       `${deg.copy_gate_unjudged} unjudged copy gate(s) · ${deg.questions_unjudged} unjudged validity gate(s)`;
   const drafts = (cur?.videos || []).filter((v) => v.status === "drafted");
   const draftTotal = drafts.reduce((a, v) => a + (v.metricool?.uuids?.length || 0), 0);
@@ -1391,12 +1432,17 @@ header h1{margin:0;font:800 24px/1 "Segoe UI",sans-serif;letter-spacing:.5px}
 .b{display:inline-block;vertical-align:middle;font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;border:2px solid var(--ink)}
 .b-ok{background:var(--green)}.b-no{background:var(--coral);color:#fff}.b-na{background:#ddd}
 .reject{background:#ffe3de;border:2px solid var(--coral);border-radius:8px;padding:6px 10px;font-size:13px;margin-bottom:8px}
+/* Deliberately NOT the reject colour: these videos shipped, which is the whole point. */
+.capfb{background:#fff6cc;border:2px solid var(--ink);border-radius:8px;padding:6px 10px;font-size:13px;margin-bottom:8px}
+.capfb-why{margin:6px 0 0;padding-left:18px;font-size:12px;color:#444}
+.vid-tpl{border-color:var(--yellow);box-shadow:inset 4px 0 0 var(--yellow)}
 .qs{margin:8px 0;padding-left:18px}.qs .ans{color:var(--green);font-weight:700}
 .cap{font-size:13px;color:#333;margin-top:4px}
 .vid-f{margin-top:10px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:13px}
 .media{font-weight:700}
 .chip{display:inline-block;vertical-align:middle;white-space:nowrap;font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px;border:2px solid var(--ink)}
 .c-ok{background:var(--green)}.c-warn{background:var(--yellow)}.c-no{background:var(--coral);color:#fff}.c-run{background:var(--blue)}.c-idle{background:#e5e5e5}
+.c-tpl{background:var(--yellow);border-style:dashed}
 .tbl{width:100%;border-collapse:collapse;font-size:13px;max-width:100%}
 .tbl th,.tbl td{border:2px solid var(--ink);padding:6px 8px;text-align:left;overflow-wrap:anywhere}
 .tbl th{background:var(--mint)}
@@ -1561,15 +1607,25 @@ code{font:12px/1.4 ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
       <div class="kpi"><div class="v">${s.drafted}</div><div class="k">videos drafted (this cycle)</div></div>
       <div class="kpi"><div class="v">${draftTotal}</div><div class="k">metricool drafts (this cycle)</div></div>
       <div class="kpi"><div class="v">${s.rejected}</div><div class="k">rejected · gates (this cycle)</div></div>
+      <div class="kpi" title="${esc(capFbTitle)}">
+        <div class="v"${capFbBad ? ' style="color:var(--coral)"' : ""}>${capFbValue}</div>
+        <div class="k">template captions · no model wrote them</div>
+      </div>
       <div class="kpi" title="${esc(degTitle)}">
         <div class="v"${degBad ? ' style="color:var(--coral)"' : ""}>${degValue}</div>
-        <div class="k">unjudged · LLM degraded (this cycle)</div>
+        <div class="k">unjudged gates · LLM degraded (this cycle)</div>
       </div>
     </div>
     ${
+      capFbBad
+        ? `<p class="muted" style="margin-top:8px;color:var(--coral)"><b>Template captions shipped.</b> ${esc(capFbTitle)} ` +
+          `These are NOT rejections: the videos went out, carrying copy the caption model never produced.</p>`
+        : ""
+    }
+    ${
       degBad
         ? `<p class="muted" style="margin-top:8px;color:var(--coral)"><b>LLM degraded.</b> ${esc(degTitle)}. ` +
-          `These videos shipped, but the model that was supposed to judge or write them never answered — ` +
+          `These videos shipped, but the model that was supposed to judge them never answered — ` +
           `a degraded gate and a passing gate are otherwise indistinguishable from here.</p>`
         : ""
     }

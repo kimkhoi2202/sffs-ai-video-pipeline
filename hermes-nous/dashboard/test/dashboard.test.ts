@@ -1849,21 +1849,32 @@ function runWithDegraded(degraded: unknown) {
 test("degradation KPI: a healthy cycle reads 0 and raises no banner", () => {
   const run = runWithDegraded({ llm_failed_calls: 0, caption_fallbacks: 0, copy_gate_unjudged: 0, questions_unjudged: 0 });
   const html = page(emptyPageData({ latest: run, runs: [run] }));
-  assert.match(html, /unjudged · LLM degraded \(this cycle\)/);
+  assert.match(html, /unjudged gates · LLM degraded \(this cycle\)/);
+  assert.match(html, /template captions · no model wrote them/);
   assert.doesNotMatch(html, /<b>LLM degraded\.<\/b>/, "a healthy cycle must not cry wolf");
+  assert.doesNotMatch(html, /<b>Template captions shipped\.<\/b>/, "a healthy cycle must not cry wolf");
 });
 
-test("degradation KPI: unjudged videos are counted, coloured and explained", () => {
+// TEMPLATE CAPTIONS GET THEIR OWN NUMBER. They used to be summed into the unjudged KPI
+// with the two gate counters, so a cycle in which every caption was written by nobody
+// read as one amber number sitting next to two unrelated ones. A video carrying copy no
+// model wrote is a different failure from a gate that returned a verdict without a
+// model, and both are different from a rejection.
+test("degradation KPI: template captions are counted separately from unjudged gates", () => {
   const run = runWithDegraded({ llm_failed_calls: 9, caption_fallbacks: 2, copy_gate_unjudged: 3, questions_unjudged: 1 });
   const html = page(emptyPageData({ latest: run, runs: [run] }));
-  // 2 + 3 + 1 unjudged pieces of work, shown as the headline number
-  assert.match(html, /<div class="v" style="color:var\(--coral\)">6<\/div>\s*<div class="k">unjudged · LLM degraded/);
-  // the breakdown, so the number is actionable rather than just alarming
+  // 2 template captions on their own KPI...
+  assert.match(html, /<div class="v" style="color:var\(--coral\)">2<\/div>\s*<div class="k">template captions · no model wrote them/);
+  // ...and 3 + 1 unjudged GATES on theirs, no longer inflated by the captions.
+  assert.match(html, /<div class="v" style="color:var\(--coral\)">4<\/div>\s*<div class="k">unjudged gates · LLM degraded/);
+  // the breakdown, so the numbers are actionable rather than just alarming
   assert.match(html, /9 failed gateway call\(s\)/);
-  assert.match(html, /2 template caption\(s\)/);
   assert.match(html, /3 unjudged copy gate\(s\)/);
   assert.match(html, /1 unjudged validity gate\(s\)/);
   assert.match(html, /<b>LLM degraded\.<\/b>/, "the banner is the part that gets noticed");
+  assert.match(html, /<b>Template captions shipped\.<\/b>/);
+  // and it must never read as a rejection, which is the whole point of the split
+  assert.match(html, /These are NOT rejections/);
 });
 
 test("degradation KPI: failed gateway calls alone still raise the alarm", () => {

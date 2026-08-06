@@ -26,6 +26,8 @@ export interface GateResult {
   detail?: unknown;
   /** the verdict was reached WITHOUT the model meant to reach it (gateway 403/429/5xx) */
   degraded?: boolean;
+  /** no model verdict exists behind this gate at all — only the deterministic rules ran */
+  unjudged?: boolean;
 }
 
 export interface HermesQ {
@@ -52,6 +54,8 @@ export interface VideoPlan {
   caption?: string;
   /** `llm:<model>` or `fallback` (the hardcoded template) */
   caption_source?: string;
+  /** Present only on a fallback: why each generation attempt was discarded, in order. */
+  caption_fallback_reasons?: string[];
   hashtag_set?: string;
   questions?: HermesQ[];
   /** quality-gate verdicts, keyed by gate name (dedup/questions/copy/render) */

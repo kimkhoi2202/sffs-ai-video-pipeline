@@ -150,8 +150,27 @@ export function revealForEnding(arm: string): RevealMode {
  * withhold at least one verdict so they nudge "comment your ANSWER". This is why the
  * new cliffhanger DEFAULT reads "comment your answer" (the last verdict is withheld).
  */
-export function captionAsk(reveal: RevealMode): string {
-  return reveal === "all" ? "comment your score" : "comment your answer";
+export function captionAsk(_reveal: RevealMode): string {
+  return "take the full test";
+}
+
+/**
+ * The light engagement beat that runs BEFORE the ask, and the reason this is not simply
+ * deleted along with the comment CTA.
+ *
+ * Comments are what distribution keys on and this account is fighting cold start, so a
+ * caption that only advertises the site would very likely be seen by fewer people —
+ * which defeats the point of putting the site in it. The trade taken here is: keep a
+ * reason to engage, demote it from THE ask to the thing that precedes the ask. The
+ * end card made the opposite trade on 2026-08-04, and it could afford to: a viewer who
+ * reaches the last two seconds has already not skipped.
+ *
+ * Still varies with the reveal mode for the same reason it always did: "all" shows every
+ * answer so there is a score to report, everything else withholds a verdict so there is
+ * an answer to guess.
+ */
+export function captionEngagementBeat(reveal: RevealMode): string {
+  return reveal === "all" ? "drop your score" : "drop your answer";
 }
 
 /** The centered outro CTA card text. The end card no longer asks for a comment — it

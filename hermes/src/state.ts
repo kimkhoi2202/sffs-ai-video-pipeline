@@ -32,6 +32,14 @@ export interface GateResult {
    * for a day. Anything that reports a gate must report this alongside it.
    */
   degraded?: boolean;
+  /**
+   * TRUE when NO model verdict exists behind this gate at all — distinct from
+   * `degraded`, which also covers a verdict reached by the fallback model. An unjudged
+   * gate has had only the deterministic rules run against it, and those check dashes,
+   * emoji and banned phrases, not whether the copy is on brand. It is not a rejection
+   * and must never be counted as one.
+   */
+  unjudged?: boolean;
 }
 
 // ── Nonverbal SHAPE/FIGURE question kinds ────────────────────────────────────
@@ -148,6 +156,13 @@ export interface VideoPlan {
   caption: string;
   /** Where `caption` came from: `llm:<model>` or `fallback` (the hardcoded template). */
   caption_source?: string;
+  /**
+   * Present ONLY when `caption_source === "fallback"`: why each generation attempt was
+   * thrown away, in order. Without it a fallback is a dead end — the run records that
+   * the template shipped but not what the model did, so diagnosing it means re-running
+   * the model and hoping the failure reproduces.
+   */
+  caption_fallback_reasons?: string[];
   hashtag_set: string;
   questions: HermesQ[];
   gates: Record<string, GateResult>;
