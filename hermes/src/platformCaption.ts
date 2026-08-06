@@ -53,17 +53,18 @@ export function vanityUrl(network: CaptionNetwork): string {
  * The comment Metricool auto-posts as the account the moment the post publishes
  * (`ScheduledPost.firstCommentText`), or undefined on a network where we do not use one.
  *
- * YOUTUBE ONLY, and specifically because of SHORTS. On YouTube the caption already IS
- * the description, so the link is technically there — but a Shorts description is
- * hidden behind a tap on the title and most viewers never learn it exists, while the
- * comment button is always on screen and opening it is ordinary Shorts behaviour. Same
- * link, somewhere a viewer actually looks.
+ * YOUTUBE AND TIKTOK. On YouTube the caption already IS the description, so the link is
+ * technically there — but a Shorts description is hidden behind a tap on the title and
+ * most viewers never learn it exists, while the comment button is always on screen and
+ * opening it is ordinary Shorts behaviour. Same link, somewhere a viewer actually looks.
+ * TikTok behaves the same way and Metricool's own network-feature table lists first
+ * comment as supported there; it was held back only until YouTube's had been seen on a
+ * live post, which it now has (13 scheduled rows carry one, verified through both the
+ * list and single-post endpoints on 2026-08-06).
  *
- * WHY NOT THE OTHER TWO. Instagram is documented for FEED posts and this account posts
- * Reels, so it would likely be silently dropped. TikTok does support it and is the
- * obvious next one, but nothing here has been proven against a live post yet and an
- * unverified comment on a second network is not worth more than a verified one on the
- * first.
+ * This is the ONLY surface where the test CTA currently reaches a viewer as a clickable
+ * link rather than as text they would have to retype, which is why it is worth having on
+ * every network that will honour it.
  *
  * It carries the same per-network vanity path as the caption, so a click arriving from
  * the comment is still attributable to the network that produced it. Note the loop
@@ -71,7 +72,11 @@ export function vanityUrl(network: CaptionNetwork): string {
  * top-level field can never leak onto a network it was not written for.
  */
 export function firstCommentFor(network: CaptionNetwork): string | undefined {
-  if (network !== "youtube") return undefined;
+  // INSTAGRAM IS THE ONE THAT STAYS OUT. Metricool documents first comment for Instagram
+  // FEED posts and this account posts REELS, so the field would very likely be accepted
+  // and then dropped in silence — the worst outcome of the three, because it reads as
+  // shipped. It goes in when a Reel has been seen to carry one.
+  if (network === "instagram") return undefined;
   return `Take the full test, free \uD83D\uDC49 ${vanityUrl(network)}`;
 }
 

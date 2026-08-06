@@ -241,7 +241,7 @@ export async function pullAndScore(): Promise<ScoreResult> {
   learnings.pinned_format = {
     as_of: to,
     arm: "pinned-format",
-    description: "3 mixed questions, cold-plate open, full narration, cliffhanger ending, 5s, short counter, branded cover",
+    description: "2 mixed questions, cold-plate open, full narration, cliffhanger ending, 5s, short counter, branded cover",
     chosen_on: "3-second skip rate vs views across all published Instagram reels (monotonic over 8 buckets, ~10x spread)",
     note: "Exploitation phase: no A/B rotation. Questions inside the format are fresh every video and still pass every gate.",
   };

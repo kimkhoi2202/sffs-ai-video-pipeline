@@ -315,6 +315,18 @@ export function buildCreateBody(input: CreatePostInput): Record<string, unknown>
       showReelOnFeed: input.showReelOnFeed ?? true,
       collaborators: [],
       autoPublish: input.autoPublish ?? true,
+      // EVERY FRAME OF THIS IS MACHINE-MADE: the questions, the script, the voice, the
+      // render. Left unset the server defaults it to FALSE, so the account has been
+      // actively declaring AI content as not-AI on every reel it has ever posted. That
+      // is a platform-disclosure problem, not a stylistic one.
+      //
+      // Instagram is the ONLY network where this can be sent today: the field exists on
+      // ScheduledPostInstagramData and round-trips (a live read returns
+      // isAiGenerated:false). tiktokData and youtubeData expose no equivalent through
+      // this API, so TikTok's "AI-generated content" toggle and YouTube's altered-media
+      // declaration are still undisclosed and cannot be fixed from here. Verify against
+      // the live swagger before adding a field to either.
+      isAiGenerated: true,
     };
   }
   if (input.networks.includes("youtube")) {
@@ -505,17 +517,33 @@ export async function setCover(uuid: string, coverUrl: string): Promise<{ update
  * uuid check does not close that window, because Metricool re-indexes ids across the
  * WHOLE BRAND on every write and the check is a read followed by a separate delete.
  *
- * The same run also disproved the premise: the board held 46 rows before the PUT and 46
- * after it. The PUT REPLACED THE RECORD IN PLACE and minted no duplicate at all. There
- * was nothing to retire; the retirement was pure loss.
+ * THE PUT DOES MINT A DUPLICATE. An earlier version of this comment claimed the
+ * opposite — "the board held 46 rows before the PUT and 46 after it, the PUT REPLACED
+ * THE RECORD IN PLACE and minted no duplicate at all" — and that is WRONG. On
+ * 2026-08-06 a first-comment PUT was applied to fifteen scheduled YouTube posts and
+ * every single one came back as TWO live rows: same uuid, same slot, same media, one
+ * copy carrying the new field and one without. Both would have published. The 46-to-46
+ * observation was a coincidence, most likely a row draining as another was minted.
  *
- * So the contract here is census, not cleanup. The row count is measured before and
- * after, and:
- *   - unchanged  -> the normal case, nothing to do;
- *   - one fewer  -> something was destroyed, THROW so the caller stops;
- *   - one more   -> a real duplicate, THROW so a human decides which row dies.
+ * WHY THE ROW COUNT DID NOT CATCH IT, and this is the part worth carrying forward: the
+ * board total was 265 before and 265 after. A count cannot see fifteen rows arriving
+ * while fifteen others leave the returned window. What saw it was counting DISTINCT
+ * UUIDS — 265 rows against 250 uuids. So:
+ *
+ *   VERIFY A WRITE BY UNIQUE UUID COUNT, NOT BY ROW COUNT.
+ *
+ * A duplicate is not cosmetic here. It double-posts, and the account also holds a hard
+ * ceiling on scheduled rows where a stray row can evict a real one.
+ *
+ * The contract is therefore census PLUS uniqueness. Measured before and after:
+ *   - rows unchanged AND uuids unchanged -> the normal case, nothing to do;
+ *   - one fewer                          -> something was destroyed, THROW;
+ *   - a uuid appearing twice             -> a real duplicate; retire the copy that is
+ *     identifiably the stale one (re-read by id immediately before deleting and assert
+ *     uuid, media, slot and the field that distinguishes the copies — not uuid alone,
+ *     which both copies share).
  * Deleting by a numeric id we are not certain about is the one thing this account has
- * proven it cannot survive, and a stray row is cheaper than a wrong delete.
+ * proven it cannot survive, so the identification has to be positive, not by elimination.
  *
  * The numeric id is re-resolved from the stable uuid first, because Metricool
  * reassigns the id on every update and any cached one is stale by default.

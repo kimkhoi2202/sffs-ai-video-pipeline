@@ -67,8 +67,25 @@ export interface DimSpec {
   mascotArm?: MascotArm; // set only on MASCOT test arms
 }
 
+/**
+ * TWO QUESTIONS, NOT THREE, AND THE QUESTION COUNT IS THE ONLY LEVER THAT REACHES 60s.
+ *
+ * Skip rate is the strongest predictor of reach on this account and length pushes it
+ * up, so the target is roughly a minute against a measured median of 90.0s. Fitting the
+ * two real cohorts on the box — 102 three-question renders at a 90.0s median and 8
+ * one-question renders at 32.1s — gives ~29.0s per question against just ~3.2s of fixed
+ * overhead. That fit puts a two-question video at ~61s, which is the target almost
+ * exactly.
+ *
+ * WHY NOT TRIM EVERY BEAT INSTEAD. Because there is nothing to trim. The fixed overhead
+ * is 3.2 seconds; essentially the whole runtime is the questions. Holding three and
+ * reaching 60s needs per-question down from 29.0s to 18.9s, a 35% cut applied to the
+ * read, the countdown and the reveal alike — a ~3.3s timer on a puzzle written for 5,
+ * and a reveal too short to land. That does not shorten the format, it breaks it.
+ * Dropping a question removes one whole unit and leaves the other two intact.
+ */
 export const BASE = {
-  numQ: 3,
+  numQ: 2,
   category: "mixed" as const,
   showProgress: true,
   progressStyle: "short" as const,
@@ -167,12 +184,12 @@ export const PINNED_ARM = "pinned-format";
  * undefined is what the hook arms were injected into.
  */
 export const PINNED: DimSpec = {
-  ...BASE, // 3 questions, mixed, progress on + short, 5s countdown
+  ...BASE, // 2 questions, mixed, progress on + short, 5s countdown
   dimension: "pinned",
   arm: PINNED_ARM,
   opening: "cold-plate",
   rationale:
-    "PINNED production format: 3 mixed questions, cold-plate open (no pre-roll animation), full narration, " +
+    "PINNED production format: 2 mixed questions, cold-plate open (no pre-roll animation), full narration, " +
     "cliffhanger ending, short progress counter, 5s per question, branded cover. The shape every top-performing " +
     "reel shares; fresh questions inside it every time.",
 };

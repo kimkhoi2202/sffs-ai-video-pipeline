@@ -67,7 +67,11 @@ test("PINNED: the format is the shape the winners share, not an A/B arm", () => 
   const { specs } = selectBatchSpecs("2026-08-02", 3);
   assert.deepEqual(tally(specs), { [PINNED_ARM]: 3 });
   for (const s of specs) {
-    assert.equal(s.numQ, 3, "three questions");
+    // TWO, not three: the question count is the only lever that reaches the ~60s
+    // target. Measured on the box, per-question is ~29.0s against ~3.2s of fixed
+    // overhead, so three questions cannot fit in a minute without cutting every beat
+    // by a third — a ~3.3s timer on a puzzle written for 5.
+    assert.equal(s.numQ, 2, "two questions");
     assert.equal(s.opening, "cold-plate", "cold open — question one at 0.00s");
     assert.equal(s.hookMechanism, undefined, "no spoken hook rides the opening any more");
     assert.equal(s.countdownSec, 5);

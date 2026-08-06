@@ -201,13 +201,23 @@ def load_limits(env: Optional[Dict[str, str]] = None) -> Limits:
     )
 
 
-# per-1M-token (input, output) USD; unknown models priced at the Opus rate so an
-# unrecognized model over-counts (fails safe) rather than under-counts.
+# per-1M-token (input, output) USD.
+#
+# OPUS WAS PRICED AT 15/75, WHICH IS THE LIST RATE, NOT THE RATE WE PAY. The gateway
+# bills Opus at 5/25, so every Opus call was counted at three times its real cost and
+# the day's budget tripped at roughly $25 of true spend against a limit that reads $75.
+# The governor was not too loose, it was silently three times too tight — and a governor
+# that halts the loop a third of the way through the day looks exactly like a loop that
+# ran out of work. Nothing else here is re-verified: sonnet and haiku are left at their
+# previous values because no measurement was taken against them today.
 _PRICE_TABLE: Tuple[Tuple[str, float, float], ...] = (
-    ("opus", 15.0, 75.0),
+    ("opus", 5.0, 25.0),
     ("sonnet", 3.0, 15.0),
     ("haiku", 0.80, 4.0),
 )
+# Deliberately the LIST rate rather than any row above: this is what an UNRECOGNIZED
+# model costs, and the only safe assumption about a model nobody has priced is that it
+# is expensive. It is no longer "the Opus rate" and should not be re-tied to it.
 _DEFAULT_PRICE = (15.0, 75.0)
 
 

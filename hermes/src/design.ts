@@ -368,7 +368,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     .filter((s) => s.arm !== PINNED_ARM)
     .reduce<Record<string, number>>((a, s) => ((a[s.arm] = (a[s.arm] ?? 0) + 1), a), {});
   decision(
-    `FORMAT MIX: ${nPinned}/${specs.length} slot(s) run ${PINNED_ARM} (3 mixed questions, cold-plate open, ` +
+    `FORMAT MIX: ${nPinned}/${specs.length} slot(s) run ${PINNED_ARM} (2 mixed questions, cold-plate open, ` +
       `${defaults.narration} narration, ${defaults.ending} ending, 5s, short counter); ` +
       `${specs.length - nPinned}/${specs.length} run the exploration slice ` +
       `(${Object.entries(exploreTally).map(([a, n]) => `${a} x${n}`).join(", ") || "none"}) ` +

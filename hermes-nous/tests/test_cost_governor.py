@@ -114,10 +114,13 @@ def test_limits_env_overrides_and_garbage():
 
 
 def test_price_table_and_blended_override():
-    assert cg.price_for_model("claude-opus-4-8") == (15.0, 75.0)
+    # The gateway bills Opus at 5/25, not the 15/75 list rate this table used to carry.
+    assert cg.price_for_model("claude-opus-5") == (5.0, 25.0)
     assert cg.price_for_model("claude-sonnet-5") == (3.0, 15.0)
     assert cg.price_for_model("claude-haiku-4-5") == (0.80, 4.0)
-    assert cg.price_for_model("some-unknown-model") == (15.0, 75.0)  # unknown → Opus (over-count)
+    # An unknown model is still priced at the LIST rate, which is now HIGHER than any
+    # row in the table — the point is to over-count something nobody has measured.
+    assert cg.price_for_model("some-unknown-model") == (15.0, 75.0)
     blended = cg.price_for_model("haiku", {"SFFS_COST_PRICE_IN_PER_MTOK": "1", "SFFS_COST_PRICE_OUT_PER_MTOK": "2"})
     assert blended == (1.0, 2.0)
 
@@ -126,8 +129,10 @@ def test_estimate_tokens_and_cost():
     assert cg.estimate_tokens("") == 0
     assert cg.estimate_tokens(None) == 0
     assert cg.estimate_tokens("a" * 40) == 10  # 40 chars / 4
-    # 1M in + 1M out at opus = 15 + 75 = 90
-    assert cg.estimate_cost_usd(1_000_000, 1_000_000, "opus") == pytest.approx(90.0)
+    # 1M in + 1M out at opus = 5 + 25 = 30, at the rate the gateway actually bills.
+    # It read 90 while the table carried the 15/75 list rate, which is why the daily
+    # budget halted the loop at roughly a third of the spend it was configured for.
+    assert cg.estimate_cost_usd(1_000_000, 1_000_000, "opus") == pytest.approx(30.0)
 
 
 # ===========================================================================
@@ -288,7 +293,7 @@ def test_pre_tool_call_never_raises_on_garbage(tmp_path, monkeypatch):
 def test_post_llm_call_records_usage(tmp_path, monkeypatch):
     monkeypatch.setenv("SFFS_COST_GOVERNOR_DIR", str(tmp_path))
     cg.post_llm_call(
-        model="claude-opus-4-8",
+        model="claude-opus-5",
         conversation_history=[{"role": "user", "content": "x" * 400}],
         assistant_response="y" * 800,
     )

@@ -174,7 +174,15 @@ export function planSlots(
       instantFromWallClock(`${day}T${String(WINDOW_OPEN_HOUR).padStart(2, "0")}:00:00`, CONFIG.METRICOOL_TZ),
     );
     const fromMs = Math.max(now.getTime(), windowOpen.getTime());
-    const got = nextSlots(take, { seed: `${seed}|${day}`, platform: network, avoid, fromMs });
+    // Pass the NETWORK'S OWN floor. Without it the scheduler used a hardcoded 56 for
+    // every platform, so TikTok's configured 240 never applied to a single post.
+    const got = nextSlots(take, {
+      seed: `${seed}|${day}`,
+      platform: network,
+      avoid,
+      fromMs,
+      minGapMin: CONFIG.PLATFORM_POLICY[network]?.minGapMinutes,
+    });
     if (!got.length) continue;
     // Charge every slot to the date it ACTUALLY falls on, and drop any that would push
     // a date past its cap. A dropped slot is not lost — the horizon walks on and the

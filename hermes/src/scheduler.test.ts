@@ -1,6 +1,6 @@
 /**
  * scheduler.test.ts — proves the post-kickoff scheduling policy: every slot lands
- * in the 7:00am–3:00am America/Chicago window (NOTHING 3–7am), minutes are odd +
+ * in the 7:00am–1:00am America/Chicago window (NOTHING 1–7am), minutes are odd +
  * jittered, gaps are irregular, slots are distinct + increasing, and IG != TikTok.
  */
 import { test } from "node:test";
@@ -9,20 +9,32 @@ import { nextSlots, isWithinWindow, chicagoHour, MIN_GAP_MIN, WINDOW_OPEN_HOUR, 
 
 const dayFrom = Date.UTC(2026, 6, 20, 12, 0, 0); // fixed base (July 2026 = CDT)
 
-test("every slot is inside the window — NOTHING between 3:00am and 7:00am CST", () => {
+test("every slot is inside the window — NOTHING between 1:00am and 7:00am CST", () => {
+  // Asking for 60 is a window-containment stress, not an operating count. It now comes
+  // back SHORT on purpose: 60 posts cannot sit in an 18-hour window at a 56-minute
+  // floor, and the scheduler returns fewer rather than cramming them. What must hold is
+  // that every slot it DOES return is inside the window and clears the floor.
   const slots = nextSlots(60, { seed: "run-x", platform: "instagram", fromMs: dayFrom });
-  assert.equal(slots.length, 60);
+  assert.ok(slots.length > 0 && slots.length <= 60, `got ${slots.length}`);
+  assert.ok(
+    slots.length <= Math.floor((24 - WINDOW_OPEN_HOUR + WINDOW_CLOSE_HOUR) * 60 / MIN_GAP_MIN) + 1,
+    `${slots.length} slots cannot fit the window at a ${MIN_GAP_MIN}min floor`,
+  );
+  for (let i = 1; i < slots.length; i++) {
+    const gap = (Date.parse(slots[i]) - Date.parse(slots[i - 1])) / 60_000;
+    assert.ok(gap >= MIN_GAP_MIN, `gap ${gap}min < ${MIN_GAP_MIN}min`);
+  }
   for (const iso of slots) {
     const d = new Date(iso);
     const h = chicagoHour(d);
-    assert.ok(h < 3 || h >= 7, `slot ${iso} -> Chicago hour ${h} must be <3 or >=7 (never 3..6)`);
+    assert.ok(h < 1 || h >= 7, `slot ${iso} -> Chicago hour ${h} must be <1 or >=7 (never 1..6)`);
     assert.ok(isWithinWindow(d), `${iso} within window`);
   }
 });
 
-// ── the 7am–3am window (extended from 7am–1am) ───────────────────────────────
+// ── the 7am–1am window (pulled back in from 7am–3am) ─────────────────────────
 
-test("window boundaries: 02:59 is postable, 03:00 and 06:59 are not, 07:00 is", () => {
+test("window boundaries: 00:59 is postable, 01:00 and 06:59 are not, 07:00 is", () => {
   const at = (h: number, mi: number): Date => {
     // walk from a known CDT noon to the requested Chicago wall-clock hour
     let ms = dayFrom;
@@ -33,28 +45,31 @@ test("window boundaries: 02:59 is postable, 03:00 and 06:59 are not, 07:00 is", 
     throw new Error(`could not construct ${h}:${mi} Chicago`);
   };
   assert.equal(WINDOW_OPEN_HOUR, 7);
-  assert.equal(WINDOW_CLOSE_HOUR, 3);
-  assert.ok(isWithinWindow(at(2, 59)), "02:59 is the tail of the window");
-  assert.ok(!isWithinWindow(at(3, 0)), "03:00 is the close (exclusive)");
+  assert.equal(WINDOW_CLOSE_HOUR, 1);
+  assert.ok(isWithinWindow(at(0, 59)), "00:59 is the tail of the window");
+  assert.ok(!isWithinWindow(at(1, 0)), "01:00 is the close (exclusive)");
+  assert.ok(!isWithinWindow(at(2, 0)), "02:00 is a dead hour again");
   assert.ok(!isWithinWindow(at(6, 59)), "06:59 is still a dead hour");
   assert.ok(isWithinWindow(at(7, 0)), "07:00 opens the window");
 });
 
-test("the extended tail is actually USED — a full batch reaches past 1:00am", () => {
-  // 12 posts spread over the 20h window must place their last slot after 01:00,
-  // which the old 7am-1am window could not produce.
-  const slots = nextSlots(12, { seed: "tail", platform: "tiktok", fromMs: dayFrom });
+// THE 1am-3am TAIL IS GONE ON PURPOSE. It was added to buy room for a 12/day grid
+// and it bought it in the emptiest hours on the clock: real posts landed at 1:00,
+// 2:00 and 2:39am Chicago. The cap is 11 and the 18h window holds 11 at the 56-minute
+// floor with room to spare, so the tail was spending slots for nothing.
+test("nothing lands in the retired 1am-3am tail", () => {
+  const slots = nextSlots(11, { seed: "tail", platform: "tiktok", fromMs: dayFrom });
   const hours = slots.map((s) => chicagoHour(new Date(s)));
   assert.ok(
-    hours.some((h) => h === 1 || h === 2),
-    `expected a slot in the new 1am-3am tail, got hours ${hours.join(",")}`,
+    !hours.some((h) => h === 1 || h === 2),
+    `expected NO slot in the retired 1am-3am tail, got hours ${hours.join(",")}`,
   );
 });
 
 test("a full daily batch keeps >= MIN_GAP_MIN between same-platform posts", () => {
-  // The 56-min invariant must hold for the real operating range (<= the 12/day cap)
+  // The 56-min invariant must hold for the real operating range (<= the 11/day cap)
   // on the plain even-distribution path, not only when `avoid` is supplied.
-  for (const count of [8, 10, 12]) {
+  for (const count of [8, 10, 11]) {
     const ms = nextSlots(count, { seed: `cap-${count}`, platform: "instagram", fromMs: dayFrom }).map((s) => Date.parse(s));
     for (let i = 1; i < ms.length; i++) {
       const gap = (ms[i] - ms[i - 1]) / 60_000;

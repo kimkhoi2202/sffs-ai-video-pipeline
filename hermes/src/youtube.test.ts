@@ -220,11 +220,16 @@ test("FIRST COMMENT: YouTube gets one, carrying its own vanity path", () => {
   assert.ok(!/[\u2014\u2013]/.test(c!), "no em or en dashes");
 });
 
-test("FIRST COMMENT: no other network gets one", () => {
-  // Instagram's is documented for FEED posts and this account posts Reels; TikTok is
-  // supported but deliberately not enabled until YouTube's is verified on a live post.
+test("FIRST COMMENT: TikTok gets one too, Instagram still does not", () => {
+  // TikTok was held back only until YouTube's had been seen on a live post, which it
+  // has been (13 scheduled rows carry one, read back through both endpoints on
+  // 2026-08-06). Instagram stays out: Metricool documents first comment for FEED posts
+  // and this account posts Reels, so it would most likely be accepted and then dropped
+  // in silence, which is worse than not sending it.
+  const tt = firstCommentFor("tiktok");
+  assert.ok(tt, "TikTok must get a first comment");
+  assert.ok(tt!.includes(vanityUrl("tiktok")), "it must carry TikTok's own vanity URL, not YouTube's");
   assert.equal(firstCommentFor("instagram"), undefined);
-  assert.equal(firstCommentFor("tiktok"), undefined);
 });
 
 test("FIRST COMMENT: the key is sent on YouTube and ABSENT elsewhere", () => {
