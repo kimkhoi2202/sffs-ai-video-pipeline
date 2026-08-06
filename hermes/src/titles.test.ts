@@ -6,7 +6,9 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { titleFromCaption, loadBrandVoice } from "./brand.ts";
+import { readFileSync } from "node:fs";
+import { titleFromCaption, loadBrandVoice, ruleCheckCopy } from "./brand.ts";
+import { CONFIG } from "./config.ts";
 import { altTextFor } from "./loopPublish.ts";
 import { YT_TITLE_MAX, TIKTOK_TITLE_MAX, buildCreateBody } from "./metricool.ts";
 
@@ -122,4 +124,40 @@ test("the corpus loader hands the judge CAPTIONS, not the file's header metadata
   assert.ok(!/^\d{4}-\d{2}-\d{2}$/m.test(joined), "a bare date leaked in as an example");
   // And it must actually contain the signature device, which every real example carries.
   assert.match(joined, /SMART|FART/i);
+});
+
+// ── the corpus must not contradict the gate it calibrates ───────────────────
+//
+// The 20 caption examples closed on "comment your score" and "follow for more" while
+// HARD_RULES had moved to the free test, so they would have FAILED the very gate they
+// exist to calibrate. Two of them were also carrying two emoji beyond the brand glyph
+// and had been failing the deterministic rule since before that. This pins the
+// deterministic half permanently; the LLM half is checked by hand against the live
+// judge, since a unit test cannot reach it.
+
+test("every brand-voice example passes the deterministic rules it calibrates", () => {
+  const bv = loadBrandVoice();
+  assert.ok(bv.examples.length > 0, "no examples loaded");
+  const bad = bv.examples
+    .map((e) => ({ e, r: ruleCheckCopy(e) }))
+    .filter((x) => !x.r.pass)
+    // Legacy WEBSITE strings are preserved verbatim WITH their em dashes on purpose
+    // (see the corpus notes); they are not social copy and are not what the gate grades.
+    .filter((x) => !x.r.violations.every((v) => v.includes("dash")));
+  assert.deepEqual(
+    bad.map((x) => `${x.r.violations.join("; ")} :: ${x.e.slice(0, 60)}`),
+    [],
+    "an example the judge is shown would itself be rejected",
+  );
+});
+
+test("no caption example asks for a follow, and every one closes on the test", () => {
+  const raw = JSON.parse(readFileSync(CONFIG.BRAND_EXAMPLES, "utf8"));
+  const caps: string[] = raw.categories.caption.examples.map((e: any) => e.text);
+  assert.equal(caps.length, 20, "the caption surface count moved; update the corpus counters too");
+  for (const c of caps) {
+    assert.ok(!/\bfollow (for more|so you)\b/i.test(c), `still asks for a follow: ${c.slice(0, 70)}`);
+    assert.ok(/take the full test/i.test(c), `never closes on the test: ${c.slice(0, 70)}`);
+    assert.ok(!/\ball 3\b/i.test(c), `still hard-codes a 3-question format: ${c.slice(0, 70)}`);
+  }
 });

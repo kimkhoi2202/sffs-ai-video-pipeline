@@ -1,6 +1,6 @@
 # SFFS brand voice - example library
 
-> **262 examples across 37 surfaces.** 230 are real, verbatim snippets mined from the SFFS website and video pipeline; the rest are user-approved comment replies plus an authored, rotating comment-reply bank (so replies never read as copy-paste). This is the training corpus the auto-replier and the caption / variant generators learn from. Companion to `brand-voice.md` (the principles + hard rules). Machine-readable mirror: `brand-voice-examples.json`.
+> **262 examples across 37 surfaces.** 230 are real snippets mined from the SFFS website and video pipeline, verbatim except the 20 `caption` examples, whose CLOSING ASK was revised on 2026-08-06 (comment/follow to the free test) so they stop contradicting the brand gate they calibrate; the remaining 32 are user-approved comment replies plus an authored, rotating comment-reply bank (so replies never read as copy-paste). This is the training corpus the auto-replier and the caption / variant generators learn from. Companion to `brand-voice.md` (the principles + hard rules). Machine-readable mirror: `brand-voice-examples.json`.
 
 Everything below is REAL copy pulled from the repos, labeled by surface. Prefer copying / recombining these over inventing new phrasing. A few legacy website strings contain em dashes (preserved verbatim as mined); do NOT reproduce em dashes in generated social copy - see `brand-voice.md`.
 
@@ -273,47 +273,47 @@ _FAQ answers. Honest, funny, never over-earnest. (Legacy site copy; a couple con
 
 ## caption  ·  20
 
-_REAL social post captions (TikTok + Instagram). Note the hook + emoji glyph + comment CTA + follow nudge + hashtags._
+_REAL social post captions (TikTok + Instagram). Note the hook + emoji glyph + a comment beat + a closing ask to take the free test + hashtags. The closing ask was revised 2026-08-06 from a comment/follow CTA to the free test, to match defaults.ts captionAsk(); everything else is verbatim as mined._
 
-- `SMART or FART? 🧠💨 Odd one out, figure analogy & a tricky number series. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
+- `SMART or FART? 🧠💨 Odd one out, figure analogy & a tricky number series. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
   <sub>ready-to-post/01 caption.txt</sub>
-- `SMART or FART? 🧠💨 Word analogy, number series & figure series. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
+- `SMART or FART? 🧠💨 Word analogy, number series & figure series. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
   <sub>ready-to-post/02 caption.txt</sub>
-- `SMART or FART? 🧠💨 Word analogy, dot position & number analogy. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
+- `SMART or FART? 🧠💨 Word analogy, dot position & number analogy. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
   <sub>ready-to-post/03 caption.txt</sub>
-- `SMART or FART? 🧠💨 Number series, odd one out & a sneaky puzzle. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
+- `SMART or FART? 🧠💨 Number series, odd one out & a sneaky puzzle. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
   <sub>ready-to-post/04 caption.txt</sub>
-- `SMART or FART? 🧠💨 Number series, word analogy & fill in the blank. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
+- `SMART or FART? 🧠💨 Number series, word analogy & fill in the blank. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia #braintest #puzzle`  
   <sub>ready-to-post/05 caption.txt</sub>
-- `Are you a SMART fella… or a FART smella? 🧠💨 /  / Only one way to find out. /  / 🔥 Brand new challenges EVERY day. / 👉 Follow so you don’t miss one /  / #brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella`  
+- `Are you a SMART fella… or a FART smella? 🧠💨 /  / Only one way to find out. /  / Brand new challenges EVERY day. / 👉 Take the full test at smartfellaorfartsmella.com /  / #brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella`  
   <sub>ab-database.json (brand intro post, multiline)</sub>
-- `Are you a SMART fella… or a FART smella? 🧠💨 Only one way to find out. 🔥 Brand new challenges EVERY day. 👉 Follow so you don't miss one #brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella`  
+- `Are you a SMART fella… or a FART smella? 🧠💨 Only one way to find out. Brand new challenges EVERY day. 👉 Take the full test at smartfellaorfartsmella.com #brainteaser #iqtest #riddles #puzzles #smartfellaorfartsmella`  
   <sub>ab-database.json (brand intro post, single line)</sub>
-- `SMART or FART? 🧠💨 Word analogy, dot position & number analogy. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia`  
+- `SMART or FART? 🧠💨 Word analogy, dot position & number analogy. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia`  
   <sub>ab-database.json</sub>
-- `SMART or FART? 🧠💨 Odd one out, figure analogy & a tricky number series. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia`  
+- `SMART or FART? 🧠💨 Odd one out, figure analogy & a tricky number series. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia`  
   <sub>ab-database.json</sub>
-- `SMART or FART? 🧠💨 Word analogy, number series & figure series. Can you get all 3? Comment your score 👇 #smartfellaorfartsmella #iqtest #brainteaser #quiz #puzzle`  
+- `SMART or FART? 🧠💨 Word analogy, number series & figure series. Can you get them all? Comment your score 👇 then take the full test on the site #smartfellaorfartsmella #iqtest #brainteaser #quiz #puzzle`  
   <sub>ab-database.json</sub>
-- `SMART or FART? 🧠💨 Number series, word analogy & fill in the blank. Can you get all 3? Comment your score 👇 #smartorfart #iqtest #brainteaser #quiz #trivia`  
+- `SMART or FART? 🧠💨 Number series, word analogy & fill in the blank. Can you get them all? Comment your score 👇 then take the full test on the site #smartorfart #iqtest #brainteaser #quiz #trivia`  
   <sub>ab-database.json</sub>
-- `SMART or FART? 🧠💨 Word analogy, dot position & number analogy. Can you get all 3? Comment your score 👇 #riddlefun #brainteaser #puzzletok #mindgames #riddles`  
+- `SMART or FART? 🧠💨 Word analogy, dot position & number analogy. Can you get them all? Comment your score 👇 then take the full test on the site #riddlefun #brainteaser #puzzletok #mindgames #riddles`  
   <sub>ab-database.json</sub>
-- `The last one is tricky! Comment your answer below👇 #quiz #trivia #braintest #puzzle #logic`  
+- `The last one is tricky! Comment your answer below👇 then take the full test on the site #quiz #trivia #braintest #puzzle #logic`  
   <sub>ab-database.json (cliffhanger)</sub>
-- `This one’s tricky! Comment your answer below👇 #quiz #trivia #braintest #puzzle #logic`  
+- `This one’s tricky! Comment your answer below👇 then take the full test on the site #quiz #trivia #braintest #puzzle #logic`  
   <sub>ab-database.json (cliffhanger)</sub>
-- `Did you get the last question? Comment your answer below 👇 #quiz #logic #smart #challenge #brainteaser`  
+- `Did you get the last question? Comment your answer below 👇 then take the full test on the site #quiz #logic #smart #challenge #brainteaser`  
   <sub>ab-database.json (cliffhanger)</sub>
-- `Are you SMART or FART? 🧠💨 Comment your answer below 👇 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames`  
+- `Are you SMART or FART? 🧠💨 Comment your answer below 👇 then take the full test on the site!! #smartorfart #iqtest #puzzletok #riddles #mindgames`  
   <sub>ab-database.json (no-answer variant)</sub>
-- `Are you SMART or FART? 🧠💨 Comment your answer below 👇 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser`  
+- `Are you SMART or FART? 🧠💨 Comment your answer below 👇 then take the full test on the site!! #fyp #foryou #quiz #trivia #brainteaser`  
   <sub>ab-database.json (no-answer variant)</sub>
-- `Are you SMART or FART? 🧠💨 Comment your score below 👇 and follow for more!! #fyp #foryou #quiz #trivia #brainteaser`  
+- `Are you SMART or FART? 🧠💨 Comment your score below 👇 then take the full test on the site!! #fyp #foryou #quiz #trivia #brainteaser`  
   <sub>ab-database.json (score-CTA)</sub>
-- `Are you SMART or FART? 🧠💨 Comment your score below 👇 and follow for more!! #quiztime #braintest #canyoupass #puzzle #trivianight`  
+- `Are you SMART or FART? 🧠💨 Comment your score below 👇 then take the full test on the site!! #quiztime #braintest #canyoupass #puzzle #trivianight`  
   <sub>ab-database.json (score-CTA)</sub>
-- `Are you SMART or FART? 🧠💨 Comment your score below 👇 and follow for more!! #smartorfart #iqtest #puzzletok #riddles #mindgames`  
+- `Are you SMART or FART? 🧠💨 Comment your score below 👇 then take the full test on the site!! #smartorfart #iqtest #puzzletok #riddles #mindgames`  
   <sub>ab-database.json (score-CTA)</sub>
 
 ## caption-template  ·  3
