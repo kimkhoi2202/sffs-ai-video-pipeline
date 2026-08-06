@@ -48,6 +48,7 @@
  * This module NEVER logs the token and never puts it in a query string.
  */
 import { CONFIG } from "./config.ts";
+import { titleFromCaption } from "./brand.ts";
 import { info, warn } from "./log.ts";
 
 const V2 = "/v2";
@@ -225,6 +226,8 @@ export type McNetwork = "instagram" | "youtube" | "tiktok";
 
 /** YouTube's hard title ceiling. Over this and the upload is rejected. */
 export const YT_TITLE_MAX = 100;
+/** TikTok's title cap. Its own constant so the 90 is never a bare literal again. */
+export const TIKTOK_TITLE_MAX = 90;
 
 /**
  * A YouTube title from the post text.
@@ -235,18 +238,11 @@ export const YT_TITLE_MAX = 100;
  * collapsed to one line, and cut on a word boundary. Falls back to the brand line
  * rather than ever producing an empty title, which YouTube also rejects.
  */
+/** Kept as the named YouTube entry point; the trimming itself is shared with TikTok,
+ *  and now stops on a SENTENCE boundary rather than a word boundary, so a derived title
+ *  is a finished thought instead of a line ending on the word "comment". */
 export function youtubeTitleFrom(text: string, max = YT_TITLE_MAX): string {
-  const firstLine = String(text ?? "").split(/\r?\n/).find((l) => l.trim()) ?? "";
-  let t = firstLine
-    .replace(/\s*#[\p{L}\p{N}_]+/gu, " ") // drop hashtags anywhere on the line
-    .replace(/https?:\/\/\S+/g, " ") // and any bare url
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!t) t = "Smart Fella or Fart Smella?";
-  if (t.length <= max) return t;
-  const cut = t.slice(0, max);
-  const sp = cut.lastIndexOf(" ");
-  return (sp > max * 0.6 ? cut.slice(0, sp) : cut).trim();
+  return titleFromCaption(text, max);
 }
 
 export interface CreatePostInput {
@@ -267,6 +263,13 @@ export interface CreatePostInput {
   videoCoverMilliseconds?: number;
   /** TikTok requires a title; also used as the TikTok caption headline. */
   tiktokTitle?: string;
+  /**
+   * Alt text for the media. Null on every video the loop has ever posted, while the
+   * older image posts carried real text — so this is a regression rather than a gap.
+   * It describes what is ON the video (the questions), which is the only description
+   * that helps someone who cannot see it.
+   */
+  mediaAltText?: string;
   tiktokPrivacy?: string;
   /**
    * YouTube title — a SEPARATE field from `text`. On a YouTube post `text` becomes the
@@ -294,7 +297,7 @@ export function buildCreateBody(input: CreatePostInput): Record<string, unknown>
     text: input.text,
     providers,
     media: [input.mediaUrl],
-    mediaAltText: [],
+    mediaAltText: input.mediaAltText ? [input.mediaAltText] : [],
     saveExternalMediaFiles: true,
     autoPublish: input.autoPublish ?? true,
     draft: input.draft ?? false,
@@ -336,7 +339,7 @@ export function buildCreateBody(input: CreatePostInput): Record<string, unknown>
     // difference that made showReelOnFeed worth pinning down on Instagram.
     body.youtubeData = {
       // The post text is the DESCRIPTION on YouTube; the title is its own field.
-      title: (input.youtubeTitle ?? youtubeTitleFrom(input.text)).slice(0, YT_TITLE_MAX),
+      title: (input.youtubeTitle ?? titleFromCaption(input.text, YT_TITLE_MAX)).slice(0, YT_TITLE_MAX),
       // "short" is what puts it in the Shorts shelf. Metricool's own videoType enum
       // (video|short|unknown) is lowercase, so this is too.
       type: CONFIG.YOUTUBE.type,
@@ -357,7 +360,11 @@ export function buildCreateBody(input: CreatePostInput): Record<string, unknown>
       disableStitch: false,
       commercialContentThirdParty: false,
       commercialContentOwnBrand: false,
-      title: (input.tiktokTitle ?? input.text).slice(0, 90),
+      // WAS `input.text.slice(0, 90)`, a raw cut of the WHOLE caption — newlines, URL
+      // and all — so the title arrived ending on a blank line with the link chopped in
+      // half. It gets the same written title YouTube gets, and the same sentence-aware
+      // derivation if none was supplied.
+      title: (input.tiktokTitle ?? titleFromCaption(input.text, TIKTOK_TITLE_MAX)).slice(0, TIKTOK_TITLE_MAX),
       autoAddMusic: false,
     };
   }

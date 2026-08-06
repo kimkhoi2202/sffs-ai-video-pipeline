@@ -60,12 +60,42 @@ export function loadBrandVoice(): BrandVoice {
   if (existsSync(CONFIG.BRAND_EXAMPLES)) {
     try {
       const raw = JSON.parse(readFileSync(CONFIG.BRAND_EXAMPLES, "utf8"));
-      const collect = (v: any) => {
-        if (typeof v === "string") examples.push(v);
-        else if (Array.isArray(v)) v.forEach(collect);
-        else if (v && typeof v === "object") Object.values(v).forEach(collect);
-      };
-      collect(raw);
+      // READ THE EXAMPLES, NOT THE FILE. This used to walk the whole JSON collecting
+      // every string anywhere in it, then take the first 60 — which are the file's
+      // HEADER: the campaign name, the acronym, a generated_at date, the audience
+      // paragraph, two copies of the account handle. Of the 60 strings the judge was
+      // handed, ZERO were captions. It has been grading brand voice against metadata.
+      //
+      // The real corpus is 262 approved examples under categories.<surface>.examples,
+      // and only those are read now. `surface` and `description` are labels ABOUT the
+      // examples and stay out.
+      const cats = raw?.categories;
+      if (cats && typeof cats === "object") {
+        // Callers slice (gateCopy takes 20), so ORDER decides what actually arrives.
+        // The surfaces the copy gate judges come first; the rest follow so nothing
+        // approved is thrown away, it is just further down.
+        const FIRST = [
+          "caption", "caption-template", "hook", "signature-phrase", "endcard",
+          "on-screen", "question-onscreen", "explanation-onscreen", "verdict", "cta",
+        ];
+        const seen = new Set<string>();
+        const take = (name: string) => {
+          if (seen.has(name)) return;
+          seen.add(name);
+          const ex = (cats as Record<string, any>)[name]?.examples;
+          if (!Array.isArray(ex)) return;
+          for (const e of ex) {
+            // An example is `{ text, source }`, where `source` is the FILE it was
+            // lifted from ("ready-to-post/01 caption.txt"). Only `text` is copy. The
+            // old recursive flatten took both, so filenames were being handed to the
+            // judge as examples of the brand's voice alongside the header metadata.
+            const t = typeof e === "string" ? e : typeof e?.text === "string" ? e.text : null;
+            if (t) examples.push(t);
+          }
+        };
+        FIRST.forEach(take);
+        Object.keys(cats).forEach(take);
+      }
     } catch {
       /* ignore malformed */
     }
@@ -76,6 +106,42 @@ export function loadBrandVoice(): BrandVoice {
     hardRules: HARD_RULES,
     signatureDevice: "SMART FELLA (praise) vs FART SMELLA '(for now)' (miss).",
   };
+}
+
+/**
+ * Derive a standalone title from a caption, on a SENTENCE boundary where one exists.
+ *
+ * This is the fallback path only — a real title is written, not derived (design.ts
+ * makeTitle). But when the model cannot be reached the derived one still has to read
+ * like a finished thought, because it goes out on the video either way. The old
+ * derivations cut at a character count and shipped "...99% of people mess this up 👀
+ * comment" on YouTube and a bare trailing newline on TikTok.
+ *
+ * Order of preference: a whole sentence that fits, then a whole clause, then a whole
+ * word. Hashtags, URLs and line breaks are removed first — none of them belong in a
+ * title on either network.
+ */
+export function titleFromCaption(caption: string, max: number): string {
+  const flat = String(caption ?? "")
+    .split(/\r?\n/)
+    .find((l) => l.trim())
+    ?.replace(/\s*#[\p{L}\p{N}_]+/gu, " ")
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim() ?? "";
+  if (!flat) return "Smart Fella or Fart Smella?";
+  if (flat.length <= max) return flat;
+
+  // A whole sentence, then a whole clause, then a whole word. Each is only accepted if
+  // it keeps enough of the line to still be a title rather than a fragment.
+  for (const re of [/[.!?](?=\s|$)/g, /[,;:](?=\s)/g]) {
+    let best = -1;
+    for (const m of flat.slice(0, max + 1).matchAll(re)) best = m.index ?? best;
+    if (best > max * 0.4) return flat.slice(0, best + 1).replace(/[,;:]$/, "").trim();
+  }
+  const cut = flat.slice(0, max);
+  const sp = cut.lastIndexOf(" ");
+  return (sp > max * 0.5 ? cut.slice(0, sp) : cut).trim();
 }
 
 /** Deterministic, rule-based copy checks (the LLM gate adds judgement on top). */

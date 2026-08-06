@@ -1,5 +1,5 @@
 {
-  "note": "SFFS branded 'SMART FELLA OR FART SMELLA?' cover thumbnails (Remotion ThumbV 1080x1920), one per punchy brand color, direct-uploaded to Publer (POST /media direct_upload,in_library). Used by the loop posting step (hermes/src/covers.ts) + the scheduled-cover backfill. Re-render via remotion ThumbV + re-upload if Publer purges these media ids.",
+  "note": "SFFS branded \"SMART FELLA OR FART SMELLA?\" cover thumbnails (Remotion ThumbV 1080x1920), one per punchy brand colour. THE LIVE BLOCK IS \"hosted\": durable public URLs on static.metricool.com, read by hermes/src/covers.ts hostedCoverUrlFor() and sent as videoThumbnailUrl. To re-render or re-host: npx remotion render ThumbV, then node ops/host_covers.mjs, which uploads each colour to Metricool and rewrites \"hosted\" in place.",
   "rendered_at": "2026-07-24T21:27:46.158Z",
   "colors": {
     "yellow": "#fce552",
@@ -42,6 +42,9 @@
     "green": "https://static.metricool.com/planner/202607/6617222-file-2603382616901613222.png",
     "pink": "https://static.metricool.com/planner/202607/6617222-file-1185292546013471761.png"
   },
-  "hosted_note": "Durable PUBLIC cover URLs on static.metricool.com. Metricool stores videoThumbnailUrl verbatim (it does NOT rehost it, unlike media), so the cover URL must stay valid for the life of the scheduled post. cdn.publer.com 403s without Publer's Referer and our S3 bucket is private with role-signed URLs that expire, so the covers are parked on Metricool's own public CDN by uploading each as throwaway media. Written by tools/host_covers.mjs.",
-  "hosted_at": "2026-07-26T23:10:30.765Z"
+  "hosted_note": "Durable PUBLIC cover URLs on static.metricool.com. Metricool stores videoThumbnailUrl verbatim (it does NOT rehost it, unlike media), so the cover URL must stay valid for the life of the scheduled post. cdn.publer.com 403s without Publer's Referer and our S3 bucket is private with role-signed URLs that expire, so the covers are parked on Metricool's own public CDN by uploading each as throwaway media. Written by ops/host_covers.mjs (it is in ops/, not tools/).",
+  "hosted_at": "2026-07-26T23:10:30.765Z",
+  "covers_note": "DEAD. Publer media ids and cdn.publer.com URLs from the Publer era, kept only as provenance for posts published before the 2026-07-28 cutover. Publer is no longer part of this pipeline and these URLs 403 without a Publer Referer (re-checked 2026-08-06T17:20:28Z: 403). Nothing in the live path reads them - coverMediaFor() is referenced only by covers.test.ts. Do NOT follow the old instruction to \"re-upload if Publer purges these media ids\"; there is no Publer account to re-upload to.",
+  "hosted_verified_at": "2026-08-06T17:20:28Z",
+  "hosted_verified_note": "All five hosted cover URLs returned HTTP 200 image/png on 2026-08-06T17:20:28Z."
 }

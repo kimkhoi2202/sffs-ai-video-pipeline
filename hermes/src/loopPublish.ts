@@ -33,7 +33,8 @@ import { CONFIG } from "./config.ts";
 import { info, warn } from "./log.ts";
 import { nextSlots, instantFromWallClock, WINDOW_OPEN_HOUR } from "./scheduler.ts";
 import { decide, NETWORKS, perDayFor, type Network } from "./postingPolicy.ts";
-import { createPost, listPosts, youtubeTitleFrom, type McPost } from "./metricool.ts";
+import { createPost, listPosts, youtubeTitleFrom, TIKTOK_TITLE_MAX, type McPost } from "./metricool.ts";
+import { titleFromCaption } from "./brand.ts";
 import { hostedCoverUrlFor, coverMomentMs } from "./covers.ts";
 import { captionForNetwork, firstCommentFor } from "./platformCaption.ts";
 import { publishGate } from "./publishGate.ts";
@@ -209,11 +210,42 @@ export function planDay(count: number, network: Network, rows: McPost[], seed: s
   return { day: first?.day ?? "", times: p.times, room: first?.room ?? 0 };
 }
 
+/**
+ * Alt text describing what is actually ON the video, built from the questions it asks.
+ *
+ * Every video the loop has posted carried `mediaAltText: []` while the older image posts
+ * carried real text, so this is a regression. What helps someone who cannot see the
+ * video is the QUESTIONS — that is the whole content — not a restatement of the caption,
+ * which they can already read.
+ *
+ * Deliberately not an LLM call: the questions are already written, already gated, and
+ * already in hand, so generating this is a formatting job and a model could only make it
+ * wrong. Answers are left out; the video withholds at least one on purpose.
+ */
+export function altTextFor(questions: HermesQ[]): string {
+  const qs = (questions ?? []).filter((q) => q?.prompt);
+  if (!qs.length) return "Smart Fella or Fart Smella brain-teaser quiz video.";
+  const parts = qs.map((q) => {
+    const opts = Array.isArray(q.options) && q.options.length ? ` Options: ${q.options.join(", ")}.` : "";
+    return `${String(q.prompt).replace(/\s+/g, " ").trim()}${opts}`;
+  });
+  const body = `Brain-teaser quiz video with ${qs.length} question${qs.length === 1 ? "" : "s"}. ${parts.join(" ")}`;
+  // Alt text is read aloud end to end by a screen reader, so an over-long one is worse
+  // than a trimmed one. Trim on a sentence boundary, never mid-question.
+  const MAX = 420;
+  if (body.length <= MAX) return body;
+  const cut = body.slice(0, MAX);
+  const stop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "));
+  return (stop > MAX * 0.4 ? cut.slice(0, stop + 1) : cut).trim();
+}
+
 export interface LoopPublishInput {
   runId: string;
   videoId: string;
   index: number;
   caption: string;
+  /** The purpose-written standalone title (design.ts makeTitle). */
+  title?: string;
   hashtagSet?: string;
   questions: HermesQ[];
   explanations: string[];
@@ -268,7 +300,13 @@ export async function publishAsDraft(input: LoopPublishInput): Promise<LoopDraft
     networks: [input.network],
     // On YouTube `text` above is the DESCRIPTION and the title is its own 100-char
     // field. Derived from the caption's first line so the two stay in step.
-    youtubeTitle: input.network === "youtube" ? youtubeTitleFrom(caption) : undefined,
+    // The WRITTEN title (design.ts makeTitle), not a slice of the caption. Both
+    // networks get the same one: it is written to fit under TikTok's 90 as well as
+    // YouTube's 100, so neither platform truncates it. Falling back to a derivation
+    // only when the planner produced no title at all.
+    youtubeTitle: input.network === "youtube" ? (input.title || youtubeTitleFrom(caption)) : undefined,
+    tiktokTitle: input.network === "tiktok" ? (input.title || titleFromCaption(caption, TIKTOK_TITLE_MAX)) : undefined,
+    mediaAltText: altTextFor(input.questions),
     videoCoverMilliseconds: coverMs ?? undefined,
     // Instagram ignores the offset and serves frame zero, so the EXPLICIT thumbnail is
     // the one that actually decides what a scroller sees on the grid. Sent on YouTube

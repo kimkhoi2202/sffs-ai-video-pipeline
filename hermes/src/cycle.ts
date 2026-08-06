@@ -328,6 +328,7 @@ async function publishVideo(v: VideoPlan, sched: SchedCtx, slotIndex: number): P
       videoId: v.id,
       index: v.index,
       caption: v.caption,
+      title: v.title,
       hashtagSet: v.hashtag_set,
       questions: v.questions,
       explanations: mapped.explanations ?? [],

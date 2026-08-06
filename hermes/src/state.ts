@@ -163,6 +163,15 @@ export interface VideoPlan {
    * the model and hoping the failure reproduces.
    */
   caption_fallback_reasons?: string[];
+  /**
+   * The purpose-written standalone title, used as the YouTube title and the TikTok
+   * title. Separate from `caption` because it is a different job: it stands alone in a
+   * feed with no body copy under it. Both networks used to derive one by slicing the
+   * caption, which is how a title ended on the word "comment".
+   */
+  title?: string;
+  /** `llm:<model>` or `fallback` (derived from the caption on a sentence boundary). */
+  title_source?: string;
   hashtag_set: string;
   questions: HermesQ[];
   gates: Record<string, GateResult>;

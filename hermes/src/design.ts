@@ -23,7 +23,7 @@ import { readJSON, type HermesQ, type VideoPlan } from "./state.ts";
 import { candidateQuestions } from "./questions.ts";
 import { gateCopy } from "./gates.ts";
 import { chat } from "./llm.ts";
-import { ruleCheckCopy } from "./brand.ts";
+import { ruleCheckCopy, titleFromCaption } from "./brand.ts";
 import { CONFIG } from "./config.ts";
 import { info, decision, warn } from "./log.ts";
 import { contentDefaults, captionAsk, captionEngagementBeat, defaultOutro, type RevealMode, type ContentDefaults } from "./defaults.ts";
@@ -150,6 +150,71 @@ async function makeCaption(
     }
   }
   return { caption: fallbackCaption(reveal, tags), source: "fallback", failures };
+}
+
+/**
+ * A TITLE IS NOT A SHORTENED CAPTION, WHICH IS WHY IT IS WRITTEN AND NOT SLICED.
+ *
+ * Both networks were deriving one by cutting: YouTube took the caption's first line and
+ * chopped it at 100, landing on things like "...99% of people mess this up 👀 comment",
+ * and TikTok sliced the WHOLE caption at 90 — newlines, URL and all — so it ended on a
+ * bare blank line with the link gone. Older TikTok posts had real titles, so this was a
+ * regression, not a gap.
+ *
+ * The job is different from the caption's. A caption sits under the video with the video
+ * above it and can afford to open on a stat and close on a CTA. A title has to stand
+ * alone in a feed, survive being cut off by the platform, and carry the hook with no body
+ * copy underneath. So it front-loads the puzzle, drops the CTA and the URL, and is short
+ * enough that neither network truncates it at all.
+ */
+const TITLE_MAX = 85; // under YouTube's 100 AND TikTok's 90, so neither ever cuts it.
+
+async function makeTitle(questions: HermesQ[], caption: string): Promise<{ title: string; source: string }> {
+  const prompts = questions.map((q, i) => `${i + 1}. ${q.prompt}`).join("\n");
+  const system =
+    "You write TITLES for 'Smart Fella or Fart Smella', a Gen-Z brain-quiz brand. Voice: concise, funny, " +
+    "lowercase-casual, kid-safe, NO em or en dashes, at most ONE emoji beyond the \u{1F9E0}\u{1F4A8} logo, no AI-slop. " +
+    "Signature: SMART FELLA (smart) vs FART SMELLA (miss). Difficulty puffery about the puzzle is house style " +
+    "and needs no substantiation ('97% get this wrong'). NEVER claim anything about the product or the viewer's " +
+    "outcome - see compliance.md section 3.";
+  const user =
+    `Write ONE title for a quiz short built on these questions:\n${prompts}\n\n` +
+    `A TITLE IS NOT A CAPTION. It stands alone in a feed with no body copy under it, so it must make sense by ` +
+    `itself and put the interesting part FIRST in case the platform cuts it off. ` +
+    `Hard limit ${TITLE_MAX} characters. ONE line. No hashtags, no URL, no line breaks. ` +
+    `Do NOT ask for a comment, a follow or a click, and do NOT repeat this caption: "${caption.split("\n")[0]}". ` +
+    `Return ONLY the title text.`;
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const raw = await chat(system, user, {
+        model: CONFIG.CAPTION_MODEL,
+        fallbackModel: CONFIG.JUDGE_FALLBACK_MODEL,
+        maxTokens: CAPTION_MAX_TOKENS,
+        temperature: 0.8,
+      });
+      const text = raw
+        .trim()
+        .replace(/^["']|["']$/g, "")
+        .replace(/#[\w]+/g, "")
+        .replace(/https?:\/\/\S+/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (text.length === 0) { warn("title attempt discarded", { attempt, why: "empty-completion" }); continue; }
+      const rule = ruleCheckCopy(text);
+      if (!rule.pass) { warn("title attempt discarded", { attempt, why: "brand-rule", violations: rule.violations }); continue; }
+      if (text.length < 8 || text.length > TITLE_MAX) {
+        warn("title attempt discarded", { attempt, why: "length", chars: text.length });
+        continue;
+      }
+      return { title: text, source: `llm:${CONFIG.CAPTION_MODEL}` };
+    } catch (e) {
+      warn("title gen attempt failed", { attempt, err: e instanceof Error ? e.message : String(e) });
+    }
+  }
+  // The fallback is still WRITTEN rather than sliced: derive from the caption's first
+  // clause on a sentence boundary, so even the degraded path never ends mid-thought.
+  return { title: titleFromCaption(caption, TITLE_MAX), source: "fallback" };
 }
 
 const HASHTAG_ROTATION = ["A", "B", "C"];
@@ -414,6 +479,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
 
   const plans: VideoPlan[] = [];
   let captionFallbacks = 0;
+  let titleFallbacks = 0;
 
   for (let i = 0; i < specs.length; i++) {
     const spec = specs[i];
@@ -447,6 +513,8 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     const tags = CONFIG.HASHTAG_SETS[hashtagSet];
     const { caption, source, failures: captionFailures } = await makeCaption(resolved.reveal, tags);
     if (source === "fallback") captionFallbacks++;
+    const { title, source: titleSource } = await makeTitle(chosen, caption);
+    if (titleSource === "fallback") titleFallbacks++;
 
     const outro = defaultOutro(resolved.reveal);
 
@@ -476,6 +544,8 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
       rationale: spec.rationale,
       caption,
       caption_source: source,
+      title,
+      title_source: titleSource,
       // Only carried when the model lost, so a healthy run stays quiet. Every attempt's
       // discard reason, in order, which is what turns "it fell back" into "it fell back
       // because the completion came back empty three times".
@@ -549,6 +619,7 @@ export async function planBatch(runId: string, target: number): Promise<VideoPla
     pinned: nPinned,
     exploration: exploreTally,
     caption_fallbacks: captionFallbacks,
+    title_fallbacks: titleFallbacks,
   });
   void learnings;
   return plans;
