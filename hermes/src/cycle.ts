@@ -498,11 +498,29 @@ async function armedSchedule(runId: string, wave: number, count: number): Promis
   const slots: Record<string, string[]> = Object.fromEntries(NETWORKS.map((n) => [n, [] as string[]]));
   for (const a of allowed) {
     if (a.slots <= 0) continue;
-    // a.slots is the per-day cap; the batch itself may legitimately span days, so the
-    // request is for the whole batch and planSlots decides how it spreads.
-    const plan = planSlots(count, a.network, rows, seed);
+    // A NETWORK NEVER TAKES MORE OF A BATCH THAN ITS OWN DAILY ALLOWANCE.
+    //
+    // This used to request the WHOLE batch from every network and let planSlots spread
+    // it, which was harmless only while every network shared one perDay. It stopped
+    // being harmless the moment Instagram went to 15 and YouTube stayed at 11: the
+    // batch is sized by Instagram, so YouTube was asked for 15, placed 11, and spilled
+    // 4 onto tomorrow — where the next cycle did it again. Simulated over the five
+    // remaining days that is a YouTube backlog growing from 26 posts to 46, every one
+    // of them landing after the campaign closes, on a channel currently hard-blocking
+    // roughly eleven of every twelve uploads. Raising Instagram would have quietly
+    // raised YouTube, which is the one thing the volume decision ruled out.
+    //
+    // `a.slots` is already the right number: decide() returns each network's own perDay
+    // capped by the live record budget. Bounding the REQUEST changes nothing when the
+    // batch fits (min(11, 11) === 11, so every prior cycle is byte-identical) and does
+    // not disable spill — planSlots still walks the horizon when a day is genuinely
+    // full, which is what TikTok's 4-hour floor needs.
+    const ask = Math.min(count, a.slots);
+    const plan = planSlots(ask, a.network, rows, seed);
     slots[a.network] = plan.times.map(toNaive);
     info(`loop scheduling ${a.network}`, {
+      asked: ask,
+      of_batch: count,
       placed: plan.times.length,
       across: plan.spread.map((x) => `${x.day}:${x.placed}`).join(" "),
       first: slots[a.network][0], last: slots[a.network].at(-1),

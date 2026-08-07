@@ -128,13 +128,13 @@ test("LANE: YouTube slots keep the window + ODD-minute invariants", () => {
 
 test("BUDGET: a fan-out costs one record PER NETWORK, and a PAUSED network costs none", () => {
   const m = monthlyRecords(31);
-  assert.equal(m.byNetwork.instagram, 11);
-  assert.equal(m.byNetwork.youtube, 11);
+  assert.equal(m.byNetwork.instagram, 15, "Instagram was raised on 2026-08-07");
+  assert.equal(m.byNetwork.youtube, 11, "YouTube was NOT");
   assert.equal(m.byNetwork.tiktok, undefined, "TikTok is paused and therefore costs nothing");
   // The per-network principle is unchanged and is what makes the pause worth anything:
-  // two live networks at 11 is 22/day, so pausing the third saved 11 a day, not zero.
-  assert.equal(m.perDay, 22);
-  assert.equal(m.perMonth, 682);
+  // pausing the third network saved 11 a day, which is what paid for Instagram's extra 4.
+  assert.equal(m.perDay, 26);
+  assert.equal(m.perMonth, 806);
   assert.equal(budgetForecast(31).budget, 600);
 });
 
@@ -143,11 +143,11 @@ test("BUDGET: the guard is HORIZON-dependent, and the WINDOW's horizon fits", ()
   // answer that matters is what is left of the campaign, against the live counter on
   // 2026-08-07: 166 published leaves 434, and 22 x 14 = 308 — so the budget stopped
   // being the binding constraint on volume the moment TikTok was paused.
-  assert.equal(budgetForecast(31).withinBudget, false, "a full month at 22/day does not fit — knowingly");
+  assert.equal(budgetForecast(31).withinBudget, false, "a full month at 26/day does not fit — knowingly");
   const sprint = budgetForecast(14);
-  assert.equal(sprint.perMonth, 308);
+  assert.equal(sprint.perMonth, 364);
   assert.ok(sprint.withinBudget, sprint.reason);
-  assert.ok(308 <= 600 - 166, "308 of the 434 records still unspent on 2026-08-07");
+  assert.ok(364 <= 600 - 170, "364 of the 430 records still unspent on 2026-08-07");
 });
 
 test("BUDGET: the LIVE guard still fails closed, whatever the forecast says", () => {
@@ -162,8 +162,8 @@ test("BUDGET: the LIVE guard still fails closed, whatever the forecast says", ()
 test("BUDGET: Instagram is served FIRST when headroom is short", () => {
   // NETWORKS order is load-bearing: the network that carries the audience, and the only
   // one that reports a skip rate, must not be the one that starves.
-  const d = decide(15);
-  assert.equal(d.find((x) => x.network === "instagram")!.slots, 11);
+  const d = decide(19);
+  assert.equal(d.find((x) => x.network === "instagram")!.slots, 15, "Instagram takes its full rate first");
   assert.equal(d.find((x) => x.network === "youtube")!.slots, 4, "YouTube absorbs the shortfall");
   assert.equal(d.find((x) => x.network === "tiktok")!.slots, 0, "and TikTok absorbs the rest of it");
 });
@@ -368,19 +368,21 @@ test("PLUMBING: timesByNetwork gives YouTube a bucket (an empty one drops its ga
 test("PLUMBING: config carries a YouTube account id and policy entry", () => {
   assert.ok(CONFIG.ACCOUNTS.youtube, "annotateDb reads CONFIG.ACCOUNTS[platform]");
   assert.ok(CONFIG.ACCOUNT_IDS.includes(CONFIG.ACCOUNTS.youtube));
-  // 11/day is still the per-network cadence on all three; what changed on 2026-08-07 is
-  // that TikTok is PAUSED, so its 11 is never spent. Keeping the perDay rather than
-  // zeroing it means resuming is one env line and no code change.
-  for (const network of ["instagram", "youtube", "tiktok"] as const) {
-    assert.equal(CONFIG.PLATFORM_POLICY[network].perDay, 11, `${network} runs 11/day when live`);
-  }
+  // The three networks no longer share one number. Instagram was raised to 15 on
+  // 2026-08-07 to maximise total views over the last five days; YouTube stayed at 11
+  // because it is hard-blocking most uploads; TikTok keeps its 11 unspent because it is
+  // paused, and keeping the perDay rather than zeroing it means resuming is one env line.
+  assert.equal(CONFIG.PLATFORM_POLICY.instagram.perDay, 15, "Instagram runs 15/day");
+  assert.equal(CONFIG.PLATFORM_POLICY.youtube.perDay, 11, "YouTube runs 11/day and was NOT raised with Instagram");
+  assert.equal(CONFIG.PLATFORM_POLICY.tiktok.perDay, 11, "TikTok would run 11/day if resumed");
   for (const network of ["instagram", "youtube"] as const) {
     assert.equal(CONFIG.PLATFORM_POLICY[network].paused, false, `${network} is live`);
   }
   assert.equal(CONFIG.PLATFORM_POLICY.tiktok.paused, true, "TikTok is paused (2026-08-07 owner decision)");
   // The ceiling and the floor track the policy, or the loop plans a day it cannot place.
-  assert.equal(CONFIG.VIDEOS_PER_DAY, 11);
-  assert.equal(CONFIG.VIDEOS_FLOOR, 11);
+  // They follow INSTAGRAM, which is the network that sizes the batch.
+  assert.equal(CONFIG.VIDEOS_PER_DAY, 15);
+  assert.equal(CONFIG.VIDEOS_FLOOR, 15);
   // Spacing is per-network and was NOT touched by the volume change.
   assert.equal(CONFIG.PLATFORM_POLICY.instagram.minGapMinutes, 56);
   assert.equal(CONFIG.PLATFORM_POLICY.youtube.minGapMinutes, 56);

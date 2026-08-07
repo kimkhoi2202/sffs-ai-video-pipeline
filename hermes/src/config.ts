@@ -218,7 +218,7 @@ export const CONFIG = Object.freeze({
    * planSlots, HORIZON_DAYS). That spill is the existing designed behaviour for a
    * batch bigger than one day's cap, not something YouTube introduced.
    */
-  VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 11),
+  VIDEOS_PER_DAY: Number(process.env.HERMES_VIDEOS_PER_DAY || 15),
   /**
    * FLOOR: the minimum videos a healthy cycle must land. If the first wave finishes
    * short of this (and the ceiling still has room), cycle.ts plans a bounded top-up
@@ -231,7 +231,7 @@ export const CONFIG = Object.freeze({
    * only finished when the cap is full or the waves run out. Tracked the ceiling down
    * to 11 on 2026-08-03; floor == ceiling is the property, 12 was not.
    */
-  VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 11),
+  VIDEOS_FLOOR: Number(process.env.HERMES_VIDEOS_FLOOR || 15),
   /**
    * PER-PLATFORM posting policy. EVERY NETWORK RUNS 11/DAY (2026-08-03, was 12).
    *
@@ -277,7 +277,29 @@ export const CONFIG = Object.freeze({
   PLATFORM_POLICY: {
     // 56 minutes is the same-platform floor the campaign has always run under; it was
     // 0 here only because the daily grid happened to space posts further apart anyway.
-    instagram: { perDay: 11, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
+    // INSTAGRAM 11 -> 15 (2026-08-07, owner decision to maximise total views over the
+    // last five days). 15 is not a taste pick and it is not the number that was asked
+    // for; it is where the machinery actually saturates, measured against the live
+    // calendar over twelve simulated five-day runs:
+    //
+    //   rate  in-window posts  landing AFTER the 12 Aug close  runs breaking the floor
+    //     14        62                    8                            0/12
+    //     15        66                    9                            0/12
+    //     16        67                   13                            0/12
+    //     17        68                   17                            0/12
+    //     18        72                   18                            3/12
+    //     19        76                   19                           12/12
+    //
+    // Two things fall out of that table. The RETURN saturates at 15: the curve gains 4
+    // posts from 14 to 15 and one per step after, because the window physically holds
+    // ~14 posts at a 56-minute floor once the jitter lane is accounted for, so a higher
+    // number does not create posts, it creates SPILL that lands after the campaign has
+    // ended. And the FLOOR breaks at 18, in a quarter of runs — the guard is not a
+    // policy dial, so 18 and 19 are unavailable at any price.
+    //
+    // 15 therefore buys 66 of the ~68 posts the window can deliver at all, wastes the
+    // fewest records outside it, and keeps three steps of margin from the floor.
+    instagram: { perDay: 15, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
     youtube: { perDay: 11, minGapMinutes: 56, darkUntil: null as string | null, paused: false },
     tiktok: {
       perDay: 11,

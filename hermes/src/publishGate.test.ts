@@ -205,7 +205,7 @@ test("the cooldown logic is KEPT, not deleted — it still evaluates as it alway
   assert.equal(P.isDark("instagram", before).dark, false);
 });
 
-test("Instagram and YouTube take 11/day; TikTok is PAUSED and takes none", () => {
+test("Instagram takes 15/day, YouTube 11; TikTok is PAUSED and takes none", () => {
   // TikTok paused again on 2026-08-07, by explicit owner decision and on the evidence:
   // 10 views across 37 August posts, zero across the 30 since 4 August, at a cost of
   // ~11 records a day. The point of asserting it here is unchanged from when this test
@@ -213,11 +213,16 @@ test("Instagram and YouTube take 11/day; TikTok is PAUSED and takes none", () =>
   // something that drifts on a timer. Its `darkUntil` cooldown expired long ago, so
   // without the pause it would come back on its own.
   const d = P.decide(600, new Date("2026-08-07T20:00:00Z"));
-  for (const network of ["instagram", "youtube"] as const) {
-    const x = d.find((n) => n.network === network)!;
-    assert.equal(x.slots, 11, `${network} should take the full 11/day`);
+  // Instagram went to 15 on 2026-08-07; YouTube deliberately did NOT follow it. The two
+  // numbers being different is the point, so they are asserted apart rather than in a
+  // loop that would pass if both drifted together.
+  const igSlots = d.find((n) => n.network === "instagram")!;
+  assert.equal(igSlots.slots, 15, "Instagram takes the raised 15/day");
+  const ytSlots = d.find((n) => n.network === "youtube")!;
+  assert.equal(ytSlots.slots, 11, "YouTube stays at 11 — it is hard-blocking most uploads");
+  for (const x of [igSlots, ytSlots]) {
     assert.equal(x.allowed, true);
-    assert.ok(!x.paused, `${network} must not be paused`);
+    assert.ok(!x.paused, `${x.network} must not be paused`);
   }
   const tt = d.find((n) => n.network === "tiktok")!;
   assert.equal(tt.slots, 0, "a paused network takes no slots");
@@ -295,7 +300,7 @@ test("SETTING the pause takes TikTok back out, cleanly", async () => {
 test("pausing TikTok still leaves Instagram exactly as it was", async () => {
   const d = await decideWith({ HERMES_TIKTOK_PAUSED: "true" });
   const ig = d.find((x) => x.network === "instagram");
-  assert.equal(ig.slots, 11);
+  assert.equal(ig.slots, 15);
   assert.equal(ig.minGapMinutes, 56);
   assert.equal(ig.allowed, true);
 });
@@ -320,7 +325,9 @@ test("only the literal 'false' resumes; a lost or garbled env var leaves TikTok 
 });
 
 test("Instagram is unaffected by the TikTok pause at any budget", () => {
-  for (const [budget, want] of [[600, 11], [11, 11], [5, 5]] as const) {
+  // Instagram is served FIRST, so it takes its full rate until the headroom itself is
+  // the smaller number. 15/15/5 rather than 11/11/5 since the rate rise.
+  for (const [budget, want] of [[600, 15], [15, 15], [5, 5]] as const) {
     const ig = P.decide(budget).find((x) => x.network === "instagram")!;
     assert.equal(ig.slots, want, `budget ${budget} should give Instagram ${want}`);
   }
