@@ -78,6 +78,17 @@ export const APT_SEGMENTS: readonly string[] = [
   "apt/apt-12.mp3", // bar 34 — late-chorus, vocal leaning
 ];
 
+/**
+ * A deterministic pick from `pool`, seeded by `seed`. Same seed and pool in, same entry
+ * out, so a video whose bed has to be substituted re-renders to the SAME licensed bed
+ * every time instead of drifting between runs. Same FNV-1a hash as the segment rotation
+ * above, so the two behave alike.
+ */
+export function pickBed(pool: readonly string[], seed: string): string {
+  if (!pool.length) throw new Error("pickBed: empty pool");
+  return pool[seedOf(`bed:${seed}`) % pool.length];
+}
+
 /** FNV-1a, and the seeded Fisher-Yates from design.ts. Same shape, so a run id
  *  seeds a music order the same way it seeds the day's dimension order. */
 function seedOf(s: string): number {

@@ -5,6 +5,7 @@ import { FullVideo } from "./full/FullVideo";
 import { ALL_IDS, FPS, TOTAL as FULL_TOTAL, getTimeline, type Platform, type SfxSet } from "./full/timeline";
 import type { Question } from "./data/types";
 import { bySlug } from "./data/cuts";
+import { bedAllowedOn, forbiddenBedMessage } from "./data/musicPolicy";
 import { Round15Slice } from "./slice/Round15Slice";
 import { SEG, TOTAL as SLICE_TOTAL } from "./slice/timeline";
 import { Intro } from "./scenes/Intro";
@@ -17,6 +18,22 @@ import { MascotShort } from "./mascot/MascotShort";
 /** Duration for a cut: prefer the named cut (by slug) from src/data/cuts.ts;
  *  fall back to explicit props. Per-round overrides (questions/durs/qrBase) are
  *  threaded so a generated round's length is computed from ITS narration. */
+/**
+ * REFUSE A RENDER WHOSE BED IS NOT LEGAL FOR ITS PLATFORM.
+ *
+ * This runs in calculateMetadata, before a single frame is drawn, and it is the ONLY
+ * enforcement point that an ad-hoc `npx remotion render Short --props=...` cannot walk
+ * around — which matters, because that is exactly how APT beds were baked into YouTube
+ * masters on 2026-08-06 without touching hermes/src at all. Throwing here fails the
+ * render loudly instead of producing a file that looks fine until YouTube claims it.
+ */
+const assertBedLegal = (props: { platform?: Platform; music?: string; slug?: string }): void => {
+  const cut = props.slug ? bySlug(props.slug) : undefined;
+  const platform = cut?.platform ?? props.platform ?? "youtube";
+  const music = cut?.music ?? props.music;
+  if (!bedAllowedOn(music, platform)) throw new Error(forbiddenBedMessage(music, platform, props.slug));
+};
+
 const cutDuration = (props: {
   slug?: string;
   platform?: Platform;
@@ -63,7 +80,10 @@ export const RemotionRoot: React.FC = () => {
         component={FullVideo}
         durationInFrames={FULL_TOTAL}
         defaultProps={{ slug: "short-1" }}
-        calculateMetadata={({ props }) => ({ durationInFrames: (props.totalFrames as number | undefined) ?? cutDuration(props) })}
+        calculateMetadata={({ props }) => {
+          assertBedLegal(props);
+          return { durationInFrames: (props.totalFrames as number | undefined) ?? cutDuration(props) };
+        }}
         {...portrait}
       />
 

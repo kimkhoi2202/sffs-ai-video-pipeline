@@ -47,7 +47,8 @@ import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "no
 import { join } from "node:path";
 import { CONFIG } from "./config.ts";
 import { info } from "./log.ts";
-import { aptSegmentFor, aptRightsCleared } from "./music.ts";
+import { aptSegmentFor, aptRightsCleared, pickBed } from "./music.ts";
+import { isAptBed, aptPermittedOn, bedAllowedOn, forbiddenBedMessage } from "../../remotion/src/data/musicPolicy.ts";
 import { generateVO, type RevealBeatInput, type NarrationMode, resolveFfprobe, isNum, spellNums } from "./narration.ts";
 import { isShapeKind, type Figure } from "./state.ts";
 // Reuse the pipeline's canonical number-speller so "25" reads "twenty-five".
@@ -477,6 +478,14 @@ function buildDurs(id: string, mapped: Mapped, opts: { force?: boolean }): { dur
  *
  * The switch matrix lives in the pure `aptAppliesTo` predicate below so it can be
  * tested without reaching for the environment (CONFIG is frozen at import).
+ *
+ * `aptAppliesTo` DECIDES SELECTION AND NOTHING ELSE. It answers "would this render
+ * choose the alternate bed", which is a question about the switches. Whether the bed
+ * it chose is ALLOWED on the target platform is a separate question, answered by
+ * `bedForPlatform` below and enforced again at the render call and in the Remotion
+ * root. That layering is deliberate: the owner's platform rule has to hold for beds
+ * that no switch ever selected, such as one read straight out of a stored sidecar.
+ * So a `true` from this predicate is a proposal, not permission.
  */
 export function aptAppliesTo(
   platform: Platform,
@@ -493,12 +502,70 @@ export function aptAppliesTo(
   return platform === "instagram";
 }
 
+/**
+ * THE BED A RENDER MAY ACTUALLY USE on `platform`, applied to the bed about to be used
+ * rather than to the switches that chose it.
+ *
+ * Non-APT beds pass through UNTOUCHED — same value, same `audio/music/` prefix or lack
+ * of one, `undefined` stays `undefined` — so this is a no-op for every licensed bed and
+ * for every Instagram and TikTok render. Only an APT bed bound for a platform that
+ * forbids it is replaced, with a licensed bed chosen deterministically from
+ * CONFIG.MUSIC_TRACKS so the same video always re-renders to the same one.
+ *
+ * SUBSTITUTING RATHER THAN REFUSING is deliberate here. The point of the catalogue
+ * backfill is that the content still publishes, and a licensed bed is a complete
+ * substitute for a bed whose only job was to vary which bar the video opens on. The
+ * hard refusal lives one level down, at the render call itself, where it catches a
+ * caller that skipped this function entirely.
+ */
+export function bedForPlatform(music: unknown, platform: Platform, id?: string): any {
+  if (bedAllowedOn(music, platform)) return music;
+  const pool = CONFIG.MUSIC_TRACKS.map((t) => t.replace(/^audio\/music\//, ""));
+  const bed = pickBed(pool, id ?? String(music));
+  info("music: APT bed refused for this platform, licensed bed substituted", {
+    id, platform, refused: String(music), bed,
+  });
+  return bed;
+}
+
+/**
+ * LAST LINE, at the one call that actually bakes audio into a file. `bedForPlatform` is
+ * the rule; this is the assertion that the rule ran. If an APT bed reaches a render for
+ * a platform that forbids it, something bypassed the substitution, and the right outcome
+ * is a loud failure rather than an MP4 nobody re-checks: an unrendered video is
+ * recoverable, a Content ID strike on a Short over a minute is a hard block that is not.
+ */
+export function assertBedAllowed(id: string, platform: Platform, music: unknown): void {
+  if (bedAllowedOn(music, platform)) return;
+  throw new Error(forbiddenBedMessage(music, platform, id));
+}
+
+/**
+ * Was the EXISTING `<id>.<platform>.mp4` rendered with a bed this platform still allows?
+ *
+ * The reuse shortcut trusts a file on disk, and files on disk predate this rule — the
+ * YouTube masters sitting in RENDERS_DIR on 2026-08-07 all carried APT. The companion
+ * props sidecar `runRemotion` writes beside each MP4 records what actually went into it,
+ * so it is the cheapest honest answer. No sidecar means we cannot vouch for the file,
+ * which reads as NOT allowed and forces a re-render rather than reusing a master we
+ * cannot account for.
+ */
+function renderedBedAllowed(id: string, platform: Platform): boolean {
+  if (aptPermittedOn(platform)) return true;
+  try {
+    const p = join(CONFIG.RENDERS_DIR, `${id}.${platform}.props.json`);
+    return !isAptBed(JSON.parse(readFileSync(p, "utf8"))?.music);
+  } catch {
+    return false;
+  }
+}
+
 export function musicFor(props: any, id: string, platform: Platform, applies: boolean = aptAppliesTo(platform)): string {
   const planned = String(props.music ?? "audio/music/gameshow-fanfare.mp3").replace(/^audio\/music\//, "");
-  if (!applies) return planned;
+  if (!applies) return bedForPlatform(planned, platform, id);
   const seg = aptSegmentFor(id);
   info("music: alternate bed selected", { id, platform, segment: seg, replaced: planned });
-  return seg;
+  return bedForPlatform(seg, platform, id);
 }
 
 function shortProps(mapped: Mapped, durs: Record<string, number>, qrBase: string, props: any, id: string, platform: Platform, totalFrames: number): any {
@@ -533,6 +600,9 @@ function shortProps(mapped: Mapped, durs: Record<string, number>, qrBase: string
 }
 
 function runRemotion(id: string, platform: Platform, sp: any, outMp4: string): void {
+  // Nothing renders until the bed is legal for the platform. Every render in the
+  // repo funnels through here, so this is the Node-side choke point.
+  assertBedAllowed(id, platform, sp?.music);
   const propsFile = join(CONFIG.RENDERS_DIR, `${id}.${platform}.props.json`);
   writeFileSync(propsFile, JSON.stringify(sp));
   const args = ["remotion", "render", "Short", outMp4, `--props=${propsFile}`, "--log=error", "--concurrency=2"];
@@ -660,7 +730,7 @@ export function endKeyForCard(endCard: string | undefined, platform: Platform): 
  *
  * Pure apart from the ffprobe measurement, and it never mutates the input.
  */
-export function retargetPropsToYouTube(sp: any): { props: any; endKey: string; frameDelta: number } {
+export function retargetPropsToYouTube(sp: any, id?: string): { props: any; endKey: string; frameDelta: number } {
   if (!sp || typeof sp !== "object") throw new Error("retargetPropsToYouTube: no props");
   const from = String(sp.platform ?? "") as Platform;
   const durs: Record<string, number> = { ...(sp.durs ?? {}) };
@@ -682,7 +752,16 @@ export function retargetPropsToYouTube(sp: any): { props: any; endKey: string; f
   if (!Number.isFinite(totalFrames) || totalFrames <= 0) {
     throw new Error(`retargetPropsToYouTube: bad totalFrames ${sp.totalFrames} -> ${totalFrames}`);
   }
-  return { props: { ...sp, platform: "youtube" as Platform, durs, totalFrames }, endKey: newKey, frameDelta: delta };
+  // THE STORED BED IS NOT AUTHORITY. The sidecar records what the ORIGINAL render used,
+  // and for these videos that is frequently an APT segment picked when the switch was on
+  // and YouTube was still in scope. Carrying it through verbatim is what put uncleared
+  // music in the YouTube queue, so the platform rule is applied to it HERE, at render
+  // time. Only ever set when it actually changes, so a licensed bed keeps its exact
+  // stored form and a sidecar with no bed at all stays that way.
+  const props: any = { ...sp, platform: "youtube" as Platform, durs, totalFrames };
+  const bed = bedForPlatform(sp.music, "youtube", id);
+  if (bed !== sp.music) props.music = bed;
+  return { props, endKey: newKey, frameDelta: delta };
 }
 
 /**
@@ -692,9 +771,9 @@ export function retargetPropsToYouTube(sp: any): { props: any; endKey: string; f
 export function renderYouTubeFromSidecar(id: string, sidecarPath: string, opts: { force?: boolean } = {}): PlatformRender {
   mkdirSync(CONFIG.RENDERS_DIR, { recursive: true });
   const stored = JSON.parse(readFileSync(sidecarPath, "utf8"));
-  const { props: sp } = retargetPropsToYouTube(stored);
+  const { props: sp } = retargetPropsToYouTube(stored, id);
   const outMp4 = join(CONFIG.RENDERS_DIR, `${id}.youtube.mp4`);
-  if (!opts.force && existsSync(outMp4) && statSync(outMp4).size > 100_000) {
+  if (!opts.force && existsSync(outMp4) && statSync(outMp4).size > 100_000 && renderedBedAllowed(id, "youtube")) {
     info("youtube render reused", { id, out: outMp4 });
     return { platform: "youtube", path: outMp4, frames: sp.totalFrames, reused: true };
   }
