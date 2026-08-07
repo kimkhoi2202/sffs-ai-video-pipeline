@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-08-06T14:05:30.990Z",
-  "run_id": "2026-08-06",
+  "updated_at": "2026-08-07T14:04:20.517Z",
+  "run_id": "2026-08-07",
   "evidence_source": "INSTAGRAM ONLY. The 3-second skip rate is the only retention metric that exists on this account: Metricool returns null for every TikTok watch-time field and the YouTube payload has no drop-off field at all. The mix decided here is applied to all three networks, but only Instagram voted.",
   "policy": {
     "applied": true,
@@ -8,54 +8,54 @@
       {
         "band": "short",
         "label": "<=5 words",
-        "n": 30,
+        "n": 34,
         "median": 66.7,
-        "others_median": 72.6,
-        "ci_lo": 62.9,
-        "ci_hi": 69.69999999999999,
-        "advantage": 5.8999999999999915,
+        "others_median": 73.44999999999999,
+        "ci_lo": 63.75,
+        "ci_hi": 70.2,
+        "advantage": 6.749999999999986,
         "passes": true,
-        "reason": "retains better: 90% CI [62.9, 69.7] is entirely below the 72.6 median of the other bands",
-        "weight": 1.5899999999999992,
-        "share": 0.520458265139116
+        "reason": "retains better: 90% CI [63.8, 70.2] is entirely below the 73.4 median of the other bands",
+        "weight": 1.6749999999999985,
+        "share": 0.5145929339477725
       },
       {
         "band": "medium",
         "label": "6-9 words",
-        "n": 28,
-        "median": 72.55,
-        "others_median": 71.1,
-        "ci_lo": 71.80000000000001,
-        "ci_hi": 77.44999999999999,
-        "advantage": -1.4500000000000028,
-        "passes": true,
-        "reason": "retains worse: 90% CI [71.8, 77.4] is entirely above the 71.1 median of the other bands",
-        "weight": 0.8549999999999998,
-        "share": 0.2798690671031096
+        "n": 31,
+        "median": 72.6,
+        "others_median": 71.7,
+        "ci_lo": 71.5,
+        "ci_hi": 76.3,
+        "advantage": -0.8999999999999915,
+        "passes": false,
+        "reason": "indistinguishable: 90% CI [71.5, 76.3] straddles the 71.7 median of the other bands",
+        "weight": 1,
+        "share": 0.3072196620583719
       },
       {
         "band": "long",
         "label": ">=10 words",
-        "n": 25,
-        "median": 73.8,
-        "others_median": 69.9,
-        "ci_lo": 71.7,
+        "n": 27,
+        "median": 74.4,
+        "others_median": 70.2,
+        "ci_lo": 72,
         "ci_hi": 78.4,
-        "advantage": -3.8999999999999915,
+        "advantage": -4.200000000000003,
         "passes": true,
-        "reason": "retains worse: 90% CI [71.7, 78.4] is entirely above the 69.9 median of the other bands",
-        "weight": 0.6100000000000009,
-        "share": 0.19967266775777445
+        "reason": "retains worse: 90% CI [72.0, 78.4] is entirely above the 70.2 median of the other bands",
+        "weight": 0.5799999999999997,
+        "share": 0.17818740399385563
       }
     ],
     "shares": {
-      "short": 0.520458265139116,
-      "medium": 0.2798690671031096,
-      "long": 0.19967266775777445
+      "short": 0.5145929339477725,
+      "medium": 0.3072196620583719,
+      "long": 0.17818740399385563
     },
-    "n_posts": 83,
+    "n_posts": 92,
     "min_posts": 12,
-    "note": "<=5 words retains better by 5.9 pts of skip rate on n=30; 6-9 words retains worse by 1.5 pts of skip rate on n=28; >=10 words retains worse by 3.9 pts of skip rate on n=25"
+    "note": "<=5 words retains better by 6.7 pts of skip rate on n=34; >=10 words retains worse by 4.2 pts of skip rate on n=27"
   },
   "detail": [
     {
@@ -349,7 +349,7 @@
     {
       "post_id": "17966997813068439",
       "band": "medium",
-      "skip": 72,
+      "skip": 71.5,
       "words": 9,
       "type": "VERBAL ANALOGY",
       "via": "stamped"
@@ -365,7 +365,7 @@
     {
       "post_id": "17950367871247317",
       "band": "short",
-      "skip": 55.9,
+      "skip": 55.8,
       "words": 5,
       "type": "FIGURE MATRIX",
       "via": "stamped"
@@ -429,7 +429,7 @@
     {
       "post_id": "17961954369163828",
       "band": "medium",
-      "skip": 80.7,
+      "skip": 80,
       "words": 9,
       "type": "VERBAL ANALOGY",
       "via": "stamped"
@@ -437,7 +437,7 @@
     {
       "post_id": "17877877821620549",
       "band": "medium",
-      "skip": 81.7,
+      "skip": 81.8,
       "words": 8,
       "type": "NUMBER PUZZLE",
       "via": "stamped"
@@ -445,7 +445,7 @@
     {
       "post_id": "18094220822573321",
       "band": "long",
-      "skip": 72.2,
+      "skip": 72.4,
       "words": 15,
       "type": "NUMBER ANALOGY",
       "via": "stamped"
@@ -453,7 +453,7 @@
     {
       "post_id": "18089554718551673",
       "band": "medium",
-      "skip": 54.7,
+      "skip": 55,
       "words": 8,
       "type": "NUMBER PUZZLE",
       "via": "stamped"
@@ -485,7 +485,7 @@
     {
       "post_id": "18100723892191010",
       "band": "long",
-      "skip": 80.4,
+      "skip": 80.5,
       "words": 15,
       "type": "NUMBER ANALOGY",
       "via": "stamped"
@@ -549,7 +549,7 @@
     {
       "post_id": "18089472203640130",
       "band": "short",
-      "skip": 70,
+      "skip": 70.2,
       "words": 4,
       "type": "ODD ONE OUT",
       "via": "stamped"
@@ -565,7 +565,7 @@
     {
       "post_id": "17910197307445891",
       "band": "long",
-      "skip": 80.9,
+      "skip": 81.1,
       "words": 11,
       "type": "SENTENCE COMPLETION",
       "via": "stamped"
@@ -645,7 +645,7 @@
     {
       "post_id": "18104824199143971",
       "band": "short",
-      "skip": 49.2,
+      "skip": 47.7,
       "words": 5,
       "type": "ODD ONE OUT",
       "via": "stamped"
@@ -653,7 +653,7 @@
     {
       "post_id": "17900380608519274",
       "band": "short",
-      "skip": 60.7,
+      "skip": 61.3,
       "words": 5,
       "type": "ODD ONE OUT",
       "via": "stamped"
@@ -685,7 +685,7 @@
     {
       "post_id": "18614875174034058",
       "band": "short",
-      "skip": 64.3,
+      "skip": 64.6,
       "words": 5,
       "type": "ODD ONE OUT",
       "via": "stamped"
@@ -693,7 +693,7 @@
     {
       "post_id": "18122680984766170",
       "band": "medium",
-      "skip": 69.4,
+      "skip": 57.6,
       "words": 8,
       "type": "NUMBER PUZZLE",
       "via": "stamped"
@@ -709,7 +709,7 @@
     {
       "post_id": "18084623144222657",
       "band": "medium",
-      "skip": 71.7,
+      "skip": 73.1,
       "words": 8,
       "type": "NUMBER PUZZLE",
       "via": "stamped"
@@ -717,7 +717,79 @@
     {
       "post_id": "18000583928989882",
       "band": "short",
-      "skip": 69.8,
+      "skip": 69.5,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "stamped"
+    },
+    {
+      "post_id": "17887422765671009",
+      "band": "short",
+      "skip": 75,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "stamped"
+    },
+    {
+      "post_id": "18083208359268391",
+      "band": "medium",
+      "skip": 76,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "stamped"
+    },
+    {
+      "post_id": "17959181358187495",
+      "band": "long",
+      "skip": 83.2,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "stamped"
+    },
+    {
+      "post_id": "17928076662142472",
+      "band": "short",
+      "skip": 74.8,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "stamped"
+    },
+    {
+      "post_id": "17962246614085511",
+      "band": "short",
+      "skip": 72.3,
+      "words": 5,
+      "type": "ODD ONE OUT",
+      "via": "stamped"
+    },
+    {
+      "post_id": "18092027645408163",
+      "band": "long",
+      "skip": 74.4,
+      "words": 15,
+      "type": "NUMBER ANALOGY",
+      "via": "stamped"
+    },
+    {
+      "post_id": "18095374808568434",
+      "band": "medium",
+      "skip": 65.5,
+      "words": 9,
+      "type": "VERBAL ANALOGY",
+      "via": "stamped"
+    },
+    {
+      "post_id": "18090041417552116",
+      "band": "medium",
+      "skip": 66.9,
+      "words": 8,
+      "type": "NUMBER PUZZLE",
+      "via": "stamped"
+    },
+    {
+      "post_id": "18093691829377092",
+      "band": "short",
+      "skip": 50.9,
       "words": 5,
       "type": "ODD ONE OUT",
       "via": "stamped"
@@ -767,6 +839,17 @@
       },
       "applied": true,
       "note": "<=5 words retains better by 6.4 pts of skip rate on n=28; >=10 words retains worse by 3.1 pts of skip rate on n=24"
+    },
+    {
+      "at": "2026-08-06T14:05:30.990Z",
+      "run_id": "2026-08-06",
+      "shares": {
+        "short": 0.520458265139116,
+        "medium": 0.2798690671031096,
+        "long": 0.19967266775777445
+      },
+      "applied": true,
+      "note": "<=5 words retains better by 5.9 pts of skip rate on n=30; 6-9 words retains worse by 1.5 pts of skip rate on n=28; >=10 words retains worse by 3.9 pts of skip rate on n=25"
     }
   ]
 }
