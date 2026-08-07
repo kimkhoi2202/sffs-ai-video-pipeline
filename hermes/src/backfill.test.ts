@@ -168,21 +168,23 @@ test("BUDGET: the ramp never RAISES the monthly bill — it is costed at the ter
   assert.equal(CONFIG.YT_RAMP_STEPS.at(-1)!.perDay, cap, "the terminal step must converge on the real cap");
 });
 
-test("BUDGET: 33/day is a SPRINT — it does not fit a full month, and does fit the WINDOW", () => {
-  // Three networks at 11/day is 33 Metricool records a day, because a fan-out costs one
-  // record PER NETWORK. Stated here as arithmetic rather than left as a comment, so a
-  // future volume change has to confront it.
+test("BUDGET: 22/day is a SPRINT — it does not fit a full month, and does fit the WINDOW", () => {
+  // A fan-out costs one record PER NETWORK, so the bill is the sum over LIVE networks.
+  // TikTok paused on 2026-08-07 and therefore contributes nothing: 11 + 11 = 22/day,
+  // down from 33. Stated as arithmetic rather than left as a comment, so a future
+  // volume change — in either direction — has to confront it.
   const m = monthlyRecords(31);
-  assert.equal(m.perDay, 33, "instagram 11 + youtube 11 + tiktok 11");
-  assert.equal(m.perMonth, 1023);
+  assert.equal(m.perDay, 22, "instagram 11 + youtube 11; tiktok is paused and costs nothing");
+  assert.equal(m.perMonth, 682);
+  assert.equal(m.byNetwork.tiktok, undefined, "a paused network is ABSENT, not present with a zero");
 
   const full = budgetForecast(31);
-  assert.equal(full.withinBudget, false, "a full month at this cadence does NOT fit the 600 guard — deliberately");
+  assert.equal(full.withinBudget, false, "a full month at this cadence STILL does not fit the 600 guard");
   assert.match(full.reason, /OVER BUDGET/);
 
-  // The horizon that actually matters: the 14-day goal window.
+  // The horizon that actually matters: what is left of the campaign.
   const sprint = budgetForecast(14);
-  assert.equal(sprint.perMonth, 462);
+  assert.equal(sprint.perMonth, 308);
   assert.ok(sprint.withinBudget, sprint.reason);
 });
 
@@ -202,8 +204,10 @@ test("BUDGET: 11/network is the number that buys the WHOLE window; 12 runs out i
     assert.ok(at11.daysLeft >= 14, `11/network must reach 2026-08-17, got ${at11.exhaustsOn}`);
   }
 
-  // And it is the LIVE policy that produces 33, not just a number typed into this test.
-  assert.equal(monthlyRecords().perDay, 33);
+  // And it is the LIVE policy that produces the number, not one typed into this test.
+  // 22, not 33, since the TikTok pause on 2026-08-07 — which is the single change that
+  // turned a budget with 23 records of slack into one that is no longer binding.
+  assert.equal(monthlyRecords().perDay, 22);
 
   // WHAT EATS THE MARGIN. 33 x 14 = 462 records, against 485 of headroom on the later
   // reading — 23 spare. The committed side already includes 18 records of a rebus
@@ -213,6 +217,10 @@ test("BUDGET: 11/network is the number that buys the WHOLE window; 12 runs out i
   // failure mode is "the loop stops scheduling", never a Fair Use breach and a manual
   // account review — which is what makes a margin this thin acceptable at all.
   assert.ok(485 - 33 * 14 > 0);
+  // AND WHAT PAUSING TIKTOK BOUGHT. The same headroom against 22/day is 485 - 308 = 177
+  // records of slack rather than 23, which is why the record budget stopped being the
+  // constraint on volume for the rest of the campaign.
+  assert.ok(485 - 22 * 14 > 150);
   assert.ok(CONFIG.MC_MONTHLY_POST_BUDGET < CONFIG.MC_MONTHLY_HARD_CAP);
 });
 

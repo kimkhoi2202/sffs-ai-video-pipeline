@@ -205,21 +205,25 @@ test("the cooldown logic is KEPT, not deleted — it still evaluates as it alway
   assert.equal(P.isDark("instagram", before).dark, false);
 });
 
-test("ALL THREE networks are live and take 11/day", () => {
-  // TikTok resumed on 2026-08-02, by explicit owner decision and against the evidence
-  // (1 view on our best video 22 hours after posting). The point of asserting it here
-  // is that resuming must be a DECISION visible in the policy, the same way the pause
-  // was — not something that drifts back on a timer.
-  //
-  // 12 -> 11 on 2026-08-03: 33 records/day is what the Metricool headroom buys for the
-  // full 14-day window, where 36 runs out on 2026-08-15 with two days still to play.
-  const d = P.decide(600, new Date("2026-08-02T20:00:00Z"));
-  for (const network of ["instagram", "youtube", "tiktok"] as const) {
+test("Instagram and YouTube take 11/day; TikTok is PAUSED and takes none", () => {
+  // TikTok paused again on 2026-08-07, by explicit owner decision and on the evidence:
+  // 10 views across 37 August posts, zero across the 30 since 4 August, at a cost of
+  // ~11 records a day. The point of asserting it here is unchanged from when this test
+  // asserted the opposite — the state must be a DECISION visible in the policy, not
+  // something that drifts on a timer. Its `darkUntil` cooldown expired long ago, so
+  // without the pause it would come back on its own.
+  const d = P.decide(600, new Date("2026-08-07T20:00:00Z"));
+  for (const network of ["instagram", "youtube"] as const) {
     const x = d.find((n) => n.network === network)!;
     assert.equal(x.slots, 11, `${network} should take the full 11/day`);
     assert.equal(x.allowed, true);
     assert.ok(!x.paused, `${network} must not be paused`);
   }
+  const tt = d.find((n) => n.network === "tiktok")!;
+  assert.equal(tt.slots, 0, "a paused network takes no slots");
+  assert.equal(tt.allowed, false);
+  assert.equal(tt.paused, true, "and it is reported as PAUSED, not as out of budget");
+  assert.match(tt.reason, /HERMES_TIKTOK_PAUSED=false to resume/, "the message names the one line that reverses it");
 });
 
 test("resuming TikTok did NOT relax its 4-hour same-platform floor", () => {
@@ -296,19 +300,23 @@ test("pausing TikTok still leaves Instagram exactly as it was", async () => {
   assert.equal(ig.allowed, true);
 });
 
-test("only the literal 'true' pauses; a lost or garbled env var leaves TikTok LIVE", async () => {
-  // The polarity FLIPPED on 2026-08-02 and that is the dangerous kind of change, so it
-  // is pinned here. Before, anything but "false" meant paused; now only "true" means
-  // paused. A fresh box or a lost env file therefore comes up POSTING, which is the
-  // intended default for the remaining campaign.
-  for (const v of ["true", "True", "TRUE"]) {
+test("only the literal 'false' resumes; a lost or garbled env var leaves TikTok PAUSED", async () => {
+  // The polarity FLIPPED BACK on 2026-08-07, and the DEFAULT is the whole point of the
+  // change rather than a side effect of it. Under the previous polarity the pause lived
+  // only in /etc/hermes/hermes.env, so a rebuilt box, a restored-from-template env file
+  // or a fresh checkout would resume TikTok with nobody deciding to. Now absence means
+  // paused, and the only thing that resumes it is someone typing the word.
+  for (const v of ["false", "False", "FALSE"]) {
     const tt = (await decideWith({ HERMES_TIKTOK_PAUSED: v })).find((x) => x.network === "tiktok");
-    assert.equal(tt.slots, 0, `HERMES_TIKTOK_PAUSED="${v}" must pause TikTok`);
+    assert.equal(tt.slots, 11, `HERMES_TIKTOK_PAUSED="${v}" must resume TikTok`);
   }
-  for (const v of ["false", "0", "no", "", "garbage"]) {
+  for (const v of ["true", "0", "no", "", "garbage"]) {
     const tt = (await decideWith({ HERMES_TIKTOK_PAUSED: v })).find((x) => x.network === "tiktok");
-    assert.equal(tt.slots, 11, `HERMES_TIKTOK_PAUSED="${v}" must leave TikTok live`);
+    assert.equal(tt.slots, 0, `HERMES_TIKTOK_PAUSED="${v}" must leave TikTok paused`);
   }
+  // THE REBUILT-BOX CASE, which is the one the flip exists for: no variable at all.
+  const gone = (await decideWith({ HERMES_TIKTOK_PAUSED: undefined as any })).find((x) => x.network === "tiktok");
+  assert.equal(gone.slots, 0, "an ABSENT env var must leave TikTok paused");
 });
 
 test("Instagram is unaffected by the TikTok pause at any budget", () => {

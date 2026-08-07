@@ -649,7 +649,11 @@ function renderOne(
  * Also stashes the resolved frame count/durs onto `props` so a later
  * computeFrames(props) is exact.
  */
-export function renderForPlatforms(id: string, props: any, opts: { force?: boolean } = {}): PlatformRender[] {
+export function renderForPlatforms(
+  id: string,
+  props: any,
+  opts: { force?: boolean; platforms?: Platform[] } = {},
+): PlatformRender[] {
   mkdirSync(CONFIG.RENDERS_DIR, { recursive: true });
   const mapped = mapProps(props);
   const { durs, qrBase } = buildDurs(id, mapped, opts);
@@ -662,16 +666,25 @@ export function renderForPlatforms(id: string, props: any, opts: { force?: boole
   // than gateRenderSanity's 1.5s tolerance, so it would have shipped silently. On the
   // cliffhanger / no-answer endings all three still agree, and this returns the same
   // number for each, so nothing changes for those.
+  // WHICH PLATFORMS. Defaults to all of RENDER_PLATFORMS, so the loop is unchanged.
+  // A caller may narrow it — an Instagram-only batch should not spend two renders and
+  // two safe-zone layouts on networks it is not going to post to (YouTube is currently
+  // hard-blocking most uploads and TikTok is paused). Narrowing NEVER widens: an
+  // unknown platform is dropped rather than rendered without a safe box of its own.
+  const targets = (opts.platforms ?? RENDER_PLATFORMS).filter((p) => RENDER_PLATFORMS.includes(p));
+  if (!targets.length) throw new Error(`renderForPlatforms(${id}): no known platform requested`);
+
   const framesByPlatform = new Map<Platform, number>(
-    RENDER_PLATFORMS.map((pl) => [pl, computeShortFrames(mapped, durs, pl)]),
+    targets.map((pl) => [pl, computeShortFrames(mapped, durs, pl)]),
   );
   // The stash feeds computeFrames(props) and the dashboard preview, which are
-  // single-number contracts: use the FIRST platform (Instagram, the measurable arm).
-  const totalFrames = framesByPlatform.get(RENDER_PLATFORMS[0]) as number;
+  // single-number contracts: use the FIRST platform rendered (Instagram whenever it is
+  // in the set, since RENDER_PLATFORMS lists it first and it is the measurable arm).
+  const totalFrames = framesByPlatform.get(targets[0]) as number;
   props.__short = { totalFrames, durs, qrBase, framesByPlatform: Object.fromEntries(framesByPlatform) };
   props.totalFrames = totalFrames;
 
-  return RENDER_PLATFORMS.map((platform) =>
+  return targets.map((platform) =>
     renderOne(id, mapped, durs, qrBase, props, platform, framesByPlatform.get(platform) as number, opts),
   );
 }

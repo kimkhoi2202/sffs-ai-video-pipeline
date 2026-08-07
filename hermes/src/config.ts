@@ -283,8 +283,20 @@ export const CONFIG = Object.freeze({
       perDay: 11,
       minGapMinutes: 240,
       darkUntil: (process.env.HERMES_TIKTOK_DARK_UNTIL || "2026-07-27T18:00:00").trim() as string | null,
-      // Defaults to LIVE now. Still one env line either way.
-      paused: String(process.env.HERMES_TIKTOK_PAUSED ?? "false").trim().toLowerCase() === "true",
+      // DEFAULTS TO PAUSED (2026-08-07, owner decision), and the DEFAULT is the point.
+      // With the old polarity the pause lived only in /etc/hermes/hermes.env, so a box
+      // rebuild, a lost env file or a fresh checkout would bring TikTok back on its own
+      // with nobody deciding to. The polarity now matches HERMES_APPROVAL_PAUSED: the
+      // literal "false" is the only thing that resumes it, and absence means paused.
+      //
+      // The evidence is not about the music bed. TikTok returned 10 views across 37
+      // August posts and zero across the 30 since 4 August, and the collapse began
+      // around 24 July — five days BEFORE the alternate bed was ever enabled, so the
+      // bed cannot be the cause and pausing is not a fix for it. This is only about not
+      // spending ~11 records a day on a channel returning nothing.
+      //
+      //   TO RESUME: HERMES_TIKTOK_PAUSED=false in /etc/hermes/hermes.env.
+      paused: String(process.env.HERMES_TIKTOK_PAUSED ?? "true").trim().toLowerCase() !== "false",
     },
   } as Record<string, { perDay: number; minGapMinutes: number; darkUntil: string | null; paused: boolean }>,
   /**

@@ -3881,6 +3881,81 @@
           "answerNorm": "19"
         }
       ]
+    },
+    {
+      "videoSlug": "contested-20260807-v01",
+      "test": "contested-answer",
+      "variant": "contested-answer",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "a211f7e438c3",
+          "sig": "text|quantitative|number-puzzle|if 8 9 80 1 2 3 9 9 90 then 2 3 || 5~7~8~9|8",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "8"
+        }
+      ]
+    },
+    {
+      "videoSlug": "contested-20260807-v02",
+      "test": "contested-answer",
+      "variant": "contested-answer",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "0f92eacccf34",
+          "sig": "text|quantitative|number-puzzle|if 7 4 53 5 3 28 1 5 6 then 3 2 || 11~15~5~9|11",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "11"
+        }
+      ]
+    },
+    {
+      "videoSlug": "contested-20260807-v03",
+      "test": "contested-answer",
+      "variant": "contested-answer",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "a2e64998fd9f",
+          "sig": "text|quantitative|number-puzzle|if 3 3 6 9 9 72 8 6 42 then 4 3 || 12~7~8~9|9",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "9"
+        }
+      ]
+    },
+    {
+      "videoSlug": "contested-20260807-v04",
+      "test": "contested-answer",
+      "variant": "contested-answer",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "f01a97764517",
+          "sig": "text|quantitative|number-puzzle|if 9 8 55 7 6 29 4 4 8 then 3 5 || 15~23~7~8|7",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "7"
+        }
+      ]
+    },
+    {
+      "videoSlug": "contested-20260807-v05",
+      "test": "contested-answer",
+      "variant": "contested-answer",
+      "round": "hermes",
+      "generatedBy": "hermes-loop",
+      "questions": [
+        {
+          "hash": "6bdb196a900c",
+          "sig": "text|quantitative|number-puzzle|if 9 2 77 2 1 3 8 5 39 then 5 2 || 12~21~7~9|21",
+          "tier": "NUMBER PUZZLE",
+          "answerNorm": "21"
+        }
+      ]
     }
   ],
   "updated": "2026-07-21"

@@ -126,25 +126,28 @@ test("LANE: YouTube slots keep the window + ODD-minute invariants", () => {
 
 // ── the budget guard ─────────────────────────────────────────────────────────
 
-test("BUDGET: a fan-out costs one record PER NETWORK — 11x3 is 33/day, not 11", () => {
+test("BUDGET: a fan-out costs one record PER NETWORK, and a PAUSED network costs none", () => {
   const m = monthlyRecords(31);
   assert.equal(m.byNetwork.instagram, 11);
   assert.equal(m.byNetwork.youtube, 11);
-  assert.equal(m.byNetwork.tiktok, 11, "TikTok is live again and therefore costs records");
-  assert.equal(m.perDay, 33);
-  assert.equal(m.perMonth, 1023);
+  assert.equal(m.byNetwork.tiktok, undefined, "TikTok is paused and therefore costs nothing");
+  // The per-network principle is unchanged and is what makes the pause worth anything:
+  // two live networks at 11 is 22/day, so pausing the third saved 11 a day, not zero.
+  assert.equal(m.perDay, 22);
+  assert.equal(m.perMonth, 682);
   assert.equal(budgetForecast(31).budget, 600);
 });
 
 test("BUDGET: the guard is HORIZON-dependent, and the WINDOW's horizon fits", () => {
-  // The 31-day answer is "no" and that is the intended shape of a sprint. The answer
-  // that matters is the 14-day goal window, against the live counter on 2026-08-03:
-  // 57 published and 58 records already on the calendar leaves 485, and 33 x 14 = 462.
-  assert.equal(budgetForecast(31).withinBudget, false, "a full month at 33/day does not fit — knowingly");
+  // The 31-day answer is still "no" and that is the intended shape of a sprint. The
+  // answer that matters is what is left of the campaign, against the live counter on
+  // 2026-08-07: 166 published leaves 434, and 22 x 14 = 308 — so the budget stopped
+  // being the binding constraint on volume the moment TikTok was paused.
+  assert.equal(budgetForecast(31).withinBudget, false, "a full month at 22/day does not fit — knowingly");
   const sprint = budgetForecast(14);
-  assert.equal(sprint.perMonth, 462);
+  assert.equal(sprint.perMonth, 308);
   assert.ok(sprint.withinBudget, sprint.reason);
-  assert.ok(462 <= 600 - 57 - 58, "462 of the 485 records still unspent on 2026-08-03");
+  assert.ok(308 <= 600 - 166, "308 of the 434 records still unspent on 2026-08-07");
 });
 
 test("BUDGET: the LIVE guard still fails closed, whatever the forecast says", () => {
@@ -365,12 +368,16 @@ test("PLUMBING: timesByNetwork gives YouTube a bucket (an empty one drops its ga
 test("PLUMBING: config carries a YouTube account id and policy entry", () => {
   assert.ok(CONFIG.ACCOUNTS.youtube, "annotateDb reads CONFIG.ACCOUNTS[platform]");
   assert.ok(CONFIG.ACCOUNT_IDS.includes(CONFIG.ACCOUNTS.youtube));
-  // 11/day on all three, TikTok resumed — the 2026-08-02 volume decision, trimmed on
-  // 2026-08-03 so the Metricool budget reaches the close of the 14-day window.
+  // 11/day is still the per-network cadence on all three; what changed on 2026-08-07 is
+  // that TikTok is PAUSED, so its 11 is never spent. Keeping the perDay rather than
+  // zeroing it means resuming is one env line and no code change.
   for (const network of ["instagram", "youtube", "tiktok"] as const) {
-    assert.equal(CONFIG.PLATFORM_POLICY[network].perDay, 11, `${network} runs 11/day`);
+    assert.equal(CONFIG.PLATFORM_POLICY[network].perDay, 11, `${network} runs 11/day when live`);
+  }
+  for (const network of ["instagram", "youtube"] as const) {
     assert.equal(CONFIG.PLATFORM_POLICY[network].paused, false, `${network} is live`);
   }
+  assert.equal(CONFIG.PLATFORM_POLICY.tiktok.paused, true, "TikTok is paused (2026-08-07 owner decision)");
   // The ceiling and the floor track the policy, or the loop plans a day it cannot place.
   assert.equal(CONFIG.VIDEOS_PER_DAY, 11);
   assert.equal(CONFIG.VIDEOS_FLOOR, 11);

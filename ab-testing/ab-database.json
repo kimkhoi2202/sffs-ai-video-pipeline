@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-07T14:50:16.145Z",
+  "updated_at": "2026-08-07T17:39:58.537Z",
   "campaign": "Smart Fella or Fart Smella",
   "description": "A/B-testing brain: one record per published short-form post, correlated back to the rendered video variant it came from, tagged with A/B dimensions, and joined to performance metrics. Append-only, versioned, designed to grow as an automated posting loop reads/writes it.",
   "repo": {
@@ -16948,6 +16948,266 @@
       },
       "match_confidence": "high",
       "notes": "Created by the Hermes autonomous loop and scheduled LIVE (approval gate retired)."
+    },
+    {
+      "_hermes_key": "hermes:contested-20260807-v01:instagram",
+      "metricool_uuid": "-4668434532053597912",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "if you got this one instantly, read it again 👀 what's your answer? drop it in the comments, then take the full test 🧠💨\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:contested-20260807-v01.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "contested-answer",
+        "arm": "contested-answer",
+        "label": "contested-answer",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER PUZZLE"
+        ],
+        "num_questions": 1,
+        "contested": true,
+        "contested_naive_answer": "5",
+        "contested_endorsed_by": "1+2=3",
+        "contested_rule": "a*b+a",
+        "lead_type": "NUMBER PUZZLE",
+        "lead_prompt_words": 6,
+        "lead_band": "medium",
+        "opening_type_arm": null
+      },
+      "experiment": {
+        "dimension": "contested-answer",
+        "arm": "contested-answer",
+        "rationale": "One question, and the plain-arithmetic answer is both offered as a distractor and endorsed by a worked example. Judged on COMMENTS, not skip rate: skip rate cannot see an argument.",
+        "hermes_video_id": "contested-20260807-v01"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-07T15:51:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Owner-directed contested-answer batch, 2026-08-07. Instagram only."
+    },
+    {
+      "_hermes_key": "hermes:contested-20260807-v02:instagram",
+      "metricool_uuid": "815851239970786554",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "the comments are gonna fight about this one. what's your answer? drop it below, then take the full test 🧠💨\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:contested-20260807-v02.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "contested-answer",
+        "arm": "contested-answer",
+        "label": "contested-answer",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER PUZZLE"
+        ],
+        "num_questions": 1,
+        "contested": true,
+        "contested_naive_answer": "5",
+        "contested_endorsed_by": "1+5=6",
+        "contested_rule": "a^2+b",
+        "lead_type": "NUMBER PUZZLE",
+        "lead_prompt_words": 6,
+        "lead_band": "medium",
+        "opening_type_arm": null
+      },
+      "experiment": {
+        "dimension": "contested-answer",
+        "arm": "contested-answer",
+        "rationale": "One question, and the plain-arithmetic answer is both offered as a distractor and endorsed by a worked example. Judged on COMMENTS, not skip rate: skip rate cannot see an argument.",
+        "hermes_video_id": "contested-20260807-v02"
+      },
+      "hashtag_set": "B",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-07T17:53:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Owner-directed contested-answer batch, 2026-08-07. Instagram only."
+    },
+    {
+      "_hermes_key": "hermes:contested-20260807-v03:instagram",
+      "metricool_uuid": "-2294431492212963973",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "two answers look right here, only one of them is. what's your answer? tell us in the comments, then take the full test 🧠💨\n\n#quiztime #braintest #canyoupass #puzzle #trivianight",
+      "source_video": "hermes-render:contested-20260807-v03.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "contested-answer",
+        "arm": "contested-answer",
+        "label": "contested-answer",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER PUZZLE"
+        ],
+        "num_questions": 1,
+        "contested": true,
+        "contested_naive_answer": "7",
+        "contested_endorsed_by": "3+3=6",
+        "contested_rule": "a*b-b",
+        "lead_type": "NUMBER PUZZLE",
+        "lead_prompt_words": 6,
+        "lead_band": "medium",
+        "opening_type_arm": null
+      },
+      "experiment": {
+        "dimension": "contested-answer",
+        "arm": "contested-answer",
+        "rationale": "One question, and the plain-arithmetic answer is both offered as a distractor and endorsed by a worked example. Judged on COMMENTS, not skip rate: skip rate cannot see an argument.",
+        "hermes_video_id": "contested-20260807-v03"
+      },
+      "hashtag_set": "C",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-07T19:57:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Owner-directed contested-answer batch, 2026-08-07. Instagram only."
+    },
+    {
+      "_hermes_key": "hermes:contested-20260807-v04:instagram",
+      "metricool_uuid": "4397559189690403058",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "bet you picked the obvious one 👀 what's your answer? drop it in the comments, then take the full test 🧠💨\n\n#fyp #foryou #quiz #trivia #brainteaser",
+      "source_video": "hermes-render:contested-20260807-v04.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "contested-answer",
+        "arm": "contested-answer",
+        "label": "contested-answer",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER PUZZLE"
+        ],
+        "num_questions": 1,
+        "contested": true,
+        "contested_naive_answer": "8",
+        "contested_endorsed_by": "4+4=8",
+        "contested_rule": "a*b-a-b",
+        "lead_type": "NUMBER PUZZLE",
+        "lead_prompt_words": 6,
+        "lead_band": "medium",
+        "opening_type_arm": null
+      },
+      "experiment": {
+        "dimension": "contested-answer",
+        "arm": "contested-answer",
+        "rationale": "One question, and the plain-arithmetic answer is both offered as a distractor and endorsed by a worked example. Judged on COMMENTS, not skip rate: skip rate cannot see an argument.",
+        "hermes_video_id": "contested-20260807-v04"
+      },
+      "hashtag_set": "A",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-07T22:03:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Owner-directed contested-answer batch, 2026-08-07. Instagram only."
+    },
+    {
+      "_hermes_key": "hermes:contested-20260807-v05:instagram",
+      "metricool_uuid": "9102505758698194632",
+      "platform_post_id": null,
+      "platform": "instagram",
+      "account_id": "6a5fc9dc4ccd63dc1f041549",
+      "account_handle": "@smartfellafartsmellatest",
+      "permalink": null,
+      "caption": "read the middle line again. what's your answer? settle it in the comments, then take the full test 🧠💨\n\n#smartorfart #iqtest #puzzletok #riddles #mindgames",
+      "source_video": "hermes-render:contested-20260807-v05.instagram.mp4",
+      "media_url_note": "S3 private object (presigned at post time)",
+      "variant": {
+        "family": "contested-answer",
+        "arm": "contested-answer",
+        "label": "contested-answer",
+        "narration": "full",
+        "ending": "cliffhanger",
+        "question_types": [
+          "NUMBER PUZZLE"
+        ],
+        "num_questions": 1,
+        "contested": true,
+        "contested_naive_answer": "7",
+        "contested_endorsed_by": "2+1=3",
+        "contested_rule": "(a+b)*(a-b)",
+        "lead_type": "NUMBER PUZZLE",
+        "lead_prompt_words": 6,
+        "lead_band": "medium",
+        "opening_type_arm": null
+      },
+      "experiment": {
+        "dimension": "contested-answer",
+        "arm": "contested-answer",
+        "rationale": "One question, and the plain-arithmetic answer is both offered as a distractor and endorsed by a worked example. Judged on COMMENTS, not skip rate: skip rate cannot see an argument.",
+        "hermes_video_id": "contested-20260807-v05"
+      },
+      "hashtag_set": "B",
+      "post_state": "scheduled",
+      "scheduled_at": "2026-08-08T00:09:00",
+      "metrics": {
+        "reach": null,
+        "video_views": null,
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "eng_rate": null,
+        "as_of": null,
+        "source": "pending"
+      },
+      "match_confidence": "high",
+      "notes": "Owner-directed contested-answer batch, 2026-08-07. Instagram only."
     }
   ],
   "variant_families": {
